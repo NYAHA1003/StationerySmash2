@@ -381,7 +381,7 @@ public class Pencil_Throw_State : Pencil_State
         }
 
         //초기 벡터
-        float force = Mathf.Clamp(Vector2.Distance(myTrm.position, mousePos), 0, 1) * 4;
+        float force = Mathf.Clamp(Vector2.Distance(myTrm.position, mousePos), 0, 1) * 4 * (100.0f / myUnit.weight);
 
         //최고점
         float height = Utill.Utill.Caculated_Height(force, dirx);

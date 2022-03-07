@@ -32,12 +32,13 @@ public class Battle_Throw : BattleCommand
         float targetRange = float.MaxValue;
         for (int i = 0; i < battleManager.unit_MyDatasTemp.Count; i++)
         {
-            if (battleManager.unit_MyDatasTemp[i].transform.position.sqrMagnitude < targetRange)
+            if (Vector2.Distance(pos, battleManager.unit_MyDatasTemp[i].transform.position) < targetRange)
             {
                 throw_Unit = battleManager.unit_MyDatasTemp[i];
-                targetRange = throw_Unit.transform.position.sqrMagnitude;
+                targetRange = Vector2.Distance(pos, throw_Unit.transform.position);
             }
         }
+        Debug.Log(throw_Unit.gameObject.name);
 
         if (throw_Unit != null)
         {
@@ -96,13 +97,12 @@ public class Battle_Throw : BattleCommand
             arrow.transform.eulerAngles = new Vector3(0, 0, dir * Mathf.Rad2Deg);
             
             //초기 벡터
-            force = Mathf.Clamp(Vector2.Distance(throw_Unit.transform.position, pos), 0, 1) * 4;
+            force = Mathf.Clamp(Vector2.Distance(throw_Unit.transform.position, pos), 0, 1) * 4 * (100.0f / throw_Unit.weight);
 
             //최고점
             float height = Utill.Utill.Caculated_Height(force, dirx);
             //수평 도달 거리
-            //100.0f / throw_Unit.weight;
-            float width = Utill.Utill.Caculated_Width(force, dirx);
+            float width = Utill.Utill.Caculated_Width(force, dirx) ;
             //수평 도달 시간
             float time = Utill.Utill.Caculated_Time(force, dir, 2);
             
