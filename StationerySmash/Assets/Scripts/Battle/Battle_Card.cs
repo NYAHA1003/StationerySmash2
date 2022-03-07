@@ -313,7 +313,6 @@ public class Battle_Card : BattleCommand
         isCardDown = false;
 
         //¿Ø¥÷ º“»Ø
-
         Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         battleManager.battle_Unit.Summon_Unit(card.unitData, new Vector3(mouse_Pos.x, 0, 0), unitidCount);
     }
