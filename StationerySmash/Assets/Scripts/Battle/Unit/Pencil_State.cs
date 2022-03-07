@@ -280,6 +280,12 @@ public class Pencil_Damaged_State : Pencil_State
     {
         myUnit.Set_IsInvincibility(true);
         myUnit.Subtract_HP(atkData.damage);
+        if (myUnit.hp <= 0)
+        {
+            nextState = new Pencil_Die_State(myTrm, mySprTrm, myUnit, stageData);
+            curEvent = eEvent.EXIT;
+            return;
+        }
         KnockBack();
         base.Enter();
     }
@@ -300,11 +306,6 @@ public class Pencil_Damaged_State : Pencil_State
     public override void Update()
     {
         Check_Wall();
-        if (myUnit.hp <= 0)
-        {
-            nextState = new Pencil_Die_State(myTrm, mySprTrm, myUnit, stageData);
-            return;
-        }
         nextState = new Pencil_Wait_State(myTrm, mySprTrm, myUnit, stageData, 0.5f);
     }
 
@@ -335,15 +336,17 @@ public class Pencil_Die_State : Pencil_State
         Vector3 diePos = new Vector3(myTrm.position.x, myTrm.position.y + 0.3f, 0);
         if(myUnit.eTeam == TeamType.MyTeam)
         {
-            diePos.x += -0.2f;
+            diePos.x += Random.Range(-0.5f, -0.1f);
         }
         if (myUnit.eTeam == TeamType.EnemyTeam)
         {
-            diePos.x += 0.2f;
+            diePos.x += Random.Range(0.1f, 0.5f);
         }
-        myTrm.DOLocalRotate(new Vector3(0, 0, -360), 0.3f, RotateMode.FastBeyond360);
-        myTrm.DOJump(diePos, 0.3f, 1, 0.3f).OnComplete(() =>
+        myTrm.DOLocalRotate(new Vector3(0, 0, -360), 0.6f, RotateMode.FastBeyond360);
+        myTrm.DOScale(3, 0.6f);
+        myTrm.DOJump(diePos, Random.Range(0.3f, 0.6f), 1, 0.6f).OnComplete(() =>
         {
+            myTrm.localScale = new Vector3(1, 1, 1);
             myTrm.eulerAngles = new Vector3(0, 0, 0);
             curEvent = eEvent.EXIT;
             myUnit.Delete_Unit();
