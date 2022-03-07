@@ -300,6 +300,7 @@ public class Battle_Card : BattleCommand
     /// <param name="card"></param>
     public void Check_MouseUp(CardMove card)
     {
+        summonRangeLine.gameObject.SetActive(false);
         if (isFusion) return;
         if (isDrow) return;
         if (!isPossibleSummon)
@@ -352,7 +353,12 @@ public class Battle_Card : BattleCommand
         {
             isPossibleSummon = true;
             return;
-        }    
+        }
+        if (battleManager.battle_Unit.eTeam == Utill.TeamType.EnemyTeam)
+        {
+            isPossibleSummon = true;
+            return;
+        }
         Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if (mouse_Pos.x >= -stageData.max_Range && mouse_Pos.x <= summonRange)
         {

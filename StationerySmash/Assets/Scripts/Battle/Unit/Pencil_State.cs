@@ -329,8 +329,25 @@ public class Pencil_Die_State : Pencil_State
     public override void Enter()
     {
         //µÚÁü
-        Debug.Log("µÚÁü");
-        myUnit.Delete_Unit();
+        myUnit.Set_IsInvincibility(true);
+        myTrm.DOKill();
+
+        Vector3 diePos = new Vector3(myTrm.position.x, myTrm.position.y + 0.3f, 0);
+        if(myUnit.eTeam == TeamType.MyTeam)
+        {
+            diePos.x += -0.2f;
+        }
+        if (myUnit.eTeam == TeamType.EnemyTeam)
+        {
+            diePos.x += 0.2f;
+        }
+        myTrm.DOLocalRotate(new Vector3(0, 0, -360), 0.3f, RotateMode.FastBeyond360);
+        myTrm.DOJump(diePos, 0.3f, 1, 0.3f).OnComplete(() =>
+        {
+            myTrm.eulerAngles = new Vector3(0, 0, 0);
+            curEvent = eEvent.EXIT;
+            myUnit.Delete_Unit();
+        });
         base.Enter();
     }
 
