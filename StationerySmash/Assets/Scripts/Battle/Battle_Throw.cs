@@ -101,6 +101,7 @@ public class Battle_Throw : BattleCommand
             //최고점
             float height = Utill.Utill.Caculated_Height(force, dirx);
             //수평 도달 거리
+            //100.0f / throw_Unit.weight;
             float width = Utill.Utill.Caculated_Width(force, dirx);
             //수평 도달 시간
             float time = Utill.Utill.Caculated_Time(force, dir, 2);
