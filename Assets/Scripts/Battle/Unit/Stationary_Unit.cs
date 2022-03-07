@@ -11,6 +11,14 @@ public class Stationary_Unit : Unit
     public UnitData unitData;
     protected List<Stationary_Unit_Eff_State> statEffList = new List<Stationary_Unit_Eff_State>();
 
+    public int damagePercent = 100;
+    public int moveSpeedPercent = 100;
+    public int attackSpeedPercent = 100;
+    public int rangePercent = 100;
+    public int accuracyPercent = 100;
+    public int weightPercent = 100;
+    public int knockbackPercent = 100;
+
     [SerializeField]
     protected Canvas canvas;
     [SerializeField]
@@ -102,7 +110,7 @@ public class Stationary_Unit : Unit
     {
         unitState = new Pencil_Throw_State(transform, spr.transform, this, stageData);
     }
-    public void Add_StatusEffect(AtkType atkType, float value = 0)
+    public void Add_StatusEffect(AtkType atkType, params float[] value)
     {
         Stationary_Unit_Eff_State statEffState = statEffList.Find(x => x.statusEffect == atkType);
         if (statEffState != null)
@@ -121,4 +129,37 @@ public class Stationary_Unit : Unit
 
         return;
     }
+
+    #region Ω∫≈» π›»Ø
+
+    public int Return_Damage()
+    {
+        return Mathf.RoundToInt(unitData.damage * (float)damagePercent / 100);
+    }
+    public int Return_MoveSpeed()
+    {
+        return Mathf.RoundToInt(unitData.moveSpeed * (float)moveSpeedPercent / 100);
+    }
+    public int Return_AttackSpeed()
+    {
+        return Mathf.RoundToInt(unitData.attackSpeed * (float)attackSpeedPercent / 100);
+    }
+    public int Return_Range()
+    {
+        return Mathf.RoundToInt(unitData.range * (float)rangePercent / 100);
+    }
+    public int Return_Weight()
+    {
+        return Mathf.RoundToInt(unitData.weight * (float)weightPercent / 100);
+    }
+    public int Return_Accuracy()
+    {
+        return Mathf.RoundToInt(unitData.accuracy * (float)accuracyPercent / 100);
+    }
+    public int Return_Knockback()
+    {
+        return Mathf.RoundToInt(unitData.knockback * (float)knockbackPercent / 100);
+    }
+
+    #endregion
 }

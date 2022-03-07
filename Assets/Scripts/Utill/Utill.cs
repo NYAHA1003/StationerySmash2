@@ -31,6 +31,8 @@ namespace Utill
     {
         Normal,
         Stun,
+        Ink,
+        SlowDown,
     }
     public class AtkData
     {
@@ -50,9 +52,9 @@ namespace Utill
 
         //공격 속성
         public AtkType atkType;
-        public float value;
+        public float[] value;
 
-        public AtkData(Unit attacker, int damage, float baseKnockback, float extraKnockback, float direction, bool isMyTeam, AtkType atkType, float value = 0, int damageId = 0)
+        public AtkData(Unit attacker, int damage, float baseKnockback, float extraKnockback, float direction, bool isMyTeam, int damageId = 0, AtkType atkType = AtkType.Normal, params float[] value)
         {
             this.attacker = attacker;
             this.damage = damage;
@@ -85,7 +87,7 @@ namespace Utill
             this.damage = damage;
         }
 
-        public void Reset_Value(float value)
+        public void Reset_Value(params float[] value)
         {
             this.value = value;
         }

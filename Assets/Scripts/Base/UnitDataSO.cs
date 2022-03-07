@@ -18,7 +18,9 @@ public class UnitData : DataBase
     public int cost;
     public int knockback;
     public float dir;
+    public float accuracy;
     public float moveSpeed;
+    public int damage;
     public float attackSpeed;
     public float range;
     public UnitType unitType;
