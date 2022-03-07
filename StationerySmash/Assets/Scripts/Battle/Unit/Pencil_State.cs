@@ -6,7 +6,7 @@ using Utill;
 
 public class Pencil_State : Stationary_UnitState
 {
-    public Pencil_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit) : base(myTrm, mySprTrm, myUnit)
+    public Pencil_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, StageData stageData) : base(myTrm, mySprTrm, myUnit,stageData)
     {
         this.myUnit = myUnit;
     }
@@ -28,20 +28,42 @@ public class Pencil_State : Stationary_UnitState
 
     public override void Set_Wait(float waitTime)
     {
-        nextState = new Pencil_Wait_State(myTrm, mySprTrm, myUnit, waitTime);
+        nextState = new Pencil_Wait_State(myTrm, mySprTrm, myUnit, stageData, waitTime);
         curEvent = eEvent.EXIT;
     }
 
     public override void Set_Damaged(AtkData atkData)
     {
-        nextState = new Pencil_Damaged_State(myTrm, mySprTrm, myUnit, atkData);
+        nextState = new Pencil_Damaged_State(myTrm, mySprTrm, myUnit, stageData, atkData);
         curEvent = eEvent.EXIT;
+    }
+
+    public void Check_Wall()
+    {
+        if (stageData.max_Range <= myTrm.position.x)
+        {
+            //¿ÞÂÊÀ¸·Î Æ¨°ÜÁ® ³ª¿È
+            myTrm.DOJump(new Vector3(myTrm.position.x - 0.2f, 0, myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
+            {
+                nextState = new Pencil_Wait_State(myTrm, mySprTrm, myUnit, stageData, 0.5f);
+                curEvent = eEvent.EXIT;
+            }).SetEase(myUnit.curve);
+        }
+        if (-stageData.max_Range >= myTrm.position.x)
+        {
+            //¿À¸¥ÂÊÀ¸·Î Æ¨°ÜÁ® ³ª¿È
+            myTrm.DOJump(new Vector3(myTrm.position.x + 0.2f, 0, myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
+            {
+                nextState = new Pencil_Wait_State(myTrm, mySprTrm, myUnit, stageData, 0.5f);
+                curEvent = eEvent.EXIT;
+            }).SetEase(myUnit.curve);
+        }
     }
 }
 
 public class Pencil_Idle_State : Pencil_State
 {
-    public Pencil_Idle_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit) : base(myTrm, mySprTrm, myUnit)
+    public Pencil_Idle_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, StageData stageData) : base(myTrm, mySprTrm, myUnit, stageData)
     {
         curState = eState.IDLE;
     }
@@ -53,7 +75,7 @@ public class Pencil_Idle_State : Pencil_State
 
     public override void Update()
     {
-        nextState = new Pencil_Wait_State(myTrm, mySprTrm, myUnit, 0.5f);
+        nextState = new Pencil_Wait_State(myTrm, mySprTrm, myUnit, stageData, 0.5f);
         curEvent = eEvent.EXIT;
     }
 
@@ -66,7 +88,7 @@ public class Pencil_Idle_State : Pencil_State
 public class Pencil_Wait_State : Pencil_State
 {
     private float waitTime;
-    public Pencil_Wait_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, float waitTime) : base(myTrm, mySprTrm, myUnit)
+    public Pencil_Wait_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, StageData stageData, float waitTime) : base(myTrm, mySprTrm, myUnit, stageData)
     {
         curState = eState.WAIT;
         this.waitTime = waitTime;
@@ -79,14 +101,14 @@ public class Pencil_Wait_State : Pencil_State
             waitTime -= Time.deltaTime;
             return;
         }
-        nextState = new Pencil_Move_State(myTrm, mySprTrm, myUnit);
+        nextState = new Pencil_Move_State(myTrm, mySprTrm, myUnit, stageData);
         curEvent = eEvent.EXIT;
     }
 }
 
 public class Pencil_Move_State : Pencil_State
 {
-    public Pencil_Move_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit) : base(myTrm, mySprTrm, myUnit)
+    public Pencil_Move_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, StageData stageData) : base(myTrm, mySprTrm, myUnit, stageData)
     {
         curState = eState.MOVE;
     }
@@ -150,7 +172,7 @@ public class Pencil_Move_State : Pencil_State
         {
             if (Vector2.Distance(myTrm.position, targetUnit.transform.position) < myUnitData.range)
             {
-                nextState = new Pencil_Attack_State(myTrm, mySprTrm, myUnit, targetUnit);
+                nextState = new Pencil_Attack_State(myTrm, mySprTrm, myUnit, stageData, targetUnit);
                 curEvent = eEvent.EXIT;
             }
         }
@@ -163,7 +185,7 @@ public class Pencil_Attack_State : Pencil_State
     private Unit targetUnit;
     private float cur_delay = 0;
     private float max_delay = 100;
-    public Pencil_Attack_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, Unit targetUnit) : base(myTrm, mySprTrm, myUnit)
+    public Pencil_Attack_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, StageData stageData, Unit targetUnit) : base(myTrm, mySprTrm, myUnit, stageData)
     {
         curState = eState.ATTACK;
         this.targetUnit = targetUnit;
@@ -198,7 +220,7 @@ public class Pencil_Attack_State : Pencil_State
         AtkData atkData = new AtkData(myUnit, 10, myUnitData.knockback, 0, myUnitData.dir, myUnit.eTeam == TeamType.MyTeam, AtkType.Normal);
         targetUnit.Run_Damaged(atkData);
         targetUnit = null;
-        nextState = new Pencil_Wait_State(myTrm, mySprTrm, myUnit, 0.4f);
+        nextState = new Pencil_Wait_State(myTrm, mySprTrm, myUnit, stageData, 0.4f);
         curEvent = eEvent.EXIT;
     }
 
@@ -238,7 +260,7 @@ public class Pencil_Attack_State : Pencil_State
 
     private void Move()
     {
-        nextState = new Pencil_Move_State(myTrm, mySprTrm, myUnit);
+        nextState = new Pencil_Move_State(myTrm, mySprTrm, myUnit, stageData);
         curEvent = eEvent.EXIT;
     }
 }
@@ -247,8 +269,7 @@ public class Pencil_Damaged_State : Pencil_State
 {
     private AtkData atkData;
 
-    private Unit attacker;
-    public Pencil_Damaged_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, AtkData atkData) : base(myTrm, mySprTrm, myUnit)
+    public Pencil_Damaged_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, StageData stageData, AtkData atkData) : base(myTrm, mySprTrm, myUnit, stageData)
     {
         curState = eState.DAMAGED;
         this.atkData = atkData;
@@ -269,25 +290,29 @@ public class Pencil_Damaged_State : Pencil_State
         float time = atkData.baseKnockback * 0.005f +  Mathf.Abs((atkData.baseKnockback * 0.5f + atkData.extraKnockback)  / (Physics2D.gravity.y ));
         
         myTrm.DOKill();
-        myTrm.DOJump(new Vector3(myTrm.position.x - calculated_knockback, 0, myTrm.position.z), height, 1, time);
+        myTrm.DOJump(new Vector3(myTrm.position.x - calculated_knockback, 0, myTrm.position.z), height, 1, time).OnComplete(() =>
+        {
+            curEvent = eEvent.EXIT;
+        });
     }
 
     public override void Update()
     {
+        Check_Wall();
         if (myUnit.hp <= 0)
         {
-            nextState = new Pencil_Die_State(myTrm, mySprTrm, myUnit);
+            nextState = new Pencil_Die_State(myTrm, mySprTrm, myUnit, stageData);
+            return;
         }
-        if (atkData.atkType != AtkType.Normal)
-        {
-            myUnit.Add_StatusEffect(atkData.atkType, atkData.value);
-        }
-        nextState = new Pencil_Wait_State(myTrm, mySprTrm, myUnit, 0.5f);
-        curEvent = eEvent.EXIT;
+        nextState = new Pencil_Wait_State(myTrm, mySprTrm, myUnit, stageData, 0.5f);
     }
 
     public override void Exit()
     {
+        if (atkData.atkType != AtkType.Normal)
+        {
+            myUnit.Add_StatusEffect(atkData.atkType, atkData.value);
+        }
         myUnit.Set_IsInvincibility(false);
         base.Exit();
     }
@@ -295,7 +320,7 @@ public class Pencil_Damaged_State : Pencil_State
 
 public class Pencil_Die_State : Pencil_State
 {
-    public Pencil_Die_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit) : base(myTrm, mySprTrm, myUnit)
+    public Pencil_Die_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, StageData stageData) : base(myTrm, mySprTrm, myUnit, stageData)
     {
         curState = eState.DIE;
     }
@@ -312,7 +337,7 @@ public class Pencil_Die_State : Pencil_State
 
 public class Pencil_Throw_State : Pencil_State
 {
-    public Pencil_Throw_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit) : base(myTrm, mySprTrm, myUnit)
+    public Pencil_Throw_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, StageData stageData) : base(myTrm, mySprTrm, myUnit, stageData)
     {
         curState = eState.THROW;
     }
@@ -329,7 +354,7 @@ public class Pencil_Throw_State : Pencil_State
 
         if(dir < 0)
         {
-            nextState = new Pencil_Wait_State(myTrm, mySprTrm, myUnit, 0.5f);
+            nextState = new Pencil_Wait_State(myTrm, mySprTrm, myUnit, stageData, 0.5f);
             curEvent = eEvent.EXIT;
             return;
         }
@@ -346,7 +371,7 @@ public class Pencil_Throw_State : Pencil_State
 
         myTrm.DOJump(new Vector3(myTrm.position.x - width, 0, myTrm.position.z), height, 1, time).OnComplete(() =>
         {
-            nextState = new Pencil_Wait_State(myTrm, mySprTrm, myUnit, 0.5f);
+            nextState = new Pencil_Wait_State(myTrm, mySprTrm, myUnit, stageData, 0.5f);
             curEvent = eEvent.EXIT;
         }).SetEase(myUnit.curve);
         
@@ -355,7 +380,8 @@ public class Pencil_Throw_State : Pencil_State
 
     public override void Update()
     {
-        if(myUnit.eTeam == TeamType.MyTeam)
+        Check_Wall();
+        if (myUnit.eTeam == TeamType.MyTeam)
         {
             Check_Collide(myUnit.battleManager.unit_EnemyDatasTemp);
             return;

@@ -25,6 +25,7 @@ public abstract class Unit : MonoBehaviour
     public TeamType eTeam;
 
     public BattleManager battleManager { get; protected set; }
+    protected StageData stageData;
 
 
     #region 기본 로직
@@ -56,6 +57,7 @@ public abstract class Unit : MonoBehaviour
         
         spr.sprite = unitData.sprite;
         this.battleManager = battleManager;
+        stageData = battleManager.currentStageData;
         maxhp = unitData.hp;
         hp = unitData.hp;
         weight = unitData.weight;
