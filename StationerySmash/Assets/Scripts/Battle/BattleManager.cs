@@ -50,6 +50,11 @@ public class BattleManager : MonoBehaviour
     private RectTransform card_RightPosition;
     [SerializeField]
     private GameObject card_AfterImage;
+    [SerializeField]
+    private LineRenderer card_SummonRangeLine;
+
+    [Header("어느 곳이든 유닛 소환 가능")]
+    public bool isAnySummon;
 
     #endregion
 
@@ -130,7 +135,7 @@ public class BattleManager : MonoBehaviour
 
     private void Awake()
     {
-        battle_Card = new Battle_Card(this, unitDataSO, card_cardMove_Prefeb, card_PoolManager, card_Canvas, card_SpawnPosition, card_LeftPosition, card_RightPosition, card_AfterImage);
+        battle_Card = new Battle_Card(this, unitDataSO, card_cardMove_Prefeb, card_PoolManager, card_Canvas, card_SpawnPosition, card_LeftPosition, card_RightPosition, card_AfterImage, card_SummonRangeLine);
         battle_Camera = new Battle_Camera(this, main_Cam);
         battle_Unit = new Battle_Unit(this, unit_Prefeb, unit_PoolManager, unit_Parent);
         battle_Effect = new Battle_Effect(this, effect_PoolManager);
@@ -150,6 +155,7 @@ public class BattleManager : MonoBehaviour
 
         //카드 시스템
         battle_Card.Check_PossibleSummon();
+        battle_Card.Add_SummonRange();
         if (Input.GetKeyDown(KeyCode.X))
         {
             battle_Card.Add_OneCard();

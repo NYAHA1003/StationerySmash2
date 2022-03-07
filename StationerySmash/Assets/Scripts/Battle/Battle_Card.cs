@@ -9,6 +9,8 @@ public class Battle_Card : BattleCommand
     private int max_Card = 3;
     private int cur_Card = 0;
     private float summonRange;
+    private float summonRangeDelay = 30f;
+    private LineRenderer summonRangeLine;
     private UnitDataSO unitDataSO;
     private StageData stageData;
     private GameObject cardMove_Prefeb;
@@ -30,7 +32,7 @@ public class Battle_Card : BattleCommand
     private int cardidCount;
     private int unitidCount;
 
-    public Battle_Card(BattleManager battleManager, UnitDataSO unitDataSO, GameObject card_Prefeb, Transform card_PoolManager, Transform card_Canvas, RectTransform card_SpawnPosition, RectTransform card_LeftPosition, RectTransform card_RightPosition, GameObject unit_AfterImage)
+    public Battle_Card(BattleManager battleManager, UnitDataSO unitDataSO, GameObject card_Prefeb, Transform card_PoolManager, Transform card_Canvas, RectTransform card_SpawnPosition, RectTransform card_LeftPosition, RectTransform card_RightPosition, GameObject unit_AfterImage, LineRenderer summonRangeLine)
         : base(battleManager)
     {
         this.unitDataSO = unitDataSO;
@@ -41,8 +43,10 @@ public class Battle_Card : BattleCommand
         this.card_RightPosition = card_RightPosition;
         this.card_LeftPosition = card_LeftPosition;
 
-        stageData = battleManager.currentStageData;
-        summonRange = -stageData.max_Range + stageData.max_Range / 4;
+        this.stageData = battleManager.currentStageData;
+        this.summonRange = -stageData.max_Range + stageData.max_Range / 4;
+        this.summonRangeLine = summonRangeLine;
+        Set_SummonRangeLinePos();
 
         this.unit_AfterImage = unit_AfterImage;
         unit_AfterImage_Spr = unit_AfterImage.GetComponent<SpriteRenderer>();
@@ -270,6 +274,7 @@ public class Battle_Card : BattleCommand
     /// <param name="card"></param>
     public void Check_MouseOver(CardMove card)
     {
+        summonRangeLine.gameObject.SetActive(true);
         if (isFusion) return;
         if (isDrow) return;
         card.Set_CardScale(Vector3.one * 1.3f, 0.3f);
@@ -282,6 +287,7 @@ public class Battle_Card : BattleCommand
     /// <param name="card"></param>
     public void Check_MouseExit(CardMove card)
     {
+        summonRangeLine.gameObject.SetActive(false);
         if (isFusion) return;
         if (isDrow) return;
         card.Set_CardScale(Vector3.one * 1, 0.3f);
@@ -337,8 +343,16 @@ public class Battle_Card : BattleCommand
         return;
     }
 
+    /// <summary>
+    /// 유닛 소환 범위에 드는지 체크
+    /// </summary>
     public void Check_PossibleSummon()
     {
+        if(battleManager.isAnySummon)
+        {
+            isPossibleSummon = true;
+            return;
+        }    
         Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if (mouse_Pos.x >= -stageData.max_Range && mouse_Pos.x <= summonRange)
         {
@@ -348,4 +362,25 @@ public class Battle_Card : BattleCommand
         isPossibleSummon = false;
     }
 
+    public void Add_SummonRange()
+    {
+        if (summonRange >= 0)
+            return;
+
+        if(summonRangeDelay > 0)
+        {
+            summonRangeDelay -= Time.deltaTime;
+            return;
+        }
+        Debug.Log("범위 늘어남");
+        summonRangeDelay = 30f;
+        summonRange = summonRange + stageData.max_Range / 4;
+        Set_SummonRangeLinePos();
+    }
+
+    private void Set_SummonRangeLinePos()
+    {
+        summonRangeLine.SetPosition(0, new Vector2(-stageData.max_Range, 0));
+        summonRangeLine.SetPosition(1, new Vector2(summonRange, 0));
+    }
 }
