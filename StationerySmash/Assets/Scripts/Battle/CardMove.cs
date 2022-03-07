@@ -61,6 +61,11 @@ public class CardMove : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDo
 
     public PRS originPRS;
 
+    /// <summary>
+    /// 카드에 유닛 데이터를 전달함
+    /// </summary>
+    /// <param name="unitData">유닛 데이터</param>
+    /// <param name="id">카드 고유 아이디</param>
     public void Set_UnitData(UnitData unitData, int id)
     {
         cardCanvas ??= transform.parent.GetComponent<Canvas>();
@@ -79,6 +84,12 @@ public class CardMove : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDo
         fusion_Effect.DOFade(0, 0.8f);
     }
 
+    /// <summary>
+    /// 카드 애니메이션 닷트윈
+    /// </summary>
+    /// <param name="prs">위치 정보 데이터</param>
+    /// <param name="duration">시간</param>
+    /// <param name="isDotween">True면 닷트윈 사용</param>
     public void Set_CardPRS(PRS prs, float duration, bool isDotween = true)
     {
         if (isDotween)
@@ -92,6 +103,12 @@ public class CardMove : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDo
         rectTransform.rotation = prs.rot;
         rectTransform.localScale = prs.scale;
     }
+    /// <summary>
+    /// 위치만 옮김
+    /// </summary>
+    /// <param name="pos">위치</param>
+    /// <param name="duration">시간</param>
+    /// <param name="isDotween">True면 닷트윈 사용</param>
     public void Set_CardPos(Vector3 pos, float duration, bool isDotween = true)
     {
         if(isDotween)
@@ -101,6 +118,12 @@ public class CardMove : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDo
         }
         transform.position = pos;
     }
+    /// <summary>
+    /// 크기만 바꿈
+    /// </summary>
+    /// <param name="scale">크기</param>
+    /// <param name="duration">시간</param>
+    /// <param name="isDotween">True면 닷트윈 사용</param>
     public void Set_CardScale(Vector3 scale, float duration, bool isDotween = true)
     {
         if (isDotween)
@@ -110,6 +133,12 @@ public class CardMove : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDo
         }
         rectTransform.localScale = scale;
     }
+    /// <summary>
+    /// 각도만 바꿈
+    /// </summary>
+    /// <param name="rot">각도</param>
+    /// <param name="duration">시간</param>
+    /// <param name="isDotween">True면 닷트윈 사용</param>
     public void Set_CardRot(Quaternion rot, float duration, bool isDotween = true)
     {
         if (isDotween)
@@ -152,15 +181,25 @@ public class CardMove : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDo
         Set_UnitGrade();
     }
 
+    /// <summary>
+    /// 융합시 하얘짐
+    /// </summary>
     public void Fusion_FadeInEffect()
     {
         fusion_Effect.DOFade(1, 0.3f);
     }
+    /// <summary>
+    /// 융합이 끝난 후 돌아옴
+    /// </summary>
     public void Fusion_FadeOutEffect()
     {
         fusion_Effect.DOFade(0, 0.3f);
     }
 
+    /// <summary>
+    /// 드래그 중일 때
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnDrag(PointerEventData eventData)
     {
         /*
@@ -180,15 +219,15 @@ public class CardMove : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDo
         if(rectTransform.anchoredPosition.y > 0)
         {
             Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            battleManager.battle_Unit.Set_UnitAfterImage(unitData, mouse_Pos);
+            battleManager.battle_Card.Set_UnitAfterImage(unitData, mouse_Pos);
             return;
         }
-        battleManager.battle_Unit.Set_UnitAfterImage(unitData, Vector3.zero, true);
+        battleManager.battle_Card.Set_UnitAfterImage(unitData, Vector3.zero, true);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        battleManager.battle_Unit.Set_UnitAfterImage(unitData, Vector3.zero, true);
+        battleManager.battle_Card.Set_UnitAfterImage(unitData, Vector3.zero, true);
 
         if (rectTransform.anchoredPosition.y > 0)
         {
@@ -213,5 +252,10 @@ public class CardMove : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDo
         {
             battleManager.battle_Card.Check_MouseExit(this);
         }
+    }
+
+    public void Run_OriginPRS()
+    {
+        Set_CardPRS(originPRS, 0.3f);
     }
 }

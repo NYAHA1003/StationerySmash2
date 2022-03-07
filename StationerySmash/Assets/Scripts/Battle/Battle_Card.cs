@@ -8,7 +8,9 @@ public class Battle_Card : BattleCommand
 {
     private int max_Card = 3;
     private int cur_Card = 0;
+    private float summonRange;
     private UnitDataSO unitDataSO;
+    private StageData stageData;
     private GameObject cardMove_Prefeb;
     private Transform card_PoolManager;
     private Transform card_Canvas;
@@ -16,15 +18,19 @@ public class Battle_Card : BattleCommand
     private RectTransform card_RightPosition;
     private RectTransform card_SpawnPosition;
 
+    private GameObject unit_AfterImage;
+    private SpriteRenderer unit_AfterImage_Spr;
+
     private Coroutine coroutine;
-    public bool isDrow {get; private set;} //카드를 뽑거나 삭제하는 중인지 
+    public bool isDrow { get; private set; } //카드를 뽑거나 삭제하는 중인지 
     public bool isFusion { get; private set; } //카드가 융합중인 상태인지
     public bool isCardDown { get; private set; } //카드를 클릭한 상태인지
+    public bool isPossibleSummon { get; private set; } //해당 카드를 소환할 수 있는지
 
     private int cardidCount;
     private int unitidCount;
 
-    public Battle_Card(BattleManager battleManager, UnitDataSO unitDataSO, GameObject card_Prefeb, Transform card_PoolManager, Transform card_Canvas, RectTransform card_SpawnPosition, RectTransform card_LeftPosition, RectTransform card_RightPosition)
+    public Battle_Card(BattleManager battleManager, UnitDataSO unitDataSO, GameObject card_Prefeb, Transform card_PoolManager, Transform card_Canvas, RectTransform card_SpawnPosition, RectTransform card_LeftPosition, RectTransform card_RightPosition, GameObject unit_AfterImage)
         : base(battleManager)
     {
         this.unitDataSO = unitDataSO;
@@ -34,6 +40,12 @@ public class Battle_Card : BattleCommand
         this.card_SpawnPosition = card_SpawnPosition;
         this.card_RightPosition = card_RightPosition;
         this.card_LeftPosition = card_LeftPosition;
+
+        stageData = battleManager.currentStageData;
+        summonRange = -stageData.max_Range + stageData.max_Range / 4;
+
+        this.unit_AfterImage = unit_AfterImage;
+        unit_AfterImage_Spr = unit_AfterImage.GetComponent<SpriteRenderer>();
     }
 
     /// <summary>
@@ -186,10 +198,10 @@ public class Battle_Card : BattleCommand
         battleManager.card_DatasTemp[index + 1].Fusion_FadeInEffect();
 
         yield return new WaitForSeconds(0.3f);
-        
+
         battleManager.card_DatasTemp[index].Fusion_FadeOutEffect();
         battleManager.card_DatasTemp[index].Upgrade_UnitGrade();
-        
+
         Subtract_CardAt(index + 1);
         Sort_Card();
 
@@ -284,12 +296,56 @@ public class Battle_Card : BattleCommand
     {
         if (isFusion) return;
         if (isDrow) return;
+        if (!isPossibleSummon)
+        {
+            card.Run_OriginPRS();
+            battleManager.battle_Camera.Set_CameraIsMove(true);
+            return; 
+        }
         Subtract_CardAt(battleManager.card_DatasTemp.FindIndex(x => x.id == card.id));
         isCardDown = false;
 
         //유닛 소환
 
         Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        battleManager.battle_Unit.Summon_Unit(card.unitData, new Vector3(mouse_Pos.x,0,0), unitidCount);
+        battleManager.battle_Unit.Summon_Unit(card.unitData, new Vector3(mouse_Pos.x, 0, 0), unitidCount);
     }
+
+    /// <summary>
+    /// 유닛 소환 미리보기
+    /// </summary>
+    /// <param name="unitData"></param>
+    /// <param name="pos"></param>
+    /// <param name="isDelete"></param>
+    public void Set_UnitAfterImage(UnitData unitData, Vector3 pos, bool isDelete = false)
+    {
+        unit_AfterImage_Spr.color = Color.white;
+        if (!isPossibleSummon)
+        {
+            unit_AfterImage_Spr.color = Color.red;
+        }
+        unit_AfterImage.transform.position = new Vector3(pos.x, 0);
+        unit_AfterImage_Spr.sprite = unitData.sprite;
+
+        if (isDelete)
+        {
+            unit_AfterImage.SetActive(false);
+            return;
+        }
+        unit_AfterImage.SetActive(true);
+
+        return;
+    }
+
+    public void Check_PossibleSummon()
+    {
+        Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (mouse_Pos.x >= -stageData.max_Range && mouse_Pos.x <= summonRange)
+        {
+            isPossibleSummon = true;
+            return;
+        }
+        isPossibleSummon = false;
+    }
+
 }

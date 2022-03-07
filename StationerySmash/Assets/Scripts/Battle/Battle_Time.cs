@@ -25,7 +25,14 @@ public class Battle_Time : BattleCommand
         if (timer > 0)
         {
             timer -= Time.deltaTime;
+            timeText.text = string.Format("{0}:{1:D2}", (int)timer / 60, (int)timer % 60);
+            return;
         }
-        timeText.text = string.Format("{0}:{1:D2}", (int)timer / 60, (int)timer % 60);
+
+    }
+
+    public void Set_SuddenDeath()
+    {
+
     }
 }
