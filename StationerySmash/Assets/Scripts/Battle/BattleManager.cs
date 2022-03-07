@@ -106,6 +106,17 @@ public class BattleManager : MonoBehaviour
 
     #endregion
 
+    #region 시간 시스템 Battle_Time
+
+    public Battle_Time battle_Time { get; private set; }
+
+    [Header("시간시스템 Battle_Time")]
+    [Space(30)]
+    public TextMeshProUGUI time_TimeText;
+
+
+    #endregion
+
     #region 스테이지 AI 시스템 Battle_AI
 
     public Battle_AI battle_AI;
@@ -125,10 +136,14 @@ public class BattleManager : MonoBehaviour
         battle_Effect = new Battle_Effect(this, effect_PoolManager);
         battle_Throw = new Battle_Throw(this, throw_parabola, throw_Arrow, currentStageData);
         battle_AI = new Battle_AI(this);
+        battle_Time = new Battle_Time(this, time_TimeText);
     }
 
     private void Update()
     {
+        //시간 시스템
+        battle_Time.Update_Time();
+
         //카메라 위치, 크기 조정
         battle_Camera.Update_CameraPos();
         battle_Camera.Update_CameraScale();
@@ -164,6 +179,7 @@ public class BattleManager : MonoBehaviour
         {
             battle_Throw.Throw_Unit();
         }
+
     }
 
     #region 공용함수

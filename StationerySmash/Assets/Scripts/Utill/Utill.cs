@@ -4,6 +4,11 @@ using UnityEngine;
 
 namespace Utill
 {
+    public enum TimeType
+    {
+        ActiveTime,
+        DisabledTime,
+    }
     public enum TeamType
     {
         Null,
