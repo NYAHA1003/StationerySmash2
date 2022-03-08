@@ -21,18 +21,20 @@ public class Pencil_State : Stationary_UnitState
         if (stageData.max_Range <= myTrm.position.x)
         {
             //¿ÞÂÊÀ¸·Î Æ¨°ÜÁ® ³ª¿È
+            myTrm.DOKill();
             myTrm.DOJump(new Vector3(myTrm.position.x - 0.2f, 0, myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
             {
-                //nextState = scm.Set_Wait(this, 0.5f);
+                nextState = StateChangeManager.Set_Wait(this, 0.5f);
             }).SetEase(myUnit.curve);
         }
         if (-stageData.max_Range >= myTrm.position.x)
         {
             //
             //¿À¸¥ÂÊÀ¸·Î Æ¨°ÜÁ® ³ª¿È
+            myTrm.DOKill();
             myTrm.DOJump(new Vector3(myTrm.position.x + 0.2f, 0, myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
             {
-                StateChangeManager.Set_Wait(this,0.5f);
+                nextState = StateChangeManager.Set_Wait(this,0.5f);
             }).SetEase(myUnit.curve);
         }
     }
@@ -259,6 +261,7 @@ public class Pencil_Damaged_State : Pencil_State
     {
         myUnit.Set_IsInvincibility(true);
         myUnit.Subtract_HP(atkData.damage);
+        nextState = StateChangeManager.Set_Wait(this, 0.5f);
         if (myUnit.hp <= 0)
         {
             nextState = StateChangeManager.Set_Die(this);
@@ -284,7 +287,6 @@ public class Pencil_Damaged_State : Pencil_State
     public override void Update()
     {
         Check_Wall();
-        nextState = StateChangeManager.Set_Wait(this, 0.5f);
     }
 
     public override void Exit()

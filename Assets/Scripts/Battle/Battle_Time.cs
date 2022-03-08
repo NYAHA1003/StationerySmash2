@@ -9,6 +9,7 @@ public class Battle_Time : BattleCommand
     private StageData stageData;
     private float timer;
     private TextMeshProUGUI timeText;
+    private bool isSuddenDeath;
 
     public Battle_Time(BattleManager battleManager, TextMeshProUGUI timeText) : base(battleManager)
     {
@@ -29,10 +30,23 @@ public class Battle_Time : BattleCommand
             return;
         }
 
+        if(!isSuddenDeath)
+        {
+            isSuddenDeath = true;
+            Set_SuddenDeath();
+            return;
+        }
+
     }
 
     public void Set_SuddenDeath()
     {
+        //모든 카드 삭제
+        battleManager.battle_Card.Clear_Cards();
 
+        //모든 유닛
+        battleManager.battle_Unit.Clear_Unit();
+
+        Debug.Log("서든데스");
     }
 }

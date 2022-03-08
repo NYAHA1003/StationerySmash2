@@ -54,4 +54,16 @@ public class Battle_Unit : BattleCommand
     {
         battleManager.unit_EnemyDatasTemp.Add(unit);
     }
+
+    public void Clear_Unit()
+    {
+        for(int i = 1; i < battleManager.unit_MyDatasTemp.Count; i++)
+        {
+            battleManager.unit_MyDatasTemp[i].Delete_Unit();
+        }
+        for (int i = 1; i < battleManager.unit_EnemyDatasTemp.Count; i++)
+        {
+            battleManager.unit_EnemyDatasTemp[i].Delete_Unit();
+        }
+    }
 }
