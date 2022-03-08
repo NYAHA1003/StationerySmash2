@@ -100,6 +100,8 @@ public abstract class Unit : MonoBehaviour
     /// <param name="atkData">공격 데이터</param>
     public abstract void Run_Damaged(AtkData atkData);
 
+    public abstract void Add_StatusEffect(AtkType atkType, params float[] value);
+
     #endregion
 
     #region 던지기 시스템

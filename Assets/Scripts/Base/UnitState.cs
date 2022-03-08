@@ -17,14 +17,13 @@ public class UnitState
     };
 
     public eState curState { get; protected set; }
-    public AtkType curStatEff { get; protected set; }
-    public eEvent curEvent { get; protected set; }
+    public eEvent curEvent;
 
-    public UnitState nextState { get; protected set; }  // 다음 상태
+    public UnitState nextState; // 다음 상태
 
-    protected Transform myTrm;
-    protected Transform mySprTrm;
-    protected Unit myUnit;
+    public Transform myTrm { get; protected set; }
+    public Transform mySprTrm { get; protected set; }
+    public Unit myUnit { get; protected set; }
 
     public UnitState(Transform myTrm, Transform mySprTrm, Unit myUnit)
     {
@@ -63,41 +62,5 @@ public class UnitState
     public void Set_Event(eEvent eEvent)
     {
         curEvent = eEvent;
-    }
-
-    public virtual void Set_Idle()
-    {
-        throw new System.Exception("Set_Idle 함수를 오버라이드하지 않음");
-    }
-
-    public virtual void Set_Wait(float waitTime)
-    {
-        throw new System.Exception("Set_Wait 함수를 오버라이드하지 않음");
-    }
-
-    public virtual void Set_Move()
-    {
-        throw new System.Exception("Set_Move 함수를 오버라이드하지 않음");
-    }
-
-    public virtual void Set_Damaged(AtkData atkData)
-    {
-        throw new System.Exception("Set_Damaged 함수를 오버라이드하지 않음");
-    }
-    public virtual void Set_Die()
-    {
-        throw new System.Exception("Set_Die 함수를 오버라이드하지 않음");
-    }
-    public virtual void Set_Attack()
-    {
-        throw new System.Exception("Set_Attack 함수를 오버라이드하지 않음");
-    }
-    public virtual void Set_Pull()
-    {
-        throw new System.Exception("Set_Pull 함수를 오버라이드하지 않음");
-    }
-    public virtual void Set_Throw()
-    {
-        throw new System.Exception("Set_Throw 함수를 오버라이드하지 않음");
     }
 }

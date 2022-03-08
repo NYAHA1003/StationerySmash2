@@ -7,7 +7,7 @@ using Utill;
 
 public class Stationary_Unit : Unit
 {
-
+    new public Stationary_UnitState unitState;
     public UnitData unitData;
     protected List<Stationary_Unit_Eff_State> statEffList = new List<Stationary_Unit_Eff_State>();
 
@@ -18,6 +18,7 @@ public class Stationary_Unit : Unit
     public int accuracyPercent = 100;
     public int weightPercent = 100;
     public int knockbackPercent = 100;
+    public float[] unitablityData;
 
     [SerializeField]
     protected Canvas canvas;
@@ -37,10 +38,13 @@ public class Stationary_Unit : Unit
         canvas.worldCamera = mainCam;
     }
 
+
     protected override void Update()
     {
-        base.Update();
-        
+        if (!isSettingEnd) return;
+
+        unitState = unitState.Process();
+
         for (int i = 0; i < statEffList.Count; i++)
         {
             statEffList[i] = statEffList[i].Process();
@@ -50,14 +54,29 @@ public class Stationary_Unit : Unit
     public virtual void Set_Stationary_UnitData(UnitData unitData, TeamType eTeam, BattleManager battleManager, int id)
     {
         this.unitData = unitData;
+        this.unitablityData = unitData.unitablityData;
 
         //딜레이시스템
         attack_Cur_Delay = 0;
         Update_DelayBar(attack_Cur_Delay);
         delayBar.rectTransform.anchoredPosition = eTeam == TeamType.MyTeam ? new Vector2(-960.15f, -540.15f) : new Vector2(-959.85f, -540.15f);
-
         Set_UnitData(unitData, eTeam, battleManager, id);
-        unitState = new Pencil_Idle_State(transform, spr.transform, this, stageData);
+
+        switch (unitData.unitType)
+        {
+            default:
+            case UnitType.None:
+            case UnitType.Pencil:
+            case UnitType.Eraser:
+            case UnitType.Sharp:
+                unitState = new Pencil_Idle_State(transform, spr.transform, this, stageData);
+                break;
+
+            case UnitType.BallPen:
+                unitState = new BallPen_Idle_State(transform, spr.transform, this, stageData);
+                break;
+        }
+
     }
 
 
@@ -69,7 +88,6 @@ public class Stationary_Unit : Unit
     {
         delayBar.fillAmount = delay;
     }
-
     public override void Run_Damaged(AtkData atkData)
     {
         if (atkData.damageId == -1)
@@ -82,7 +100,7 @@ public class Stationary_Unit : Unit
             //똑같은 공격 아이디를 지닌 공격은 무시함
             return;
         }
-        unitState.Set_Damaged(atkData);
+        unitState.nextState = StateChangeManager.Set_Damaged(unitState, atkData);
     }
 
     public override Unit Pull_Unit()
@@ -92,7 +110,7 @@ public class Stationary_Unit : Unit
             return null;
         }
 
-        unitState.Set_Wait(2);
+        unitState.nextState = StateChangeManager.Set_Wait(unitState, 2);
         return this;
     }
 
@@ -108,9 +126,9 @@ public class Stationary_Unit : Unit
 
     public override void Throw_Unit()
     {
-        unitState = new Pencil_Throw_State(transform, spr.transform, this, stageData);
+        unitState.nextState = StateChangeManager.Set_Throw(unitState);
     }
-    public void Add_StatusEffect(AtkType atkType, params float[] value)
+    public override void Add_StatusEffect(AtkType atkType, params float[] value)
     {
         Stationary_Unit_Eff_State statEffState = statEffList.Find(x => x.statusEffect == atkType);
         if (statEffState != null)
@@ -136,25 +154,25 @@ public class Stationary_Unit : Unit
     {
         return Mathf.RoundToInt(unitData.damage * (float)damagePercent / 100);
     }
-    public int Return_MoveSpeed()
+    public float Return_MoveSpeed()
     {
-        return Mathf.RoundToInt(unitData.moveSpeed * (float)moveSpeedPercent / 100);
+        return unitData.moveSpeed * (float)moveSpeedPercent / 100;
     }
-    public int Return_AttackSpeed()
+    public float Return_AttackSpeed()
     {
-        return Mathf.RoundToInt(unitData.attackSpeed * (float)attackSpeedPercent / 100);
+        return unitData.attackSpeed * (float)attackSpeedPercent / 100;
     }
-    public int Return_Range()
+    public float Return_Range()
     {
-        return Mathf.RoundToInt(unitData.range * (float)rangePercent / 100);
+        return unitData.range * (float)rangePercent / 100;
     }
     public int Return_Weight()
     {
         return Mathf.RoundToInt(unitData.weight * (float)weightPercent / 100);
     }
-    public int Return_Accuracy()
+    public float Return_Accuracy()
     {
-        return Mathf.RoundToInt(unitData.accuracy * (float)accuracyPercent / 100);
+        return unitData.accuracy * (float)accuracyPercent / 100;
     }
     public int Return_Knockback()
     {

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using UnityEngine.UI;
 using TMPro;
 using Utill;
@@ -24,4 +25,6 @@ public class UnitData : DataBase
     public float attackSpeed;
     public float range;
     public UnitType unitType;
+    public AtkType atkType;
+    public float[] unitablityData;
 }

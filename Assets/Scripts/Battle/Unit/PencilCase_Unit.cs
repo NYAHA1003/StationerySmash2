@@ -62,4 +62,9 @@ public class PencilCase_Unit : Unit
     {
         unitState = new PencilCase_Normal_Damaged_State(transform, spr.transform, this, atkData);
     }
+
+    public override void Add_StatusEffect(AtkType atkType, params float[] value)
+    {
+
+    }
 }

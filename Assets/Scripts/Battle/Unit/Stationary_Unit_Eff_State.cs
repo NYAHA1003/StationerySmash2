@@ -12,7 +12,6 @@ public class Stationary_Unit_Eff_State : UnitState
     public AtkType statusEffect { get; protected set; }
     public Stationary_Unit_Eff_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, AtkType statusEffect, params float[] valueList) : base(myTrm, mySprTrm, myUnit)
     {
-        curState = eState.NONE;
         this.valueList = valueList;
         this.myUnit = myUnit;
         this.statusEffect = statusEffect;
@@ -78,8 +77,7 @@ public class Stationary_Unit_Sturn_Eff_State : Stationary_Unit_Eff_State
     public override void Enter()
     {
         stunTime = stunTime + (stunTime * (((float)myUnit.maxhp / (myUnit.hp + 0.1f)) - 1));
-        Debug.Log("스턴: " + stunTime);
-        myUnit.unitState.Set_Wait(stunTime);
+        myUnit.unitState.nextState = StateChangeManager.Set_Wait(myUnit.unitState,stunTime);
 
         base.Enter();
     }
@@ -101,7 +99,6 @@ public class Stationary_Unit_Sturn_Eff_State : Stationary_Unit_Eff_State
         {
             stunTime = value[0];
             stunTime = stunTime + (stunTime * (((float)myUnit.maxhp / (myUnit.hp + 0.1f)) - 1));
-            Debug.Log("스턴: " + stunTime);
         }
     }
 }
@@ -110,6 +107,7 @@ public class Stationary_Unit_Ink_Eff_State : Stationary_Unit_Eff_State
     private float inkTime = 0;
     private float damageSubtractPercent = 0;
     private float accuracySubtractPercent = 0;
+    private float range;
 
     public Stationary_Unit_Ink_Eff_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, AtkType statusEffect, params float[] value) : base(myTrm, mySprTrm, myUnit, statusEffect, value)
     {
@@ -117,11 +115,42 @@ public class Stationary_Unit_Ink_Eff_State : Stationary_Unit_Eff_State
     }
     public override void Enter()
     {
+        mySprTrm.GetComponent<SpriteRenderer>().color = Color.green;
         myUnit.damagePercent -= (int)damageSubtractPercent;
         myUnit.accuracyPercent -= (int)accuracySubtractPercent;
 
+        if(myUnit.eTeam == TeamType.MyTeam)
+        {
+            //Check_InkRangeMyTeam(myUnit.battleManager.unit_MyDatasTemp);
+        }
+        else
+        {
+            //Check_InkRangeMyTeam(myUnit.battleManager.unit_EnemyDatasTemp);
+        }
+
         base.Enter();
     }
+
+    //private void Check_InkRangeMyTeam(List<Unit> list)
+    //{
+    //    Stationary_Unit target_Unit = null;
+    //    for (int i = 0; i < list.Count; i++)
+    //    {
+    //        target_Unit = list[i].GetComponent<Stationary_Unit>();
+            
+    //        if (target_Unit == null) 
+    //            continue;
+
+    //        if (target_Unit == myUnit)
+    //            continue;
+
+    //        //거리 비교해서 잉크 적용
+    //        if (Mathf.Abs(target_Unit.transform.position.x - originPosX) < range)
+    //        {
+    //            target_Unit.Add_StatusEffect(AtkType.Ink, inkTime, damageSubtractPercent, accuracySubtractPercent, originPosX, range);
+    //        }
+    //    }
+    //}
 
     public override void Update()
     {
@@ -140,6 +169,7 @@ public class Stationary_Unit_Ink_Eff_State : Stationary_Unit_Eff_State
     {
         myUnit.damagePercent += (int)damageSubtractPercent;
         myUnit.accuracyPercent += (int)accuracySubtractPercent;
+        mySprTrm.GetComponent<SpriteRenderer>().color = Color.red;
 
         base.Exit();
     }
@@ -149,6 +179,7 @@ public class Stationary_Unit_Ink_Eff_State : Stationary_Unit_Eff_State
         inkTime = value[0];
         damageSubtractPercent = value[1];
         accuracySubtractPercent = value[2];
+        range = value[3];
     }
 }
 
