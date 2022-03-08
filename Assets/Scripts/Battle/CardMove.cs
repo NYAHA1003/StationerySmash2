@@ -40,6 +40,7 @@ public class CardMove : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDo
     private Image fusion_Effect;
 
     public int card_Cost { get; private set; }
+    public bool isFusion;
 
     public UnitData unitData;
 
@@ -211,11 +212,11 @@ public class CardMove : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDo
          *Set_CardPosition(new PRS(cardCanvas.transform.TransformPoint(localPos), Quaternion.identity, Vector3.one), 0, false);
         */
 
-        if (battleManager.battle_Card.isFusion) return;
-        if (battleManager.battle_Card.isDrow) return;
+        if (isFusion) return;
 
         isDrag = true;
         transform.position = Input.mousePosition;
+        transform.DOKill();
         Set_CardRot(Quaternion.identity, 0.3f);
 
         if(rectTransform.anchoredPosition.y > 0)
@@ -233,26 +234,26 @@ public class CardMove : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDo
 
         if (rectTransform.anchoredPosition.y > 0)
         {
-            battleManager.battle_Card.Check_MouseUp(this);
+            battleManager.battle_Card.Set_UseCard(this);
             return;
         }
 
         Set_CardPRS(originPRS, 0.3f);
-        battleManager.battle_Card.Check_MouseExit(this);
+        battleManager.battle_Card.Set_UnSelectCard(this);
         isDrag = false;
 
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        battleManager.battle_Card.Check_MouseOver(this);
+        battleManager.battle_Card.Set_SelectCard(this);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         if(!isDrag)
         {
-            battleManager.battle_Card.Check_MouseExit(this);
+            battleManager.battle_Card.Set_UnSelectCard(this);
         }
     }
 

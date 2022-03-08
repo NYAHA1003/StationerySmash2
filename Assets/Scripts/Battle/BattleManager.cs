@@ -166,7 +166,7 @@ public class BattleManager : MonoBehaviour
         //카드 시스템
         battle_Card.Update_CardDrow();
         battle_Card.Check_PossibleSummon();
-        battle_Card.Add_SummonRange();
+        battle_Card.Update_SummonRange();
         if (Input.GetKeyDown(KeyCode.X))
         {
             battle_Card.Add_OneCard();
