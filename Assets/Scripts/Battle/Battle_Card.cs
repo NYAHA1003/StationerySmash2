@@ -8,6 +8,7 @@ public class Battle_Card : BattleCommand
 {
     private int max_Card = 3;
     private int cur_Card = 0;
+    private float cardDelay;
     private float summonRange;
     private float summonRangeDelay = 30f;
     private LineRenderer summonRangeLine;
@@ -396,6 +397,19 @@ public class Battle_Card : BattleCommand
     {
         summonRangeLine.SetPosition(0, new Vector2(-stageData.max_Range, 0));
         summonRangeLine.SetPosition(1, new Vector2(summonRange, 0));
+    }
+
+    public void Update_CardDrow()
+    {
+        if (cur_Card >= max_Card)
+            return;
+        if (cardDelay > 0)
+        {
+            cardDelay -= Time.deltaTime;
+            return;
+        }
+        cardDelay = 0.3f;
+        Add_OneCard();
     }
 
     public void Set_MaxCard(int max)
