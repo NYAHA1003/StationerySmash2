@@ -57,11 +57,11 @@ public class Battle_Unit : BattleCommand
 
     public void Clear_Unit()
     {
-        for(int i = 1; i < battleManager.unit_MyDatasTemp.Count; i++)
+        for (int i = 1; battleManager.unit_MyDatasTemp.Count > 1;)
         {
             battleManager.unit_MyDatasTemp[i].Delete_Unit();
         }
-        for (int i = 1; i < battleManager.unit_EnemyDatasTemp.Count; i++)
+        for (int i = 1; battleManager.unit_EnemyDatasTemp.Count > 1;)
         {
             battleManager.unit_EnemyDatasTemp[i].Delete_Unit();
         }

@@ -8,4 +8,5 @@ public class PencilCaseDataSO : ScriptableObject
 {
     public PencilCaseType pencilCaseType;
     public DataBase data;
+    public float costSpeed;
 }

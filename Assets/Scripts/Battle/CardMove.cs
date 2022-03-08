@@ -39,6 +39,7 @@ public class CardMove : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDo
     [SerializeField]
     private Image fusion_Effect;
 
+    public int card_Cost { get; private set; }
 
     public UnitData unitData;
 
@@ -77,6 +78,7 @@ public class CardMove : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDo
         card_Name.text = unitData.unitName;
         card_UnitCost.text = unitData.cost.ToString();
         card_UnitImage.sprite = unitData.sprite;
+        card_Cost = unitData.cost;
         grade = 0;
         Set_UnitGrade();
         

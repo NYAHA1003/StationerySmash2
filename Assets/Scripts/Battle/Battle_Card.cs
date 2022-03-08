@@ -300,15 +300,24 @@ public class Battle_Card : BattleCommand
     /// <param name="card"></param>
     public void Check_MouseUp(CardMove card)
     {
+
         summonRangeLine.gameObject.SetActive(false);
-        if (isFusion) return;
-        if (isDrow) return;
+
+        if (isFusion)
+            isPossibleSummon = false;
+        if (isDrow)
+            isPossibleSummon = false;
+        if (battleManager.battle_Cost.cur_Cost < card.card_Cost)
+            isPossibleSummon = false;
+
         if (!isPossibleSummon)
         {
             card.Run_OriginPRS();
             battleManager.battle_Camera.Set_CameraIsMove(true);
             return; 
         }
+
+        battleManager.battle_Cost.Subtract_Cost(card.card_Cost);
         Subtract_CardAt(battleManager.card_DatasTemp.FindIndex(x => x.id == card.id));
         isCardDown = false;
 
@@ -387,5 +396,10 @@ public class Battle_Card : BattleCommand
     {
         summonRangeLine.SetPosition(0, new Vector2(-stageData.max_Range, 0));
         summonRangeLine.SetPosition(1, new Vector2(summonRange, 0));
+    }
+
+    public void Set_MaxCard(int max)
+    {
+        max_Card = max;
     }
 }

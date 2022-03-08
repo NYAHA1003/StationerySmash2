@@ -10,6 +10,7 @@ public class Battle_Time : BattleCommand
     private float timer;
     private TextMeshProUGUI timeText;
     private bool isSuddenDeath;
+    private bool isFinallyEnd;
 
     public Battle_Time(BattleManager battleManager, TextMeshProUGUI timeText) : base(battleManager)
     {
@@ -20,6 +21,8 @@ public class Battle_Time : BattleCommand
 
     public void Update_Time()
     {
+        if (isFinallyEnd) return;
+
         if (stageData.timeType == TimeType.DisabledTime)
             return;
 
@@ -30,23 +33,40 @@ public class Battle_Time : BattleCommand
             return;
         }
 
-        if(!isSuddenDeath)
-        {
-            isSuddenDeath = true;
-            Set_SuddenDeath();
-            return;
-        }
-
+        Set_SuddenDeath();
     }
 
     public void Set_SuddenDeath()
     {
-        //모든 카드 삭제
         battleManager.battle_Card.Clear_Cards();
-
-        //모든 유닛
         battleManager.battle_Unit.Clear_Unit();
 
-        Debug.Log("서든데스");
+        if (!isSuddenDeath)
+        {
+            battleManager.battle_Card.Set_MaxCard(8);
+            battleManager.battle_Cost.Set_CostSpeed(500);
+            isSuddenDeath = true;
+            timer = 60;
+
+            Debug.Log("서든데스 시작");
+            return;
+        }
+
+        //체력 비교
+        if(battleManager.unit_MyDatasTemp[0].hp > battleManager.unit_EnemyDatasTemp[0].hp)
+        {
+            Debug.Log("서든데스 승리");
+            isFinallyEnd = true;
+            return;
+        }
+        if (battleManager.unit_MyDatasTemp[0].hp < battleManager.unit_EnemyDatasTemp[0].hp)
+        {
+            Debug.Log("서든데스 패배");
+            isFinallyEnd = true;
+            return;
+        }
+
+        Debug.Log("서든데스 무승부");
+        isFinallyEnd = true;
     }
 }

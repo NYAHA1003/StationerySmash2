@@ -29,7 +29,6 @@ public class Pencil_State : Stationary_UnitState
         }
         if (-stageData.max_Range >= myTrm.position.x)
         {
-            //
             //¿À¸¥ÂÊÀ¸·Î Æ¨°ÜÁ® ³ª¿È
             myTrm.DOKill();
             myTrm.DOJump(new Vector3(myTrm.position.x + 0.2f, 0, myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>

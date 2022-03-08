@@ -133,6 +133,15 @@ public class BattleManager : MonoBehaviour
 
     #endregion
 
+    #region 코스트 시스템 Battle_Cost
+
+    public Battle_Cost battle_Cost { get; private set; }
+    [Header("코스트 시스템 Battle_Cost")]
+    [Space(30)]
+    public TextMeshProUGUI cost_CostText;
+
+    #endregion
+
     private void Awake()
     {
         battle_Card = new Battle_Card(this, unitDataSO, card_cardMove_Prefeb, card_PoolManager, card_Canvas, card_SpawnPosition, card_LeftPosition, card_RightPosition, card_AfterImage, card_SummonRangeLine);
@@ -142,6 +151,7 @@ public class BattleManager : MonoBehaviour
         battle_Throw = new Battle_Throw(this, throw_parabola, throw_Arrow, currentStageData);
         battle_AI = new Battle_AI(this);
         battle_Time = new Battle_Time(this, time_TimeText);
+        battle_Cost = new Battle_Cost(this, cost_CostText);
     }
 
     private void Update()
@@ -187,6 +197,9 @@ public class BattleManager : MonoBehaviour
             battle_Throw.Throw_Unit();
         }
 
+        //코스트 시스템
+        battle_Cost.Update_Cost();
+
     }
 
     #region 공용함수
@@ -224,7 +237,6 @@ public class BattleManager : MonoBehaviour
             unit_teamText.text = "나의 팀";
             return;
         }
-
     }
 
     /// <summary>
