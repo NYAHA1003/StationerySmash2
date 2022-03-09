@@ -70,7 +70,7 @@ public class Battle_Cost : BattleCommand
 
     public void Update_CostText()
     {
-        cost_CostText.text = cur_Cost.ToString();
+        cost_CostText.text = string.Format("{0} / {1}", cur_Cost.ToString(), max_Cost.ToString());
     }
 
     public void Run_UpgradeCostGrade()
@@ -84,7 +84,9 @@ public class Battle_Cost : BattleCommand
         Subtract_Cost(max_Cost);
         Add_CostSpeed(0.25f);
         max_Cost += 2;
-    
+        Update_CostText();
+
+
     }
 
 }

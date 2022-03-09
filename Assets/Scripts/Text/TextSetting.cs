@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
+using static LanguageSingleton;
 
 public class TextSetting : MonoBehaviour
 {
@@ -17,5 +19,4 @@ public class TextSetting : MonoBehaviour
         tmpGUI = GetComponent<TextMeshProUGUI>();
     }
 
-    
 }
