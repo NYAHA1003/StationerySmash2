@@ -42,7 +42,7 @@ public class LanguageSingleton : MonoSingleton<LanguageSingleton>
     }
 
 
-    [ContextMenu("언어 가져오기")]    //ContextMenu로 게임중이 아닐 때에도 실행 가능 
+    [ContextMenu("언어 가져오기")]
     void GetLang()
     {
         StartCoroutine(GetLangCo());

@@ -29,7 +29,6 @@ public class LocalizeText : MonoBehaviour
     string Localize(string key) //어떤 문자열이 필요하진 key를 매개변수로 받는다 
     {
         int keyIndex = LanguageSingleton._instance.Langs[0].value.FindIndex(x => x.ToLower() == key.ToLower()); //기준이 되는 0번 기준으로 value 탐색 후 keyIndex에 문자열 선언
-        Debug.Log(keyIndex);
         return LanguageSingleton._instance.Langs[LanguageSingleton._instance.curLangIndex].value[keyIndex];      //현재 언어 인덱스, value의 key를 기준으로 문자열을 반환한다. 
     }
 
