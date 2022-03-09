@@ -26,6 +26,9 @@ public class Battle_Card : BattleCommand
     private SpriteRenderer unit_AfterImage_Spr;
 
     private Coroutine coroutine;
+
+    private CardMove selectCard;
+    
     public bool isCardDown { get; private set; } //카드를 클릭한 상태인지
     public bool isPossibleSummon { get; private set; } //해당 카드를 소환할 수 있는지
 
@@ -113,10 +116,12 @@ public class Battle_Card : BattleCommand
 
         for (int i = 0; i < battleManager.card_DatasTemp.Count; i++)
         {
-            if (battleManager.card_DatasTemp[i].isFusion)
-                continue;
             CardMove targetCard = battleManager.card_DatasTemp[i];
             targetCard.originPRS = originCardPRS[i];
+            if (battleManager.card_DatasTemp[i] == selectCard)
+                continue;
+            if (battleManager.card_DatasTemp[i].isFusion)
+                continue;
             targetCard.Set_CardPRS(targetCard.originPRS, 0.5f);
         }
     }
@@ -278,8 +283,20 @@ public class Battle_Card : BattleCommand
     {
         summonRangeLine.gameObject.SetActive(true);
         if (card.isFusion) return;
+        card.transform.DOKill();
         card.Set_CardScale(Vector3.one * 1.3f, 0.3f);
+        card.Set_CardRot(Quaternion.identity, 0.3f);
+        selectCard = card;
         isCardDown = true;
+    }
+
+    /// <summary>
+    /// 선택한 카드 위치를 업데이트 한다
+    /// </summary>
+    public void Update_SelectCardPos()
+    {
+        if (selectCard == null) return;
+        selectCard.transform.position = Input.mousePosition;
     }
 
     /// <summary>
@@ -291,6 +308,7 @@ public class Battle_Card : BattleCommand
         summonRangeLine.gameObject.SetActive(false);
         if (card.isFusion) return;
         card.Set_CardScale(Vector3.one * 1, 0.3f);
+        selectCard = null;
         isCardDown = false;
     }
 
@@ -300,6 +318,8 @@ public class Battle_Card : BattleCommand
     /// <param name="card"></param>
     public void Set_UseCard(CardMove card)
     {
+
+        selectCard = null;
 
         summonRangeLine.gameObject.SetActive(false);
 

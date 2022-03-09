@@ -9,7 +9,7 @@ using Utill;
 
 
 
-public class CardMove : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHandler, IPointerUpHandler
+public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField]
     private Image card_Background;
@@ -192,54 +192,46 @@ public class CardMove : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDo
     /// <param name="eventData"></param>
     public void OnDrag(PointerEventData eventData)
     {
-        /*
-         *캔버스가 카메라옵션일 때
-         *Vector2 localPos;
-         *RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, Input.mouseScrollDelta, cardCanvas.worldCamera, out localPos);
-         *Set_CardPosition(new PRS(cardCanvas.transform.TransformPoint(localPos), Quaternion.identity, Vector3.one), 0, false);
-        */
-
-        if (isFusion) return;
-
-        isDrag = true;
-        transform.position = Input.mousePosition;
-        transform.DOKill();
-        Set_CardRot(Quaternion.identity, 0.3f);
-
-        if(rectTransform.anchoredPosition.y > 0)
-        {
-            Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            battleManager.battle_Card.Set_UnitAfterImage(unitData, mouse_Pos);
-            return;
-        }
-        battleManager.battle_Card.Set_UnitAfterImage(unitData, Vector3.zero, true);
+        //if(rectTransform.anchoredPosition.y > 0)
+        //{
+        //    Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //    battleManager.battle_Card.Set_UnitAfterImage(unitData, mouse_Pos);
+        //    return;
+        //}
+        //battleManager.battle_Card.Set_UnitAfterImage(unitData, Vector3.zero, true);
     }
 
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        battleManager.battle_Card.Set_UnitAfterImage(unitData, Vector3.zero, true);
-
-        if (rectTransform.anchoredPosition.y > 0)
-        {
-            battleManager.battle_Card.Set_UseCard(this);
-            return;
-        }
-
-        Set_CardPRS(originPRS, 0.3f);
-        battleManager.battle_Card.Set_UnSelectCard(this);
-        isDrag = false;
-
-    }
-
+    /// <summary>
+    /// 카드 선택
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (isFusion) return;
+        if (isDrag) return;
+
+        isDrag = true;
         battleManager.battle_Card.Set_SelectCard(this);
     }
 
+    /// <summary>
+    /// 카드 선택 해제
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerUp(PointerEventData eventData)
     {
-        if(!isDrag)
+        if(isDrag)
         {
+            isDrag = false;
+            battleManager.battle_Card.Set_UnitAfterImage(unitData, Vector3.zero, true);
+
+            if (rectTransform.anchoredPosition.y > 0)
+            {
+                battleManager.battle_Card.Set_UseCard(this);
+                return;
+            }
+
+            Set_CardPRS(originPRS, 0.3f);
             battleManager.battle_Card.Set_UnSelectCard(this);
         }
     }
