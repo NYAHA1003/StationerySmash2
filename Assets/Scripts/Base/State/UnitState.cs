@@ -4,18 +4,8 @@ using UnityEngine;
 using DG.Tweening;
 using Utill;
 
-public class UnitState
+public abstract class UnitState
 {
-    public enum eState  // 가질 수 있는 상태 나열
-    {
-        IDLE, MOVE, ATTACK, WAIT, DAMAGED, DIE, PULL, THROW, NONE,
-    };
-
-    public enum eEvent  // 이벤트 나열
-    {
-        ENTER, UPDATE, EXIT, NOTHING
-    };
-
     public eState curState { get; protected set; }
     public eEvent curEvent;
 
@@ -24,6 +14,7 @@ public class UnitState
     public Transform myTrm { get; protected set; }
     public Transform mySprTrm { get; protected set; }
     public Unit myUnit { get; protected set; }
+    public IStateChange stateChange;
 
     public UnitState(Transform myTrm, Transform mySprTrm, Unit myUnit)
     {
@@ -40,7 +31,7 @@ public class UnitState
     /// 로직 실행
     /// </summary>
     /// <returns></returns>
-    public UnitState Process()
+    public virtual UnitState Process()
     {
         if (curEvent == eEvent.ENTER)
         {

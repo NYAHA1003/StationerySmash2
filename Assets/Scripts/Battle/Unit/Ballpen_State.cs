@@ -4,11 +4,55 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 
+public class BallPenStateChange : IStateChange
+{
+    public UnitState Return_Attack(Stationary_UnitState unit, Unit targetUnit)
+    {
+        unit.Set_Event(eEvent.EXIT);
+        return new BallPen_Attack_State(unit.myTrm, unit.mySprTrm, unit.myUnit, unit.stageData, targetUnit);
+    }
+
+    public UnitState Return_Damaged(Stationary_UnitState unit, AtkData atkData)
+    {
+        unit.Set_Event(eEvent.EXIT);
+        return new BallPen_Damaged_State(unit.myTrm, unit.mySprTrm, unit.myUnit, unit.stageData, atkData);
+    }
+
+    public UnitState Return_Die(Stationary_UnitState unit)
+    {
+        unit.Set_Event(eEvent.EXIT);
+        return new BallPen_Die_State(unit.myTrm, unit.mySprTrm, unit.myUnit, unit.stageData);
+    }
+
+    public UnitState Return_Idle(Stationary_UnitState unit)
+    {
+        unit.Set_Event(eEvent.EXIT);
+        return new BallPen_Idle_State(unit.myTrm, unit.mySprTrm, unit.myUnit, unit.stageData);
+    }
+
+    public UnitState Return_Move(Stationary_UnitState unit)
+    {
+        unit.Set_Event(eEvent.EXIT);
+        return new BallPen_Move_State(unit.myTrm, unit.mySprTrm, unit.myUnit, unit.stageData);
+    }
+
+    public UnitState Return_Throw(Stationary_UnitState unit)
+    {
+        unit.Set_Event(eEvent.EXIT);
+        return new BallPen_Throw_State(unit.myTrm, unit.mySprTrm, unit.myUnit, unit.stageData);
+    }
+
+    public UnitState Return_Wait(Stationary_UnitState unit, float time)
+    {
+        unit.Set_Event(eEvent.EXIT);
+        return new BallPen_Wait_State(unit.myTrm, unit.mySprTrm, unit.myUnit, unit.stageData, 0.5f);
+    }
+}
 public class BallPen_Idle_State : Pencil_Idle_State
 {
     public BallPen_Idle_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, StageData stageData) : base(myTrm, mySprTrm, myUnit, stageData)
     {
-
+        stateChange = new BallPenStateChange();
     }
 }
 
@@ -16,6 +60,7 @@ public class BallPen_Wait_State : Pencil_Wait_State
 {
     public BallPen_Wait_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, StageData stageData, float waitTime) : base(myTrm, mySprTrm, myUnit, stageData, waitTime)
     {
+        stateChange = new BallPenStateChange();
     }
 }
 
@@ -23,6 +68,7 @@ public class BallPen_Move_State : Pencil_Move_State
 {
     public BallPen_Move_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, StageData stageData) : base(myTrm, mySprTrm, myUnit, stageData)
     {
+        stateChange = new BallPenStateChange();
     }
 }
 
@@ -30,6 +76,7 @@ public class BallPen_Damaged_State : Pencil_Damaged_State
 {
     public BallPen_Damaged_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, StageData stageData, AtkData atkData) : base(myTrm, mySprTrm, myUnit, stageData, atkData)
     {
+        stateChange = new BallPenStateChange();
     }
 }
 
@@ -37,6 +84,7 @@ public class BallPen_Attack_State : Pencil_Attack_State
 {
     public BallPen_Attack_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, StageData stageData, Unit targetUnit) : base(myTrm, mySprTrm, myUnit, stageData, targetUnit)
     {
+        stateChange = new BallPenStateChange();
     }
 }
 
@@ -44,6 +92,7 @@ public class BallPen_Die_State : Pencil_Die_State
 {
     public BallPen_Die_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, StageData stageData) : base(myTrm, mySprTrm, myUnit, stageData)
     {
+        stateChange = new BallPenStateChange();
     }
 }
 
@@ -51,6 +100,7 @@ public class BallPen_Throw_State : Pencil_Throw_State
 {
     public BallPen_Throw_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, StageData stageData) : base(myTrm, mySprTrm, myUnit, stageData)
     {
+        stateChange = new BallPenStateChange();
     }
 
     public override void Enter()

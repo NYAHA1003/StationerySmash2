@@ -5,22 +5,9 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 using DG.Tweening;
+using Utill;
 
 
-[System.Serializable]
-public class PRS
-{
-    public Vector3 pos;
-    public Quaternion rot;
-    public Vector3 scale;
-
-    public PRS(Vector3 pos, Quaternion rot, Vector3 scale)
-    {
-        this.pos = pos;
-        this.rot = rot;
-        this.scale = scale;
-    }
-}
 
 public class CardMove : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHandler, IPointerUpHandler
 {

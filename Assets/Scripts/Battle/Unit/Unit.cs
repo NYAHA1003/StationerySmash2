@@ -4,29 +4,30 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utill;
 
-public abstract class Unit : MonoBehaviour 
+public abstract class Unit : MonoBehaviour
 {
+    public UnitData unitData;
     public UnitState unitState { get; protected set; }
 
     [SerializeField]
     protected SpriteRenderer spr;
+    
+    public TeamType eTeam;
 
-
-    protected bool isSettingEnd;
 
     public int myDamagedId = 0;
     public int damageCount = 0;
     public int myUnitId;
-    public int hp { get; protected set; } = 100;
-    public int weight { get; protected set; }
+    public int hp { get; protected set; }
     public int maxhp { get; protected set; }
+    public int weight { get; protected set; }
     public bool isInvincibility { get; protected set; }
 
-    public TeamType eTeam;
+    protected bool isSettingEnd;
 
     public BattleManager battleManager { get; protected set; }
+    
     protected StageData stageData;
-
 
     #region 기본 로직
 
@@ -91,9 +92,11 @@ public abstract class Unit : MonoBehaviour
         }
         battleManager.unit_EnemyDatasTemp.Remove(this);
     }
+
     #endregion
 
     #region 무조건 재정의 해야함
+
     /// <summary>
     /// 공격 맞음
     /// </summary>
@@ -140,7 +143,7 @@ public abstract class Unit : MonoBehaviour
     /// 무적 여부 설정
     /// </summary>
     /// <param name="isboolean">True면 무적, False면 비무적</param>
-    public void Set_IsInvincibility(bool isboolean)
+    public virtual void Set_IsInvincibility(bool isboolean)
     {
         isInvincibility = isboolean;
     }

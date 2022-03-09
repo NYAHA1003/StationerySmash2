@@ -3,18 +3,67 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 
-public class Stationary_Unit_Eff_State : UnitState
+public abstract class Eff_State
 {
-    protected new Stationary_Unit myUnit;
-    protected new Stationary_Unit_Eff_State nextState;  // 다음 상태
-    protected UnitData myUnitData;
-    private float[] valueList;
+    public eState curState { get; protected set; }
+    public eEvent curEvent;
+    public Transform myTrm { get; protected set; }
+    public Transform mySprTrm { get; protected set; }
     public AtkType statusEffect { get; protected set; }
-    public Stationary_Unit_Eff_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, AtkType statusEffect, params float[] valueList) : base(myTrm, mySprTrm, myUnit)
+
+    protected Stationary_Unit myUnit;
+    protected Eff_State nextState;
+    protected UnitData myUnitData;
+    protected float[] valueList;
+
+    public Eff_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, AtkType statusEffect, params float[] valueList)
+    {
+        this.myTrm = myTrm;
+        this.mySprTrm = mySprTrm;
+        this.myUnit = myUnit;
+        this.statusEffect = statusEffect;
+        this.valueList = valueList;
+    }
+
+
+    public virtual void Enter() { curEvent = eEvent.UPDATE; }
+    public virtual void Update() { curEvent = eEvent.UPDATE; }
+    public virtual void Exit() { curEvent = eEvent.EXIT; }
+
+    public Eff_State Process()
+    {
+        if (curEvent == eEvent.ENTER)
+        {
+            Enter();
+        }
+        if (curEvent == eEvent.UPDATE)
+        {
+            Update();
+        }
+        if (curEvent == eEvent.EXIT)
+        {
+            Exit();
+            return nextState;
+        }
+
+        return this;
+    }
+    public void Set_EffType(AtkType atkType, params float[] value)
+    {
+        statusEffect = atkType;
+        this.valueList = value;
+    }
+
+    public abstract void Set_EffValue(params float[] value);
+
+}
+
+public class Stationary_Unit_Eff_State : Eff_State
+{
+    public Stationary_Unit_Eff_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, AtkType statusEffect, params float[] valueList) : base(myTrm, mySprTrm, myUnit, statusEffect, valueList)
     {
         this.valueList = valueList;
         this.myUnit = myUnit;
-        this.statusEffect = statusEffect;
     }
     public override void Update()
     {
@@ -39,34 +88,14 @@ public class Stationary_Unit_Eff_State : UnitState
         }
     }
 
-    public new Stationary_Unit_Eff_State Process()
-    {
-        if (curEvent == eEvent.ENTER)
-        {
-            Enter();
-        }
-        if (curEvent == eEvent.UPDATE)
-        {
-            Update();
-        }
-        if (curEvent == eEvent.EXIT)
-        {
-            Exit();
-            return nextState;
-        }
 
-        return this;
+    public override void Set_EffValue(params float[] value)
+    {
+
     }
 
-    public void Set_EffType(AtkType atkType, params float[] value)
-    {
-        statusEffect = atkType;
-        this.valueList = value;
-    }
-
-    public virtual void Set_EffSetting(params float[] value) { }
 }
-public class Stationary_Unit_Sturn_Eff_State : Stationary_Unit_Eff_State
+public class Stationary_Unit_Sturn_Eff_State : Eff_State
 {
     private float stunTime;
 
@@ -77,7 +106,7 @@ public class Stationary_Unit_Sturn_Eff_State : Stationary_Unit_Eff_State
     public override void Enter()
     {
         stunTime = stunTime + (stunTime * (((float)myUnit.maxhp / (myUnit.hp + 0.1f)) - 1));
-        myUnit.unitState.nextState = StateChangeManager.Set_Wait(myUnit.unitState,stunTime);
+        myUnit.unitState.nextState = myUnit.unitState.stateChange.Return_Wait(myUnit.unitState as Stationary_UnitState,stunTime);
 
         base.Enter();
     }
@@ -93,7 +122,7 @@ public class Stationary_Unit_Sturn_Eff_State : Stationary_Unit_Eff_State
         curEvent = eEvent.EXIT;
     }
 
-    public override void Set_EffSetting(params float[] value)
+    public override void Set_EffValue(params float[] value)
     {
         if (stunTime < value[0])
         {
@@ -102,7 +131,7 @@ public class Stationary_Unit_Sturn_Eff_State : Stationary_Unit_Eff_State
         }
     }
 }
-public class Stationary_Unit_Ink_Eff_State : Stationary_Unit_Eff_State
+public class Stationary_Unit_Ink_Eff_State : Eff_State
 {
     private float inkTime = 0;
     private float damageSubtractPercent = 0;
@@ -111,7 +140,7 @@ public class Stationary_Unit_Ink_Eff_State : Stationary_Unit_Eff_State
 
     public Stationary_Unit_Ink_Eff_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, AtkType statusEffect, params float[] value) : base(myTrm, mySprTrm, myUnit, statusEffect, value)
     {
-        Set_EffSetting(value);
+        Set_EffValue(value);
     }
     public override void Enter()
     {
@@ -174,7 +203,7 @@ public class Stationary_Unit_Ink_Eff_State : Stationary_Unit_Eff_State
         base.Exit();
     }
 
-    public override void Set_EffSetting(params float[] value)
+    public override void Set_EffValue(params float[] value)
     {
         inkTime = value[0];
         damageSubtractPercent = value[1];
@@ -191,7 +220,7 @@ public class Stationary_Unit_SlowDown_Eff_State : Stationary_Unit_Eff_State
 
     public Stationary_Unit_SlowDown_Eff_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, AtkType statusEffect, params float[] value) : base(myTrm, mySprTrm, myUnit, statusEffect, value)
     {
-        Set_EffSetting(value);
+        Set_EffValue(value);
     }
     public override void Enter()
     {
@@ -222,7 +251,7 @@ public class Stationary_Unit_SlowDown_Eff_State : Stationary_Unit_Eff_State
         base.Exit();
     }
 
-    public override void Set_EffSetting(params float[] value)
+    public override void Set_EffValue(params float[] value)
     {
         slowDownTime = value[0];
         moveSpeedSubtractPercent = value[1];

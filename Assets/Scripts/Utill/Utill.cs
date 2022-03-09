@@ -4,6 +4,42 @@ using UnityEngine;
 
 namespace Utill
 {
+    public enum eState  // 가질 수 있는 상태 나열
+    {
+        IDLE, MOVE, ATTACK, WAIT, DAMAGED, DIE, PULL, THROW, NONE,
+    };
+
+    public enum eEvent  // 이벤트 나열
+    {
+        ENTER, UPDATE, EXIT, NOTHING
+    };
+
+
+    public interface IStateChange
+    {
+        public UnitState Return_Idle(Stationary_UnitState unit);
+        public UnitState Return_Wait(Stationary_UnitState unit, float time);
+        public UnitState Return_Move(Stationary_UnitState unit);
+        public UnitState Return_Damaged(Stationary_UnitState unit, AtkData atkData);
+        public UnitState Return_Attack(Stationary_UnitState unit, Unit targetUnit);
+        public UnitState Return_Die(Stationary_UnitState unit);
+        public UnitState Return_Throw(Stationary_UnitState unit);
+    }
+
+    [System.Serializable]
+    public class PRS
+    {
+        public Vector3 pos;
+        public Quaternion rot;
+        public Vector3 scale;
+
+        public PRS(Vector3 pos, Quaternion rot, Vector3 scale)
+        {
+            this.pos = pos;
+            this.rot = rot;
+            this.scale = scale;
+        }
+    }
     public enum TimeType
     {
         ActiveTime,

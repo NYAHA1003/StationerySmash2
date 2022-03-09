@@ -7,9 +7,7 @@ using Utill;
 
 public class Stationary_Unit : Unit
 {
-    new public Stationary_UnitState unitState;
-    public UnitData unitData;
-    protected List<Stationary_Unit_Eff_State> statEffList = new List<Stationary_Unit_Eff_State>();
+    protected List<Eff_State> statEffList = new List<Eff_State>();
 
     public int damagePercent = 100;
     public int moveSpeedPercent = 100;
@@ -32,7 +30,7 @@ public class Stationary_Unit : Unit
     private Camera mainCam;
 
 
-    private void Awake()
+    private void Start()
     {
         mainCam = Camera.main;
         canvas.worldCamera = mainCam;
@@ -100,23 +98,23 @@ public class Stationary_Unit : Unit
             //똑같은 공격 아이디를 지닌 공격은 무시함
             return;
         }
-        unitState.nextState = StateChangeManager.Set_Damaged(unitState, atkData);
+        unitState.nextState = unitState.stateChange.Return_Damaged(unitState as Stationary_UnitState, atkData);
     }
 
     public override Unit Pull_Unit()
     {
-        if(unitState.curState == UnitState.eState.DAMAGED)
+        if(unitState.curState == eState.DAMAGED)
         {
             return null;
         }
 
-        unitState.nextState = StateChangeManager.Set_Wait(unitState, 2);
+        unitState.nextState = unitState.stateChange.Return_Wait(unitState as Stationary_UnitState, 2);
         return this;
     }
 
     public override Unit Pulling_Unit()
     {
-        if (unitState.curState == UnitState.eState.DAMAGED)
+        if (unitState.curState == eState.DAMAGED)
         {
             return null;
         }
@@ -126,20 +124,19 @@ public class Stationary_Unit : Unit
 
     public override void Throw_Unit()
     {
-        unitState.nextState = StateChangeManager.Set_Throw(unitState);
+        unitState.nextState = unitState.stateChange.Return_Throw(unitState as Stationary_UnitState);
     }
     public override void Add_StatusEffect(AtkType atkType, params float[] value)
     {
-        Stationary_Unit_Eff_State statEffState = statEffList.Find(x => x.statusEffect == atkType);
+        Eff_State statEffState = statEffList.Find(x => x.statusEffect == atkType);
         if (statEffState != null)
         {
-            statEffState.Set_EffSetting(value);
+            statEffState.Set_EffValue(value);
             return;
         }
         statEffState = statEffList.Find(x => x.statusEffect == AtkType.Normal);
         if (statEffState != null)
         {
-            statEffState.Set_EffType(atkType, value);
             return;
         }
 
