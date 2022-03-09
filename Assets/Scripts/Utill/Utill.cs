@@ -6,10 +6,12 @@ namespace Utill
 {
     public enum CardType
     {
-        Unit,
-        Strategy,
-
+        Execute,
+        SummonUnit,
+        SummonTrap,
+        Installation,
     }
+
     public enum DieType
     {
         StarKo,
