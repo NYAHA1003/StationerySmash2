@@ -148,39 +148,8 @@ public class Stationary_Unit_Ink_Eff_State : Eff_State
         myUnit.damagePercent -= (int)damageSubtractPercent;
         myUnit.accuracyPercent -= (int)accuracySubtractPercent;
 
-        if(myUnit.eTeam == TeamType.MyTeam)
-        {
-            //Check_InkRangeMyTeam(myUnit.battleManager.unit_MyDatasTemp);
-        }
-        else
-        {
-            //Check_InkRangeMyTeam(myUnit.battleManager.unit_EnemyDatasTemp);
-        }
-
         base.Enter();
     }
-
-    //private void Check_InkRangeMyTeam(List<Unit> list)
-    //{
-    //    Stationary_Unit target_Unit = null;
-    //    for (int i = 0; i < list.Count; i++)
-    //    {
-    //        target_Unit = list[i].GetComponent<Stationary_Unit>();
-            
-    //        if (target_Unit == null) 
-    //            continue;
-
-    //        if (target_Unit == myUnit)
-    //            continue;
-
-    //        //거리 비교해서 잉크 적용
-    //        if (Mathf.Abs(target_Unit.transform.position.x - originPosX) < range)
-    //        {
-    //            target_Unit.Add_StatusEffect(AtkType.Ink, inkTime, damageSubtractPercent, accuracySubtractPercent, originPosX, range);
-    //        }
-    //    }
-    //}
-
     public override void Update()
     {
         if (inkTime > 0)
@@ -188,7 +157,6 @@ public class Stationary_Unit_Ink_Eff_State : Eff_State
             inkTime -= Time.deltaTime;
             return;
         }
-
 
         nextState = new Stationary_Unit_Eff_State(myTrm, mySprTrm, myUnit, AtkType.Normal, null);
         curEvent = eEvent.EXIT;

@@ -137,6 +137,7 @@ public class Stationary_Unit : Unit
         statEffState = statEffList.Find(x => x.statusEffect == AtkType.Normal);
         if (statEffState != null)
         {
+            statEffState.Set_EffType(atkType, value);
             return;
         }
 

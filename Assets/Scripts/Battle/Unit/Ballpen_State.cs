@@ -45,7 +45,7 @@ public class BallPenStateChange : IStateChange
     public UnitState Return_Wait(Stationary_UnitState unit, float time)
     {
         unit.Set_Event(eEvent.EXIT);
-        return new BallPen_Wait_State(unit.myTrm, unit.mySprTrm, unit.myUnit, unit.stageData, 0.5f);
+        return new BallPen_Wait_State(unit.myTrm, unit.mySprTrm, unit.myUnit, unit.stageData, time);
     }
 }
 public class BallPen_Idle_State : Pencil_Idle_State
@@ -116,7 +116,15 @@ public class BallPen_Throw_State : Pencil_Throw_State
         float extraKnockBack = (targetUnit.weight - myUnit.Return_Weight() * (float)targetUnit.hp / targetUnit.maxhp) * 0.025f;
         AtkData atkData = new AtkData(myUnit, 0, 0, 0, 0, true, 0, originAtkType, originValue);
 
-        targetUnit.Add_StatusEffect(originAtkType, originValue);
+        if(myUnit.eTeam == TeamType.MyTeam)
+        {
+            IntAttack(myUnit.battleManager.unit_EnemyDatasTemp);
+        }
+        else
+        {
+            IntAttack(myUnit.battleManager.unit_MyDatasTemp);
+        }
+
         atkData.Reset_Damage(100 + (myUnit.weight > targetUnit.weight ? (Mathf.RoundToInt((float)myUnit.weight - targetUnit.weight) / 2) : Mathf.RoundToInt((float)(targetUnit.weight - myUnit.weight) / 5)));
 
 
@@ -162,6 +170,17 @@ public class BallPen_Throw_State : Pencil_Throw_State
             myUnit.Run_Damaged(atkData);
 
             return;
+        }
+    }
+
+    private void IntAttack(List<Unit> list)
+    {
+        for(int i = 0; i < list.Count; i++)
+        {
+            if(Vector2.Distance(myTrm.position, list[i].transform.position) < originValue[3])
+            {
+                list[i].Add_StatusEffect(originAtkType, originValue);
+            }
         }
     }
 }

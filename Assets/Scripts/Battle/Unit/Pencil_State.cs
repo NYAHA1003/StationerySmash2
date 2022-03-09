@@ -55,6 +55,7 @@ public class Pencil_Idle_State : Stationary_UnitState
     {
         stateChange = new PencilStateChange();
         curState = eState.IDLE;
+        curEvent = eEvent.ENTER;
     }
 
     public override void Enter()
@@ -80,6 +81,7 @@ public class Pencil_Wait_State : Stationary_UnitState
     {
         stateChange = new PencilStateChange();
         curState = eState.WAIT;
+        curEvent = eEvent.ENTER;
         this.waitTime = waitTime;
     }
 
@@ -100,6 +102,7 @@ public class Pencil_Move_State : Stationary_UnitState
     {
         stateChange = new PencilStateChange();
         curState = eState.MOVE;
+        curEvent = eEvent.ENTER;
     }
 
     public override void Update()
@@ -183,6 +186,7 @@ public class Pencil_Attack_State : Stationary_UnitState
     {
         stateChange = new PencilStateChange();
         curState = eState.ATTACK;
+        curEvent = eEvent.ENTER;
         this.targetUnit = targetUnit;
     }
 
@@ -268,6 +272,7 @@ public class Pencil_Damaged_State : Stationary_UnitState
     {
         stateChange = new PencilStateChange();
         curState = eState.DAMAGED;
+        curEvent = eEvent.ENTER;
         this.atkData = atkData;
     }
 
@@ -307,7 +312,6 @@ public class Pencil_Damaged_State : Stationary_UnitState
     {
         if (atkData.atkType != AtkType.Normal)
         {
-            Debug.Log("적용 효과: " + atkData.atkType);
             myUnit.Add_StatusEffect(atkData.atkType, atkData.value);
         }
         myUnit.Set_IsInvincibility(false);
@@ -321,6 +325,7 @@ public class Pencil_Die_State : Stationary_UnitState
     {
         stateChange = new PencilStateChange();
         curState = eState.DIE;
+        curEvent = eEvent.ENTER;
     }
 
     public override void Enter()
@@ -358,6 +363,7 @@ public class Pencil_Throw_State : Stationary_UnitState
     {
         stateChange = new PencilStateChange();
         curState = eState.THROW;
+        curEvent = eEvent.ENTER;
     }
 
     public override void Enter()
