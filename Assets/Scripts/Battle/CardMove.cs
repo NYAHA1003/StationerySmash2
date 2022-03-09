@@ -33,13 +33,11 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public int grade = 1;
     public int id;
-    private float scale;
 
     private RectTransform rectTransform;
 
     private BattleManager battleManager;
 
-    private Canvas cardCanvas;
 
     private bool isDrag; // 드래그 중인 상태인가
     private void Awake()
@@ -57,7 +55,6 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <param name="id">카드 고유 아이디</param>
     public void Set_UnitData(UnitData unitData, int id)
     {
-        cardCanvas ??= transform.parent.GetComponent<Canvas>();
         
         isDrag = false;
 
