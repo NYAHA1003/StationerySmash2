@@ -125,7 +125,8 @@ public class BattleManager : MonoBehaviour
 
     [SerializeField, Header("AI ╫ц╫╨еш Battle_Ai"), Space(30)]
     public bool ai_isActive;
-
+    [SerializeField]
+    public StageLog ai_Log;
 
     #endregion
 

@@ -388,6 +388,7 @@ public class Battle_Card : BattleCommand
                 card.dataBase.strategyData.starategy_State.Run_Card(battleManager);
                 break;
         }
+        battleManager.ai_Log.Add_Log(card.dataBase, card.grade);
 
     }
 
