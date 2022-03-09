@@ -24,10 +24,9 @@ public class Stationary_Unit : Unit
     protected Image delayBar;
     public float attack_Cur_Delay { get; private set; }
 
-    //public Ease ease;
-    public AnimationCurve curve;
-
+    //
     private Camera mainCam;
+    public AnimationCurve asa;
 
 
     private void Start()
@@ -59,6 +58,8 @@ public class Stationary_Unit : Unit
         Update_DelayBar(attack_Cur_Delay);
         delayBar.rectTransform.anchoredPosition = eTeam == TeamType.MyTeam ? new Vector2(-960.15f, -540.15f) : new Vector2(-959.85f, -540.15f);
         Set_UnitData(unitData, eTeam, battleManager, id);
+        Set_IsInvincibility(false);
+        Show_Canvas();
 
         switch (unitData.unitType)
         {
@@ -126,6 +127,16 @@ public class Stationary_Unit : Unit
     {
         unitState.nextState = unitState.stateChange.Return_Throw(unitState as Stationary_UnitState);
     }
+
+    public void Show_Canvas()
+    {
+        canvas.gameObject.SetActive(true);
+    }
+    public void NoShow_Canvas()
+    {
+        canvas.gameObject.SetActive(false);
+    }
+
     public override void Add_StatusEffect(AtkType atkType, params float[] value)
     {
         Eff_State statEffState = statEffList.Find(x => x.statusEffect == atkType);

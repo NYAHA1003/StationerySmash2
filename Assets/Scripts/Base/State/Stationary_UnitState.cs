@@ -20,6 +20,12 @@ public class Stationary_UnitState : UnitState
         this.stageData = stageData;
         this.myUnitData = myUnit.unitData;
     }
+
+    public virtual void Animation(params float[] value)
+    {
+
+    }
+
     public void Check_Wall()
     {
         if (stageData.max_Range <= myTrm.position.x)
@@ -29,7 +35,7 @@ public class Stationary_UnitState : UnitState
             myTrm.DOJump(new Vector3(myTrm.position.x - 0.2f, 0, myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
             {
                 nextState = stateChange.Return_Wait(this, 0.5f);
-            }).SetEase(myUnit.curve);
+            }).SetEase(Utill.Utill.Return_ParabolaCurve());
         }
         if (-stageData.max_Range >= myTrm.position.x)
         {
@@ -38,7 +44,7 @@ public class Stationary_UnitState : UnitState
             myTrm.DOJump(new Vector3(myTrm.position.x + 0.2f, 0, myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
             {
                 nextState = stateChange.Return_Wait(this, 0.5f);
-            }).SetEase(myUnit.curve);
+            }).SetEase(Utill.Utill.Return_ParabolaCurve());
         }
     }
 }

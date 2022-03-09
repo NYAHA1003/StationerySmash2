@@ -85,6 +85,12 @@ public class Pencil_Wait_State : Stationary_UnitState
         this.waitTime = waitTime;
     }
 
+    public override void Enter()
+    {
+        mySprTrm.DOKill();
+        base.Enter();
+    }
+
     public override void Update()
     {
         if (waitTime > 0)
@@ -105,10 +111,16 @@ public class Pencil_Move_State : Stationary_UnitState
         curEvent = eEvent.ENTER;
     }
 
+    public override void Enter()
+    {
+        Animation();
+        base.Enter();
+    }
+
     public override void Update()
     {
         //우리 팀
-        if(myUnit.eTeam == TeamType.MyTeam)
+        if (myUnit.eTeam == TeamType.MyTeam)
         {
             Move_MyTeam();
             Check_Range(myUnit.battleManager.unit_EnemyDatasTemp);
@@ -175,6 +187,14 @@ public class Pencil_Move_State : Stationary_UnitState
         }
 
     }
+
+    public override void Animation(params float[] value)
+    {
+        mySprTrm.DOKill();
+        float rotate = myUnit.eTeam == TeamType.MyTeam ? 30 : -30;
+        mySprTrm.eulerAngles = new Vector3(0, 0, 0);
+        mySprTrm.DORotate(new Vector3(0, 0, rotate), 0.3f).SetLoops(-1, LoopType.Yoyo);
+    }
 }
 
 public class Pencil_Attack_State : Stationary_UnitState
@@ -213,6 +233,8 @@ public class Pencil_Attack_State : Stationary_UnitState
 
     private void Attack()
     {
+        Animation();
+
         cur_delay = 0;
         Set_Delay();
 
@@ -262,6 +284,13 @@ public class Pencil_Attack_State : Stationary_UnitState
             }
         }
     }
+    public override void Animation(params float[] value)
+    {
+        mySprTrm.DOKill();
+        float rotate = myUnit.eTeam == TeamType.MyTeam ? -90 : 90;
+        mySprTrm.eulerAngles = new Vector3(0, 0, 0);
+        mySprTrm.DORotate(new Vector3(0, 0, rotate), 0.2f).SetLoops(2, LoopType.Yoyo);
+    }
 }
 
 public class Pencil_Damaged_State : Stationary_UnitState
@@ -297,6 +326,8 @@ public class Pencil_Damaged_State : Stationary_UnitState
         float time = atkData.baseKnockback * 0.005f +  Mathf.Abs((atkData.baseKnockback * 0.5f + atkData.extraKnockback)  / (Physics2D.gravity.y ));
         
         myTrm.DOKill();
+        mySprTrm.DOKill();
+        Animation(time);
         myTrm.DOJump(new Vector3(myTrm.position.x - calculated_knockback, 0, myTrm.position.z), height, 1, time).OnComplete(() =>
         {
             curEvent = eEvent.EXIT;
@@ -317,6 +348,11 @@ public class Pencil_Damaged_State : Stationary_UnitState
         myUnit.Set_IsInvincibility(false);
         base.Exit();
     }
+    public override void Animation(params float[] value)
+    {
+        float rotate = myUnit.eTeam == TeamType.MyTeam ? 360 : -360;
+        mySprTrm.DORotate(new Vector3(0, 0, rotate), value[0], RotateMode.FastBeyond360);
+    }
 }
 
 public class Pencil_Die_State : Stationary_UnitState
@@ -330,29 +366,110 @@ public class Pencil_Die_State : Stationary_UnitState
 
     public override void Enter()
     {
+        myUnit.NoShow_Canvas();
+        
         //뒤짐
         myUnit.Set_IsInvincibility(true);
         myTrm.DOKill();
+        mySprTrm.DOKill();
 
-        Vector3 diePos = new Vector3(myTrm.position.x, myTrm.position.y + 0.3f, 0);
-        if(myUnit.eTeam == TeamType.MyTeam)
+        DieType dietype = Utill.Utill.Return_RandomDieType();
+        switch (dietype)
         {
-            diePos.x += Random.Range(-0.5f, -0.1f);
+            case DieType.StarKo:
+                Animation_StarKO();
+                break;
+            case DieType.ScreenKo:
+                Animation_ScreenKO();
+                break;
+            case DieType.OutKo:
+                Animation_OutKO();
+                break;
+        }
+
+        base.Enter();
+    }
+
+    private void Reset_SprTrm()
+    {
+        mySprTrm.localPosition = Vector3.zero;
+        mySprTrm.localScale = Vector3.one;
+        mySprTrm.eulerAngles = Vector3.zero;
+        mySprTrm.DOKill();
+    }
+
+    private void Animation_ScreenKO()
+    {
+        Vector3 diePos = new Vector3(myTrm.position.x, myTrm.position.y + 0.4f, 0);
+        if (myUnit.eTeam == TeamType.MyTeam)
+        {
+            diePos.x -= Random.Range(0.1f, 0.2f);
         }
         if (myUnit.eTeam == TeamType.EnemyTeam)
         {
-            diePos.x += Random.Range(0.1f, 0.5f);
+            diePos.x += Random.Range(0.1f, 0.2f);
         }
-        myTrm.DOLocalRotate(new Vector3(0, 0, -360), 0.6f, RotateMode.FastBeyond360);
-        myTrm.DOScale(3, 0.6f);
-        myTrm.DOJump(diePos, Random.Range(0.3f, 0.6f), 1, 0.6f).OnComplete(() =>
+        mySprTrm.DOLocalRotate(new Vector3(0, 0, -360), 0.3f, RotateMode.FastBeyond360).SetLoops(3, LoopType.Incremental);
+        myTrm.DOJump(diePos, 2f, 1, 1f);
+        mySprTrm.DOScale(10, 0.6f).SetDelay(0.3f).SetEase(Utill.Utill.Return_ScreenKoCurve()).OnComplete(() =>
         {
-            myTrm.localScale = new Vector3(1, 1, 1);
-            myTrm.eulerAngles = new Vector3(0, 0, 0);
+            mySprTrm.eulerAngles = new Vector3(0, 0, Random.Range(mySprTrm.eulerAngles.z - 10, mySprTrm.eulerAngles.z + 10));
+            mySprTrm.DOShakePosition(0.6f, 0.1f, 30).OnComplete(() =>
+            {
+                mySprTrm.DOMoveY(-3, 1).OnComplete(() =>
+                {
+                    Reset_SprTrm();
+                    curEvent = eEvent.EXIT;
+                    myUnit.Delete_Unit();
+                });
+            });
+
+        });
+    }
+
+    private void Animation_StarKO()
+    {
+        Vector3 diePos = new Vector3(myTrm.position.x, 1, 0);
+        if (myUnit.eTeam == TeamType.MyTeam)
+        {
+            diePos.x += Random.Range(-2f, -1f);
+        }
+        if (myUnit.eTeam == TeamType.EnemyTeam)
+        {
+            diePos.x += Random.Range(1f, 2f);
+        }
+
+        mySprTrm.DOLocalRotate(new Vector3(0, 0, -360), 0.5f, RotateMode.FastBeyond360).SetLoops(-1, LoopType.Incremental);
+        mySprTrm.DOScale(0.1f, 1f).SetDelay(1);
+        myTrm.DOJump(diePos, 3, 1, 2f).OnComplete(() =>
+        {
+            Reset_SprTrm();
             curEvent = eEvent.EXIT;
             myUnit.Delete_Unit();
         });
-        base.Enter();
+    }
+
+    private void Animation_OutKO()
+    {
+        Vector3 diePos = new Vector3(myTrm.position.x, myTrm.position.y -2, 0);
+        if (myUnit.eTeam == TeamType.MyTeam)
+        {
+            diePos.x -= stageData.max_Range + 1;
+        }
+        if (myUnit.eTeam == TeamType.EnemyTeam)
+        {
+            diePos.x += stageData.max_Range + 1;
+        }
+
+        float time = Mathf.Abs(myTrm.position.x - diePos.x) / 2;
+        mySprTrm.DOScale(3f, time);
+        mySprTrm.DOLocalRotate(new Vector3(0, 0, -360), time, RotateMode.FastBeyond360);
+        myTrm.DOJump(diePos, Random.Range(3, 5), 1, time).OnComplete(() =>
+        {
+            Reset_SprTrm();
+            curEvent = eEvent.EXIT;
+            myUnit.Delete_Unit();
+        });
     }
 
 }
@@ -392,10 +509,11 @@ public class Pencil_Throw_State : Stationary_UnitState
         //수평 도달 시간
         float time = Utill.Utill.Caculated_Time(force, dir, 3);
 
+        mySprTrm.DOKill();
         myTrm.DOJump(new Vector3(myTrm.position.x - width, 0, myTrm.position.z), height, 1, time).OnComplete(() =>
         {
             nextState = stateChange.Return_Wait(this, 0.5f);
-        }).SetEase(myUnit.curve);
+        }).SetEase(Utill.Utill.Return_ParabolaCurve());
         
         base.Enter();
     }
