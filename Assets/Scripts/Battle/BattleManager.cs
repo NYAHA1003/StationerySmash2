@@ -142,6 +142,15 @@ public class BattleManager : MonoBehaviour
 
     #endregion
 
+    #region 필통 시스템 Battle_PencilCase
+
+    public Battle_PencilCase battle_PenCase;
+    public PencilCase_Unit pencilCase_My;
+    public PencilCase_Unit pencilCase_Enemy;
+
+
+    #endregion
+
     private void Awake()
     {
         battle_Card = new Battle_Card(this, unitDataSO, card_cardMove_Prefeb, card_PoolManager, card_Canvas, card_SpawnPosition, card_LeftPosition, card_RightPosition, card_AfterImage, card_SummonRangeLine);
@@ -152,6 +161,7 @@ public class BattleManager : MonoBehaviour
         battle_AI = new Battle_AI(this);
         battle_Time = new Battle_Time(this, time_TimeText);
         battle_Cost = new Battle_Cost(this, cost_CostText);
+        battle_PenCase = new Battle_PencilCase(this);
     }
 
     private void Update()
@@ -248,6 +258,24 @@ public class BattleManager : MonoBehaviour
     {
         unit.gameObject.SetActive(false);
         unit.transform.SetParent(unit_PoolManager);
+    }
+
+    #endregion
+
+    #region 코스트 시스템 함수 Battle_Cost
+
+    public void Run_UpgradeCostGrade()
+    {
+        battle_Cost.Run_UpgradeCostGrade();
+    }
+
+    #endregion
+
+    #region 필통 시스템 함수 Battle_PencilCase
+
+    public void Run_PencilCaseAbility()
+    {
+        battle_PenCase.Run_PencilCaseAbility();
     }
 
     #endregion

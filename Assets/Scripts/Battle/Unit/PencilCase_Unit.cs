@@ -7,6 +7,7 @@ public class PencilCase_Unit : Unit
 {
 
     private PencilCaseDataSO pencilCaseData;
+    public PencilCase_Ability_State pencilCase_Ability_State;
 
     private void Start()
     {
@@ -48,14 +49,25 @@ public class PencilCase_Unit : Unit
                 spr.color = Color.blue;
                 break;
         }
-
         this.pencilCaseData = pencilCaseData;
+
+        switch (this.pencilCaseData.pencilCaseType)
+        {
+            default:
+            case PencilCaseType.Normal:
+                pencilCase_Ability_State = new PencilCase_Normal_Ability_State(battleManager, this.pencilCaseData.pencilCaseType);
+                break;
+        }
+
         spr.sprite = pencilCaseData.data.sprite;
         this.battleManager = battleManager;
         hp = pencilCaseData.data.hp;
 
         unitState = new PencilCase_Normal_State(transform, spr.transform, this);
+        battleManager.battle_PenCase.Set_PencilCase(this, eTeam);
+        
         isSettingEnd = true;
+
     }
 
     public override void Run_Damaged(AtkData atkData)
