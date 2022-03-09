@@ -18,7 +18,9 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     public StarategyDataSO  starategyDataSO;
     [SerializeField]
-    public DeckDataSO deckDataSO;
+    public DeckData deckData;
+
+    private bool isEndSetting = false;
 
     public StageData currentStageData
     {
@@ -146,21 +148,27 @@ public class BattleManager : MonoBehaviour
 
     #endregion
 
-    private void Awake()
+    private void Start()
     {
-        battle_Card = new Battle_Card(this, unitDataSO, card_cardMove_Prefeb, card_PoolManager, card_Canvas, card_SpawnPosition, card_LeftPosition, card_RightPosition, card_AfterImage, card_SummonRangeLine);
+        deckData = new DeckData();
+        battle_Card = new Battle_Card(this, deckData, unitDataSO, starategyDataSO, card_cardMove_Prefeb, card_PoolManager, card_Canvas, card_SpawnPosition, card_LeftPosition, card_RightPosition, card_AfterImage, card_SummonRangeLine);
         battle_Camera = new Battle_Camera(this, main_Cam);
+        battle_PenCase = new Battle_PencilCase(this);
         battle_Unit = new Battle_Unit(this, unit_Prefeb, unit_PoolManager, unit_Parent);
         battle_Effect = new Battle_Effect(this, effect_PoolManager);
         battle_Throw = new Battle_Throw(this, throw_parabola, throw_Arrow, currentStageData);
         battle_AI = new Battle_AI(this);
         battle_Time = new Battle_Time(this, time_TimeText);
         battle_Cost = new Battle_Cost(this, cost_CostText);
-        battle_PenCase = new Battle_PencilCase(this);
+
+        isEndSetting = true;
     }
 
     private void Update()
     {
+        if (!isEndSetting)
+            return;
+
         //시간 시스템
         battle_Time.Update_Time();
 

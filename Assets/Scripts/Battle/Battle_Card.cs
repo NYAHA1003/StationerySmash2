@@ -13,7 +13,9 @@ public class Battle_Card : BattleCommand
     private float summonRange;
     private float summonRangeDelay = 30f;
     private LineRenderer summonRangeLine;
+    private DeckData deckData;
     private UnitDataSO unitDataSO;
+    private StarategyDataSO starategyDataSO;
     private StageData stageData;
     private GameObject cardMove_Prefeb;
     private Transform card_PoolManager;
@@ -35,10 +37,12 @@ public class Battle_Card : BattleCommand
     private int cardidCount = 0;
     private int unitidCount = 0;
 
-    public Battle_Card(BattleManager battleManager, UnitDataSO unitDataSO, GameObject card_Prefeb, Transform card_PoolManager, Transform card_Canvas, RectTransform card_SpawnPosition, RectTransform card_LeftPosition, RectTransform card_RightPosition, GameObject unit_AfterImage, LineRenderer summonRangeLine)
+    public Battle_Card(BattleManager battleManager, DeckData deckData, UnitDataSO unitDataSO, StarategyDataSO starategyDataSO, GameObject card_Prefeb, Transform card_PoolManager, Transform card_Canvas, RectTransform card_SpawnPosition, RectTransform card_LeftPosition, RectTransform card_RightPosition, GameObject unit_AfterImage, LineRenderer summonRangeLine)
         : base(battleManager)
     {
+        this.deckData = deckData;
         this.unitDataSO = unitDataSO;
+        this.starategyDataSO = starategyDataSO;
         this.cardMove_Prefeb = card_Prefeb;
         this.card_PoolManager = card_PoolManager;
         this.card_Canvas = card_Canvas;
@@ -53,6 +57,23 @@ public class Battle_Card : BattleCommand
 
         this.unit_AfterImage = unit_AfterImage;
         unit_AfterImage_Spr = unit_AfterImage.GetComponent<SpriteRenderer>();
+
+        Set_DeckCard();
+    }
+
+    /// <summary>
+    /// 덱에 카드 정보들을 넣는다(임시)
+    /// </summary>
+    public void Set_DeckCard()
+    {
+        for(int i = 0; i < unitDataSO.unitDatas.Count; i++)
+        {
+            deckData.Add_CardData(unitDataSO.unitDatas[i]);
+        }
+        for (int i = 0; i < starategyDataSO.starategyDatas.Count; i++)
+        {
+            deckData.Add_CardData(starategyDataSO.starategyDatas[i]);
+        }
     }
 
     /// <summary>
@@ -71,11 +92,11 @@ public class Battle_Card : BattleCommand
     /// </summary>
     public void Add_OneCard()
     {
-        int random = Random.Range(0, unitDataSO.unitDatas.Count);
+        int random = Random.Range(0, deckData.cardDatas.Count);
         cur_Card++;
 
         CardMove cardmove = Pool_Card();
-        cardmove.Set_UnitData(unitDataSO.unitDatas[random], cardidCount++);
+        cardmove.Set_UnitData(deckData.cardDatas[random], cardidCount++);
         battleManager.card_DatasTemp.Add(cardmove);
 
         Sort_Card();
@@ -179,16 +200,35 @@ public class Battle_Card : BattleCommand
     /// </summary>
     private void Fusion_Card()
     {
+        CardMove targetCard1 = null;
+        CardMove targetCard2 = null;
         for (int i = 0; i < battleManager.card_DatasTemp.Count - 1; i++)
         {
-            if (battleManager.card_DatasTemp[i].dataBase.unitData.unitType == battleManager.card_DatasTemp[i + 1].dataBase.unitData.unitType)
+            targetCard1 = battleManager.card_DatasTemp[i];
+            targetCard2 = battleManager.card_DatasTemp[i + 1];
+            if (targetCard1.dataBase.cardType != targetCard2.dataBase.cardType)
+                continue;
+
+            switch (targetCard1.dataBase.cardType)
             {
-                if (battleManager.card_DatasTemp[i].grade == battleManager.card_DatasTemp[i + 1].grade)
-                {
-                    coroutine = battleManager.StartCoroutine(Fusion_Move(i));
-                    return;
-                }
+                default:
+                case CardType.Execute:
+                case CardType.SummonTrap:
+                case CardType.Installation:
+                    if (targetCard1.dataBase.strategyData.starategyType != targetCard2.dataBase.strategyData.starategyType)
+                        continue;
+                    break;
+                case CardType.SummonUnit:
+                    if (targetCard1.dataBase.unitData.unitType != targetCard2.dataBase.unitData.unitType)
+                        continue;
+                    break;
             }
+
+            if (targetCard1.grade != targetCard2.grade)
+                continue;
+
+            coroutine = battleManager.StartCoroutine(Fusion_Move(i));
+            return;
         }
     }
 

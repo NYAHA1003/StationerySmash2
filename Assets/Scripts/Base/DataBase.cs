@@ -10,9 +10,10 @@ public class DataBase
     public CardType cardType;
     public string card_Name;
     public int card_Cost;
+    public Sprite card_Sprite;
 
     //실행형
-    public StrategyData strategyData;
+    public StarategyData strategyData;
 
     //유닛소환형
     public UnitData unitData;
@@ -27,7 +28,6 @@ public class UnitData
 {
 
     public int unit_Hp;
-    public Sprite unit_Sprite;
     public int unit_Weight;
     public int knockback;
     public float dir;
@@ -43,7 +43,7 @@ public class UnitData
 
 
 [System.Serializable]
-public class StrategyData
+public class StarategyData
 {
-    public Sprite strategy_Sprite;
+    public StarategyType starategyType;
 }

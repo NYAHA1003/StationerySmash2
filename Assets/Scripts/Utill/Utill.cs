@@ -73,7 +73,13 @@ namespace Utill
         Eraser,
         Sharp,
         BallPen,
-
+    }
+    public enum StarategyType
+    {
+        a,
+        b,
+        c,
+        d,
     }
     public enum PencilCaseType
     {

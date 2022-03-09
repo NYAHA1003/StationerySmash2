@@ -14,9 +14,9 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField]
     private Image card_Background;
     [SerializeField]
-    private Image card_UnitImage;
+    private Image card_Image;
     [SerializeField]
-    private TextMeshProUGUI card_UnitCost;
+    private TextMeshProUGUI card_CostText;
     [SerializeField]
     private Image card_Grade;
     [SerializeField]
@@ -40,35 +40,45 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
 
     private bool isDrag; // 드래그 중인 상태인가
-    private void Awake()
-    {
-        battleManager = FindObjectOfType<BattleManager>();
-        rectTransform = GetComponent<RectTransform>();
-    }
-
+    
     public PRS originPRS;
 
     /// <summary>
-    /// 카드에 유닛 데이터를 전달함
+    /// 카드에 데이터를 전달함
     /// </summary>
     /// <param name="dataBase">유닛 데이터</param>
     /// <param name="id">카드 고유 아이디</param>
     public void Set_UnitData(DataBase dataBase, int id)
     {
-        
-        isDrag = false;
+        battleManager??= FindObjectOfType<BattleManager>();
+        rectTransform??= GetComponent<RectTransform>();
 
+        //기본적인 초기화
+        isDrag = false;
         this.id = id;
         this.dataBase = dataBase;
         card_Name.text = dataBase.card_Name;
-        card_UnitCost.text = dataBase.card_Cost.ToString();
-        card_UnitImage.sprite = dataBase.unitData.unit_Sprite;
+        card_CostText.text = dataBase.card_Cost.ToString();
         card_Cost = dataBase.card_Cost;
+        card_Image.sprite = dataBase.card_Sprite;
         grade = 0;
         Set_UnitGrade();
-        
         fusion_Effect.color = new Color(1, 1, 1, 1);
         fusion_Effect.DOFade(0, 0.8f);
+
+        //유닛별 초기화
+        switch (dataBase.cardType)
+        {
+            default:
+            case CardType.Execute:
+            case CardType.SummonTrap:
+            case CardType.Installation:
+                break;
+            case CardType.SummonUnit:
+                break;
+        }
+
+        
     }
 
     /// <summary>
@@ -220,7 +230,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if(isDrag)
         {
             isDrag = false;
-            battleManager.battle_Card.Set_UnitAfterImage(dataBase.unitData.unit_Sprite, Vector3.zero, true);
+            battleManager.battle_Card.Set_UnitAfterImage(dataBase.card_Sprite, Vector3.zero, true);
 
             if (rectTransform.anchoredPosition.y > 0)
             {
@@ -233,6 +243,9 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
     }
 
+    /// <summary>
+    /// 원래 위치로 돌아감
+    /// </summary>
     public void Run_OriginPRS()
     {
         Set_CardPRS(originPRS, 0.3f);

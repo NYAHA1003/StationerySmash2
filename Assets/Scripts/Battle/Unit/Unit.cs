@@ -56,7 +56,7 @@ public abstract class Unit : MonoBehaviour
         }
         
         
-        spr.sprite = dataBase.unitData.unit_Sprite;
+        spr.sprite = dataBase.card_Sprite;
         this.battleManager = battleManager;
         stageData = battleManager.currentStageData;
         maxhp = dataBase.unitData.unit_Hp;

@@ -59,7 +59,7 @@ public class PencilCase_Unit : Unit
                 break;
         }
 
-        spr.sprite = pencilCaseData.dataBase.unitData.unit_Sprite;
+        spr.sprite = pencilCaseData.dataBase.card_Sprite;
         this.battleManager = battleManager;
         hp = pencilCaseData.dataBase.unitData.unit_Hp;
 
