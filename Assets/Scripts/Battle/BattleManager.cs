@@ -9,13 +9,16 @@ public class BattleManager : MonoBehaviour
 {
     #region 데이터들
 
-    [Header("공용 데이터들")]
-    [Space(30)]
-    [SerializeField]
+    [SerializeField, Header("공용 데이터들"), Space(30)]
     private UnitDataSO unitDataSO;
+    [SerializeField]
     public PencilCaseDataSO pencilCaseDataSO;
     [SerializeField]
-    private StageDataSO stageDataSO;
+    public StageDataSO stageDataSO;
+    [SerializeField]
+    public StarategyDataSO  starategyDataSO;
+    [SerializeField]
+    public DeckDataSO deckDataSO;
 
     public StageData currentStageData
     {
@@ -33,8 +36,7 @@ public class BattleManager : MonoBehaviour
 
     public Battle_Card battle_Card { get; private set;}
 
-    [Header("카드시스템 Battle_Card")]
-    [Space(30)]
+    [SerializeField, Header("카드시스템 Battle_Card"), Space(30)]
     public List<CardMove> card_DatasTemp;
     [SerializeField]
     private GameObject card_cardMove_Prefeb;
@@ -62,8 +64,7 @@ public class BattleManager : MonoBehaviour
 
     public Battle_Unit battle_Unit { get; private set; }
 
-    [Header("유닛시스템 Battle_Unit")]
-    [Space(30)]
+    [SerializeField, Header("유닛시스템 Battle_Unit"), Space(30)]
     public List<Unit> unit_MyDatasTemp;
     public List<Unit> unit_EnemyDatasTemp;
     [SerializeField]
@@ -81,9 +82,7 @@ public class BattleManager : MonoBehaviour
 
     public Battle_Camera battle_Camera { get; private set; }
 
-    [Header("카메라시스템 Battle_Card")]
-    [Space(30)]
-    [SerializeField]
+    [SerializeField, Header("카메라시스템 Battle_Camera"), Space(30)]
     public Camera main_Cam;
 
     #endregion
@@ -91,9 +90,8 @@ public class BattleManager : MonoBehaviour
     #region 이펙트 시스템 Battle_Effect
 
     public Battle_Effect battle_Effect { get; private set; }
-    [Header("이펙트 시스템")]
-    [Space(30)]
-    [SerializeField]
+
+    [SerializeField, Header("이펙트 시스템 Battle_Effect"), Space(30)]
     private Transform effect_PoolManager;
 
 
@@ -102,9 +100,7 @@ public class BattleManager : MonoBehaviour
     #region 던지기 시스템 Battle_Throw
 
     public Battle_Throw battle_Throw { get; private set; }
-    [Header("던지기 시스템")]
-    [Space(30)]
-    [SerializeField]
+    [SerializeField, Header("던지기 시스템 Battle_Throw"), Space(30)]
     private LineRenderer throw_parabola;
     [SerializeField]
     private Transform throw_Arrow;
@@ -115,8 +111,7 @@ public class BattleManager : MonoBehaviour
 
     public Battle_Time battle_Time { get; private set; }
 
-    [Header("시간시스템 Battle_Time")]
-    [Space(30)]
+    [SerializeField, Header("시간시스템 Battle_Time"), Space(30)]
     public TextMeshProUGUI time_TimeText;
 
 
@@ -126,8 +121,7 @@ public class BattleManager : MonoBehaviour
 
     public Battle_AI battle_AI;
 
-    [Header("AI 시스템")]
-    [Space(30)]
+    [SerializeField, Header("AI 시스템 Battle_Ai"), Space(30)]
     public bool ai_isActive;
 
 
@@ -136,8 +130,8 @@ public class BattleManager : MonoBehaviour
     #region 코스트 시스템 Battle_Cost
 
     public Battle_Cost battle_Cost { get; private set; }
-    [Header("코스트 시스템 Battle_Cost")]
-    [Space(30)]
+
+    [SerializeField, Header("코스트 시스템 Battle_Cost"), Space(30)]
     public TextMeshProUGUI cost_CostText;
 
     #endregion
@@ -145,6 +139,7 @@ public class BattleManager : MonoBehaviour
     #region 필통 시스템 Battle_PencilCase
 
     public Battle_PencilCase battle_PenCase;
+    [SerializeField, Header("카드시스템 Battle_Card"), Space(30)]
     public PencilCase_Unit pencilCase_My;
     public PencilCase_Unit pencilCase_Enemy;
 

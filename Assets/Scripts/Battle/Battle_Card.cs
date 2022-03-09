@@ -181,7 +181,7 @@ public class Battle_Card : BattleCommand
     {
         for (int i = 0; i < battleManager.card_DatasTemp.Count - 1; i++)
         {
-            if (battleManager.card_DatasTemp[i].unitData.unitType == battleManager.card_DatasTemp[i + 1].unitData.unitType)
+            if (battleManager.card_DatasTemp[i].dataBase.unitData.unitType == battleManager.card_DatasTemp[i + 1].dataBase.unitData.unitType)
             {
                 if (battleManager.card_DatasTemp[i].grade == battleManager.card_DatasTemp[i + 1].grade)
                 {
@@ -339,7 +339,7 @@ public class Battle_Card : BattleCommand
 
         //À¯´Ö ¼ÒÈ¯
         Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        battleManager.battle_Unit.Summon_Unit(card.unitData, new Vector3(mouse_Pos.x, 0, 0), unitidCount++);
+        battleManager.battle_Unit.Summon_Unit(card.dataBase, new Vector3(mouse_Pos.x, 0, 0), unitidCount++);
     }
 
     /// <summary>
@@ -348,7 +348,7 @@ public class Battle_Card : BattleCommand
     /// <param name="unitData"></param>
     /// <param name="pos"></param>
     /// <param name="isDelete"></param>
-    public void Set_UnitAfterImage(UnitData unitData, Vector3 pos, bool isDelete = false)
+    public void Set_UnitAfterImage(Sprite unitSprite, Vector3 pos, bool isDelete = false)
     {
         unit_AfterImage_Spr.color = Color.white;
         if (!isPossibleSummon)
@@ -356,7 +356,7 @@ public class Battle_Card : BattleCommand
             unit_AfterImage_Spr.color = Color.red;
         }
         unit_AfterImage.transform.position = new Vector3(pos.x, 0);
-        unit_AfterImage_Spr.sprite = unitData.sprite;
+        unit_AfterImage_Spr.sprite = unitSprite;
 
         if (isDelete)
         {

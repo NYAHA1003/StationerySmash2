@@ -29,7 +29,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public int card_Cost { get; private set; }
     public bool isFusion;
 
-    public UnitData unitData;
+    public DataBase dataBase;
 
     public int grade = 1;
     public int id;
@@ -51,19 +51,19 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <summary>
     /// 카드에 유닛 데이터를 전달함
     /// </summary>
-    /// <param name="unitData">유닛 데이터</param>
+    /// <param name="dataBase">유닛 데이터</param>
     /// <param name="id">카드 고유 아이디</param>
-    public void Set_UnitData(UnitData unitData, int id)
+    public void Set_UnitData(DataBase dataBase, int id)
     {
         
         isDrag = false;
 
         this.id = id;
-        this.unitData = unitData;
-        card_Name.text = unitData.unitName;
-        card_UnitCost.text = unitData.cost.ToString();
-        card_UnitImage.sprite = unitData.sprite;
-        card_Cost = unitData.cost;
+        this.dataBase = dataBase;
+        card_Name.text = dataBase.card_Name;
+        card_UnitCost.text = dataBase.card_Cost.ToString();
+        card_UnitImage.sprite = dataBase.unitData.unit_Sprite;
+        card_Cost = dataBase.card_Cost;
         grade = 0;
         Set_UnitGrade();
         
@@ -220,7 +220,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if(isDrag)
         {
             isDrag = false;
-            battleManager.battle_Card.Set_UnitAfterImage(unitData, Vector3.zero, true);
+            battleManager.battle_Card.Set_UnitAfterImage(dataBase.unitData.unit_Sprite, Vector3.zero, true);
 
             if (rectTransform.anchoredPosition.y > 0)
             {

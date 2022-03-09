@@ -10,21 +10,5 @@ using Utill;
 public class UnitDataSO : ScriptableObject
 {
     [Header("임시 유닛 데이터")]
-    public List<UnitData> unitDatas;
-}
-
-[System.Serializable]
-public class UnitData : DataBase
-{
-    public int cost;
-    public int knockback;
-    public float dir;
-    public float accuracy;
-    public float moveSpeed;
-    public int damage;
-    public float attackSpeed;
-    public float range;
-    public UnitType unitType;
-    public AtkType atkType;
-    public float[] unitablityData;
+    public List<DataBase> unitDatas;
 }

@@ -37,7 +37,7 @@ public class PencilCase_Unit : Unit
     public void Set_PencilCaseData(PencilCaseDataSO pencilCaseData, TeamType eTeam, BattleManager battleManager)
     {//∆¿, ¿Ã∏ß º≥¡§
         this.eTeam = eTeam;
-        transform.name = pencilCaseData.data.unitName + this.eTeam;
+        transform.name = pencilCaseData.dataBase.card_Name + this.eTeam;
         switch (this.eTeam)
         {
             case TeamType.Null:
@@ -59,9 +59,9 @@ public class PencilCase_Unit : Unit
                 break;
         }
 
-        spr.sprite = pencilCaseData.data.sprite;
+        spr.sprite = pencilCaseData.dataBase.unitData.unit_Sprite;
         this.battleManager = battleManager;
-        hp = pencilCaseData.data.hp;
+        hp = pencilCaseData.dataBase.unitData.unit_Hp;
 
         unitState = new PencilCase_Normal_State(transform, spr.transform, this);
         battleManager.battle_PenCase.Set_PencilCase(this, eTeam);

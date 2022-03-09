@@ -48,20 +48,20 @@ public class Stationary_Unit : Unit
         }
     }
 
-    public virtual void Set_Stationary_UnitData(UnitData unitData, TeamType eTeam, BattleManager battleManager, int id)
+    public virtual void Set_Stationary_UnitData(DataBase dataBase, TeamType eTeam, BattleManager battleManager, int id)
     {
-        this.unitData = unitData;
-        this.unitablityData = unitData.unitablityData;
+        this.unitData = dataBase.unitData;
+        this.unitablityData = dataBase.unitData.unitablityData;
 
         //딜레이시스템
         attack_Cur_Delay = 0;
         Update_DelayBar(attack_Cur_Delay);
         delayBar.rectTransform.anchoredPosition = eTeam == TeamType.MyTeam ? new Vector2(-960.15f, -540.15f) : new Vector2(-959.85f, -540.15f);
-        Set_UnitData(unitData, eTeam, battleManager, id);
+        Set_UnitData(dataBase, eTeam, battleManager, id);
         Set_IsInvincibility(false);
         Show_Canvas();
 
-        switch (unitData.unitType)
+        switch (dataBase.unitData.unitType)
         {
             default:
             case UnitType.None:
@@ -177,7 +177,7 @@ public class Stationary_Unit : Unit
     }
     public int Return_Weight()
     {
-        return Mathf.RoundToInt(unitData.weight * (float)weightPercent / 100);
+        return Mathf.RoundToInt(unitData.unit_Weight * (float)weightPercent / 100);
     }
     public float Return_Accuracy()
     {

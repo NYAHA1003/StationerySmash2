@@ -34,15 +34,15 @@ public abstract class Unit : MonoBehaviour
     /// <summary>
     /// 유닛 생성
     /// </summary>
-    /// <param name="unitData">유닛 데이터</param>
+    /// <param name="dataBase">유닛 데이터</param>
     /// <param name="eTeam">팀 변수</param>
     /// <param name="battleManager">배틀매니저</param>
     /// <param name="id"></param>
-    public virtual void Set_UnitData(DataBase unitData, TeamType eTeam, BattleManager battleManager, int id)
+    public virtual void Set_UnitData(DataBase dataBase, TeamType eTeam, BattleManager battleManager, int id)
     {
         //팀, 이름 설정
         this.eTeam = eTeam;
-        transform.name = unitData.unitName + this.eTeam;
+        transform.name = dataBase.card_Name + this.eTeam;
         switch (this.eTeam)
         {
             case TeamType.Null:
@@ -56,12 +56,12 @@ public abstract class Unit : MonoBehaviour
         }
         
         
-        spr.sprite = unitData.sprite;
+        spr.sprite = dataBase.unitData.unit_Sprite;
         this.battleManager = battleManager;
         stageData = battleManager.currentStageData;
-        maxhp = unitData.hp;
-        hp = unitData.hp;
-        weight = unitData.weight;
+        maxhp = dataBase.unitData.unit_Hp;
+        hp = dataBase.unitData.unit_Hp;
+        weight = dataBase.unitData.unit_Weight;
         this.myUnitId = id;
 
         isSettingEnd = true;

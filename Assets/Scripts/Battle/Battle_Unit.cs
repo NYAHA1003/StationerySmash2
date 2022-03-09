@@ -18,10 +18,10 @@ public class Battle_Unit : BattleCommand
         this.unit_Parent = unit_Parent;
     }
 
-    public void Summon_Unit(UnitData unitData, Vector3 Pos, int count)
+    public void Summon_Unit(DataBase dataBase, Vector3 Pos, int count)
     {
         Stationary_Unit unit = Pool_Unit(Pos);
-        unit.Set_Stationary_UnitData(unitData, eTeam, battleManager, count);
+        unit.Set_Stationary_UnitData(dataBase, eTeam, battleManager, count);
 
         if(eTeam == TeamType.MyTeam)
         {
