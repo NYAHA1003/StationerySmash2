@@ -230,7 +230,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if(isDrag)
         {
             isDrag = false;
-            battleManager.battle_Card.Set_UnitAfterImage(dataBase.card_Sprite, Vector3.zero, true);
+            //battleManager.battle_Card.Set_UnitAfterImage(dataBase.card_Sprite, Vector3.zero, true);
 
             if (rectTransform.anchoredPosition.y > 0)
             {

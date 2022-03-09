@@ -358,14 +358,10 @@ public class Battle_Card : BattleCommand
     /// <param name="card"></param>
     public void Set_UseCard(CardMove card)
     {
-
         selectCard = null;
-
         summonRangeLine.gameObject.SetActive(false);
-
-        if (battleManager.battle_Cost.cur_Cost < card.card_Cost)
-            isPossibleSummon = false;
-
+        
+        Check_PossibleSummon();
         if (!isPossibleSummon)
         {
             card.Run_OriginPRS();
@@ -377,9 +373,22 @@ public class Battle_Card : BattleCommand
         Subtract_CardAt(battleManager.card_DatasTemp.FindIndex(x => x.id == card.id));
         isCardDown = false;
 
-        //유닛 소환
+        //카드 사용
         Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        battleManager.battle_Unit.Summon_Unit(card.dataBase, new Vector3(mouse_Pos.x, 0, 0), unitidCount++);
+
+        switch (card.dataBase.cardType)
+        {
+            case CardType.SummonUnit:
+                battleManager.battle_Unit.Summon_Unit(card.dataBase, new Vector3(mouse_Pos.x, 0, 0), unitidCount++);
+                break;
+            default:
+            case CardType.Execute:
+            case CardType.SummonTrap:
+            case CardType.Installation:
+                card.dataBase.strategyData.starategy_State.Run_Card(battleManager);
+                break;
+        }
+
     }
 
     /// <summary>
@@ -409,29 +418,47 @@ public class Battle_Card : BattleCommand
     }
 
     /// <summary>
-    /// 유닛을 여러 조건에 따라 소환할 수 있는지 체크
+    /// 카드를 여러 조건에 따라 사용할 수 있는지 체크
     /// </summary>
     public void Check_PossibleSummon()
     {
+        if (selectCard == null)
+            return;
         //테스트용 소환 조건 해제
         if(battleManager.isAnySummon)
         {
             isPossibleSummon = true;
             return;
         }
-        if (battleManager.battle_Unit.eTeam == Utill.TeamType.EnemyTeam)
+        if (battleManager.battle_Unit.eTeam == TeamType.EnemyTeam)
         {
             isPossibleSummon = true;
             return;
         }
 
+        switch (selectCard.dataBase.cardType)
+        {
+            case CardType.Execute:
+                break;
+            case CardType.SummonUnit:
+            case CardType.SummonTrap:
+                Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                if (mouse_Pos.x < -stageData.max_Range || mouse_Pos.x > summonRange)
+                {
+                    isPossibleSummon = false;
+                    return;
+                }
+                break;
+            case CardType.Installation:
+                break;
+        }
 
-        Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        if (mouse_Pos.x < -stageData.max_Range && mouse_Pos.x > summonRange)
+        if (battleManager.battle_Cost.cur_Cost < selectCard.card_Cost)
         {
             isPossibleSummon = false;
             return;
         }
+
         isPossibleSummon = true;
     }
 

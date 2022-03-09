@@ -6,7 +6,7 @@ using TMPro;
 
 public class Battle_Cost : BattleCommand
 {
-    public int cur_Cost { get; private set; }
+    public int cur_Cost { get; private set; } = 0;
     public int max_Cost { get; private set; } = 2;
 
     public float cost_Speed;
@@ -29,9 +29,9 @@ public class Battle_Cost : BattleCommand
         Update_CostText();
     }
 
-    public void Subtract_Cost(int SubtractCost)
+    public void Subtract_Cost(int subtractCost)
     {
-        cur_Cost -= SubtractCost;
+        cur_Cost -= subtractCost;
         Update_CostText();
     }
 

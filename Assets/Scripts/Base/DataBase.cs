@@ -46,4 +46,22 @@ public class UnitData
 public class StarategyData
 {
     public StarategyType starategyType;
+    public Starategy_State starategy_State;
+
+    public StarategyData()
+    {
+        starategy_State = new Starategy_State();
+
+        switch (starategyType)
+        {
+            case StarategyType.a:
+                break;
+            case StarategyType.b:
+                break;
+            case StarategyType.c:
+                break;
+            case StarategyType.d:
+                break;
+        }
+    }
 }
