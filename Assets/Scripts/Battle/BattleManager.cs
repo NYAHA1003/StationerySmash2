@@ -96,7 +96,7 @@ public class BattleManager : MonoBehaviour
 
     [SerializeField, Header("이펙트 시스템 Battle_Effect"), Space(30)]
     private Transform effect_PoolManager;
-
+    public List<GameObject> effect_ObjList;
 
     #endregion
 

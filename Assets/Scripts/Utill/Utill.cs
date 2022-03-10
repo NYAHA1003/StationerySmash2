@@ -4,6 +4,23 @@ using UnityEngine;
 
 namespace Utill
 {
+    public enum EffectType
+    {
+        Attack,
+        Stun,
+    }
+    public struct EffData
+    {
+        public Vector2 pos;
+        public float lifeTime;
+
+        public EffData(Vector2 pos, float lifeTime = 0.5f)
+        {
+            this.pos = pos;
+            this.lifeTime = lifeTime;
+        }
+
+    }
     public enum CardType
     {
         Execute,
@@ -43,7 +60,7 @@ namespace Utill
     }
 
     [System.Serializable]
-    public class PRS
+    public struct PRS
     {
         public Vector3 pos;
         public Quaternion rot;

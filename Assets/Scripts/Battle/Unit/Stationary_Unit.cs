@@ -146,7 +146,7 @@ public class Stationary_Unit : Unit
             return;
         }
 
-        statEffList.Add(new Stationary_Unit_Eff_State(transform, spr.transform, this, atkType, value));
+        statEffList.Add(new Stationary_Unit_Eff_State(battleManager, transform, spr.transform, this, atkType, value));
 
         return;
     }
