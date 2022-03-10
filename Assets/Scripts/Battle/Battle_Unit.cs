@@ -9,7 +9,6 @@ public class Battle_Unit : BattleCommand
     private Transform unit_PoolManager;
     private Transform unit_Parent;
     public TeamType eTeam = TeamType.MyTeam;
-    private int count;
 
     public Battle_Unit(BattleManager battleManager, GameObject unit_Prefeb, Transform unit_PoolManager, Transform unit_Parent) : base(battleManager)
     {
@@ -20,18 +19,36 @@ public class Battle_Unit : BattleCommand
 
     public void Summon_Unit(DataBase dataBase, Vector3 Pos, int count)
     {
-        Stationary_Unit unit = Pool_Unit(Pos);
-        unit.Set_Stationary_UnitData(dataBase, eTeam, battleManager, count);
+        Unit unit = null;
+        unit.Set_UnitData(dataBase, eTeam, battleManager, count);
 
-        if(eTeam == TeamType.MyTeam)
+        switch (dataBase.cardType)
         {
-            battleManager.unit_MyDatasTemp.Add(unit);
-            return;
+            case CardType.Execute:
+            case CardType.SummonTrap:
+            case CardType.Installation:
+                unit = Pool_Strategy_Unit(Pos);
+                break;
+            case CardType.SummonUnit:
+                unit = Pool_Stationary_Unit(Pos);
+                break;
         }
-        battleManager.unit_EnemyDatasTemp.Add(unit);
+
+
+        switch (eTeam)
+        {
+            case TeamType.Null:
+                break;
+            case TeamType.MyTeam:
+                battleManager.unit_MyDatasTemp.Add(unit);
+                break;
+            case TeamType.EnemyTeam:
+                battleManager.unit_EnemyDatasTemp.Add(unit);
+                break;
+        }
     }
 
-    private Stationary_Unit Pool_Unit(Vector3 Pos)
+    private Stationary_Unit Pool_Stationary_Unit(Vector3 Pos)
     {
         GameObject unit_obj = null;
         if (unit_PoolManager.childCount > 0)
@@ -43,6 +60,19 @@ public class Battle_Unit : BattleCommand
         unit_obj ??= battleManager.Create_Object(unit_Prefeb, Pos, Quaternion.identity);
         unit_obj.transform.SetParent(unit_Parent);
         return unit_obj.GetComponent<Stationary_Unit>();
+    }
+    private Strategy_Unit Pool_Strategy_Unit(Vector3 Pos)
+    {
+        GameObject unit_obj = null;
+        if (unit_PoolManager.childCount > 0)
+        {
+            unit_obj = unit_PoolManager.GetChild(0).gameObject;
+            unit_obj.transform.position = Pos;
+            unit_obj.SetActive(true);
+        }
+        unit_obj ??= battleManager.Create_Object(unit_Prefeb, Pos, Quaternion.identity);
+        unit_obj.transform.SetParent(unit_Parent);
+        return unit_obj.GetComponent<Strategy_Unit>();
     }
 
     public void Add_UnitListMy(Unit unit)

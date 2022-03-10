@@ -21,6 +21,14 @@ public abstract class Unit : MonoBehaviour
     public int hp { get; protected set; }
     public int maxhp { get; protected set; }
     public int weight { get; protected set; }
+
+    public int damagePercent = 100;
+    public int moveSpeedPercent = 100;
+    public int attackSpeedPercent = 100;
+    public int rangePercent = 100;
+    public int accuracyPercent = 100;
+    public int weightPercent = 100;
+    public int knockbackPercent = 100;
     public bool isInvincibility { get; protected set; }
 
     protected bool isSettingEnd;
@@ -40,13 +48,17 @@ public abstract class Unit : MonoBehaviour
     /// <param name="id"></param>
     public virtual void Set_UnitData(DataBase dataBase, TeamType eTeam, BattleManager battleManager, int id)
     {
+        this.isSettingEnd = false;
+
         //팀, 이름 설정
         this.eTeam = eTeam;
         transform.name = dataBase.card_Name + this.eTeam;
+
         switch (this.eTeam)
         {
             case TeamType.Null:
-                throw new System.Exception("팀 에러");
+                spr.color = Color.white;
+                break;
             case TeamType.MyTeam:
                 spr.color = Color.red;
                 break;
@@ -56,15 +68,15 @@ public abstract class Unit : MonoBehaviour
         }
         
         
-        spr.sprite = dataBase.card_Sprite;
+        this.spr.sprite = dataBase.card_Sprite;
         this.battleManager = battleManager;
-        stageData = battleManager.currentStageData;
-        maxhp = dataBase.unitData.unit_Hp;
-        hp = dataBase.unitData.unit_Hp;
-        weight = dataBase.unitData.unit_Weight;
+        this.stageData = battleManager.currentStageData;
+        this.maxhp = dataBase.unitData.unit_Hp;
+        this.hp = dataBase.unitData.unit_Hp;
+        this.weight = dataBase.unitData.unit_Weight;
         this.myUnitId = id;
 
-        isSettingEnd = true;
+        this.isSettingEnd = true;
     }
 
     /// <summary>
@@ -85,12 +97,17 @@ public abstract class Unit : MonoBehaviour
     {
         battleManager.Pool_DeleteUnit(this);
 
-        if (eTeam == TeamType.MyTeam)
+        switch (eTeam)
         {
-            battleManager.unit_MyDatasTemp.Remove(this);
-            return;
+            case TeamType.Null:
+                break;
+            case TeamType.MyTeam:
+                battleManager.unit_MyDatasTemp.Remove(this);
+                break;
+            case TeamType.EnemyTeam:
+                battleManager.unit_EnemyDatasTemp.Remove(this);
+                break;
         }
-        battleManager.unit_EnemyDatasTemp.Remove(this);
     }
 
     #endregion
@@ -103,6 +120,11 @@ public abstract class Unit : MonoBehaviour
     /// <param name="atkData">공격 데이터</param>
     public abstract void Run_Damaged(AtkData atkData);
 
+    /// <summary>
+    /// 속성 효과 적용
+    /// </summary>
+    /// <param name="atkType"></param>
+    /// <param name="value"></param>
     public abstract void Add_StatusEffect(AtkType atkType, params float[] value);
 
     #endregion
@@ -156,4 +178,36 @@ public abstract class Unit : MonoBehaviour
     {
         hp -= damage;
     }
+
+    #region 스탯 반환
+    public int Return_Damage()
+    {
+        return Mathf.RoundToInt(unitData.damage * (float)damagePercent / 100);
+    }
+    public float Return_MoveSpeed()
+    {
+        return unitData.moveSpeed * (float)moveSpeedPercent / 100;
+    }
+    public float Return_AttackSpeed()
+    {
+        return unitData.attackSpeed * (float)attackSpeedPercent / 100;
+    }
+    public float Return_Range()
+    {
+        return unitData.range * (float)rangePercent / 100;
+    }
+    public int Return_Weight()
+    {
+        return Mathf.RoundToInt(unitData.unit_Weight * (float)weightPercent / 100);
+    }
+    public float Return_Accuracy()
+    {
+        return unitData.accuracy * (float)accuracyPercent / 100;
+    }
+    public int Return_Knockback()
+    {
+        return Mathf.RoundToInt(unitData.knockback * (float)knockbackPercent / 100);
+    }
+
+    #endregion
 }

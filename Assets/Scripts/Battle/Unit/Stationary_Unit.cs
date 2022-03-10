@@ -9,24 +9,14 @@ public class Stationary_Unit : Unit
 {
     protected List<Eff_State> statEffList = new List<Eff_State>();
 
-    public int damagePercent = 100;
-    public int moveSpeedPercent = 100;
-    public int attackSpeedPercent = 100;
-    public int rangePercent = 100;
-    public int accuracyPercent = 100;
-    public int weightPercent = 100;
-    public int knockbackPercent = 100;
-    public float[] unitablityData;
 
     [SerializeField]
     protected Canvas canvas;
     [SerializeField]
     protected Image delayBar;
     public float attack_Cur_Delay { get; private set; }
-
-    //
+    public float[] unitablityData;
     private Camera mainCam;
-    public AnimationCurve asa;
 
 
     private void Start()
@@ -48,7 +38,7 @@ public class Stationary_Unit : Unit
         }
     }
 
-    public virtual void Set_Stationary_UnitData(DataBase dataBase, TeamType eTeam, BattleManager battleManager, int id)
+    public override void Set_UnitData(DataBase dataBase, TeamType eTeam, BattleManager battleManager, int id)
     {
         this.unitData = dataBase.unitData;
         this.unitablityData = dataBase.unitData.unitablityData;
@@ -57,7 +47,6 @@ public class Stationary_Unit : Unit
         attack_Cur_Delay = 0;
         Update_DelayBar(attack_Cur_Delay);
         delayBar.rectTransform.anchoredPosition = eTeam == TeamType.MyTeam ? new Vector2(-960.15f, -540.15f) : new Vector2(-959.85f, -540.15f);
-        Set_UnitData(dataBase, eTeam, battleManager, id);
         Set_IsInvincibility(false);
         Show_Canvas();
 
@@ -75,6 +64,8 @@ public class Stationary_Unit : Unit
                 unitState = new BallPen_Idle_State(transform, spr.transform, this, stageData);
                 break;
         }
+
+        base.Set_UnitData(dataBase, eTeam, battleManager, id);
 
     }
 
@@ -159,34 +150,6 @@ public class Stationary_Unit : Unit
 
     #region Ω∫≈» π›»Ø
 
-    public int Return_Damage()
-    {
-        return Mathf.RoundToInt(unitData.damage * (float)damagePercent / 100);
-    }
-    public float Return_MoveSpeed()
-    {
-        return unitData.moveSpeed * (float)moveSpeedPercent / 100;
-    }
-    public float Return_AttackSpeed()
-    {
-        return unitData.attackSpeed * (float)attackSpeedPercent / 100;
-    }
-    public float Return_Range()
-    {
-        return unitData.range * (float)rangePercent / 100;
-    }
-    public int Return_Weight()
-    {
-        return Mathf.RoundToInt(unitData.unit_Weight * (float)weightPercent / 100);
-    }
-    public float Return_Accuracy()
-    {
-        return unitData.accuracy * (float)accuracyPercent / 100;
-    }
-    public int Return_Knockback()
-    {
-        return Mathf.RoundToInt(unitData.knockback * (float)knockbackPercent / 100);
-    }
 
     #endregion
 }

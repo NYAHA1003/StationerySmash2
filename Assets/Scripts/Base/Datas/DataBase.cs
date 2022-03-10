@@ -14,11 +14,11 @@ public class DataBase
     public Sprite card_Sprite;
 
     //실행형
-    [ShowWhen("cardType", new object[] { CardType.Execute, CardType.Installation, CardType.SummonTrap })]
+    [ShowWhen("cardType", new object[] { CardType.Execute, CardType.SummonTrap, CardType.Installation })]
     public StarategyData strategyData;
 
     //유닛소환형
-    [ShowWhen("cardType", CardType.SummonUnit)]
+    [ShowWhen("cardType", new object[] { CardType.SummonUnit, CardType.SummonTrap, CardType.Installation })]
     public UnitData unitData;
 
     //함정 소환형
@@ -29,7 +29,6 @@ public class DataBase
 [System.Serializable]
 public class UnitData
 {
-    //[ShowWhen("DataBase.cardType", CardType.SummonUnit)]
     public int unit_Hp;
     public int unit_Weight;
     public int knockback;
