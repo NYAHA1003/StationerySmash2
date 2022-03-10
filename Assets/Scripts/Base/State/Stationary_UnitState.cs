@@ -34,7 +34,7 @@ public class Stationary_UnitState : UnitState
             myTrm.DOKill();
             myTrm.DOJump(new Vector3(myTrm.position.x - 0.2f, 0, myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
             {
-                nextState = stateChange.Return_Wait(this, 0.5f);
+                stateChange.Return_Wait(0.5f);
             }).SetEase(Utill.Utill.Return_ParabolaCurve());
         }
         if (-stageData.max_Range >= myTrm.position.x)
@@ -43,7 +43,7 @@ public class Stationary_UnitState : UnitState
             myTrm.DOKill();
             myTrm.DOJump(new Vector3(myTrm.position.x + 0.2f, 0, myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
             {
-                nextState = stateChange.Return_Wait(this, 0.5f);
+                stateChange.Return_Wait(0.5f);
             }).SetEase(Utill.Utill.Return_ParabolaCurve());
         }
     }

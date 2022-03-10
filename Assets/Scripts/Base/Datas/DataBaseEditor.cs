@@ -19,7 +19,7 @@ public class DataEditor : PropertyDrawer
         SerializedProperty conditionField = property.FindSiblingProperty(attribute.conditionFieldName);
         
         // We check that exist a Field with the parameter name
-        if (conditionField == null)
+        if (conditionField.Equals(null))
         {
             ShowError(position, label, "Error getting the condition Field. Check the name.");
             return;
@@ -217,7 +217,7 @@ public static class SerializedPropertyExt
     public static SerializedProperty FindSiblingProperty(this SerializedProperty aProperty, string aPath)
     {
         var parent = aProperty.GetParent();
-        if (parent == null)
+        if (parent.Equals(null))
             return aProperty.serializedObject.FindProperty(aPath);
         return parent.FindPropertyRelative(aPath);
     }

@@ -32,13 +32,14 @@ namespace Utill
 
     public interface IStateChange
     {
-        public UnitState Return_Idle(Stationary_UnitState unit);
-        public UnitState Return_Wait(Stationary_UnitState unit, float time);
-        public UnitState Return_Move(Stationary_UnitState unit);
-        public UnitState Return_Damaged(Stationary_UnitState unit, AtkData atkData);
-        public UnitState Return_Attack(Stationary_UnitState unit, Unit targetUnit);
-        public UnitState Return_Die(Stationary_UnitState unit);
-        public UnitState Return_Throw(Stationary_UnitState unit);
+        public void Set_State(Stationary_UnitState unit);
+        public void Return_Idle();
+        public void Return_Wait(float time);
+        public void Return_Move();
+        public void Return_Damaged(AtkData atkData);
+        public void Return_Attack(Unit targetUnit);
+        public void Return_Die();
+        public void Return_Throw();
     }
 
     [System.Serializable]

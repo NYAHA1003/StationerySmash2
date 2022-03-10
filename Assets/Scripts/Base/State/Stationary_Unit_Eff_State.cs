@@ -32,15 +32,15 @@ public abstract class Eff_State
 
     public Eff_State Process()
     {
-        if (curEvent == eEvent.ENTER)
+        if (curEvent.Equals(eEvent.ENTER))
         {
             Enter();
         }
-        if (curEvent == eEvent.UPDATE)
+        if (curEvent.Equals(eEvent.UPDATE))
         {
             Update();
         }
-        if (curEvent == eEvent.EXIT)
+        if (curEvent.Equals(eEvent.EXIT))
         {
             Exit();
             return nextState;
@@ -106,7 +106,7 @@ public class Stationary_Unit_Sturn_Eff_State : Eff_State
     public override void Enter()
     {
         stunTime = stunTime + (stunTime * (((float)myUnit.maxhp / (myUnit.hp + 0.1f)) - 1));
-        myUnit.unitState.nextState = myUnit.unitState.stateChange.Return_Wait(myUnit.unitState as Stationary_UnitState,stunTime);
+        myUnit.unitState.stateChange.Return_Wait(stunTime);
 
         base.Enter();
     }

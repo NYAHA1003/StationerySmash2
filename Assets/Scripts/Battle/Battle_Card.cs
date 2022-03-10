@@ -139,7 +139,7 @@ public class Battle_Card : BattleCommand
         {
             CardMove targetCard = battleManager.card_DatasTemp[i];
             targetCard.originPRS = originCardPRS[i];
-            if (battleManager.card_DatasTemp[i] == selectCard)
+            if (battleManager.card_DatasTemp[i].Equals(selectCard))
                 continue;
             if (battleManager.card_DatasTemp[i].isFusion)
                 continue;
@@ -287,7 +287,7 @@ public class Battle_Card : BattleCommand
     /// </summary>
     public void Subtract_CardAt(int index)
     {
-        if (cur_Card == 0)
+        if (cur_Card.Equals(0))
             return;
 
         cur_Card--;
@@ -335,7 +335,8 @@ public class Battle_Card : BattleCommand
     /// </summary>
     public void Update_SelectCardPos()
     {
-        if (selectCard == null) return;
+        if (selectCard == null) 
+            return;
         selectCard.transform.position = Input.mousePosition;
     }
 
@@ -431,7 +432,7 @@ public class Battle_Card : BattleCommand
             isPossibleSummon = true;
             return;
         }
-        if (battleManager.battle_Unit.eTeam == TeamType.EnemyTeam)
+        if (battleManager.battle_Unit.eTeam.Equals(TeamType.EnemyTeam))
         {
             isPossibleSummon = true;
             return;

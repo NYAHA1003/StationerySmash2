@@ -46,9 +46,10 @@ public class Stationary_Unit : Unit
         //딜레이시스템
         attack_Cur_Delay = 0;
         Update_DelayBar(attack_Cur_Delay);
-        delayBar.rectTransform.anchoredPosition = eTeam == TeamType.MyTeam ? new Vector2(-960.15f, -540.15f) : new Vector2(-959.85f, -540.15f);
+        delayBar.rectTransform.anchoredPosition = eTeam.Equals(TeamType.MyTeam) ? new Vector2(-960.15f, -540.15f) : new Vector2(-959.85f, -540.15f);
         Set_IsInvincibility(false);
         Show_Canvas();
+        base.Set_UnitData(dataBase, eTeam, battleManager, id);
 
         switch (dataBase.unitData.unitType)
         {
@@ -58,14 +59,16 @@ public class Stationary_Unit : Unit
             case UnitType.Eraser:
             case UnitType.Sharp:
                 unitState = new Pencil_Idle_State(transform, spr.transform, this, stageData);
+                unitState.stateChange = new PencilStateChange();
                 break;
 
             case UnitType.BallPen:
                 unitState = new BallPen_Idle_State(transform, spr.transform, this, stageData);
+                unitState.stateChange = new BallPenStateChange();
                 break;
         }
+        unitState.stateChange.Set_State(unitState as Stationary_UnitState);
 
-        base.Set_UnitData(dataBase, eTeam, battleManager, id);
 
     }
 
@@ -80,33 +83,33 @@ public class Stationary_Unit : Unit
     }
     public override void Run_Damaged(AtkData atkData)
     {
-        if (atkData.damageId == -1)
+        if (atkData.damageId.Equals(-1))
         {
             //무조건 무시해야할 공격
             return;
         }
-        if (atkData.damageId == myDamagedId)
+        if (atkData.damageId.Equals(myDamagedId))
         {
             //똑같은 공격 아이디를 지닌 공격은 무시함
             return;
         }
-        unitState.nextState = unitState.stateChange.Return_Damaged(unitState as Stationary_UnitState, atkData);
+        unitState.stateChange.Return_Damaged(atkData);
     }
 
     public override Unit Pull_Unit()
     {
-        if(unitState.curState == eState.DAMAGED)
+        if(unitState.curState.Equals(eState.DAMAGED))
         {
             return null;
         }
 
-        unitState.nextState = unitState.stateChange.Return_Wait(unitState as Stationary_UnitState, 2);
+        unitState.stateChange.Return_Wait(2);
         return this;
     }
 
     public override Unit Pulling_Unit()
     {
-        if (unitState.curState == eState.DAMAGED)
+        if (unitState.curState.Equals(eState.DAMAGED))
         {
             return null;
         }
@@ -116,7 +119,7 @@ public class Stationary_Unit : Unit
 
     public override void Throw_Unit()
     {
-        unitState.nextState = unitState.stateChange.Return_Throw(unitState as Stationary_UnitState);
+        unitState.stateChange.Return_Throw();
     }
 
     public void Show_Canvas()
@@ -130,13 +133,13 @@ public class Stationary_Unit : Unit
 
     public override void Add_StatusEffect(AtkType atkType, params float[] value)
     {
-        Eff_State statEffState = statEffList.Find(x => x.statusEffect == atkType);
+        Eff_State statEffState = statEffList.Find(x => x.statusEffect.Equals(atkType));
         if (statEffState != null)
         {
             statEffState.Set_EffValue(value);
             return;
         }
-        statEffState = statEffList.Find(x => x.statusEffect == AtkType.Normal);
+        statEffState = statEffList.Find(x => x.statusEffect.Equals(AtkType.Normal));
         if (statEffState != null)
         {
             statEffState.Set_EffType(atkType, value);

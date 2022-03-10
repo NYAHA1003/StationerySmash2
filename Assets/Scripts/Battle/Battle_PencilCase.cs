@@ -15,7 +15,7 @@ public class Battle_PencilCase : BattleCommand
 
     public void Set_PencilCase(PencilCase_Unit pencilCase_Unit, TeamType eteam)
     {
-        if(eteam == TeamType.MyTeam)
+        if(eteam.Equals(TeamType.MyTeam))
         {
             pencilCase_My = pencilCase_Unit;
             pencilCase_Ability_State_My = pencilCase_Unit.pencilCase_Ability_State;

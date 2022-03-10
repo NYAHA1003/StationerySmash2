@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using Utill;
 using TMPro;
 
 public class BattleManager : MonoBehaviour
@@ -241,13 +242,13 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     public void Change_Team()
     {
-        if(battle_Unit.eTeam == Utill.TeamType.MyTeam)
+        if(battle_Unit.eTeam.Equals(TeamType.MyTeam))
         {
             battle_Unit.eTeam = Utill.TeamType.EnemyTeam;
             unit_teamText.text = "ÀûÀÇ ÆÀ";
             return;
         }
-        if (battle_Unit.eTeam == Utill.TeamType.EnemyTeam)
+        if (battle_Unit.eTeam.Equals(Utill.TeamType.EnemyTeam))
         {
             battle_Unit.eTeam = Utill.TeamType.MyTeam;
             unit_teamText.text = "³ªÀÇ ÆÀ";

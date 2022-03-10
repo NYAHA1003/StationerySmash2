@@ -23,7 +23,7 @@ public class Battle_Time : BattleCommand
     {
         if (isFinallyEnd) return;
 
-        if (stageData.timeType == TimeType.DisabledTime)
+        if (stageData.timeType.Equals(TimeType.DisabledTime))
             return;
 
         if (timer > 0)

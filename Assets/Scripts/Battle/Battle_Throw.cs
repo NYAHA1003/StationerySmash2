@@ -44,7 +44,7 @@ public class Battle_Throw : BattleCommand
             if (Vector2.Distance(pos, throw_Unit.transform.position) < 0.1f)
             {
                 throw_Unit = throw_Unit.Pull_Unit();
-                if(throw_Unit == null)
+                if(throw_Unit.Equals(null))
                 {
                     battleManager.battle_Camera.Set_CameraIsMove(false);
                 }
@@ -73,7 +73,7 @@ public class Battle_Throw : BattleCommand
             throw_Unit = throw_Unit.Pulling_Unit();
             battleManager.battle_Camera.Set_CameraIsMove(false);
 
-            if (throw_Unit == null)
+            if (throw_Unit.Equals(null))
             {
                 UnDraw_Parabola();
                 return;

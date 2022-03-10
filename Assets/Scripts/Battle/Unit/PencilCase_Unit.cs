@@ -15,7 +15,7 @@ public class PencilCase_Unit : Unit
         Set_PencilCaseData(battleManager.pencilCaseDataSO, eTeam, battleManager);
         Set_Position();
 
-        if (eTeam == TeamType.MyTeam)
+        if (eTeam.Equals(TeamType.MyTeam))
         {
             battleManager.battle_Unit.Add_UnitListMy(this);
             return;
@@ -26,7 +26,7 @@ public class PencilCase_Unit : Unit
 
     private void Set_Position()
     {
-        if (eTeam == TeamType.MyTeam)
+        if (eTeam.Equals(TeamType.MyTeam))
         {
             transform.position = new Vector2(-battleManager.currentStageData.max_Range, 0);
             return;

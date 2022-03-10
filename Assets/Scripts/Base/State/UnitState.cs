@@ -33,15 +33,15 @@ public abstract class UnitState
     /// <returns></returns>
     public virtual UnitState Process()
     {
-        if (curEvent == eEvent.ENTER)
+        if (curEvent.Equals(eEvent.ENTER))
         {
             Enter();
         }
-        if (curEvent == eEvent.UPDATE)
+        if (curEvent.Equals(eEvent.UPDATE))
         {
             Update();
         }
-        if (curEvent == eEvent.EXIT)
+        if (curEvent.Equals(eEvent.EXIT))
         {
             Exit();
             return nextState;
@@ -53,5 +53,16 @@ public abstract class UnitState
     public void Set_Event(eEvent eEvent)
     {
         curEvent = eEvent;
+    }
+
+    public void Set_StateChange(IStateChange stateChange)
+    {
+        this.stateChange = stateChange;
+    }
+
+    public void Reset_State()
+    {
+        nextState = null;
+        curEvent = eEvent.ENTER;
     }
 }

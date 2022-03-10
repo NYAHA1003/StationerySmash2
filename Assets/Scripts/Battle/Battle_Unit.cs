@@ -20,7 +20,6 @@ public class Battle_Unit : BattleCommand
     public void Summon_Unit(DataBase dataBase, Vector3 Pos, int count)
     {
         Unit unit = null;
-        unit.Set_UnitData(dataBase, eTeam, battleManager, count);
 
         switch (dataBase.cardType)
         {
@@ -33,6 +32,7 @@ public class Battle_Unit : BattleCommand
                 unit = Pool_Stationary_Unit(Pos);
                 break;
         }
+        unit.Set_UnitData(dataBase, eTeam, battleManager, count);
 
 
         switch (eTeam)
