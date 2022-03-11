@@ -48,6 +48,10 @@ public class Effect_Stun : IEffect
     private float delete_time = 0.5f;
     public void Set_Effect(EffectObject effObj, EffData effData)
     {
+        if(effData.trm == null)
+        {
+            throw new System.Exception("EffData가 이상함");
+        }
         
         effObj.CancelInvoke();
 
@@ -63,8 +67,8 @@ public class Effect_Stun : IEffect
     public void Update_Effect(EffectObject effObj, EffData effData)
     {
         angle += Time.deltaTime * speed;
-        starX = Mathf.Cos(angle) * width + effData.pos.x;
-        starY = Mathf.Sin(angle) * height + effData.pos.y;
+        starX = Mathf.Cos(angle) * width + effData.trm.position.x;
+        starY = Mathf.Sin(angle) * height + effData.trm.position.y;
         effObj.transform.position = new Vector3(starX, starY, 0);
 
      

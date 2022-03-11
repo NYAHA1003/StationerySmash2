@@ -107,9 +107,11 @@ public class Stationary_Unit_Sturn_Eff_State : Eff_State
     }
     public override void Enter()
     {
-        stunTime = stunTime + (stunTime * (((float)myUnit.maxhp / (myUnit.hp + 0.1f)) - 1)) + 1;
+        stunTime = stunTime + (stunTime * (((float)myUnit.maxhp / (myUnit.hp + 0.1f)) - 1));
+        myUnit.Set_IsDontThrow(true);
         myUnit.unitState.stateChange.Return_Wait(stunTime);
-        battleManager.battle_Effect.Set_Effect(EffectType.Stun, new EffData(new Vector2(myTrm.position.x, myTrm.position.y + 0.1f), stunTime));
+        myUnit.unitState.stateChange.Set_WaitExtraTime(stunTime);
+        battleManager.battle_Effect.Set_Effect(EffectType.Stun, new EffData(new Vector2(myTrm.position.x, myTrm.position.y + 0.1f), stunTime, myTrm));
 
         base.Enter();
     }
@@ -119,8 +121,10 @@ public class Stationary_Unit_Sturn_Eff_State : Eff_State
         if (stunTime > 0)
         {
             stunTime -= Time.deltaTime;
+            myUnit.unitState.stateChange.Set_WaitExtraTime(stunTime);
             return;
         }
+        myUnit.Set_IsDontThrow(false);
         nextState = new Stationary_Unit_Eff_State(battleManager, myTrm, mySprTrm, myUnit, AtkType.Normal, null);
         curEvent = eEvent.EXIT;
     }
