@@ -74,3 +74,35 @@ public class Effect_Stun : IEffect
      
     }
 }
+
+public class Effect_Slow : IEffect
+{
+    [SerializeField]
+    private ParticleSystem particleSys;
+    [SerializeField]
+    private float delete_time = 0.5f;
+    void IEffect.Set_Effect(EffectObject effObj, EffData effData)
+    {
+        particleSys ??= effObj.GetComponent<ParticleSystem>();
+
+        effObj.CancelInvoke();
+
+        effObj.gameObject.SetActive(true);
+
+        //재생 시간 설정
+        var main = particleSys.main;
+        main.startLifetime = effData.lifeTime;
+
+        particleSys.Stop();
+        particleSys.Play();
+
+        effObj.transform.position = effData.pos;
+
+        effObj.Invoke("Delete_Effect", delete_time);
+    }
+
+    void IEffect.Update_Effect(EffectObject effObj, EffData effData)
+    {
+        
+    }
+}

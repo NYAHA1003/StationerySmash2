@@ -26,6 +26,9 @@ public class EffectObject : MonoBehaviour
             case EffectType.Stun:
                 effectState ??= new Effect_Stun();
                 break;
+            case EffectType.Slow:
+                effectState ??= new Effect_Slow();
+                break;
         }
 
         this.effData = effData;
