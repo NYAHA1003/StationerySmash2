@@ -6,6 +6,7 @@ using Utill;
 [CreateAssetMenu(fileName = "PencilCaseDataSO", menuName = "Scriptable Object/PencilCaseDataSO")]
 public class PencilCaseDataSO : ScriptableObject
 {
+    public DataBase dataBase;
     public PencilCaseType pencilCaseType;
-    public DataBase data;
+    public float costSpeed;
 }

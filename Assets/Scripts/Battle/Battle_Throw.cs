@@ -38,7 +38,6 @@ public class Battle_Throw : BattleCommand
                 targetRange = Vector2.Distance(pos, throw_Unit.transform.position);
             }
         }
-        Debug.Log(throw_Unit.gameObject.name);
 
         if (throw_Unit != null)
         {

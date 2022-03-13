@@ -7,4 +7,9 @@ public class Battle_AI : BattleCommand
     public Battle_AI(BattleManager battleManager) : base(battleManager)
     {
     }
+
+    public void Process()
+    {
+
+    }
 }
