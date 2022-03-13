@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 
-public interface IStateChange
+public interface IStateManager
 {
-    public void Set_State(Stationary_UnitState unit);
+
+    public void Reset_CurrentUnitState();
+    public void Set_State();
+    public void Reset_State(UnitState unit);
     public void Return_Idle();
     public void Return_Wait(float time);
     public void Set_WaitExtraTime(float extraTime);
@@ -14,4 +17,5 @@ public interface IStateChange
     public void Return_Attack(Unit targetUnit);
     public void Return_Die();
     public void Return_Throw();
+    
 }

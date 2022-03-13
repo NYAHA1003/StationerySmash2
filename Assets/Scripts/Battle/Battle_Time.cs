@@ -4,8 +4,10 @@ using UnityEngine;
 using Utill;
 using TMPro;
 
+
 public class Battle_Time : BattleCommand
 {
+
     private StageData stageData;
     private float timer;
     private TextMeshProUGUI timeText;
@@ -23,7 +25,7 @@ public class Battle_Time : BattleCommand
     {
         if (isFinallyEnd) return;
 
-        if (stageData.timeType.Equals(TimeType.DisabledTime))
+        if (stageData.timeType == TimeType.DisabledTime)
             return;
 
         if (timer > 0)

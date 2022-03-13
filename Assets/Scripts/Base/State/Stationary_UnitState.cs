@@ -6,7 +6,6 @@ using Utill;
 using DG.Tweening;
 public class Stationary_UnitState : UnitState
 {
-    public new Stationary_Unit myUnit;
     public UnitData myUnitData { get; protected set; }
     public StageData stageData { get; protected set; }
 
@@ -14,11 +13,12 @@ public class Stationary_UnitState : UnitState
     protected float[] originValue;
 
 
-    public Stationary_UnitState(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, StageData stageData) : base(myTrm, mySprTrm, myUnit)
+    public Stationary_UnitState(Transform myTrm, Transform mySprTrm, Unit myUnit) : base(myTrm, mySprTrm, myUnit)
     {
         this.myUnit = myUnit;
         this.stageData = stageData;
         this.myUnitData = myUnit.unitData;
+        stageData = myUnit.battleManager.currentStageData;
     }
 
     public virtual void Animation(params float[] value)

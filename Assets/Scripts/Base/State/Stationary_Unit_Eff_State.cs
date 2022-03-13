@@ -12,12 +12,12 @@ public abstract class Eff_State
     public AtkType statusEffect { get; protected set; }
 
     public BattleManager battleManager;
-    protected Stationary_Unit myUnit;
+    protected Unit myUnit;
     protected Eff_State nextState;
     protected UnitData myUnitData;
     protected float[] valueList;
 
-    public Eff_State(BattleManager battleManager, Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, AtkType statusEffect, params float[] valueList)
+    public Eff_State(BattleManager battleManager, Transform myTrm, Transform mySprTrm, Unit myUnit, AtkType statusEffect, params float[] valueList)
     {
         this.battleManager = battleManager;
         this.myTrm = myTrm;
@@ -62,7 +62,7 @@ public abstract class Eff_State
 
 public class Stationary_Unit_Eff_State : Eff_State
 {
-    public Stationary_Unit_Eff_State(BattleManager battleManager, Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, AtkType statusEffect, params float[] valueList) : base(battleManager, myTrm, mySprTrm, myUnit, statusEffect, valueList)
+    public Stationary_Unit_Eff_State(BattleManager battleManager, Transform myTrm, Transform mySprTrm, Unit myUnit, AtkType statusEffect, params float[] valueList) : base(battleManager, myTrm, mySprTrm, myUnit, statusEffect, valueList)
     {
         this.valueList = valueList;
         this.myUnit = myUnit;
@@ -101,7 +101,7 @@ public class Stationary_Unit_Sturn_Eff_State : Eff_State
 {
     private float stunTime;
 
-    public Stationary_Unit_Sturn_Eff_State(BattleManager battleManager, Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, AtkType statusEffect, params float[] stunTime) : base(battleManager, myTrm, mySprTrm, myUnit, statusEffect, stunTime)
+    public Stationary_Unit_Sturn_Eff_State(BattleManager battleManager, Transform myTrm, Transform mySprTrm, Unit myUnit, AtkType statusEffect, params float[] stunTime) : base(battleManager, myTrm, mySprTrm, myUnit, statusEffect, stunTime)
     {
         this.stunTime = stunTime[0];
     }
@@ -145,7 +145,7 @@ public class Stationary_Unit_Ink_Eff_State : Eff_State
     private float accuracySubtractPercent = 0;
     private float range;
 
-    public Stationary_Unit_Ink_Eff_State(BattleManager battleManager, Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, AtkType statusEffect, params float[] value) : base(battleManager, myTrm, mySprTrm, myUnit, statusEffect, value)
+    public Stationary_Unit_Ink_Eff_State(BattleManager battleManager, Transform myTrm, Transform mySprTrm, Unit myUnit, AtkType statusEffect, params float[] value) : base(battleManager, myTrm, mySprTrm, myUnit, statusEffect, value)
     {
         Set_EffValue(value);
     }
@@ -193,7 +193,7 @@ public class Stationary_Unit_SlowDown_Eff_State : Stationary_Unit_Eff_State
     private float moveSpeedSubtractPercent = 0;
     private float attackSpeedSubtractPercent = 0;
 
-    public Stationary_Unit_SlowDown_Eff_State(BattleManager battleManager, Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, AtkType statusEffect, params float[] value) : base(battleManager, myTrm, mySprTrm, myUnit, statusEffect, value)
+    public Stationary_Unit_SlowDown_Eff_State(BattleManager battleManager, Transform myTrm, Transform mySprTrm, Unit myUnit, AtkType statusEffect, params float[] value) : base(battleManager, myTrm, mySprTrm, myUnit, statusEffect, value)
     {
         Set_EffValue(value);
     }

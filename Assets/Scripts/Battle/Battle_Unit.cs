@@ -8,33 +8,32 @@ public class Battle_Unit : BattleCommand
     private GameObject unit_Prefeb;
     private Transform unit_PoolManager;
     private Transform unit_Parent;
+
+    //테스트용 팀 설정
     public TeamType eTeam = TeamType.MyTeam;
+
+    //상태 풀링
+    public static Dictionary<string, object> stateDic = new Dictionary<string, object>();
+
 
     public Battle_Unit(BattleManager battleManager, GameObject unit_Prefeb, Transform unit_PoolManager, Transform unit_Parent) : base(battleManager)
     {
         this.unit_Prefeb = unit_Prefeb;
         this.unit_PoolManager = unit_PoolManager;
         this.unit_Parent = unit_Parent;
+
+        CreatePool<PencilStateManager>();
     }
 
     public void Summon_Unit(DataBase dataBase, Vector3 Pos, int count)
     {
         Unit unit = null;
 
-        switch (dataBase.cardType)
-        {
-            case CardType.Execute:
-            case CardType.SummonTrap:
-            case CardType.Installation:
-                unit = Pool_Strategy_Unit(Pos);
-                break;
-            case CardType.SummonUnit:
-                unit = Pool_Stationary_Unit(Pos);
-                break;
-        }
+        unit = Pool_Unit(Pos);
+
         unit.Set_UnitData(dataBase, eTeam, battleManager, count);
 
-
+        //유닛 리스트에 추가
         switch (eTeam)
         {
             case TeamType.Null:
@@ -48,7 +47,12 @@ public class Battle_Unit : BattleCommand
         }
     }
 
-    private Stationary_Unit Pool_Stationary_Unit(Vector3 Pos)
+    /// <summary>
+    /// 유닛 풀링
+    /// </summary>
+    /// <param name="Pos"></param>
+    /// <returns></returns>
+    private Unit Pool_Unit(Vector3 Pos)
     {
         GameObject unit_obj = null;
         if (unit_PoolManager.childCount > 0)
@@ -59,32 +63,30 @@ public class Battle_Unit : BattleCommand
         }
         unit_obj ??= battleManager.Create_Object(unit_Prefeb, Pos, Quaternion.identity);
         unit_obj.transform.SetParent(unit_Parent);
-        return unit_obj.GetComponent<Stationary_Unit>();
-    }
-    private Strategy_Unit Pool_Strategy_Unit(Vector3 Pos)
-    {
-        GameObject unit_obj = null;
-        if (unit_PoolManager.childCount > 0)
-        {
-            unit_obj = unit_PoolManager.GetChild(0).gameObject;
-            unit_obj.transform.position = Pos;
-            unit_obj.SetActive(true);
-        }
-        unit_obj ??= battleManager.Create_Object(unit_Prefeb, Pos, Quaternion.identity);
-        unit_obj.transform.SetParent(unit_Parent);
-        return unit_obj.GetComponent<Strategy_Unit>();
+        return unit_obj.GetComponent<Unit>();
     }
 
+    /// <summary>
+    /// 내 유닛 리스트 추가
+    /// </summary>
+    /// <param name="unit"></param>
     public void Add_UnitListMy(Unit unit)
     {
         battleManager.unit_MyDatasTemp.Add(unit);
     }
 
+    /// <summary>
+    /// 적 유닛 리스트 추가
+    /// </summary>
+    /// <param name="unit"></param>
     public void Add_UnitListEnemy(Unit unit)
     {
         battleManager.unit_EnemyDatasTemp.Add(unit);
     }
 
+    /// <summary>
+    /// 모든 유닛 삭제
+    /// </summary>
     public void Clear_Unit()
     {
         for (int i = 1; battleManager.unit_MyDatasTemp.Count > 1;)
@@ -95,5 +97,64 @@ public class Battle_Unit : BattleCommand
         {
             battleManager.unit_EnemyDatasTemp[i].Delete_Unit();
         }
+    }
+
+
+    /// <summary>
+    /// 풀링매니저 생성
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="count"></param>
+    public static void CreatePool<T>(int count = 3) where T : IStateManager, new()
+    {
+        Queue<T> q = new Queue<T>();
+
+        for (int i = 0; i < count; i++)
+        {
+            T g = new T();
+
+            q.Enqueue(g);
+        }
+
+        try
+        {
+            stateDic.Add(typeof(T).Name, q);
+        }
+        catch (System.ArgumentException e)
+        {
+            stateDic.Clear();
+            stateDic.Add(typeof(T).Name, q);
+        }
+    }
+
+    /// <summary>
+    /// 안 쓰는 상태 가져오기
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static T GetItem<T>() where T : IStateManager, new()
+    {
+        T item = default(T);
+
+
+        if (stateDic.ContainsKey(typeof(T).Name))
+        {
+            Queue<T> q = (Queue<T>)stateDic[typeof(T).Name];
+            T firstItem = q.Peek();
+
+            if (firstItem == null)
+            {  //안 사용하는 상태가 없으면 새로운 상태를 만든다
+                item = new T();
+            }
+            else
+            {
+                item = q.Dequeue();
+            }
+            q.Enqueue(item);
+
+        }
+
+        //할당
+        return item;
     }
 }

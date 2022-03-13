@@ -6,22 +6,33 @@ using Utill;
 
 public abstract class Unit : MonoBehaviour
 {
+
     public UnitData unitData;
     public UnitState unitState { get; protected set; }
 
+    public List<Eff_State> statEffList = new List<Eff_State>();
+
+    [SerializeField]
+    protected Canvas canvas;
+    [SerializeField]
+    protected Image delayBar;
     [SerializeField]
     protected SpriteRenderer spr;
     
     public TeamType eTeam;
 
+    public float attack_Cur_Delay { get; protected set; }
+    public float[] unitablityData;
+    protected Camera mainCam;
 
-    public int myDamagedId = 0;
-    public int damageCount = 0;
-    public int myUnitId;
+    public int myDamagedId { get; protected set; } = 0;
+    public int damageCount { get; protected set; } = 0;
+    public int myUnitId { get; protected set; } = 0;
     public int hp { get; protected set; }
     public int maxhp { get; protected set; }
     public int weight { get; protected set; }
 
+    //스탯 퍼센트
     public int damagePercent = 100;
     public int moveSpeedPercent = 100;
     public int attackSpeedPercent = 100;
@@ -32,13 +43,19 @@ public abstract class Unit : MonoBehaviour
     public bool isInvincibility { get; protected set; }
     public bool isDontThrow { get; protected set; }
 
+    //유닛 설정 여부
     protected bool isSettingEnd;
 
     public BattleManager battleManager { get; protected set; }
     
     protected StageData stageData;
+    protected IStateManager stateManager;
 
-    #region 기본 로직
+    private void Start()
+    {
+        mainCam = Camera.main;
+        canvas.worldCamera = mainCam;
+    }
 
     /// <summary>
     /// 유닛 생성
@@ -49,6 +66,17 @@ public abstract class Unit : MonoBehaviour
     /// <param name="id"></param>
     public virtual void Set_UnitData(DataBase dataBase, TeamType eTeam, BattleManager battleManager, int id)
     {
+        this.unitData = dataBase.unitData;
+        this.unitablityData = dataBase.unitData.unitablityData;
+
+        //딜레이시스템
+        attack_Cur_Delay = 0;
+        Update_DelayBar(attack_Cur_Delay);
+        delayBar.rectTransform.anchoredPosition = eTeam.Equals(TeamType.MyTeam) ? new Vector2(-960.15f, -540.15f) : new Vector2(-959.85f, -540.15f);
+        Set_IsInvincibility(false);
+        Show_Canvas();
+
+        this.isInvincibility = true;
         this.isSettingEnd = false;
 
         //팀, 이름 설정
@@ -77,11 +105,29 @@ public abstract class Unit : MonoBehaviour
         this.weight = dataBase.unitData.unit_Weight;
         this.myUnitId = id;
 
+
+
+
+        switch (dataBase.unitData.unitType)
+        {
+            default:
+            case UnitType.None:
+            case UnitType.Pencil:
+            case UnitType.Eraser:
+            case UnitType.Sharp:
+                stateManager = Battle_Unit.GetItem<PencilStateManager>();
+                stateManager.Return_Idle();
+                break;
+        }
+        unitState.stateChange.Reset_State(unitState as Stationary_UnitState);
+
+
+        this.isInvincibility = false;
         this.isSettingEnd = true;
     }
 
     /// <summary>
-    /// 유닛 스테이트 로직 실행
+    /// 유닛 상태 업데이트
     /// </summary>
     protected virtual void Update()
     {
@@ -89,6 +135,10 @@ public abstract class Unit : MonoBehaviour
 
         unitState = unitState.Process();
 
+        for (int i = 0; i < statEffList.Count; i++)
+        {
+            statEffList[i] = statEffList[i].Process();
+        }
     }
 
     /// <summary>
@@ -111,7 +161,6 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
-    #endregion
 
     #region 무조건 재정의 해야함
 
@@ -172,7 +221,7 @@ public abstract class Unit : MonoBehaviour
     }
 
     /// <summary>
-    /// 무적 여부 설정
+    /// 던지기 가능 설정
     /// </summary>
     /// <param name="isboolean">True면 던지기 불가능, False면 던지기 가능</param>
     public virtual void Set_IsDontThrow(bool isboolean)
@@ -187,6 +236,22 @@ public abstract class Unit : MonoBehaviour
     public virtual void Subtract_HP(int damage)
     {
         hp -= damage;
+    }
+    public void Set_AttackDelay(float delay)
+    {
+        attack_Cur_Delay = delay;
+    }
+    public void Update_DelayBar(float delay)
+    {
+        delayBar.fillAmount = delay;
+    }
+    public void Show_Canvas()
+    {
+        canvas.gameObject.SetActive(true);
+    }
+    public void NoShow_Canvas()
+    {
+        canvas.gameObject.SetActive(false);
     }
 
     #region 스탯 반환
