@@ -30,6 +30,7 @@ public abstract class Unit : MonoBehaviour
     public int weightPercent = 100;
     public int knockbackPercent = 100;
     public bool isInvincibility { get; protected set; }
+    public bool isDontThrow { get; protected set; }
 
     protected bool isSettingEnd;
 
@@ -168,6 +169,15 @@ public abstract class Unit : MonoBehaviour
     public virtual void Set_IsInvincibility(bool isboolean)
     {
         isInvincibility = isboolean;
+    }
+
+    /// <summary>
+    /// 무적 여부 설정
+    /// </summary>
+    /// <param name="isboolean">True면 던지기 불가능, False면 던지기 가능</param>
+    public virtual void Set_IsDontThrow(bool isboolean)
+    {
+        isDontThrow = isboolean;
     }
 
     /// <summary>

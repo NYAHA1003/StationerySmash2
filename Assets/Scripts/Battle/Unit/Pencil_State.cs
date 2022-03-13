@@ -15,6 +15,7 @@ public class PencilStateChange : IStateChange
     private Pencil_Wait_State WaitState;
     private Stationary_UnitState unit;
 
+    private float Wait_extraTime = 0;
     public void Set_State(Stationary_UnitState unit)
     {
         this.unit = unit;
@@ -89,9 +90,15 @@ public class PencilStateChange : IStateChange
     {
         unit.Set_Event(eEvent.EXIT);
         WaitState.Set_Time(time);
+        WaitState.Set_ExtraTime(Wait_extraTime);
         unit.nextState = WaitState;
         WaitState.Reset_State();
         unit = WaitState;
+    }
+
+    public void Set_WaitExtraTime(float extraTime)
+    {
+        this.Wait_extraTime = extraTime;
     }
 }
 
@@ -122,6 +129,7 @@ public class Pencil_Idle_State : Stationary_UnitState
 public class Pencil_Wait_State : Stationary_UnitState
 {
     private float waitTime;
+    private float extraWaitTime;
     public Pencil_Wait_State(Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, StageData stageData) : base(myTrm, mySprTrm, myUnit, stageData)
     {
 
@@ -130,6 +138,11 @@ public class Pencil_Wait_State : Stationary_UnitState
     public void Set_Time(float waitTime)
     {
         this.waitTime = waitTime;
+    }
+    public void Set_ExtraTime(float extraWaitTime)
+    {
+        this.extraWaitTime = extraWaitTime;
+        this.waitTime = waitTime + extraWaitTime;
     }
 
     public override void Enter()

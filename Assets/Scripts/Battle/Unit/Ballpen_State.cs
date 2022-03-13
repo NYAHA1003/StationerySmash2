@@ -15,6 +15,8 @@ public class BallPenStateChange : IStateChange
     private BallPen_Wait_State WaitState;
     private Stationary_UnitState unit;
 
+    private float Wait_extraTime = 0;
+
     public void Set_State(Stationary_UnitState unit)
     {
         this.unit = unit;
@@ -89,9 +91,15 @@ public class BallPenStateChange : IStateChange
     {
         unit.Set_Event(eEvent.EXIT);
         WaitState.Set_Time(time);
+        WaitState.Set_ExtraTime(Wait_extraTime);
         unit.nextState = WaitState;
         WaitState.Reset_State();
         unit = WaitState;
+    }
+
+    public void Set_WaitExtraTime(float extraTime)
+    {
+        this.Wait_extraTime = extraTime;
     }
 }
 public class BallPen_Idle_State : Pencil_Idle_State

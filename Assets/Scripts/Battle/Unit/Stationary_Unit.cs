@@ -98,6 +98,8 @@ public class Stationary_Unit : Unit
 
     public override Unit Pull_Unit()
     {
+        if (isDontThrow)
+            return null;
         if(unitState.curState.Equals(eState.DAMAGED))
         {
             return null;
@@ -109,6 +111,8 @@ public class Stationary_Unit : Unit
 
     public override Unit Pulling_Unit()
     {
+        if (isDontThrow)
+            return null;
         if (unitState.curState.Equals(eState.DAMAGED))
         {
             return null;

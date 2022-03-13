@@ -13,11 +13,13 @@ namespace Utill
     {
         public Vector2 pos;
         public float lifeTime;
+        public Transform trm;
 
-        public EffData(Vector2 pos, float lifeTime = 0.5f)
+        public EffData(Vector2 pos, float lifeTime = 0.5f, Transform trm = null)
         {
             this.pos = pos;
             this.lifeTime = lifeTime;
+            this.trm = trm;
         }
 
     }
@@ -47,17 +49,7 @@ namespace Utill
     };
 
 
-    public interface IStateChange
-    {
-        public void Set_State(Stationary_UnitState unit);
-        public void Return_Idle();
-        public void Return_Wait(float time);
-        public void Return_Move();
-        public void Return_Damaged(AtkData atkData);
-        public void Return_Attack(Unit targetUnit);
-        public void Return_Die();
-        public void Return_Throw();
-    }
+
 
     [System.Serializable]
     public struct PRS
