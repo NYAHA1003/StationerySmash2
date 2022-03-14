@@ -109,7 +109,6 @@ public class Coupon : MonoBehaviour
                 print(UseCouponList[i]);
                 print(UseCouponKind[i]);
             }
-            truth = "";
             return;
         }
         else
