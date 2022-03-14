@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utill;
 
-public abstract class Unit : MonoBehaviour
+public class Unit : MonoBehaviour
 {
 
     public UnitData unitData;

@@ -21,8 +21,6 @@ public class Battle_Unit : BattleCommand
         this.unit_Prefeb = unit_Prefeb;
         this.unit_PoolManager = unit_PoolManager;
         this.unit_Parent = unit_Parent;
-
-        CreatePool<PencilStateManager>();
     }
 
     public void Summon_Unit(DataBase dataBase, Vector3 Pos, int count)
@@ -105,13 +103,14 @@ public class Battle_Unit : BattleCommand
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="count"></param>
-    public static void CreatePool<T>(int count = 3) where T : IStateManager, new()
+    public static void CreatePool<T>(Transform myTrm, Transform mySprTrm, Unit myUnit, int count = 3) where T : IStateManager, new()
     {
         Queue<T> q = new Queue<T>();
 
         for (int i = 0; i < count; i++)
         {
             T g = new T();
+            g.Set_State(myTrm, mySprTrm, myUnit);
 
             q.Enqueue(g);
         }
@@ -154,6 +153,14 @@ public class Battle_Unit : BattleCommand
             }
             q.Enqueue(item);
 
+        }
+        else
+        {
+            CreatePool<T>(myTrm, mySprTrm, myUnit);
+            Queue<T> q = (Queue<T>)stateDic[typeof(T).Name];
+            item = q.Dequeue();
+            item.Reset_State(myTrm, mySprTrm, myUnit);
+            q.Enqueue(item);
         }
 
         //วาด็
