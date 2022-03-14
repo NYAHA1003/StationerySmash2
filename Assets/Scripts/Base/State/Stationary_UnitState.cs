@@ -36,7 +36,7 @@ public class Stationary_UnitState : UnitState
             myTrm.DOJump(new Vector3(myTrm.position.x - 0.2f, 0, myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
             {
                 stateChange.Set_Wait(0.5f);
-            }).SetEase(Utill.Utill.Return_ParabolaCurve());
+            }).SetEase(Utill.Parabola.Return_ParabolaCurve());
         }
         if (-stageData.max_Range >= myTrm.position.x)
         {
@@ -45,7 +45,7 @@ public class Stationary_UnitState : UnitState
             myTrm.DOJump(new Vector3(myTrm.position.x + 0.2f, 0, myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
             {
                 stateChange.Set_Wait(0.5f);
-            }).SetEase(Utill.Utill.Return_ParabolaCurve());
+            }).SetEase(Utill.Parabola.Return_ParabolaCurve());
         }
     }
 }

@@ -4,177 +4,7 @@ using UnityEngine;
 
 namespace Utill
 {
-    public enum EffectType
-    {
-        Attack,
-        Stun,
-        Slow,
-    }
-    public struct EffData
-    {
-        public Vector2 pos;
-        public float lifeTime;
-        public Transform trm;
-
-        public EffData(Vector2 pos, float lifeTime = 0.5f, Transform trm = null)
-        {
-            this.pos = pos;
-            this.lifeTime = lifeTime;
-            this.trm = trm;
-        }
-
-    }
-    public enum CardType
-    {
-        Execute,
-        SummonUnit,
-        SummonTrap,
-        Installation,
-    }
-
-    public enum DieType
-    {
-        StarKo,
-        ScreenKo,
-        OutKo,
-    }
-
-    public enum eState  // 가질 수 있는 상태 나열
-    {
-        IDLE, MOVE, ATTACK, WAIT, DAMAGED, DIE, PULL, THROW, NONE,
-    };
-
-    public enum eEvent  // 이벤트 나열
-    {
-        ENTER, UPDATE, EXIT, NOTHING
-    };
-
-
-
-
-    [System.Serializable]
-    public struct PRS
-    {
-        public Vector3 pos;
-        public Quaternion rot;
-        public Vector3 scale;
-
-        public PRS(Vector3 pos, Quaternion rot, Vector3 scale)
-        {
-            this.pos = pos;
-            this.rot = rot;
-            this.scale = scale;
-        }
-    }
-    public enum TimeType
-    {
-        ActiveTime,
-        DisabledTime,
-    }
-    public enum TeamType
-    {
-        Null,
-        MyTeam,
-        EnemyTeam,
-    }
-    public enum UnitType
-    {
-        None,
-        Pencil,
-        Eraser,
-        Sharp,
-        BallPen,
-    }
-    public enum StarategyType
-    {
-        a,
-        b,
-        c,
-        d,
-    }
-    public enum PencilCaseType
-    {
-        Normal,
-
-    }
-    public enum AtkType
-    {
-        Normal,
-        Stun,
-        Ink,
-        SlowDown,
-    }
-    public class AtkData
-    {
-
-        public Unit attacker;
-
-        public int damage;
-
-        //데미지 아이디
-        public int damageId;
-
-
-        //넉백 데이터
-        public float baseKnockback;
-        public float extraKnockback;
-        public float direction; // 디그리값. 라디안으로 주지 마셈
-
-        //공격 속성
-        public AtkType atkType;
-        public float[] value;
-
-        public AtkData(Unit attacker, int damage, float baseKnockback, float extraKnockback, float direction, bool isMyTeam, int damageId = 0, AtkType atkType = AtkType.Normal, params float[] value)
-        {
-            this.attacker = attacker;
-            this.damage = damage;
-            Set_DamageId(damageId);
-            this.baseKnockback = baseKnockback;
-            this.extraKnockback = extraKnockback;
-            this.direction = (isMyTeam ? direction : 180 - direction) * Mathf.Deg2Rad;
-            this.atkType = atkType;
-            this.value = value;
-        }
-        public float Caculated_Knockback(int weight, int hp, int maxhp, bool isMyTeam)
-        {
-            return ((baseKnockback + extraKnockback) / (weight * (((float)hp / maxhp) + 0.1f))) * (isMyTeam ? 1 : -1);
-        }
-
-        public void Reset_Kncockback(float baseKnockback, float extraKnockback, float direction, bool isMyTeam)
-        {
-            this.baseKnockback = baseKnockback;
-            this.extraKnockback = extraKnockback;
-            this.direction = (isMyTeam ? direction : 180 - direction) * Mathf.Deg2Rad;
-        }
-
-        public void Reset_Type(AtkType atkType)
-        {
-            this.atkType = atkType;
-        }
-
-        public void Reset_Damage(int damage)
-        {
-            this.damage = damage;
-        }
-
-        public void Reset_Value(params float[] value)
-        {
-            this.value = value;
-        }
-        public void Set_DamageId(int damageId = 0)
-        {
-            if(damageId != 0)
-            {
-                this.damageId = damageId;
-                return;
-            }
-
-            attacker.damageCount++;
-            this.damageId = attacker.myUnitId * 10000 + attacker.damageCount;
-
-        }
-    }
-    public class Utill : MonoBehaviour
+    public class Parabola : MonoBehaviour
     {
         /// <summary>
         /// 최고점 계산
@@ -224,23 +54,7 @@ namespace Utill
             return (v * time * Mathf.Sin(sin)) - (Mathf.Abs(Physics2D.gravity.y / 2) * (time * time));
         }
 
-        /// <summary>
-        /// 랜덤으로 죽는 유형을 반환
-        /// </summary>
-        /// <returns></returns>
-        public static DieType Return_RandomDieType()
-        {
-            int random = Random.Range(0, 100);
-            if (random < 10)
-            {
-                return DieType.StarKo;
-            }
-            if (random < 30)
-            {
-                return DieType.ScreenKo;
-            }
-            return DieType.OutKo;
-        }
+        
 
         public static AnimationCurve Return_ParabolaCurve()
         {
@@ -342,5 +156,4 @@ namespace Utill
         }
 
     }
-
 }

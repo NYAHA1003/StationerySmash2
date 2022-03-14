@@ -427,7 +427,7 @@ public class Pencil_Damaged_State : Stationary_UnitState
     private void KnockBack()
     {
         float calculated_knockback = atkData.Caculated_Knockback(myUnit.Return_Weight(), myUnit.hp, myUnit.maxhp, myUnit.eTeam.Equals(TeamType.MyTeam));
-        float height = atkData.baseKnockback * 0.01f + Utill.Utill.Caculated_Height((atkData.baseKnockback + atkData.extraKnockback) * 0.15f, atkData.direction, 1);
+        float height = atkData.baseKnockback * 0.01f + Utill.Parabola.Caculated_Height((atkData.baseKnockback + atkData.extraKnockback) * 0.15f, atkData.direction, 1);
         float time = atkData.baseKnockback * 0.005f +  Mathf.Abs((atkData.baseKnockback * 0.5f + atkData.extraKnockback)  / (Physics2D.gravity.y ));
         
         myTrm.DOKill();
@@ -477,7 +477,7 @@ public class Pencil_Die_State : Stationary_UnitState
         myTrm.DOKill();
         mySprTrm.DOKill();
 
-        DieType dietype = Utill.Utill.Return_RandomDieType();
+        DieType dietype = Utill.Die.Return_RandomDieType();
         switch (dietype)
         {
             case DieType.StarKo:
@@ -515,7 +515,7 @@ public class Pencil_Die_State : Stationary_UnitState
         }
         mySprTrm.DOLocalRotate(new Vector3(0, 0, -360), 0.3f, RotateMode.FastBeyond360).SetLoops(3, LoopType.Incremental);
         myTrm.DOJump(diePos, 2f, 1, 1f);
-        mySprTrm.DOScale(10, 0.6f).SetDelay(0.3f).SetEase(Utill.Utill.Return_ScreenKoCurve()).OnComplete(() =>
+        mySprTrm.DOScale(10, 0.6f).SetDelay(0.3f).SetEase(Utill.Parabola.Return_ScreenKoCurve()).OnComplete(() =>
         {
             mySprTrm.eulerAngles = new Vector3(0, 0, Random.Range(mySprTrm.eulerAngles.z - 10, mySprTrm.eulerAngles.z + 10));
             mySprTrm.DOShakePosition(0.6f, 0.1f, 30).OnComplete(() =>
@@ -606,17 +606,17 @@ public class Pencil_Throw_State : Stationary_UnitState
         float force = Mathf.Clamp(Vector2.Distance(myTrm.position, mousePos), 0, 1) * 4 * (100.0f / myUnit.Return_Weight());
 
         //최고점
-        float height = Utill.Utill.Caculated_Height(force, dirx);
+        float height = Utill.Parabola.Caculated_Height(force, dirx);
         //수평 도달 거리
-        float width = Utill.Utill.Caculated_Width(force, dirx);
+        float width = Utill.Parabola.Caculated_Width(force, dirx);
         //수평 도달 시간
-        float time = Utill.Utill.Caculated_Time(force, dir, 3);
+        float time = Utill.Parabola.Caculated_Time(force, dir, 3);
 
         mySprTrm.DOKill();
         myTrm.DOJump(new Vector3(myTrm.position.x - width, 0, myTrm.position.z), height, 1, time).OnComplete(() =>
         {
             stateChange.Set_Wait(0.5f);
-        }).SetEase(Utill.Utill.Return_ParabolaCurve());
+        }).SetEase(Utill.Parabola.Return_ParabolaCurve());
         
         base.Enter();
     }

@@ -99,11 +99,11 @@ public class Battle_Throw : BattleCommand
             force = Mathf.Clamp(Vector2.Distance(throw_Unit.transform.position, pos), 0, 1) * 4 * (100.0f / throw_Unit.weight);
 
             //최고점
-            float height = Utill.Utill.Caculated_Height(force, dirx);
+            float height = Utill.Parabola.Caculated_Height(force, dirx);
             //수평 도달 거리
-            float width = Utill.Utill.Caculated_Width(force, dirx) ;
+            float width = Utill.Parabola.Caculated_Width(force, dirx) ;
             //수평 도달 시간
-            float time = Utill.Utill.Caculated_Time(force, dir, 2);
+            float time = Utill.Parabola.Caculated_Time(force, dir, 2);
             
             List<Vector2> linePos = Set_ParabolaPos(parabola.positionCount, width, force, dir, time);
 
@@ -143,7 +143,7 @@ public class Battle_Throw : BattleCommand
         for(int i = 0; i < count; i ++)
         {
             Vector3 pos = Vector3.Lerp((Vector2)throw_Unit.transform.position, new Vector2(throw_Unit.transform.position.x - width, 0), objLerps[i]);
-            pos.y = Utill.Utill.Caculated_TimeToPos(force, dir_rad, timeLerps[i]);
+            pos.y = Utill.Parabola.Caculated_TimeToPos(force, dir_rad, timeLerps[i]);
             
             if(i > 0)
             {
