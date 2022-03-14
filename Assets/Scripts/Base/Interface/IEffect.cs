@@ -74,3 +74,7 @@ public class Effect_Stun : IEffect
      
     }
 }
+
+public class Effect_Slow : Effect_Attack
+{
+}
