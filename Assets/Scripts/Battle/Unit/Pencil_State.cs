@@ -134,6 +134,10 @@ public class PencilStateManager : IStateManager
         this.Wait_extraTime = extraTime;
     }
 
+    public void Set_ThrowPos(Vector2 pos)
+    {
+        this.ThrowState.Set_ThrowPos(pos);
+    }
 }
 
 public class Pencil_Idle_State : Stationary_UnitState
@@ -580,17 +584,20 @@ public class Pencil_Die_State : Stationary_UnitState
 
 public class Pencil_Throw_State : Stationary_UnitState
 {
+    Vector2 mousePos = Vector2.zero;
     public Pencil_Throw_State(Transform myTrm, Transform mySprTrm, Unit myUnit) : base(myTrm, mySprTrm, myUnit)
     {
         curState = eState.THROW;
         curEvent = eEvent.ENTER;
     }
 
+    public void Set_ThrowPos(Vector2 pos)
+    {
+        mousePos = pos;
+    }
+
     public override void Enter()
     {
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-
         //πÊ«‚
         Vector2 direction = (Vector2)myTrm.position - mousePos;
         float dir = Mathf.Atan2(direction.y, direction.x);

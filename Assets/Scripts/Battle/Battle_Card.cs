@@ -35,7 +35,6 @@ public class Battle_Card : BattleCommand
     Coroutine delayCoroutine;
 
     private int cardidCount = 0;
-    private int unitidCount = 0;
 
     public Battle_Card(BattleManager battleManager, DeckData deckData, UnitDataSO unitDataSO, StarategyDataSO starategyDataSO, GameObject card_Prefeb, Transform card_PoolManager, Transform card_Canvas, RectTransform card_SpawnPosition, RectTransform card_LeftPosition, RectTransform card_RightPosition, GameObject unit_AfterImage, LineRenderer summonRangeLine)
         : base(battleManager)
@@ -389,7 +388,7 @@ public class Battle_Card : BattleCommand
         switch (card.dataBase.cardType)
         {
             case CardType.SummonUnit:
-                battleManager.battle_Unit.Summon_Unit(card.dataBase, new Vector3(mouse_Pos.x, 0, 0), unitidCount++);
+                battleManager.battle_Unit.Summon_Unit(card.dataBase, new Vector3(mouse_Pos.x, 0, 0));
                 break;
             default:
             case CardType.Execute:
@@ -398,7 +397,10 @@ public class Battle_Card : BattleCommand
                 card.dataBase.strategyData.starategy_State.Run_Card(battleManager);
                 break;
         }
-        battleManager.ai_Log.Add_Log(card.dataBase, card.grade);
+        if(battleManager.battle_Unit.eTeam == TeamType.EnemyTeam)
+        {
+            battleManager.ai_Log.Add_Log(card.dataBase);
+        }
         Fusion_Card();
     }
 

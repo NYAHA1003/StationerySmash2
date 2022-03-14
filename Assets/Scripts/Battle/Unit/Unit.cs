@@ -229,9 +229,9 @@ public class Unit : MonoBehaviour
     /// <summary>
     /// 유닛을 던졌을 때
     /// </summary>
-    public void Throw_Unit()
+    public void Throw_Unit(Vector2 pos)
     {
-        unitState.Throw_Unit();
+        unitState.Throw_Unit(pos);
     }
 
     /// <summary>

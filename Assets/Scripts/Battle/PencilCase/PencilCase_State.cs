@@ -97,6 +97,10 @@ public class PencilCaseStateManager : IStateManager
         throw new System.Exception("필통 에러");
     }
 
+    public void Set_ThrowPos(Vector2 pos)
+    {
+        throw new System.Exception("필통 에러");
+    }
 }
 public class PencilCase_Idle_State : Stationary_UnitState
 {
@@ -117,7 +121,7 @@ public class PencilCase_Idle_State : Stationary_UnitState
     {
         return null;
     }
-    public override void Throw_Unit()
+    public override void Throw_Unit(Vector2 pos)
     {
 
     }
@@ -172,7 +176,7 @@ public class PencilCase_Damaged_State : Stationary_UnitState
     {
         return null;
     }
-    public override void Throw_Unit()
+    public override void Throw_Unit(Vector2 pos)
     {
 
     }
@@ -213,7 +217,7 @@ public class PencilCase_Die_State : Stationary_UnitState
     {
         return null;
     }
-    public override void Throw_Unit()
+    public override void Throw_Unit(Vector2 pos)
     {
         
     }

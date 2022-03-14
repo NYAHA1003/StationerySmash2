@@ -142,8 +142,9 @@ public abstract class UnitState
 
         return myUnit;
     }
-    public virtual void Throw_Unit()
+    public virtual void Throw_Unit(Vector2 pos)
     {
+        stateChange.Set_ThrowPos(pos);
         stateChange.Set_Throw();
     }
 

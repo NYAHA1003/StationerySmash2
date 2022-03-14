@@ -133,6 +133,10 @@ public class BallpenStateManager : IStateManager
     {
         this.Wait_extraTime = extraTime;
     }
+    public void Set_ThrowPos(Vector2 pos)
+    {
+        this.ThrowState.Set_ThrowPos(pos);
+    }
 
 }
 
