@@ -28,6 +28,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public int card_Cost { get; private set; }
     public bool isFusion;
+    public bool isDontMove;
 
     public DataBase dataBase;
 
@@ -81,6 +82,11 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         
     }
 
+    public void Show_Card(bool isboolean)
+    {
+        gameObject.SetActive(isboolean);
+    }
+
     /// <summary>
     /// 카드 애니메이션 닷트윈
     /// </summary>
@@ -89,6 +95,8 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <param name="isDotween">True면 닷트윈 사용</param>
     public void Set_CardPRS(PRS prs, float duration, bool isDotween = true)
     {
+        if (isDontMove)
+            return;
         if (isDotween)
         {
             rectTransform.DOAnchorPos(prs.pos, duration);
@@ -184,14 +192,14 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public void Fusion_FadeInEffect(Color color)
     {
         fusion_Effect.color = color;
-        fusion_Effect.DOFade(1, 0.3f);
+        fusion_Effect.DOFade(1, 0.2f);
     }
     /// <summary>
     /// 융합이 끝난 후 돌아옴
     /// </summary>
     public void Fusion_FadeOutEffect()
     {
-        fusion_Effect.DOFade(0, 0.3f);
+        fusion_Effect.DOFade(0, 0.5f);
     }
 
     /// <summary>
