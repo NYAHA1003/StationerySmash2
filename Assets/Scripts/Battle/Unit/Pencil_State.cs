@@ -474,7 +474,7 @@ public class Pencil_Die_State : Stationary_UnitState
 
     public override void Enter()
     {
-        myUnit.NoShow_Canvas();
+        myUnit.Show_Canvas(false);
         
         //µÚÁü
         myUnit.Set_IsInvincibility(true);
