@@ -25,7 +25,7 @@ public class Battle_Card : BattleCommand
     private RectTransform card_SpawnPosition;
 
     private GameObject unit_AfterImage;
-    private SpriteRenderer unit_AfterImage_Spr;
+    private SpriteRenderer afterImage_Spr;
 
     private Coroutine coroutine;
 
@@ -56,7 +56,7 @@ public class Battle_Card : BattleCommand
         Set_SummonRangeLinePos();
 
         this.unit_AfterImage = unit_AfterImage;
-        unit_AfterImage_Spr = unit_AfterImage.GetComponent<SpriteRenderer>();
+        afterImage_Spr = unit_AfterImage.GetComponent<SpriteRenderer>();
 
         Set_DeckCard();
     }
@@ -399,28 +399,27 @@ public class Battle_Card : BattleCommand
     }
 
     /// <summary>
-    /// 유닛 소환 미리보기
+    /// 카드 소환 미리보기
     /// </summary>
     /// <param name="unitData"></param>
     /// <param name="pos"></param>
     /// <param name="isDelete"></param>
-    public void Set_UnitAfterImage(Sprite unitSprite, Vector3 pos, bool isDelete = false)
+    public void Update_UnitAfterImage()
     {
-        unit_AfterImage_Spr.color = Color.white;
-        if (!isPossibleSummon)
-        {
-            unit_AfterImage_Spr.color = Color.red;
-        }
-        unit_AfterImage.transform.position = new Vector3(pos.x, 0);
-        unit_AfterImage_Spr.sprite = unitSprite;
-
-        if (isDelete)
+        if (selectCard == null || selectCard.dataBase.unitData.unitType == UnitType.None)
         {
             unit_AfterImage.SetActive(false);
             return;
         }
         unit_AfterImage.SetActive(true);
-
+        afterImage_Spr.color = Color.white;
+        if (!isPossibleSummon)
+        {
+            afterImage_Spr.color = Color.red;
+        }
+        Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        unit_AfterImage.transform.position = new Vector3(pos.x, 0);
+        afterImage_Spr.sprite = selectCard.dataBase.card_Sprite;
         return;
     }
 

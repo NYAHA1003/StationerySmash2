@@ -23,6 +23,12 @@ public class Battle_Unit : BattleCommand
         this.unit_Parent = unit_Parent;
     }
 
+    /// <summary>
+    /// 유닛 소환
+    /// </summary>
+    /// <param name="dataBase"></param>
+    /// <param name="Pos"></param>
+    /// <param name="count"></param>
     public void Summon_Unit(DataBase dataBase, Vector3 Pos, int count)
     {
         Unit unit = null;
@@ -96,8 +102,7 @@ public class Battle_Unit : BattleCommand
             battleManager.unit_EnemyDatasTemp[i].Delete_Unit();
         }
     }
-
-
+    
     /// <summary>
     /// 풀링매니저 생성
     /// </summary>

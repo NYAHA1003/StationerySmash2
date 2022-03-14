@@ -166,6 +166,7 @@ public class BattleManager : MonoBehaviour
         battle_Camera.Update_CameraScale();
 
         //카드 시스템
+        battle_Card.Update_UnitAfterImage();
         battle_Card.Update_SelectCardPos();
         battle_Card.Update_CardDrow();
         battle_Card.Check_PossibleSummon();
