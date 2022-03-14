@@ -49,8 +49,6 @@ public class PencilStateManager : IStateManager
     }
     public void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
     {
-        Debug.Log("ÀçÈ°¿ë");
-
         IdleState.Change_Trm(myTrm, mySprTrm, myUnit);
         WaitState.Change_Trm(myTrm, mySprTrm, myUnit);
         MoveState.Change_Trm(myTrm, mySprTrm, myUnit);

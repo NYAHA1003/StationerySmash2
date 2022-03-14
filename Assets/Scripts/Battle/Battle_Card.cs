@@ -105,7 +105,7 @@ public class Battle_Card : BattleCommand
 
     private IEnumerator Delay_Drow()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.4f);
         Fusion_Card();
     }
 
@@ -239,26 +239,31 @@ public class Battle_Card : BattleCommand
     /// <returns></returns>
     private IEnumerator Fusion_Move(int index)
     {
-        battleManager.card_DatasTemp[index].isFusion = true;
-        battleManager.card_DatasTemp[index + 1].isFusion = true;
+        CardMove targetCard1 = battleManager.card_DatasTemp[index];
+        CardMove targetCard2 = battleManager.card_DatasTemp[index + 1];
+        targetCard1.isFusion = true;
+        targetCard2.isFusion = true;
 
-        battleManager.card_DatasTemp[index + 1].Set_CardPRS(battleManager.card_DatasTemp[index].originPRS, 0.3f);
-        battleManager.card_DatasTemp[index].Fusion_FadeInEffect();
-        battleManager.card_DatasTemp[index + 1].Fusion_FadeInEffect();
+        targetCard2.Set_CardPRS(new PRS(targetCard1.transform.localPosition, targetCard1.transform.rotation, Vector3.one * 0.3f), 0.3f);
+
+        Color color = targetCard1.grade > 1 ? Color.yellow : Color.white;
+        targetCard1.Fusion_FadeInEffect(color);
+        targetCard2.Fusion_FadeInEffect(color);
 
         yield return new WaitForSeconds(0.3f);
 
-        battleManager.card_DatasTemp[index].Fusion_FadeOutEffect();
-        battleManager.card_DatasTemp[index].Upgrade_UnitGrade();
+        targetCard1.Fusion_FadeOutEffect();
+        targetCard1.Upgrade_UnitGrade();
 
-        battleManager.card_DatasTemp[index].isFusion = false;
-        battleManager.card_DatasTemp[index + 1].isFusion = false;
+        targetCard1.isFusion = false;
+        targetCard2.isFusion = false;
 
         Subtract_CardAt(index + 1);
-        Sort_Card();
 
         battleManager.StopCoroutine(coroutine);
         coroutine = battleManager.StartCoroutine(Delay_Drow());
+
+        Sort_Card();
     }
 
     /// <summary>

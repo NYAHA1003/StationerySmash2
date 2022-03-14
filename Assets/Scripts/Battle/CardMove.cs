@@ -61,7 +61,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         card_CostText.text = dataBase.card_Cost.ToString();
         card_Cost = dataBase.card_Cost;
         card_Image.sprite = dataBase.card_Sprite;
-        grade = 0;
+        grade = 1;
         Set_UnitGrade();
         fusion_Effect.color = new Color(1, 1, 1, 1);
         fusion_Effect.DOFade(0, 0.8f);
@@ -181,8 +181,9 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <summary>
     /// À¶ÇÕ½Ã ÇÏ¾êÁü
     /// </summary>
-    public void Fusion_FadeInEffect()
+    public void Fusion_FadeInEffect(Color color)
     {
+        fusion_Effect.color = color;
         fusion_Effect.DOFade(1, 0.3f);
     }
     /// <summary>
