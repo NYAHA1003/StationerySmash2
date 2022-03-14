@@ -26,7 +26,7 @@ public abstract class Unit : MonoBehaviour
     protected Camera mainCam;
 
     public int myDamagedId { get; protected set; } = 0;
-    public int damageCount { get; protected set; } = 0;
+    public int damageCount { get; set; } = 0;
     public int myUnitId { get; protected set; } = 0;
     public int hp { get; protected set; }
     public int maxhp { get; protected set; }
@@ -105,9 +105,7 @@ public abstract class Unit : MonoBehaviour
         this.weight = dataBase.unitData.unit_Weight;
         this.myUnitId = id;
 
-
-
-
+        //스테이트 설정
         switch (dataBase.unitData.unitType)
         {
             default:
@@ -115,12 +113,11 @@ public abstract class Unit : MonoBehaviour
             case UnitType.Pencil:
             case UnitType.Eraser:
             case UnitType.Sharp:
-                stateManager = Battle_Unit.GetItem<PencilStateManager>();
-                stateManager.Return_Idle();
+                stateManager = Battle_Unit.GetItem<PencilStateManager>(transform, spr.transform, this);
                 break;
         }
-        unitState.stateChange.Reset_State(unitState as Stationary_UnitState);
 
+        unitState = stateManager.Return_CurrentUnitState();
 
         this.isInvincibility = false;
         this.isSettingEnd = true;
@@ -161,61 +158,59 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
-
-    #region 무조건 재정의 해야함
-
     /// <summary>
     /// 공격 맞음
     /// </summary>
     /// <param name="atkData">공격 데이터</param>
-    public abstract void Run_Damaged(AtkData atkData);
+    public void Run_Damaged(AtkData atkData)
+    {
+        unitState.Run_Damaged(atkData);
+    }
 
     /// <summary>
     /// 속성 효과 적용
     /// </summary>
     /// <param name="atkType"></param>
     /// <param name="value"></param>
-    public abstract void Add_StatusEffect(AtkType atkType, params float[] value);
+    public void Add_StatusEffect(AtkType atkType, params float[] value)
+    {
+        unitState.Add_StatusEffect(atkType, value);
+    }
 
-    #endregion
-
-    #region 던지기 시스템
 
     /// <summary>
     /// 당길 유닛을 선택했을 때
     /// </summary>
     /// <returns></returns>
-    public virtual Unit Pull_Unit()
+    public Unit Pull_Unit()
     {
         //당기 유닛 선택
-        return null;
+        return unitState.Pull_Unit();
     }
 
     /// <summary>
     /// 유닛을 당기고 있을 때
     /// </summary>
     /// <returns></returns>
-    public virtual Unit Pulling_Unit()
+    public Unit Pulling_Unit()
     {
         //유닛 당기는 중
-        return null;
+        return unitState.Pulling_Unit();
     }
 
     /// <summary>
     /// 유닛을 던졌을 때
     /// </summary>
-    public virtual void Throw_Unit()
+    public void Throw_Unit()
     {
-
+        unitState.Throw_Unit();
     }
-
-    #endregion
 
     /// <summary>
     /// 무적 여부 설정
     /// </summary>
     /// <param name="isboolean">True면 무적, False면 비무적</param>
-    public virtual void Set_IsInvincibility(bool isboolean)
+    public void Set_IsInvincibility(bool isboolean)
     {
         isInvincibility = isboolean;
     }
@@ -224,7 +219,7 @@ public abstract class Unit : MonoBehaviour
     /// 던지기 가능 설정
     /// </summary>
     /// <param name="isboolean">True면 던지기 불가능, False면 던지기 가능</param>
-    public virtual void Set_IsDontThrow(bool isboolean)
+    public void Set_IsDontThrow(bool isboolean)
     {
         isDontThrow = isboolean;
     }
@@ -233,7 +228,7 @@ public abstract class Unit : MonoBehaviour
     /// 체력 감소
     /// </summary>
     /// <param name="damage">줄어들 체력</param>
-    public virtual void Subtract_HP(int damage)
+    public void Subtract_HP(int damage)
     {
         hp -= damage;
     }

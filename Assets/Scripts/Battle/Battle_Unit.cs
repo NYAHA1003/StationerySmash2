@@ -132,7 +132,7 @@ public class Battle_Unit : BattleCommand
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static T GetItem<T>() where T : IStateManager, new()
+    public static T GetItem<T>(Transform myTrm, Transform mySprTrm, Unit myUnit) where T : IStateManager, new()
     {
         T item = default(T);
 
@@ -145,10 +145,12 @@ public class Battle_Unit : BattleCommand
             if (firstItem == null)
             {  //안 사용하는 상태가 없으면 새로운 상태를 만든다
                 item = new T();
+                item.Set_State(myTrm, mySprTrm, myUnit);
             }
             else
             {
                 item = q.Dequeue();
+                item.Reset_State(myTrm, mySprTrm, myUnit);
             }
             q.Enqueue(item);
 

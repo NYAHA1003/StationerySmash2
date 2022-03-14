@@ -109,7 +109,7 @@ public class Stationary_Unit_Sturn_Eff_State : Eff_State
     {
         stunTime = stunTime + (stunTime * (((float)myUnit.maxhp / (myUnit.hp + 0.1f)) - 1));
         myUnit.Set_IsDontThrow(true);
-        myUnit.unitState.stateChange.Return_Wait(stunTime);
+        myUnit.unitState.stateChange.Set_Wait(stunTime);
         myUnit.unitState.stateChange.Set_WaitExtraTime(stunTime);
         battleManager.battle_Effect.Set_Effect(EffectType.Stun, new EffData(new Vector2(myTrm.position.x, myTrm.position.y + 0.1f), stunTime, myTrm));
 

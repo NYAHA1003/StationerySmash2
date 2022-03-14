@@ -13,8 +13,6 @@ public class BattleManager : MonoBehaviour
     [SerializeField, Header("공용 데이터들"), Space(30)]
     private UnitDataSO unitDataSO;
     [SerializeField]
-    public PencilCaseDataSO pencilCaseDataSO;
-    [SerializeField]
     public StageDataSO stageDataSO;
     [SerializeField]
     public StarategyDataSO  starategyDataSO;
@@ -140,22 +138,11 @@ public class BattleManager : MonoBehaviour
 
     #endregion
 
-    #region 필통 시스템 Battle_PencilCase
-
-    public Battle_PencilCase battle_PenCase;
-    [SerializeField, Header("카드시스템 Battle_Card"), Space(30)]
-    public PencilCase_Unit pencilCase_My;
-    public PencilCase_Unit pencilCase_Enemy;
-
-
-    #endregion
-
     private void Start()
     {
         deckData = new DeckData();
         battle_Card = new Battle_Card(this, deckData, unitDataSO, starategyDataSO, card_cardMove_Prefeb, card_PoolManager, card_Canvas, card_SpawnPosition, card_LeftPosition, card_RightPosition, card_AfterImage, card_SummonRangeLine);
         battle_Camera = new Battle_Camera(this, main_Cam);
-        battle_PenCase = new Battle_PencilCase(this);
         battle_Unit = new Battle_Unit(this, unit_Prefeb, unit_PoolManager, unit_Parent);
         battle_Effect = new Battle_Effect(this, effect_PoolManager);
         battle_Throw = new Battle_Throw(this, throw_parabola, throw_Arrow, currentStageData);
@@ -273,15 +260,6 @@ public class BattleManager : MonoBehaviour
     public void Run_UpgradeCostGrade()
     {
         battle_Cost.Run_UpgradeCostGrade();
-    }
-
-    #endregion
-
-    #region 필통 시스템 함수 Battle_PencilCase
-
-    public void Run_PencilCaseAbility()
-    {
-        battle_PenCase.Run_PencilCaseAbility();
     }
 
     #endregion

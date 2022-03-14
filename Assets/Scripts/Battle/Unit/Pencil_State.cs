@@ -17,30 +17,27 @@ public class PencilStateManager : IStateManager
 
     private float Wait_extraTime = 0;
 
-    public PencilStateManager()
+    public void Reset_CurrentUnitState(UnitState unitState)
     {
+        cur_unitState = unitState;
+    }
+    public UnitState Return_CurrentUnitState()
+    {
+        return cur_unitState;
     }
 
-    public void Reset_CurrentUnitState()
+    public void Set_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
     {
-        throw new System.NotImplementedException();
-    }
-    
-    public void Set_State()
-    {
-        throw new System.NotImplementedException();
-    }
-    public void Reset_State(UnitState unitState)
-    {
-        //스테이트들을 리셋한다
-        this.cur_unitState = unitState;
-        IdleState = new Pencil_Idle_State(unitState.myTrm, unitState.mySprTrm, unitState.myUnit);
-        WaitState = new Pencil_Wait_State(unitState.myTrm, unitState.mySprTrm, unitState.myUnit);
-        MoveState = new Pencil_Move_State(unitState.myTrm, unitState.mySprTrm, unitState.myUnit);
-        AttackState = new Pencil_Attack_State(unitState.myTrm, unitState.mySprTrm, unitState.myUnit);
-        DamagedState = new Pencil_Damaged_State(unitState.myTrm, unitState.mySprTrm, unitState.myUnit);
-        DieState = new Pencil_Die_State(unitState.myTrm, unitState.mySprTrm, unitState.myUnit);
-        ThrowState = new Pencil_Throw_State(unitState.myTrm, unitState.mySprTrm, unitState.myUnit);
+        //스테이트들을 설정한다
+        IdleState = new Pencil_Idle_State(myTrm, mySprTrm, myUnit);
+        WaitState = new Pencil_Wait_State(myTrm, mySprTrm, myUnit);
+        MoveState = new Pencil_Move_State(myTrm, mySprTrm, myUnit);
+        AttackState = new Pencil_Attack_State(myTrm, mySprTrm, myUnit);
+        DamagedState = new Pencil_Damaged_State(myTrm, mySprTrm, myUnit);
+        DieState = new Pencil_Die_State(myTrm, mySprTrm, myUnit);
+        ThrowState = new Pencil_Throw_State(myTrm, mySprTrm, myUnit);
+
+        Reset_CurrentUnitState(IdleState);
 
         IdleState.Set_StateChange(this);
         WaitState.Set_StateChange(this);
@@ -50,65 +47,77 @@ public class PencilStateManager : IStateManager
         DieState.Set_StateChange(this);
         ThrowState.Set_StateChange(this);
     }
+    public void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
+    {
+        IdleState.Reset_State(myTrm, mySprTrm, myUnit);
+        WaitState.Reset_State(myTrm, mySprTrm, myUnit);
+        MoveState.Reset_State(myTrm, mySprTrm, myUnit);
+        AttackState.Reset_State(myTrm, mySprTrm, myUnit);
+        DamagedState.Reset_State(myTrm, mySprTrm, myUnit);
+        DieState.Reset_State(myTrm, mySprTrm, myUnit);
+        ThrowState.Reset_State(myTrm, mySprTrm, myUnit);
 
-    public void Return_Attack(Unit targetUnit)
+        Reset_CurrentUnitState(IdleState);
+    }
+
+    public void Set_Attack(Unit targetUnit)
     {
         cur_unitState.Set_Event(eEvent.EXIT);
         AttackState.Set_Target(targetUnit);
         cur_unitState.nextState = AttackState;
         AttackState.Reset_State();
-        cur_unitState = AttackState;
+        Reset_CurrentUnitState(AttackState);
     }
 
-    public void Return_Damaged(AtkData atkData)
+    public void Set_Damaged(AtkData atkData)
     {
         cur_unitState.Set_Event(eEvent.EXIT);
         DamagedState.Set_AtkData(atkData);
         cur_unitState.nextState = DamagedState;
         DamagedState.Reset_State();
-        cur_unitState = DamagedState;
+        Reset_CurrentUnitState(DamagedState);
     }
 
-    public void Return_Die()
+    public void Set_Die()
     {
         cur_unitState.Set_Event(eEvent.EXIT);
         cur_unitState.nextState = DieState;
         DieState.Reset_State();
-        cur_unitState = DieState;
+        Reset_CurrentUnitState(DieState);
     }
 
-    public void Return_Idle()
+    public void Set_Idle()
     {
         cur_unitState.Set_Event(eEvent.EXIT);
         cur_unitState.nextState = IdleState;
         IdleState.Reset_State();
-        cur_unitState = IdleState;
+        Reset_CurrentUnitState(IdleState);
     }
 
-    public void Return_Move()
+    public void Set_Move()
     {
         cur_unitState.Set_Event(eEvent.EXIT);
         cur_unitState.nextState = MoveState;
         MoveState.Reset_State();
-        cur_unitState = MoveState;
+        Reset_CurrentUnitState(MoveState);
     }
 
-    public void Return_Throw()
+    public void Set_Throw()
     {
         cur_unitState.Set_Event(eEvent.EXIT);
         cur_unitState.nextState = ThrowState;
         ThrowState.Reset_State();
-        cur_unitState = ThrowState;
+        Reset_CurrentUnitState(ThrowState);
     }
 
-    public void Return_Wait(float time)
+    public void Set_Wait(float time)
     {
         cur_unitState.Set_Event(eEvent.EXIT);
         WaitState.Set_Time(time);
         WaitState.Set_ExtraTime(Wait_extraTime);
         cur_unitState.nextState = WaitState;
         WaitState.Reset_State();
-        cur_unitState = WaitState;
+        Reset_CurrentUnitState(WaitState);
     }
 
 
@@ -116,6 +125,7 @@ public class PencilStateManager : IStateManager
     {
         this.Wait_extraTime = extraTime;
     }
+
 }
 
 public class Pencil_Idle_State : Stationary_UnitState
@@ -133,7 +143,7 @@ public class Pencil_Idle_State : Stationary_UnitState
 
     public override void Update()
     {
-        stateChange.Return_Wait(0.5f);
+        stateChange.Set_Wait(0.5f);
     }
 
     public override void Exit()
@@ -176,7 +186,7 @@ public class Pencil_Wait_State : Stationary_UnitState
             waitTime -= Time.deltaTime;
             return;
         }
-        stateChange.Return_Move();
+        stateChange.Set_Move();
     }
 }
 
@@ -262,7 +272,7 @@ public class Pencil_Move_State : Stationary_UnitState
         {
             if (Vector2.Distance(myTrm.position, targetUnit.transform.position) < myUnit.Return_Range())
             {
-                stateChange.Return_Attack(targetUnit);
+                stateChange.Set_Attack(targetUnit);
             }
         }
 
@@ -321,7 +331,7 @@ public class Pencil_Attack_State : Stationary_UnitState
         cur_delay = 0;
         Set_Delay();
 
-        stateChange.Return_Wait(0.4f);
+        stateChange.Set_Wait(0.4f);
         curEvent = eEvent.EXIT;
         if (Random.Range(0,100) <= myUnit.Return_Accuracy())
         {
@@ -346,23 +356,23 @@ public class Pencil_Attack_State : Stationary_UnitState
         {
             if (Vector2.Distance(myTrm.position, targetUnit.transform.position) > myUnit.Return_Range())
             {
-                stateChange.Return_Move();
+                stateChange.Set_Move();
                 return;
             }
 
             if (myUnit.eTeam.Equals(TeamType.MyTeam) && myTrm.position.x > targetUnit.transform.position.x)
             {
-                stateChange.Return_Move();
+                stateChange.Set_Move();
                 return;
             }
             if (myUnit.eTeam.Equals(TeamType.EnemyTeam) && myTrm.position.x < targetUnit.transform.position.x)
             {
-                stateChange.Return_Move();
+                stateChange.Set_Move();
                 return;
             }
             if(targetUnit.transform.position.y > myTrm.position.y)
             {
-                stateChange.Return_Move();
+                stateChange.Set_Move();
                 return;
             }
         }
@@ -396,10 +406,10 @@ public class Pencil_Damaged_State : Stationary_UnitState
 
         myUnit.Set_IsInvincibility(true);
         myUnit.Subtract_HP(atkData.damage);
-        stateChange.Return_Wait(0.5f);
+        stateChange.Set_Wait(0.5f);
         if (myUnit.hp <= 0)
         {
-            stateChange.Return_Die();
+            stateChange.Set_Die();
             return;
         }
         KnockBack();
@@ -580,7 +590,7 @@ public class Pencil_Throw_State : Stationary_UnitState
 
         if(dir < 0)
         {
-            stateChange.Return_Wait(0.5f);
+            stateChange.Set_Wait(0.5f);
             return;
         }
 
@@ -597,7 +607,7 @@ public class Pencil_Throw_State : Stationary_UnitState
         mySprTrm.DOKill();
         myTrm.DOJump(new Vector3(myTrm.position.x - width, 0, myTrm.position.z), height, 1, time).OnComplete(() =>
         {
-            stateChange.Return_Wait(0.5f);
+            stateChange.Set_Wait(0.5f);
         }).SetEase(Utill.Utill.Return_ParabolaCurve());
         
         base.Enter();

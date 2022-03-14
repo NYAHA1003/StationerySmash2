@@ -25,6 +25,13 @@ public abstract class UnitState
         this.battleManager = myUnit.battleManager;
     }
 
+    public void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
+    {
+        this.myTrm = myTrm;
+        this.mySprTrm = mySprTrm;
+        this.myUnit = myUnit;
+    }
+
     public virtual void Enter() { curEvent = eEvent.UPDATE; }
     public virtual void Update() { curEvent = eEvent.UPDATE; }
     public virtual void Exit() { curEvent = eEvent.EXIT; }
@@ -84,7 +91,7 @@ public abstract class UnitState
             //똑같은 공격 아이디를 지닌 공격은 무시함
             return;
         }
-        this.stateChange.Return_Damaged(atkData);
+        this.stateChange.Set_Damaged(atkData);
     }
     public void Add_StatusEffect(AtkType atkType, params float[] value)
     {
@@ -117,7 +124,7 @@ public abstract class UnitState
             return null;
         }
 
-        stateChange.Return_Wait(2);
+        stateChange.Set_Wait(2);
         return myUnit;
     }
 
@@ -135,7 +142,7 @@ public abstract class UnitState
 
     public void Throw_Unit()
     {
-        stateChange.Return_Throw();
+        stateChange.Set_Throw();
     }
 
 }
