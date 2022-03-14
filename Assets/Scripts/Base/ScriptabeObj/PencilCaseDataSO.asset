@@ -9,20 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3526a114fdedd849974e26a8077b61a, type: 3}
-  m_Name: StageDataSO
+  m_Script: {fileID: 11500000, guid: 69a706f43cc0207469aacd24ef10386d, type: 3}
+  m_Name: PencilCaseDataSO
   m_EditorClassIdentifier: 
-  stageDatas:
-  - name: "\uC2A4\uD14C\uC774\uC9C01"
-    max_Range: 3
-    timeType: 0
-    timeValue: 300
-  enemyPencilCase:
-    maxCard: 3
+  pencilCaseData:
+    maxCard: 4
     costSpeed: 100
     pencilCaseData:
       cardType: 1
-      card_Name: "\uC801\uD544\uD1B5"
+      card_Name: "\uD544\uD1B5"
       card_Cost: 0
       card_Sprite: {fileID: 21300000, guid: b5418de72b5ba3f448beb725d2a12048, type: 3}
       strategyData:

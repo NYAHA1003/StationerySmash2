@@ -10,6 +10,7 @@ public class StageDataSO : ScriptableObject
 {
     [Header("임시 스테이지 데이터")]
     public List<StageData> stageDatas;
+    public PencilCaseData enemyPencilCase;
 }
 
 [System.Serializable]

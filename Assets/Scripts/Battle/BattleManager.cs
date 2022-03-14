@@ -138,6 +138,18 @@ public class BattleManager : MonoBehaviour
 
     #endregion
 
+    #region 필통 시스템 Battle_PencilCase
+
+    public Battle_PencilCase battle_PencilCase { get; private set; }
+    [SerializeField, Header("필통시스템 Battle_PencilCase"), Space(30)]
+    public Unit pencilCase_My;
+    public Unit pencilCase_Enemy;
+    public PencilCaseDataSO pencilCase_MyData;
+    public PencilCaseData pencilCase_EnemyData;
+
+
+    #endregion
+
     private void Start()
     {
         deckData = new DeckData();
@@ -149,6 +161,11 @@ public class BattleManager : MonoBehaviour
         battle_AI = new Battle_AI(this);
         battle_Time = new Battle_Time(this, time_TimeText);
         battle_Cost = new Battle_Cost(this, cost_CostText);
+        pencilCase_EnemyData = stageDataSO.enemyPencilCase;
+        battle_PencilCase = new Battle_PencilCase(this, pencilCase_My, pencilCase_Enemy, pencilCase_MyData.pencilCaseData, pencilCase_EnemyData);
+
+        battle_Cost.Set_CostSpeed(pencilCase_MyData.pencilCaseData.costSpeed);
+        battle_Card.Set_MaxCard(pencilCase_MyData.pencilCaseData.maxCard);
 
         isEndSetting = true;
     }
@@ -267,6 +284,15 @@ public class BattleManager : MonoBehaviour
     public void Run_UpgradeCostGrade()
     {
         battle_Cost.Run_UpgradeCostGrade();
+    }
+
+    #endregion
+
+    #region 필통 시스템 함수 Battle_PencilCase
+
+    public void Run_PencilCaseAbility()
+    {
+        battle_PencilCase.Run_PencilCaseAbility();
     }
 
     #endregion

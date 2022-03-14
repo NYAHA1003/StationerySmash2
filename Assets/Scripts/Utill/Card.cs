@@ -28,6 +28,7 @@ namespace Utill
     public enum UnitType
     {
         None,
+        PencilCase,
         Pencil,
         Eraser,
         Sharp,

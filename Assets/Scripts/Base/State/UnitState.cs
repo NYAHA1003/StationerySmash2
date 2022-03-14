@@ -59,11 +59,6 @@ public abstract class UnitState
         return this;
     }
 
-    public void Set_Unit()
-    {
-
-    }
-
     public void Set_Event(eEvent eEvent)
     {
         curEvent = eEvent;
@@ -79,7 +74,7 @@ public abstract class UnitState
         nextState = null;
         curEvent = eEvent.ENTER;
     }
-    public void Run_Damaged(AtkData atkData)
+    public virtual void Run_Damaged(AtkData atkData)
     {
         if (atkData.damageId.Equals(-1))
         {
@@ -93,13 +88,12 @@ public abstract class UnitState
         }
         this.stateChange.Set_Damaged(atkData);
     }
-
     /// <summary>
     /// 효과 추가
     /// </summary>
     /// <param name="atkType"></param>
     /// <param name="value"></param>
-    public void Add_StatusEffect(AtkType atkType, params float[] value)
+    public virtual void Add_StatusEffect(AtkType atkType, params float[] value)
     {
         //이미 있는 효과인지 찾기
         Eff_State statEffState = myUnit.statEffList.Find(x => x.statusType.Equals(atkType));
@@ -125,9 +119,7 @@ public abstract class UnitState
                 return;
         }
     }
-    
-
-    public Unit Pull_Unit()
+    public virtual Unit Pull_Unit()
     {
         if (myUnit.isDontThrow)
             return null;
@@ -139,8 +131,7 @@ public abstract class UnitState
         stateChange.Set_Wait(2);
         return myUnit;
     }
-
-    public Unit Pulling_Unit()
+    public virtual Unit Pulling_Unit()
     {
         if (myUnit.isDontThrow)
             return null;
@@ -151,8 +142,7 @@ public abstract class UnitState
 
         return myUnit;
     }
-
-    public void Throw_Unit()
+    public virtual void Throw_Unit()
     {
         stateChange.Set_Throw();
     }
