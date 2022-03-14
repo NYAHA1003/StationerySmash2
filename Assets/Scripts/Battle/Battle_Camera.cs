@@ -12,6 +12,7 @@ public class Battle_Camera : BattleCommand
     private Vector3 mouse_Pos;
 
     private bool isCameraMove = false;
+    private bool isEffect = false;
 
     public float perspectiveZoomSpeed = 0.5f;       // perspective mode.
     public float orthoZoomSpeed = 0.5f;        //  orthographic mode.
@@ -36,6 +37,9 @@ public class Battle_Camera : BattleCommand
     /// </summary>
     public void Update_CameraScale()
     {
+        if (isEffect)
+            return;
+
         if (Input.GetKey(KeyCode.UpArrow))
         {
             if (battleManager.currentStageData.max_Range - 1 < camera.orthographicSize)
@@ -96,13 +100,15 @@ public class Battle_Camera : BattleCommand
     /// </summary>
     public void Update_CameraPos()
     {
+        if (isEffect)
+            return;
         //if(Input.touchCount != 1)
         //{
         //    return;
         //}
 
         //카드를 클릭한 상태라면
-        if(battleManager.battle_Card.isCardDown)
+        if (battleManager.battle_Card.isCardDown)
         {
             isCameraMove = false;
             return;
@@ -133,5 +139,21 @@ public class Battle_Camera : BattleCommand
                 camera.transform.DOMoveX(-battleManager.currentStageData.max_Range, 0.1f);
             }
         }
+    }
+
+    /// <summary>
+    /// 승리 카메라 이펙트
+    /// </summary>
+    public void Win_CamEffect(Vector2 pos)
+    {
+        if (isEffect)
+            return;
+        isEffect = true;
+        float time = Vector2.Distance(camera.transform.position, pos) / 5;
+        camera.transform.DOMove(new Vector3(pos.x,pos.y,-10), time);
+
+        DOTween.To(() => camera.orthographicSize, x => camera.orthographicSize = x, 0.5f, time);
+        int angle = Random.Range(0, 2) > 0 ? 30 : -30;
+        camera.transform.DORotate(new Vector3(0, 0, angle), 5);
     }
 }
