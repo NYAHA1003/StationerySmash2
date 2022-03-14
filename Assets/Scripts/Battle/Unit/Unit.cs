@@ -144,6 +144,10 @@ public class Unit : MonoBehaviour
     {
         switch (unitData.unitType)
         {
+            case UnitType.PencilCase:
+                stateManager = Battle_Unit.GetItem<PencilCaseStateManager>(transform, spr.transform, this);
+                break;
+
             default:
             case UnitType.None:
             case UnitType.Pencil:
@@ -164,12 +168,20 @@ public class Unit : MonoBehaviour
     {
         switch (unitData.unitType)
         {
+            case UnitType.PencilCase:
+                Battle_Unit.AddItem((PencilCaseStateManager)stateManager);
+                break;
+
+            case UnitType.BallPen:
+                Battle_Unit.AddItem((BallpenStateManager)stateManager);
+                break;
+
             default:
             case UnitType.None:
             case UnitType.Pencil:
             case UnitType.Eraser:
             case UnitType.Sharp:
-                Battle_Unit.AddItem<PencilStateManager>((PencilStateManager)stateManager);
+                Battle_Unit.AddItem((PencilStateManager)stateManager);
                 break;
         }
     }

@@ -4,12 +4,10 @@ using UnityEngine;
 
 namespace Utill
 {
-    public class PencilCase
+    public enum PencilCaseType
     {
-        public enum PencilCaseType
-        {
-            Normal,
+        Normal,
 
-        }
     }
+
 }
