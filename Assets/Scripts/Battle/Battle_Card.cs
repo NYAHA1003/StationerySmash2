@@ -104,6 +104,8 @@ public class Battle_Card : BattleCommand
         {
             CardMove targetCard1 = battleManager.card_DatasTemp[battleManager.card_DatasTemp.Count - 1];
             CardMove targetCard2 = battleManager.card_DatasTemp[battleManager.card_DatasTemp.Count - 2];
+
+            if (targetCard1.grade < 2 && targetCard2.grade < 2)
             Fusion_Check(targetCard1, targetCard2);
         }
 
@@ -240,6 +242,8 @@ public class Battle_Card : BattleCommand
         {
             targetCard1 = battleManager.card_DatasTemp[i];
             targetCard2 = battleManager.card_DatasTemp[i + 1];
+            if (targetCard1.grade > 2 || targetCard2.grade > 2)
+                continue;
 
             if (Fusion_Check(targetCard1, targetCard2))
             {
