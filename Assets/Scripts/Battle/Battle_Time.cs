@@ -4,8 +4,10 @@ using UnityEngine;
 using Utill;
 using TMPro;
 
+
 public class Battle_Time : BattleCommand
 {
+
     private StageData stageData;
     private float timer;
     private TextMeshProUGUI timeText;

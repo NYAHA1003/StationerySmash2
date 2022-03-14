@@ -166,7 +166,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 636465713026102459}
-  - component: {fileID: 4403586084709680864}
+  - component: {fileID: 1620893961092262553}
   m_Layer: 0
   m_Name: Unit
   m_TagString: Untagged
@@ -190,7 +190,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4403586084709680864
+--- !u!114 &1620893961092262553
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -199,15 +199,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 636465713026102458}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bead1cbfa50fb934da77e3acdbc2908a, type: 3}
+  m_Script: {fileID: 11500000, guid: 509f157fbcc27074185d8f8988385b1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   unitData:
-    unitName: 
-    hp: 0
-    sprite: {fileID: 0}
-    weight: 0
-    cost: 0
+    unit_Hp: 0
+    unit_Weight: 0
     knockback: 0
     dir: 0
     accuracy: 0
@@ -218,11 +215,11 @@ MonoBehaviour:
     unitType: 0
     atkType: 0
     unitablityData: []
+  canvas: {fileID: 1229507686348804346}
+  delayBar: {fileID: 1495274319}
   spr: {fileID: 8050812612465737753}
   eTeam: 0
-  myDamagedId: 0
-  damageCount: 0
-  myUnitId: 0
+  unitablityData: []
   damagePercent: 100
   moveSpeedPercent: 100
   attackSpeedPercent: 100
@@ -230,42 +227,6 @@ MonoBehaviour:
   accuracyPercent: 100
   weightPercent: 100
   knockbackPercent: 100
-  unitablityData: []
-  canvas: {fileID: 1229507686348804346}
-  delayBar: {fileID: 1495274319}
-  asa:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: -0.008813612
-      outSlope: -0.008813612
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.5556595
-    - serializedVersion: 3
-      time: 0.93587357
-      value: 0.3258655
-      inSlope: 1.0313913
-      outSlope: 1.0313913
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &7400524376483032631
 GameObject:
   m_ObjectHideFlags: 0

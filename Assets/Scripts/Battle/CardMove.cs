@@ -9,14 +9,14 @@ using Utill;
 
 
 
-public class CardMove : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHandler, IPointerUpHandler
+public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField]
     private Image card_Background;
     [SerializeField]
-    private Image card_UnitImage;
+    private Image card_Image;
     [SerializeField]
-    private TextMeshProUGUI card_UnitCost;
+    private TextMeshProUGUI card_CostText;
     [SerializeField]
     private Image card_Grade;
     [SerializeField]
@@ -29,49 +29,56 @@ public class CardMove : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDo
     public int card_Cost { get; private set; }
     public bool isFusion;
 
-    public UnitData unitData;
+    public DataBase dataBase;
 
     public int grade = 1;
     public int id;
-    private float scale;
 
     private RectTransform rectTransform;
 
     private BattleManager battleManager;
 
-    private Canvas cardCanvas;
 
     private bool isDrag; // 드래그 중인 상태인가
-    private void Awake()
-    {
-        battleManager = FindObjectOfType<BattleManager>();
-        rectTransform = GetComponent<RectTransform>();
-    }
-
+    
     public PRS originPRS;
 
     /// <summary>
-    /// 카드에 유닛 데이터를 전달함
+    /// 카드에 데이터를 전달함
     /// </summary>
-    /// <param name="unitData">유닛 데이터</param>
+    /// <param name="dataBase">유닛 데이터</param>
     /// <param name="id">카드 고유 아이디</param>
-    public void Set_UnitData(UnitData unitData, int id)
+    public void Set_UnitData(DataBase dataBase, int id)
     {
-        cardCanvas ??= transform.parent.GetComponent<Canvas>();
-        
-        isDrag = false;
+        battleManager??= FindObjectOfType<BattleManager>();
+        rectTransform??= GetComponent<RectTransform>();
 
+        //기본적인 초기화
+        isDrag = false;
         this.id = id;
-        this.unitData = unitData;
-        card_Name.text = unitData.unitName;
-        card_UnitCost.text = unitData.cost.ToString();
-        card_UnitImage.sprite = unitData.sprite;
-        card_Cost = unitData.cost;
-        grade = 0;
+        this.dataBase = dataBase;
+        card_Name.text = dataBase.card_Name;
+        card_CostText.text = dataBase.card_Cost.ToString();
+        card_Cost = dataBase.card_Cost;
+        card_Image.sprite = dataBase.card_Sprite;
+        grade = 1;
         Set_UnitGrade();
-        
         fusion_Effect.color = new Color(1, 1, 1, 1);
         fusion_Effect.DOFade(0, 0.8f);
+
+        //유닛별 초기화
+        switch (dataBase.cardType)
+        {
+            default:
+            case CardType.Execute:
+            case CardType.SummonTrap:
+            case CardType.Installation:
+                break;
+            case CardType.SummonUnit:
+                break;
+        }
+
+        
     }
 
     /// <summary>
@@ -174,8 +181,9 @@ public class CardMove : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDo
     /// <summary>
     /// 융합시 하얘짐
     /// </summary>
-    public void Fusion_FadeInEffect()
+    public void Fusion_FadeInEffect(Color color)
     {
+        fusion_Effect.color = color;
         fusion_Effect.DOFade(1, 0.3f);
     }
     /// <summary>
@@ -192,58 +200,53 @@ public class CardMove : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDo
     /// <param name="eventData"></param>
     public void OnDrag(PointerEventData eventData)
     {
-        /*
-         *캔버스가 카메라옵션일 때
-         *Vector2 localPos;
-         *RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, Input.mouseScrollDelta, cardCanvas.worldCamera, out localPos);
-         *Set_CardPosition(new PRS(cardCanvas.transform.TransformPoint(localPos), Quaternion.identity, Vector3.one), 0, false);
-        */
-
-        if (isFusion) return;
-
-        isDrag = true;
-        transform.position = Input.mousePosition;
-        transform.DOKill();
-        Set_CardRot(Quaternion.identity, 0.3f);
-
-        if(rectTransform.anchoredPosition.y > 0)
-        {
-            Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            battleManager.battle_Card.Set_UnitAfterImage(unitData, mouse_Pos);
-            return;
-        }
-        battleManager.battle_Card.Set_UnitAfterImage(unitData, Vector3.zero, true);
+        //if(rectTransform.anchoredPosition.y > 0)
+        //{
+        //    Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //    battleManager.battle_Card.Set_UnitAfterImage(unitData, mouse_Pos);
+        //    return;
+        //}
+        //battleManager.battle_Card.Set_UnitAfterImage(unitData, Vector3.zero, true);
     }
 
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        battleManager.battle_Card.Set_UnitAfterImage(unitData, Vector3.zero, true);
-
-        if (rectTransform.anchoredPosition.y > 0)
-        {
-            battleManager.battle_Card.Set_UseCard(this);
-            return;
-        }
-
-        Set_CardPRS(originPRS, 0.3f);
-        battleManager.battle_Card.Set_UnSelectCard(this);
-        isDrag = false;
-
-    }
-
+    /// <summary>
+    /// 카드 선택
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (isFusion) return;
+        if (isDrag) return;
+
+        isDrag = true;
         battleManager.battle_Card.Set_SelectCard(this);
     }
 
+    /// <summary>
+    /// 카드 선택 해제
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerUp(PointerEventData eventData)
     {
-        if(!isDrag)
+        if(isDrag)
         {
+            isDrag = false;
+            //battleManager.battle_Card.Set_UnitAfterImage(dataBase.card_Sprite, Vector3.zero, true);
+
+            if (rectTransform.anchoredPosition.y > 0)
+            {
+                battleManager.battle_Card.Set_UseCard(this);
+                return;
+            }
+
+            Set_CardPRS(originPRS, 0.3f);
             battleManager.battle_Card.Set_UnSelectCard(this);
         }
     }
 
+    /// <summary>
+    /// 원래 위치로 돌아감
+    /// </summary>
     public void Run_OriginPRS()
     {
         Set_CardPRS(originPRS, 0.3f);
