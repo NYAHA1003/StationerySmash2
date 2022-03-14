@@ -28,6 +28,8 @@ public class PencilStateManager : IStateManager
 
     public void Set_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
     {
+        Debug.Log("생성");
+
         //스테이트들을 설정한다
         IdleState = new Pencil_Idle_State(myTrm, mySprTrm, myUnit);
         WaitState = new Pencil_Wait_State(myTrm, mySprTrm, myUnit);
@@ -49,13 +51,23 @@ public class PencilStateManager : IStateManager
     }
     public void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
     {
-        IdleState.Reset_State(myTrm, mySprTrm, myUnit);
-        WaitState.Reset_State(myTrm, mySprTrm, myUnit);
-        MoveState.Reset_State(myTrm, mySprTrm, myUnit);
-        AttackState.Reset_State(myTrm, mySprTrm, myUnit);
-        DamagedState.Reset_State(myTrm, mySprTrm, myUnit);
-        DieState.Reset_State(myTrm, mySprTrm, myUnit);
-        ThrowState.Reset_State(myTrm, mySprTrm, myUnit);
+        Debug.Log("재활용");
+
+        IdleState.Change_Trm(myTrm, mySprTrm, myUnit);
+        WaitState.Change_Trm(myTrm, mySprTrm, myUnit);
+        MoveState.Change_Trm(myTrm, mySprTrm, myUnit);
+        AttackState.Change_Trm(myTrm, mySprTrm, myUnit);
+        DamagedState.Change_Trm(myTrm, mySprTrm, myUnit);
+        DieState.Change_Trm(myTrm, mySprTrm, myUnit);
+        ThrowState.Change_Trm(myTrm, mySprTrm, myUnit);
+
+        IdleState.Reset_State();
+        WaitState.Reset_State();
+        MoveState.Reset_State();
+        AttackState.Reset_State();
+        DamagedState.Reset_State();
+        DieState.Reset_State();
+        ThrowState.Reset_State();
 
         Reset_CurrentUnitState(IdleState);
     }

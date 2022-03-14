@@ -87,11 +87,11 @@ public class Battle_Unit : BattleCommand
     /// </summary>
     public void Clear_Unit()
     {
-        for (int i = 1; battleManager.unit_MyDatasTemp.Count > 1;)
+        for (int i = 0; battleManager.unit_MyDatasTemp.Count > 0;)
         {
             battleManager.unit_MyDatasTemp[i].Delete_Unit();
         }
-        for (int i = 1; battleManager.unit_EnemyDatasTemp.Count > 1;)
+        for (int i = 0; battleManager.unit_EnemyDatasTemp.Count > 0;)
         {
             battleManager.unit_EnemyDatasTemp[i].Delete_Unit();
         }
@@ -103,17 +103,14 @@ public class Battle_Unit : BattleCommand
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="count"></param>
-    public static void CreatePool<T>(Transform myTrm, Transform mySprTrm, Unit myUnit, int count = 3) where T : IStateManager, new()
+    public static void CreatePool<T>(Transform myTrm, Transform mySprTrm, Unit myUnit) where T : IStateManager, new()
     {
         Queue<T> q = new Queue<T>();
 
-        for (int i = 0; i < count; i++)
-        {
-            T g = new T();
-            g.Set_State(myTrm, mySprTrm, myUnit);
+        T g = new T();
+        g.Set_State(myTrm, mySprTrm, myUnit);
 
-            q.Enqueue(g);
-        }
+        q.Enqueue(g);
 
         try
         {
@@ -139,9 +136,8 @@ public class Battle_Unit : BattleCommand
         if (stateDic.ContainsKey(typeof(T).Name))
         {
             Queue<T> q = (Queue<T>)stateDic[typeof(T).Name];
-            T firstItem = q.Peek();
 
-            if (firstItem == null)
+            if (q.Count == 0)
             {  //안 사용하는 상태가 없으면 새로운 상태를 만든다
                 item = new T();
                 item.Set_State(myTrm, mySprTrm, myUnit);
@@ -151,8 +147,7 @@ public class Battle_Unit : BattleCommand
                 item = q.Dequeue();
                 item.Reset_State(myTrm, mySprTrm, myUnit);
             }
-            q.Enqueue(item);
-
+            Debug.Log("현재 갯수: " + q.Count);
         }
         else
         {
@@ -160,10 +155,23 @@ public class Battle_Unit : BattleCommand
             Queue<T> q = (Queue<T>)stateDic[typeof(T).Name];
             item = q.Dequeue();
             item.Reset_State(myTrm, mySprTrm, myUnit);
-            q.Enqueue(item);
+            //q.Enqueue(item);
+            Debug.Log("현재 갯수: " + q.Count);
         }
+
 
         //할당
         return item;
+    }
+
+    /// <summary>
+    /// 다 쓴 상태 반납
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="state"></param>
+    public static void AddItem<T>(T state) where T : IStateManager
+    {
+        Queue<T> q = (Queue<T>)stateDic[typeof(T).Name];
+        q.Enqueue(state);
     }
 }

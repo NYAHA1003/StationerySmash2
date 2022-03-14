@@ -106,16 +106,7 @@ public class Unit : MonoBehaviour
         this.myUnitId = id;
 
         //스테이트 설정
-        switch (dataBase.unitData.unitType)
-        {
-            default:
-            case UnitType.None:
-            case UnitType.Pencil:
-            case UnitType.Eraser:
-            case UnitType.Sharp:
-                stateManager = Battle_Unit.GetItem<PencilStateManager>(transform, spr.transform, this);
-                break;
-        }
+        Add_state();
 
         unitState = stateManager.Return_CurrentUnitState();
 
@@ -144,6 +135,8 @@ public class Unit : MonoBehaviour
     public virtual void Delete_Unit()
     {
         battleManager.Pool_DeleteUnit(this);
+        Delete_state();
+        unitState = null;
 
         switch (eTeam)
         {
@@ -154,6 +147,33 @@ public class Unit : MonoBehaviour
                 break;
             case TeamType.EnemyTeam:
                 battleManager.unit_EnemyDatasTemp.Remove(this);
+                break;
+        }
+    }
+
+    private void Add_state()
+    {
+        switch (unitData.unitType)
+        {
+            default:
+            case UnitType.None:
+            case UnitType.Pencil:
+            case UnitType.Eraser:
+            case UnitType.Sharp:
+                stateManager = Battle_Unit.GetItem<PencilStateManager>(transform, spr.transform, this);
+                break;
+        }
+    }
+    private void Delete_state()
+    {
+        switch (unitData.unitType)
+        {
+            default:
+            case UnitType.None:
+            case UnitType.Pencil:
+            case UnitType.Eraser:
+            case UnitType.Sharp:
+                Battle_Unit.AddItem<PencilStateManager>((PencilStateManager)stateManager);
                 break;
         }
     }

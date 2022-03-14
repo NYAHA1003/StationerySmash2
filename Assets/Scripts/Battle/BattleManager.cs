@@ -187,6 +187,12 @@ public class BattleManager : MonoBehaviour
             battle_Card.Subtract_Card();
         }
 
+        //유닛 시스템
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            battle_Unit.Clear_Unit();
+        }
+
         //던지기 시스템
         if(Input.GetMouseButtonDown(0))
         {

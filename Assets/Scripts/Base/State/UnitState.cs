@@ -25,7 +25,7 @@ public abstract class UnitState
         this.battleManager = myUnit.battleManager;
     }
 
-    public void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
+    public void Change_Trm(Transform myTrm, Transform mySprTrm, Unit myUnit)
     {
         this.myTrm = myTrm;
         this.mySprTrm = mySprTrm;
