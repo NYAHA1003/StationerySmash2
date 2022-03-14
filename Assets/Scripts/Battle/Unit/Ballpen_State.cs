@@ -28,8 +28,6 @@ public class BallpenStateManager : IStateManager
 
     public void Set_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
     {
-        Debug.Log("생성");
-
         //스테이트들을 설정한다
         IdleState = new    Ballpen_Idle_State(myTrm, mySprTrm, myUnit);
         WaitState = new    Ballpen_Wait_State(myTrm, mySprTrm, myUnit);
@@ -51,8 +49,6 @@ public class BallpenStateManager : IStateManager
     }
     public void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
     {
-        Debug.Log("재활용");
-
         IdleState.Change_Trm(myTrm, mySprTrm, myUnit);
         WaitState.Change_Trm(myTrm, mySprTrm, myUnit);
         MoveState.Change_Trm(myTrm, mySprTrm, myUnit);
@@ -188,6 +184,80 @@ public class Ballpen_Throw_State : Pencil_Throw_State
 {
     public Ballpen_Throw_State(Transform myTrm, Transform mySprTrm, Unit myUnit) : base(myTrm, mySprTrm, myUnit)
     {
+    }
+    protected override void Run_ThrowAttack(Unit targetUnit)
+    {
+        float dir = Vector2.Angle((Vector2)myTrm.position, (Vector2)targetUnit.transform.position);
+        float extraKnockBack = (targetUnit.weight - myUnit.Return_Weight() * (float)targetUnit.hp / targetUnit.maxhp) * 0.025f;
+        AtkData atkData = new AtkData(myUnit, 0, 0, 0, 0, true, 0, AtkType.Normal, originValue);
+
+        if (myUnit.eTeam.Equals(TeamType.MyTeam))
+        {
+            IntAttack(myUnit.battleManager.unit_EnemyDatasTemp);
+        }
+        else
+        {
+            IntAttack(myUnit.battleManager.unit_MyDatasTemp);
+        }
+
+        atkData.Reset_Damage(100 + (myUnit.weight > targetUnit.weight ? (Mathf.RoundToInt((float)myUnit.weight - targetUnit.weight) / 2) : Mathf.RoundToInt((float)(targetUnit.weight - myUnit.weight) / 5)));
+
+
+        //무게가 더 클 경우
+        if (myUnit.weight > targetUnit.weight)
+        {
+            atkData.Reset_Kncockback(10, extraKnockBack, dir, false);
+            atkData.Reset_Type(AtkType.Stun);
+            atkData.Reset_Value(1);
+            targetUnit.Run_Damaged(atkData);
+            return;
+        }
+
+        //무게가 더 작을 경우
+        if (myUnit.weight < targetUnit.weight)
+        {
+            atkData.Reset_Kncockback(0, 0, 0, false);
+            atkData.Reset_Type(AtkType.Normal);
+            atkData.Reset_Value(0);
+            targetUnit.Run_Damaged(atkData);
+
+            atkData.Reset_Kncockback(20, 0, dir, true);
+            atkData.Reset_Type(AtkType.Stun);
+            atkData.Reset_Value(1);
+            atkData.Reset_Damage(0);
+            myUnit.Run_Damaged(atkData);
+            return;
+        }
+
+        //무게가 같을 경우
+        if (myUnit.weight.Equals(targetUnit.weight))
+        {
+            atkData.Reset_Kncockback(10, extraKnockBack, dir, false);
+            atkData.Reset_Type(AtkType.Stun);
+            atkData.Reset_Value(1);
+            targetUnit.Run_Damaged(atkData);
+
+
+            atkData.Reset_Kncockback(20, 0, dir, true);
+            atkData.Reset_Type(AtkType.Stun);
+            atkData.Reset_Value(1);
+            atkData.Reset_Damage(0);
+            myUnit.Run_Damaged(atkData);
+
+            return;
+        }
+    }
+
+    private void IntAttack(List<Unit> list)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            //originValue[3]은 거리 값
+            if (Vector2.Distance(myTrm.position, list[i].transform.position) < originValue[3])
+            {
+                list[i].Add_StatusEffect(AtkType.Ink, originValue);
+            }
+        }
     }
 
 }

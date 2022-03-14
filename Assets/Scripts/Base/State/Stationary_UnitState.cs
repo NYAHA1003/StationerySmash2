@@ -18,6 +18,7 @@ public class Stationary_UnitState : UnitState
         this.myUnit = myUnit;
         this.stageData = stageData;
         this.myUnitData = myUnit.unitData;
+        originValue = myUnitData.unitablityData;
         stageData = myUnit.battleManager.currentStageData;
     }
 

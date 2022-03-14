@@ -28,8 +28,6 @@ public class PencilStateManager : IStateManager
 
     public void Set_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
     {
-        Debug.Log("생성");
-
         //스테이트들을 설정한다
         IdleState = new Pencil_Idle_State(myTrm, mySprTrm, myUnit);
         WaitState = new Pencil_Wait_State(myTrm, mySprTrm, myUnit);

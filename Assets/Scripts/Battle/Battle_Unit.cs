@@ -122,6 +122,34 @@ public class Battle_Unit : BattleCommand
             stateDic.Add(typeof(T).Name, q);
         }
     }
+    /// <summary>
+    /// 상태 풀링 매니저 생성
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="myTrm"></param>
+    /// <param name="mySprTrm"></param>
+    /// <param name="myUnit"></param>
+    /// <param name="statusEffect"></param>
+    /// <param name="valueList"></param>
+    public static void CreatePoolEff<T>(Transform myTrm, Transform mySprTrm, Unit myUnit, AtkType statusEffect, params float[] valueList) where T : Eff_State, new()
+    {
+        Queue<T> q = new Queue<T>();
+
+        T g = new T();
+        g.Set_StateEff(myTrm, mySprTrm, myUnit, statusEffect, valueList);
+
+        q.Enqueue(g);
+
+        try
+        {
+            stateDic.Add(typeof(T).Name, q);
+        }
+        catch (System.ArgumentException e)
+        {
+            stateDic.Clear();
+            stateDic.Add(typeof(T).Name, q);
+        }
+    }
 
     /// <summary>
     /// 안 쓰는 상태 가져오기
@@ -147,7 +175,6 @@ public class Battle_Unit : BattleCommand
                 item = q.Dequeue();
                 item.Reset_State(myTrm, mySprTrm, myUnit);
             }
-            Debug.Log("현재 갯수: " + q.Count);
         }
         else
         {
@@ -155,8 +182,47 @@ public class Battle_Unit : BattleCommand
             Queue<T> q = (Queue<T>)stateDic[typeof(T).Name];
             item = q.Dequeue();
             item.Reset_State(myTrm, mySprTrm, myUnit);
-            //q.Enqueue(item);
-            Debug.Log("현재 갯수: " + q.Count);
+        }
+
+
+        //할당
+        return item;
+    }
+
+    /// <summary>
+    /// 안 쓰는 상태이상 가져오기
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="myTrm"></param>
+    /// <param name="mySprTrm"></param>
+    /// <param name="myUnit"></param>
+    /// <returns></returns>
+    public static T GetEff<T>(Transform myTrm, Transform mySprTrm, Unit myUnit, AtkType statusEffect, params float[] valueList) where T : Eff_State, new()
+    {
+        T item = default(T);
+
+
+        if (stateDic.ContainsKey(typeof(T).Name))
+        {
+            Queue<T> q = (Queue<T>)stateDic[typeof(T).Name];
+
+            if (q.Count == 0)
+            {  //안 사용하는 상태가 없으면 새로운 상태를 만든다
+                item = new T();
+                item.Set_StateEff(myTrm, mySprTrm, myUnit, statusEffect, valueList);
+            }
+            else
+            {
+                item = q.Dequeue();
+                item.Reset_StateEff(myTrm, mySprTrm, myUnit, statusEffect, valueList);
+            }
+        }
+        else
+        {
+            CreatePoolEff<T>(myTrm, mySprTrm, myUnit, statusEffect, valueList);
+            Queue<T> q = (Queue<T>)stateDic[typeof(T).Name];
+            item = q.Dequeue();
+            item.Reset_StateEff(myTrm, mySprTrm, myUnit, statusEffect, valueList);
         }
 
 
@@ -170,6 +236,17 @@ public class Battle_Unit : BattleCommand
     /// <typeparam name="T"></typeparam>
     /// <param name="state"></param>
     public static void AddItem<T>(T state) where T : IStateManager
+    {
+        Queue<T> q = (Queue<T>)stateDic[typeof(T).Name];
+        q.Enqueue(state);
+    }
+
+    /// <summary>
+    /// 다 쓴 상태이상 반납
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="state"></param>
+    public static void AddEff<T>(T state) where T : Eff_State
     {
         Queue<T> q = (Queue<T>)stateDic[typeof(T).Name];
         q.Enqueue(state);

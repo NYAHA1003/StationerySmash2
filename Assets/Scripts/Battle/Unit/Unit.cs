@@ -22,7 +22,6 @@ public class Unit : MonoBehaviour
     public TeamType eTeam;
 
     public float attack_Cur_Delay { get; protected set; }
-    public float[] unitablityData;
     protected Camera mainCam;
 
     public int myDamagedId { get; protected set; } = 0;
@@ -67,7 +66,6 @@ public class Unit : MonoBehaviour
     public virtual void Set_UnitData(DataBase dataBase, TeamType eTeam, BattleManager battleManager, int id)
     {
         this.unitData = dataBase.unitData;
-        this.unitablityData = dataBase.unitData.unitablityData;
 
         //딜레이시스템
         attack_Cur_Delay = 0;
@@ -113,7 +111,7 @@ public class Unit : MonoBehaviour
 
         for (int i = 0; i < statEffList.Count; i++)
         {
-            statEffList[i] = statEffList[i].Process();
+            statEffList[i].Process();
         }
     }
 
@@ -152,6 +150,9 @@ public class Unit : MonoBehaviour
             case UnitType.Eraser:
             case UnitType.Sharp:
                 stateManager = Battle_Unit.GetItem<PencilStateManager>(transform, spr.transform, this);
+                break;
+            case UnitType.BallPen:
+                stateManager = Battle_Unit.GetItem<BallpenStateManager>(transform, spr.transform, this);
                 break;
         }
     }
