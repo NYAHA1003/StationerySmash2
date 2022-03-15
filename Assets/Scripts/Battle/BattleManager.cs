@@ -152,6 +152,17 @@ public class BattleManager : MonoBehaviour
 
     #endregion
 
+    #region 일시정지 시스템 Battle_Pause
+
+    public Battle_Pause battle_Pause { get; private set; }
+
+    [SerializeField, Header("일시정지시스템 Battle_Pause"), Space(30)]
+    private RectTransform pause_UI;
+    [SerializeField]
+    private Canvas pause_Canvas;
+
+    #endregion
+
     private void Start()
     {
         deckData = new DeckData();
@@ -165,6 +176,7 @@ public class BattleManager : MonoBehaviour
         battle_Cost = new Battle_Cost(this, cost_CostText);
         pencilCase_EnemyData = stageDataSO.enemyPencilCase;
         battle_PencilCase = new Battle_PencilCase(this, pencilCase_My, pencilCase_Enemy, pencilCase_MyData.pencilCaseData, pencilCase_EnemyData);
+        battle_Pause = new Battle_Pause(this, pause_UI, pause_Canvas);
 
         battle_Cost.Set_CostSpeed(pencilCase_MyData.pencilCaseData.costSpeed);
         battle_Card.Set_MaxCard(pencilCase_MyData.pencilCaseData.maxCard);
@@ -299,6 +311,15 @@ public class BattleManager : MonoBehaviour
     public void Run_PencilCaseAbility()
     {
         battle_PencilCase.Run_PencilCaseAbility();
+    }
+
+    #endregion
+
+    #region 일시정지 시스템 함수 Battle_Pause
+
+    public void Set_Pause()
+    {
+        battle_Pause.Set_Pause();
     }
 
     #endregion
