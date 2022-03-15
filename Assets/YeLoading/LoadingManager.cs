@@ -5,13 +5,21 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class LoadingManager : MonoBehaviour
 {
+    private static string nextScene;
+    private int previousRandomNum = 0;
+    [SerializeField]
+    private Image progressBar_Image;
+    [SerializeField]
+    private string[] tip_StrList;
+    [SerializeField]
+    private Text tip_Text;
+    [Range (0, 5)]
+    public float repeatTerm;
     void Start()
     {
         StartCoroutine(LoadSceneProcess());
+        InvokeRepeating("Random_Tips", repeatTerm, 0f);
     }
-    private static string nextScene;
-    [SerializeField]
-    private Image progressBar_Image;
     /// <summary>
     /// 씬 로드하는 함수
     /// </summary>
@@ -22,7 +30,7 @@ public class LoadingManager : MonoBehaviour
         SceneManager.LoadScene("LoadingScene");
     }
 
-    private IEnumerator LoadSceneProcess()
+    public IEnumerator LoadSceneProcess()
     {
         AsyncOperation operation = SceneManager.LoadSceneAsync(nextScene);
         operation.allowSceneActivation = false;
@@ -46,5 +54,16 @@ public class LoadingManager : MonoBehaviour
                 }
             }
         }
+
+
+    }
+
+    private void Random_Tips()
+    {
+        int random = Random.Range(0, tip_StrList.Length);
+        if(previousRandomNum == random)
+            random = Random.Range(0, tip_StrList.Length);
+        tip_Text.text = tip_StrList[random];
+        previousRandomNum = random;
     }
 }
