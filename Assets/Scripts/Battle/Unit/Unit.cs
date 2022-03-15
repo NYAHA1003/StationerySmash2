@@ -18,8 +18,14 @@ public class Unit : MonoBehaviour
     [SerializeField]
     protected Image delayBar;
     [SerializeField]
+    protected SpriteMask sprMask;
+    [SerializeField]
     protected SpriteRenderer spr;
-    
+    [SerializeField]
+    protected SpriteRenderer hpSpr;
+    [SerializeField]
+    protected Sprite[] hpSprites;
+
     public TeamType eTeam;
 
     public float attack_Cur_Delay { get; protected set; }
@@ -92,6 +98,10 @@ public class Unit : MonoBehaviour
         this.hp = dataBase.unitData.unit_Hp;
         this.weight = dataBase.unitData.unit_Weight;
         this.myUnitId = id;
+
+        //깨짐 이미지
+        sprMask.sprite = dataBase.card_Sprite;
+        Set_HPSprite();
 
         //스테이트 설정
         Add_state();
@@ -297,6 +307,28 @@ public class Unit : MonoBehaviour
     public void Subtract_HP(int damage)
     {
         hp -= damage;
+        Set_HPSprite();
+    }
+
+    /// <summary>
+    /// 체력 비율에 따른 깨짐 이미지
+    /// </summary>
+    public void Set_HPSprite()
+    {
+        float percent = (float)hp / maxhp;
+
+        if(percent > 0.5f)
+        {
+            hpSpr.sprite = null;
+        }
+        else if(percent > 0.2f)
+        {
+            hpSpr.sprite = hpSprites[0];
+        }
+        else
+        {
+            hpSpr.sprite = hpSprites[1];
+        }
     }
 
     /// <summary>
