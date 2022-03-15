@@ -122,6 +122,13 @@ public class Unit : MonoBehaviour
     {
         battleManager.Pool_DeleteUnit(this);
         Delete_state();
+
+        //모든 상태이상 삭제
+        for(; statEffList.Count > 0; )
+        {
+            statEffList[0].Delete_StatusEffect();
+        }
+
         unitState = null;
 
         switch (eTeam)
@@ -366,6 +373,16 @@ public class Unit : MonoBehaviour
     public int Return_Knockback()
     {
         return Mathf.RoundToInt(unitData.knockback * (float)knockbackPercent / 100);
+    }
+
+    #endregion
+
+    #region 디버그
+
+    [ContextMenu("디버그 함수 실행")]
+    public void Debug_State()
+    {
+        Debug.Log(unitState.curState);
     }
 
     #endregion

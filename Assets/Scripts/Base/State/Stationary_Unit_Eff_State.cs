@@ -45,7 +45,7 @@ public abstract class Eff_State
     public virtual void Update() { curEvent = eEvent.UPDATE; }
     public virtual void Exit() 
     {
-        Delete_StatusEffect(statusType, this);
+        Delete_StatusEffect();
         curEvent = eEvent.EXIT; 
     }
 
@@ -78,22 +78,22 @@ public abstract class Eff_State
     /// </summary>
     /// <param name="atkType"></param>
     /// <param name="eff_State"></param>
-    public void Delete_StatusEffect(AtkType atkType, Eff_State eff_State)
+    public void Delete_StatusEffect()
     {
-        myUnit.statEffList.Remove(eff_State);
+        myUnit.statEffList.Remove(this);
 
-        switch (atkType)
+        switch (statusType)
         {
             case AtkType.Normal:
                 break;
             case AtkType.Stun:
-                Battle_Unit.AddEff((Sturn_Eff_State)eff_State);
+                Battle_Unit.AddEff((Sturn_Eff_State)this);
                 break;
             case AtkType.Ink:
-                Battle_Unit.AddEff((Ink_Eff_State)eff_State);
+                Battle_Unit.AddEff((Ink_Eff_State)this);
                 break;
             case AtkType.SlowDown:
-                Battle_Unit.AddEff((SlowDown_Eff_State)eff_State);
+                Battle_Unit.AddEff((SlowDown_Eff_State)this);
                 break;
         }
 

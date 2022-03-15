@@ -243,7 +243,7 @@ public class Ballpen_Throw_State : Pencil_Throw_State
 
 
             atkData.Reset_Kncockback(20, 0, dir, true);
-            atkData.Reset_Type(AtkType.Stun);
+            atkData.Reset_Type(AtkType.Normal);
             atkData.Reset_Value(1);
             atkData.Reset_Damage(0);
             myUnit.Run_Damaged(atkData);
