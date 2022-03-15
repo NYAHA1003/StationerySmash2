@@ -4,31 +4,29 @@ using UnityEngine;
 
 namespace Utill
 {
-    public struct ColideData
+    [System.Serializable]
+    public struct CollideData
     {
         public Vector2[] originpoints;
-        public Vector2[] points;
+        private Vector2[] points;
 
-        public ColideData(Vector2 point1, Vector2 point2, Vector2 point3, Vector2 point4)
+        public Vector2[] Set_Pos(Vector2 trm_Pos)
         {
-            points = new Vector2[4];
-            originpoints = new Vector2[4];
-            originpoints[0] = point1;
-            originpoints[1] = point2;
-            originpoints[2] = point3;
-            originpoints[3] = point4;
-        }
-
-        public void Set_Pos(Vector2 trm_Pos)
-        {
+            Vector2[] points = new Vector2[4];
             points[0] = trm_Pos + originpoints[0];
             points[1] = trm_Pos + originpoints[1];
             points[2] = trm_Pos + originpoints[2];
             points[3] = trm_Pos + originpoints[3];
+            this.points = points;
+            return points;
+        }
+        public Vector2 Get_Point(int index)
+        {
+            return points[index];
         }
     }
 
-    public class Collider
+    public static class Collider
     {
         private static float Check_Dir(float dir1, float dir2)
         {
@@ -45,24 +43,24 @@ namespace Utill
         /// <param name="close1"></param>
         /// <param name="close2"></param>
         /// <returns></returns>
-        private static float FindDistanceBetweenSegments(ColideData colideData1, ColideData colideData2)
+        public static float FindDistanceBetweenSegments(Vector2[] points1, Vector2[] points2)
         {
             // 가장 짧은 거리 찾기
             float best_dist = float.MaxValue;
-            float test_dist = 0f;
+            float test_dist = float.MaxValue;
 
             for(int i = 0; i < 4; i++)
             {
-                test_dist = FindDistanceToSegment(colideData1.points[i], colideData2.points[0], colideData2.points[1]);
+                test_dist = FindDistanceToSegment(points1[i], points2[0], points2[1]);
                 best_dist = Check_Dir(best_dist, test_dist);
 
-                test_dist = FindDistanceToSegment(colideData1.points[i], colideData2.points[0], colideData2.points[2]);
+                test_dist = FindDistanceToSegment(points1[i], points2[0], points2[2]);
                 best_dist = Check_Dir(best_dist, test_dist);
 
-                test_dist = FindDistanceToSegment(colideData1.points[i], colideData2.points[1], colideData2.points[3]);
+                test_dist = FindDistanceToSegment(points1[i], points2[0], points2[3]);
                 best_dist = Check_Dir(best_dist, test_dist);
 
-                test_dist = FindDistanceToSegment(colideData1.points[i], colideData2.points[2], colideData2.points[3]);
+                test_dist = FindDistanceToSegment(points1[i], points2[0], points2[3]);
                 best_dist = Check_Dir(best_dist, test_dist);
             }
 
@@ -89,8 +87,7 @@ namespace Utill
             }
 
             // Calculate the t that minimizes the distance.
-            float t = ((pt.x - p1.x) * dx + (pt.y - p1.y) * dy) /
-                (dx * dx + dy * dy);
+            float t = ((pt.x - p1.x) * dx + (pt.y - p1.y) * dy) / (dx * dx + dy * dy);
 
             // See if this represents one of the segment's
             // end points or a point in the middle.

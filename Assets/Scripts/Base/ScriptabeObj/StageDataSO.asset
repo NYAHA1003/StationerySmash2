@@ -20,6 +20,7 @@ MonoBehaviour:
   enemyPencilCase:
     maxCard: 3
     costSpeed: 100
+    pencilCaseType: 0
     pencilCaseData:
       cardType: 1
       card_Name: "\uC801\uD544\uD1B5"
@@ -37,6 +38,13 @@ MonoBehaviour:
         damage: 0
         attackSpeed: 0
         range: 0
+        colideData:
+          originpoints:
+          - {x: -0.2, y: 0.2}
+          - {x: 0.2, y: 0.2}
+          - {x: -0.2, y: -0.2}
+          - {x: 0.2, y: -0.2}
+          points: []
         unitType: 1
         atkType: 0
         unitablityData: []

@@ -8,6 +8,7 @@ public class Unit : MonoBehaviour
 {
 
     public UnitData unitData;
+    public CollideData collideData;
     public UnitState unitState { get; protected set; }
 
     public List<Eff_State> statEffList = new List<Eff_State>();
@@ -66,6 +67,8 @@ public class Unit : MonoBehaviour
     public virtual void Set_UnitData(DataBase dataBase, TeamType eTeam, BattleManager battleManager, int id)
     {
         this.unitData = dataBase.unitData;
+        collideData = new CollideData();
+        collideData.originpoints = dataBase.unitData.colideData.originpoints;
 
         //딜레이시스템
         attack_Cur_Delay = 0;

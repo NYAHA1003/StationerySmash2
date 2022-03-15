@@ -649,7 +649,8 @@ public class Pencil_Throw_State : Stationary_UnitState
         for (int i = 0; i < list.Count; i++)
         {
             targetUnit = list[i];
-            if (Vector2.Distance(myTrm.position, targetUnit.transform.position) < 0.2f)
+            float distance = Utill.Collider.FindDistanceBetweenSegments(myUnit.collideData.Set_Pos(myTrm.position), targetUnit.collideData.Set_Pos(targetUnit.transform.position));
+            if (distance < 0.2f)
             {
                 Run_ThrowAttack(targetUnit);
             }
