@@ -393,6 +393,7 @@ public class Battle_Card : BattleCommand
 
         //카드 사용
         Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, -stageData.max_Range, summonRange);
 
         switch (card.dataBase.cardType)
         {
@@ -421,7 +422,9 @@ public class Battle_Card : BattleCommand
     /// <param name="isDelete"></param>
     public void Update_UnitAfterImage()
     {
-        if (selectCard == null || selectCard.dataBase.unitData.unitType == UnitType.None)
+        Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        pos.x = Mathf.Clamp(pos.x, -stageData.max_Range, summonRange);
+        if (selectCard == null || selectCard.dataBase.unitData.unitType == UnitType.None || pos.y < 0)
         {
             unit_AfterImage.SetActive(false);
             return;
@@ -432,7 +435,6 @@ public class Battle_Card : BattleCommand
         {
             afterImage_Spr.color = Color.red;
         }
-        Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         unit_AfterImage.transform.position = new Vector3(pos.x, 0);
         afterImage_Spr.sprite = selectCard.dataBase.card_Sprite;
         return;
@@ -464,6 +466,7 @@ public class Battle_Card : BattleCommand
             case CardType.SummonUnit:
             case CardType.SummonTrap:
                 Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, -stageData.max_Range, summonRange);
                 if (mouse_Pos.x < -stageData.max_Range || mouse_Pos.x > summonRange)
                 {
                     isPossibleSummon = false;
