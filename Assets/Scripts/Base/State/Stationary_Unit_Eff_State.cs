@@ -15,6 +15,7 @@ public abstract class Eff_State
     protected Unit myUnit;
     protected UnitData myUnitData;
     protected float[] valueList;
+    protected IEffect effectObj;
 
     public Eff_State()
     {
@@ -80,6 +81,12 @@ public abstract class Eff_State
     /// <param name="eff_State"></param>
     public void Delete_StatusEffect()
     {
+        if(effectObj != null)
+        {
+            effectObj.Delete_Effect();
+            effectObj = null;
+        }
+
         myUnit.statEffList.Remove(this);
 
         switch (statusType)
@@ -112,7 +119,7 @@ public class Sturn_Eff_State : Eff_State
         myUnit.Set_IsDontThrow(true);
         myUnit.unitState.stateChange.Set_Wait(stunTime);
         myUnit.unitState.stateChange.Set_WaitExtraTime(stunTime);
-        battleManager.battle_Effect.Set_Effect(EffectType.Stun, new EffData(new Vector2(myTrm.position.x, myTrm.position.y + 0.1f), stunTime, myTrm));
+        effectObj = battleManager.battle_Effect.Set_Effect(EffectType.Stun, new EffData(new Vector2(myTrm.position.x, myTrm.position.y + 0.1f), stunTime, myTrm));
 
         base.Enter();
     }
@@ -127,6 +134,16 @@ public class Sturn_Eff_State : Eff_State
         }
         myUnit.Set_IsDontThrow(false);
         curEvent = eEvent.EXIT;
+    }
+
+    public override void Exit()
+    {
+        if (effectObj != null)
+        {
+            effectObj.Delete_Effect();
+            effectObj = null;
+        }
+        base.Exit();
     }
 
     public override void Set_EffValue(params float[] value)

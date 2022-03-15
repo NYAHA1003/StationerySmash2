@@ -474,6 +474,7 @@ public class Pencil_Die_State : Stationary_UnitState
 
     public override void Enter()
     {
+        myUnit.Delete_EffStetes();
         myUnit.Show_Canvas(false);
         
         //µÚÁü

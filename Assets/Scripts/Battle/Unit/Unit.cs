@@ -122,12 +122,7 @@ public class Unit : MonoBehaviour
     {
         battleManager.Pool_DeleteUnit(this);
         Delete_state();
-
-        //모든 상태이상 삭제
-        for(; statEffList.Count > 0; )
-        {
-            statEffList[0].Delete_StatusEffect();
-        }
+        Delete_EffStetes();
 
         unitState = null;
 
@@ -141,6 +136,18 @@ public class Unit : MonoBehaviour
             case TeamType.EnemyTeam:
                 battleManager.unit_EnemyDatasTemp.Remove(this);
                 break;
+        }
+    }
+
+    /// <summary>
+    /// 모든 상태이상 삭제
+    /// </summary>
+    public void Delete_EffStetes()
+    {
+        //모든 상태이상 삭제
+        for (; statEffList.Count > 0;)
+        {
+            statEffList[0].Delete_StatusEffect();
         }
     }
     

@@ -22,7 +22,7 @@ public class Battle_Effect : BattleCommand
     /// <param name="position">이펙트 위치</param>
     /// <param name="startLifeTime">이펙트의 유지시간</param>
     /// <param name="isSetLifeTime">이펙트 설정을 할 것인지</param>
-    public void Set_Effect(EffectType effectType, EffData effData)
+    public IEffect Set_Effect(EffectType effectType, EffData effData)
     {
         Transform effect_Parent = effect_PoolManager.GetChild((int)effectType);
         EffectObject effect_Object = null;
@@ -34,7 +34,7 @@ public class Battle_Effect : BattleCommand
             if (!effect_Object.gameObject.activeSelf)
             {
                 effect_Object.Set_Effect(effData);
-                return;
+                return effect_Object.effectState;
             }
         }
 
@@ -42,5 +42,6 @@ public class Battle_Effect : BattleCommand
         effect_Object = battleManager.Create_Object(battleManager.effect_ObjList[(int)effectType].gameObject, effData.pos, Quaternion.identity).GetComponent<EffectObject>();
         effect_Object.transform.SetParent(effect_Parent);
         effect_Object.Set_Effect(effData);
+        return effect_Object.effectState;
     }
 }

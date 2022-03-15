@@ -28,6 +28,8 @@ public class Battle_AI : BattleCommand
 
     public void Update_AIThrow()
     {
+        if (!isAIOn)
+            return;
         if (battleManager.unit_EnemyDatasTemp.Count < 3)
             return;
         if (throw_CurDelay < throw_MaxDelay)
