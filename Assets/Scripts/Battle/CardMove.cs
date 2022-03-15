@@ -64,6 +64,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         card_Image.sprite = dataBase.card_Sprite;
         grade = 1;
         Set_UnitGrade();
+        isFusion = false;
         fusion_Effect.color = new Color(1, 1, 1, 1);
         fusion_Effect.DOFade(0, 0.8f);
 

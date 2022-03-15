@@ -31,6 +31,7 @@ public class Battle_Card : BattleCommand
 
     public bool isCardDown { get; private set; } //카드를 클릭한 상태인지
     public bool isPossibleSummon { get; private set; } //해당 카드를 소환할 수 있는지
+    private bool isFusion;
 
     Coroutine delayCoroutine;
 
@@ -246,6 +247,8 @@ public class Battle_Card : BattleCommand
 
             if (Fusion_Check(targetCard1, targetCard2))
             {
+                if (isFusion)
+                    return;
                 battleManager.StartCoroutine(Fusion_Move(i));
                 return;
             }
@@ -259,6 +262,7 @@ public class Battle_Card : BattleCommand
     /// <returns></returns>
     private IEnumerator Fusion_Move(int index)
     {
+        isFusion = true;
         CardMove targetCard1 = battleManager.card_DatasTemp[index];
         CardMove targetCard2 = battleManager.card_DatasTemp[index + 1];
         targetCard1.isFusion = true;
@@ -282,8 +286,9 @@ public class Battle_Card : BattleCommand
         targetCard2.isFusion = false;
         targetCard2.isDontMove = false;
 
-        Subtract_CardAt(index + 1);
+        Subtract_CardFind(targetCard2);
         Sort_Card();
+        isFusion = false;
     }
 
     /// <summary>
@@ -292,6 +297,10 @@ public class Battle_Card : BattleCommand
     public void Subtract_Card()
     {
         Subtract_CardAt(cur_Card - 1);
+    }
+    public void Subtract_CardFind(CardMove cardMove)
+    {
+        Subtract_CardAt(battleManager.card_DatasTemp.FindIndex(x => x.id == cardMove.id));
     }
 
     /// <summary>
