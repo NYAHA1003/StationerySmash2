@@ -81,6 +81,7 @@ public class Unit : MonoBehaviour
         Update_DelayBar(attack_Cur_Delay);
         delayBar.rectTransform.anchoredPosition = eTeam.Equals(TeamType.MyTeam) ? new Vector2(-960.15f, -540.15f) : new Vector2(-959.85f, -540.15f);
         Set_IsInvincibility(false);
+        Set_IsDontThrow(false);
         Show_Canvas(true);
 
         this.isInvincibility = true;

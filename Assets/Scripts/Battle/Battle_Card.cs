@@ -393,7 +393,8 @@ public class Battle_Card : BattleCommand
 
         //카드 사용
         Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, -stageData.max_Range, summonRange);
+        if(battleManager.battle_Unit.eTeam == TeamType.MyTeam)
+            mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, -stageData.max_Range, summonRange);
 
         switch (card.dataBase.cardType)
         {
@@ -423,7 +424,8 @@ public class Battle_Card : BattleCommand
     public void Update_UnitAfterImage()
     {
         Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        pos.x = Mathf.Clamp(pos.x, -stageData.max_Range, summonRange);
+        if(battleManager.battle_Unit.eTeam == TeamType.MyTeam)
+            pos.x = Mathf.Clamp(pos.x, -stageData.max_Range, summonRange);
         if (selectCard == null || selectCard.dataBase.unitData.unitType == UnitType.None || pos.y < 0)
         {
             unit_AfterImage.SetActive(false);

@@ -211,6 +211,7 @@ public class Pencil_Move_State : Stationary_UnitState
 
     public override void Enter()
     {
+        myUnit.Set_IsDontThrow(false);
         curState = eState.MOVE;
         curEvent = eEvent.ENTER;
         Animation();
@@ -417,6 +418,7 @@ public class Pencil_Damaged_State : Stationary_UnitState
         curState = eState.DAMAGED;
         curEvent = eEvent.ENTER;
 
+        myUnit.Set_IsDontThrow(true);
         myUnit.Set_IsInvincibility(true);
         myUnit.Subtract_HP(atkData.damage);
         if (myUnit.hp <= 0)
@@ -475,6 +477,7 @@ public class Pencil_Die_State : Stationary_UnitState
     public override void Enter()
     {
         myUnit.Delete_EffStetes();
+        myUnit.Set_IsDontThrow(true);
         myUnit.Show_Canvas(false);
         
         //µÚÁü
@@ -599,6 +602,7 @@ public class Pencil_Throw_State : Stationary_UnitState
 
     public override void Enter()
     {
+        myUnit.Set_IsDontThrow(true);
         //¹æÇâ
         Vector2 direction = (Vector2)myTrm.position - mousePos;
         float dir = Mathf.Atan2(direction.y, direction.x);
