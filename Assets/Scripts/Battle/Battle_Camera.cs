@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-
+using Utill;
 public class Battle_Camera : BattleCommand
 {
     private Camera camera;
@@ -144,7 +144,7 @@ public class Battle_Camera : BattleCommand
     /// <summary>
     /// ½Â¸® Ä«¸Þ¶ó ÀÌÆåÆ®
     /// </summary>
-    public void Win_CamEffect(Vector2 pos)
+    public void Win_CamEffect(Vector2 pos, bool isWin)
     {
         if (isEffect)
             return;
@@ -152,8 +152,18 @@ public class Battle_Camera : BattleCommand
         float time = Vector2.Distance(camera.transform.position, pos) / 5;
         camera.transform.DOMove(new Vector3(pos.x,pos.y,-10), time);
 
-        DOTween.To(() => camera.orthographicSize, x => camera.orthographicSize = x, 0.5f, time);
-        int angle = Random.Range(0, 2) > 0 ? 30 : -30;
-        camera.transform.DORotate(new Vector3(0, 0, angle), 5);
+        DOTween.To(() => camera.orthographicSize, x => camera.orthographicSize = x, 1f, time);
+        camera.transform.DORotate(new Vector3(0,0,Random.Range(-30f,-10f)), 0.07f).SetDelay(0.2f).OnComplete(() =>
+        {
+            DOTween.To(() => camera.orthographicSize, x => camera.orthographicSize = x, 0.8f, 0.05f);
+            camera.transform.DORotate(new Vector3(0, 0, Random.Range(10f, 30f)), 0.07f).SetDelay(0.2f).OnComplete(() =>
+            {
+                DOTween.To(() => camera.orthographicSize, x => camera.orthographicSize = x, 0.6f, 0.05f);
+                camera.transform.DORotate(new Vector3(0, 0, Random.Range(-30f, -10f)), 0.07f).SetDelay(0.2f).OnComplete(() =>
+                {
+                    battleManager.battle_WinLose.Set_WinLosePanel(isWin);
+                });
+            });
+        });
     }
 }

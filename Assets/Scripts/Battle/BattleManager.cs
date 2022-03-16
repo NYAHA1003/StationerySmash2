@@ -163,6 +163,18 @@ public class BattleManager : MonoBehaviour
 
     #endregion
 
+    #region 승리 패배 시스템 Battle_WinLose
+
+    public Battle_WinLose battle_WinLose { get; private set; }
+    [SerializeField, Header("승리패배시스템 Battle_WinLose"), Space(30)]
+    private Canvas winLose_Canvas;
+    [SerializeField]
+    private RectTransform winlose_winPanel;
+    [SerializeField]
+    private RectTransform winlose_losePanel;
+
+    #endregion
+
     private void Start()
     {
         deckData = new DeckData();
@@ -177,6 +189,7 @@ public class BattleManager : MonoBehaviour
         pencilCase_EnemyData = stageDataSO.enemyPencilCase;
         battle_PencilCase = new Battle_PencilCase(this, pencilCase_My, pencilCase_Enemy, pencilCase_MyData.pencilCaseData, pencilCase_EnemyData);
         battle_Pause = new Battle_Pause(this, pause_UI, pause_Canvas);
+        battle_WinLose = new Battle_WinLose(this, winLose_Canvas, winlose_winPanel, winlose_losePanel);
 
         battle_Cost.Set_CostSpeed(pencilCase_MyData.pencilCaseData.costSpeed);
         battle_Card.Set_MaxCard(pencilCase_MyData.pencilCaseData.maxCard);
