@@ -145,23 +145,14 @@ public class Pencil_Idle_State : Stationary_UnitState
 {
     public Pencil_Idle_State(Transform myTrm, Transform mySprTrm, Unit myUnit) : base(myTrm, mySprTrm, myUnit)
     {
-        curState = eState.IDLE;
-        curEvent = eEvent.ENTER;
     }
 
     public override void Enter()
     {
-        base.Enter();
-    }
+        curState = eState.IDLE;
+        curEvent = eEvent.ENTER;
 
-    public override void Update()
-    {
         stateChange.Set_Wait(0.5f);
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
     }
 }
 
@@ -171,7 +162,6 @@ public class Pencil_Wait_State : Stationary_UnitState
     private float extraWaitTime;
     public Pencil_Wait_State(Transform myTrm, Transform mySprTrm, Unit myUnit) : base(myTrm, mySprTrm, myUnit)
     {
-
     }
 
     public void Set_Time(float waitTime)

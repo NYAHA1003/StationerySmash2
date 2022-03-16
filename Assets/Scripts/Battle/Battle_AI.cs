@@ -10,7 +10,8 @@ public class Battle_AI : BattleCommand
     public List<DataBase> cardDataList;
     public List<Vector2> pos;
     public List<float> max_Delay;
-    
+
+    private int summonGrade = 1;
     private float cur_Delay;
     private float throw_Speed;
     private float throw_CurDelay;
@@ -53,7 +54,7 @@ public class Battle_AI : BattleCommand
             cur_Delay += Time.deltaTime;
             return;
         }
-        battleManager.battle_Unit.Summon_Unit(cardDataList[current], new Vector3(pos[current].x, 0, 0), Utill.TeamType.EnemyTeam);
+        battleManager.battle_Unit.Summon_Unit(cardDataList[current], new Vector3(pos[current].x, 0, 0), summonGrade, Utill.TeamType.EnemyTeam);
         current++;
         if(current == max_Delay.Count)
         {

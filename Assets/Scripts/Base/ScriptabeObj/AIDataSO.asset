@@ -13,6 +13,62 @@ MonoBehaviour:
   m_Name: AIDataSO
   m_EditorClassIdentifier: 
   throwSpeed: 20
-  cardDataList: []
-  pos: []
-  max_Delay: []
+  cardDataList:
+  - cardType: 1
+    card_Name: "\uC5F0\uD544"
+    card_Cost: 0
+    card_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+    strategyData:
+      starategyType: 0
+      starategyablityData: []
+    unitData:
+      unit_Hp: 100
+      unit_Weight: 100
+      knockback: 20
+      dir: 45
+      accuracy: 100
+      moveSpeed: 0.1
+      damage: 10
+      attackSpeed: 60
+      range: 1
+      colideData:
+        originpoints:
+        - {x: -0.1, y: 0.1}
+        - {x: 0.1, y: 0.1}
+        - {x: -0.1, y: -0.1}
+        - {x: 0.1, y: -0.1}
+      unitType: 3
+      atkType: 0
+      unitablityData: []
+  - cardType: 1
+    card_Name: "\uC5F0\uD544"
+    card_Cost: 0
+    card_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+    strategyData:
+      starategyType: 0
+      starategyablityData: []
+    unitData:
+      unit_Hp: 100
+      unit_Weight: 100
+      knockback: 20
+      dir: 45
+      accuracy: 100
+      moveSpeed: 0.1
+      damage: 10
+      attackSpeed: 60
+      range: 1
+      colideData:
+        originpoints:
+        - {x: -0.1, y: 0.1}
+        - {x: 0.1, y: 0.1}
+        - {x: -0.1, y: -0.1}
+        - {x: 0.1, y: -0.1}
+      unitType: 3
+      atkType: 0
+      unitablityData: []
+  pos:
+  - {x: 2.8214226, y: 0.30118275}
+  - {x: 2.9333665, y: 0.48242545}
+  max_Delay:
+  - 3.5689082
+  - 10.272494
