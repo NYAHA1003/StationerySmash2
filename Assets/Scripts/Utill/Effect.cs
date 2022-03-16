@@ -8,6 +8,7 @@ namespace Utill
     {
         Attack,
         Stun,
+        Ink,
         Slow,
     }
     public struct EffData

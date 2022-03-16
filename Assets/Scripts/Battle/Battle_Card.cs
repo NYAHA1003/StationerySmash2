@@ -405,7 +405,7 @@ public class Battle_Card : BattleCommand
             case CardType.Execute:
             case CardType.SummonTrap:
             case CardType.Installation:
-                card.dataBase.strategyData.starategy_State.Run_Card(battleManager, card.grade, card.dataBase.strategyData.starategyablityData);
+                card.dataBase.strategyData.starategy_State.Run_Card(battleManager, battleManager.battle_Unit.eTeam ,card.grade, card.dataBase.strategyData.starategyablityData);
                 break;
         }
         if(battleManager.battle_Unit.eTeam == TeamType.EnemyTeam)
