@@ -6,7 +6,7 @@ using Utill;
 public class EffectObject : MonoBehaviour
 {
     public EffectType effectType;
-    private IEffect effectState;
+    public IEffect effectState;
     private EffData effData;
     private bool isSettingEnd;
 
@@ -25,6 +25,9 @@ public class EffectObject : MonoBehaviour
                 break;
             case EffectType.Stun:
                 effectState ??= new Effect_Stun();
+                break;
+            case EffectType.Ink:
+                //effectState ??= new Effect_Slow();
                 break;
             case EffectType.Slow:
                 effectState ??= new Effect_Slow();
@@ -45,7 +48,7 @@ public class EffectObject : MonoBehaviour
         effectState.Update_Effect(this, effData);
     }
 
-    private void Delete_Effect()
+    public void Delete_Effect()
     {
         gameObject.SetActive(false);
         isSettingEnd = false;

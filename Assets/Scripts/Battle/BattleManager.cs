@@ -126,6 +126,8 @@ public class BattleManager : MonoBehaviour
     public bool ai_isActive;
     [SerializeField]
     public StageLog ai_Log;
+    [SerializeField]
+    public AIDataSO ai_DataSO;
 
     #endregion
 
@@ -138,6 +140,41 @@ public class BattleManager : MonoBehaviour
 
     #endregion
 
+    #region 필통 시스템 Battle_PencilCase
+
+    public Battle_PencilCase battle_PencilCase { get; private set; }
+    [SerializeField, Header("필통시스템 Battle_PencilCase"), Space(30)]
+    public Unit pencilCase_My;
+    public Unit pencilCase_Enemy;
+    public PencilCaseDataSO pencilCase_MyData;
+    public PencilCaseData pencilCase_EnemyData;
+
+
+    #endregion
+
+    #region 일시정지 시스템 Battle_Pause
+
+    public Battle_Pause battle_Pause { get; private set; }
+
+    [SerializeField, Header("일시정지시스템 Battle_Pause"), Space(30)]
+    private RectTransform pause_UI;
+    [SerializeField]
+    private Canvas pause_Canvas;
+
+    #endregion
+
+    #region 승리 패배 시스템 Battle_WinLose
+
+    public Battle_WinLose battle_WinLose { get; private set; }
+    [SerializeField, Header("승리패배시스템 Battle_WinLose"), Space(30)]
+    private Canvas winLose_Canvas;
+    [SerializeField]
+    private RectTransform winlose_winPanel;
+    [SerializeField]
+    private RectTransform winlose_losePanel;
+
+    #endregion
+
     private void Start()
     {
         deckData = new DeckData();
@@ -146,9 +183,16 @@ public class BattleManager : MonoBehaviour
         battle_Unit = new Battle_Unit(this, unit_Prefeb, unit_PoolManager, unit_Parent);
         battle_Effect = new Battle_Effect(this, effect_PoolManager);
         battle_Throw = new Battle_Throw(this, throw_parabola, throw_Arrow, currentStageData);
-        battle_AI = new Battle_AI(this);
+        battle_AI = new Battle_AI(this, ai_DataSO, ai_isActive);
         battle_Time = new Battle_Time(this, time_TimeText);
         battle_Cost = new Battle_Cost(this, cost_CostText);
+        pencilCase_EnemyData = stageDataSO.enemyPencilCase;
+        battle_PencilCase = new Battle_PencilCase(this, pencilCase_My, pencilCase_Enemy, pencilCase_MyData.pencilCaseData, pencilCase_EnemyData);
+        battle_Pause = new Battle_Pause(this, pause_UI, pause_Canvas);
+        battle_WinLose = new Battle_WinLose(this, winLose_Canvas, winlose_winPanel, winlose_losePanel);
+
+        battle_Cost.Set_CostSpeed(pencilCase_MyData.pencilCaseData.costSpeed);
+        battle_Card.Set_MaxCard(pencilCase_MyData.pencilCaseData.maxCard);
 
         isEndSetting = true;
     }
@@ -211,6 +255,10 @@ public class BattleManager : MonoBehaviour
         //코스트 시스템
         battle_Cost.Update_Cost();
 
+        //AI 시스템
+        battle_AI.Update_AICard();
+        battle_AI.Update_AIThrow();
+
     }
 
     #region 공용함수
@@ -267,6 +315,24 @@ public class BattleManager : MonoBehaviour
     public void Run_UpgradeCostGrade()
     {
         battle_Cost.Run_UpgradeCostGrade();
+    }
+
+    #endregion
+
+    #region 필통 시스템 함수 Battle_PencilCase
+
+    public void Run_PencilCaseAbility()
+    {
+        battle_PencilCase.Run_PencilCaseAbility();
+    }
+
+    #endregion
+
+    #region 일시정지 시스템 함수 Battle_Pause
+
+    public void Set_Pause()
+    {
+        battle_Pause.Set_Pause();
     }
 
     #endregion

@@ -7,6 +7,8 @@ public interface IEffect
 {
     public void Update_Effect(EffectObject effObj, EffData effData);
     public void Set_Effect(EffectObject effObj, EffData effData);
+
+    public void Delete_Effect();
 }
 
 public class Effect_Attack : IEffect
@@ -39,11 +41,18 @@ public class Effect_Attack : IEffect
     {
         //업데이트 없음
     }
+
+    public void Delete_Effect()
+    {
+        //자동 삭제
+    }
 }
 public class Effect_Stun : IEffect
 {
     private float angle = 0, starX = 0, starY = 0, speed = 5f, width = 0.2f, height = 0.05f;
-    
+
+    EffectObject effObj;
+
     [SerializeField]
     private float delete_time = 0.5f;
     public void Set_Effect(EffectObject effObj, EffData effData)
@@ -52,16 +61,18 @@ public class Effect_Stun : IEffect
         {
             throw new System.Exception("EffData가 이상함");
         }
-        
-        effObj.CancelInvoke();
+
+        this.effObj ??= effObj;
+
+        this.effObj.CancelInvoke();
 
         delete_time = effData.lifeTime;
 
-        effObj.gameObject.SetActive(true);
+        this.effObj.gameObject.SetActive(true);
 
-        effObj.transform.position = effData.pos;
+        this.effObj.transform.position = effData.pos;
 
-        effObj.Invoke("Delete_Effect", delete_time);
+        this.effObj.Invoke("Delete_Effect", delete_time);
     }
 
     public void Update_Effect(EffectObject effObj, EffData effData)
@@ -69,9 +80,11 @@ public class Effect_Stun : IEffect
         angle += Time.deltaTime * speed;
         starX = Mathf.Cos(angle) * width + effData.trm.position.x;
         starY = Mathf.Sin(angle) * height + effData.trm.position.y;
-        effObj.transform.position = new Vector3(starX, starY, 0);
-
-     
+        this.effObj.transform.position = new Vector3(starX, starY, 0);
+    }
+    public void Delete_Effect()
+    {
+        this.effObj.Delete_Effect();
     }
 }
 

@@ -163,7 +163,7 @@ public class Battle_Throw : BattleCommand
     {
         if (throw_Unit != null)
         {
-            throw_Unit.Throw_Unit();
+            throw_Unit.Throw_Unit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             throw_Unit = null;
             UnDraw_Parabola();
         }

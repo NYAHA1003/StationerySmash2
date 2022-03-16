@@ -11,6 +11,7 @@ public class Battle_Unit : BattleCommand
 
     //테스트용 팀 설정
     public TeamType eTeam = TeamType.MyTeam;
+    private int unitidCount = 0;
 
     //상태 풀링
     public static Dictionary<string, object> stateDic = new Dictionary<string, object>();
@@ -29,13 +30,17 @@ public class Battle_Unit : BattleCommand
     /// <param name="dataBase"></param>
     /// <param name="Pos"></param>
     /// <param name="count"></param>
-    public void Summon_Unit(DataBase dataBase, Vector3 Pos, int count)
+    public void Summon_Unit(DataBase dataBase, Vector3 Pos, TeamType eTeam = TeamType.Null)
     {
         Unit unit = null;
 
         unit = Pool_Unit(Pos);
-
-        unit.Set_UnitData(dataBase, eTeam, battleManager, count);
+        if (eTeam == TeamType.Null)
+        {
+            eTeam = this.eTeam;
+        }
+        unit.Set_UnitData(dataBase, eTeam, battleManager, unitidCount++);
+        
 
         //유닛 리스트에 추가
         switch (eTeam)

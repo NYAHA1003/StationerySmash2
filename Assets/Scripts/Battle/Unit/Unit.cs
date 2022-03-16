@@ -8,6 +8,7 @@ public class Unit : MonoBehaviour
 {
 
     public UnitData unitData;
+    public CollideData collideData;
     public UnitState unitState { get; protected set; }
 
     public List<Eff_State> statEffList = new List<Eff_State>();
@@ -17,8 +18,14 @@ public class Unit : MonoBehaviour
     [SerializeField]
     protected Image delayBar;
     [SerializeField]
+    protected SpriteMask sprMask;
+    [SerializeField]
     protected SpriteRenderer spr;
-    
+    [SerializeField]
+    protected SpriteRenderer hpSpr;
+    [SerializeField]
+    protected Sprite[] hpSprites;
+
     public TeamType eTeam;
 
     public float attack_Cur_Delay { get; protected set; }
@@ -66,12 +73,15 @@ public class Unit : MonoBehaviour
     public virtual void Set_UnitData(DataBase dataBase, TeamType eTeam, BattleManager battleManager, int id)
     {
         this.unitData = dataBase.unitData;
+        collideData = new CollideData();
+        collideData.originpoints = dataBase.unitData.colideData.originpoints;
 
         //딜레이시스템
         attack_Cur_Delay = 0;
         Update_DelayBar(attack_Cur_Delay);
         delayBar.rectTransform.anchoredPosition = eTeam.Equals(TeamType.MyTeam) ? new Vector2(-960.15f, -540.15f) : new Vector2(-959.85f, -540.15f);
         Set_IsInvincibility(false);
+        Set_IsDontThrow(false);
         Show_Canvas(true);
 
         this.isInvincibility = true;
@@ -89,6 +99,10 @@ public class Unit : MonoBehaviour
         this.hp = dataBase.unitData.unit_Hp;
         this.weight = dataBase.unitData.unit_Weight;
         this.myUnitId = id;
+
+        //깨짐 이미지
+        sprMask.sprite = dataBase.card_Sprite;
+        Set_HPSprite();
 
         //스테이트 설정
         Add_state();
@@ -122,6 +136,8 @@ public class Unit : MonoBehaviour
     {
         battleManager.Pool_DeleteUnit(this);
         Delete_state();
+        Delete_EffStetes();
+
         unitState = null;
 
         switch (eTeam)
@@ -136,6 +152,18 @@ public class Unit : MonoBehaviour
                 break;
         }
     }
+
+    /// <summary>
+    /// 모든 상태이상 삭제
+    /// </summary>
+    public void Delete_EffStetes()
+    {
+        //모든 상태이상 삭제
+        for (; statEffList.Count > 0;)
+        {
+            statEffList[0].Delete_StatusEffect();
+        }
+    }
     
     /// <summary>
     /// 스테이트 추가
@@ -144,6 +172,10 @@ public class Unit : MonoBehaviour
     {
         switch (unitData.unitType)
         {
+            case UnitType.PencilCase:
+                stateManager = Battle_Unit.GetItem<PencilCaseStateManager>(transform, spr.transform, this);
+                break;
+
             default:
             case UnitType.None:
             case UnitType.Pencil:
@@ -164,12 +196,20 @@ public class Unit : MonoBehaviour
     {
         switch (unitData.unitType)
         {
+            case UnitType.PencilCase:
+                Battle_Unit.AddItem((PencilCaseStateManager)stateManager);
+                break;
+
+            case UnitType.BallPen:
+                Battle_Unit.AddItem((BallpenStateManager)stateManager);
+                break;
+
             default:
             case UnitType.None:
             case UnitType.Pencil:
             case UnitType.Eraser:
             case UnitType.Sharp:
-                Battle_Unit.AddItem<PencilStateManager>((PencilStateManager)stateManager);
+                Battle_Unit.AddItem((PencilStateManager)stateManager);
                 break;
         }
     }
@@ -217,9 +257,9 @@ public class Unit : MonoBehaviour
     /// <summary>
     /// 유닛을 던졌을 때
     /// </summary>
-    public void Throw_Unit()
+    public void Throw_Unit(Vector2 pos)
     {
-        unitState.Throw_Unit();
+        unitState.Throw_Unit(pos);
     }
 
     /// <summary>
@@ -268,6 +308,28 @@ public class Unit : MonoBehaviour
     public void Subtract_HP(int damage)
     {
         hp -= damage;
+        Set_HPSprite();
+    }
+
+    /// <summary>
+    /// 체력 비율에 따른 깨짐 이미지
+    /// </summary>
+    public void Set_HPSprite()
+    {
+        float percent = (float)hp / maxhp;
+
+        if(percent > 0.5f)
+        {
+            hpSpr.sprite = null;
+        }
+        else if(percent > 0.2f)
+        {
+            hpSpr.sprite = hpSprites[0];
+        }
+        else
+        {
+            hpSpr.sprite = hpSprites[1];
+        }
     }
 
     /// <summary>
@@ -354,6 +416,16 @@ public class Unit : MonoBehaviour
     public int Return_Knockback()
     {
         return Mathf.RoundToInt(unitData.knockback * (float)knockbackPercent / 100);
+    }
+
+    #endregion
+
+    #region 디버그
+
+    [ContextMenu("디버그 함수 실행")]
+    public void Debug_State()
+    {
+        Debug.Log(unitState.curState);
     }
 
     #endregion

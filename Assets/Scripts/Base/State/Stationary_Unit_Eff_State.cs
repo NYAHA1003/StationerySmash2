@@ -15,6 +15,7 @@ public abstract class Eff_State
     protected Unit myUnit;
     protected UnitData myUnitData;
     protected float[] valueList;
+    protected IEffect effectObj;
 
     public Eff_State()
     {
@@ -45,7 +46,7 @@ public abstract class Eff_State
     public virtual void Update() { curEvent = eEvent.UPDATE; }
     public virtual void Exit() 
     {
-        Delete_StatusEffect(statusType, this);
+        Delete_StatusEffect();
         curEvent = eEvent.EXIT; 
     }
 
@@ -78,149 +79,30 @@ public abstract class Eff_State
     /// </summary>
     /// <param name="atkType"></param>
     /// <param name="eff_State"></param>
-    public void Delete_StatusEffect(AtkType atkType, Eff_State eff_State)
+    public void Delete_StatusEffect()
     {
-        myUnit.statEffList.Remove(eff_State);
+        if(effectObj != null)
+        {
+            effectObj.Delete_Effect();
+            effectObj = null;
+        }
 
-        switch (atkType)
+        myUnit.statEffList.Remove(this);
+
+        switch (statusType)
         {
             case AtkType.Normal:
                 break;
             case AtkType.Stun:
-                Battle_Unit.AddEff((Sturn_Eff_State)eff_State);
+                Battle_Unit.AddEff((Sturn_Eff_State)this);
                 break;
             case AtkType.Ink:
-                Battle_Unit.AddEff((Ink_Eff_State)eff_State);
+                Battle_Unit.AddEff((Ink_Eff_State)this);
                 break;
             case AtkType.SlowDown:
-                Battle_Unit.AddEff((SlowDown_Eff_State)eff_State);
+                Battle_Unit.AddEff((SlowDown_Eff_State)this);
                 break;
         }
 
-    }
-}
-public class Sturn_Eff_State : Eff_State
-{
-    private float stunTime = 0.0f;
-
-    public Sturn_Eff_State() : base()
-    {
-    }
-    public override void Enter()
-    {
-        stunTime = stunTime + (stunTime * (((float)myUnit.maxhp / (myUnit.hp + 0.1f)) - 1));
-        myUnit.Set_IsDontThrow(true);
-        myUnit.unitState.stateChange.Set_Wait(stunTime);
-        myUnit.unitState.stateChange.Set_WaitExtraTime(stunTime);
-        battleManager.battle_Effect.Set_Effect(EffectType.Stun, new EffData(new Vector2(myTrm.position.x, myTrm.position.y + 0.1f), stunTime, myTrm));
-
-        base.Enter();
-    }
-
-    public override void Update()
-    {
-        if (stunTime > 0)
-        {
-            stunTime -= Time.deltaTime;
-            myUnit.unitState.stateChange.Set_WaitExtraTime(stunTime);
-            return;
-        }
-        myUnit.Set_IsDontThrow(false);
-        curEvent = eEvent.EXIT;
-    }
-
-    public override void Set_EffValue(params float[] value)
-    {
-        if (stunTime < value[0])
-        {
-            stunTime = value[0];
-            stunTime = stunTime + (stunTime * (((float)myUnit.maxhp / (myUnit.hp + 0.1f)) - 1));
-        }
-    }
-}
-public class Ink_Eff_State : Eff_State
-{
-    private float inkTime = 0;
-    private float damageSubtractPercent = 0;
-    private float accuracySubtractPercent = 0;
-
-    public Ink_Eff_State() : base()
-    {
-    }
-    public override void Enter()
-    {
-        mySprTrm.GetComponent<SpriteRenderer>().color = Color.green;
-        myUnit.damagePercent -= (int)damageSubtractPercent;
-        myUnit.accuracyPercent -= (int)accuracySubtractPercent;
-
-        base.Enter();
-    }
-    public override void Update()
-    {
-        if (inkTime > 0)
-        {
-            inkTime -= Time.deltaTime;
-            return;
-        }
-
-        curEvent = eEvent.EXIT;
-    }
-
-    public override void Exit()
-    {
-        myUnit.damagePercent += (int)damageSubtractPercent;
-        myUnit.accuracyPercent += (int)accuracySubtractPercent;
-        mySprTrm.GetComponent<SpriteRenderer>().color = Color.red;
-
-        base.Exit();
-    }
-
-    public override void Set_EffValue(params float[] value)
-    {
-        inkTime = value[0];
-        damageSubtractPercent = value[1];
-        accuracySubtractPercent = value[2];
-    }
-}
-public class SlowDown_Eff_State : Eff_State
-{
-    private float slowDownTime = 0;
-    private float moveSpeedSubtractPercent = 0;
-    private float attackSpeedSubtractPercent = 0;
-
-    public SlowDown_Eff_State() : base()
-    {
-    }
-    public override void Enter()
-    {
-        myUnit.moveSpeedPercent -= (int)moveSpeedSubtractPercent;
-        myUnit.attackSpeedPercent -= (int)attackSpeedSubtractPercent;
-
-        base.Enter();
-    }
-
-    public override void Update()
-    {
-        if (slowDownTime > 0)
-        {
-            slowDownTime -= Time.deltaTime;
-            return;
-        }
-        curEvent = eEvent.EXIT;
-    }
-
-    public override void Exit()
-    {
-        myUnit.moveSpeedPercent += (int)moveSpeedSubtractPercent;
-        myUnit.attackSpeedPercent += (int)attackSpeedSubtractPercent;
-
-        base.Exit();
-    }
-
-    public override void Set_EffValue(params float[] value)
-    {
-        slowDownTime = value[0];
-        moveSpeedSubtractPercent = value[1];
-        attackSpeedSubtractPercent = value[2];
     }
 }

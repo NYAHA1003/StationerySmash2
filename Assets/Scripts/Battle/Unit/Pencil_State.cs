@@ -65,6 +65,7 @@ public class PencilStateManager : IStateManager
         DieState.Reset_State();
         ThrowState.Reset_State();
 
+        Set_WaitExtraTime(0);
         Reset_CurrentUnitState(IdleState);
     }
 
@@ -134,6 +135,10 @@ public class PencilStateManager : IStateManager
         this.Wait_extraTime = extraTime;
     }
 
+    public void Set_ThrowPos(Vector2 pos)
+    {
+        this.ThrowState.Set_ThrowPos(pos);
+    }
 }
 
 public class Pencil_Idle_State : Stationary_UnitState
@@ -206,6 +211,7 @@ public class Pencil_Move_State : Stationary_UnitState
 
     public override void Enter()
     {
+        myUnit.Set_IsDontThrow(false);
         curState = eState.MOVE;
         curEvent = eEvent.ENTER;
         Animation();
@@ -412,9 +418,9 @@ public class Pencil_Damaged_State : Stationary_UnitState
         curState = eState.DAMAGED;
         curEvent = eEvent.ENTER;
 
+        myUnit.Set_IsDontThrow(true);
         myUnit.Set_IsInvincibility(true);
         myUnit.Subtract_HP(atkData.damage);
-        stateChange.Set_Wait(0.5f);
         if (myUnit.hp <= 0)
         {
             stateChange.Set_Die();
@@ -435,7 +441,7 @@ public class Pencil_Damaged_State : Stationary_UnitState
         Animation(time);
         myTrm.DOJump(new Vector3(myTrm.position.x - calculated_knockback, 0, myTrm.position.z), height, 1, time).OnComplete(() =>
         {
-            curEvent = eEvent.EXIT;
+            stateChange.Set_Wait(0.4f);
         });
     }
 
@@ -470,6 +476,8 @@ public class Pencil_Die_State : Stationary_UnitState
 
     public override void Enter()
     {
+        myUnit.Delete_EffStetes();
+        myUnit.Set_IsDontThrow(true);
         myUnit.Show_Canvas(false);
         
         //뒤짐
@@ -580,17 +588,21 @@ public class Pencil_Die_State : Stationary_UnitState
 
 public class Pencil_Throw_State : Stationary_UnitState
 {
+    Vector2 mousePos = Vector2.zero;
     public Pencil_Throw_State(Transform myTrm, Transform mySprTrm, Unit myUnit) : base(myTrm, mySprTrm, myUnit)
     {
         curState = eState.THROW;
         curEvent = eEvent.ENTER;
     }
 
+    public void Set_ThrowPos(Vector2 pos)
+    {
+        mousePos = pos;
+    }
+
     public override void Enter()
     {
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-
+        myUnit.Set_IsDontThrow(true);
         //방향
         Vector2 direction = (Vector2)myTrm.position - mousePos;
         float dir = Mathf.Atan2(direction.y, direction.x);
@@ -641,7 +653,8 @@ public class Pencil_Throw_State : Stationary_UnitState
         for (int i = 0; i < list.Count; i++)
         {
             targetUnit = list[i];
-            if (Vector2.Distance(myTrm.position, targetUnit.transform.position) < 0.2f)
+            float distance = Utill.Collider.FindDistanceBetweenSegments(myUnit.collideData.Set_Pos(myTrm.position), targetUnit.collideData.Set_Pos(targetUnit.transform.position));
+            if (distance < 0.2f)
             {
                 Run_ThrowAttack(targetUnit);
             }
@@ -653,6 +666,7 @@ public class Pencil_Throw_State : Stationary_UnitState
         float dir = Vector2.Angle((Vector2)myTrm.position, (Vector2)targetUnit.transform.position);
         float extraKnockBack = (targetUnit.weight - myUnit.Return_Weight() * (float)targetUnit.hp / targetUnit.maxhp) * 0.025f;
         AtkData atkData = new AtkData(myUnit, 0, 0, 0, 0, true, 0, AtkType.Normal);
+        AtkData atkDataMy = new AtkData(myUnit, 0, 0, 0, 0, true, 0, AtkType.Normal);
         atkData.Reset_Damage(100 + (myUnit.weight > targetUnit.weight ? (Mathf.RoundToInt((float)myUnit.weight - targetUnit.weight) / 2) : Mathf.RoundToInt((float)(targetUnit.weight - myUnit.weight) / 5)));
 
         //무게가 더 클 경우
@@ -673,11 +687,11 @@ public class Pencil_Throw_State : Stationary_UnitState
             atkData.Reset_Value(null);
             targetUnit.Run_Damaged(atkData);
 
-            atkData.Reset_Kncockback(20, 0, dir, true);
-            atkData.Reset_Type(AtkType.Stun);
-            atkData.Reset_Value(1);
-            atkData.Reset_Damage(0);
-            myUnit.Run_Damaged(atkData);
+            atkDataMy.Reset_Kncockback(20, 0, dir, true);
+            atkDataMy.Reset_Type(AtkType.Stun);
+            atkDataMy.Reset_Value(1);
+            atkDataMy.Reset_Damage(0);
+            myUnit.Run_Damaged(atkDataMy);
             return;
         }
 
@@ -690,11 +704,11 @@ public class Pencil_Throw_State : Stationary_UnitState
             targetUnit.Run_Damaged(atkData);
 
 
-            atkData.Reset_Kncockback(20, 0, dir, true);
-            atkData.Reset_Type(AtkType.Stun);
-            atkData.Reset_Value(1);
-            atkData.Reset_Damage(0);
-            myUnit.Run_Damaged(atkData);
+            atkDataMy.Reset_Kncockback(20, 0, dir, true);
+            atkDataMy.Reset_Type(AtkType.Normal);
+            atkDataMy.Reset_Value(1);
+            atkDataMy.Reset_Damage(0);
+            myUnit.Run_Damaged(atkDataMy);
 
             return;
         }

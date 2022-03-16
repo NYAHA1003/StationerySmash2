@@ -58,5 +58,11 @@ public interface IStateManager
     /// 다음 상태를 Throw로 설정함
     /// </summary>
     public void Set_Throw();
-    
+    /// <summary>
+    /// Throw의 던질 위치를 결정함
+    /// </summary>
+    /// <param name="pos"></param>
+    public void Set_ThrowPos(Vector2 pos);
+
+
 }
