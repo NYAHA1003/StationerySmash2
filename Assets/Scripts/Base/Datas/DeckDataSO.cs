@@ -9,6 +9,7 @@ public class DeckData
     
     public void Add_CardData(DataBase data)
     {
+        data.strategyData.Set_State();
         cardDatas.Add(data);
     }
 }

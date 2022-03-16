@@ -14,10 +14,18 @@ namespace Utill
 
     public enum StarategyType
     {
-        a,
-        b,
-        c,
-        d,
+        None,
+
+        //Execute,
+        CostUp,
+
+        //SummonTrap,
+
+
+        //Installation,
+        InstallCandy,
+        InstallSlowdown,
+        InstallRage,
     }
     public enum TeamType
     {

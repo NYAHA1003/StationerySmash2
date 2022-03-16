@@ -49,21 +49,27 @@ public class UnitData
 public class StarategyData
 {
     public StarategyType starategyType;
-    public Starategy_State starategy_State;
+    public IStarategy starategy_State;
+    public float[] starategyablityData = new float[0];
 
-    public StarategyData()
+    public void Set_State()
     {
-        starategy_State = new Starategy_State();
 
         switch (starategyType)
         {
-            case StarategyType.a:
+            case StarategyType.None:
                 break;
-            case StarategyType.b:
+            case StarategyType.CostUp:
+                starategy_State = new Starategy_CostUp();
                 break;
-            case StarategyType.c:
+            case StarategyType.InstallCandy:
+                starategy_State = new Starategy_Candy();
                 break;
-            case StarategyType.d:
+            case StarategyType.InstallSlowdown:
+                starategy_State = new Starategy_Slowdown();
+                break;
+            case StarategyType.InstallRage:
+                starategy_State = new Starategy_Rage();
                 break;
         }
     }

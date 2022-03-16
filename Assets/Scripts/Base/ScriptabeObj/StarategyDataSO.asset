@@ -15,10 +15,12 @@ MonoBehaviour:
   starategyDatas:
   - cardType: 0
     card_Name: "\uBFB0\uB85C\uB871"
-    card_Cost: 2
+    card_Cost: 0
     card_Sprite: {fileID: 21300000, guid: b45b3667de1d9e34d9451555c3567877, type: 3}
     strategyData:
-      starategyType: 0
+      starategyType: 1
+      starategyablityData:
+      - 0
     unitData:
       unit_Hp: 0
       unit_Weight: 0
@@ -29,6 +31,8 @@ MonoBehaviour:
       damage: 0
       attackSpeed: 0
       range: 0
+      colideData:
+        originpoints: []
       unitType: 0
       atkType: 0
       unitablityData: []
