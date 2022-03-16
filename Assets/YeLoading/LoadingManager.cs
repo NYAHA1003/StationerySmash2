@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 public class LoadingManager : MonoBehaviour
 {
     private static string nextScene;
@@ -12,7 +13,7 @@ public class LoadingManager : MonoBehaviour
     [SerializeField]
     private string[] tip_StrList;
     [SerializeField]
-    private Text tip_Text;
+    private TextMeshProUGUI tip_Text;
     [Range (0, 5)]
     public float repeatTerm;
     void Start()
