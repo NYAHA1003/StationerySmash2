@@ -38,6 +38,7 @@ public class UnitData
     public int damage;
     public float attackSpeed;
     public float range;
+    public CollideData colideData;
     public UnitType unitType;
     public AtkType atkType;
     public float[] unitablityData;

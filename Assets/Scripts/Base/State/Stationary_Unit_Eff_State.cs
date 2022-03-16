@@ -9,30 +9,48 @@ public abstract class Eff_State
     public eEvent curEvent;
     public Transform myTrm { get; protected set; }
     public Transform mySprTrm { get; protected set; }
-    public AtkType statusEffect { get; protected set; }
+    public AtkType statusType { get; protected set; }
 
     public BattleManager battleManager;
-    protected Stationary_Unit myUnit;
-    protected Eff_State nextState;
+    protected Unit myUnit;
     protected UnitData myUnitData;
     protected float[] valueList;
+    protected IEffect effectObj;
 
-    public Eff_State(BattleManager battleManager, Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, AtkType statusEffect, params float[] valueList)
+    public Eff_State()
     {
-        this.battleManager = battleManager;
+    }
+
+    public void Set_StateEff(Transform myTrm, Transform mySprTrm, Unit myUnit, AtkType statusEffect, params float[] valueList)
+    {
+        curEvent = eEvent.ENTER;
         this.myTrm = myTrm;
         this.mySprTrm = mySprTrm;
         this.myUnit = myUnit;
-        this.statusEffect = statusEffect;
-        this.valueList = valueList;
+        Set_EffType(statusEffect, valueList);
+        Set_EffValue(valueList);
+        this.battleManager = myUnit.battleManager;
     }
-
+    public void Reset_StateEff(Transform myTrm, Transform mySprTrm, Unit myUnit, AtkType statusEffect, params float[] valueList)
+    {
+        curEvent = eEvent.ENTER;
+        this.myTrm = myTrm;
+        this.mySprTrm = mySprTrm;
+        this.myUnit = myUnit;
+        Set_EffType(statusEffect, valueList);
+        Set_EffValue(valueList);
+        this.battleManager = myUnit.battleManager;
+    }
 
     public virtual void Enter() { curEvent = eEvent.UPDATE; }
     public virtual void Update() { curEvent = eEvent.UPDATE; }
-    public virtual void Exit() { curEvent = eEvent.EXIT; }
+    public virtual void Exit() 
+    {
+        Delete_StatusEffect();
+        curEvent = eEvent.EXIT; 
+    }
 
-    public Eff_State Process()
+    public void Process()
     {
         if (curEvent.Equals(eEvent.ENTER))
         {
@@ -45,73 +63,63 @@ public abstract class Eff_State
         if (curEvent.Equals(eEvent.EXIT))
         {
             Exit();
-            return nextState;
         }
-
-        return this;
     }
+
     public void Set_EffType(AtkType atkType, params float[] value)
     {
-        statusEffect = atkType;
+        statusType = atkType;
         this.valueList = value;
     }
 
     public abstract void Set_EffValue(params float[] value);
 
-}
-
-public class Stationary_Unit_Eff_State : Eff_State
-{
-    public Stationary_Unit_Eff_State(BattleManager battleManager, Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, AtkType statusEffect, params float[] valueList) : base(battleManager, myTrm, mySprTrm, myUnit, statusEffect, valueList)
+    /// <summary>
+    /// 효과 삭제
+    /// </summary>
+    /// <param name="atkType"></param>
+    /// <param name="eff_State"></param>
+    public void Delete_StatusEffect()
     {
-        this.valueList = valueList;
-        this.myUnit = myUnit;
-    }
-    public override void Update()
-    {
-        if(statusEffect != AtkType.Normal)
+        if(effectObj != null)
         {
-            switch (statusEffect)
-            {
-                default:
-                case AtkType.Normal:
-                    break;
-                case AtkType.Stun:
-                    nextState = new Stationary_Unit_Sturn_Eff_State(battleManager, myTrm, mySprTrm, myUnit, statusEffect, valueList);
-                    break;
-                case AtkType.Ink:
-                    nextState = new Stationary_Unit_Ink_Eff_State(battleManager, myTrm, mySprTrm, myUnit, statusEffect, valueList);
-                    break;
-                case AtkType.SlowDown:
-                    nextState = new Stationary_Unit_SlowDown_Eff_State(battleManager, myTrm, mySprTrm, myUnit, statusEffect, valueList);
-                    break;
-            }
-            curEvent = eEvent.EXIT;
+            effectObj.Delete_Effect();
+            effectObj = null;
         }
+
+        myUnit.statEffList.Remove(this);
+
+        switch (statusType)
+        {
+            case AtkType.Normal:
+                break;
+            case AtkType.Stun:
+                Battle_Unit.AddEff((Sturn_Eff_State)this);
+                break;
+            case AtkType.Ink:
+                Battle_Unit.AddEff((Ink_Eff_State)this);
+                break;
+            case AtkType.SlowDown:
+                Battle_Unit.AddEff((SlowDown_Eff_State)this);
+                break;
+        }
+
     }
-
-
-    public override void Set_EffValue(params float[] value)
-    {
-
-    }
-
 }
-public class Stationary_Unit_Sturn_Eff_State : Eff_State
+public class Sturn_Eff_State : Eff_State
 {
-    private float stunTime;
+    private float stunTime = 0.0f;
 
-    public Stationary_Unit_Sturn_Eff_State(BattleManager battleManager, Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, AtkType statusEffect, params float[] stunTime) : base(battleManager, myTrm, mySprTrm, myUnit, statusEffect, stunTime)
+    public Sturn_Eff_State() : base()
     {
-        this.stunTime = stunTime[0];
     }
     public override void Enter()
     {
         stunTime = stunTime + (stunTime * (((float)myUnit.maxhp / (myUnit.hp + 0.1f)) - 1));
         myUnit.Set_IsDontThrow(true);
-        myUnit.unitState.stateChange.Return_Wait(stunTime);
+        myUnit.unitState.stateChange.Set_Wait(stunTime);
         myUnit.unitState.stateChange.Set_WaitExtraTime(stunTime);
-        battleManager.battle_Effect.Set_Effect(EffectType.Stun, new EffData(new Vector2(myTrm.position.x, myTrm.position.y + 0.1f), stunTime, myTrm));
+        effectObj = battleManager.battle_Effect.Set_Effect(EffectType.Stun, new EffData(new Vector2(myTrm.position.x, myTrm.position.y + 0.1f), stunTime, myTrm));
 
         base.Enter();
     }
@@ -125,8 +133,17 @@ public class Stationary_Unit_Sturn_Eff_State : Eff_State
             return;
         }
         myUnit.Set_IsDontThrow(false);
-        nextState = new Stationary_Unit_Eff_State(battleManager, myTrm, mySprTrm, myUnit, AtkType.Normal, null);
         curEvent = eEvent.EXIT;
+    }
+
+    public override void Exit()
+    {
+        if (effectObj != null)
+        {
+            effectObj.Delete_Effect();
+            effectObj = null;
+        }
+        base.Exit();
     }
 
     public override void Set_EffValue(params float[] value)
@@ -138,16 +155,14 @@ public class Stationary_Unit_Sturn_Eff_State : Eff_State
         }
     }
 }
-public class Stationary_Unit_Ink_Eff_State : Eff_State
+public class Ink_Eff_State : Eff_State
 {
     private float inkTime = 0;
     private float damageSubtractPercent = 0;
     private float accuracySubtractPercent = 0;
-    private float range;
 
-    public Stationary_Unit_Ink_Eff_State(BattleManager battleManager, Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, AtkType statusEffect, params float[] value) : base(battleManager, myTrm, mySprTrm, myUnit, statusEffect, value)
+    public Ink_Eff_State() : base()
     {
-        Set_EffValue(value);
     }
     public override void Enter()
     {
@@ -165,7 +180,6 @@ public class Stationary_Unit_Ink_Eff_State : Eff_State
             return;
         }
 
-        nextState = new Stationary_Unit_Eff_State(battleManager, myTrm, mySprTrm, myUnit, AtkType.Normal, null);
         curEvent = eEvent.EXIT;
     }
 
@@ -183,19 +197,16 @@ public class Stationary_Unit_Ink_Eff_State : Eff_State
         inkTime = value[0];
         damageSubtractPercent = value[1];
         accuracySubtractPercent = value[2];
-        range = value[3];
     }
 }
-
-public class Stationary_Unit_SlowDown_Eff_State : Stationary_Unit_Eff_State
+public class SlowDown_Eff_State : Eff_State
 {
     private float slowDownTime = 0;
     private float moveSpeedSubtractPercent = 0;
     private float attackSpeedSubtractPercent = 0;
 
-    public Stationary_Unit_SlowDown_Eff_State(BattleManager battleManager, Transform myTrm, Transform mySprTrm, Stationary_Unit myUnit, AtkType statusEffect, params float[] value) : base(battleManager, myTrm, mySprTrm, myUnit, statusEffect, value)
+    public SlowDown_Eff_State() : base()
     {
-        Set_EffValue(value);
     }
     public override void Enter()
     {
@@ -212,9 +223,6 @@ public class Stationary_Unit_SlowDown_Eff_State : Stationary_Unit_Eff_State
             slowDownTime -= Time.deltaTime;
             return;
         }
-
-
-        nextState = new Stationary_Unit_Eff_State(battleManager, myTrm, mySprTrm, myUnit, AtkType.Normal, null);
         curEvent = eEvent.EXIT;
     }
 

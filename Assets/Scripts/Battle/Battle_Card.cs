@@ -25,17 +25,17 @@ public class Battle_Card : BattleCommand
     private RectTransform card_SpawnPosition;
 
     private GameObject unit_AfterImage;
-    private SpriteRenderer unit_AfterImage_Spr;
-
-    private Coroutine coroutine;
+    private SpriteRenderer afterImage_Spr;
 
     private CardMove selectCard;
-    
+
     public bool isCardDown { get; private set; } //카드를 클릭한 상태인지
     public bool isPossibleSummon { get; private set; } //해당 카드를 소환할 수 있는지
+    private bool isFusion;
+
+    Coroutine delayCoroutine;
 
     private int cardidCount = 0;
-    private int unitidCount = 0;
 
     public Battle_Card(BattleManager battleManager, DeckData deckData, UnitDataSO unitDataSO, StarategyDataSO starategyDataSO, GameObject card_Prefeb, Transform card_PoolManager, Transform card_Canvas, RectTransform card_SpawnPosition, RectTransform card_LeftPosition, RectTransform card_RightPosition, GameObject unit_AfterImage, LineRenderer summonRangeLine)
         : base(battleManager)
@@ -56,7 +56,7 @@ public class Battle_Card : BattleCommand
         Set_SummonRangeLinePos();
 
         this.unit_AfterImage = unit_AfterImage;
-        unit_AfterImage_Spr = unit_AfterImage.GetComponent<SpriteRenderer>();
+        afterImage_Spr = unit_AfterImage.GetComponent<SpriteRenderer>();
 
         Set_DeckCard();
     }
@@ -66,7 +66,7 @@ public class Battle_Card : BattleCommand
     /// </summary>
     public void Set_DeckCard()
     {
-        for(int i = 0; i < unitDataSO.unitDatas.Count; i++)
+        for (int i = 0; i < unitDataSO.unitDatas.Count; i++)
         {
             deckData.Add_CardData(unitDataSO.unitDatas[i]);
         }
@@ -96,16 +96,28 @@ public class Battle_Card : BattleCommand
         cur_Card++;
 
         CardMove cardmove = Pool_Card();
+        cardmove.isFusion = false;
         cardmove.Set_UnitData(deckData.cardDatas[random], cardidCount++);
         battleManager.card_DatasTemp.Add(cardmove);
 
+        if (battleManager.card_DatasTemp.Count > 1)
+        {
+            CardMove targetCard1 = battleManager.card_DatasTemp[battleManager.card_DatasTemp.Count - 1];
+            CardMove targetCard2 = battleManager.card_DatasTemp[battleManager.card_DatasTemp.Count - 2];
+
+            if (targetCard1.grade < 2 && targetCard2.grade < 2)
+            Fusion_Check(targetCard1, targetCard2);
+        }
+
         Sort_Card();
-        Fusion_DelayCard();
+        if(delayCoroutine != null)
+            battleManager.StopCoroutine(delayCoroutine);
+        delayCoroutine = battleManager.StartCoroutine(Delay_Drow());
     }
 
     private IEnumerator Delay_Drow()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.4f);
         Fusion_Card();
     }
 
@@ -141,9 +153,9 @@ public class Battle_Card : BattleCommand
             targetCard.originPRS = originCardPRS[i];
             if (battleManager.card_DatasTemp[i].Equals(selectCard))
                 continue;
-            if (battleManager.card_DatasTemp[i].isFusion)
-                continue;
-            targetCard.Set_CardPRS(targetCard.originPRS, 0.5f);
+            //if (battleManager.card_DatasTemp[i].isFusion)
+            //  continue;
+            targetCard.Set_CardPRS(targetCard.originPRS, 0.4f);
         }
     }
 
@@ -196,6 +208,30 @@ public class Battle_Card : BattleCommand
     }
 
     /// <summary>
+    /// 카드의 융합이 가능한지 체크함
+    /// </summary>
+    /// <param name="targetCard1"></param>
+    /// <param name="targetCard2"></param>
+    private bool Fusion_Check(CardMove targetCard1, CardMove targetCard2)
+    {
+        if (targetCard1 == selectCard || targetCard2 == selectCard)
+            return false;
+        if (targetCard1.dataBase.cardType == targetCard2.dataBase.cardType && targetCard1.dataBase.unitData.unitType == targetCard2.dataBase.unitData.unitType)
+        {
+            if (targetCard1.grade == targetCard2.grade)
+            {
+                if (targetCard1.isFusion == targetCard2.isFusion)
+                {
+                    targetCard1.isFusion = true;
+                    targetCard2.isFusion = true;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /// <summary>
     /// 카드를 융합함
     /// </summary>
     private void Fusion_Card()
@@ -206,29 +242,16 @@ public class Battle_Card : BattleCommand
         {
             targetCard1 = battleManager.card_DatasTemp[i];
             targetCard2 = battleManager.card_DatasTemp[i + 1];
-            if (targetCard1.dataBase.cardType != targetCard2.dataBase.cardType)
+            if (targetCard1.grade > 2 || targetCard2.grade > 2)
                 continue;
 
-            switch (targetCard1.dataBase.cardType)
+            if (Fusion_Check(targetCard1, targetCard2))
             {
-                default:
-                case CardType.Execute:
-                case CardType.SummonTrap:
-                case CardType.Installation:
-                    if (targetCard1.dataBase.strategyData.starategyType != targetCard2.dataBase.strategyData.starategyType)
-                        continue;
-                    break;
-                case CardType.SummonUnit:
-                    if (targetCard1.dataBase.unitData.unitType != targetCard2.dataBase.unitData.unitType)
-                        continue;
-                    break;
+                if (isFusion)
+                    return;
+                battleManager.StartCoroutine(Fusion_Move(i));
+                return;
             }
-
-            if (targetCard1.grade != targetCard2.grade)
-                continue;
-
-            coroutine = battleManager.StartCoroutine(Fusion_Move(i));
-            return;
         }
     }
 
@@ -239,39 +262,33 @@ public class Battle_Card : BattleCommand
     /// <returns></returns>
     private IEnumerator Fusion_Move(int index)
     {
-        battleManager.card_DatasTemp[index].isFusion = true;
-        battleManager.card_DatasTemp[index + 1].isFusion = true;
+        isFusion = true;
+        CardMove targetCard1 = battleManager.card_DatasTemp[index];
+        CardMove targetCard2 = battleManager.card_DatasTemp[index + 1];
+        targetCard1.isFusion = true;
+        targetCard2.isFusion = true;
 
-        battleManager.card_DatasTemp[index + 1].Set_CardPRS(battleManager.card_DatasTemp[index].originPRS, 0.3f);
-        battleManager.card_DatasTemp[index].Fusion_FadeInEffect();
-        battleManager.card_DatasTemp[index + 1].Fusion_FadeInEffect();
+        targetCard2.DOKill();
+        targetCard2.Set_CardPRS(new PRS(targetCard1.transform.localPosition, targetCard1.transform.rotation, Vector3.one * 0.3f), 0.25f);
+        targetCard2.isDontMove = true;
 
-        yield return new WaitForSeconds(0.3f);
+        Color color = targetCard1.grade > 1 ? Color.yellow : Color.white;
+        targetCard1.Fusion_FadeInEffect(color);
+        targetCard2.Fusion_FadeInEffect(color);
 
-        battleManager.card_DatasTemp[index].Fusion_FadeOutEffect();
-        battleManager.card_DatasTemp[index].Upgrade_UnitGrade();
+        yield return new WaitForSeconds(0.23f);
+        targetCard2.Show_Card(false);
 
-        battleManager.card_DatasTemp[index].isFusion = false;
-        battleManager.card_DatasTemp[index + 1].isFusion = false;
+        targetCard1.Fusion_FadeOutEffect();
+        targetCard1.Upgrade_UnitGrade();
 
-        Subtract_CardAt(index + 1);
+        targetCard1.isFusion = false;
+        targetCard2.isFusion = false;
+        targetCard2.isDontMove = false;
+
+        Subtract_CardFind(targetCard2);
         Sort_Card();
-
-        battleManager.StopCoroutine(coroutine);
-        coroutine = battleManager.StartCoroutine(Delay_Drow());
-    }
-
-    /// <summary>
-    /// 카드를 뽑거나 제거하고 있을 때는 융합하지 않음
-    /// </summary>
-    private void Fusion_DelayCard()
-    {
-        if (coroutine != null)
-        {
-            battleManager.StopCoroutine(coroutine);
-        }
-
-        coroutine = battleManager.StartCoroutine(Delay_Drow());
+        isFusion = false;
     }
 
     /// <summary>
@@ -280,6 +297,10 @@ public class Battle_Card : BattleCommand
     public void Subtract_Card()
     {
         Subtract_CardAt(cur_Card - 1);
+    }
+    public void Subtract_CardFind(CardMove cardMove)
+    {
+        Subtract_CardAt(battleManager.card_DatasTemp.FindIndex(x => x.id == cardMove.id));
     }
 
     /// <summary>
@@ -295,8 +316,6 @@ public class Battle_Card : BattleCommand
         battleManager.card_DatasTemp[index].gameObject.SetActive(false);
         battleManager.card_DatasTemp.RemoveAt(index);
         Sort_Card();
-
-        Fusion_DelayCard();
     }
 
     /// <summary>
@@ -304,11 +323,8 @@ public class Battle_Card : BattleCommand
     /// </summary>
     public void Clear_Cards()
     {
-        if (coroutine != null)
-        {
-            battleManager.StopCoroutine(coroutine);
-        }
-
+        if (delayCoroutine != null)
+            battleManager.StopCoroutine(delayCoroutine);
         for (; cur_Card > 0;)
         {
             Subtract_Card();
@@ -335,7 +351,7 @@ public class Battle_Card : BattleCommand
     /// </summary>
     public void Update_SelectCardPos()
     {
-        if (selectCard == null) 
+        if (selectCard == null)
             return;
         selectCard.transform.position = Input.mousePosition;
     }
@@ -351,6 +367,7 @@ public class Battle_Card : BattleCommand
         card.Set_CardScale(Vector3.one * 1, 0.3f);
         selectCard = null;
         isCardDown = false;
+        Fusion_Card();
     }
 
     /// <summary>
@@ -361,13 +378,13 @@ public class Battle_Card : BattleCommand
     {
         selectCard = null;
         summonRangeLine.gameObject.SetActive(false);
-        
+
         Check_PossibleSummon();
         if (!isPossibleSummon)
         {
             card.Run_OriginPRS();
             battleManager.battle_Camera.Set_CameraIsMove(true);
-            return; 
+            return;
         }
 
         battleManager.battle_Cost.Subtract_Cost(card.card_Cost);
@@ -376,11 +393,13 @@ public class Battle_Card : BattleCommand
 
         //카드 사용
         Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if(battleManager.battle_Unit.eTeam == TeamType.MyTeam)
+            mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, -stageData.max_Range, summonRange);
 
         switch (card.dataBase.cardType)
         {
             case CardType.SummonUnit:
-                battleManager.battle_Unit.Summon_Unit(card.dataBase, new Vector3(mouse_Pos.x, 0, 0), unitidCount++);
+                battleManager.battle_Unit.Summon_Unit(card.dataBase, new Vector3(mouse_Pos.x, 0, 0));
                 break;
             default:
             case CardType.Execute:
@@ -389,33 +408,37 @@ public class Battle_Card : BattleCommand
                 card.dataBase.strategyData.starategy_State.Run_Card(battleManager);
                 break;
         }
-        battleManager.ai_Log.Add_Log(card.dataBase, card.grade);
-
+        if(battleManager.battle_Unit.eTeam == TeamType.EnemyTeam)
+        {
+            battleManager.ai_Log.Add_Log(card.dataBase);
+        }
+        Fusion_Card();
     }
 
     /// <summary>
-    /// 유닛 소환 미리보기
+    /// 카드 소환 미리보기
     /// </summary>
     /// <param name="unitData"></param>
     /// <param name="pos"></param>
     /// <param name="isDelete"></param>
-    public void Set_UnitAfterImage(Sprite unitSprite, Vector3 pos, bool isDelete = false)
+    public void Update_UnitAfterImage()
     {
-        unit_AfterImage_Spr.color = Color.white;
-        if (!isPossibleSummon)
-        {
-            unit_AfterImage_Spr.color = Color.red;
-        }
-        unit_AfterImage.transform.position = new Vector3(pos.x, 0);
-        unit_AfterImage_Spr.sprite = unitSprite;
-
-        if (isDelete)
+        Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if(battleManager.battle_Unit.eTeam == TeamType.MyTeam)
+            pos.x = Mathf.Clamp(pos.x, -stageData.max_Range, summonRange);
+        if (selectCard == null || selectCard.dataBase.unitData.unitType == UnitType.None || pos.y < 0)
         {
             unit_AfterImage.SetActive(false);
             return;
         }
         unit_AfterImage.SetActive(true);
-
+        afterImage_Spr.color = Color.white;
+        if (!isPossibleSummon)
+        {
+            afterImage_Spr.color = Color.red;
+        }
+        unit_AfterImage.transform.position = new Vector3(pos.x, 0);
+        afterImage_Spr.sprite = selectCard.dataBase.card_Sprite;
         return;
     }
 
@@ -427,7 +450,7 @@ public class Battle_Card : BattleCommand
         if (selectCard == null)
             return;
         //테스트용 소환 조건 해제
-        if(battleManager.isAnySummon)
+        if (battleManager.isAnySummon)
         {
             isPossibleSummon = true;
             return;
@@ -445,6 +468,7 @@ public class Battle_Card : BattleCommand
             case CardType.SummonUnit:
             case CardType.SummonTrap:
                 Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, -stageData.max_Range, summonRange);
                 if (mouse_Pos.x < -stageData.max_Range || mouse_Pos.x > summonRange)
                 {
                     isPossibleSummon = false;
@@ -472,7 +496,7 @@ public class Battle_Card : BattleCommand
         if (summonRange >= 0)
             return;
 
-        if(summonRangeDelay > 0)
+        if (summonRangeDelay > 0)
         {
             summonRangeDelay -= Time.deltaTime;
             return;

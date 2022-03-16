@@ -13,8 +13,6 @@ public class BattleManager : MonoBehaviour
     [SerializeField, Header("공용 데이터들"), Space(30)]
     private UnitDataSO unitDataSO;
     [SerializeField]
-    public PencilCaseDataSO pencilCaseDataSO;
-    [SerializeField]
     public StageDataSO stageDataSO;
     [SerializeField]
     public StarategyDataSO  starategyDataSO;
@@ -128,6 +126,8 @@ public class BattleManager : MonoBehaviour
     public bool ai_isActive;
     [SerializeField]
     public StageLog ai_Log;
+    [SerializeField]
+    public AIDataSO ai_DataSO;
 
     #endregion
 
@@ -142,10 +142,12 @@ public class BattleManager : MonoBehaviour
 
     #region 필통 시스템 Battle_PencilCase
 
-    public Battle_PencilCase battle_PenCase;
-    [SerializeField, Header("카드시스템 Battle_Card"), Space(30)]
-    public PencilCase_Unit pencilCase_My;
-    public PencilCase_Unit pencilCase_Enemy;
+    public Battle_PencilCase battle_PencilCase { get; private set; }
+    [SerializeField, Header("필통시스템 Battle_PencilCase"), Space(30)]
+    public Unit pencilCase_My;
+    public Unit pencilCase_Enemy;
+    public PencilCaseDataSO pencilCase_MyData;
+    public PencilCaseData pencilCase_EnemyData;
 
 
     #endregion
@@ -155,13 +157,17 @@ public class BattleManager : MonoBehaviour
         deckData = new DeckData();
         battle_Card = new Battle_Card(this, deckData, unitDataSO, starategyDataSO, card_cardMove_Prefeb, card_PoolManager, card_Canvas, card_SpawnPosition, card_LeftPosition, card_RightPosition, card_AfterImage, card_SummonRangeLine);
         battle_Camera = new Battle_Camera(this, main_Cam);
-        battle_PenCase = new Battle_PencilCase(this);
         battle_Unit = new Battle_Unit(this, unit_Prefeb, unit_PoolManager, unit_Parent);
         battle_Effect = new Battle_Effect(this, effect_PoolManager);
         battle_Throw = new Battle_Throw(this, throw_parabola, throw_Arrow, currentStageData);
-        battle_AI = new Battle_AI(this);
+        battle_AI = new Battle_AI(this, ai_DataSO, ai_isActive);
         battle_Time = new Battle_Time(this, time_TimeText);
         battle_Cost = new Battle_Cost(this, cost_CostText);
+        pencilCase_EnemyData = stageDataSO.enemyPencilCase;
+        battle_PencilCase = new Battle_PencilCase(this, pencilCase_My, pencilCase_Enemy, pencilCase_MyData.pencilCaseData, pencilCase_EnemyData);
+
+        battle_Cost.Set_CostSpeed(pencilCase_MyData.pencilCaseData.costSpeed);
+        battle_Card.Set_MaxCard(pencilCase_MyData.pencilCaseData.maxCard);
 
         isEndSetting = true;
     }
@@ -179,6 +185,7 @@ public class BattleManager : MonoBehaviour
         battle_Camera.Update_CameraScale();
 
         //카드 시스템
+        battle_Card.Update_UnitAfterImage();
         battle_Card.Update_SelectCardPos();
         battle_Card.Update_CardDrow();
         battle_Card.Check_PossibleSummon();
@@ -200,6 +207,12 @@ public class BattleManager : MonoBehaviour
             battle_Card.Subtract_Card();
         }
 
+        //유닛 시스템
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            battle_Unit.Clear_Unit();
+        }
+
         //던지기 시스템
         if(Input.GetMouseButtonDown(0))
         {
@@ -216,6 +229,10 @@ public class BattleManager : MonoBehaviour
 
         //코스트 시스템
         battle_Cost.Update_Cost();
+
+        //AI 시스템
+        battle_AI.Update_AICard();
+        battle_AI.Update_AIThrow();
 
     }
 
@@ -281,7 +298,7 @@ public class BattleManager : MonoBehaviour
 
     public void Run_PencilCaseAbility()
     {
-        battle_PenCase.Run_PencilCaseAbility();
+        battle_PencilCase.Run_PencilCaseAbility();
     }
 
     #endregion

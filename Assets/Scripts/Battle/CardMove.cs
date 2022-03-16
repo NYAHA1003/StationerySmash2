@@ -28,6 +28,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public int card_Cost { get; private set; }
     public bool isFusion;
+    public bool isDontMove;
 
     public DataBase dataBase;
 
@@ -61,8 +62,9 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         card_CostText.text = dataBase.card_Cost.ToString();
         card_Cost = dataBase.card_Cost;
         card_Image.sprite = dataBase.card_Sprite;
-        grade = 0;
+        grade = 1;
         Set_UnitGrade();
+        isFusion = false;
         fusion_Effect.color = new Color(1, 1, 1, 1);
         fusion_Effect.DOFade(0, 0.8f);
 
@@ -81,6 +83,11 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         
     }
 
+    public void Show_Card(bool isboolean)
+    {
+        gameObject.SetActive(isboolean);
+    }
+
     /// <summary>
     /// Ä«µå ¾Ö´Ï¸ÞÀÌ¼Ç ´åÆ®À©
     /// </summary>
@@ -89,6 +96,8 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <param name="isDotween">True¸é ´åÆ®À© »ç¿ë</param>
     public void Set_CardPRS(PRS prs, float duration, bool isDotween = true)
     {
+        if (isDontMove)
+            return;
         if (isDotween)
         {
             rectTransform.DOAnchorPos(prs.pos, duration);
@@ -181,16 +190,17 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <summary>
     /// À¶ÇÕ½Ã ÇÏ¾êÁü
     /// </summary>
-    public void Fusion_FadeInEffect()
+    public void Fusion_FadeInEffect(Color color)
     {
-        fusion_Effect.DOFade(1, 0.3f);
+        fusion_Effect.color = color;
+        fusion_Effect.DOFade(1, 0.2f);
     }
     /// <summary>
     /// À¶ÇÕÀÌ ³¡³­ ÈÄ µ¹¾Æ¿È
     /// </summary>
     public void Fusion_FadeOutEffect()
     {
-        fusion_Effect.DOFade(0, 0.3f);
+        fusion_Effect.DOFade(0, 0.5f);
     }
 
     /// <summary>
