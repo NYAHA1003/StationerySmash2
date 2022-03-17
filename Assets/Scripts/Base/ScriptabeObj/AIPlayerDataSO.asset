@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76f4204bed4bcb043b724c0398df06c3, type: 3}
-  m_Name: AIDataSO
+  m_Name: AIPlayerDataSO
   m_EditorClassIdentifier: 
-  summonGrade: 0
+  summonGrade: 1
   throwSpeed: 20
   cardDataList:
   - cardType: 1
@@ -38,7 +38,7 @@ MonoBehaviour:
         - {x: 0.016, y: 0.016}
         - {x: -0.016, y: -0.016}
         - {x: 0.016, y: -0.016}
-      unitType: 3
+      unitType: 2
       atkType: 0
       unitablityData: []
   - cardType: 1
@@ -64,12 +64,12 @@ MonoBehaviour:
         - {x: 0.016, y: 0.016}
         - {x: -0.016, y: -0.016}
         - {x: 0.016, y: -0.016}
-      unitType: 3
+      unitType: 2
       atkType: 0
       unitablityData: []
   pos:
-  - {x: 2.8214226, y: 0.30118275}
-  - {x: 2.9333665, y: 0.48242545}
+  - {x: -2.821423, y: 0.30118275}
+  - {x: -2.933367, y: 0.48242545}
   max_Delay:
-  - 3.5689082
-  - 10.272494
+  - 3
+  - 3
