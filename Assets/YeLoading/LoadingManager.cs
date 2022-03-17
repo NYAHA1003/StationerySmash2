@@ -37,18 +37,23 @@ public class LoadingManager : MonoBehaviour
         operation.allowSceneActivation = false;
 
         float timer = 0f;
-        while(operation.isDone)
+        while(!operation.isDone)
         {
             yield return null;
+                timer += Time.deltaTime;
             if(operation.progress < 0.9)    //90퍼까지는 정상적으로 로딩을 나타냄
             {
-                progressBar_Image.fillAmount = operation.progress;
+                progressBar_Image.fillAmount = Mathf.Lerp(progressBar_Image.fillAmount, operation.progress, timer);
+                //progressBar_Image.fillAmount = operation.progress;
+                if (progressBar_Image.fillAmount >= operation.progress)
+                {
+                    timer = 0f;
+                }
             }
             else                           //그 이후엔 페이크로딩 진행
             {
-                timer += Time.unscaledDeltaTime;
-                progressBar_Image.fillAmount = Mathf.Lerp(0.9f, 1f, timer);
-                if(operation.progress >=1f)
+                progressBar_Image.fillAmount = Mathf.Lerp(progressBar_Image.fillAmount, 1f, timer);
+                if(progressBar_Image.fillAmount >=1f)
                 {
                     operation.allowSceneActivation = true;
                     yield break;
