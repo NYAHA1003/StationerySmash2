@@ -608,11 +608,11 @@ public class Pencil_Throw_State : Stationary_UnitState
         float force = Mathf.Clamp(Vector2.Distance(myTrm.position, mousePos), 0, 1) * 4 * (100.0f / myUnit.Return_Weight());
 
         //최고점
-        float height = Utill.Parabola.Caculated_Height(force, dirx);
+        float height = Parabola.Caculated_Height(force, dirx);
         //수평 도달 거리
-        float width = Utill.Parabola.Caculated_Width(force, dirx);
+        float width = Parabola.Caculated_Width(force, dirx);
         //수평 도달 시간
-        float time = Utill.Parabola.Caculated_Time(force, dir, 3);
+        float time = Parabola.Caculated_Time(force, dir, 3);
 
         mySprTrm.DOKill();
         myTrm.DOJump(new Vector3(myTrm.position.x - width, 0, myTrm.position.z), height, 1, time).OnComplete(() =>

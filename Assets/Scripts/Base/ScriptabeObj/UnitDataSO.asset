@@ -19,6 +19,7 @@ MonoBehaviour:
     card_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
     strategyData:
       starategyType: 0
+      starategyablityData: []
     unitData:
       unit_Hp: 100
       unit_Weight: 100
@@ -31,15 +32,10 @@ MonoBehaviour:
       range: 1
       colideData:
         originpoints:
-        - {x: -0.1, y: 0.1}
-        - {x: 0.1, y: 0.1}
-        - {x: -0.1, y: -0.1}
-        - {x: 0.1, y: -0.1}
-        points:
-        - {x: 0, y: 0}
-        - {x: 0, y: 0}
-        - {x: 0, y: 0}
-        - {x: 0, y: 0}
+        - {x: -0.016, y: 0.016}
+        - {x: 0.016, y: 0.016}
+        - {x: -0.016, y: -0.016}
+        - {x: 0.016, y: -0.016}
       unitType: 3
       atkType: 0
       unitablityData: []
