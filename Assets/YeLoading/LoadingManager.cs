@@ -9,17 +9,20 @@ public class LoadingManager : MonoBehaviour
     private static string nextScene;
     private int previousRandomNum = 0;
     [SerializeField]
-    private Image progressBar_Image;
+    private Slider progressBar;
     [SerializeField]
     private string[] tip_StrList;
     [SerializeField]
     private TextMeshProUGUI tip_Text;
     [Range (0, 5)]
     public float repeatTerm;
+    private void Awake()
+    {
+        StartCoroutine(Random_Tips());
+    }
     void Start()
     {
         StartCoroutine(LoadSceneProcess());
-        InvokeRepeating("Random_Tips", repeatTerm, 0f);
     }
     /// <summary>
     /// 씬 로드하는 함수
@@ -33,43 +36,44 @@ public class LoadingManager : MonoBehaviour
 
     public IEnumerator LoadSceneProcess()
     {
-        AsyncOperation operation = SceneManager.LoadSceneAsync(nextScene);
-        operation.allowSceneActivation = false;
+        yield return new WaitForSeconds(0.5f); 
+        AsyncOperation op = SceneManager.LoadSceneAsync(nextScene);
+        op.allowSceneActivation = false; 
+        
+            float timer = 0.0f;
+            while (!op.isDone)
+            {
+                yield return null;
+                if (op.progress < 0.9f)
+                {
+                    progressBar.value = op.progress;
 
-        float timer = 0f;
-        while(!operation.isDone)
-        {
-            yield return null;
-                timer += Time.deltaTime;
-            if(operation.progress < 0.9)    //90퍼까지는 정상적으로 로딩을 나타냄
-            {
-                progressBar_Image.fillAmount = Mathf.Lerp(progressBar_Image.fillAmount, operation.progress, timer);
-                //progressBar_Image.fillAmount = operation.progress;
-                if (progressBar_Image.fillAmount >= operation.progress)
-                {
-                    timer = 0f;
+
                 }
-            }
-            else                           //그 이후엔 페이크로딩 진행
-            {
-                progressBar_Image.fillAmount = Mathf.Lerp(progressBar_Image.fillAmount, 1f, timer);
-                if(progressBar_Image.fillAmount >=1f)
+                else
                 {
-                    operation.allowSceneActivation = true;
-                    yield break;
+                    timer += Time.deltaTime;
+                    progressBar.value = Mathf.Lerp(0.9f,1f, timer * 0.5f);
+                    if (progressBar.value >= 1.0f)
+                    {
+                        op.allowSceneActivation = true;
+                        yield break;
+                    }
                 }
+
             }
-        }
 
 
     }
 
-    private void Random_Tips()
+    private IEnumerator Random_Tips()
     {
         int random = Random.Range(0, tip_StrList.Length);
         if(previousRandomNum == random)
             random = Random.Range(0, tip_StrList.Length);
         tip_Text.text = tip_StrList[random];
         previousRandomNum = random;
+        Debug.Log("radom");
+        yield return new WaitForSeconds(1f);
     }
 }
