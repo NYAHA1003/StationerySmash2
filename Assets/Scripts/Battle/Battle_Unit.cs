@@ -30,7 +30,7 @@ public class Battle_Unit : BattleCommand
     /// <param name="dataBase"></param>
     /// <param name="Pos"></param>
     /// <param name="count"></param>
-    public void Summon_Unit(DataBase dataBase, Vector3 Pos, TeamType eTeam = TeamType.Null)
+    public void Summon_Unit(DataBase dataBase, Vector3 Pos, int grade, TeamType eTeam = TeamType.Null)
     {
         Unit unit = null;
 
@@ -39,7 +39,7 @@ public class Battle_Unit : BattleCommand
         {
             eTeam = this.eTeam;
         }
-        unit.Set_UnitData(dataBase, eTeam, battleManager, unitidCount++);
+        unit.Set_UnitData(dataBase, eTeam, battleManager, unitidCount++, grade);
         
 
         //유닛 리스트에 추가

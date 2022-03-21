@@ -19,9 +19,13 @@ public class Starategy_Slowdown : IStarategy
 
     private void Check_Range(List<Unit> list, params float[] value)
     {
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         for(int i = 0; i < list.Count; i++)
         {
-            list[i].Add_StatusEffect(Utill.AtkType.SlowDown, value);
+            if(Vector2.Distance(list[i].transform.position, mousePos) < value[3])
+            {
+                list[i].Add_StatusEffect(Utill.AtkType.SlowDown, value);
+            }
         }
     }
 }

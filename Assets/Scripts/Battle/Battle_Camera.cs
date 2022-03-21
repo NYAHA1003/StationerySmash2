@@ -155,10 +155,10 @@ public class Battle_Camera : BattleCommand
         DOTween.To(() => camera.orthographicSize, x => camera.orthographicSize = x, 1f, time);
         camera.transform.DORotate(new Vector3(0,0,Random.Range(-30f,-10f)), 0.07f).SetDelay(0.2f).OnComplete(() =>
         {
-            DOTween.To(() => camera.orthographicSize, x => camera.orthographicSize = x, 0.8f, 0.05f);
+            DOTween.To(() => camera.orthographicSize, x => camera.orthographicSize = x, 0.8f, 0.05f).SetDelay(0.2f);
             camera.transform.DORotate(new Vector3(0, 0, Random.Range(10f, 30f)), 0.07f).SetDelay(0.2f).OnComplete(() =>
             {
-                DOTween.To(() => camera.orthographicSize, x => camera.orthographicSize = x, 0.6f, 0.05f);
+                DOTween.To(() => camera.orthographicSize, x => camera.orthographicSize = x, 0.6f, 0.05f).SetDelay(0.2f); ;
                 camera.transform.DORotate(new Vector3(0, 0, Random.Range(-30f, -10f)), 0.07f).SetDelay(0.2f).OnComplete(() =>
                 {
                     battleManager.battle_WinLose.Set_WinLosePanel(isWin);
