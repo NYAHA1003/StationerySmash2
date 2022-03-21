@@ -70,7 +70,7 @@ public class Unit : MonoBehaviour
     /// <param name="eTeam">팀 변수</param>
     /// <param name="battleManager">배틀매니저</param>
     /// <param name="id"></param>
-    public virtual void Set_UnitData(DataBase dataBase, TeamType eTeam, BattleManager battleManager, int id)
+    public virtual void Set_UnitData(DataBase dataBase, TeamType eTeam, BattleManager battleManager, int id, int grade)
     {
         this.unitData = dataBase.unitData;
         collideData = new CollideData();
@@ -95,8 +95,11 @@ public class Unit : MonoBehaviour
         this.spr.sprite = dataBase.card_Sprite;
         this.battleManager = battleManager;
         this.stageData = battleManager.currentStageData;
-        this.maxhp = dataBase.unitData.unit_Hp;
+        this.maxhp = dataBase.unitData.unit_Hp * grade;
         this.hp = dataBase.unitData.unit_Hp;
+        moveSpeedPercent = 100 * grade;
+        attackSpeedPercent = 100 * grade;
+        damagePercent = 100 * grade;
         this.weight = dataBase.unitData.unit_Weight;
         this.myUnitId = id;
 
@@ -111,7 +114,8 @@ public class Unit : MonoBehaviour
 
         this.isInvincibility = false;
         this.isSettingEnd = true;
-    }
+
+}
 
 
     /// <summary>

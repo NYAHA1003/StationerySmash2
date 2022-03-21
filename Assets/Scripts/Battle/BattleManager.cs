@@ -123,11 +123,14 @@ public class BattleManager : MonoBehaviour
     public Battle_AI battle_AI;
 
     [SerializeField, Header("AI 시스템 Battle_Ai"), Space(30)]
-    public bool ai_isActive;
+    public bool ai_isEnemyActive;
+    public bool ai_isPlayerActive;
     [SerializeField]
     public StageLog ai_Log;
     [SerializeField]
-    public AIDataSO ai_DataSO;
+    public AIDataSO ai_EnemyDataSO;
+    [SerializeField]
+    public AIDataSO ai_PlayerDataSO;
 
     #endregion
 
@@ -183,7 +186,7 @@ public class BattleManager : MonoBehaviour
         battle_Unit = new Battle_Unit(this, unit_Prefeb, unit_PoolManager, unit_Parent);
         battle_Effect = new Battle_Effect(this, effect_PoolManager);
         battle_Throw = new Battle_Throw(this, throw_parabola, throw_Arrow, currentStageData);
-        battle_AI = new Battle_AI(this, ai_DataSO, ai_isActive);
+        battle_AI = new Battle_AI(this, ai_EnemyDataSO, ai_PlayerDataSO, ai_isEnemyActive, ai_isPlayerActive);
         battle_Time = new Battle_Time(this, time_TimeText);
         battle_Cost = new Battle_Cost(this, cost_CostText);
         pencilCase_EnemyData = stageDataSO.enemyPencilCase;
@@ -256,8 +259,10 @@ public class BattleManager : MonoBehaviour
         battle_Cost.Update_Cost();
 
         //AI 시스템
-        battle_AI.Update_AICard();
-        battle_AI.Update_AIThrow();
+        battle_AI.Update_EnemyAICard();
+        battle_AI.Update_EnemyAIThrow();
+        battle_AI.Update_PlayerAICard();
+        battle_AI.Update_PlayerAIThrow();
 
     }
 

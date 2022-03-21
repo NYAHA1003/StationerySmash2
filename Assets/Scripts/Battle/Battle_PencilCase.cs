@@ -21,12 +21,12 @@ public class Battle_PencilCase : BattleCommand
         this.pencilCase_Ability_State_Enemy = pencilCaseDataEnemy.pencilState;
         this.battleManager = battleManager;
 
-        pencilCase_My.Set_UnitData(pencilCaseDataMy.pencilCaseData, TeamType.MyTeam, battleManager, -1);
+        pencilCase_My.Set_UnitData(pencilCaseDataMy.pencilCaseData, TeamType.MyTeam, battleManager, -1, 1);
         battleManager.unit_MyDatasTemp.Add(pencilCase_My);
         pencilCase_My.transform.position = new Vector2(-battleManager.currentStageData.max_Range, 0);
         Set_PencilCaseAbility(ref pencilCase_Ability_State_My, pencilCaseDataMy);
         
-        pencilCase_Enemy.Set_UnitData(pencilCaseDataEnemy.pencilCaseData, TeamType.EnemyTeam, battleManager, -2);
+        pencilCase_Enemy.Set_UnitData(pencilCaseDataEnemy.pencilCaseData, TeamType.EnemyTeam, battleManager, -2, 1);
         battleManager.unit_EnemyDatasTemp.Add(pencilCase_Enemy);
         pencilCase_Enemy.transform.position = new Vector2(battleManager.currentStageData.max_Range, 0);
         Set_PencilCaseAbility(ref pencilCase_Ability_State_Enemy, pencilCaseDataEnemy);

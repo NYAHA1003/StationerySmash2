@@ -145,23 +145,14 @@ public class Pencil_Idle_State : Stationary_UnitState
 {
     public Pencil_Idle_State(Transform myTrm, Transform mySprTrm, Unit myUnit) : base(myTrm, mySprTrm, myUnit)
     {
-        curState = eState.IDLE;
-        curEvent = eEvent.ENTER;
     }
 
     public override void Enter()
     {
-        base.Enter();
-    }
+        curState = eState.IDLE;
+        curEvent = eEvent.ENTER;
 
-    public override void Update()
-    {
         stateChange.Set_Wait(0.5f);
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
     }
 }
 
@@ -171,7 +162,6 @@ public class Pencil_Wait_State : Stationary_UnitState
     private float extraWaitTime;
     public Pencil_Wait_State(Transform myTrm, Transform mySprTrm, Unit myUnit) : base(myTrm, mySprTrm, myUnit)
     {
-
     }
 
     public void Set_Time(float waitTime)
@@ -618,11 +608,11 @@ public class Pencil_Throw_State : Stationary_UnitState
         float force = Mathf.Clamp(Vector2.Distance(myTrm.position, mousePos), 0, 1) * 4 * (100.0f / myUnit.Return_Weight());
 
         //최고점
-        float height = Utill.Parabola.Caculated_Height(force, dirx);
+        float height = Parabola.Caculated_Height(force, dirx);
         //수평 도달 거리
-        float width = Utill.Parabola.Caculated_Width(force, dirx);
+        float width = Parabola.Caculated_Width(force, dirx);
         //수평 도달 시간
-        float time = Utill.Parabola.Caculated_Time(force, dir, 3);
+        float time = Parabola.Caculated_Time(force, dir, 3);
 
         mySprTrm.DOKill();
         myTrm.DOJump(new Vector3(myTrm.position.x - width, 0, myTrm.position.z), height, 1, time).OnComplete(() =>
@@ -653,6 +643,8 @@ public class Pencil_Throw_State : Stationary_UnitState
         for (int i = 0; i < list.Count; i++)
         {
             targetUnit = list[i];
+            if (targetUnit.isInvincibility)
+                continue;
             float distance = Utill.Collider.FindDistanceBetweenSegments(myUnit.collideData.Set_Pos(myTrm.position), targetUnit.collideData.Set_Pos(targetUnit.transform.position));
             if (distance < 0.2f)
             {

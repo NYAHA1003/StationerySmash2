@@ -214,21 +214,37 @@ public class Battle_Card : BattleCommand
     /// <param name="targetCard2"></param>
     private bool Fusion_Check(CardMove targetCard1, CardMove targetCard2)
     {
+        //카드 두개 중 하나가 현재 클릭 중인 카드인지 체크
         if (targetCard1 == selectCard || targetCard2 == selectCard)
             return false;
-        if (targetCard1.dataBase.cardType == targetCard2.dataBase.cardType && targetCard1.dataBase.unitData.unitType == targetCard2.dataBase.unitData.unitType)
+        //카드 타입이 같은지 체크
+        if (targetCard1.dataBase.cardType != targetCard2.dataBase.cardType)
         {
-            if (targetCard1.grade == targetCard2.grade)
-            {
-                if (targetCard1.isFusion == targetCard2.isFusion)
-                {
-                    targetCard1.isFusion = true;
-                    targetCard2.isFusion = true;
-                    return true;
-                }
-            }
+            return false;
         }
-        return false;
+        //유닛 타입이 같은지 체크
+        if (targetCard1.dataBase.unitData.unitType != targetCard2.dataBase.unitData.unitType)
+        {
+            return false;
+        }
+        //전략 타입이 같은지 체크
+        if (targetCard1.dataBase.strategyData.starategyType != targetCard2.dataBase.strategyData.starategyType)
+        {
+            return false;
+        }
+        //등급이 같은지 체크
+        if (targetCard1.grade != targetCard2.grade)
+        {
+            return false;
+        }
+
+        if (targetCard1.isFusion != targetCard2.isFusion)
+        {
+            return false;
+        }
+        targetCard1.isFusion = true;
+        targetCard2.isFusion = true;
+        return true;
     }
 
     /// <summary>
@@ -399,7 +415,7 @@ public class Battle_Card : BattleCommand
         switch (card.dataBase.cardType)
         {
             case CardType.SummonUnit:
-                battleManager.battle_Unit.Summon_Unit(card.dataBase, new Vector3(mouse_Pos.x, 0, 0));
+                battleManager.battle_Unit.Summon_Unit(card.dataBase, new Vector3(mouse_Pos.x, 0, 0), card.grade);
                 break;
             default:
             case CardType.Execute:
