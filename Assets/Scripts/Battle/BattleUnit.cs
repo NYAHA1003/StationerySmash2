@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 
-public class Battle_Unit : BattleCommand
+public class BattleUnit : BattleCommand
 {
     private GameObject unit_Prefeb;
     private Transform unit_PoolManager;
@@ -17,7 +17,7 @@ public class Battle_Unit : BattleCommand
     public static Dictionary<string, object> stateDic = new Dictionary<string, object>();
 
 
-    public Battle_Unit(BattleManager battleManager, GameObject unit_Prefeb, Transform unit_PoolManager, Transform unit_Parent) : base(battleManager)
+    public BattleUnit(BattleManager battleManager, GameObject unit_Prefeb, Transform unit_PoolManager, Transform unit_Parent) : base(battleManager)
     {
         this.unit_Prefeb = unit_Prefeb;
         this.unit_PoolManager = unit_PoolManager;
@@ -48,10 +48,10 @@ public class Battle_Unit : BattleCommand
             case TeamType.Null:
                 break;
             case TeamType.MyTeam:
-                battleManager.unit_MyDatasTemp.Add(unit);
+                battleManager._myUnitDatasTemp.Add(unit);
                 break;
             case TeamType.EnemyTeam:
-                battleManager.unit_EnemyDatasTemp.Add(unit);
+                battleManager._enemyUnitDatasTemp.Add(unit);
                 break;
         }
     }
@@ -81,7 +81,7 @@ public class Battle_Unit : BattleCommand
     /// <param name="unit"></param>
     public void Add_UnitListMy(Unit unit)
     {
-        battleManager.unit_MyDatasTemp.Add(unit);
+        battleManager._myUnitDatasTemp.Add(unit);
     }
 
     /// <summary>
@@ -90,7 +90,7 @@ public class Battle_Unit : BattleCommand
     /// <param name="unit"></param>
     public void Add_UnitListEnemy(Unit unit)
     {
-        battleManager.unit_EnemyDatasTemp.Add(unit);
+        battleManager._enemyUnitDatasTemp.Add(unit);
     }
 
     /// <summary>
@@ -98,13 +98,13 @@ public class Battle_Unit : BattleCommand
     /// </summary>
     public void Clear_Unit()
     {
-        for (int i = 0; battleManager.unit_MyDatasTemp.Count > 0;)
+        for (int i = 0; battleManager._myUnitDatasTemp.Count > 0;)
         {
-            battleManager.unit_MyDatasTemp[i].Delete_Unit();
+            battleManager._myUnitDatasTemp[i].Delete_Unit();
         }
-        for (int i = 0; battleManager.unit_EnemyDatasTemp.Count > 0;)
+        for (int i = 0; battleManager._enemyUnitDatasTemp.Count > 0;)
         {
-            battleManager.unit_EnemyDatasTemp[i].Delete_Unit();
+            battleManager._enemyUnitDatasTemp[i].Delete_Unit();
         }
     }
     

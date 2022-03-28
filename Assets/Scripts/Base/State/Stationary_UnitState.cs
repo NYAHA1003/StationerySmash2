@@ -19,7 +19,7 @@ public class Stationary_UnitState : UnitState
         this.stageData = stageData;
         this.myUnitData = myUnit.unitData;
         originValue = myUnitData.unitablityData;
-        stageData = myUnit.battleManager.currentStageData;
+        stageData = myUnit.battleManager.CurrentStageData;
     }
 
     public virtual void Animation(params float[] value)

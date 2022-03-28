@@ -197,11 +197,11 @@ public class Ballpen_Throw_State : Pencil_Throw_State
 
         if (myUnit.eTeam.Equals(TeamType.MyTeam))
         {
-            IntAttack(myUnit.battleManager.unit_EnemyDatasTemp);
+            IntAttack(myUnit.battleManager._enemyUnitDatasTemp);
         }
         else
         {
-            IntAttack(myUnit.battleManager.unit_MyDatasTemp);
+            IntAttack(myUnit.battleManager._myUnitDatasTemp);
         }
 
         atkData.Reset_Damage(100 + (myUnit.weight > targetUnit.weight ? (Mathf.RoundToInt((float)myUnit.weight - targetUnit.weight) / 2) : Mathf.RoundToInt((float)(targetUnit.weight - myUnit.weight) / 5)));

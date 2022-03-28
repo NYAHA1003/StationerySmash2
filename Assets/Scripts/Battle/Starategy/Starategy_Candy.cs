@@ -9,11 +9,11 @@ public class Starategy_Candy : IStarategy
     {
         if(eTeam == TeamType.MyTeam)
         {
-            Check_Range(battleManager, battleManager.unit_EnemyDatasTemp, true, value);
+            Check_Range(battleManager, battleManager._enemyUnitDatasTemp, true, value);
         }
         else if (eTeam == TeamType.EnemyTeam)
         {
-            Check_Range(battleManager, battleManager.unit_MyDatasTemp, false, value);
+            Check_Range(battleManager, battleManager._myUnitDatasTemp, false, value);
         }
     }
     private void Check_Range(BattleManager battleManager, List<Unit> list, bool isMyTeam , params float[] value)

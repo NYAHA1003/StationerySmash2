@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
-public class Battle_Throw : BattleCommand
+public class BattleThrow : BattleCommand
 {
     private Unit throw_Unit;
     private LineRenderer parabola;
@@ -15,7 +15,7 @@ public class Battle_Throw : BattleCommand
     private float pullTime;
 
 
-    public Battle_Throw(BattleManager battleManager, LineRenderer parabola, Transform arrow, StageData stageData) : base(battleManager)
+    public BattleThrow(BattleManager battleManager, LineRenderer parabola, Transform arrow, StageData stageData) : base(battleManager)
     {
         this.parabola = parabola;
         this.stageData = stageData;
@@ -30,11 +30,11 @@ public class Battle_Throw : BattleCommand
     public void Pull_Unit(Vector2 pos)
     {
         float targetRange = float.MaxValue;
-        for (int i = 0; i < battleManager.unit_MyDatasTemp.Count; i++)
+        for (int i = 0; i < battleManager._myUnitDatasTemp.Count; i++)
         {
-            if (Vector2.Distance(pos, battleManager.unit_MyDatasTemp[i].transform.position) < targetRange)
+            if (Vector2.Distance(pos, battleManager._myUnitDatasTemp[i].transform.position) < targetRange)
             {
-                throw_Unit = battleManager.unit_MyDatasTemp[i];
+                throw_Unit = battleManager._myUnitDatasTemp[i];
                 targetRange = Vector2.Distance(pos, throw_Unit.transform.position);
             }
         }
@@ -46,7 +46,7 @@ public class Battle_Throw : BattleCommand
                 throw_Unit = throw_Unit.Pull_Unit();
                 if(throw_Unit == null)
                 {
-                    battleManager.battle_Camera.Set_CameraIsMove(false);
+                    battleManager.BattleCamera.Set_CameraIsMove(false);
                 }
                 pullTime = 2f;
                 return;
@@ -71,7 +71,7 @@ public class Battle_Throw : BattleCommand
 
             //유닛이 다른 행동을 취하게 되면 취소
             throw_Unit = throw_Unit.Pulling_Unit();
-            battleManager.battle_Camera.Set_CameraIsMove(false);
+            battleManager.BattleCamera.Set_CameraIsMove(false);
 
             if (throw_Unit == null)
             {

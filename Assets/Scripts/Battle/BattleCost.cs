@@ -4,7 +4,7 @@ using UnityEngine;
 using Utill;
 using TMPro;
 
-public class Battle_Cost : BattleCommand
+public class BattleCost : BattleCommand
 {
     public int cur_Cost { get; private set; } = 0;
     public int max_Cost { get; private set; } = 2;
@@ -17,7 +17,7 @@ public class Battle_Cost : BattleCommand
 
     private TextMeshProUGUI cost_CostText;
 
-    public Battle_Cost(BattleManager battleManager, TextMeshProUGUI cost_CostText) : base(battleManager)
+    public BattleCost(BattleManager battleManager, TextMeshProUGUI cost_CostText) : base(battleManager)
     {
         this.cost_CostText = cost_CostText;
     }

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class Battle_Pause : BattleCommand
+public class BattlePause : BattleCommand
 {
     private bool isActive = false;
     private RectTransform pauseUI;
     private Canvas pauseCanvas;
-    public Battle_Pause(BattleManager battleManager, RectTransform pauseUI, Canvas pauseCanvas) : base(battleManager)
+    public BattlePause(BattleManager battleManager, RectTransform pauseUI, Canvas pauseCanvas) : base(battleManager)
     {
         this.pauseUI = pauseUI;
         this.pauseCanvas = pauseCanvas;

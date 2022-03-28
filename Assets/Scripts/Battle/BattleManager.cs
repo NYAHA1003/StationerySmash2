@@ -11,258 +11,259 @@ public class BattleManager : MonoBehaviour
     #region 데이터들
 
     [SerializeField, Header("공용 데이터들"), Space(30)]
-    private UnitDataSO unitDataSO;
+    private UnitDataSO _unitDataSO = null;
     [SerializeField]
-    public StageDataSO stageDataSO;
+    public StageDataSO _stageDataSO = null;
     [SerializeField]
-    public StarategyDataSO  starategyDataSO;
+    public StarategyDataSO _starategyDataSO = null;
     [SerializeField]
-    public DeckData deckData;
+    public DeckData _deckData = null;
+    private bool _isEndSetting = false;
 
-    private bool isEndSetting = false;
-
-    public StageData currentStageData
+    public StageData CurrentStageData
     {
         get
         {
-            return stageDataSO.stageDatas[0];
+            return _stageDataSO.stageDatas[0];
         }
 
-        private set {}
+        private set 
+        {
+        }
     }
 
     #endregion
 
-    #region 카드 시스템 Battle_Card
+    #region 카드 시스템 BattleCard
 
-    public Battle_Card battle_Card { get; private set;}
+    public BattleCard BattleCard { get; private set;}
 
-    [SerializeField, Header("카드시스템 Battle_Card"), Space(30)]
-    public List<CardMove> card_DatasTemp;
+    [SerializeField, Header("카드시스템 BattleCard"), Space(30)]
+    public List<CardMove> _cardDatasTemp = new List<CardMove>();
     [SerializeField]
-    private GameObject card_cardMove_Prefeb;
+    private GameObject _cardMovePrefeb = null;
     [SerializeField]
-    private Transform card_PoolManager;
+    private Transform _cardPoolManager = null;
     [SerializeField]
-    private Transform card_Canvas;
+    private Transform _cardCanvas = null;
     [SerializeField]
-    private RectTransform card_SpawnPosition;
+    private RectTransform _cardSpawnPosition = null;
     [SerializeField]
-    private RectTransform card_LeftPosition;
+    private RectTransform _cardLeftPosition = null;
     [SerializeField]
-    private RectTransform card_RightPosition;
+    private RectTransform _cardRightPosition = null;
     [SerializeField]
-    private GameObject card_AfterImage;
+    private GameObject _cardAfterImage = null;
     [SerializeField]
-    private LineRenderer card_SummonRangeLine;
+    private LineRenderer _cardSummonRangeLine = null;
 
     [Header("어느 곳이든 유닛 소환 가능")]
-    public bool isAnySummon;
+    public bool isAnySummon = false;
 
     #endregion
 
-    #region 유닛 시스템 Battle_Unit
+    #region 유닛 시스템 BattleUnit
 
-    public Battle_Unit battle_Unit { get; private set; }
+    public BattleUnit BattleUnit { get; private set; }
 
-    [SerializeField, Header("유닛시스템 Battle_Unit"), Space(30)]
-    public List<Unit> unit_MyDatasTemp;
-    public List<Unit> unit_EnemyDatasTemp;
+    [SerializeField, Header("유닛시스템 BattleUnit"), Space(30)]
+    public List<Unit> _myUnitDatasTemp;
+    public List<Unit> _enemyUnitDatasTemp;
     [SerializeField]
-    private GameObject unit_Prefeb;
+    private GameObject _unitPrefeb;
     [SerializeField]
-    private Transform unit_PoolManager;
+    private Transform _unitPoolManager;
     [SerializeField]
-    private Transform unit_Parent;
+    private Transform _unitParent;
 
-    public TextMeshProUGUI unit_teamText;
-
-    #endregion
-
-    #region 카메라 시스템 Battle_Camera
-
-    public Battle_Camera battle_Camera { get; private set; }
-
-    [SerializeField, Header("카메라시스템 Battle_Camera"), Space(30)]
-    public Camera main_Cam;
+    public TextMeshProUGUI _unitTeamText;
 
     #endregion
 
-    #region 이펙트 시스템 Battle_Effect
+    #region 카메라 시스템 BattleCamera
 
-    public Battle_Effect battle_Effect { get; private set; }
+    public BattleCamera BattleCamera { get; private set; }
 
-    [SerializeField, Header("이펙트 시스템 Battle_Effect"), Space(30)]
-    private Transform effect_PoolManager;
-    public List<GameObject> effect_ObjList;
+    [SerializeField, Header("카메라시스템 BattleCamera"), Space(30)]
+    private Camera _mainCam;
 
     #endregion
 
-    #region 던지기 시스템 Battle_Throw
+    #region 이펙트 시스템 BattleEffect
 
-    public Battle_Throw battle_Throw { get; private set; }
-    [SerializeField, Header("던지기 시스템 Battle_Throw"), Space(30)]
-    private LineRenderer throw_parabola;
+    public BattleEffect BattleEffect { get; private set; }
+
+    [SerializeField, Header("이펙트 시스템 BattleEffect"), Space(30)]
+    private Transform _effectPoolManager;
+    public List<GameObject> _effectObjectList;
+
+    #endregion
+
+    #region 던지기 시스템 BattleThrow
+
+    public BattleThrow BattleThrow { get; private set; }
+    [SerializeField, Header("던지기 시스템 BattleThrow"), Space(30)]
+    private LineRenderer _throwParabola;
     [SerializeField]
-    private Transform throw_Arrow;
+    private Transform _throwArrow;
 
     #endregion
 
-    #region 시간 시스템 Battle_Time
+    #region 시간 시스템 BattleTime
 
-    public Battle_Time battle_Time { get; private set; }
+    public BattleTime BattleTime { get; private set; }
 
-    [SerializeField, Header("시간시스템 Battle_Time"), Space(30)]
-    public TextMeshProUGUI time_TimeText;
+    [SerializeField, Header("시간시스템 BattleTime"), Space(30)]
+    public TextMeshProUGUI _timeText;
 
 
     #endregion
 
     #region 스테이지 AI 시스템 Battle_AI
 
-    public Battle_AI battle_AI;
+    public BattleAI BattleAI;
 
-    [SerializeField, Header("AI 시스템 Battle_Ai"), Space(30)]
-    public bool ai_isEnemyActive;
-    public bool ai_isPlayerActive;
+    [SerializeField, Header("AI 시스템 BattleAi"), Space(30)]
+    public bool _isEnemyActive;
+    public bool _isPlayerActive;
     [SerializeField]
-    public StageLog ai_Log;
+    public StageLog _aiLog;
     [SerializeField]
-    public AIDataSO ai_EnemyDataSO;
+    public AIDataSO _aiEnemyDataSO;
     [SerializeField]
-    public AIDataSO ai_PlayerDataSO;
+    public AIDataSO _aiPlayerDataSO;
 
     #endregion
 
-    #region 코스트 시스템 Battle_Cost
+    #region 코스트 시스템 BattleCost
 
-    public Battle_Cost battle_Cost { get; private set; }
+    public BattleCost BattleCost { get; private set; }
 
-    [SerializeField, Header("코스트 시스템 Battle_Cost"), Space(30)]
-    public TextMeshProUGUI cost_CostText;
+    [SerializeField, Header("코스트 시스템 BattleCost"), Space(30)]
+    public TextMeshProUGUI _costText;
 
     #endregion
 
-    #region 필통 시스템 Battle_PencilCase
+    #region 필통 시스템 BattlePencilCase
 
-    public Battle_PencilCase battle_PencilCase { get; private set; }
-    [SerializeField, Header("필통시스템 Battle_PencilCase"), Space(30)]
-    public Unit pencilCase_My;
-    public Unit pencilCase_Enemy;
-    public PencilCaseDataSO pencilCase_MyData;
-    public PencilCaseData pencilCase_EnemyData;
+    public BattlePencilCase BattlePencilCase { get; private set; }
+    [SerializeField, Header("필통시스템 BattlePencilCase"), Space(30)]
+    public Unit _myPencilCase;
+    public Unit _enemyPencilCase;
+    public PencilCaseDataSO _pencilCaseMyData;
+    public PencilCaseData _pencilCaseEnemyData;
 
 
     #endregion
 
     #region 일시정지 시스템 Battle_Pause
 
-    public Battle_Pause battle_Pause { get; private set; }
+    public BattlePause BattlePause { get; private set; }
 
     [SerializeField, Header("일시정지시스템 Battle_Pause"), Space(30)]
-    private RectTransform pause_UI;
+    private RectTransform _pauseUI;
     [SerializeField]
-    private Canvas pause_Canvas;
+    private Canvas _pauseCanvas;
 
     #endregion
 
     #region 승리 패배 시스템 Battle_WinLose
 
-    public Battle_WinLose battle_WinLose { get; private set; }
-    [SerializeField, Header("승리패배시스템 Battle_WinLose"), Space(30)]
-    private Canvas winLose_Canvas;
+    public BattleWinLose BattleWinLose { get; private set; }
+    [SerializeField, Header("승리패배시스템 BattleWinLose"), Space(30)]
+    private Canvas winLoseCanvas;
     [SerializeField]
-    private RectTransform winlose_winPanel;
+    private RectTransform winPanel;
     [SerializeField]
-    private RectTransform winlose_losePanel;
+    private RectTransform losePanel;
 
     #endregion
 
     private void Start()
     {
-        deckData = new DeckData();
-        battle_Card = new Battle_Card(this, deckData, unitDataSO, starategyDataSO, card_cardMove_Prefeb, card_PoolManager, card_Canvas, card_SpawnPosition, card_LeftPosition, card_RightPosition, card_AfterImage, card_SummonRangeLine);
-        battle_Camera = new Battle_Camera(this, main_Cam);
-        battle_Unit = new Battle_Unit(this, unit_Prefeb, unit_PoolManager, unit_Parent);
-        battle_Effect = new Battle_Effect(this, effect_PoolManager);
-        battle_Throw = new Battle_Throw(this, throw_parabola, throw_Arrow, currentStageData);
-        battle_AI = new Battle_AI(this, ai_EnemyDataSO, ai_PlayerDataSO, ai_isEnemyActive, ai_isPlayerActive);
-        battle_Time = new Battle_Time(this, time_TimeText);
-        battle_Cost = new Battle_Cost(this, cost_CostText);
-        pencilCase_EnemyData = stageDataSO.enemyPencilCase;
-        battle_PencilCase = new Battle_PencilCase(this, pencilCase_My, pencilCase_Enemy, pencilCase_MyData.pencilCaseData, pencilCase_EnemyData);
-        battle_Pause = new Battle_Pause(this, pause_UI, pause_Canvas);
-        battle_WinLose = new Battle_WinLose(this, winLose_Canvas, winlose_winPanel, winlose_losePanel);
+        _deckData = new DeckData();
+        BattleCard = new BattleCard(this, _deckData, _unitDataSO, _starategyDataSO, _cardMovePrefeb, _cardPoolManager, _cardCanvas, _cardSpawnPosition, _cardLeftPosition, _cardRightPosition, _cardAfterImage, _cardSummonRangeLine);
+        BattleCamera = new BattleCamera(this, _mainCam);
+        BattleUnit = new BattleUnit(this, _unitPrefeb, _unitPoolManager, _unitParent);
+        BattleEffect = new BattleEffect(this, _effectPoolManager);
+        BattleThrow = new BattleThrow(this, _throwParabola, _throwArrow, CurrentStageData);
+        BattleAI = new BattleAI(this, _aiEnemyDataSO, _aiPlayerDataSO, _isEnemyActive, _isPlayerActive);
+        BattleTime = new BattleTime(this, _timeText);
+        BattleCost = new BattleCost(this, _costText);
+        _pencilCaseEnemyData = _stageDataSO.enemyPencilCase;
+        BattlePencilCase = new BattlePencilCase(this, _myPencilCase, _enemyPencilCase, _pencilCaseMyData.pencilCaseData, _pencilCaseEnemyData);
+        BattlePause = new BattlePause(this, _pauseUI, _pauseCanvas);
+        BattleWinLose = new BattleWinLose(this, winLoseCanvas, winPanel, losePanel);
 
-        battle_Cost.Set_CostSpeed(pencilCase_MyData.pencilCaseData.costSpeed);
-        battle_Card.Set_MaxCard(pencilCase_MyData.pencilCaseData.maxCard);
+        BattleCost.Set_CostSpeed(_pencilCaseMyData.pencilCaseData.costSpeed);
+        BattleCard.Set_MaxCard(_pencilCaseMyData.pencilCaseData.maxCard);
 
-        isEndSetting = true;
+        _isEndSetting = true;
     }
 
     private void Update()
     {
-        if (!isEndSetting)
+        if (!_isEndSetting)
             return;
 
         //시간 시스템
-        battle_Time.Update_Time();
+        BattleTime.Update_Time();
 
         //카메라 위치, 크기 조정
-        battle_Camera.Update_CameraPos();
-        battle_Camera.Update_CameraScale();
+        BattleCamera.Update_CameraPos();
+        BattleCamera.Update_CameraScale();
 
         //카드 시스템
-        battle_Card.Update_UnitAfterImage();
-        battle_Card.Update_SelectCardPos();
-        battle_Card.Update_CardDrow();
-        battle_Card.Check_PossibleSummon();
-        battle_Card.Update_SummonRange();
+        BattleCard.Update_UnitAfterImage();
+        BattleCard.Update_SelectCardPos();
+        BattleCard.Update_CardDrow();
+        BattleCard.Check_PossibleSummon();
+        BattleCard.Update_SummonRange();
         if (Input.GetKeyDown(KeyCode.X))
         {
-            battle_Card.Add_OneCard();
+            BattleCard.Add_OneCard();
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            battle_Card.Add_AllCard();
+            BattleCard.Add_AllCard();
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
-            battle_Card.Clear_Cards();
+            BattleCard.Clear_Cards();
         }
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
-            battle_Card.Subtract_Card();
+            BattleCard.Subtract_Card();
         }
 
         //유닛 시스템
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            battle_Unit.Clear_Unit();
+            BattleUnit.Clear_Unit();
         }
 
         //던지기 시스템
         if(Input.GetMouseButtonDown(0))
         {
-            battle_Throw.Pull_Unit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            BattleThrow.Pull_Unit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
         else if(Input.GetMouseButton(0))
         {
-            battle_Throw.Draw_Parabola(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            BattleThrow.Draw_Parabola(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
         else if(Input.GetMouseButtonUp(0))
         {
-            battle_Throw.Throw_Unit();
+            BattleThrow.Throw_Unit();
         }
 
         //코스트 시스템
-        battle_Cost.Update_Cost();
+        BattleCost.Update_Cost();
 
         //AI 시스템
-        battle_AI.Update_EnemyAICard();
-        battle_AI.Update_EnemyAIThrow();
-        battle_AI.Update_PlayerAICard();
-        battle_AI.Update_PlayerAIThrow();
+        BattleAI.Update_EnemyAICard();
+        BattleAI.Update_EnemyAIThrow();
+        BattleAI.Update_PlayerAICard();
+        BattleAI.Update_PlayerAIThrow();
 
     }
 
@@ -289,16 +290,16 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     public void Change_Team()
     {
-        if(battle_Unit.eTeam.Equals(TeamType.MyTeam))
+        if(BattleUnit.eTeam.Equals(TeamType.MyTeam))
         {
-            battle_Unit.eTeam = Utill.TeamType.EnemyTeam;
-            unit_teamText.text = "적의 팀";
+            BattleUnit.eTeam = Utill.TeamType.EnemyTeam;
+            _unitTeamText.text = "적의 팀";
             return;
         }
-        if (battle_Unit.eTeam.Equals(Utill.TeamType.EnemyTeam))
+        if (BattleUnit.eTeam.Equals(Utill.TeamType.EnemyTeam))
         {
-            battle_Unit.eTeam = Utill.TeamType.MyTeam;
-            unit_teamText.text = "나의 팀";
+            BattleUnit.eTeam = Utill.TeamType.MyTeam;
+            _unitTeamText.text = "나의 팀";
             return;
         }
     }
@@ -310,7 +311,7 @@ public class BattleManager : MonoBehaviour
     public void Pool_DeleteUnit(Unit unit)
     {
         unit.gameObject.SetActive(false);
-        unit.transform.SetParent(unit_PoolManager);
+        unit.transform.SetParent(_unitPoolManager);
     }
 
     #endregion
@@ -319,7 +320,7 @@ public class BattleManager : MonoBehaviour
 
     public void Run_UpgradeCostGrade()
     {
-        battle_Cost.Run_UpgradeCostGrade();
+        BattleCost.Run_UpgradeCostGrade();
     }
 
     #endregion
@@ -328,7 +329,7 @@ public class BattleManager : MonoBehaviour
 
     public void Run_PencilCaseAbility()
     {
-        battle_PencilCase.Run_PencilCaseAbility();
+        BattlePencilCase.Run_PencilCaseAbility();
     }
 
     #endregion
@@ -337,7 +338,7 @@ public class BattleManager : MonoBehaviour
 
     public void Set_Pause()
     {
-        battle_Pause.Set_Pause();
+        BattlePause.Set_Pause();
     }
 
     #endregion

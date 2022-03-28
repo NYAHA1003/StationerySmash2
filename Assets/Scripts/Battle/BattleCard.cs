@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using Utill;
 
-public class Battle_Card : BattleCommand
+public class BattleCard : BattleCommand
 {
     private int max_Card = 3;
     private int cur_Card = 0;
@@ -37,7 +37,7 @@ public class Battle_Card : BattleCommand
 
     private int cardidCount = 0;
 
-    public Battle_Card(BattleManager battleManager, DeckData deckData, UnitDataSO unitDataSO, StarategyDataSO starategyDataSO, GameObject card_Prefeb, Transform card_PoolManager, Transform card_Canvas, RectTransform card_SpawnPosition, RectTransform card_LeftPosition, RectTransform card_RightPosition, GameObject unit_AfterImage, LineRenderer summonRangeLine)
+    public BattleCard(BattleManager battleManager, DeckData deckData, UnitDataSO unitDataSO, StarategyDataSO starategyDataSO, GameObject card_Prefeb, Transform card_PoolManager, Transform card_Canvas, RectTransform card_SpawnPosition, RectTransform card_LeftPosition, RectTransform card_RightPosition, GameObject unit_AfterImage, LineRenderer summonRangeLine)
         : base(battleManager)
     {
         this.deckData = deckData;
@@ -50,7 +50,7 @@ public class Battle_Card : BattleCommand
         this.card_RightPosition = card_RightPosition;
         this.card_LeftPosition = card_LeftPosition;
 
-        this.stageData = battleManager.currentStageData;
+        this.stageData = battleManager.CurrentStageData;
         this.summonRange = -stageData.max_Range + stageData.max_Range / 4;
         this.summonRangeLine = summonRangeLine;
         Set_SummonRangeLinePos();
@@ -98,12 +98,12 @@ public class Battle_Card : BattleCommand
         CardMove cardmove = Pool_Card();
         cardmove.isFusion = false;
         cardmove.Set_UnitData(deckData.cardDatas[random], cardidCount++);
-        battleManager.card_DatasTemp.Add(cardmove);
+        battleManager._cardDatasTemp.Add(cardmove);
 
-        if (battleManager.card_DatasTemp.Count > 1)
+        if (battleManager._cardDatasTemp.Count > 1)
         {
-            CardMove targetCard1 = battleManager.card_DatasTemp[battleManager.card_DatasTemp.Count - 1];
-            CardMove targetCard2 = battleManager.card_DatasTemp[battleManager.card_DatasTemp.Count - 2];
+            CardMove targetCard1 = battleManager._cardDatasTemp[battleManager._cardDatasTemp.Count - 1];
+            CardMove targetCard2 = battleManager._cardDatasTemp[battleManager._cardDatasTemp.Count - 2];
 
             if (targetCard1.grade < 2 && targetCard2.grade < 2)
             Fusion_Check(targetCard1, targetCard2);
@@ -145,13 +145,13 @@ public class Battle_Card : BattleCommand
     public void Sort_Card()
     {
         List<PRS> originCardPRS = new List<PRS>();
-        originCardPRS = Return_RoundPRS(battleManager.card_DatasTemp.Count, 800, 600);
+        originCardPRS = Return_RoundPRS(battleManager._cardDatasTemp.Count, 800, 600);
 
-        for (int i = 0; i < battleManager.card_DatasTemp.Count; i++)
+        for (int i = 0; i < battleManager._cardDatasTemp.Count; i++)
         {
-            CardMove targetCard = battleManager.card_DatasTemp[i];
+            CardMove targetCard = battleManager._cardDatasTemp[i];
             targetCard.originPRS = originCardPRS[i];
-            if (battleManager.card_DatasTemp[i].Equals(selectCard))
+            if (battleManager._cardDatasTemp[i].Equals(selectCard))
                 continue;
             //if (battleManager.card_DatasTemp[i].isFusion)
             //  continue;
@@ -254,10 +254,10 @@ public class Battle_Card : BattleCommand
     {
         CardMove targetCard1 = null;
         CardMove targetCard2 = null;
-        for (int i = 0; i < battleManager.card_DatasTemp.Count - 1; i++)
+        for (int i = 0; i < battleManager._cardDatasTemp.Count - 1; i++)
         {
-            targetCard1 = battleManager.card_DatasTemp[i];
-            targetCard2 = battleManager.card_DatasTemp[i + 1];
+            targetCard1 = battleManager._cardDatasTemp[i];
+            targetCard2 = battleManager._cardDatasTemp[i + 1];
             if (targetCard1.grade > 2 || targetCard2.grade > 2)
                 continue;
 
@@ -279,8 +279,8 @@ public class Battle_Card : BattleCommand
     private IEnumerator Fusion_Move(int index)
     {
         isFusion = true;
-        CardMove targetCard1 = battleManager.card_DatasTemp[index];
-        CardMove targetCard2 = battleManager.card_DatasTemp[index + 1];
+        CardMove targetCard1 = battleManager._cardDatasTemp[index];
+        CardMove targetCard2 = battleManager._cardDatasTemp[index + 1];
         targetCard1.isFusion = true;
         targetCard2.isFusion = true;
 
@@ -316,7 +316,7 @@ public class Battle_Card : BattleCommand
     }
     public void Subtract_CardFind(CardMove cardMove)
     {
-        Subtract_CardAt(battleManager.card_DatasTemp.FindIndex(x => x.id == cardMove.id));
+        Subtract_CardAt(battleManager._cardDatasTemp.FindIndex(x => x.id == cardMove.id));
     }
 
     /// <summary>
@@ -328,9 +328,9 @@ public class Battle_Card : BattleCommand
             return;
 
         cur_Card--;
-        battleManager.card_DatasTemp[index].transform.SetParent(card_PoolManager);
-        battleManager.card_DatasTemp[index].gameObject.SetActive(false);
-        battleManager.card_DatasTemp.RemoveAt(index);
+        battleManager._cardDatasTemp[index].transform.SetParent(card_PoolManager);
+        battleManager._cardDatasTemp[index].gameObject.SetActive(false);
+        battleManager._cardDatasTemp.RemoveAt(index);
         Sort_Card();
     }
 
@@ -399,34 +399,34 @@ public class Battle_Card : BattleCommand
         if (!isPossibleSummon)
         {
             card.Run_OriginPRS();
-            battleManager.battle_Camera.Set_CameraIsMove(true);
+            battleManager.BattleCamera.Set_CameraIsMove(true);
             return;
         }
 
-        battleManager.battle_Cost.Subtract_Cost(card.card_Cost);
-        Subtract_CardAt(battleManager.card_DatasTemp.FindIndex(x => x.id == card.id));
+        battleManager.BattleCost.Subtract_Cost(card.card_Cost);
+        Subtract_CardAt(battleManager._cardDatasTemp.FindIndex(x => x.id == card.id));
         isCardDown = false;
 
         //카드 사용
         Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        if(battleManager.battle_Unit.eTeam == TeamType.MyTeam)
+        if(battleManager.BattleUnit.eTeam == TeamType.MyTeam)
             mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, -stageData.max_Range, summonRange);
 
         switch (card.dataBase.cardType)
         {
             case CardType.SummonUnit:
-                battleManager.battle_Unit.Summon_Unit(card.dataBase, new Vector3(mouse_Pos.x, 0, 0), card.grade);
+                battleManager.BattleUnit.Summon_Unit(card.dataBase, new Vector3(mouse_Pos.x, 0, 0), card.grade);
                 break;
             default:
             case CardType.Execute:
             case CardType.SummonTrap:
             case CardType.Installation:
-                card.dataBase.strategyData.starategy_State.Run_Card(battleManager, battleManager.battle_Unit.eTeam ,card.grade, card.dataBase.strategyData.starategyablityData);
+                card.dataBase.strategyData.starategy_State.Run_Card(battleManager, battleManager.BattleUnit.eTeam ,card.grade, card.dataBase.strategyData.starategyablityData);
                 break;
         }
-        if(battleManager.battle_Unit.eTeam == TeamType.EnemyTeam)
+        if(battleManager.BattleUnit.eTeam == TeamType.EnemyTeam)
         {
-            battleManager.ai_Log.Add_Log(card.dataBase);
+            battleManager._aiLog.Add_Log(card.dataBase);
         }
         Fusion_Card();
     }
@@ -440,7 +440,7 @@ public class Battle_Card : BattleCommand
     public void Update_UnitAfterImage()
     {
         Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        if(battleManager.battle_Unit.eTeam == TeamType.MyTeam)
+        if(battleManager.BattleUnit.eTeam == TeamType.MyTeam)
             pos.x = Mathf.Clamp(pos.x, -stageData.max_Range, summonRange);
         if (selectCard == null || selectCard.dataBase.unitData.unitType == UnitType.None || pos.y < 0)
         {
@@ -471,7 +471,7 @@ public class Battle_Card : BattleCommand
             isPossibleSummon = true;
             return;
         }
-        if (battleManager.battle_Unit.eTeam.Equals(TeamType.EnemyTeam))
+        if (battleManager.BattleUnit.eTeam.Equals(TeamType.EnemyTeam))
         {
             isPossibleSummon = true;
             return;
@@ -495,7 +495,7 @@ public class Battle_Card : BattleCommand
                 break;
         }
 
-        if (battleManager.battle_Cost.cur_Cost < selectCard.card_Cost)
+        if (battleManager.BattleCost.cur_Cost < selectCard.card_Cost)
         {
             isPossibleSummon = false;
             return;

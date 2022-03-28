@@ -25,6 +25,6 @@ public class PencilCase_Normal_Ability_State : PencilCase_Ability_State
     /// </summary>
     public override void Run_PencilCaseAility()
     {
-        battleManager.battle_Card.Clear_Cards();
+        battleManager.BattleCard.Clear_Cards();
     }
 }

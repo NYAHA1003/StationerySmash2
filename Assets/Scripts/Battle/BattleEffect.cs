@@ -4,12 +4,12 @@ using UnityEngine;
 using Utill;
 
 
-public class Battle_Effect : BattleCommand
+public class BattleEffect : BattleCommand
 {
     
     private Transform effect_PoolManager;
 
-    public Battle_Effect(BattleManager battleManager, Transform effect_PoolManager) : base(battleManager)
+    public BattleEffect(BattleManager battleManager, Transform effect_PoolManager) : base(battleManager)
     {
         this.effect_PoolManager = effect_PoolManager;
     }
@@ -39,7 +39,7 @@ public class Battle_Effect : BattleCommand
         }
 
         //없으면 새로 만듦
-        effect_Object = battleManager.Create_Object(battleManager.effect_ObjList[(int)effectType].gameObject, effData.pos, Quaternion.identity).GetComponent<EffectObject>();
+        effect_Object = battleManager.Create_Object(battleManager._effectObjectList[(int)effectType].gameObject, effData.pos, Quaternion.identity).GetComponent<EffectObject>();
         effect_Object.transform.SetParent(effect_Parent);
         effect_Object.Set_Effect(effData);
         return effect_Object.effectState;

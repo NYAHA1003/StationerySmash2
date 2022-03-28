@@ -94,7 +94,7 @@ public class Unit : MonoBehaviour
         
         this.spr.sprite = dataBase.card_Sprite;
         this.battleManager = battleManager;
-        this.stageData = battleManager.currentStageData;
+        this.stageData = battleManager.CurrentStageData;
         this.maxhp = dataBase.unitData.unit_Hp * grade;
         this.hp = dataBase.unitData.unit_Hp;
         moveSpeedPercent = 100 * grade;
@@ -149,10 +149,10 @@ public class Unit : MonoBehaviour
             case TeamType.Null:
                 break;
             case TeamType.MyTeam:
-                battleManager.unit_MyDatasTemp.Remove(this);
+                battleManager._myUnitDatasTemp.Remove(this);
                 break;
             case TeamType.EnemyTeam:
-                battleManager.unit_EnemyDatasTemp.Remove(this);
+                battleManager._enemyUnitDatasTemp.Remove(this);
                 break;
         }
     }
@@ -177,7 +177,7 @@ public class Unit : MonoBehaviour
         switch (unitData.unitType)
         {
             case UnitType.PencilCase:
-                stateManager = Battle_Unit.GetItem<PencilCaseStateManager>(transform, spr.transform, this);
+                stateManager = BattleUnit.GetItem<PencilCaseStateManager>(transform, spr.transform, this);
                 break;
 
             default:
@@ -185,10 +185,10 @@ public class Unit : MonoBehaviour
             case UnitType.Pencil:
             case UnitType.Eraser:
             case UnitType.Sharp:
-                stateManager = Battle_Unit.GetItem<PencilStateManager>(transform, spr.transform, this);
+                stateManager = BattleUnit.GetItem<PencilStateManager>(transform, spr.transform, this);
                 break;
             case UnitType.BallPen:
-                stateManager = Battle_Unit.GetItem<BallpenStateManager>(transform, spr.transform, this);
+                stateManager = BattleUnit.GetItem<BallpenStateManager>(transform, spr.transform, this);
                 break;
         }
     }
@@ -201,11 +201,11 @@ public class Unit : MonoBehaviour
         switch (unitData.unitType)
         {
             case UnitType.PencilCase:
-                Battle_Unit.AddItem((PencilCaseStateManager)stateManager);
+                BattleUnit.AddItem((PencilCaseStateManager)stateManager);
                 break;
 
             case UnitType.BallPen:
-                Battle_Unit.AddItem((BallpenStateManager)stateManager);
+                BattleUnit.AddItem((BallpenStateManager)stateManager);
                 break;
 
             default:
@@ -213,7 +213,7 @@ public class Unit : MonoBehaviour
             case UnitType.Pencil:
             case UnitType.Eraser:
             case UnitType.Sharp:
-                Battle_Unit.AddItem((PencilStateManager)stateManager);
+                BattleUnit.AddItem((PencilStateManager)stateManager);
                 break;
         }
     }

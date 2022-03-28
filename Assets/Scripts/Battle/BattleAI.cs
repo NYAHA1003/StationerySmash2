@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Battle_AI : BattleCommand
+public class BattleAI : BattleCommand
 {
     //Enemy¿ë
     private int enemy_current;
@@ -30,7 +30,7 @@ public class Battle_AI : BattleCommand
     private float player_throw_MaxDelay = 100;
     private bool isPlayerAIOn;
 
-    public Battle_AI(BattleManager battleManager, AIDataSO aIenemyDataSO, AIDataSO aIplayerDataSO, bool isEnemyAIOn, bool isPlayerAIOn) : base(battleManager)
+    public BattleAI(BattleManager battleManager, AIDataSO aIenemyDataSO, AIDataSO aIplayerDataSO, bool isEnemyAIOn, bool isPlayerAIOn) : base(battleManager)
     {
         //Àû AI
         this.enemy_summonGrade = aIenemyDataSO.summonGrade;
@@ -53,18 +53,18 @@ public class Battle_AI : BattleCommand
     {
         if (!isEnemyAIOn)
             return;
-        if (battleManager.unit_EnemyDatasTemp.Count < 3)
+        if (battleManager._enemyUnitDatasTemp.Count < 3)
             return;
         if (enemy_throw_CurDelay < enemy_throw_MaxDelay)
         {
             enemy_throw_CurDelay += enemy_throw_Speed * Time.deltaTime;
             return;
         }
-        int selectUnit = Random.Range(2, battleManager.unit_EnemyDatasTemp.Count - 1);
-        Vector2 pos = battleManager.unit_EnemyDatasTemp[selectUnit].transform.position;
+        int selectUnit = Random.Range(2, battleManager._enemyUnitDatasTemp.Count - 1);
+        Vector2 pos = battleManager._enemyUnitDatasTemp[selectUnit].transform.position;
         pos.x += Random.Range(2.0f, 4.0f);
         pos.y -= Random.Range(2.0f, 4.0f);
-        battleManager.unit_EnemyDatasTemp[selectUnit].Throw_Unit(pos);
+        battleManager._enemyUnitDatasTemp[selectUnit].Throw_Unit(pos);
         enemy_throw_CurDelay = 0;
     }
     public void Update_EnemyAICard()
@@ -76,7 +76,7 @@ public class Battle_AI : BattleCommand
             enemy_cur_Delay += Time.deltaTime;
             return;
         }
-        battleManager.battle_Unit.Summon_Unit(enemy_cardDataList[enemy_current], new Vector3(enemy_pos[enemy_current].x, 0, 0), enemy_summonGrade, Utill.TeamType.EnemyTeam);
+        battleManager.BattleUnit.Summon_Unit(enemy_cardDataList[enemy_current], new Vector3(enemy_pos[enemy_current].x, 0, 0), enemy_summonGrade, Utill.TeamType.EnemyTeam);
         enemy_current++;
         if(enemy_current == enemy_max_Delay.Count)
         {
@@ -90,18 +90,18 @@ public class Battle_AI : BattleCommand
     {
         if (!isPlayerAIOn)
             return;
-        if (battleManager.unit_MyDatasTemp.Count < 3)
+        if (battleManager._myUnitDatasTemp.Count < 3)
             return;
         if (player_throw_CurDelay < player_throw_MaxDelay)
         {
             player_throw_CurDelay += player_throw_Speed * Time.deltaTime;
             return;
         }
-        int selectUnit = Random.Range(2, battleManager.unit_MyDatasTemp.Count - 1);
-        Vector2 pos = battleManager.unit_MyDatasTemp[selectUnit].transform.position;
+        int selectUnit = Random.Range(2, battleManager._myUnitDatasTemp.Count - 1);
+        Vector2 pos = battleManager._myUnitDatasTemp[selectUnit].transform.position;
         pos.x -= Random.Range(2.0f, 4.0f);
         pos.y -= Random.Range(2.0f, 4.0f);
-        battleManager.unit_MyDatasTemp[selectUnit].Throw_Unit(pos);
+        battleManager._myUnitDatasTemp[selectUnit].Throw_Unit(pos);
         player_throw_CurDelay = 0;
     }
     public void Update_PlayerAICard()
@@ -113,7 +113,7 @@ public class Battle_AI : BattleCommand
             player_cur_Delay += Time.deltaTime;
             return;
         }
-        battleManager.battle_Unit.Summon_Unit(player_cardDataList[player_current], new Vector3(player_pos[player_current].x, 0, 0), player_summonGrade, Utill.TeamType.MyTeam);
+        battleManager.BattleUnit.Summon_Unit(player_cardDataList[player_current], new Vector3(player_pos[player_current].x, 0, 0), player_summonGrade, Utill.TeamType.MyTeam);
         player_current++;
         if (player_current == player_max_Delay.Count)
         {

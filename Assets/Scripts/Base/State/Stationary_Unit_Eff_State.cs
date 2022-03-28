@@ -94,13 +94,13 @@ public abstract class Eff_State
             case AtkType.Normal:
                 break;
             case AtkType.Stun:
-                Battle_Unit.AddEff((Sturn_Eff_State)this);
+                BattleUnit.AddEff((Sturn_Eff_State)this);
                 break;
             case AtkType.Ink:
-                Battle_Unit.AddEff((Ink_Eff_State)this);
+                BattleUnit.AddEff((Ink_Eff_State)this);
                 break;
             case AtkType.SlowDown:
-                Battle_Unit.AddEff((SlowDown_Eff_State)this);
+                BattleUnit.AddEff((SlowDown_Eff_State)this);
                 break;
         }
 

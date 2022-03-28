@@ -9,11 +9,11 @@ public class Starategy_Slowdown : IStarategy
     {
         if(eTeam == TeamType.MyTeam)
         {
-            Check_Range(battleManager.unit_EnemyDatasTemp, value);
+            Check_Range(battleManager._enemyUnitDatasTemp, value);
         }
         else if (eTeam == TeamType.EnemyTeam)
         {
-            Check_Range(battleManager.unit_MyDatasTemp, value);
+            Check_Range(battleManager._myUnitDatasTemp, value);
         }
     }
 

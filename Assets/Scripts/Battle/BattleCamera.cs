@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Utill;
-public class Battle_Camera : BattleCommand
+public class BattleCamera : BattleCommand
 {
     private Camera camera;
     
@@ -18,7 +18,7 @@ public class Battle_Camera : BattleCommand
     public float orthoZoomSpeed = 0.5f;        //  orthographic mode.
 
 
-    public Battle_Camera(BattleManager battleManager, Camera camera) : base(battleManager)
+    public BattleCamera(BattleManager battleManager, Camera camera) : base(battleManager)
     {
         this.camera = camera;
     }
@@ -42,7 +42,7 @@ public class Battle_Camera : BattleCommand
 
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            if (battleManager.currentStageData.max_Range - 1 < camera.orthographicSize)
+            if (battleManager.CurrentStageData.max_Range - 1 < camera.orthographicSize)
                 return;
             camera.orthographicSize += Time.deltaTime * 10;
         }
@@ -108,7 +108,7 @@ public class Battle_Camera : BattleCommand
         //}
 
         //카드를 클릭한 상태라면
-        if (battleManager.battle_Card.isCardDown)
+        if (battleManager.BattleCard.isCardDown)
         {
             isCameraMove = false;
             return;
@@ -130,13 +130,13 @@ public class Battle_Camera : BattleCommand
         if (isCameraMove)
         {
             camera.transform.position = new Vector3(cur_Pos.x + (click_Pos.x + -mouse_Pos.x), 0, -10);
-            if (battleManager.currentStageData.max_Range + 1f < camera.transform.position.x)
+            if (battleManager.CurrentStageData.max_Range + 1f < camera.transform.position.x)
             {
-                camera.transform.DOMoveX(battleManager.currentStageData.max_Range, 0.1f);
+                camera.transform.DOMoveX(battleManager.CurrentStageData.max_Range, 0.1f);
             }
-            if (-battleManager.currentStageData.max_Range - 1f > camera.transform.position.x)
+            if (-battleManager.CurrentStageData.max_Range - 1f > camera.transform.position.x)
             {
-                camera.transform.DOMoveX(-battleManager.currentStageData.max_Range, 0.1f);
+                camera.transform.DOMoveX(-battleManager.CurrentStageData.max_Range, 0.1f);
             }
         }
     }
@@ -161,7 +161,7 @@ public class Battle_Camera : BattleCommand
                 DOTween.To(() => camera.orthographicSize, x => camera.orthographicSize = x, 0.6f, 0.05f).SetDelay(0.2f); ;
                 camera.transform.DORotate(new Vector3(0, 0, Random.Range(-30f, -10f)), 0.07f).SetDelay(0.2f).OnComplete(() =>
                 {
-                    battleManager.battle_WinLose.Set_WinLosePanel(isWin);
+                    battleManager.BattleWinLose.Set_WinLosePanel(isWin);
                 });
             });
         });

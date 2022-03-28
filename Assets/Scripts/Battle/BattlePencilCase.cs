@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 
-public class Battle_PencilCase : BattleCommand
+public class BattlePencilCase : BattleCommand
 {
     public Unit pencilCase_My;
     public Unit pencilCase_Enemy;
@@ -11,7 +11,7 @@ public class Battle_PencilCase : BattleCommand
     public PencilCaseData pencilCaseDataEnemy;
     public PencilCase_Ability_State pencilCase_Ability_State_My;
     public PencilCase_Ability_State pencilCase_Ability_State_Enemy;
-    public Battle_PencilCase(BattleManager battleManager, Unit pencilCase_My, Unit pencilCase_Enemy, PencilCaseData pencilCaseDataMy, PencilCaseData pencilCaseDataEnemy) : base(battleManager)
+    public BattlePencilCase(BattleManager battleManager, Unit pencilCase_My, Unit pencilCase_Enemy, PencilCaseData pencilCaseDataMy, PencilCaseData pencilCaseDataEnemy) : base(battleManager)
     {
         this.pencilCase_My = pencilCase_My;
         this.pencilCase_Enemy = pencilCase_Enemy;
@@ -22,13 +22,13 @@ public class Battle_PencilCase : BattleCommand
         this.battleManager = battleManager;
 
         pencilCase_My.Set_UnitData(pencilCaseDataMy.pencilCaseData, TeamType.MyTeam, battleManager, -1, 1);
-        battleManager.unit_MyDatasTemp.Add(pencilCase_My);
-        pencilCase_My.transform.position = new Vector2(-battleManager.currentStageData.max_Range, 0);
+        battleManager._myUnitDatasTemp.Add(pencilCase_My);
+        pencilCase_My.transform.position = new Vector2(-battleManager.CurrentStageData.max_Range, 0);
         Set_PencilCaseAbility(ref pencilCase_Ability_State_My, pencilCaseDataMy);
         
         pencilCase_Enemy.Set_UnitData(pencilCaseDataEnemy.pencilCaseData, TeamType.EnemyTeam, battleManager, -2, 1);
-        battleManager.unit_EnemyDatasTemp.Add(pencilCase_Enemy);
-        pencilCase_Enemy.transform.position = new Vector2(battleManager.currentStageData.max_Range, 0);
+        battleManager._enemyUnitDatasTemp.Add(pencilCase_Enemy);
+        pencilCase_Enemy.transform.position = new Vector2(battleManager.CurrentStageData.max_Range, 0);
         Set_PencilCaseAbility(ref pencilCase_Ability_State_Enemy, pencilCaseDataEnemy);
     }
 

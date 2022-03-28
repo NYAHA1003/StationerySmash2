@@ -7,6 +7,6 @@ public class Starategy_Rage : IStarategy
 {
     public void Run_Card(BattleManager battleManager, TeamType eTeam, int grade, params float[] value)
     {
-        battleManager.battle_Cost.Add_Cost(3);
+        battleManager.BattleCost.Add_Cost(3);
     }
 }

@@ -5,7 +5,7 @@ using Utill;
 using TMPro;
 
 
-public class Battle_Time : BattleCommand
+public class BattleTime : BattleCommand
 {
 
     private StageData stageData;
@@ -14,9 +14,9 @@ public class Battle_Time : BattleCommand
     private bool isSuddenDeath;
     private bool isFinallyEnd;
 
-    public Battle_Time(BattleManager battleManager, TextMeshProUGUI timeText) : base(battleManager)
+    public BattleTime(BattleManager battleManager, TextMeshProUGUI timeText) : base(battleManager)
     {
-        stageData = battleManager.currentStageData;
+        stageData = battleManager.CurrentStageData;
         timer = stageData.timeValue;
         this.timeText = timeText;
     }
@@ -40,13 +40,13 @@ public class Battle_Time : BattleCommand
 
     public void Set_SuddenDeath()
     {
-        battleManager.battle_Card.Clear_Cards();
-        battleManager.battle_Unit.Clear_Unit();
+        battleManager.BattleCard.Clear_Cards();
+        battleManager.BattleUnit.Clear_Unit();
 
         if (!isSuddenDeath)
         {
-            battleManager.battle_Card.Set_MaxCard(8);
-            battleManager.battle_Cost.Set_CostSpeed(500);
+            battleManager.BattleCard.Set_MaxCard(8);
+            battleManager.BattleCost.Set_CostSpeed(500);
             isSuddenDeath = true;
             timer = 60;
 
@@ -55,13 +55,13 @@ public class Battle_Time : BattleCommand
         }
 
         //체력 비교
-        if(battleManager.unit_MyDatasTemp[0].hp > battleManager.unit_EnemyDatasTemp[0].hp)
+        if(battleManager._myUnitDatasTemp[0].hp > battleManager._enemyUnitDatasTemp[0].hp)
         {
             Debug.Log("서든데스 승리");
             isFinallyEnd = true;
             return;
         }
-        if (battleManager.unit_MyDatasTemp[0].hp < battleManager.unit_EnemyDatasTemp[0].hp)
+        if (battleManager._myUnitDatasTemp[0].hp < battleManager._enemyUnitDatasTemp[0].hp)
         {
             Debug.Log("서든데스 패배");
             isFinallyEnd = true;

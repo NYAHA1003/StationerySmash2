@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class Battle_WinLose : BattleCommand
+public class BattleWinLose : BattleCommand
 {
     private Canvas winLoseCanvas;
     private RectTransform winPanel;
@@ -11,7 +11,7 @@ public class Battle_WinLose : BattleCommand
 
     private RectTransform winText;
     private RectTransform loseText;
-    public Battle_WinLose(BattleManager battleManager, Canvas winLoseCanvas, RectTransform winPanel, RectTransform losePanel) : base(battleManager)
+    public BattleWinLose(BattleManager battleManager, Canvas winLoseCanvas, RectTransform winPanel, RectTransform losePanel) : base(battleManager)
     {
         this.winLoseCanvas = winLoseCanvas;
         this.winPanel = winPanel;
