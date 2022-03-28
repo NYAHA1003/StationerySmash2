@@ -504,19 +504,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3eec010ac3f0564d897fde4ffb0ca1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  card_Background: {fileID: 1637879170289799549}
-  card_Image: {fileID: 1637879169813098364}
-  card_CostText: {fileID: 1637879170312230851}
-  card_Grade: {fileID: 1637879169535216384}
-  card_GradeText: {fileID: 8770946777826786346}
-  card_Name: {fileID: 9110486368304110601}
-  fusion_Effect: {fileID: 7259773741188929852}
-  isFusion: 0
-  dataBase:
+  _background: {fileID: 1637879170289799549}
+  _image: {fileID: 1637879169813098364}
+  _costText: {fileID: 1637879170312230851}
+  _gradeImage: {fileID: 1637879169535216384}
+  _gradeText: {fileID: 8770946777826786346}
+  _nameText: {fileID: 9110486368304110601}
+  _fusionEffect: {fileID: 7259773741188929852}
+  _isFusion: 0
+  _isDontMove: 0
+  _dataBase:
     cardType: 0
     card_Name: 
     card_Cost: 0
     card_Sprite: {fileID: 0}
+    strategyData:
+      starategyType: 0
+      starategyablityData: []
     unitData:
       unit_Hp: 0
       unit_Weight: 0
@@ -527,12 +531,14 @@ MonoBehaviour:
       damage: 0
       attackSpeed: 0
       range: 0
+      colideData:
+        originpoints: []
       unitType: 0
       atkType: 0
       unitablityData: []
-  grade: 1
-  id: 0
-  originPRS:
+  _grade: 1
+  _id: 0
+  _originPRS:
     pos: {x: 0, y: 0, z: 0}
     rot: {x: 0, y: 0, z: 0, w: 0}
     scale: {x: 0, y: 0, z: 0}

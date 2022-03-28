@@ -758,7 +758,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1615569215}
         m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
-        m_MethodName: Run_UpgradeCostGrade
+        m_MethodName: RunUpgradeCostGrade
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1376,7 +1376,7 @@ GameObject:
   - component: {fileID: 603366385}
   - component: {fileID: 603366384}
   m_Layer: 0
-  m_Name: parabola
+  m_Name: parabolaLine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3004,7 +3004,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1615569215}
         m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
-        m_MethodName: Run_PencilCaseAbility
+        m_MethodName: RunPencilCaseAbility
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4280,61 +4280,61 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4837adaeae5a1af439a40f80f13b0aa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitDataSO: {fileID: 11400000, guid: 196a1c2a611bf814194df094e01de64f, type: 2}
-  stageDataSO: {fileID: 11400000, guid: a930bac7dd6fe314a9d2c68dd5b3deef, type: 2}
-  starategyDataSO: {fileID: 11400000, guid: d5486960d229edc4591f2b1af68a0897, type: 2}
-  deckData:
+  _unitDataSO: {fileID: 11400000, guid: 196a1c2a611bf814194df094e01de64f, type: 2}
+  _stageDataSO: {fileID: 11400000, guid: a930bac7dd6fe314a9d2c68dd5b3deef, type: 2}
+  _starategyDataSO: {fileID: 11400000, guid: d5486960d229edc4591f2b1af68a0897, type: 2}
+  _deckData:
     cardDatas: []
-  card_DatasTemp: []
-  card_cardMove_Prefeb: {fileID: 1637879170446956799, guid: 8826a6084291dae4ab520c6869beb819, type: 3}
-  card_PoolManager: {fileID: 1788391718}
-  card_Canvas: {fileID: 328308598}
-  card_SpawnPosition: {fileID: 15836575}
-  card_LeftPosition: {fileID: 1489626588}
-  card_RightPosition: {fileID: 2050583622}
-  card_AfterImage: {fileID: 1551840266}
-  card_SummonRangeLine: {fileID: 969550364}
+  _cardDatasTemp: []
+  _cardMovePrefeb: {fileID: 1637879170446956799, guid: 8826a6084291dae4ab520c6869beb819, type: 3}
+  _cardPoolManager: {fileID: 1788391718}
+  _cardCanvas: {fileID: 328308598}
+  _cardSpawnPosition: {fileID: 15836575}
+  _cardLeftPosition: {fileID: 1489626588}
+  _cardRightPosition: {fileID: 2050583622}
+  _cardAfterImage: {fileID: 1551840266}
+  _cardSummonRangeLine: {fileID: 969550364}
   isAnySummon: 0
-  unit_MyDatasTemp: []
-  unit_EnemyDatasTemp: []
-  unit_Prefeb: {fileID: 636465713026102458, guid: 255f6e8226be8b545a784f4db6787063, type: 3}
-  unit_PoolManager: {fileID: 1213032192}
-  unit_Parent: {fileID: 1681970528}
-  unit_teamText: {fileID: 1544231457}
-  main_Cam: {fileID: 1586630335}
-  effect_PoolManager: {fileID: 660203832}
-  effect_ObjList:
+  _myUnitDatasTemp: []
+  _enemyUnitDatasTemp: []
+  _unitPrefeb: {fileID: 636465713026102458, guid: 255f6e8226be8b545a784f4db6787063, type: 3}
+  _unitPoolManager: {fileID: 1213032192}
+  _unitParent: {fileID: 1681970528}
+  _unitTeamText: {fileID: 1544231457}
+  _mainCam: {fileID: 1586630335}
+  _effectPoolManager: {fileID: 660203832}
+  _effectObjectList:
   - {fileID: 430091320808335753, guid: 7aed540c7c818c44099cb3ad17cf0f5f, type: 3}
   - {fileID: 8234603714307236981, guid: c92250436e2bdea43a6415a1491cdacd, type: 3}
-  - {fileID: 8234603714307236981, guid: c92250436e2bdea43a6415a1491cdacd, type: 3}
   - {fileID: 7354281497325091915, guid: d23525b41f176f348bc9fbeb9922e73b, type: 3}
-  throw_parabola: {fileID: 603366384}
-  throw_Arrow: {fileID: 1669006650}
-  time_TimeText: {fileID: 1157790894}
-  ai_isEnemyActive: 1
-  ai_isPlayerActive: 1
-  ai_Log: {fileID: 1356909448}
-  ai_EnemyDataSO: {fileID: 11400000, guid: 5d42000c05a0b75478ccb3f7b791c495, type: 2}
-  ai_PlayerDataSO: {fileID: 11400000, guid: 80a4ae25dafc1c144a26640b6a05e2e9, type: 2}
-  cost_CostText: {fileID: 208719802}
-  pencilCase_My: {fileID: 2054021051}
-  pencilCase_Enemy: {fileID: 961183042}
-  pencilCase_MyData: {fileID: 11400000, guid: 5d00c087bdf0e1b429a2764fd7ead3e6, type: 2}
-  pencilCase_EnemyData:
-    maxCard: 0
-    costSpeed: 0
+  - {fileID: 7354281497325091915, guid: d23525b41f176f348bc9fbeb9922e73b, type: 3}
+  _throwParabola: {fileID: 603366384}
+  _throwArrow: {fileID: 1669006650}
+  _timeText: {fileID: 1157790894}
+  _isEnemyActive: 0
+  _isPlayerActive: 0
+  _aiLog: {fileID: 1356909448}
+  _aiEnemyDataSO: {fileID: 11400000, guid: 5d42000c05a0b75478ccb3f7b791c495, type: 2}
+  _aiPlayerDataSO: {fileID: 11400000, guid: 80a4ae25dafc1c144a26640b6a05e2e9, type: 2}
+  _costText: {fileID: 208719802}
+  _myPencilCase: {fileID: 2054021051}
+  _enemyPencilCase: {fileID: 961183042}
+  _pencilCaseMyData: {fileID: 11400000, guid: 5d00c087bdf0e1b429a2764fd7ead3e6, type: 2}
+  _pencilCaseEnemyData:
+    maxCard: 4
+    costSpeed: 100
     pencilCaseType: 0
     pencilCaseData:
-      cardType: 0
-      card_Name: 
+      cardType: 1
+      card_Name: "\uD544\uD1B5"
       card_Cost: 0
-      card_Sprite: {fileID: 0}
+      card_Sprite: {fileID: 21300000, guid: b5418de72b5ba3f448beb725d2a12048, type: 3}
       strategyData:
         starategyType: 0
         starategyablityData: []
       unitData:
-        unit_Hp: 0
-        unit_Weight: 0
+        unit_Hp: 200
+        unit_Weight: 1000
         knockback: 0
         dir: 0
         accuracy: 0
@@ -4343,15 +4343,19 @@ MonoBehaviour:
         attackSpeed: 0
         range: 0
         colideData:
-          originpoints: []
-        unitType: 0
+          originpoints:
+          - {x: -0.2, y: 0.2}
+          - {x: 0.2, y: 0.2}
+          - {x: -0.2, y: -0.2}
+          - {x: 0.2, y: -0.2}
+        unitType: 1
         atkType: 0
         unitablityData: []
-  pause_UI: {fileID: 1476667448}
-  pause_Canvas: {fileID: 1461045864}
-  winLose_Canvas: {fileID: 1206540032}
-  winlose_winPanel: {fileID: 1127670285}
-  winlose_losePanel: {fileID: 367118909}
+  _pauseUI: {fileID: 1476667448}
+  _pauseCanvas: {fileID: 1461045864}
+  _winLoseCanvas: {fileID: 1206540032}
+  _winPanel: {fileID: 1127670285}
+  _losePanel: {fileID: 367118909}
 --- !u!1 &1669006649
 GameObject:
   m_ObjectHideFlags: 0
@@ -4549,7 +4553,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1615569215}
         m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
-        m_MethodName: Set_Pause
+        m_MethodName: SetPause
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5399,7 +5403,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1615569215}
         m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
-        m_MethodName: Change_Team
+        m_MethodName: ChangeTeam
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

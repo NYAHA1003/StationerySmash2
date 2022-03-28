@@ -31,7 +31,7 @@ public class BattleTime : BattleCommand
         if (_timer > 0)
         {
             _timer -= Time.deltaTime;
-            _timeText.text = $"{(int)_timer / 60}{(int)_timer % 60}";
+            _timeText.text = $"{(int)_timer / 60}:{(int)_timer % 60}";
             return;
         }
 
