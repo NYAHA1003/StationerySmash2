@@ -5,43 +5,43 @@ using DG.Tweening;
 
 public class BattleWinLose : BattleCommand
 {
-    private Canvas winLoseCanvas;
-    private RectTransform winPanel;
-    private RectTransform losePanel;
+    private Canvas _winLoseCanvas;
+    private RectTransform _winPanel;
+    private RectTransform _losePanel;
+    private RectTransform _winText;
+    private RectTransform _loseText;
 
-    private RectTransform winText;
-    private RectTransform loseText;
     public BattleWinLose(BattleManager battleManager, Canvas winLoseCanvas, RectTransform winPanel, RectTransform losePanel) : base(battleManager)
     {
-        this.winLoseCanvas = winLoseCanvas;
-        this.winPanel = winPanel;
-        this.losePanel = losePanel;
+        this._winLoseCanvas = winLoseCanvas;
+        this._winPanel = winPanel;
+        this._losePanel = losePanel;
 
-        winText = winPanel.GetChild(0).GetComponent<RectTransform>();
-        loseText = losePanel.GetChild(0).GetComponent<RectTransform>();
+        _winText = winPanel.GetChild(0).GetComponent<RectTransform>();
+        _loseText = losePanel.GetChild(0).GetComponent<RectTransform>();
     }
 
-    public void Set_WinLosePanel(bool isWin)
+    public void SetWinLosePanel(bool isWin)
     {
-        winLoseCanvas.gameObject.SetActive(true);
+        _winLoseCanvas.gameObject.SetActive(true);
 
-        winPanel.gameObject.SetActive(isWin);
-        losePanel.gameObject.SetActive(!isWin);
+        _winPanel.gameObject.SetActive(isWin);
+        _losePanel.gameObject.SetActive(!isWin);
         if (isWin)
         {
-            winPanel.sizeDelta = new Vector2(3, 3);
-            winPanel.DOScale(1, 0.3f).SetEase(Ease.OutExpo).
+            _winPanel.sizeDelta = new Vector2(3, 3);
+            _winPanel.DOScale(1, 0.3f).SetEase(Ease.OutExpo).
                 OnComplete(() =>
                 {
-                    winText.DOScale(1.5f, 0.3f).SetLoops(-1, LoopType.Yoyo);
+                    _winText.DOScale(1.5f, 0.3f).SetLoops(-1, LoopType.Yoyo);
                 });
             return;
         }
-        losePanel.sizeDelta = new Vector2(3, 3);
-        losePanel.DOScale(1, 0.3f).SetEase(Ease.OutExpo).
+        _losePanel.sizeDelta = new Vector2(3, 3);
+        _losePanel.DOScale(1, 0.3f).SetEase(Ease.OutExpo).
                 OnComplete(() =>
                 {
-                    loseText.DOScale(1.5f, 0.3f).SetLoops(-1, LoopType.Yoyo);
+                    _loseText.DOScale(1.5f, 0.3f).SetLoops(-1, LoopType.Yoyo);
                 });
 
     }

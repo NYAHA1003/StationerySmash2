@@ -8,49 +8,47 @@ using TMPro;
 public class BattleTime : BattleCommand
 {
 
-    private StageData stageData;
-    private float timer;
-    private TextMeshProUGUI timeText;
-    private bool isSuddenDeath;
-    private bool isFinallyEnd;
+    private StageData _stageData;
+    private float _timer;
+    private TextMeshProUGUI _timeText;
+    private bool _isSuddenDeath;
+    private bool _isFinallyEnd;
 
     public BattleTime(BattleManager battleManager, TextMeshProUGUI timeText) : base(battleManager)
     {
-        stageData = battleManager.CurrentStageData;
-        timer = stageData.timeValue;
-        this.timeText = timeText;
+        _stageData = battleManager.CurrentStageData;
+        _timer = _stageData.timeValue;
+        this._timeText = timeText;
     }
 
-    public void Update_Time()
+    public void UpdateTime()
     {
-        if (isFinallyEnd) return;
+        if (_isFinallyEnd) return;
 
-        if (stageData.timeType == TimeType.DisabledTime)
+        if (_stageData.timeType == TimeType.DisabledTime)
             return;
 
-        if (timer > 0)
+        if (_timer > 0)
         {
-            timer -= Time.deltaTime;
-            timeText.text = string.Format("{0}:{1:D2}", (int)timer / 60, (int)timer % 60);
+            _timer -= Time.deltaTime;
+            _timeText.text = $"{(int)_timer / 60}{(int)_timer % 60}";
             return;
         }
 
-        Set_SuddenDeath();
+        SetSuddenDeath();
     }
 
-    public void Set_SuddenDeath()
+    public void SetSuddenDeath()
     {
-        battleManager.BattleCard.Clear_Cards();
-        battleManager.BattleUnit.Clear_Unit();
+        battleManager.BattleCard.ClearCards();
+        battleManager.BattleUnit.ClearUnit();
 
-        if (!isSuddenDeath)
+        if (!_isSuddenDeath)
         {
-            battleManager.BattleCard.Set_MaxCard(8);
-            battleManager.BattleCost.Set_CostSpeed(500);
-            isSuddenDeath = true;
-            timer = 60;
-
-            Debug.Log("서든데스 시작");
+            battleManager.BattleCard.SetMaxCard(8);
+            battleManager.BattleCost.SetCostSpeed(500);
+            _isSuddenDeath = true;
+            _timer = 60;
             return;
         }
 
@@ -58,17 +56,17 @@ public class BattleTime : BattleCommand
         if(battleManager._myUnitDatasTemp[0].hp > battleManager._enemyUnitDatasTemp[0].hp)
         {
             Debug.Log("서든데스 승리");
-            isFinallyEnd = true;
+            _isFinallyEnd = true;
             return;
         }
         if (battleManager._myUnitDatasTemp[0].hp < battleManager._enemyUnitDatasTemp[0].hp)
         {
             Debug.Log("서든데스 패배");
-            isFinallyEnd = true;
+            _isFinallyEnd = true;
             return;
         }
 
         Debug.Log("서든데스 무승부");
-        isFinallyEnd = true;
+        _isFinallyEnd = true;
     }
 }

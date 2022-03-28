@@ -7,11 +7,11 @@ using Utill;
 public class BattleEffect : BattleCommand
 {
     
-    private Transform effect_PoolManager;
+    private Transform _effectPoolManager;
 
     public BattleEffect(BattleManager battleManager, Transform effect_PoolManager) : base(battleManager)
     {
-        this.effect_PoolManager = effect_PoolManager;
+        this._effectPoolManager = effect_PoolManager;
     }
 
     
@@ -22,9 +22,9 @@ public class BattleEffect : BattleCommand
     /// <param name="position">이펙트 위치</param>
     /// <param name="startLifeTime">이펙트의 유지시간</param>
     /// <param name="isSetLifeTime">이펙트 설정을 할 것인지</param>
-    public IEffect Set_Effect(EffectType effectType, EffData effData)
+    public IEffect SetEffect(EffectType effectType, EffData effData)
     {
-        Transform effect_Parent = effect_PoolManager.GetChild((int)effectType);
+        Transform effect_Parent = _effectPoolManager.GetChild((int)effectType);
         EffectObject effect_Object = null;
 
         //재사용할 수 있을 이펙트 찾기
@@ -33,15 +33,15 @@ public class BattleEffect : BattleCommand
             effect_Object = effect_Parent.GetChild(i).GetComponent<EffectObject>();
             if (!effect_Object.gameObject.activeSelf)
             {
-                effect_Object.Set_Effect(effData);
-                return effect_Object.effectState;
+                effect_Object.SetEffect(effData);
+                return effect_Object._effectState;
             }
         }
 
         //없으면 새로 만듦
-        effect_Object = battleManager.Create_Object(battleManager._effectObjectList[(int)effectType].gameObject, effData.pos, Quaternion.identity).GetComponent<EffectObject>();
+        effect_Object = battleManager.CreateObject(battleManager._effectObjectList[(int)effectType].gameObject, effData.pos, Quaternion.identity).GetComponent<EffectObject>();
         effect_Object.transform.SetParent(effect_Parent);
-        effect_Object.Set_Effect(effData);
-        return effect_Object.effectState;
+        effect_Object.SetEffect(effData);
+        return effect_Object._effectState;
     }
 }

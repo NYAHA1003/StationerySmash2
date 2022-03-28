@@ -5,23 +5,23 @@ using Utill;
 
 public class BattleUnit : BattleCommand
 {
-    private GameObject unit_Prefeb;
-    private Transform unit_PoolManager;
-    private Transform unit_Parent;
+    private GameObject _unitPrefeb;
+    private Transform _unitPoolManager;
+    private Transform _unitParent;
 
     //테스트용 팀 설정
     public TeamType eTeam = TeamType.MyTeam;
-    private int unitidCount = 0;
+    private int unitIdCount = 0;
 
     //상태 풀링
-    public static Dictionary<string, object> stateDic = new Dictionary<string, object>();
+    public static Dictionary<string, object> stateDictionary = new Dictionary<string, object>();
 
 
-    public BattleUnit(BattleManager battleManager, GameObject unit_Prefeb, Transform unit_PoolManager, Transform unit_Parent) : base(battleManager)
+    public BattleUnit(BattleManager battleManager, GameObject _unitPrefeb, Transform _unitPoolManager, Transform _unitParent) : base(battleManager)
     {
-        this.unit_Prefeb = unit_Prefeb;
-        this.unit_PoolManager = unit_PoolManager;
-        this.unit_Parent = unit_Parent;
+        this._unitPrefeb = _unitPrefeb;
+        this._unitPoolManager = _unitPoolManager;
+        this._unitParent = _unitParent;
     }
 
     /// <summary>
@@ -30,16 +30,16 @@ public class BattleUnit : BattleCommand
     /// <param name="dataBase"></param>
     /// <param name="Pos"></param>
     /// <param name="count"></param>
-    public void Summon_Unit(DataBase dataBase, Vector3 Pos, int grade, TeamType eTeam = TeamType.Null)
+    public void SummonUnit(DataBase dataBase, Vector3 Pos, int grade, TeamType eTeam = TeamType.Null)
     {
         Unit unit = null;
 
-        unit = Pool_Unit(Pos);
+        unit = PoolUnit(Pos);
         if (eTeam == TeamType.Null)
         {
             eTeam = this.eTeam;
         }
-        unit.Set_UnitData(dataBase, eTeam, battleManager, unitidCount++, grade);
+        unit.SetUnitData(dataBase, eTeam, battleManager, unitIdCount++, grade);
         
 
         //유닛 리스트에 추가
@@ -61,17 +61,17 @@ public class BattleUnit : BattleCommand
     /// </summary>
     /// <param name="Pos"></param>
     /// <returns></returns>
-    private Unit Pool_Unit(Vector3 Pos)
+    private Unit PoolUnit(Vector3 Pos)
     {
         GameObject unit_obj = null;
-        if (unit_PoolManager.childCount > 0)
+        if (_unitPoolManager.childCount > 0)
         {
-            unit_obj = unit_PoolManager.GetChild(0).gameObject;
+            unit_obj = _unitPoolManager.GetChild(0).gameObject;
             unit_obj.transform.position = Pos;
             unit_obj.SetActive(true);
         }
-        unit_obj ??= battleManager.Create_Object(unit_Prefeb, Pos, Quaternion.identity);
-        unit_obj.transform.SetParent(unit_Parent);
+        unit_obj ??= battleManager.CreateObject(_unitPrefeb, Pos, Quaternion.identity);
+        unit_obj.transform.SetParent(_unitParent);
         return unit_obj.GetComponent<Unit>();
     }
 
@@ -79,7 +79,7 @@ public class BattleUnit : BattleCommand
     /// 내 유닛 리스트 추가
     /// </summary>
     /// <param name="unit"></param>
-    public void Add_UnitListMy(Unit unit)
+    public void AddUnitListMy(Unit unit)
     {
         battleManager._myUnitDatasTemp.Add(unit);
     }
@@ -88,7 +88,7 @@ public class BattleUnit : BattleCommand
     /// 적 유닛 리스트 추가
     /// </summary>
     /// <param name="unit"></param>
-    public void Add_UnitListEnemy(Unit unit)
+    public void AddUnitListEnemy(Unit unit)
     {
         battleManager._enemyUnitDatasTemp.Add(unit);
     }
@@ -96,7 +96,7 @@ public class BattleUnit : BattleCommand
     /// <summary>
     /// 모든 유닛 삭제
     /// </summary>
-    public void Clear_Unit()
+    public void ClearUnit()
     {
         for (int i = 0; battleManager._myUnitDatasTemp.Count > 0;)
         {
@@ -124,12 +124,12 @@ public class BattleUnit : BattleCommand
 
         try
         {
-            stateDic.Add(typeof(T).Name, q);
+            stateDictionary.Add(typeof(T).Name, q);
         }
         catch (System.ArgumentException e)
         {
-            stateDic.Clear();
-            stateDic.Add(typeof(T).Name, q);
+            stateDictionary.Clear();
+            stateDictionary.Add(typeof(T).Name, q);
         }
     }
     /// <summary>
@@ -152,12 +152,12 @@ public class BattleUnit : BattleCommand
 
         try
         {
-            stateDic.Add(typeof(T).Name, q);
+            stateDictionary.Add(typeof(T).Name, q);
         }
         catch (System.ArgumentException e)
         {
-            stateDic.Clear();
-            stateDic.Add(typeof(T).Name, q);
+            stateDictionary.Clear();
+            stateDictionary.Add(typeof(T).Name, q);
         }
     }
 
@@ -171,9 +171,9 @@ public class BattleUnit : BattleCommand
         T item = default(T);
 
 
-        if (stateDic.ContainsKey(typeof(T).Name))
+        if (stateDictionary.ContainsKey(typeof(T).Name))
         {
-            Queue<T> q = (Queue<T>)stateDic[typeof(T).Name];
+            Queue<T> q = (Queue<T>)stateDictionary[typeof(T).Name];
 
             if (q.Count == 0)
             {  //안 사용하는 상태가 없으면 새로운 상태를 만든다
@@ -189,7 +189,7 @@ public class BattleUnit : BattleCommand
         else
         {
             CreatePool<T>(myTrm, mySprTrm, myUnit);
-            Queue<T> q = (Queue<T>)stateDic[typeof(T).Name];
+            Queue<T> q = (Queue<T>)stateDictionary[typeof(T).Name];
             item = q.Dequeue();
             item.Reset_State(myTrm, mySprTrm, myUnit);
         }
@@ -212,9 +212,9 @@ public class BattleUnit : BattleCommand
         T item = default(T);
 
 
-        if (stateDic.ContainsKey(typeof(T).Name))
+        if (stateDictionary.ContainsKey(typeof(T).Name))
         {
-            Queue<T> q = (Queue<T>)stateDic[typeof(T).Name];
+            Queue<T> q = (Queue<T>)stateDictionary[typeof(T).Name];
 
             if (q.Count == 0)
             {  //안 사용하는 상태가 없으면 새로운 상태를 만든다
@@ -230,7 +230,7 @@ public class BattleUnit : BattleCommand
         else
         {
             CreatePoolEff<T>(myTrm, mySprTrm, myUnit, statusEffect, valueList);
-            Queue<T> q = (Queue<T>)stateDic[typeof(T).Name];
+            Queue<T> q = (Queue<T>)stateDictionary[typeof(T).Name];
             item = q.Dequeue();
             item.Reset_StateEff(myTrm, mySprTrm, myUnit, statusEffect, valueList);
         }
@@ -247,7 +247,7 @@ public class BattleUnit : BattleCommand
     /// <param name="state"></param>
     public static void AddItem<T>(T state) where T : IStateManager
     {
-        Queue<T> q = (Queue<T>)stateDic[typeof(T).Name];
+        Queue<T> q = (Queue<T>)stateDictionary[typeof(T).Name];
         q.Enqueue(state);
     }
 
@@ -258,7 +258,7 @@ public class BattleUnit : BattleCommand
     /// <param name="state"></param>
     public static void AddEff<T>(T state) where T : Eff_State
     {
-        Queue<T> q = (Queue<T>)stateDic[typeof(T).Name];
+        Queue<T> q = (Queue<T>)stateDictionary[typeof(T).Name];
         q.Enqueue(state);
     }
 }

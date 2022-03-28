@@ -171,11 +171,11 @@ public class BattleManager : MonoBehaviour
 
     public BattleWinLose BattleWinLose { get; private set; }
     [SerializeField, Header("승리패배시스템 BattleWinLose"), Space(30)]
-    private Canvas winLoseCanvas;
+    private Canvas _winLoseCanvas;
     [SerializeField]
-    private RectTransform winPanel;
+    private RectTransform _winPanel;
     [SerializeField]
-    private RectTransform losePanel;
+    private RectTransform _losePanel;
 
     #endregion
 
@@ -190,13 +190,13 @@ public class BattleManager : MonoBehaviour
         BattleAI = new BattleAI(this, _aiEnemyDataSO, _aiPlayerDataSO, _isEnemyActive, _isPlayerActive);
         BattleTime = new BattleTime(this, _timeText);
         BattleCost = new BattleCost(this, _costText);
-        _pencilCaseEnemyData = _stageDataSO.enemyPencilCase;
         BattlePencilCase = new BattlePencilCase(this, _myPencilCase, _enemyPencilCase, _pencilCaseMyData.pencilCaseData, _pencilCaseEnemyData);
         BattlePause = new BattlePause(this, _pauseUI, _pauseCanvas);
-        BattleWinLose = new BattleWinLose(this, winLoseCanvas, winPanel, losePanel);
+        BattleWinLose = new BattleWinLose(this, _winLoseCanvas, _winPanel, _losePanel);
+        _pencilCaseEnemyData = _stageDataSO.enemyPencilCase;
 
-        BattleCost.Set_CostSpeed(_pencilCaseMyData.pencilCaseData.costSpeed);
-        BattleCard.Set_MaxCard(_pencilCaseMyData.pencilCaseData.maxCard);
+        BattleCost.SetCostSpeed(_pencilCaseMyData.pencilCaseData.costSpeed);
+        BattleCard.SetMaxCard(_pencilCaseMyData.pencilCaseData.maxCard);
 
         _isEndSetting = true;
     }
@@ -207,63 +207,63 @@ public class BattleManager : MonoBehaviour
             return;
 
         //시간 시스템
-        BattleTime.Update_Time();
+        BattleTime.UpdateTime();
 
         //카메라 위치, 크기 조정
-        BattleCamera.Update_CameraPos();
-        BattleCamera.Update_CameraScale();
+        BattleCamera.UpdateCameraPos();
+        BattleCamera.UpdateCameraScale();
 
         //카드 시스템
-        BattleCard.Update_UnitAfterImage();
-        BattleCard.Update_SelectCardPos();
-        BattleCard.Update_CardDrow();
-        BattleCard.Check_PossibleSummon();
-        BattleCard.Update_SummonRange();
+        BattleCard.UpdateUnitAfterImage();
+        BattleCard.UpdateSelectCardPos();
+        BattleCard.UpdateCardDrow();
+        BattleCard.CheckPossibleSummon();
+        BattleCard.UpdateSummonRange();
         if (Input.GetKeyDown(KeyCode.X))
         {
-            BattleCard.Add_OneCard();
+            BattleCard.AddOneCard();
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            BattleCard.Add_AllCard();
+            BattleCard.AddAllCard();
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
-            BattleCard.Clear_Cards();
+            BattleCard.ClearCards();
         }
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
-            BattleCard.Subtract_Card();
+            BattleCard.SubtractCard();
         }
 
         //유닛 시스템
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            BattleUnit.Clear_Unit();
+            BattleUnit.ClearUnit();
         }
 
         //던지기 시스템
         if(Input.GetMouseButtonDown(0))
         {
-            BattleThrow.Pull_Unit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            BattleThrow.PullUnit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
         else if(Input.GetMouseButton(0))
         {
-            BattleThrow.Draw_Parabola(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            BattleThrow.DrawParabola(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
         else if(Input.GetMouseButtonUp(0))
         {
-            BattleThrow.Throw_Unit();
+            BattleThrow.ThrowUnit();
         }
 
         //코스트 시스템
-        BattleCost.Update_Cost();
+        BattleCost.UpdateCost();
 
         //AI 시스템
-        BattleAI.Update_EnemyAICard();
-        BattleAI.Update_EnemyAIThrow();
-        BattleAI.Update_PlayerAICard();
-        BattleAI.Update_PlayerAIThrow();
+        BattleAI.UpdateEnemyAICard();
+        BattleAI.UpdateEnemyAIThrow();
+        BattleAI.UpdatePlayerAICard();
+        BattleAI.UpdatePlayerAIThrow();
 
     }
 
@@ -276,19 +276,19 @@ public class BattleManager : MonoBehaviour
     /// <param name="position">생성할 위치</param>
     /// <param name="quaternion">생성할 때의 각도</param>
     /// <returns></returns>
-    public GameObject Create_Object(GameObject prefeb, Vector3 position, Quaternion quaternion)
+    public GameObject CreateObject(GameObject prefeb, Vector3 position, Quaternion quaternion)
     {
         return Instantiate(prefeb, position, quaternion);
     }
 
     #endregion
 
-    #region 유닛 시스템 함수 Battle_Unit
+    #region 유닛 시스템 함수 BattleUnit
 
     /// <summary>
     /// 버튼함수. 유닛을 소환할 때의 팀
     /// </summary>
-    public void Change_Team()
+    public void ChangeTeam()
     {
         if(BattleUnit.eTeam.Equals(TeamType.MyTeam))
         {
@@ -308,7 +308,7 @@ public class BattleManager : MonoBehaviour
     /// 유닛 제거
     /// </summary>
     /// <param name="unit">제거할 유닛</param>
-    public void Pool_DeleteUnit(Unit unit)
+    public void PoolDeleteUnit(Unit unit)
     {
         unit.gameObject.SetActive(false);
         unit.transform.SetParent(_unitPoolManager);
@@ -316,29 +316,29 @@ public class BattleManager : MonoBehaviour
 
     #endregion
 
-    #region 코스트 시스템 함수 Battle_Cost
+    #region 코스트 시스템 함수 BattleCost
 
-    public void Run_UpgradeCostGrade()
+    public void RunUpgradeCostGrade()
     {
-        BattleCost.Run_UpgradeCostGrade();
+        BattleCost.RunUpgradeCostGrade();
     }
 
     #endregion
 
-    #region 필통 시스템 함수 Battle_PencilCase
+    #region 필통 시스템 함수 BattlePencilCase
 
-    public void Run_PencilCaseAbility()
+    public void RunPencilCaseAbility()
     {
-        BattlePencilCase.Run_PencilCaseAbility();
+        BattlePencilCase.RunPencilCaseAbility();
     }
 
     #endregion
 
-    #region 일시정지 시스템 함수 Battle_Pause
+    #region 일시정지 시스템 함수 BattlePause
 
-    public void Set_Pause()
+    public void SetPause()
     {
-        BattlePause.Set_Pause();
+        BattlePause.SetPause();
     }
 
     #endregion

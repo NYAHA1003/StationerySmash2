@@ -191,7 +191,7 @@ public class PencilCase_Die_State : Stationary_UnitState
 
     public override void Enter()
     {
-        battleManager.BattleCamera.Win_CamEffect(myTrm.position, myUnit.eTeam != TeamType.MyTeam);
+        battleManager.BattleCamera.WinCamEffect(myTrm.position, myUnit.eTeam != TeamType.MyTeam);
         base.Enter();
     }
 

@@ -5,26 +5,26 @@ using DG.Tweening;
 
 public class BattlePause : BattleCommand
 {
-    private bool isActive = false;
-    private RectTransform pauseUI;
-    private Canvas pauseCanvas;
+    private bool _isActive = false;
+    private RectTransform _pauseUI;
+    private Canvas _pauseCanvas;
     public BattlePause(BattleManager battleManager, RectTransform pauseUI, Canvas pauseCanvas) : base(battleManager)
     {
-        this.pauseUI = pauseUI;
-        this.pauseCanvas = pauseCanvas;
+        this._pauseUI = pauseUI;
+        this._pauseCanvas = pauseCanvas;
     }
     
     /// <summary>
     /// 일시정지 창을 껐다 키는 함수
     /// </summary>
-    public void Set_Pause()
+    public void SetPause()
     {
-        isActive = !isActive;
-        pauseCanvas.gameObject.SetActive(isActive);
-        if (isActive)
+        _isActive = !_isActive;
+        _pauseCanvas.gameObject.SetActive(_isActive);
+        if (_isActive)
         {
             Time.timeScale = 0;
-            Set_Animation();
+            SetAnimation();
         }
         else
         {
@@ -32,11 +32,11 @@ public class BattlePause : BattleCommand
         }
     }
 
-    private void Set_Animation()
+    private void SetAnimation()
     {
-        pauseUI.DOKill();
-        pauseUI.anchoredPosition = new Vector2(Screen.width, 0);
-        pauseUI.DOAnchorPosX(0, 1).SetUpdate(true);
+        _pauseUI.DOKill();
+        _pauseUI.anchoredPosition = new Vector2(Screen.width, 0);
+        _pauseUI.DOAnchorPosX(0, 1).SetUpdate(true);
     }
 
 

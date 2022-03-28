@@ -5,10 +5,10 @@ using Utill;
 
 public class EffectObject : MonoBehaviour
 {
-    public EffectType effectType;
-    public IEffect effectState;
-    private EffData effData;
-    private bool isSettingEnd;
+    public EffectType _effectType;
+    public IEffect _effectState;
+    private EffData _effData;
+    private bool _isSettingEnd;
 
     /// <summary>
     /// 이펙트 리셋 및 설정
@@ -16,41 +16,41 @@ public class EffectObject : MonoBehaviour
     /// <param name="pos">이펙트 위치</param>
     /// <param name="startLifeTime">이펙트 유지시간</param>
     /// <param name="isSetLifeTime">이펙트를 유지시간을 바꿀 것인지</param>
-    public void Set_Effect(EffData effData)
+    public void SetEffect(EffData effData)
     {
-        switch (effectType)
+        switch (_effectType)
         {
             case EffectType.Attack:
-                effectState ??= new Effect_Attack();
+                _effectState ??= new Effect_Attack();
                 break;
             case EffectType.Stun:
-                effectState ??= new Effect_Stun();
+                _effectState ??= new Effect_Stun();
                 break;
             case EffectType.Ink:
                 //effectState ??= new Effect_Slow();
                 break;
             case EffectType.Slow:
-                effectState ??= new Effect_Slow();
+                _effectState ??= new Effect_Slow();
                 break;
         }
 
-        this.effData = effData;
-        effectState.Set_Effect(this, effData);
+        this._effData = effData;
+        _effectState.Set_Effect(this, effData);
 
-        isSettingEnd = true;
+        _isSettingEnd = true;
     }
 
     private void Update()
     {
-        if (!isSettingEnd)
+        if (!_isSettingEnd)
             return;
 
-        effectState.Update_Effect(this, effData);
+        _effectState.Update_Effect(this, _effData);
     }
 
     public void Delete_Effect()
     {
         gameObject.SetActive(false);
-        isSettingEnd = false;
+        _isSettingEnd = false;
     }
 }

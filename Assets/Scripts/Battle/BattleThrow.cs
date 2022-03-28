@@ -4,130 +4,130 @@ using UnityEngine;
 using Utill;
 public class BattleThrow : BattleCommand
 {
-    private Unit throw_Unit;
-    private LineRenderer parabola;
-    private Transform arrow;
-    private StageData stageData;
+    private Unit _throwUnit = null;
+    private LineRenderer _parabola;
+    private Transform _arrow;
+    private StageData _stageData;
 
-    private List<Vector2> lineZeroPos;
-    private Vector2 direction;
-    private float force;
-    private float pullTime;
+    private List<Vector2> _lineZeroPos;
+    private Vector2 _direction;
+    private float _force;
+    private float _pullTime;
 
 
     public BattleThrow(BattleManager battleManager, LineRenderer parabola, Transform arrow, StageData stageData) : base(battleManager)
     {
-        this.parabola = parabola;
-        this.stageData = stageData;
-        this.arrow = arrow;
-        lineZeroPos = new List<Vector2>(parabola.positionCount);
+        this._parabola = parabola;
+        this._stageData = stageData;
+        this._arrow = arrow;
+        _lineZeroPos = new List<Vector2>(parabola.positionCount);
         for(int i = 0; i < parabola.positionCount; i++)
         {
-            lineZeroPos.Add(Vector2.zero);
+            _lineZeroPos.Add(Vector2.zero);
         }
     }
 
-    public void Pull_Unit(Vector2 pos)
+    public void PullUnit(Vector2 pos)
     {
         float targetRange = float.MaxValue;
         for (int i = 0; i < battleManager._myUnitDatasTemp.Count; i++)
         {
             if (Vector2.Distance(pos, battleManager._myUnitDatasTemp[i].transform.position) < targetRange)
             {
-                throw_Unit = battleManager._myUnitDatasTemp[i];
-                targetRange = Vector2.Distance(pos, throw_Unit.transform.position);
+                _throwUnit = battleManager._myUnitDatasTemp[i];
+                targetRange = Vector2.Distance(pos, _throwUnit.transform.position);
             }
         }
 
-        if (throw_Unit != null)
+        if (_throwUnit != null)
         {
-            if (Vector2.Distance(pos, throw_Unit.transform.position) < 0.1f)
+            if (Vector2.Distance(pos, _throwUnit.transform.position) < 0.1f)
             {
-                throw_Unit = throw_Unit.Pull_Unit();
-                if(throw_Unit == null)
+                _throwUnit = _throwUnit.Pull_Unit();
+                if(_throwUnit == null)
                 {
-                    battleManager.BattleCamera.Set_CameraIsMove(false);
+                    battleManager.BattleCamera.SetCameraIsMove(false);
                 }
-                pullTime = 2f;
+                _pullTime = 2f;
                 return;
             }
-            throw_Unit = null;
+            _throwUnit = null;
         }
     }
 
-    public void Draw_Parabola(Vector2 pos)
+    public void DrawParabola(Vector2 pos)
     {
-        UnDraw_Parabola();
-        if (throw_Unit != null)
+        UnDrawParabola();
+        if (_throwUnit != null)
         {
             //시간이 지나면 취소
-            pullTime -= Time.deltaTime;
-            if (pullTime < 0)
+            _pullTime -= Time.deltaTime;
+            if (_pullTime < 0)
             {
-                throw_Unit = null;
-                UnDraw_Parabola();
+                _throwUnit = null;
+                UnDrawParabola();
                 return;
             }
 
             //유닛이 다른 행동을 취하게 되면 취소
-            throw_Unit = throw_Unit.Pulling_Unit();
-            battleManager.BattleCamera.Set_CameraIsMove(false);
+            _throwUnit = _throwUnit.Pulling_Unit();
+            battleManager.BattleCamera.SetCameraIsMove(false);
 
-            if (throw_Unit == null)
+            if (_throwUnit == null)
             {
-                UnDraw_Parabola();
+                UnDrawParabola();
                 return;
             }
 
             //방향
-            direction = (Vector2)throw_Unit.transform.position - pos;
-            float dir = Mathf.Atan2(direction.y, direction.x);
-            float dirx = Mathf.Atan2(direction.y, -direction.x);
+            _direction = (Vector2)_throwUnit.transform.position - pos;
+            float dir = Mathf.Atan2(_direction.y, _direction.x);
+            float dirx = Mathf.Atan2(_direction.y, -_direction.x);
             
             //던지는 방향에 따라 포물선만 안 보이게 함
             if(dir < 0)
             {
-                UnDraw_Parabola();
+                UnDrawParabola();
                 return;
             }
 
             //화살표
-            arrow.transform.position = throw_Unit.transform.position;
-            arrow.transform.eulerAngles = new Vector3(0, 0, dir * Mathf.Rad2Deg);
+            _arrow.transform.position = _throwUnit.transform.position;
+            _arrow.transform.eulerAngles = new Vector3(0, 0, dir * Mathf.Rad2Deg);
             
             //초기 벡터
-            force = Mathf.Clamp(Vector2.Distance(throw_Unit.transform.position, pos), 0, 1) * 4 * (100.0f / throw_Unit.weight);
+            _force = Mathf.Clamp(Vector2.Distance(_throwUnit.transform.position, pos), 0, 1) * 4 * (100.0f / _throwUnit.weight);
 
             //최고점
-            float height = Utill.Parabola.Caculated_Height(force, dirx);
+            float height = Utill.Parabola.Caculated_Height(_force, dirx);
             //수평 도달 거리
-            float width = Utill.Parabola.Caculated_Width(force, dirx) ;
+            float width = Utill.Parabola.Caculated_Width(_force, dirx) ;
             //수평 도달 시간
-            float time = Utill.Parabola.Caculated_Time(force, dir, 2);
+            float time = Utill.Parabola.Caculated_Time(_force, dir, 2);
             
-            List<Vector2> linePos = Set_ParabolaPos(parabola.positionCount, width, force, dir, time);
+            List<Vector2> linePos = SetParabolaPos(_parabola.positionCount, width, _force, dir, time);
 
-            Set_ParabolaPos(linePos);
+            SetParabolaPos(linePos);
 
             return;
         }
     }
 
-    public void UnDraw_Parabola()
+    public void UnDrawParabola()
     {
-        Set_ParabolaPos(lineZeroPos);
+        SetParabolaPos(_lineZeroPos);
     }
 
-    private void Set_ParabolaPos(List<Vector2> linePos)
+    private void SetParabolaPos(List<Vector2> linePos)
     {
-        for (int i = 0; i < parabola.positionCount; i++)
+        for (int i = 0; i < _parabola.positionCount; i++)
         {
-            parabola.SetPosition(i, linePos[i]);
+            _parabola.SetPosition(i, linePos[i]);
         }
     }
 
 
-    private List<Vector2> Set_ParabolaPos(int count, float width, float force, float dir_rad, float time)
+    private List<Vector2> SetParabolaPos(int count, float width, float force, float dir_rad, float time)
     {
         List<Vector2> results = new List<Vector2>(count);
         float[] objLerps = new float[count];
@@ -142,12 +142,12 @@ public class BattleThrow : BattleCommand
 
         for(int i = 0; i < count; i ++)
         {
-            Vector3 pos = Vector3.Lerp((Vector2)throw_Unit.transform.position, new Vector2(throw_Unit.transform.position.x - width, 0), objLerps[i]);
+            Vector3 pos = Vector3.Lerp((Vector2)_throwUnit.transform.position, new Vector2(_throwUnit.transform.position.x - width, 0), objLerps[i]);
             pos.y = Utill.Parabola.Caculated_TimeToPos(force, dir_rad, timeLerps[i]);
             
             if(i > 0)
             {
-                if(pos.x >= stageData.max_Range || pos.x <= -stageData.max_Range)
+                if(pos.x >= _stageData.max_Range || pos.x <= -_stageData.max_Range)
                 {
                     pos = results[i - 1];
                 }
@@ -159,13 +159,13 @@ public class BattleThrow : BattleCommand
         return results;
     }
 
-    public void Throw_Unit()
+    public void ThrowUnit()
     {
-        if (throw_Unit != null)
+        if (_throwUnit != null)
         {
-            throw_Unit.Throw_Unit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-            throw_Unit = null;
-            UnDraw_Parabola();
+            _throwUnit.Throw_Unit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            _throwUnit = null;
+            UnDrawParabola();
         }
     }
 }

@@ -70,7 +70,7 @@ public class Unit : MonoBehaviour
     /// <param name="eTeam">팀 변수</param>
     /// <param name="battleManager">배틀매니저</param>
     /// <param name="id"></param>
-    public virtual void Set_UnitData(DataBase dataBase, TeamType eTeam, BattleManager battleManager, int id, int grade)
+    public virtual void SetUnitData(DataBase dataBase, TeamType eTeam, BattleManager battleManager, int id, int grade)
     {
         this.unitData = dataBase.unitData;
         collideData = new CollideData();
@@ -138,7 +138,7 @@ public class Unit : MonoBehaviour
     /// </summary>
     public virtual void Delete_Unit()
     {
-        battleManager.Pool_DeleteUnit(this);
+        battleManager.PoolDeleteUnit(this);
         Delete_state();
         Delete_EffStetes();
 

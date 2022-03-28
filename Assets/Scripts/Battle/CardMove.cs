@@ -11,38 +11,39 @@ using Utill;
 
 public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    [SerializeField]
-    private Image card_Background;
-    [SerializeField]
-    private Image card_Image;
-    [SerializeField]
-    private TextMeshProUGUI card_CostText;
-    [SerializeField]
-    private Image card_Grade;
-    [SerializeField]
-    private TextMeshProUGUI card_GradeText;
-    [SerializeField]
-    private TextMeshProUGUI card_Name;
-    [SerializeField]
-    private Image fusion_Effect;
-
-    public int card_Cost { get; private set; }
-    public bool isFusion;
-    public bool isDontMove;
-
-    public DataBase dataBase;
-
-    public int grade = 1;
-    public int id;
-
-    private RectTransform rectTransform;
-
-    private BattleManager battleManager;
-
-
-    private bool isDrag; // 드래그 중인 상태인가
+    public int CardCost { get; private set; }
     
-    public PRS originPRS;
+    [SerializeField]
+    private Image _background;
+    [SerializeField]
+    private Image _image;
+    [SerializeField]
+    private TextMeshProUGUI _costText;
+    [SerializeField]
+    private Image _gradeImage;
+    [SerializeField]
+    private TextMeshProUGUI _gradeText;
+    [SerializeField]
+    private TextMeshProUGUI _nameText;
+    [SerializeField]
+    private Image _fusionEffect;
+
+    public bool _isFusion;
+    public bool _isDontMove;
+
+    public DataBase _dataBase;
+
+    public int _grade = 1;
+    public int _id;
+
+    private RectTransform _rectTransform;
+
+    private BattleManager _battleManager;
+
+
+    private bool _isDrag; // 드래그 중인 상태인가
+    
+    public PRS _originPRS;
 
     /// <summary>
     /// 카드에 데이터를 전달함
@@ -51,22 +52,22 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <param name="id">카드 고유 아이디</param>
     public void Set_UnitData(DataBase dataBase, int id)
     {
-        battleManager??= FindObjectOfType<BattleManager>();
-        rectTransform??= GetComponent<RectTransform>();
+        _battleManager??= FindObjectOfType<BattleManager>();
+        _rectTransform??= GetComponent<RectTransform>();
 
         //기본적인 초기화
-        isDrag = false;
-        this.id = id;
-        this.dataBase = dataBase;
-        card_Name.text = dataBase.card_Name;
-        card_CostText.text = dataBase.card_Cost.ToString();
-        card_Cost = dataBase.card_Cost;
-        card_Image.sprite = dataBase.card_Sprite;
-        grade = 1;
-        Set_UnitGrade();
-        isFusion = false;
-        fusion_Effect.color = new Color(1, 1, 1, 1);
-        fusion_Effect.DOFade(0, 0.8f);
+        _isDrag = false;
+        this._id = id;
+        this._dataBase = dataBase;
+        _nameText.text = dataBase.card_Name;
+        _costText.text = dataBase.card_Cost.ToString();
+        CardCost = dataBase.card_Cost;
+        _image.sprite = dataBase.card_Sprite;
+        _grade = 1;
+        SetUnitGrade();
+        _isFusion = false;
+        _fusionEffect.color = new Color(1, 1, 1, 1);
+        _fusionEffect.DOFade(0, 0.8f);
 
         //유닛별 초기화
         switch (dataBase.cardType)
@@ -83,7 +84,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         
     }
 
-    public void Show_Card(bool isboolean)
+    public void ShowCard(bool isboolean)
     {
         gameObject.SetActive(isboolean);
     }
@@ -94,20 +95,20 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <param name="prs">위치 정보 데이터</param>
     /// <param name="duration">시간</param>
     /// <param name="isDotween">True면 닷트윈 사용</param>
-    public void Set_CardPRS(PRS prs, float duration, bool isDotween = true)
+    public void SetCardPRS(PRS prs, float duration, bool isDotween = true)
     {
-        if (isDontMove)
+        if (_isDontMove)
             return;
         if (isDotween)
         {
-            rectTransform.DOAnchorPos(prs.pos, duration);
-            rectTransform.DORotateQuaternion(prs.rot, duration);
-            rectTransform.DOScale(prs.scale, duration);
+            _rectTransform.DOAnchorPos(prs.pos, duration);
+            _rectTransform.DORotateQuaternion(prs.rot, duration);
+            _rectTransform.DOScale(prs.scale, duration);
             return;
         }
-        rectTransform.anchoredPosition = prs.pos;
-        rectTransform.rotation = prs.rot;
-        rectTransform.localScale = prs.scale;
+        _rectTransform.anchoredPosition = prs.pos;
+        _rectTransform.rotation = prs.rot;
+        _rectTransform.localScale = prs.scale;
     }
     /// <summary>
     /// 위치만 옮김
@@ -115,7 +116,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <param name="pos">위치</param>
     /// <param name="duration">시간</param>
     /// <param name="isDotween">True면 닷트윈 사용</param>
-    public void Set_CardPos(Vector3 pos, float duration, bool isDotween = true)
+    public void SetCardPos(Vector3 pos, float duration, bool isDotween = true)
     {
         if(isDotween)
         {
@@ -130,14 +131,14 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <param name="scale">크기</param>
     /// <param name="duration">시간</param>
     /// <param name="isDotween">True면 닷트윈 사용</param>
-    public void Set_CardScale(Vector3 scale, float duration, bool isDotween = true)
+    public void SetCardScale(Vector3 scale, float duration, bool isDotween = true)
     {
         if (isDotween)
         {
-            rectTransform.DOScale(scale, duration);
+            _rectTransform.DOScale(scale, duration);
             return;
         }
-        rectTransform.localScale = scale;
+        _rectTransform.localScale = scale;
     }
     /// <summary>
     /// 각도만 바꿈
@@ -145,35 +146,35 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <param name="rot">각도</param>
     /// <param name="duration">시간</param>
     /// <param name="isDotween">True면 닷트윈 사용</param>
-    public void Set_CardRot(Quaternion rot, float duration, bool isDotween = true)
+    public void SetCardRot(Quaternion rot, float duration, bool isDotween = true)
     {
         if (isDotween)
         {
-            rectTransform.DORotateQuaternion(rot, duration);
+            _rectTransform.DORotateQuaternion(rot, duration);
             return;
         }
-        rectTransform.rotation = rot;
+        _rectTransform.rotation = rot;
     }
 
 
     /// <summary>
     /// 유닛 단계 이미지 설정
     /// </summary>
-    public void Set_UnitGrade()
+    public void SetUnitGrade()
     {
-        card_GradeText.text = grade.ToString();
-        switch (grade)
+        _gradeText.text = _grade.ToString();
+        switch (_grade)
         {
             default:
             case 0:
             case 1:
-                card_Grade.color = new Color(0, 0, 0);
+                _gradeImage.color = new Color(0, 0, 0);
                 break;
             case 2:
-                card_Grade.color = new Color(1, 1, 0);
+                _gradeImage.color = new Color(1, 1, 0);
                 break;
             case 3:
-                card_Grade.color = new Color(1, 1, 1);
+                _gradeImage.color = new Color(1, 1, 1);
                 break;
         }
     }
@@ -181,41 +182,26 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <summary>
     /// 유닛 업그레이드 
     /// </summary>
-    public void Upgrade_UnitGrade()
+    public void UpgradeUnitGrade()
     {
-        grade++;
-        Set_UnitGrade();
+        _grade++;
+        SetUnitGrade();
     }
 
     /// <summary>
     /// 융합시 하얘짐
     /// </summary>
-    public void Fusion_FadeInEffect(Color color)
+    public void FusionFadeInEffect(Color color)
     {
-        fusion_Effect.color = color;
-        fusion_Effect.DOFade(1, 0.2f);
+        _fusionEffect.color = color;
+        _fusionEffect.DOFade(1, 0.2f);
     }
     /// <summary>
     /// 융합이 끝난 후 돌아옴
     /// </summary>
-    public void Fusion_FadeOutEffect()
+    public void FusionFadeOutEffect()
     {
-        fusion_Effect.DOFade(0, 0.5f);
-    }
-
-    /// <summary>
-    /// 드래그 중일 때
-    /// </summary>
-    /// <param name="eventData"></param>
-    public void OnDrag(PointerEventData eventData)
-    {
-        //if(rectTransform.anchoredPosition.y > 0)
-        //{
-        //    Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //    battleManager.battle_Card.Set_UnitAfterImage(unitData, mouse_Pos);
-        //    return;
-        //}
-        //battleManager.battle_Card.Set_UnitAfterImage(unitData, Vector3.zero, true);
+        _fusionEffect.DOFade(0, 0.5f);
     }
 
     /// <summary>
@@ -224,11 +210,11 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <param name="eventData"></param>
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (isFusion) return;
-        if (isDrag) return;
+        if (_isFusion) return;
+        if (_isDrag) return;
 
-        isDrag = true;
-        battleManager.BattleCard.Set_SelectCard(this);
+        _isDrag = true;
+        _battleManager.BattleCard.SetSelectCard(this);
     }
 
     /// <summary>
@@ -237,27 +223,26 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <param name="eventData"></param>
     public void OnPointerUp(PointerEventData eventData)
     {
-        if(isDrag)
+        if(_isDrag)
         {
-            isDrag = false;
-            //battleManager.battle_Card.Set_UnitAfterImage(dataBase.card_Sprite, Vector3.zero, true);
-
-            if (rectTransform.anchoredPosition.y > 0)
+            _isDrag = false;
+            
+            if (_rectTransform.anchoredPosition.y > 0)
             {
-                battleManager.BattleCard.Set_UseCard(this);
+                _battleManager.BattleCard.SetUseCard(this);
                 return;
             }
 
-            Set_CardPRS(originPRS, 0.3f);
-            battleManager.BattleCard.Set_UnSelectCard(this);
+            SetCardPRS(_originPRS, 0.3f);
+            _battleManager.BattleCard.SetUnSelectCard(this);
         }
     }
 
     /// <summary>
     /// 원래 위치로 돌아감
     /// </summary>
-    public void Run_OriginPRS()
+    public void RunOriginPRS()
     {
-        Set_CardPRS(originPRS, 0.3f);
+        SetCardPRS(_originPRS, 0.3f);
     }
 }

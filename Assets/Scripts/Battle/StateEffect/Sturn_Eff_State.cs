@@ -16,7 +16,7 @@ public class Sturn_Eff_State : Eff_State
         myUnit.Set_IsDontThrow(true);
         myUnit.unitState.stateChange.Set_Wait(stunTime);
         myUnit.unitState.stateChange.Set_WaitExtraTime(stunTime);
-        effectObj = battleManager.BattleEffect.Set_Effect(EffectType.Stun, new EffData(new Vector2(myTrm.position.x, myTrm.position.y + 0.1f), stunTime, myTrm));
+        effectObj = battleManager.BattleEffect.SetEffect(EffectType.Stun, new EffData(new Vector2(myTrm.position.x, myTrm.position.y + 0.1f), stunTime, myTrm));
 
         base.Enter();
     }

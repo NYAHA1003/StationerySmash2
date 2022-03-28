@@ -5,45 +5,45 @@ using Utill;
 
 public class BattlePencilCase : BattleCommand
 {
-    public Unit pencilCase_My;
-    public Unit pencilCase_Enemy;
+    public Unit myPencilCase;
+    public Unit enemy_pencilCase;
     public PencilCaseData pencilCaseDataMy;
     public PencilCaseData pencilCaseDataEnemy;
-    public PencilCase_Ability_State pencilCase_Ability_State_My;
-    public PencilCase_Ability_State pencilCase_Ability_State_Enemy;
+    public PencilCaseAbilityState myPencilCaseAbilityStaty;
+    public PencilCaseAbilityState enemyPencilCaseAbilityStaty;
     public BattlePencilCase(BattleManager battleManager, Unit pencilCase_My, Unit pencilCase_Enemy, PencilCaseData pencilCaseDataMy, PencilCaseData pencilCaseDataEnemy) : base(battleManager)
     {
-        this.pencilCase_My = pencilCase_My;
-        this.pencilCase_Enemy = pencilCase_Enemy;
+        this.myPencilCase = pencilCase_My;
+        this.enemy_pencilCase = pencilCase_Enemy;
         this.pencilCaseDataMy = pencilCaseDataMy;
         this.pencilCaseDataEnemy = pencilCaseDataEnemy;
-        this.pencilCase_Ability_State_My = pencilCaseDataMy.pencilState;
-        this.pencilCase_Ability_State_Enemy = pencilCaseDataEnemy.pencilState;
+        this.myPencilCaseAbilityStaty = pencilCaseDataMy.pencilState;
+        this.enemyPencilCaseAbilityStaty = pencilCaseDataEnemy.pencilState;
         this.battleManager = battleManager;
 
-        pencilCase_My.Set_UnitData(pencilCaseDataMy.pencilCaseData, TeamType.MyTeam, battleManager, -1, 1);
+        pencilCase_My.SetUnitData(pencilCaseDataMy.pencilCaseData, TeamType.MyTeam, battleManager, -1, 1);
         battleManager._myUnitDatasTemp.Add(pencilCase_My);
         pencilCase_My.transform.position = new Vector2(-battleManager.CurrentStageData.max_Range, 0);
-        Set_PencilCaseAbility(ref pencilCase_Ability_State_My, pencilCaseDataMy);
+        SetPencilCaseAbility(ref myPencilCaseAbilityStaty, pencilCaseDataMy);
         
-        pencilCase_Enemy.Set_UnitData(pencilCaseDataEnemy.pencilCaseData, TeamType.EnemyTeam, battleManager, -2, 1);
+        pencilCase_Enemy.SetUnitData(pencilCaseDataEnemy.pencilCaseData, TeamType.EnemyTeam, battleManager, -2, 1);
         battleManager._enemyUnitDatasTemp.Add(pencilCase_Enemy);
         pencilCase_Enemy.transform.position = new Vector2(battleManager.CurrentStageData.max_Range, 0);
-        Set_PencilCaseAbility(ref pencilCase_Ability_State_Enemy, pencilCaseDataEnemy);
+        SetPencilCaseAbility(ref enemyPencilCaseAbilityStaty, pencilCaseDataEnemy);
     }
 
-    public void Run_PencilCaseAbility()
+    public void RunPencilCaseAbility()
     {
-        pencilCase_Ability_State_My.Run_PencilCaseAility();
+        myPencilCaseAbilityStaty.RunPencilCaseAility();
     }
 
-    public void Set_PencilCaseAbility(ref PencilCase_Ability_State ability_State, PencilCaseData pencilCaseData)
+    public void SetPencilCaseAbility(ref PencilCaseAbilityState ability_State, PencilCaseData pencilCaseData)
     {
         switch (pencilCaseData.pencilCaseType)
         {
             default:
             case PencilCaseType.Normal:
-                ability_State = new PencilCase_Normal_Ability_State(battleManager);
+                ability_State = new PencilCaseNormalAbilityState(battleManager);
                 break;
         }
     }

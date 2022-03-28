@@ -5,52 +5,52 @@ using DG.Tweening;
 using Utill;
 public class BattleCamera : BattleCommand
 {
-    private Camera camera;
+    private Camera _camera = null;
     
-    private Vector3 click_Pos;
-    private Vector3 cur_Pos;
-    private Vector3 mouse_Pos;
+    private Vector3 _clickPos = Vector3.zero;
+    private Vector3 _curPos = Vector3.zero;
+    private Vector3 _mousePos;
 
-    private bool isCameraMove = false;
-    private bool isEffect = false;
+    private bool _isCameraMove = false;
+    private bool _isEffect = false;
 
-    public float perspectiveZoomSpeed = 0.5f;       // perspective mode.
-    public float orthoZoomSpeed = 0.5f;        //  orthographic mode.
+    public float _perspectiveZoomSpeed = 0.5f;       // perspective mode.
+    public float _orthoZoomSpeed = 0.5f;        //  orthographic mode.
 
 
     public BattleCamera(BattleManager battleManager, Camera camera) : base(battleManager)
     {
-        this.camera = camera;
+        this._camera = camera;
     }
 
     /// <summary>
     /// 카메라가 움직일 수 있는 상태인지
     /// </summary>
     /// <param name="isCameraMove">True면 움직일 수 있음</param>
-    public void Set_CameraIsMove(bool isCameraMove)
+    public void SetCameraIsMove(bool isCameraMove)
     {
-        this.isCameraMove = isCameraMove;
+        this._isCameraMove = isCameraMove;
     }
 
     /// <summary>
     /// 카메라 크기 조정
     /// </summary>
-    public void Update_CameraScale()
+    public void UpdateCameraScale()
     {
-        if (isEffect)
+        if (_isEffect)
             return;
 
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            if (battleManager.CurrentStageData.max_Range - 1 < camera.orthographicSize)
+            if (battleManager.CurrentStageData.max_Range - 1 < _camera.orthographicSize)
                 return;
-            camera.orthographicSize += Time.deltaTime * 10;
+            _camera.orthographicSize += Time.deltaTime * 10;
         }
         else if (Input.GetKey(KeyCode.DownArrow))
         {
-            if (1 > camera.orthographicSize)
+            if (1 > _camera.orthographicSize)
                 return;
-            camera.orthographicSize -= Time.deltaTime * 10;
+            _camera.orthographicSize -= Time.deltaTime * 10;
         }
 
         //아래는 모바일로 테스트
@@ -76,21 +76,21 @@ public class BattleCamera : BattleCommand
             float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
 
             // If the camera is orthographic...
-            if (camera.orthographic)
+            if (_camera.orthographic)
             {
                 // ... change the orthographic size based on the change in distance between the touches.
-                camera.orthographicSize += deltaMagnitudeDiff * orthoZoomSpeed;
+                _camera.orthographicSize += deltaMagnitudeDiff * _orthoZoomSpeed;
 
                 // Make sure the orthographic size never drops below zero.
-                camera.orthographicSize = Mathf.Max(camera.orthographicSize, 0.1f);
+                _camera.orthographicSize = Mathf.Max(_camera.orthographicSize, 0.1f);
             }
             else
             {
                 // Otherwise change the field of view based on the change in distance between the touches.
-                camera.fieldOfView += deltaMagnitudeDiff * perspectiveZoomSpeed;
+                _camera.fieldOfView += deltaMagnitudeDiff * _perspectiveZoomSpeed;
 
                 // Clamp the field of view to make sure it's between 0 and 180.
-                camera.fieldOfView = Mathf.Clamp(camera.fieldOfView, 0.1f, 179.9f);
+                _camera.fieldOfView = Mathf.Clamp(_camera.fieldOfView, 0.1f, 179.9f);
             }
         }
     }
@@ -98,9 +98,9 @@ public class BattleCamera : BattleCommand
     /// <summary>
     /// 카메라 위치 조정
     /// </summary>
-    public void Update_CameraPos()
+    public void UpdateCameraPos()
     {
-        if (isEffect)
+        if (_isEffect)
             return;
         //if(Input.touchCount != 1)
         //{
@@ -108,35 +108,35 @@ public class BattleCamera : BattleCommand
         //}
 
         //카드를 클릭한 상태라면
-        if (battleManager.BattleCard.isCardDown)
+        if (battleManager.BattleCard.IsCardDown)
         {
-            isCameraMove = false;
+            _isCameraMove = false;
             return;
         }
 
-        mouse_Pos = Input.mousePosition * 0.005f;
+        _mousePos = Input.mousePosition * 0.005f;
 
-        if (Input.GetMouseButtonDown(0) && Input.mousePosition.y > camera.pixelHeight * 0.3f)
+        if (Input.GetMouseButtonDown(0) && Input.mousePosition.y > _camera.pixelHeight * 0.3f)
         {
-            click_Pos = mouse_Pos;
-            cur_Pos = camera.transform.position;
-            isCameraMove = true;
+            _clickPos = _mousePos;
+            _curPos = _camera.transform.position;
+            _isCameraMove = true;
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            isCameraMove = false;
+            _isCameraMove = false;
         }
 
-        if (isCameraMove)
+        if (_isCameraMove)
         {
-            camera.transform.position = new Vector3(cur_Pos.x + (click_Pos.x + -mouse_Pos.x), 0, -10);
-            if (battleManager.CurrentStageData.max_Range + 1f < camera.transform.position.x)
+            _camera.transform.position = new Vector3(_curPos.x + (_clickPos.x + -_mousePos.x), 0, -10);
+            if (battleManager.CurrentStageData.max_Range + 1f < _camera.transform.position.x)
             {
-                camera.transform.DOMoveX(battleManager.CurrentStageData.max_Range, 0.1f);
+                _camera.transform.DOMoveX(battleManager.CurrentStageData.max_Range, 0.1f);
             }
-            if (-battleManager.CurrentStageData.max_Range - 1f > camera.transform.position.x)
+            if (-battleManager.CurrentStageData.max_Range - 1f > _camera.transform.position.x)
             {
-                camera.transform.DOMoveX(-battleManager.CurrentStageData.max_Range, 0.1f);
+                _camera.transform.DOMoveX(-battleManager.CurrentStageData.max_Range, 0.1f);
             }
         }
     }
@@ -144,24 +144,24 @@ public class BattleCamera : BattleCommand
     /// <summary>
     /// 승리 카메라 이펙트
     /// </summary>
-    public void Win_CamEffect(Vector2 pos, bool isWin)
+    public void WinCamEffect(Vector2 pos, bool isWin)
     {
-        if (isEffect)
+        if (_isEffect)
             return;
-        isEffect = true;
-        float time = Vector2.Distance(camera.transform.position, pos) / 5;
-        camera.transform.DOMove(new Vector3(pos.x,pos.y,-10), time);
+        _isEffect = true;
+        float time = Vector2.Distance(_camera.transform.position, pos) / 5;
+        _camera.transform.DOMove(new Vector3(pos.x,pos.y,-10), time);
 
-        DOTween.To(() => camera.orthographicSize, x => camera.orthographicSize = x, 1f, time);
-        camera.transform.DORotate(new Vector3(0,0,Random.Range(-30f,-10f)), 0.07f).SetDelay(0.2f).OnComplete(() =>
+        DOTween.To(() => _camera.orthographicSize, x => _camera.orthographicSize = x, 1f, time);
+        _camera.transform.DORotate(new Vector3(0,0,Random.Range(-30f,-10f)), 0.07f).SetDelay(0.2f).OnComplete(() =>
         {
-            DOTween.To(() => camera.orthographicSize, x => camera.orthographicSize = x, 0.8f, 0.05f).SetDelay(0.2f);
-            camera.transform.DORotate(new Vector3(0, 0, Random.Range(10f, 30f)), 0.07f).SetDelay(0.2f).OnComplete(() =>
+            DOTween.To(() => _camera.orthographicSize, x => _camera.orthographicSize = x, 0.8f, 0.05f).SetDelay(0.2f);
+            _camera.transform.DORotate(new Vector3(0, 0, Random.Range(10f, 30f)), 0.07f).SetDelay(0.2f).OnComplete(() =>
             {
-                DOTween.To(() => camera.orthographicSize, x => camera.orthographicSize = x, 0.6f, 0.05f).SetDelay(0.2f); ;
-                camera.transform.DORotate(new Vector3(0, 0, Random.Range(-30f, -10f)), 0.07f).SetDelay(0.2f).OnComplete(() =>
+                DOTween.To(() => _camera.orthographicSize, x => _camera.orthographicSize = x, 0.6f, 0.05f).SetDelay(0.2f); ;
+                _camera.transform.DORotate(new Vector3(0, 0, Random.Range(-30f, -10f)), 0.07f).SetDelay(0.2f).OnComplete(() =>
                 {
-                    battleManager.BattleWinLose.Set_WinLosePanel(isWin);
+                    battleManager.BattleWinLose.SetWinLosePanel(isWin);
                 });
             });
         });

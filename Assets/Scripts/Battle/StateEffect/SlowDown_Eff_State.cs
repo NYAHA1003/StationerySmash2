@@ -16,7 +16,7 @@ public class SlowDown_Eff_State : Eff_State
     {
         myUnit.moveSpeedPercent -= (int)moveSpeedSubtractPercent;
         myUnit.attackSpeedPercent -= (int)attackSpeedSubtractPercent;
-        effectObj = battleManager.BattleEffect.Set_Effect(EffectType.Slow, new EffData(new Vector2(myTrm.position.x, myTrm.position.y + 0.1f), slowDownTime, myTrm));
+        effectObj = battleManager.BattleEffect.SetEffect(EffectType.Slow, new EffData(new Vector2(myTrm.position.x, myTrm.position.y + 0.1f), slowDownTime, myTrm));
 
         base.Enter();
     }

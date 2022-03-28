@@ -6,84 +6,84 @@ using TMPro;
 
 public class BattleCost : BattleCommand
 {
-    public int cur_Cost { get; private set; } = 0;
-    public int max_Cost { get; private set; } = 2;
+    public int CurCost { get; private set; } = 0;
+    public int MaxCost { get; private set; } = 2;
 
-    public float cost_Speed = 200;
-    public float cost_Delay;
+    public float _costSpeed = 200;
+    public float _costDelay;
 
-    public int grade { get; private set; } = 1;
-    public int max_grade { get; private set; } = 5;
+    public int Grade { get; private set; } = 1;
+    public int MaxGrade { get; private set; } = 5;
 
-    private TextMeshProUGUI cost_CostText;
+    private TextMeshProUGUI _costText;
 
     public BattleCost(BattleManager battleManager, TextMeshProUGUI cost_CostText) : base(battleManager)
     {
-        this.cost_CostText = cost_CostText;
+        this._costText = cost_CostText;
     }
 
-    public void Add_Cost(int addCost)
+    public void AddCost(int addCost)
     {
-        cur_Cost += addCost;
-        Update_CostText();
+        CurCost += addCost;
+        UpdateCostText();
     }
 
-    public void Subtract_Cost(int subtractCost)
+    public void SubtractCost(int subtractCost)
     {
-        cur_Cost -= subtractCost;
-        Update_CostText();
+        CurCost -= subtractCost;
+        UpdateCostText();
     }
 
-    public void Set_Cost(int setCost)
+    public void SetCost(int setCost)
     {
-        cur_Cost = setCost;
-        Update_CostText();
+        CurCost = setCost;
+        UpdateCostText();
     }
 
-    public void Set_CostSpeed(float speed)
+    public void SetCostSpeed(float speed)
     {
-        cost_Speed = speed;
+        _costSpeed = speed;
     }
-    public void Add_CostSpeed(float speed)
+    public void AddCostSpeed(float speed)
     {
-        cost_Speed += speed;
+        _costSpeed += speed;
     }
-    public void Multiple_CostSpeed(float multiplespeed)
+    public void MultipleCostSpeed(float multiplespeed)
     {
-        cost_Speed *= multiplespeed;
+        _costSpeed *= multiplespeed;
     }
 
-    public void Update_Cost()
+    public void UpdateCost()
     {
-        if (cur_Cost >= max_Cost)
+        if (CurCost >= MaxCost)
             return;
-        if (cost_Delay > 0)
+        if (_costDelay > 0)
         {
-            cost_Delay -= cost_Speed * Time.deltaTime;
+            _costDelay -= _costSpeed * Time.deltaTime;
             return;
         }
-        Add_Cost(1);
-        Update_CostText();
-        cost_Delay = 100;
+        AddCost(1);
+        UpdateCostText();
+        _costDelay = 100;
     }
 
-    public void Update_CostText()
+    public void UpdateCostText()
     {
-        cost_CostText.text = string.Format("{0} / {1}", cur_Cost.ToString(), max_Cost.ToString());
+        _costText.text = string.Format("{0} / {1}", CurCost.ToString(), MaxCost.ToString());
     }
 
-    public void Run_UpgradeCostGrade()
+    public void RunUpgradeCostGrade()
     {
-        if (grade >= max_grade)
+        if (Grade >= MaxGrade)
             return;
-        if (cur_Cost < max_Cost)
+        if (CurCost < MaxCost)
             return;
 
-        grade++;
-        Subtract_Cost(max_Cost);
-        Add_CostSpeed(0.25f);
-        max_Cost += 2;
-        Update_CostText();
+        Grade++;
+        SubtractCost(MaxCost);
+        AddCostSpeed(0.25f);
+        MaxCost += 2;
+        UpdateCostText();
 
 
     }
