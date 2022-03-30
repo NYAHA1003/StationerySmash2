@@ -2,5 +2,8 @@
 {
     ActiveDeck,
     ActiveDescription,
-    ActiveSetting
+    ActiveSetting,
+    MoveShopPn,
+    MoveMainPn
+
 }
