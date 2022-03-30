@@ -4,6 +4,7 @@
     ActiveDescription,
     ActiveSetting,
     MoveShopPn,
-    MoveMainPn
+    MoveMainPn,
+    CloaseAllPn,
 
 }

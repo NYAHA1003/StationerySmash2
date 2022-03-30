@@ -95,6 +95,7 @@ public class ButtonManager : MonoBehaviour
     public void OnMoveMainPanel(int iParam)
     {
         EventManager.TriggerEvent(EventType.MoveMainPn, iParam);
+        EventManager.TriggerEvent(EventType.CloaseAllPn); 
     }
     #endregion
 }
