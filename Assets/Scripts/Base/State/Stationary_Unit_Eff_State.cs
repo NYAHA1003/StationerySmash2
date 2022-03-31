@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
-
+using Battle;
 public abstract class Eff_State
 {
     public eState curState { get; protected set; }
@@ -94,13 +94,13 @@ public abstract class Eff_State
             case AtkType.Normal:
                 break;
             case AtkType.Stun:
-                BattleUnit.AddEff((Sturn_Eff_State)this);
+                UnitCommand.AddEff((Sturn_Eff_State)this);
                 break;
             case AtkType.Ink:
-                BattleUnit.AddEff((Ink_Eff_State)this);
+                UnitCommand.AddEff((Ink_Eff_State)this);
                 break;
             case AtkType.SlowDown:
-                BattleUnit.AddEff((SlowDown_Eff_State)this);
+                UnitCommand.AddEff((SlowDown_Eff_State)this);
                 break;
         }
 

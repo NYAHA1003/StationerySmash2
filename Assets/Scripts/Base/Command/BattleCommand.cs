@@ -2,7 +2,8 @@
 public class BattleCommand
 {
     protected BattleManager battleManager;
-    public BattleCommand(BattleManager battleManager)
+
+    protected void SetBattleManager(BattleManager battleManager)
     {
         this.battleManager = battleManager;
     }

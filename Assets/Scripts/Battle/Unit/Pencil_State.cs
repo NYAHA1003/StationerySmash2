@@ -339,7 +339,7 @@ public class Pencil_Attack_State : Stationary_UnitState
         curEvent = eEvent.EXIT;
         if (Random.Range(0,100) <= myUnit.Return_Accuracy())
         {
-            myUnit.battleManager.BattleEffect.SetEffect(EffectType.Attack, new EffData(targetUnit.transform.position, 0.2f));
+            myUnit.battleManager.CommandEffect.SetEffect(EffectType.Attack, new EffData(targetUnit.transform.position, 0.2f));
             AtkData atkData = new AtkData(myUnit, myUnit.Return_Damage(), myUnit.Return_Knockback(), 0, myUnitData.dir, myUnit.eTeam.Equals(TeamType.MyTeam), 0, originAtkType, originValue);
             targetUnit.Run_Damaged(atkData);
             targetUnit = null;

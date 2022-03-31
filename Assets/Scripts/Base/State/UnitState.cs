@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Utill;
+using Battle;
 
 public abstract class UnitState
 {
@@ -109,13 +110,13 @@ public abstract class UnitState
             case AtkType.Normal:
                 return;
             case AtkType.Stun:
-                myUnit.statEffList.Add(BattleUnit.GetEff<Sturn_Eff_State>(myTrm, mySprTrm, myUnit, atkType, value));
+                myUnit.statEffList.Add(UnitCommand.GetEff<Sturn_Eff_State>(myTrm, mySprTrm, myUnit, atkType, value));
                 return;
             case AtkType.Ink:
-                myUnit.statEffList.Add(BattleUnit.GetEff<Ink_Eff_State>(myTrm, mySprTrm, myUnit, atkType, value));
+                myUnit.statEffList.Add(UnitCommand.GetEff<Ink_Eff_State>(myTrm, mySprTrm, myUnit, atkType, value));
                 return;
             case AtkType.SlowDown:
-                myUnit.statEffList.Add(BattleUnit.GetEff<SlowDown_Eff_State>(myTrm, mySprTrm, myUnit, atkType, value));
+                myUnit.statEffList.Add(UnitCommand.GetEff<SlowDown_Eff_State>(myTrm, mySprTrm, myUnit, atkType, value));
                 return;
         }
     }

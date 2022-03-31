@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Utill;
-
+using Battle;
 public class Unit : MonoBehaviour
 {
 
@@ -177,7 +177,7 @@ public class Unit : MonoBehaviour
         switch (unitData.unitType)
         {
             case UnitType.PencilCase:
-                stateManager = BattleUnit.GetItem<PencilCaseStateManager>(transform, spr.transform, this);
+                stateManager = UnitCommand.GetItem<PencilCaseStateManager>(transform, spr.transform, this);
                 break;
 
             default:
@@ -185,10 +185,10 @@ public class Unit : MonoBehaviour
             case UnitType.Pencil:
             case UnitType.Eraser:
             case UnitType.Sharp:
-                stateManager = BattleUnit.GetItem<PencilStateManager>(transform, spr.transform, this);
+                stateManager = UnitCommand.GetItem<PencilStateManager>(transform, spr.transform, this);
                 break;
             case UnitType.BallPen:
-                stateManager = BattleUnit.GetItem<BallpenStateManager>(transform, spr.transform, this);
+                stateManager = UnitCommand.GetItem<BallpenStateManager>(transform, spr.transform, this);
                 break;
         }
     }
@@ -201,11 +201,11 @@ public class Unit : MonoBehaviour
         switch (unitData.unitType)
         {
             case UnitType.PencilCase:
-                BattleUnit.AddItem((PencilCaseStateManager)stateManager);
+                UnitCommand.AddItem((PencilCaseStateManager)stateManager);
                 break;
 
             case UnitType.BallPen:
-                BattleUnit.AddItem((BallpenStateManager)stateManager);
+                UnitCommand.AddItem((BallpenStateManager)stateManager);
                 break;
 
             default:
@@ -213,7 +213,7 @@ public class Unit : MonoBehaviour
             case UnitType.Pencil:
             case UnitType.Eraser:
             case UnitType.Sharp:
-                BattleUnit.AddItem((PencilStateManager)stateManager);
+                UnitCommand.AddItem((PencilStateManager)stateManager);
                 break;
         }
     }
