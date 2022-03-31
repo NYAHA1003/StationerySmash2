@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-
+using Util;
 public class MainScroll : AgentScroll
 {
     [SerializeField]
@@ -13,7 +13,7 @@ public class MainScroll : AgentScroll
     private RectTransform[] panelIcons;
     protected override void ChildAwake()
     {
-        EventManager.StartListening(EventType.MoveMainPn, OnMoveMainPanel);
+        EventManager.StartListening(EventsType.MoveMainPn, OnMoveMainPanel);
     }
     protected override void ChildStart()
     {
@@ -35,7 +35,8 @@ public class MainScroll : AgentScroll
 
             deltaSlide(eventData.delta.y);
         }
-        StressImage(); 
+        StressImage();
+        EventManager.TriggerEvent(EventsType.SetOriginShopPn);
     }
 
     private void StressImage()
@@ -60,3 +61,4 @@ public class MainScroll : AgentScroll
     }
     #endregion
 }
+

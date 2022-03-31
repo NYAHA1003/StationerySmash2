@@ -19,13 +19,14 @@ public class AgentScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     private void Awake()
     {
         scrollbar = this.transform.GetChild(1).GetComponent<Scrollbar>();
-        contentTr = gameObject.transform.GetChild(1);
+        contentTr = gameObject.transform.GetChild(0).GetChild(0);
         ChildAwake();
     }
     private void Start()
     {
         distance = 1f / (SIZE - 1);
         for (int i = 0; i < SIZE; i++) pos[i] = distance * i;
+        ChildStart(); 
     }
     private void Update()
     {

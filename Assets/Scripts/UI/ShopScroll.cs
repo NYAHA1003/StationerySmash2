@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-
+using Util;
 public class ShopScroll : AgentScroll
 {
     [SerializeField]
@@ -15,7 +15,9 @@ public class ShopScroll : AgentScroll
 
     protected override void ChildAwake()
     {
-        EventManager.StartListening(EventType.MoveShopPn, OnMoveShopPanel);
+        EventManager.StartListening(EventsType.MoveShopPn, OnMoveShopPanel);
+        EventManager.StartListening(EventsType.CloaseAllPn, SetOriginScroll);
+        EventManager.StartListening(EventsType.SetOriginShopPn, SetOriginScroll);
     }
 
     protected override void ChildeUpdate()
