@@ -26,7 +26,7 @@ namespace Battle
         /// <param name="stageData"></param>
         public void SetInitialization(BattleManager battleManager, LineRenderer parabola, Transform arrow, StageData stageData)
         {
-            SetBattleManager(battleManager);
+            this._battleManager = battleManager;
             this._parabola = parabola;
             this._stageData = stageData;
             this._arrow = arrow;
@@ -44,11 +44,11 @@ namespace Battle
         public void PullUnit(Vector2 pos)
         {
             float targetRange = float.MaxValue;
-            for (int i = 0; i < battleManager._myUnitDatasTemp.Count; i++)
+            for (int i = 0; i < _battleManager._myUnitDatasTemp.Count; i++)
             {
-                if (Vector2.Distance(pos, battleManager._myUnitDatasTemp[i].transform.position) < targetRange)
+                if (Vector2.Distance(pos, _battleManager._myUnitDatasTemp[i].transform.position) < targetRange)
                 {
-                    _throwUnit = battleManager._myUnitDatasTemp[i];
+                    _throwUnit = _battleManager._myUnitDatasTemp[i];
                     targetRange = Vector2.Distance(pos, _throwUnit.transform.position);
                 }
             }
@@ -60,7 +60,7 @@ namespace Battle
                     _throwUnit = _throwUnit.Pull_Unit();
                     if (_throwUnit == null)
                     {
-                        battleManager.CommandCamera.SetCameraIsMove(false);
+                        _battleManager.CommandCamera.SetCameraIsMove(false);
                     }
                     _pullTime = 2f;
                     return;
@@ -89,7 +89,7 @@ namespace Battle
 
                 //유닛이 다른 행동을 취하게 되면 취소
                 _throwUnit = _throwUnit.Pulling_Unit();
-                battleManager.CommandCamera.SetCameraIsMove(false);
+                _battleManager.CommandCamera.SetCameraIsMove(false);
 
                 if (_throwUnit == null)
                 {

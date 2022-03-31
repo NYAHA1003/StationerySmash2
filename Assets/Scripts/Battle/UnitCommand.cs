@@ -28,7 +28,7 @@ namespace Battle
         /// <param name="_unitParent"></param>
         public void SetInitialization(BattleManager battleManager, GameObject _unitPrefeb, Transform _unitPoolManager, Transform _unitParent)
         {
-            SetBattleManager(battleManager);
+            this._battleManager = battleManager;
             this._unitPrefeb = _unitPrefeb;
             this._unitPoolManager = _unitPoolManager;
             this._unitParent = _unitParent;
@@ -49,7 +49,7 @@ namespace Battle
             {
                 eTeam = this.eTeam;
             }
-            unit.SetUnitData(dataBase, eTeam, battleManager, unitIdCount++, grade);
+            unit.SetUnitData(dataBase, eTeam, _battleManager, unitIdCount++, grade);
 
 
             //유닛 리스트에 추가
@@ -58,49 +58,12 @@ namespace Battle
                 case TeamType.Null:
                     break;
                 case TeamType.MyTeam:
-                    battleManager._myUnitDatasTemp.Add(unit);
+                    _battleManager._myUnitDatasTemp.Add(unit);
                     break;
                 case TeamType.EnemyTeam:
-                    battleManager._enemyUnitDatasTemp.Add(unit);
+                    _battleManager._enemyUnitDatasTemp.Add(unit);
                     break;
             }
-        }
-
-        /// <summary>
-        /// 유닛 풀링
-        /// </summary>
-        /// <param name="Pos"></param>
-        /// <returns></returns>
-        private Unit PoolUnit(Vector3 Pos)
-        {
-            GameObject unit_obj = null;
-            if (_unitPoolManager.childCount > 0)
-            {
-                unit_obj = _unitPoolManager.GetChild(0).gameObject;
-                unit_obj.transform.position = Pos;
-                unit_obj.SetActive(true);
-            }
-            unit_obj ??= battleManager.CreateObject(_unitPrefeb, Pos, Quaternion.identity);
-            unit_obj.transform.SetParent(_unitParent);
-            return unit_obj.GetComponent<Unit>();
-        }
-
-        /// <summary>
-        /// 내 유닛 리스트 추가
-        /// </summary>
-        /// <param name="unit"></param>
-        public void AddUnitListMy(Unit unit)
-        {
-            battleManager._myUnitDatasTemp.Add(unit);
-        }
-
-        /// <summary>
-        /// 적 유닛 리스트 추가
-        /// </summary>
-        /// <param name="unit"></param>
-        public void AddUnitListEnemy(Unit unit)
-        {
-            battleManager._enemyUnitDatasTemp.Add(unit);
         }
 
         /// <summary>
@@ -108,13 +71,13 @@ namespace Battle
         /// </summary>
         public void ClearUnit()
         {
-            for (int i = 0; battleManager._myUnitDatasTemp.Count > 0;)
+            for (int i = 0; _battleManager._myUnitDatasTemp.Count > 0;)
             {
-                battleManager._myUnitDatasTemp[i].Delete_Unit();
+                _battleManager._myUnitDatasTemp[i].Delete_Unit();
             }
-            for (int i = 0; battleManager._enemyUnitDatasTemp.Count > 0;)
+            for (int i = 0; _battleManager._enemyUnitDatasTemp.Count > 0;)
             {
-                battleManager._enemyUnitDatasTemp[i].Delete_Unit();
+                _battleManager._enemyUnitDatasTemp[i].Delete_Unit();
             }
         }
 
@@ -142,6 +105,7 @@ namespace Battle
                 stateDictionary.Add(typeof(T).Name, q);
             }
         }
+
         /// <summary>
         /// 상태 풀링 매니저 생성
         /// </summary>
@@ -270,6 +234,25 @@ namespace Battle
         {
             Queue<T> q = (Queue<T>)stateDictionary[typeof(T).Name];
             q.Enqueue(state);
+        }
+
+        /// <summary>
+        /// 유닛 풀링
+        /// </summary>
+        /// <param name="Pos"></param>
+        /// <returns></returns>
+        private Unit PoolUnit(Vector3 Pos)
+        {
+            GameObject unit_obj = null;
+            if (_unitPoolManager.childCount > 0)
+            {
+                unit_obj = _unitPoolManager.GetChild(0).gameObject;
+                unit_obj.transform.position = Pos;
+                unit_obj.SetActive(true);
+            }
+            unit_obj ??= _battleManager.CreateObject(_unitPrefeb, Pos, Quaternion.identity);
+            unit_obj.transform.SetParent(_unitParent);
+            return unit_obj.GetComponent<Unit>();
         }
     }
 

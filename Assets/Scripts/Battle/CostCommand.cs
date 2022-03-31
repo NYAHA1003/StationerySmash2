@@ -27,7 +27,7 @@ namespace Battle
         /// <param name="cost_CostText"></param>
         public void SetInitialization(BattleManager battleManager, TextMeshProUGUI cost_CostText)
         {
-            SetBattleManager(battleManager);
+            this._battleManager = battleManager;
             this._costText = cost_CostText;
             battleManager.AddUpdateAction(UpdateCost);
         }

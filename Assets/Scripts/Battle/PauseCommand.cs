@@ -19,7 +19,7 @@ namespace Battle
         /// <param name="pauseCanvas"></param>
         public void SetInitialization(BattleManager battleManager, RectTransform pauseUI, Canvas pauseCanvas)
         {
-            SetBattleManager(battleManager);
+            this._battleManager = battleManager;
             this._pauseUI = pauseUI;
             this._pauseCanvas = pauseCanvas;
         }

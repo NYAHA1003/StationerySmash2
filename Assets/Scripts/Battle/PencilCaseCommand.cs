@@ -24,14 +24,14 @@ namespace Battle
         /// <param name="pencilCaseDataEnemy"></param>
         public void SetInitialization(BattleManager battleManager, Unit pencilCase_My, Unit pencilCase_Enemy, PencilCaseData pencilCaseDataMy, PencilCaseData pencilCaseDataEnemy)
         {
-            SetBattleManager(battleManager);
+            this._battleManager = battleManager;
             this.myPencilCase = pencilCase_My;
             this.enemy_pencilCase = pencilCase_Enemy;
             this.pencilCaseDataMy = pencilCaseDataMy;
             this.pencilCaseDataEnemy = pencilCaseDataEnemy;
             this.myPencilCaseAbilityStaty = pencilCaseDataMy.pencilState;
             this.enemyPencilCaseAbilityStaty = pencilCaseDataEnemy.pencilState;
-            this.battleManager = battleManager;
+            this._battleManager = battleManager;
 
             pencilCase_My.SetUnitData(pencilCaseDataMy.pencilCaseData, TeamType.MyTeam, battleManager, -1, 1);
             battleManager._myUnitDatasTemp.Add(pencilCase_My);
@@ -63,7 +63,7 @@ namespace Battle
             {
                 default:
                 case PencilCaseType.Normal:
-                    ability_State = new PencilCaseNormalAbilityState(battleManager);
+                    ability_State = new PencilCaseNormalAbilityState(_battleManager);
                     break;
             }
         }

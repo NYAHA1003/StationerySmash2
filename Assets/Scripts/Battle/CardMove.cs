@@ -214,7 +214,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if (_isDrag) return;
 
         _isDrag = true;
-        _battleManager.CommandCard.SetSelectCard(this);
+        _battleManager.CommandCard.SelectCard(this);
     }
 
     /// <summary>

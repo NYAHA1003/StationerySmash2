@@ -258,7 +258,7 @@ public class BattleManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
-            CommandCard.SubtractCard();
+            CommandCard.SubtractLastCard();
         }
 
         //¿Ø¥÷ Ω√Ω∫≈€

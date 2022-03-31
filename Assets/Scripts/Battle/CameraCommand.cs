@@ -27,7 +27,7 @@ namespace Battle
         /// <param name="camera"></param>
         public void SetInitialization(BattleManager battleManager, Camera camera)
         {
-            SetBattleManager(battleManager);
+            this._battleManager = battleManager;
             this._camera = camera;
             battleManager.AddUpdateAction(UpdateCameraPos);
             battleManager.AddUpdateAction(UpdateCameraScale);
@@ -53,7 +53,7 @@ namespace Battle
 
             if (Input.GetKey(KeyCode.UpArrow))
             {
-                if (battleManager.CurrentStageData.max_Range - 1 < _camera.orthographicSize)
+                if (_battleManager.CurrentStageData.max_Range - 1 < _camera.orthographicSize)
                     return;
                 _camera.orthographicSize += Time.deltaTime * 10;
             }
@@ -115,7 +115,7 @@ namespace Battle
                 return;
 
             //카드를 클릭한 상태라면
-            if (battleManager.CommandCard.IsCardDown)
+            if (_battleManager.CommandCard.IsSelectCard)
             {
                 _isCameraMove = false;
                 return;
@@ -137,13 +137,13 @@ namespace Battle
             if (_isCameraMove)
             {
                 _camera.transform.position = new Vector3(_curPos.x + (_clickPos.x + -_mousePos.x), 0, -10);
-                if (battleManager.CurrentStageData.max_Range + 1f < _camera.transform.position.x)
+                if (_battleManager.CurrentStageData.max_Range + 1f < _camera.transform.position.x)
                 {
-                    _camera.transform.DOMoveX(battleManager.CurrentStageData.max_Range, 0.1f);
+                    _camera.transform.DOMoveX(_battleManager.CurrentStageData.max_Range, 0.1f);
                 }
-                if (-battleManager.CurrentStageData.max_Range - 1f > _camera.transform.position.x)
+                if (-_battleManager.CurrentStageData.max_Range - 1f > _camera.transform.position.x)
                 {
-                    _camera.transform.DOMoveX(-battleManager.CurrentStageData.max_Range, 0.1f);
+                    _camera.transform.DOMoveX(-_battleManager.CurrentStageData.max_Range, 0.1f);
                 }
             }
         }
@@ -168,7 +168,7 @@ namespace Battle
                     DOTween.To(() => _camera.orthographicSize, x => _camera.orthographicSize = x, 0.6f, 0.05f).SetDelay(0.2f); ;
                     _camera.transform.DORotate(new Vector3(0, 0, Random.Range(-30f, -10f)), 0.07f).SetDelay(0.2f).OnComplete(() =>
                     {
-                        battleManager.CommandWinLose.SetWinLosePanel(isWin);
+                        _battleManager.CommandWinLose.SetWinLosePanel(isWin);
                     });
                 });
             });

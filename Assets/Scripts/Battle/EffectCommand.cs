@@ -17,7 +17,7 @@ namespace Battle
         /// <param name="effect_PoolManager"></param>
         public void SetInitialization(BattleManager battleManager, Transform effect_PoolManager)
         {
-            SetBattleManager(battleManager);
+            this._battleManager = battleManager;
             this._effectPoolManager = effect_PoolManager;
         }
 
@@ -46,7 +46,7 @@ namespace Battle
             }
 
             //없으면 새로 만듦
-            effect_Object = battleManager.CreateObject(battleManager._effectObjectList[(int)effectType].gameObject, effData.pos, Quaternion.identity).GetComponent<EffectObject>();
+            effect_Object = _battleManager.CreateObject(_battleManager._effectObjectList[(int)effectType].gameObject, effData.pos, Quaternion.identity).GetComponent<EffectObject>();
             effect_Object.transform.SetParent(effect_Parent);
             effect_Object.SetEffect(effData);
             return effect_Object._effectState;

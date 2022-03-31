@@ -53,26 +53,26 @@ namespace Battle
         /// </summary>
         public void SetSuddenDeath()
         {
-            battleManager.CommandCard.ClearCards();
-            battleManager.CommandUnit.ClearUnit();
+            _battleManager.CommandCard.ClearCards();
+            _battleManager.CommandUnit.ClearUnit();
 
             if (!_isSuddenDeath)
             {
-                battleManager.CommandCard.SetMaxCard(8);
-                battleManager.CommandCost.SetCostSpeed(500);
+                _battleManager.CommandCard.SetMaxCard(8);
+                _battleManager.CommandCost.SetCostSpeed(500);
                 _isSuddenDeath = true;
                 _timer = 60;
                 return;
             }
 
             //체력 비교
-            if (battleManager._myUnitDatasTemp[0].hp > battleManager._enemyUnitDatasTemp[0].hp)
+            if (_battleManager._myUnitDatasTemp[0].hp > _battleManager._enemyUnitDatasTemp[0].hp)
             {
                 Debug.Log("서든데스 승리");
                 _isFinallyEnd = true;
                 return;
             }
-            if (battleManager._myUnitDatasTemp[0].hp < battleManager._enemyUnitDatasTemp[0].hp)
+            if (_battleManager._myUnitDatasTemp[0].hp < _battleManager._enemyUnitDatasTemp[0].hp)
             {
                 Debug.Log("서든데스 패배");
                 _isFinallyEnd = true;
