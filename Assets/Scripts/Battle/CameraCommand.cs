@@ -24,6 +24,8 @@ namespace Battle
         {
             SetBattleManager(battleManager);
             this._camera = camera;
+            battleManager.AddAction(UpdateCameraPos);
+            battleManager.AddAction(UpdateCameraScale);
         }
 
         /// <summary>
@@ -33,6 +35,7 @@ namespace Battle
         public void SetCameraIsMove(bool isCameraMove)
         {
             this._isCameraMove = isCameraMove;
+
         }
 
         /// <summary>
@@ -105,10 +108,6 @@ namespace Battle
         {
             if (_isEffect)
                 return;
-            //if(Input.touchCount != 1)
-            //{
-            //    return;
-            //}
 
             //카드를 클릭한 상태라면
             if (battleManager.CommandCard.IsCardDown)

@@ -23,6 +23,7 @@ namespace Battle
         {
             SetBattleManager(battleManager);
             this._costText = cost_CostText;
+            battleManager.AddAction(UpdateCost);
         }
 
 

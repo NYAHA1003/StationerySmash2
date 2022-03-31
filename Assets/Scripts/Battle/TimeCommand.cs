@@ -20,6 +20,7 @@ namespace Battle
             _stageData = battleManager.CurrentStageData;
             _timer = _stageData.timeValue;
             this._timeText = timeText;
+            battleManager.AddAction(UpdateTime);
         }
 
         public void UpdateTime()

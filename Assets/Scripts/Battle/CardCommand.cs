@@ -61,6 +61,12 @@ namespace Battle
             _afterImageSpriteRenderer = unit_AfterImage.GetComponent<SpriteRenderer>();
 
             SetDeckCard();
+
+            battleManager.AddAction(UpdateUnitAfterImage);
+            battleManager.AddAction(UpdateSelectCardPos);
+            battleManager.AddAction(UpdateCardDrow);
+            battleManager.AddAction(CheckPossibleSummon);
+            battleManager.AddAction(UpdateSummonRange);
         }
 
         /// <summary>

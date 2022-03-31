@@ -6,6 +6,7 @@ using DG.Tweening;
 using Utill;
 using TMPro;
 using Battle;
+using System;
 
 
 public class BattleManager : MonoBehaviour
@@ -21,6 +22,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     public DeckData _deckData = null;
     private bool _isEndSetting = false;
+    private Action updateAction = default;
 
     public StageData CurrentStageData
     {
@@ -219,21 +221,29 @@ public class BattleManager : MonoBehaviour
     private void Update()
     {
         if (!_isEndSetting)
+        {
             return;
+        }
 
-        //시간 시스템
-        CommandTime.UpdateTime();
+        //던지기 시스템
+        if(Input.GetMouseButtonDown(0))
+        {
+            CommandThrow.PullUnit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        }
+        else if(Input.GetMouseButton(0))
+        {
+            CommandThrow.DrawParabola(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        }
+        else if(Input.GetMouseButtonUp(0))
+        {
+            CommandThrow.ThrowUnit();
+        }
 
-        //카메라 위치, 크기 조정
-        CommandCamera.UpdateCameraPos();
-        CommandCamera.UpdateCameraScale();
+        //컴포넌트들의 업데이트가 필요한 함수 재생
+        updateAction.Invoke();
+        
+        //테스트용
 
-        //카드 시스템
-        CommandCard.UpdateUnitAfterImage();
-        CommandCard.UpdateSelectCardPos();
-        CommandCard.UpdateCardDrow();
-        CommandCard.CheckPossibleSummon();
-        CommandCard.UpdateSummonRange();
         if (Input.GetKeyDown(KeyCode.X))
         {
             CommandCard.AddOneCard();
@@ -256,33 +266,12 @@ public class BattleManager : MonoBehaviour
         {
             CommandUnit.ClearUnit();
         }
-
-        //던지기 시스템
-        if(Input.GetMouseButtonDown(0))
-        {
-            CommandThrow.PullUnit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        }
-        else if(Input.GetMouseButton(0))
-        {
-            CommandThrow.DrawParabola(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        }
-        else if(Input.GetMouseButtonUp(0))
-        {
-            CommandThrow.ThrowUnit();
-        }
-
-        //코스트 시스템
-        CommandCost.UpdateCost();
-
-        //AI 시스템
-        CommandAI.UpdateEnemyAICard();
-        CommandAI.UpdateEnemyAIThrow();
-        CommandAI.UpdatePlayerAICard();
-        CommandAI.UpdatePlayerAIThrow();
-
     }
 
-    #region 공용함수
+    public void AddAction(Action method)
+    {
+        updateAction += method;
+    }
 
     /// <summary>
     /// 오브젝트 생성
@@ -296,16 +285,13 @@ public class BattleManager : MonoBehaviour
         return Instantiate(prefeb, position, quaternion);
     }
 
-    #endregion
-
-    #region 유닛 시스템 함수 BattleUnit
-
     /// <summary>
     /// 버튼함수. 유닛을 소환할 때의 팀
     /// </summary>
-    public void ChangeTeam()
+    public void OnChangeTeam()
     {
-        if(CommandUnit.eTeam.Equals(TeamType.MyTeam))
+        //내 팀인지 적팀인지 체크
+        if (CommandUnit.eTeam.Equals(TeamType.MyTeam))
         {
             CommandUnit.eTeam = Utill.TeamType.EnemyTeam;
             _unitTeamText.text = "적의 팀";
@@ -329,33 +315,27 @@ public class BattleManager : MonoBehaviour
         unit.transform.SetParent(_unitPoolManager);
     }
 
-    #endregion
-
-    #region 코스트 시스템 함수 BattleCost
-
-    public void RunUpgradeCostGrade()
+    /// <summary>
+    /// 클릭하면 코스트 단계 증가
+    /// </summary>
+    public void OnUpgradeCostGrade()
     {
         CommandCost.RunUpgradeCostGrade();
     }
 
-    #endregion
-
-    #region 필통 시스템 함수 BattlePencilCase
-
-    public void RunPencilCaseAbility()
+    /// <summary>
+    /// 클릭하면 필통 능력 사용
+    /// </summary>
+    public void OnPencilCaseAbility()
     {
         CommandPencilCase.RunPencilCaseAbility();
     }
 
-    #endregion
-
-
-    #region 일시정지 시스템 함수 BattlePause
-
-    public void SetPause()
+    /// <summary>
+    /// 클릭하면 일시정지함
+    /// </summary>
+    public void OnPause()
     {
         CommandPause.SetPause();
     }
-
-    #endregion
 }

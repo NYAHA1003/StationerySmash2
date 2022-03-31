@@ -51,6 +51,12 @@ namespace Battle
             this.playerMaxDelay = aIplayerDataSO.max_Delay;
             this.playerThrowSpeed = aIplayerDataSO.throwSpeed;
             this.isPlayerAIOn = isPlayerAIOn;
+
+            //배틀매니저에 업데이트할 함수를 넣는다
+            battleManager.AddAction(UpdateEnemyAICard);
+            battleManager.AddAction(UpdateEnemyAIThrow);
+            battleManager.AddAction(UpdatePlayerAICard);
+            battleManager.AddAction(UpdatePlayerAIThrow);
         }
 
         public void UpdateEnemyAIThrow()
