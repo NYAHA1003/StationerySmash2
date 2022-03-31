@@ -11,6 +11,12 @@ namespace Battle
         private RectTransform _pauseUI;
         private Canvas _pauseCanvas;
 
+        /// <summary>
+        /// 초기화
+        /// </summary>
+        /// <param name="battleManager"></param>
+        /// <param name="pauseUI"></param>
+        /// <param name="pauseCanvas"></param>
         public void SetInitialization(BattleManager battleManager, RectTransform pauseUI, Canvas pauseCanvas)
         {
             SetBattleManager(battleManager);
@@ -36,6 +42,9 @@ namespace Battle
             }
         }
 
+        /// <summary>
+        /// 일시정지 애니메이션
+        /// </summary>
         private void SetAnimation()
         {
             _pauseUI.DOKill();

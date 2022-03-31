@@ -15,14 +15,22 @@ namespace Battle
         private bool _isSuddenDeath;
         private bool _isFinallyEnd;
 
+        /// <summary>
+        /// 초기화
+        /// </summary>
+        /// <param name="battleManager"></param>
+        /// <param name="timeText"></param>
         public void SetInitialization(BattleManager battleManager, TextMeshProUGUI timeText)
         {
             _stageData = battleManager.CurrentStageData;
             _timer = _stageData.timeValue;
             this._timeText = timeText;
-            battleManager.AddAction(UpdateTime);
+            battleManager.AddUpdateAction(UpdateTime);
         }
 
+        /// <summary>
+        /// 시간 업데이트
+        /// </summary>
         public void UpdateTime()
         {
             if (_isFinallyEnd) return;
@@ -40,6 +48,9 @@ namespace Battle
             SetSuddenDeath();
         }
 
+        /// <summary>
+        /// 서든데스 시작
+        /// </summary>
         public void SetSuddenDeath()
         {
             battleManager.CommandCard.ClearCards();

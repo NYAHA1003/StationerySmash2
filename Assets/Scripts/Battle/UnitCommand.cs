@@ -19,6 +19,13 @@ namespace Battle
         //상태 풀링
         public static Dictionary<string, object> stateDictionary = new Dictionary<string, object>();
 
+        /// <summary>
+        /// 초기화
+        /// </summary>
+        /// <param name="battleManager"></param>
+        /// <param name="_unitPrefeb"></param>
+        /// <param name="_unitPoolManager"></param>
+        /// <param name="_unitParent"></param>
         public void SetInitialization(BattleManager battleManager, GameObject _unitPrefeb, Transform _unitPoolManager, Transform _unitParent)
         {
             SetBattleManager(battleManager);

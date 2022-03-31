@@ -10,6 +10,11 @@ namespace Battle
 
         private Transform _effectPoolManager;
 
+        /// <summary>
+        /// √ ±‚»≠
+        /// </summary>
+        /// <param name="battleManager"></param>
+        /// <param name="effect_PoolManager"></param>
         public void SetInitialization(BattleManager battleManager, Transform effect_PoolManager)
         {
             SetBattleManager(battleManager);

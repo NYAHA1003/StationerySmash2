@@ -20,12 +20,17 @@ namespace Battle
         public float _perspectiveZoomSpeed = 0.5f;       // perspective mode.
         public float _orthoZoomSpeed = 0.5f;        //  orthographic mode.
 
+        /// <summary>
+        /// √ ±‚»≠
+        /// </summary>
+        /// <param name="battleManager"></param>
+        /// <param name="camera"></param>
         public void SetInitialization(BattleManager battleManager, Camera camera)
         {
             SetBattleManager(battleManager);
             this._camera = camera;
-            battleManager.AddAction(UpdateCameraPos);
-            battleManager.AddAction(UpdateCameraScale);
+            battleManager.AddUpdateAction(UpdateCameraPos);
+            battleManager.AddUpdateAction(UpdateCameraScale);
         }
 
         /// <summary>

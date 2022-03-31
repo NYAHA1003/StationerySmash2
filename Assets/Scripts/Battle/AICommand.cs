@@ -6,12 +6,15 @@ namespace Battle
 {
     public class AICommand : BattleCommand
     {
-        //Enemy용
-        private int _enemyCurrentIndex = 0;
         public List<DataBase> enemyCardDataList = new List<DataBase>();
         public List<Vector2> enemyPos = new List<Vector2>();
         public List<float> enemyMaxDelay = new List<float>();
+        public List<DataBase> playerCardDataList;
+        public List<Vector2> playerPos;
+        public List<float> playerMaxDelay;
 
+        //Enemy용
+        private int _enemyCurrentIndex = 0;
         private int enemySummonGrade = 1;
         private float enemyCurDelay = 0.0f;
         private float enemyThrowSpeed = 0.0f;
@@ -21,10 +24,6 @@ namespace Battle
 
         //Player용
         private int playerCurrent;
-        public List<DataBase> playerCardDataList;
-        public List<Vector2> playerPos;
-        public List<float> playerMaxDelay;
-
         private int playerSummonGrade = 1;
         private float playerCurDelay = 0.0f;
         private float playerThrowSpeed = 0.0f;
@@ -32,6 +31,14 @@ namespace Battle
         private float playerThrowMaxDelay = 100;
         private bool isPlayerAIOn = false;
 
+        /// <summary>
+        /// 초기화
+        /// </summary>
+        /// <param name="battleManager"></param>
+        /// <param name="aIenemyDataSO"></param>
+        /// <param name="aIplayerDataSO"></param>
+        /// <param name="isEnemyAIOn"></param>
+        /// <param name="isPlayerAIOn"></param>
         public void SetInitialization(BattleManager battleManager, AIDataSO aIenemyDataSO, AIDataSO aIplayerDataSO, bool isEnemyAIOn, bool isPlayerAIOn)
         {
             SetBattleManager(battleManager);
@@ -53,12 +60,15 @@ namespace Battle
             this.isPlayerAIOn = isPlayerAIOn;
 
             //배틀매니저에 업데이트할 함수를 넣는다
-            battleManager.AddAction(UpdateEnemyAICard);
-            battleManager.AddAction(UpdateEnemyAIThrow);
-            battleManager.AddAction(UpdatePlayerAICard);
-            battleManager.AddAction(UpdatePlayerAIThrow);
+            battleManager.AddUpdateAction(UpdateEnemyAICard);
+            battleManager.AddUpdateAction(UpdateEnemyAIThrow);
+            battleManager.AddUpdateAction(UpdatePlayerAICard);
+            battleManager.AddUpdateAction(UpdatePlayerAIThrow);
         }
 
+        /// <summary>
+        /// 적 AI의 던지기
+        /// </summary>
         public void UpdateEnemyAIThrow()
         {
             if (!isEnemyAIOn)
@@ -77,6 +87,10 @@ namespace Battle
             battleManager._enemyUnitDatasTemp[selectUnit].Throw_Unit(pos);
             enemyThrowCurDelay = 0;
         }
+
+        /// <summary>
+        /// 적 AI의 유닛 소환
+        /// </summary>
         public void UpdateEnemyAICard()
         {
             if (!isEnemyAIOn)
@@ -95,7 +109,9 @@ namespace Battle
             enemyCurDelay = 0;
         }
 
-
+        /// <summary>
+        /// 플레이어 AI의 유닛 던지기
+        /// </summary>
         public void UpdatePlayerAIThrow()
         {
             if (!isPlayerAIOn)
@@ -114,6 +130,10 @@ namespace Battle
             battleManager._myUnitDatasTemp[selectUnit].Throw_Unit(pos);
             playerThrowCurDelay = 0;
         }
+
+        /// <summary>
+        /// 플레이어 AI의 유닛 소환
+        /// </summary>
         public void UpdatePlayerAICard()
         {
             if (!isPlayerAIOn)

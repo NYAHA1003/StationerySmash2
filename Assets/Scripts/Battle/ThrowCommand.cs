@@ -17,6 +17,13 @@ namespace Battle
         private float _force;
         private float _pullTime;
 
+        /// <summary>
+        /// 초기화
+        /// </summary>
+        /// <param name="battleManager"></param>
+        /// <param name="parabola"></param>
+        /// <param name="arrow"></param>
+        /// <param name="stageData"></param>
         public void SetInitialization(BattleManager battleManager, LineRenderer parabola, Transform arrow, StageData stageData)
         {
             SetBattleManager(battleManager);
@@ -30,6 +37,10 @@ namespace Battle
             }
         }
 
+        /// <summary>
+        /// 던질 유닛 선택
+        /// </summary>
+        /// <param name="pos"></param>
         public void PullUnit(Vector2 pos)
         {
             float targetRange = float.MaxValue;
@@ -58,6 +69,10 @@ namespace Battle
             }
         }
 
+        /// <summary>
+        /// 포물선 그리기
+        /// </summary>
+        /// <param name="pos"></param>
         public void DrawParabola(Vector2 pos)
         {
             UnDrawParabola();
@@ -116,11 +131,18 @@ namespace Battle
             }
         }
 
+        /// <summary>
+        /// 포물선 그리기 해제
+        /// </summary>
         public void UnDrawParabola()
         {
             SetParabolaPos(_lineZeroPos);
         }
 
+        /// <summary>
+        /// 라인렌더러의 포물선 위치 줘서 설정
+        /// </summary>
+        /// <param name="linePos"></param>
         private void SetParabolaPos(List<Vector2> linePos)
         {
             for (int i = 0; i < _parabola.positionCount; i++)
@@ -129,7 +151,15 @@ namespace Battle
             }
         }
 
-
+        /// <summary>
+        /// 포물선 위치를 반환
+        /// </summary>
+        /// <param name="count"></param>
+        /// <param name="width"></param>
+        /// <param name="force"></param>
+        /// <param name="dir_rad"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
         private List<Vector2> SetParabolaPos(int count, float width, float force, float dir_rad, float time)
         {
             List<Vector2> results = new List<Vector2>(count);
@@ -162,6 +192,9 @@ namespace Battle
             return results;
         }
 
+        /// <summary>
+        /// 유닛 던지기
+        /// </summary>
         public void ThrowUnit()
         {
             if (_throwUnit != null)

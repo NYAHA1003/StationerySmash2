@@ -14,6 +14,14 @@ namespace Battle
         public PencilCaseAbilityState myPencilCaseAbilityStaty;
         public PencilCaseAbilityState enemyPencilCaseAbilityStaty;
         
+        /// <summary>
+        /// 초기화
+        /// </summary>
+        /// <param name="battleManager"></param>
+        /// <param name="pencilCase_My"></param>
+        /// <param name="pencilCase_Enemy"></param>
+        /// <param name="pencilCaseDataMy"></param>
+        /// <param name="pencilCaseDataEnemy"></param>
         public void SetInitialization(BattleManager battleManager, Unit pencilCase_My, Unit pencilCase_Enemy, PencilCaseData pencilCaseDataMy, PencilCaseData pencilCaseDataEnemy)
         {
             SetBattleManager(battleManager);
@@ -36,11 +44,19 @@ namespace Battle
             SetPencilCaseAbility(ref enemyPencilCaseAbilityStaty, pencilCaseDataEnemy);
         }
 
+        /// <summary>
+        /// 필통능력 사용
+        /// </summary>
         public void RunPencilCaseAbility()
         {
             myPencilCaseAbilityStaty.RunPencilCaseAility();
         }
 
+        /// <summary>
+        /// 필통 능력 초기화
+        /// </summary>
+        /// <param name="ability_State"></param>
+        /// <param name="pencilCaseData"></param>
         public void SetPencilCaseAbility(ref PencilCaseAbilityState ability_State, PencilCaseData pencilCaseData)
         {
             switch (pencilCaseData.pencilCaseType)

@@ -22,7 +22,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     public DeckData _deckData = null;
     private bool _isEndSetting = false;
-    private Action updateAction = default;
+    private Action _updateAction = default;
 
     public StageData CurrentStageData
     {
@@ -240,7 +240,7 @@ public class BattleManager : MonoBehaviour
         }
 
         //컴포넌트들의 업데이트가 필요한 함수 재생
-        updateAction.Invoke();
+        _updateAction.Invoke();
         
         //테스트용
 
@@ -268,9 +268,13 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void AddAction(Action method)
+    /// <summary>
+    /// 업데이트 액션에 사용할 함수 추가
+    /// </summary>
+    /// <param name="method"></param>
+    public void AddUpdateAction(Action method)
     {
-        updateAction += method;
+        _updateAction += method;
     }
 
     /// <summary>
@@ -320,7 +324,7 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     public void OnUpgradeCostGrade()
     {
-        CommandCost.RunUpgradeCostGrade();
+        CommandCost.UpgradeCostGrade();
     }
 
     /// <summary>

@@ -13,6 +13,13 @@ namespace Battle
         private RectTransform _winText;
         private RectTransform _loseText;
 
+        /// <summary>
+        /// 초기화
+        /// </summary>
+        /// <param name="battleManager"></param>
+        /// <param name="winLoseCanvas"></param>
+        /// <param name="winPanel"></param>
+        /// <param name="losePanel"></param>
         public void SetInitialization(BattleManager battleManager, Canvas winLoseCanvas, RectTransform winPanel, RectTransform losePanel)
         {
             this._winLoseCanvas = winLoseCanvas;
@@ -23,6 +30,10 @@ namespace Battle
             _loseText = losePanel.GetChild(0).GetComponent<RectTransform>();
         }
 
+        /// <summary>
+        /// 승리,패배 패널 키기
+        /// </summary>
+        /// <param name="isWin"></param>
         public void SetWinLosePanel(bool isWin)
         {
             _winLoseCanvas.gameObject.SetActive(true);
