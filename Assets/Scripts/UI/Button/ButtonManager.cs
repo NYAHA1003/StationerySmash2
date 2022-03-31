@@ -4,20 +4,23 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
-using System; 
-public enum PanelType
-{
-    Sticker,
-    Ttagji,
-    Dalgona
-}
+using System.Text;
+using System;
+using static UnityEngine.Debug;
+
+//public enum PanelType
+//{
+//    Sticker,
+//    Ttagji,
+//    Dalgona
+//}
 public class ButtonManager : MonoBehaviour
 {
 
     private Btn_MainPanel btn_MainPanel;
 
 
-    
+
     [SerializeField]
     private TextMeshProUGUI textUnitName;
     [SerializeField]
@@ -26,20 +29,21 @@ public class ButtonManager : MonoBehaviour
     private TextMeshProUGUI textCost;
     [SerializeField]
     private GameObject descriptionPanel;
- 
-   
-    [Header("메인화면 UI")]
-    [SerializeField]
-    private GameObject deck;
-    [SerializeField]
-    private GameObject cardDescription;
-    [SerializeField]
-    private GameObject cancelPanel;
-    [SerializeField]
-    private GameObject settingPanel; 
+
+    private StringBuilder _stringbuilder = new StringBuilder();
+
+    //[Header("메인화면 UI")]
+    //[SerializeField]
+    //private GameObject deck;
+    //[SerializeField]
+    //private GameObject cardDescription;
+    //[SerializeField]
+    //private GameObject cancelPanel;
+    //[SerializeField]
+    //private GameObject settingPanel; 
     private void Start()
     {
-        btn_MainPanel = new Btn_MainPanel(this, deck, cardDescription, cancelPanel, settingPanel);
+        // btn_MainPanel = new Btn_MainPanel(this, deck, cardDescription, cancelPanel, settingPanel);
     }
 
     #region 이벤트 매니저 사용하려 했던거 
@@ -67,20 +71,31 @@ public class ButtonManager : MonoBehaviour
     #region 메인화면 UI버튼함수
     public void OnDeckActive()
     {
-        btn_MainPanel.OnDeckActive();
-        //EventManager.TriggerEvent("ActiveDeck");
+        //btn_MainPanel.OnDeckActive();
+        EventManager.TriggerEvent(EventType.ActiveDeck);
     }
 
     public void OnDeckDescriptoinActive()
     {
-        btn_MainPanel.OnDeckDescriptoinActive();
-        //EventManager.TriggerEvent("ActiveDescription");
+        //btn_MainPanel.OnDeckDescriptoinActive();
+        EventManager.TriggerEvent(EventType.ActiveDescription);
     }
 
     public void OnSettingActive()
     {
-        btn_MainPanel.OnSettingActive();
-        //EventManager.TriggerEvent("ActiveSetting");
+        //btn_MainPanel.OnSettingActive();
+        EventManager.TriggerEvent(EventType.ActiveSetting);
+    }
+
+    public void OnMoveShopPanel(int iParam)
+    {
+        EventManager.TriggerEvent(EventType.MoveShopPn, iParam);
+    }
+
+    public void OnMoveMainPanel(int iParam)
+    {
+        EventManager.TriggerEvent(EventType.MoveMainPn, iParam);
+        EventManager.TriggerEvent(EventType.CloaseAllPn); 
     }
     #endregion
 }

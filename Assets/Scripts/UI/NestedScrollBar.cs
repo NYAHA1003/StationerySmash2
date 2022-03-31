@@ -18,7 +18,7 @@ public class NestedScrollBar : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     [SerializeField]
     private RectTransform[] btns;
     [SerializeField]
-    private RectTransform[] ySliderIcon; 
+    private RectTransform[] ySliderIcon;
 
     const int SIZE = 3;
     float[] pos = new float[SIZE];
@@ -33,13 +33,12 @@ public class NestedScrollBar : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         distance = 1f / (SIZE - 1);
         for (int i = 0; i < SIZE; i++) pos[i] = distance * i;
-        if(!isXSlide) //처음 세팅
+        if (!isXSlide) //처음 세팅
         {
             targetPos = pos[1];
             targetIndex = 1;
             StressImage();
         }
-        
     }
     void Update()
     {
@@ -57,7 +56,7 @@ public class NestedScrollBar : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         {
             if (scrollbar.value < pos[i] + distance * 0.5f && scrollbar.value > pos[i] - distance * 0.5f)
             {
-                targetIndex = SIZE - i - 1; 
+                targetIndex = SIZE - i - 1;
                 Debug.Log("타겟인덱스@@" + targetIndex);
                 return pos[i];
             }
@@ -78,6 +77,7 @@ public class NestedScrollBar : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         isDrag = false;
         targetPos = SetPos();
+
         if (isXSlide) SetOriginScroll();
         if (curPos == targetPos)
         {
@@ -90,12 +90,12 @@ public class NestedScrollBar : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             else
             {
                 deltaSlide(eventData.delta.y);
-                StressImage(); 
+                StressImage();
             }
         }
         if (isXSlide)
         {
-            ChangeBtnSize(); 
+            ChangeBtnSize();
         }
         else
         {
@@ -117,7 +117,7 @@ public class NestedScrollBar : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     /// <summary>
     /// 상점화면에서 상하로 넘기는 스크롤바 다른 곳으로 넘기면 초기화
     /// </summary>
-    void SetOriginScroll() 
+    void SetOriginScroll()
     {
         Debug.Log("실행");
         for (int i = 0; i < SIZE; i++)
@@ -133,7 +133,7 @@ public class NestedScrollBar : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     /// 슬라이드 속도에 따른 패널 변화 
     /// </summary>
     /// <param name="deltaValue"></param>
-    void deltaSlide(float deltaValue) 
+    void deltaSlide(float deltaValue)
     {
         if (deltaValue > 18 && curPos - distance >= 0)
         {
@@ -150,7 +150,7 @@ public class NestedScrollBar : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     /// <summary>
     /// 화면 우측 아이콘이미지 강조
     /// </summary>
-    void StressImage() 
+    void StressImage()
     {
         for (int i = 0; i < ySliderIcon.Length; i++)
         {
@@ -164,20 +164,29 @@ public class NestedScrollBar : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     }
 
     #region 버튼 함수
-    public void OnMoveShopPanel(int n)
+    public void OnMoveShopPanel(object n)
     {
-        targetIndex = SIZE - n - 1;
-        targetPos = pos[n];
+        targetIndex = SIZE - (int)n - 1;
+        targetPos = pos[(int)n];
         SetOriginScroll();
         ChangeBtnSize();
-        Debug.Log(pos[n]);
+        Debug.Log(pos[(int)n]);
     }
 
-    public void OnMoveMainPanel(int n)
+    public void OnMoveMainPanel(object n)
     {
-        targetIndex = SIZE - n - 1;
-        targetPos = pos[n];
-        StressImage(); 
+        targetIndex = SIZE - (int)n - 1;
+        targetPos = pos[(int)n];
+        StressImage();
     }
+
     #endregion
+    private void Awake()
+    {
+        if (isXSlide)
+            EventManager.StartListening(EventType.MoveShopPn, OnMoveShopPanel);
+        else
+            EventManager.StartListening(EventType.MoveMainPn, OnMoveMainPanel);
+    }
+
 }
