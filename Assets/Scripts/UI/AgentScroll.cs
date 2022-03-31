@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+
 public class AgentScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     protected Scrollbar scrollbar;
@@ -19,7 +20,7 @@ public class AgentScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     {
         scrollbar = this.transform.GetChild(1).GetComponent<Scrollbar>();
         contentTr = gameObject.transform.GetChild(1);
-        ChildAwake(); 
+        ChildAwake();
     }
     private void Start()
     {
@@ -86,4 +87,5 @@ public class AgentScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     }
 }
+
 
