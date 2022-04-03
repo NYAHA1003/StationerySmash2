@@ -5,14 +5,23 @@ using Utill;
 
 namespace Battle
 {
+    [System.Serializable]
     public class PencilCaseCommand : BattleCommand
     {
-        public Unit myPencilCase;
-        public Unit enemy_pencilCase;
-        public PencilCaseData pencilCaseDataMy;
-        public PencilCaseData pencilCaseDataEnemy;
-        public PencilCaseAbilityState myPencilCaseAbilityStaty;
-        public PencilCaseAbilityState enemyPencilCaseAbilityStaty;
+        [SerializeField]
+        private Unit myPencilCase = null;
+        [SerializeField]
+        private Unit enemyPencilCase;
+        [SerializeField]
+        private PencilCaseDataSO pencilCaseDataMy;
+        public PencilCaseDataSO PencilCaseDataMy => pencilCaseDataMy;
+        [SerializeField]
+        private PencilCaseDataSO pencilCaseDataEnemy;
+        public PencilCaseDataSO PencilCaseDataEnemy => pencilCaseDataEnemy;
+        [SerializeField]
+        private PencilCaseAbilityState myPencilCaseAbilityStaty;
+        [SerializeField]
+        private PencilCaseAbilityState enemyPencilCaseAbilityStaty;
         
         /// <summary>
         /// √ ±‚»≠
@@ -22,26 +31,19 @@ namespace Battle
         /// <param name="pencilCase_Enemy"></param>
         /// <param name="pencilCaseDataMy"></param>
         /// <param name="pencilCaseDataEnemy"></param>
-        public void SetInitialization(BattleManager battleManager, Unit pencilCase_My, Unit pencilCase_Enemy, PencilCaseData pencilCaseDataMy, PencilCaseData pencilCaseDataEnemy)
+        public void SetInitialization(BattleManager battleManager)
         {
             this._battleManager = battleManager;
-            this.myPencilCase = pencilCase_My;
-            this.enemy_pencilCase = pencilCase_Enemy;
-            this.pencilCaseDataMy = pencilCaseDataMy;
-            this.pencilCaseDataEnemy = pencilCaseDataEnemy;
-            this.myPencilCaseAbilityStaty = pencilCaseDataMy.pencilState;
-            this.enemyPencilCaseAbilityStaty = pencilCaseDataEnemy.pencilState;
-            this._battleManager = battleManager;
 
-            pencilCase_My.SetUnitData(pencilCaseDataMy.pencilCaseData, TeamType.MyTeam, battleManager, -1, 1);
-            battleManager._myUnitDatasTemp.Add(pencilCase_My);
-            pencilCase_My.transform.position = new Vector2(-battleManager.CurrentStageData.max_Range, 0);
-            SetPencilCaseAbility(ref myPencilCaseAbilityStaty, pencilCaseDataMy);
+            myPencilCase.SetUnitData(pencilCaseDataMy.PencilCasedataBase.pencilCaseData, TeamType.MyTeam, battleManager, -1, 1);
+            battleManager._myUnitDatasTemp.Add(myPencilCase);
+            myPencilCase.transform.position = new Vector2(-battleManager.CurrentStageData.max_Range, 0);
+            SetPencilCaseAbility(ref myPencilCaseAbilityStaty, pencilCaseDataMy.PencilCasedataBase);
 
-            pencilCase_Enemy.SetUnitData(pencilCaseDataEnemy.pencilCaseData, TeamType.EnemyTeam, battleManager, -2, 1);
-            battleManager._enemyUnitDatasTemp.Add(pencilCase_Enemy);
-            pencilCase_Enemy.transform.position = new Vector2(battleManager.CurrentStageData.max_Range, 0);
-            SetPencilCaseAbility(ref enemyPencilCaseAbilityStaty, pencilCaseDataEnemy);
+            enemyPencilCase.SetUnitData(pencilCaseDataEnemy.PencilCasedataBase.pencilCaseData, TeamType.EnemyTeam, battleManager, -2, 1);
+            battleManager._enemyUnitDatasTemp.Add(enemyPencilCase);
+            enemyPencilCase.transform.position = new Vector2(battleManager.CurrentStageData.max_Range, 0);
+            SetPencilCaseAbility(ref enemyPencilCaseAbilityStaty, pencilCaseDataEnemy.PencilCasedataBase);
         }
 
         /// <summary>

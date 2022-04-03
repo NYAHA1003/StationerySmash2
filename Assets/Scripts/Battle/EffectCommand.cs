@@ -5,20 +5,22 @@ using Utill;
 
 namespace Battle
 {
+    [System.Serializable]
     public class EffectCommand : BattleCommand
     {
-
+        [SerializeField]
         private Transform _effectPoolManager;
+        [SerializeField]
+        private List<GameObject> _effectObjectList;
 
         /// <summary>
         /// 초기화
         /// </summary>
         /// <param name="battleManager"></param>
         /// <param name="effect_PoolManager"></param>
-        public void SetInitialization(BattleManager battleManager, Transform effect_PoolManager)
+        public void SetInitialization(BattleManager battleManager)
         {
             this._battleManager = battleManager;
-            this._effectPoolManager = effect_PoolManager;
         }
 
 
@@ -46,7 +48,7 @@ namespace Battle
             }
 
             //없으면 새로 만듦
-            effect_Object = _battleManager.CreateObject(_battleManager._effectObjectList[(int)effectType].gameObject, effData.pos, Quaternion.identity).GetComponent<EffectObject>();
+            effect_Object = _battleManager.CreateObject(_effectObjectList[(int)effectType].gameObject, effData.pos, Quaternion.identity).GetComponent<EffectObject>();
             effect_Object.transform.SetParent(effect_Parent);
             effect_Object.SetEffect(effData);
             return effect_Object._effectState;

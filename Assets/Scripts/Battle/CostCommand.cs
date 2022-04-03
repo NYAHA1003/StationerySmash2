@@ -6,6 +6,7 @@ using TMPro;
 
 namespace Battle
 {
+    [System.Serializable]
     public class CostCommand : BattleCommand
     {
         public int CurrentCost { get; private set; } = 0;
@@ -16,20 +17,19 @@ namespace Battle
         public float _costSpeed = 200;
         public float _costDelay;
 
-
+        [SerializeField]
         private TextMeshProUGUI _costText;
-
 
         /// <summary>
         /// √ ±‚»≠
         /// </summary>
         /// <param name="battleManager"></param>
         /// <param name="cost_CostText"></param>
-        public void SetInitialization(BattleManager battleManager, TextMeshProUGUI cost_CostText)
+        public void SetInitialization(BattleManager battleManager, PencilCaseData pencilCasePlayerData)
         {
             this._battleManager = battleManager;
-            this._costText = cost_CostText;
             battleManager.AddUpdateAction(UpdateCost);
+            SetCostSpeed(pencilCasePlayerData.costSpeed);
         }
 
 

@@ -5,11 +5,18 @@ using Utill;
 
 namespace Battle
 {
+    [System.Serializable]
     public class ThrowCommand : BattleCommand
     {
-        private Unit _throwUnit = null;
+        //인스펙터 참조 변수
+        [SerializeField]
         private LineRenderer _parabola;
+        [SerializeField]
         private Transform _arrow;
+
+        //참조 변수
+        private Unit _throwUnit = null;
+
         private StageData _stageData;
 
         private List<Vector2> _lineZeroPos;
@@ -24,14 +31,12 @@ namespace Battle
         /// <param name="parabola"></param>
         /// <param name="arrow"></param>
         /// <param name="stageData"></param>
-        public void SetInitialization(BattleManager battleManager, LineRenderer parabola, Transform arrow, StageData stageData)
+        public void SetInitialization(BattleManager battleManager, StageData stageData)
         {
             this._battleManager = battleManager;
-            this._parabola = parabola;
             this._stageData = stageData;
-            this._arrow = arrow;
-            _lineZeroPos = new List<Vector2>(parabola.positionCount);
-            for (int i = 0; i < parabola.positionCount; i++)
+            _lineZeroPos = new List<Vector2>(_parabola.positionCount);
+            for (int i = 0; i < _parabola.positionCount; i++)
             {
                 _lineZeroPos.Add(Vector2.zero);
             }
@@ -44,7 +49,7 @@ namespace Battle
         public void PullUnit(Vector2 pos)
         {
             float targetRange = float.MaxValue;
-            for (int i = 0; i < _battleManager._myUnitDatasTemp.Count; i++)
+            for (int i = 1; i < _battleManager._myUnitDatasTemp.Count; i++)
             {
                 if (Vector2.Distance(pos, _battleManager._myUnitDatasTemp[i].transform.position) < targetRange)
                 {

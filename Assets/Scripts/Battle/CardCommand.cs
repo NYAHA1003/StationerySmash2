@@ -7,11 +7,12 @@ using Utill;
 
 namespace Battle
 {
+    [System.Serializable]
     public class CardCommand : BattleCommand
     {
         //속성
         public bool IsSelectCard { get; private set; } = false; //카드를 클릭한 상태인지
-        
+
         //기본 변수
         private int _maxCardCount = 3;
         private int _currentCardCount = 0;
@@ -22,43 +23,46 @@ namespace Battle
         private Coroutine _delayCoroutine = null;
         private int _cardIdCount = 0;
 
-        //참조 변수
+        //인스펙터 참조 변수
+        [SerializeField]
         private LineRenderer _summonRangeLine = null;
-        private DeckData _deckData = null;
-        private UnitDataSO _unitDataSO = null;
-        private StarategyDataSO _starategyDataSO = null;
-        private StageData _stageData = null;
+        [SerializeField]
         private GameObject _cardMovePrefeb = null;
+        [SerializeField]
         private Transform _cardPoolManager = null;
+        [SerializeField]
         private Transform _cardCanvas = null;
+        [SerializeField]
         private RectTransform _cardLeftPosition = null;
+        [SerializeField]
         private RectTransform _cardRightPosition = null;
+        [SerializeField]
         private RectTransform _cardSpawnPosition = null;
+        [SerializeField]
         private GameObject _unitAfterImage = null;
+        [SerializeField]
         private SpriteRenderer _afterImageSpriteRenderer = null;
+        [SerializeField]
+        private UnitDataSO _unitDataSO = null;
+        [SerializeField]
+        private StarategyDataSO _starategyDataSO = null;
+
+        //참조 변수
+        private StageData _stageData = null;
         private CardMove _selectCard = null;
+        private DeckData _deckData = null;
 
         /// <summary>
         /// 초기화
         /// </summary>
-        public void SetInitialization(BattleManager battleManager, DeckData deckData, UnitDataSO unitDataSO, StarategyDataSO starategyDataSO, GameObject card_Prefeb, Transform card_PoolManager, Transform card_Canvas, RectTransform card_SpawnPosition, RectTransform card_LeftPosition, RectTransform card_RightPosition, GameObject unit_AfterImage, LineRenderer summonRangeLine)
+        public void SetInitialization(BattleManager battleManager, DeckData deckData, int maxCard)
         {
             //변수들 설정
             this._battleManager = battleManager;
             this._deckData = deckData;
-            this._unitDataSO = unitDataSO;
-            this._starategyDataSO = starategyDataSO;
-            this._cardMovePrefeb = card_Prefeb;
-            this._cardPoolManager = card_PoolManager;
-            this._cardCanvas = card_Canvas;
-            this._cardSpawnPosition = card_SpawnPosition;
-            this._cardRightPosition = card_RightPosition;
-            this._cardLeftPosition = card_LeftPosition;
             this._stageData = battleManager.CurrentStageData;
             this._summonRange = -_stageData.max_Range + _stageData.max_Range / 4;
-            this._summonRangeLine = summonRangeLine;
-            this._unitAfterImage = unit_AfterImage;
-            _afterImageSpriteRenderer = unit_AfterImage.GetComponent<SpriteRenderer>();
+            SetMaxCard(maxCard);
 
             //유닛 소환 범위 그리기
             DrawSummonRangeLinePos();
@@ -69,7 +73,7 @@ namespace Battle
             //업데이트할 함수들 전달
             battleManager.AddUpdateAction(UpdateUnitAfterImage);
             battleManager.AddUpdateAction(UpdateSelectCardPos);
-            battleManager.AddUpdateAction(UpdateCardDrow);
+            battleManager.AddUpdateAction(UpdateCardDraw);
             battleManager.AddUpdateAction(UpdateSummonRange);
         }
 
@@ -288,12 +292,9 @@ namespace Battle
         /// <param name="card"></param>
         public void SetUseCard(CardMove card)
         {
-            //선택한 카드를 Null로 돌림
-            _selectCard = null;
             
             //소환할 수 있는지 체크 및 소환 범위 그리기 없앰
             SetSummonRangeLine(false);
-            CheckPossibleSummon();
 
             //카드를 사용할 수 있는지 체크함
             if (!CheckPossibleSummon())
@@ -302,6 +303,8 @@ namespace Battle
                 _battleManager.CommandCamera.SetCameraIsMove(true);
                 return;
             }
+            //선택한 카드를 Null로 돌림
+            _selectCard = null;
 
             _battleManager.CommandCost.SubtractCost(card.CardCost);
             SubtractCardAt(_battleManager._cardDatasTemp.FindIndex(x => x._id == card._id));
@@ -329,10 +332,10 @@ namespace Battle
             }
 
             //적 유닛을 소환하면 로그에 추가함
-            if (_battleManager.CommandUnit.eTeam == TeamType.EnemyTeam)
-            {
-                _battleManager._aiLog.Add_Log(card._dataBase);
-            }
+            //if (_battleManager.CommandUnit.eTeam == TeamType.EnemyTeam)
+            //{
+            //    _battleManager._aiLog.Add_Log(card._dataBase);
+            //}
             
             //카드 융합
             FusionCard();
@@ -442,10 +445,12 @@ namespace Battle
         /// <summary>
         /// 자동 카드 드로우 업데이트
         /// </summary>
-        public void UpdateCardDrow()
+        public void UpdateCardDraw()
         {
             if (_currentCardCount >= _maxCardCount)
+            {
                 return;
+            }
             if (_cardDelay > 0)
             {
                 _cardDelay -= Time.deltaTime;

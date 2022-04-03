@@ -5,12 +5,18 @@ using DG.Tweening;
 
 namespace Battle
 {
+    [System.Serializable]
     public class WinLoseCommand : BattleCommand
     {
+        [SerializeField]
         private Canvas _winLoseCanvas;
+        [SerializeField]
         private RectTransform _winPanel;
+        [SerializeField]
         private RectTransform _losePanel;
+        [SerializeField]
         private RectTransform _winText;
+        [SerializeField]
         private RectTransform _loseText;
 
         /// <summary>
@@ -20,14 +26,9 @@ namespace Battle
         /// <param name="winLoseCanvas"></param>
         /// <param name="winPanel"></param>
         /// <param name="losePanel"></param>
-        public void SetInitialization(BattleManager battleManager, Canvas winLoseCanvas, RectTransform winPanel, RectTransform losePanel)
+        public void SetInitialization(BattleManager battleManager)
         {
-            this._winLoseCanvas = winLoseCanvas;
-            this._winPanel = winPanel;
-            this._losePanel = losePanel;
 
-            _winText = winPanel.GetChild(0).GetComponent<RectTransform>();
-            _loseText = losePanel.GetChild(0).GetComponent<RectTransform>();
         }
 
         /// <summary>

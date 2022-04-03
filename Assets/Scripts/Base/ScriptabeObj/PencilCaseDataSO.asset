@@ -12,20 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69a706f43cc0207469aacd24ef10386d, type: 3}
   m_Name: PencilCaseDataSO
   m_EditorClassIdentifier: 
-  pencilCaseData:
-    maxCard: 4
+  PencilCasedataBase:
+    maxCard: 5
     costSpeed: 100
     pencilCaseType: 0
     pencilCaseData:
       cardType: 1
-      card_Name: "\uD544\uD1B5"
+      card_Name: 
       card_Cost: 0
-      card_Sprite: {fileID: 21300000, guid: b5418de72b5ba3f448beb725d2a12048, type: 3}
+      card_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
       strategyData:
         starategyType: 0
+        starategyablityData: []
       unitData:
         unit_Hp: 200
-        unit_Weight: 1000
+        unit_Weight: 0
         knockback: 0
         dir: 0
         accuracy: 0
@@ -34,12 +35,7 @@ MonoBehaviour:
         attackSpeed: 0
         range: 0
         colideData:
-          originpoints:
-          - {x: -0.2, y: 0.2}
-          - {x: 0.2, y: 0.2}
-          - {x: -0.2, y: -0.2}
-          - {x: 0.2, y: -0.2}
-          points: []
-        unitType: 1
+          originpoints: []
+        unitType: 0
         atkType: 0
         unitablityData: []

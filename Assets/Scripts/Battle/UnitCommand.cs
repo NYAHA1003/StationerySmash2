@@ -6,10 +6,15 @@ using Utill;
 
 namespace Battle
 {
+    [System.Serializable]
     public class UnitCommand : BattleCommand
     {
+        //인스펙터 참조 변수
+        [SerializeField]
         private GameObject _unitPrefeb;
+        [SerializeField]
         private Transform _unitPoolManager;
+        [SerializeField]
         private Transform _unitParent;
 
         //테스트용 팀 설정
@@ -26,12 +31,9 @@ namespace Battle
         /// <param name="_unitPrefeb"></param>
         /// <param name="_unitPoolManager"></param>
         /// <param name="_unitParent"></param>
-        public void SetInitialization(BattleManager battleManager, GameObject _unitPrefeb, Transform _unitPoolManager, Transform _unitParent)
+        public void SetInitialization(BattleManager battleManager)
         {
             this._battleManager = battleManager;
-            this._unitPrefeb = _unitPrefeb;
-            this._unitPoolManager = _unitPoolManager;
-            this._unitParent = _unitParent;
         }
 
         /// <summary>
@@ -44,7 +46,7 @@ namespace Battle
         {
             Unit unit = null;
 
-            unit = PoolUnit(Pos);
+            unit = ReturnPoolUnit(Pos);
             if (eTeam == TeamType.Null)
             {
                 eTeam = this.eTeam;
@@ -235,13 +237,18 @@ namespace Battle
             Queue<T> q = (Queue<T>)stateDictionary[typeof(T).Name];
             q.Enqueue(state);
         }
+        public void DeletePoolUnit(Unit unit)
+        {
+            unit.gameObject.SetActive(false);
+            unit.transform.SetParent(_unitPoolManager);
+        }
 
         /// <summary>
-        /// 유닛 풀링
+        /// 유닛 리턴 풀링
         /// </summary>
         /// <param name="Pos"></param>
         /// <returns></returns>
-        private Unit PoolUnit(Vector3 Pos)
+        private Unit ReturnPoolUnit(Vector3 Pos)
         {
             GameObject unit_obj = null;
             if (_unitPoolManager.childCount > 0)
@@ -254,6 +261,7 @@ namespace Battle
             unit_obj.transform.SetParent(_unitParent);
             return unit_obj.GetComponent<Unit>();
         }
+
     }
 
 }

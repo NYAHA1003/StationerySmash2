@@ -6,12 +6,15 @@ using TMPro;
 
 namespace Battle
 {
+    [System.Serializable]
     public class TimeCommand : BattleCommand
     {
+        //인스펙터 참조 변수
+        [SerializeField]
+        private TextMeshProUGUI _timeText;
 
         private StageData _stageData;
         private float _timer;
-        private TextMeshProUGUI _timeText;
         private bool _isSuddenDeath;
         private bool _isFinallyEnd;
 
@@ -20,11 +23,10 @@ namespace Battle
         /// </summary>
         /// <param name="battleManager"></param>
         /// <param name="timeText"></param>
-        public void SetInitialization(BattleManager battleManager, TextMeshProUGUI timeText)
+        public void SetInitialization(BattleManager battleManager)
         {
             _stageData = battleManager.CurrentStageData;
             _timer = _stageData.timeValue;
-            this._timeText = timeText;
             battleManager.AddUpdateAction(UpdateTime);
         }
 

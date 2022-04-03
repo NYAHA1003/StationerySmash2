@@ -5,10 +5,14 @@ using DG.Tweening;
 
 namespace Battle
 {
+    [System.Serializable]
     public class PauseCommand : BattleCommand
     {
         private bool _isActive = false;
+
+        [SerializeField]
         private RectTransform _pauseUI;
+        [SerializeField]
         private Canvas _pauseCanvas;
 
         /// <summary>
@@ -17,11 +21,9 @@ namespace Battle
         /// <param name="battleManager"></param>
         /// <param name="pauseUI"></param>
         /// <param name="pauseCanvas"></param>
-        public void SetInitialization(BattleManager battleManager, RectTransform pauseUI, Canvas pauseCanvas)
+        public void SetInitialization(BattleManager battleManager)
         {
             this._battleManager = battleManager;
-            this._pauseUI = pauseUI;
-            this._pauseCanvas = pauseCanvas;
         }
 
         /// <summary>

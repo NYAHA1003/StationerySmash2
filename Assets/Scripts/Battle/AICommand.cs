@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Battle
 {
+    [System.Serializable]
     public class AICommand : BattleCommand
     {
         public List<DataBase> enemyCardDataList = new List<DataBase>();
@@ -12,6 +13,12 @@ namespace Battle
         public List<DataBase> playerCardDataList;
         public List<Vector2> playerPos;
         public List<float> playerMaxDelay;
+        [SerializeField]
+        private AIDataSO _aiEnemyDataSO;
+        [SerializeField]
+        private AIDataSO _aiPlayerDataSO;
+        [SerializeField]
+        private StageLog _aiLog;
 
         //Enemy용
         private int _enemyCurrentIndex = 0;
@@ -20,6 +27,7 @@ namespace Battle
         private float enemyThrowSpeed = 0.0f;
         private float enemyThrowCurDelay = 0.0f;
         private float enemyThrowMaxDelay = 100.0f;
+        [SerializeField]
         private bool isEnemyAIOn = false;
 
         //Player용
@@ -29,6 +37,7 @@ namespace Battle
         private float playerThrowSpeed = 0.0f;
         private float playerThrowCurDelay = 0.0f;
         private float playerThrowMaxDelay = 100;
+        [SerializeField]
         private bool isPlayerAIOn = false;
 
         /// <summary>
@@ -39,25 +48,23 @@ namespace Battle
         /// <param name="aIplayerDataSO"></param>
         /// <param name="isEnemyAIOn"></param>
         /// <param name="isPlayerAIOn"></param>
-        public void SetInitialization(BattleManager battleManager, AIDataSO aIenemyDataSO, AIDataSO aIplayerDataSO, bool isEnemyAIOn, bool isPlayerAIOn)
+        public void SetInitialization(BattleManager battleManager)
         {
             this._battleManager = battleManager;
 
             //적 AI
-            this.enemySummonGrade = aIenemyDataSO.summonGrade;
-            this.enemyCardDataList = aIenemyDataSO.cardDataList;
-            this.enemyPos = aIenemyDataSO.pos;
-            this.enemyMaxDelay = aIenemyDataSO.max_Delay;
-            this.enemyThrowSpeed = aIenemyDataSO.throwSpeed;
-            this.isEnemyAIOn = isEnemyAIOn;
+            this.enemySummonGrade = _aiEnemyDataSO.summonGrade;
+            this.enemyCardDataList = _aiEnemyDataSO.cardDataList;
+            this.enemyPos = _aiEnemyDataSO.pos;
+            this.enemyMaxDelay = _aiEnemyDataSO.max_Delay;
+            this.enemyThrowSpeed = _aiEnemyDataSO.throwSpeed;
 
             //테스트용 Player AI
-            this.playerSummonGrade = aIplayerDataSO.summonGrade;
-            this.playerCardDataList = aIplayerDataSO.cardDataList;
-            this.playerPos = aIplayerDataSO.pos;
-            this.playerMaxDelay = aIplayerDataSO.max_Delay;
-            this.playerThrowSpeed = aIplayerDataSO.throwSpeed;
-            this.isPlayerAIOn = isPlayerAIOn;
+            this.playerSummonGrade = _aiPlayerDataSO.summonGrade;
+            this.playerCardDataList = _aiPlayerDataSO.cardDataList;
+            this.playerPos = _aiPlayerDataSO.pos;
+            this.playerMaxDelay = _aiPlayerDataSO.max_Delay;
+            this.playerThrowSpeed = _aiPlayerDataSO.throwSpeed;
 
             //배틀매니저에 업데이트할 함수를 넣는다
             battleManager.AddUpdateAction(UpdateEnemyAICard);

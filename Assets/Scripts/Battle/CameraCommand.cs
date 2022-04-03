@@ -6,9 +6,9 @@ using Utill;
 
 namespace Battle
 {
+    [System.Serializable]
     public class CameraCommand : BattleCommand
     {
-        private Camera _camera = null;
 
         private Vector3 _clickPos = Vector3.zero;
         private Vector3 _curPos = Vector3.zero;
@@ -17,6 +17,8 @@ namespace Battle
         private bool _isCameraMove = false;
         private bool _isEffect = false;
 
+        [SerializeField]
+        private Camera _camera = null;
         public float _perspectiveZoomSpeed = 0.5f;       // perspective mode.
         public float _orthoZoomSpeed = 0.5f;        //  orthographic mode.
 
@@ -25,10 +27,9 @@ namespace Battle
         /// </summary>
         /// <param name="battleManager"></param>
         /// <param name="camera"></param>
-        public void SetInitialization(BattleManager battleManager, Camera camera)
+        public void SetInitialization(BattleManager battleManager)
         {
             this._battleManager = battleManager;
-            this._camera = camera;
             battleManager.AddUpdateAction(UpdateCameraPos);
             battleManager.AddUpdateAction(UpdateCameraScale);
         }
