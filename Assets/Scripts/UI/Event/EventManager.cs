@@ -79,7 +79,6 @@ public class EventManager : MonoBehaviour
         if(instance.eventParamDictionary.TryGetValue(eventName, out thisEvent))
         {
             thisEvent += listener;
-
             instance.eventParamDictionary[eventName] = thisEvent; 
         }
         else
