@@ -13,7 +13,6 @@ public class Unit : MonoBehaviour
     public CollideData collideData;
     public UnitState unitState { get; protected set; }
 
-    public List<Eff_State> statEffList = new List<Eff_State>();
     public TeamType eTeam;
 
     public float attack_Cur_Delay { get; protected set; }
@@ -48,6 +47,10 @@ public class Unit : MonoBehaviour
     [SerializeField]
     private UnitSprite _unitSprite = null;
     public UnitSprite UnitSprite => _unitSprite;
+    [SerializeField]
+    private UnitStateEff _unitStateEff = null;
+    public UnitStateEff UnitStateEff => _unitStateEff;
+
 
     protected virtual void Start()
     {
@@ -119,11 +122,7 @@ public class Unit : MonoBehaviour
         if (!isSettingEnd) return;
 
         unitState = unitState.Process();
-
-        for (int i = 0; i < statEffList.Count; i++)
-        {
-            statEffList[i].Process();
-        }
+        _unitStateEff.ProcessEff();
     }
 
     /// <summary>
@@ -133,7 +132,7 @@ public class Unit : MonoBehaviour
     {
         _battleManager.PoolDeleteUnit(this);
         Delete_state();
-        Delete_EffStetes();
+        _unitStateEff.Delete_EffStetes();
 
         unitState = null;
 
@@ -150,17 +149,6 @@ public class Unit : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 모든 상태이상 삭제
-    /// </summary>
-    public void Delete_EffStetes()
-    {
-        //모든 상태이상 삭제
-        for (; statEffList.Count > 0;)
-        {
-            statEffList[0].Delete_StatusEffect();
-        }
-    }
     
     /// <summary>
     /// 스테이트 추가

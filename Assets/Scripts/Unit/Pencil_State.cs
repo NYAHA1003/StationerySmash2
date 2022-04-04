@@ -477,7 +477,7 @@ public class Pencil_Die_State : Stationary_UnitState
 
     public override void Enter()
     {
-        myUnit.Delete_EffStetes();
+        myUnit.UnitStateEff.Delete_EffStetes();
         myUnit.Set_IsDontThrow(true);
         myUnit.UnitSprite.Show_Canvas(false);
         
