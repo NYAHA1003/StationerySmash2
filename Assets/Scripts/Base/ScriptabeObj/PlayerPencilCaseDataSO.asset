@@ -35,7 +35,11 @@ MonoBehaviour:
         attackSpeed: 0
         range: 0
         colideData:
-          originpoints: []
+          originpoints:
+          - {x: -0.01, y: 0.01}
+          - {x: 0.01, y: 0.01}
+          - {x: -0.01, y: -0.01}
+          - {x: 0.01, y: -0.01}
         unitType: 0
         atkType: 0
         unitablityData: []

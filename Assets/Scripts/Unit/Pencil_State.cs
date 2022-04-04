@@ -361,7 +361,7 @@ public class Pencil_Attack_State : Stationary_UnitState
 
     private void Set_Delay()
     {
-        myUnit.Update_DelayBar(cur_delay / max_delay);
+        myUnit.UnitSprite.Update_DelayBar(cur_delay / max_delay);
         myUnit.Set_AttackDelay(cur_delay);
     }
 
@@ -479,7 +479,7 @@ public class Pencil_Die_State : Stationary_UnitState
     {
         myUnit.Delete_EffStetes();
         myUnit.Set_IsDontThrow(true);
-        myUnit.Show_Canvas(false);
+        myUnit.UnitSprite.Show_Canvas(false);
         
         //µÚÁü
         myUnit.Set_IsInvincibility(true);
@@ -655,7 +655,9 @@ public class Pencil_Throw_State : Stationary_UnitState
         {
             targetUnit = list[i];
             if (targetUnit.isInvincibility)
+            {
                 continue;
+            }
             float distance = Utill.Collider.FindDistanceBetweenSegments(myUnit.collideData.Set_Pos(myTrm.position), targetUnit.collideData.Set_Pos(targetUnit.transform.position));
             if (distance < 0.2f)
             {

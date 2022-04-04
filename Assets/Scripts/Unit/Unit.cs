@@ -6,26 +6,14 @@ using Utill;
 using Battle;
 public class Unit : MonoBehaviour
 {
-
+    //인스펙터 참조 변수
+    //참조 변수
+    //변수
     public UnitData unitData;
     public CollideData collideData;
     public UnitState unitState { get; protected set; }
 
     public List<Eff_State> statEffList = new List<Eff_State>();
-
-    [SerializeField]
-    protected Canvas canvas;
-    [SerializeField]
-    protected Image delayBar;
-    [SerializeField]
-    protected SpriteMask sprMask;
-    [SerializeField]
-    protected SpriteRenderer spr;
-    [SerializeField]
-    protected SpriteRenderer hpSpr;
-    [SerializeField]
-    protected Sprite[] hpSprites;
-
     public TeamType eTeam;
 
     public float attack_Cur_Delay { get; protected set; }
@@ -57,10 +45,13 @@ public class Unit : MonoBehaviour
     protected StageData _stageData;
     protected IStateManager stateManager;
 
+    [SerializeField]
+    private UnitSprite _unitSprite = null;
+    public UnitSprite UnitSprite => _unitSprite;
+
     protected virtual void Start()
     {
         mainCam = Camera.main;
-        canvas.worldCamera = mainCam;
     }
 
     public void SetBattleManager(BattleManager battleManager)
@@ -78,26 +69,26 @@ public class Unit : MonoBehaviour
     public virtual void SetUnitData(DataBase dataBase, TeamType eTeam, StageData stageData, int id, int grade)
     {
         this.unitData = dataBase.unitData;
+        this.eTeam = eTeam;
         collideData = new CollideData();
         collideData.originpoints = dataBase.unitData.colideData.originpoints;
+        _unitSprite.SetUIAndSprite(eTeam, dataBase.card_Sprite);
 
         //딜레이시스템
         attack_Cur_Delay = 0;
-        Update_DelayBar(attack_Cur_Delay);
-        delayBar.rectTransform.anchoredPosition = eTeam.Equals(TeamType.MyTeam) ? new Vector2(-960.15f, -540.15f) : new Vector2(-959.85f, -540.15f);
+        _unitSprite.Update_DelayBar(attack_Cur_Delay);
         Set_IsInvincibility(false);
         Set_IsDontThrow(false);
-        Show_Canvas(true);
+        _unitSprite.Show_Canvas(true);
 
         this.isInvincibility = true;
         this.isSettingEnd = false;
 
         //팀, 이름 설정
-        Set_Team(eTeam);
+        _unitSprite.SetTeamColor(eTeam);
         transform.name = dataBase.card_Name + this.eTeam;
         
         
-        this.spr.sprite = dataBase.card_Sprite;
         this._stageData = stageData;
         this.maxhp = dataBase.unitData.unit_Hp * grade;
         this.hp = dataBase.unitData.unit_Hp;
@@ -108,8 +99,7 @@ public class Unit : MonoBehaviour
         this.myUnitId = id;
 
         //깨짐 이미지
-        sprMask.sprite = dataBase.card_Sprite;
-        Set_HPSprite();
+        _unitSprite.Set_HPSprite(hp, maxhp);
 
         //스테이트 설정
         Add_state();
@@ -180,7 +170,7 @@ public class Unit : MonoBehaviour
         switch (unitData.unitType)
         {
             case UnitType.PencilCase:
-                stateManager = PoolManager.GetItem<PencilCaseStateManager>(transform, spr.transform, this);
+                stateManager = PoolManager.GetItem<PencilCaseStateManager>(transform, _unitSprite.SpriteRenderer.transform, this);
                 break;
 
             default:
@@ -188,10 +178,10 @@ public class Unit : MonoBehaviour
             case UnitType.Pencil:
             case UnitType.Eraser:
             case UnitType.Sharp:
-                stateManager = PoolManager.GetItem<PencilStateManager>(transform, spr.transform, this);
+                stateManager = PoolManager.GetItem<PencilStateManager>(transform, _unitSprite.SpriteRenderer.transform, this);
                 break;
             case UnitType.BallPen:
-                stateManager = PoolManager.GetItem<BallpenStateManager>(transform, spr.transform, this);
+                stateManager = PoolManager.GetItem<BallpenStateManager>(transform, _unitSprite.SpriteRenderer.transform, this);
                 break;
         }
         stateManager.SetStageData(_stageData);
@@ -270,26 +260,6 @@ public class Unit : MonoBehaviour
         unitState.Throw_Unit(pos);
     }
 
-    /// <summary>
-    /// 팀 설정
-    /// </summary>
-    /// <param name="eTeam"></param>
-    private void Set_Team(TeamType eTeam)
-    {
-        this.eTeam = eTeam;
-        switch (this.eTeam)
-        {
-            case TeamType.Null:
-                spr.color = Color.white;
-                break;
-            case TeamType.MyTeam:
-                spr.color = Color.red;
-                break;
-            case TeamType.EnemyTeam:
-                spr.color = Color.blue;
-                break;
-        }
-    }
 
     /// <summary>
     /// 무적 여부 설정
@@ -316,29 +286,9 @@ public class Unit : MonoBehaviour
     public void Subtract_HP(int damage)
     {
         hp -= damage;
-        Set_HPSprite();
+        _unitSprite.Set_HPSprite(hp, maxhp);
     }
 
-    /// <summary>
-    /// 체력 비율에 따른 깨짐 이미지
-    /// </summary>
-    public void Set_HPSprite()
-    {
-        float percent = (float)hp / maxhp;
-
-        if(percent > 0.5f)
-        {
-            hpSpr.sprite = null;
-        }
-        else if(percent > 0.2f)
-        {
-            hpSpr.sprite = hpSprites[0];
-        }
-        else
-        {
-            hpSpr.sprite = hpSprites[1];
-        }
-    }
 
     /// <summary>
     /// 공격 딜레이 설정
@@ -349,23 +299,7 @@ public class Unit : MonoBehaviour
         attack_Cur_Delay = delay;
     }
 
-    /// <summary>
-    /// 딜레이바 업데이트
-    /// </summary>
-    /// <param name="delay"></param>
-    public void Update_DelayBar(float delay)
-    {
-        delayBar.fillAmount = delay;
-    }
 
-    /// <summary>
-    /// 캔버스 키기 끄기
-    /// </summary>
-    /// <param name="isShow">True면 캔버스 키기 아니면 끄기</param>
-    public void Show_Canvas(bool isShow)
-    {
-        canvas.gameObject.SetActive(isShow);
-    }
 
     /// <summary>
     /// 공격력 스탯 반환
