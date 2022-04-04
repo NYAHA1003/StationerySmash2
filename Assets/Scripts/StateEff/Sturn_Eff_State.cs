@@ -14,8 +14,8 @@ public class Sturn_Eff_State : Eff_State
     {
         stunTime = stunTime + (stunTime * (((float)myUnit.maxhp / (myUnit.hp + 70)) - 1));
         myUnit.Set_IsDontThrow(true);
-        myUnit.unitState.stateChange.Set_Wait(stunTime);
-        myUnit.unitState.stateChange.Set_WaitExtraTime(stunTime);
+        myUnit.unitState._stateManager.Set_Wait(stunTime);
+        myUnit.unitState._stateManager.Set_WaitExtraTime(stunTime);
         effectObj = battleManager.CommandEffect.SetEffect(EffectType.Stun, new EffData(new Vector2(myTrm.position.x, myTrm.position.y + 0.1f), stunTime, myTrm));
 
         base.Enter();
@@ -26,7 +26,7 @@ public class Sturn_Eff_State : Eff_State
         if (stunTime > 0)
         {
             stunTime -= Time.deltaTime;
-            myUnit.unitState.stateChange.Set_WaitExtraTime(stunTime);
+            myUnit.unitState._stateManager.Set_WaitExtraTime(stunTime);
             return;
         }
         myUnit.Set_IsDontThrow(false);

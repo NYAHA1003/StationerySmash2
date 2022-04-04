@@ -25,7 +25,7 @@ namespace Battle
         /// </summary>
         /// <param name="battleManager"></param>
         /// <param name="cost_CostText"></param>
-        public void SetInitialization(System.Action updateAction, PencilCaseData pencilCasePlayerData)
+        public void SetInitialization(ref System.Action updateAction, PencilCaseData pencilCasePlayerData)
         {
             updateAction += UpdateCost;
             SetCostSpeed(pencilCasePlayerData.costSpeed);

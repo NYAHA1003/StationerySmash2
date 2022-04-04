@@ -11,6 +11,16 @@ public interface IStateManager
     public void Set_State(Transform myTrm, Transform mySprTrm, Unit myUnit);
 
     /// <summary>
+    /// 스테이지 데이터 설정
+    /// </summary>
+    public void SetStageData(StageData stageData);
+
+    /// <summary>
+    /// 스테이지 데이터를 가져옴
+    /// </summary>
+    public StageData GetStageData();
+
+    /// <summary>
     /// 현재 상태를 지정함
     /// </summary>
     public void Reset_CurrentUnitState(UnitState unitState);

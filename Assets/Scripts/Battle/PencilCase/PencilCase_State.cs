@@ -10,6 +10,7 @@ public class PencilCaseStateManager : IStateManager
     private PencilCase_Damaged_State DamagedState;
     private PencilCase_Die_State DieState;
     private UnitState cur_unitState;
+    private StageData _stageData;
 
     public void Reset_CurrentUnitState(UnitState unitState)
     {
@@ -33,6 +34,12 @@ public class PencilCaseStateManager : IStateManager
         DamagedState.Set_StateChange(this);
         DieState.Set_StateChange(this);
     }
+
+    public void SetStageData(StageData stageData)
+    {
+        _stageData = stageData;
+    }
+
     public void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
     {
         IdleState.Change_Trm(myTrm, mySprTrm, myUnit);
@@ -101,6 +108,11 @@ public class PencilCaseStateManager : IStateManager
     {
         throw new System.Exception("필통 에러");
     }
+
+    public StageData GetStageData()
+    {
+        return _stageData;
+    }
 }
 public class PencilCase_Idle_State : Stationary_UnitState
 {
@@ -147,7 +159,7 @@ public class PencilCase_Damaged_State : Stationary_UnitState
         myUnit.Subtract_HP(atkData.damage);
         if (myUnit.hp <= 0)
         {
-            stateChange.Set_Die();
+            _stateManager.Set_Die();
             return;
         }
         base.Enter();
@@ -155,7 +167,7 @@ public class PencilCase_Damaged_State : Stationary_UnitState
 
     public override void Update()
     {
-        stateChange.Set_Idle();
+        _stateManager.Set_Idle();
     }
 
     public override void Animation(params float[] value)
@@ -191,7 +203,7 @@ public class PencilCase_Die_State : Stationary_UnitState
 
     public override void Enter()
     {
-        battleManager.CommandCamera.WinCamEffect(myTrm.position, myUnit.eTeam != TeamType.MyTeam);
+        //battleManager.CommandCamera.WinCamEffect(myTrm.position, myUnit.eTeam != TeamType.MyTeam);
         base.Enter();
     }
 

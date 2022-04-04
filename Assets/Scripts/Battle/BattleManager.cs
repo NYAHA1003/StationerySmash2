@@ -41,7 +41,7 @@ public class BattleManager : MonoBehaviour
     private StageDataSO _stageDataSO = null;
     private DeckData _deckData = null;
     private bool _isEndSetting = false;
-    private Action _updateAction = default;
+    private Action _updateAction = () => { };
 
     [SerializeField, Header("카드시스템 BattleCard"), Space(30)]
     private CardCommand _commandCard = null;
@@ -71,20 +71,19 @@ public class BattleManager : MonoBehaviour
         _deckData = new DeckData();
 
         _commandPencilCase.SetInitialization(CommandUnit, CurrentStageData);
-        _commandCard.SetInitialization(this, CommandCamera, CommandUnit, CommandCost,_updateAction, CurrentStageData, _deckData ,_commandPencilCase.PencilCaseDataMy.PencilCasedataBase.maxCard);
-        _commandCamera.SetInitialization(CommandCard, CommandWinLose, _updateAction, CurrentStageData);
-        _commandUnit.SetInitialization();
+        _commandCard.SetInitialization(this, CommandCamera, CommandUnit, CommandCost, ref _updateAction, CurrentStageData, _deckData, _commandPencilCase.PencilCaseDataMy.PencilCasedataBase.maxCard);
+        _commandCamera.SetInitialization(CommandCard, CommandWinLose, ref _updateAction, CurrentStageData);
+        _commandUnit.SetInitialization(CurrentStageData);
         _commandEffect.SetInitialization();
-        _commandThrow.SetInitialization(CurrentStageData);
-        _commandAI.SetInitialization(CommandUnit, _updateAction);
-        _commandTime.SetInitialization(_updateAction, CurrentStageData);
-        _commandCost.SetInitialization(_updateAction, _commandPencilCase.PencilCaseDataMy.PencilCasedataBase);
+        _commandThrow.SetInitialization(_commandUnit, _commandCamera, CurrentStageData);
+        _commandAI.SetInitialization(CommandUnit, ref _updateAction);
+        _commandTime.SetInitialization(ref _updateAction, CurrentStageData);
+        _commandCost.SetInitialization(ref _updateAction, _commandPencilCase.PencilCaseDataMy.PencilCasedataBase);
         _commandPause.SetInitialization();
         _commandWinLose.SetInitialization(this);
 
         _isEndSetting = true;
     }
-
     private void Update()
     {
         if (!_isEndSetting)
@@ -93,22 +92,22 @@ public class BattleManager : MonoBehaviour
         }
 
         //던지기 시스템
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
             _commandThrow.PullUnit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
-        else if(Input.GetMouseButton(0))
+        else if (Input.GetMouseButton(0))
         {
             _commandThrow.DrawParabola(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
-        else if(Input.GetMouseButtonUp(0))
+        else if (Input.GetMouseButtonUp(0))
         {
             _commandThrow.ThrowUnit();
         }
 
         //컴포넌트들의 업데이트가 필요한 함수 재생
         _updateAction.Invoke();
-        
+
         //테스트용
         if (Input.GetKeyDown(KeyCode.X))
         {

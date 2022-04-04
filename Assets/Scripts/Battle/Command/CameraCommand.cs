@@ -33,7 +33,7 @@ namespace Battle
         /// </summary>
         /// <param name="battleManager"></param>
         /// <param name="camera"></param>
-        public void SetInitialization(CardCommand cardCommand, WinLoseCommand commandWInLose, System.Action updateAction, StageData stageData)
+        public void SetInitialization(CardCommand cardCommand, WinLoseCommand commandWInLose, ref System.Action updateAction, StageData stageData)
         {
             _stageData = stageData;
             _commandWinLose = commandWInLose;

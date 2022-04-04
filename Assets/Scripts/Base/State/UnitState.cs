@@ -10,20 +10,18 @@ public abstract class UnitState
     public eState curState { get; protected set; }
     public eEvent curEvent;
 
-    public UnitState nextState; // 다음 상태
+    public UnitState nextState = null; // 다음 상태
 
-    public Transform myTrm { get; protected set; }
-    public Transform mySprTrm { get; protected set; }
-    public Unit myUnit { get; protected set; }
-    public IStateManager stateChange;
-    public BattleManager battleManager;
+    public Transform myTrm { get; protected set; } = null;
+    public Transform mySprTrm { get; protected set; } = null;
+    public Unit myUnit { get; protected set; } = null;
+    public IStateManager _stateManager = null;
 
     public UnitState(Transform myTrm, Transform mySprTrm, Unit myUnit)
     {
         this.myTrm = myTrm;
         this.mySprTrm = mySprTrm;
         this.myUnit = myUnit;
-        this.battleManager = myUnit._battleManager;
     }
 
     public void Change_Trm(Transform myTrm, Transform mySprTrm, Unit myUnit)
@@ -67,7 +65,7 @@ public abstract class UnitState
 
     public void Set_StateChange(IStateManager stateChange)
     {
-        this.stateChange = stateChange;
+        this._stateManager = stateChange;
     }
 
     public void Reset_State()
@@ -87,7 +85,7 @@ public abstract class UnitState
             //똑같은 공격 아이디를 지닌 공격은 무시함
             return;
         }
-        this.stateChange.Set_Damaged(atkData);
+        this._stateManager.Set_Damaged(atkData);
     }
     /// <summary>
     /// 효과 추가
@@ -129,7 +127,7 @@ public abstract class UnitState
             return null;
         }
 
-        stateChange.Set_Wait(2);
+        _stateManager.Set_Wait(2);
         return myUnit;
     }
     public virtual Unit Pulling_Unit()
@@ -145,8 +143,8 @@ public abstract class UnitState
     }
     public virtual void Throw_Unit(Vector2 pos)
     {
-        stateChange.Set_ThrowPos(pos);
-        stateChange.Set_Throw();
+        _stateManager.Set_ThrowPos(pos);
+        _stateManager.Set_Throw();
     }
 
 }

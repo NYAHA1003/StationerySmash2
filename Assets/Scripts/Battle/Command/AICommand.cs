@@ -56,7 +56,7 @@ namespace Battle
         /// <param name="aIplayerDataSO"></param>
         /// <param name="isEnemyAIOn"></param>
         /// <param name="isPlayerAIOn"></param>
-        public void SetInitialization(UnitCommand unitCommand, System.Action updateAction)
+        public void SetInitialization(UnitCommand unitCommand, ref System.Action updateAction)
         {
             this._unitCommand = unitCommand;
 

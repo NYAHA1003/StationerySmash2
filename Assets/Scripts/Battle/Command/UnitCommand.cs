@@ -20,8 +20,8 @@ namespace Battle
         private PoolManager _poolManager;
 
         //참조 변수
-        public List<Unit> _playerUnitList { get; private set; } = null;
-        public List<Unit> _enemyUnitList { get; private set; } = null;
+        public List<Unit> _playerUnitList { get; private set; } = new List<Unit>();
+        public List<Unit> _enemyUnitList { get; private set; } = new List<Unit>();
         private StageData _stageData;
 
         //테스트용 팀 설정
@@ -35,8 +35,9 @@ namespace Battle
         /// <param name="_unitPrefeb"></param>
         /// <param name="_unitPoolManager"></param>
         /// <param name="_unitParent"></param>
-        public void SetInitialization()
+        public void SetInitialization(StageData stageData)
         {
+            _stageData = stageData;
         }
 
         /// <summary>

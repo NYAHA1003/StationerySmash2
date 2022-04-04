@@ -54,10 +54,10 @@ public class Unit : MonoBehaviour
 
     public BattleManager _battleManager { get; protected set; }
     
-    protected StageData stageData;
+    protected StageData _stageData;
     protected IStateManager stateManager;
 
-    private void Start()
+    protected virtual void Start()
     {
         mainCam = Camera.main;
         canvas.worldCamera = mainCam;
@@ -98,7 +98,7 @@ public class Unit : MonoBehaviour
         
         
         this.spr.sprite = dataBase.card_Sprite;
-        this.stageData = stageData;
+        this._stageData = stageData;
         this.maxhp = dataBase.unitData.unit_Hp * grade;
         this.hp = dataBase.unitData.unit_Hp;
         moveSpeedPercent = 100 * grade;
@@ -194,6 +194,7 @@ public class Unit : MonoBehaviour
                 stateManager = PoolManager.GetItem<BallpenStateManager>(transform, spr.transform, this);
                 break;
         }
+        stateManager.SetStageData(_stageData);
     }
 
     /// <summary>
@@ -366,8 +367,6 @@ public class Unit : MonoBehaviour
         canvas.gameObject.SetActive(isShow);
     }
 
-    #region 스탯 반환
-
     /// <summary>
     /// 공격력 스탯 반환
     /// </summary>
@@ -424,16 +423,4 @@ public class Unit : MonoBehaviour
     {
         return Mathf.RoundToInt(unitData.knockback * (float)knockbackPercent / 100);
     }
-
-    #endregion
-
-    #region 디버그
-
-    [ContextMenu("디버그 함수 실행")]
-    public void Debug_State()
-    {
-        Debug.Log(unitState.curState);
-    }
-
-    #endregion
 }

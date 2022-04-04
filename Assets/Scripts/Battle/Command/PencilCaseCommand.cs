@@ -38,12 +38,15 @@ namespace Battle
             this._unitCommand = unitCommand;
             this._stageData = stageData;
 
-            _playerPencilCase.SetUnitData(pencilCaseDataMy.PencilCasedataBase.pencilCaseData, TeamType.MyTeam, _stageData, -1, 1);
+            pencilCaseDataMy = _playerPencilCase.PencilCaseData;
+            pencilCaseDataEnemy = _enemyPencilCase.PencilCaseData;
+
+            _playerPencilCase.SetUnitData(_playerPencilCase.PencilCaseData.PencilCasedataBase.pencilCaseData, TeamType.MyTeam, _stageData, -1, 1);
             _unitCommand._playerUnitList.Add(_playerPencilCase);
             _playerPencilCase.transform.position = new Vector2(-_stageData.max_Range, 0);
             _playerAbilityState = _playerPencilCase.AbilityState;
 
-            _enemyPencilCase.SetUnitData(pencilCaseDataEnemy.PencilCasedataBase.pencilCaseData, TeamType.EnemyTeam, _stageData, -2, 1);
+            _enemyPencilCase.SetUnitData(_enemyPencilCase.PencilCaseData.PencilCasedataBase.pencilCaseData, TeamType.EnemyTeam, _stageData, -2, 1);
             _unitCommand._enemyUnitList.Add(_enemyPencilCase);
             _enemyPencilCase.transform.position = new Vector2(_stageData.max_Range, 0);
             _enemyAbilityState = _enemyPencilCase.AbilityState;

@@ -30,7 +30,7 @@ namespace Battle
         /// </summary>
         /// <param name="battleManager"></param>
         /// <param name="timeText"></param>
-        public void SetInitialization(System.Action updateAction, StageData stageData)
+        public void SetInitialization(ref System.Action updateAction, StageData stageData)
         {
             _stageData = stageData;
             _timer = _stageData.timeValue;

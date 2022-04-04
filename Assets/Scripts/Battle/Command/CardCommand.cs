@@ -53,7 +53,7 @@ namespace Battle
         private StageData _stageData = null;
         private CardMove _selectCard = null;
         private DeckData _deckData = null;
-        private List<CardMove> _cardList = null;
+        private List<CardMove> _cardList = new List<CardMove>();
         private UnitCommand _commandUnit = null;
         private CostCommand _commandCost = null;
         private CameraCommand _commandCamera = null;
@@ -62,7 +62,7 @@ namespace Battle
         /// <summary>
         /// 초기화
         /// </summary>
-        public void SetInitialization(MonoBehaviour managerBase, CameraCommand commandCamera, UnitCommand commandUnit, CostCommand commandCost, System.Action updateAction, StageData stageData, DeckData deckData, int maxCard)
+        public void SetInitialization(MonoBehaviour managerBase, CameraCommand commandCamera, UnitCommand commandUnit, CostCommand commandCost, ref System.Action updateAction, StageData stageData, DeckData deckData, int maxCard)
         {
             //변수들 설정
             this._managerBase = managerBase;

@@ -14,6 +14,7 @@ public class BallpenStateManager : IStateManager
     private Ballpen_Move_State MoveState;
     private Ballpen_Wait_State WaitState;
     private UnitState cur_unitState;
+    public StageData _stageData { get; private set; }
 
     private float Wait_extraTime = 0;
 
@@ -138,6 +139,15 @@ public class BallpenStateManager : IStateManager
         this.ThrowState.Set_ThrowPos(pos);
     }
 
+    public void SetStageData(StageData stageData)
+    {
+        _stageData = stageData;
+    }
+
+    public StageData GetStageData()
+    {
+        return _stageData;
+    }
 }
 
 public class Ballpen_Idle_State : Pencil_Idle_State

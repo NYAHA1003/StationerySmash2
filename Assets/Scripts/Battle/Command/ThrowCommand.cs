@@ -32,8 +32,10 @@ namespace Battle
         /// <param name="parabola"></param>
         /// <param name="arrow"></param>
         /// <param name="stageData"></param>
-        public void SetInitialization(StageData stageData)
+        public void SetInitialization(UnitCommand unitCommand, CameraCommand cameraCommand, StageData stageData)
         {
+            _unitCommand = unitCommand;
+            _cameraCommand = cameraCommand;
             this._stageData = stageData;
             _lineZeroPos = new List<Vector2>(_parabola.positionCount);
             for (int i = 0; i < _parabola.positionCount; i++)

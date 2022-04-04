@@ -14,6 +14,7 @@ public class PencilStateManager : IStateManager
     private Pencil_Move_State MoveState;
     private Pencil_Wait_State WaitState;
     private UnitState cur_unitState;
+    public StageData _stageData { get; private set; }
 
     private float Wait_extraTime = 0;
 
@@ -139,6 +140,16 @@ public class PencilStateManager : IStateManager
     {
         this.ThrowState.Set_ThrowPos(pos);
     }
+
+    public void SetStageData(StageData stageData)
+    {
+        _stageData = stageData;
+    }
+
+    public StageData GetStageData()
+    {
+        return _stageData;
+    }
 }
 
 public class Pencil_Idle_State : Stationary_UnitState
@@ -152,7 +163,7 @@ public class Pencil_Idle_State : Stationary_UnitState
         curState = eState.IDLE;
         curEvent = eEvent.ENTER;
 
-        stateChange.Set_Wait(0.5f);
+        _stateManager.Set_Wait(0.5f);
     }
 }
 
@@ -189,7 +200,7 @@ public class Pencil_Wait_State : Stationary_UnitState
             waitTime -= Time.deltaTime;
             return;
         }
-        stateChange.Set_Move();
+        _stateManager.Set_Move();
     }
 }
 
@@ -228,7 +239,7 @@ public class Pencil_Move_State : Stationary_UnitState
 
     private void Move_MyTeam()
     {
-        if(myTrm.transform.position.x < stageData.max_Range - 0.1f)
+        if(myTrm.transform.position.x < _stateManager.GetStageData().max_Range - 0.1f)
         {
             myTrm.Translate(Vector2.right * myUnit.Return_MoveSpeed() * Time.deltaTime);
         }
@@ -236,7 +247,7 @@ public class Pencil_Move_State : Stationary_UnitState
 
     private void Move_EnemyTeam()
     {
-        if (myTrm.transform.position.x > -stageData.max_Range + 0.1f)
+        if (myTrm.transform.position.x > -_stateManager.GetStageData().max_Range + 0.1f)
         {
             myTrm.Translate(Vector2.left * myUnit.Return_MoveSpeed() * Time.deltaTime);
         }
@@ -276,7 +287,7 @@ public class Pencil_Move_State : Stationary_UnitState
         {
             if (Vector2.Distance(myTrm.position, targetUnit.transform.position) < myUnit.Return_Range())
             {
-                stateChange.Set_Attack(targetUnit);
+                _stateManager.Set_Attack(targetUnit);
             }
         }
 
@@ -335,7 +346,7 @@ public class Pencil_Attack_State : Stationary_UnitState
         cur_delay = 0;
         Set_Delay();
 
-        stateChange.Set_Wait(0.4f);
+        _stateManager.Set_Wait(0.4f);
         curEvent = eEvent.EXIT;
         if (Random.Range(0,100) <= myUnit.Return_Accuracy())
         {
@@ -360,23 +371,23 @@ public class Pencil_Attack_State : Stationary_UnitState
         {
             if (Vector2.Distance(myTrm.position, targetUnit.transform.position) > myUnit.Return_Range())
             {
-                stateChange.Set_Move();
+                _stateManager.Set_Move();
                 return;
             }
 
             if (myUnit.eTeam.Equals(TeamType.MyTeam) && myTrm.position.x > targetUnit.transform.position.x)
             {
-                stateChange.Set_Move();
+                _stateManager.Set_Move();
                 return;
             }
             if (myUnit.eTeam.Equals(TeamType.EnemyTeam) && myTrm.position.x < targetUnit.transform.position.x)
             {
-                stateChange.Set_Move();
+                _stateManager.Set_Move();
                 return;
             }
             if(targetUnit.transform.position.y > myTrm.position.y)
             {
-                stateChange.Set_Move();
+                _stateManager.Set_Move();
                 return;
             }
         }
@@ -413,7 +424,7 @@ public class Pencil_Damaged_State : Stationary_UnitState
         myUnit.Subtract_HP(atkData.damage);
         if (myUnit.hp <= 0)
         {
-            stateChange.Set_Die();
+            _stateManager.Set_Die();
             return;
         }
         KnockBack();
@@ -431,7 +442,7 @@ public class Pencil_Damaged_State : Stationary_UnitState
         Animation(time);
         myTrm.DOJump(new Vector3(myTrm.position.x - calculated_knockback, 0, myTrm.position.z), height, 1, time).OnComplete(() =>
         {
-            stateChange.Set_Wait(0.4f);
+            _stateManager.Set_Wait(0.4f);
         });
     }
 
@@ -556,11 +567,11 @@ public class Pencil_Die_State : Stationary_UnitState
         Vector3 diePos = new Vector3(myTrm.position.x, myTrm.position.y -2, 0);
         if (myUnit.eTeam.Equals(TeamType.MyTeam))
         {
-            diePos.x -= stageData.max_Range + 1;
+            diePos.x -= _stateManager.GetStageData().max_Range + 1;
         }
         if (myUnit.eTeam.Equals(TeamType.EnemyTeam))
         {
-            diePos.x += stageData.max_Range + 1;
+            diePos.x += _stateManager.GetStageData().max_Range + 1;
         }
 
         float time = Mathf.Abs(myTrm.position.x - diePos.x) / 2;
@@ -600,7 +611,7 @@ public class Pencil_Throw_State : Stationary_UnitState
 
         if(dir < 0)
         {
-            stateChange.Set_Wait(0.5f);
+            _stateManager.Set_Wait(0.5f);
             return;
         }
 
@@ -617,7 +628,7 @@ public class Pencil_Throw_State : Stationary_UnitState
         mySprTrm.DOKill();
         myTrm.DOJump(new Vector3(myTrm.position.x - width, 0, myTrm.position.z), height, 1, time).OnComplete(() =>
         {
-            stateChange.Set_Wait(0.5f);
+            _stateManager.Set_Wait(0.5f);
         }).SetEase(Utill.Parabola.Return_ParabolaCurve());
         
         base.Enter();
