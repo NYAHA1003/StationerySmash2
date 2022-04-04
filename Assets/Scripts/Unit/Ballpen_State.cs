@@ -195,13 +195,13 @@ public class Ballpen_Throw_State : Pencil_Throw_State
         float extraKnockBack = (targetUnit.weight - myUnit.Return_Weight() * (float)targetUnit.hp / targetUnit.maxhp) * 0.025f;
         AtkData atkData = new AtkData(myUnit, 0, 0, 0, 0, true, 0, AtkType.Normal, originValue);
 
-        if (myUnit.eTeam.Equals(TeamType.MyTeam))
+        if (myUnit.eTeam == TeamType.MyTeam)
         {
-            IntAttack(myUnit.battleManager._enemyUnitDatasTemp);
+            IntAttack(myUnit._battleManager.CommandUnit._enemyUnitList);
         }
-        else
+        else if (myUnit.eTeam == TeamType.EnemyTeam)
         {
-            IntAttack(myUnit.battleManager._myUnitDatasTemp);
+            IntAttack(myUnit._battleManager.CommandUnit._playerUnitList);
         }
 
         atkData.Reset_Damage(100 + (myUnit.weight > targetUnit.weight ? (Mathf.RoundToInt((float)myUnit.weight - targetUnit.weight) / 2) : Mathf.RoundToInt((float)(targetUnit.weight - myUnit.weight) / 5)));

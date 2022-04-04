@@ -6,7 +6,7 @@ using Utill;
 namespace Battle
 {
     [System.Serializable]
-    public class EffectCommand : BattleCommand
+    public class EffectCommand
     {
         [SerializeField]
         private Transform _effectPoolManager;
@@ -18,9 +18,9 @@ namespace Battle
         /// </summary>
         /// <param name="battleManager"></param>
         /// <param name="effect_PoolManager"></param>
-        public void SetInitialization(BattleManager battleManager)
+        public void SetInitialization()
         {
-            this._battleManager = battleManager;
+
         }
 
 
@@ -48,7 +48,7 @@ namespace Battle
             }
 
             //없으면 새로 만듦
-            effect_Object = _battleManager.CreateObject(_effectObjectList[(int)effectType].gameObject, effData.pos, Quaternion.identity).GetComponent<EffectObject>();
+            effect_Object = PoolManager.CreateObject(_effectObjectList[(int)effectType].gameObject, effData.pos, Quaternion.identity).GetComponent<EffectObject>();
             effect_Object.transform.SetParent(effect_Parent);
             effect_Object.SetEffect(effData);
             return effect_Object._effectState;

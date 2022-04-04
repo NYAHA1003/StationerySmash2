@@ -11,19 +11,6 @@ using System;
 
 public class BattleManager : MonoBehaviour
 {
-    #region 데이터들
-
-    [SerializeField, Header("공용 데이터들"), Space(30)]
-    private UnitDataSO _unitDataSO = null;
-    [SerializeField]
-    public StageDataSO _stageDataSO = null;
-    [SerializeField]
-    public StarategyDataSO _starategyDataSO = null;
-    [SerializeField]
-    public DeckData _deckData = null;
-    private bool _isEndSetting = false;
-    private Action _updateAction = default;
-
     public StageData CurrentStageData
     {
         get
@@ -31,130 +18,68 @@ public class BattleManager : MonoBehaviour
             return _stageDataSO.stageDatas[0];
         }
 
-        private set 
+        private set
         {
         }
     }
 
-    #endregion
-
-    #region 카드 시스템
-
-    [SerializeField, Header("카드시스템 BattleCard"), Space(30)]
-    private CardCommand _commandCard;
     public CardCommand CommandCard => _commandCard;
-
-
-    public List<CardMove> _cardDatasTemp = new List<CardMove>();
-
-    [Header("어느 곳이든 유닛 소환 가능")]
-    public bool isAnySummon = false;
-
-    #endregion
-
-    #region 유닛 시스템
-
-    [SerializeField, Header("유닛시스템 BattleUnit"), Space(30)]
-    private UnitCommand _commandUnit;
     public UnitCommand CommandUnit => _commandUnit;
-
-    public List<Unit> _myUnitDatasTemp;
-    public List<Unit> _enemyUnitDatasTemp;
-
-    public TextMeshProUGUI _unitTeamText;
-
-    #endregion
-
-    #region 카메라 시스템
-
-    [SerializeField, Header("카메라시스템 BattleCamera"), Space(30)]
-    private CameraCommand _commandCamera;
     public CameraCommand CommandCamera => _commandCamera;
-
-    #endregion
-
-    #region 이펙트 시스템
-
-
-    [SerializeField, Header("이펙트 시스템 BattleEffect"), Space(30)]
-    private EffectCommand _commandEffect;
     public EffectCommand CommandEffect => _commandEffect;
-
-    #endregion
-
-    #region 던지기 시스템
-
-
-    [SerializeField, Header("던지기 시스템 BattleThrow"), Space(30)]
-    private ThrowCommand _commandThrow;
     public ThrowCommand CommandThrow => _commandThrow;
-
-    #endregion
-
-    #region 시간 시스템
-
-    [SerializeField, Header("시간시스템 BattleTime"), Space(30)]
-    private TimeCommand _commandTime;
     public TimeCommand CommandTime => _commandTime;
-
-    #endregion
-
-    #region 스테이지 AI 시스템
-
-    [SerializeField, Header("AI 시스템 BattleAi"), Space(30)]
-    private AICommand _commandAI;
     public AICommand CommandAI => _commandAI;
-
-
-    #endregion
-
-    #region 코스트 시스템
-
-    [SerializeField, Header("코스트 시스템 BattleCost"), Space(30)]
-    private CostCommand _commandCost = null;
     public CostCommand CommandCost => _commandCost;
-    #endregion
-
-    #region 필통 시스템
-
-    [SerializeField, Header("필통시스템 BattlePencilCase"), Space(30)]
-    private PencilCaseCommand _commandPencilCase = null;
     public PencilCaseCommand CommandPencilCase => _commandPencilCase;
-
-
-    #endregion
-
-    #region 일시정지 시스템
-
-    [SerializeField, Header("일시정지시스템 Battle_Pause"), Space(30)]
-    private PauseCommand _commandPause = null;
     public PauseCommand CommandPause => _commandPause;
-
-
-    #endregion
-
-    #region 승리 패배 시스템
-
-    [SerializeField, Header("승리패배시스템 BattleWinLose"), Space(30)]
-    private WinLoseCommand _commandWinLose = null;
     public WinLoseCommand CommandWinLose => _commandWinLose;
 
-    #endregion
+    public TextMeshProUGUI _unitTeamText = null;
+
+    [SerializeField]
+    private StageDataSO _stageDataSO = null;
+    private DeckData _deckData = null;
+    private bool _isEndSetting = false;
+    private Action _updateAction = default;
+
+    [SerializeField, Header("카드시스템 BattleCard"), Space(30)]
+    private CardCommand _commandCard = null;
+    [SerializeField, Header("유닛시스템 BattleUnit"), Space(30)]
+    private UnitCommand _commandUnit = null;
+    [SerializeField, Header("카메라시스템 BattleCamera"), Space(30)]
+    private CameraCommand _commandCamera = null;
+    [SerializeField, Header("이펙트 시스템 BattleEffect"), Space(30)]
+    private EffectCommand _commandEffect = null;
+    [SerializeField, Header("던지기 시스템 BattleThrow"), Space(30)]
+    private ThrowCommand _commandThrow = null;
+    [SerializeField, Header("시간시스템 BattleTime"), Space(30)]
+    private TimeCommand _commandTime = null;
+    [SerializeField, Header("AI 시스템 BattleAi"), Space(30)]
+    private AICommand _commandAI = null;
+    [SerializeField, Header("코스트 시스템 BattleCost"), Space(30)]
+    private CostCommand _commandCost = null;
+    [SerializeField, Header("필통시스템 BattlePencilCase"), Space(30)]
+    private PencilCaseCommand _commandPencilCase = null;
+    [SerializeField, Header("일시정지시스템 Battle_Pause"), Space(30)]
+    private PauseCommand _commandPause = null;
+    [SerializeField, Header("승리패배시스템 BattleWinLose"), Space(30)]
+    private WinLoseCommand _commandWinLose = null;
 
     private void Start()
     {
         _deckData = new DeckData();
 
-        _commandPencilCase.SetInitialization(this);
-        _commandCard.SetInitialization(this, _deckData ,_commandPencilCase.PencilCaseDataMy.PencilCasedataBase.maxCard);
-        _commandCamera.SetInitialization(this);
-        _commandUnit.SetInitialization(this);
-        _commandEffect.SetInitialization(this);
-        _commandThrow.SetInitialization(this, CurrentStageData);
-        _commandAI.SetInitialization(this);
-        _commandTime.SetInitialization(this);
-        _commandCost.SetInitialization(this, _commandPencilCase.PencilCaseDataMy.PencilCasedataBase);
-        _commandPause.SetInitialization(this);
+        _commandPencilCase.SetInitialization(CommandUnit, CurrentStageData);
+        _commandCard.SetInitialization(this, CommandCamera, CommandUnit, CommandCost,_updateAction, CurrentStageData, _deckData ,_commandPencilCase.PencilCaseDataMy.PencilCasedataBase.maxCard);
+        _commandCamera.SetInitialization(CommandCard, CommandWinLose, _updateAction, CurrentStageData);
+        _commandUnit.SetInitialization();
+        _commandEffect.SetInitialization();
+        _commandThrow.SetInitialization(CurrentStageData);
+        _commandAI.SetInitialization(CommandUnit, _updateAction);
+        _commandTime.SetInitialization(_updateAction, CurrentStageData);
+        _commandCost.SetInitialization(_updateAction, _commandPencilCase.PencilCaseDataMy.PencilCasedataBase);
+        _commandPause.SetInitialization();
         _commandWinLose.SetInitialization(this);
 
         _isEndSetting = true;
@@ -185,7 +110,6 @@ public class BattleManager : MonoBehaviour
         _updateAction.Invoke();
         
         //테스트용
-
         if (Input.GetKeyDown(KeyCode.X))
         {
             _commandCard.AddOneCard();
@@ -219,17 +143,6 @@ public class BattleManager : MonoBehaviour
         _updateAction += method;
     }
 
-    /// <summary>
-    /// 오브젝트 생성
-    /// </summary>
-    /// <param name="prefeb">생성할 프리펩</param>
-    /// <param name="position">생성할 위치</param>
-    /// <param name="quaternion">생성할 때의 각도</param>
-    /// <returns></returns>
-    public GameObject CreateObject(GameObject prefeb, Vector3 position, Quaternion quaternion)
-    {
-        return Instantiate(prefeb, position, quaternion);
-    }
 
     /// <summary>
     /// 버튼함수. 유닛을 소환할 때의 팀

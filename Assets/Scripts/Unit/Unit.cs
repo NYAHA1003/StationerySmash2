@@ -52,7 +52,7 @@ public class Unit : MonoBehaviour
     //유닛 설정 여부
     protected bool isSettingEnd;
 
-    public BattleManager battleManager { get; protected set; }
+    public BattleManager _battleManager { get; protected set; }
     
     protected StageData stageData;
     protected IStateManager stateManager;
@@ -63,6 +63,11 @@ public class Unit : MonoBehaviour
         canvas.worldCamera = mainCam;
     }
 
+    public void SetBattleManager(BattleManager battleManager)
+    {
+        _battleManager = battleManager;
+    }
+
     /// <summary>
     /// 유닛 생성
     /// </summary>
@@ -70,7 +75,7 @@ public class Unit : MonoBehaviour
     /// <param name="eTeam">팀 변수</param>
     /// <param name="battleManager">배틀매니저</param>
     /// <param name="id"></param>
-    public virtual void SetUnitData(DataBase dataBase, TeamType eTeam, BattleManager battleManager, int id, int grade)
+    public virtual void SetUnitData(DataBase dataBase, TeamType eTeam, StageData stageData, int id, int grade)
     {
         this.unitData = dataBase.unitData;
         collideData = new CollideData();
@@ -93,8 +98,7 @@ public class Unit : MonoBehaviour
         
         
         this.spr.sprite = dataBase.card_Sprite;
-        this.battleManager = battleManager;
-        this.stageData = battleManager.CurrentStageData;
+        this.stageData = stageData;
         this.maxhp = dataBase.unitData.unit_Hp * grade;
         this.hp = dataBase.unitData.unit_Hp;
         moveSpeedPercent = 100 * grade;
@@ -114,8 +118,7 @@ public class Unit : MonoBehaviour
 
         this.isInvincibility = false;
         this.isSettingEnd = true;
-
-}
+    }
 
 
     /// <summary>
@@ -138,7 +141,7 @@ public class Unit : MonoBehaviour
     /// </summary>
     public virtual void Delete_Unit()
     {
-        battleManager.PoolDeleteUnit(this);
+        _battleManager.PoolDeleteUnit(this);
         Delete_state();
         Delete_EffStetes();
 
@@ -149,10 +152,10 @@ public class Unit : MonoBehaviour
             case TeamType.Null:
                 break;
             case TeamType.MyTeam:
-                battleManager._myUnitDatasTemp.Remove(this);
+                _battleManager.CommandUnit._playerUnitList.Remove(this);
                 break;
             case TeamType.EnemyTeam:
-                battleManager._enemyUnitDatasTemp.Remove(this);
+                _battleManager.CommandUnit._enemyUnitList.Remove(this);
                 break;
         }
     }
@@ -177,7 +180,7 @@ public class Unit : MonoBehaviour
         switch (unitData.unitType)
         {
             case UnitType.PencilCase:
-                stateManager = UnitCommand.GetItem<PencilCaseStateManager>(transform, spr.transform, this);
+                stateManager = PoolManager.GetItem<PencilCaseStateManager>(transform, spr.transform, this);
                 break;
 
             default:
@@ -185,10 +188,10 @@ public class Unit : MonoBehaviour
             case UnitType.Pencil:
             case UnitType.Eraser:
             case UnitType.Sharp:
-                stateManager = UnitCommand.GetItem<PencilStateManager>(transform, spr.transform, this);
+                stateManager = PoolManager.GetItem<PencilStateManager>(transform, spr.transform, this);
                 break;
             case UnitType.BallPen:
-                stateManager = UnitCommand.GetItem<BallpenStateManager>(transform, spr.transform, this);
+                stateManager = PoolManager.GetItem<BallpenStateManager>(transform, spr.transform, this);
                 break;
         }
     }
@@ -201,11 +204,11 @@ public class Unit : MonoBehaviour
         switch (unitData.unitType)
         {
             case UnitType.PencilCase:
-                UnitCommand.AddItem((PencilCaseStateManager)stateManager);
+                PoolManager.AddItem((PencilCaseStateManager)stateManager);
                 break;
 
             case UnitType.BallPen:
-                UnitCommand.AddItem((BallpenStateManager)stateManager);
+                PoolManager.AddItem((BallpenStateManager)stateManager);
                 break;
 
             default:
@@ -213,7 +216,7 @@ public class Unit : MonoBehaviour
             case UnitType.Pencil:
             case UnitType.Eraser:
             case UnitType.Sharp:
-                UnitCommand.AddItem((PencilStateManager)stateManager);
+                PoolManager.AddItem((PencilStateManager)stateManager);
                 break;
         }
     }

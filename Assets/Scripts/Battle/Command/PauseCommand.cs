@@ -6,7 +6,7 @@ using DG.Tweening;
 namespace Battle
 {
     [System.Serializable]
-    public class PauseCommand : BattleCommand
+    public class PauseCommand
     {
         private bool _isActive = false;
 
@@ -21,9 +21,9 @@ namespace Battle
         /// <param name="battleManager"></param>
         /// <param name="pauseUI"></param>
         /// <param name="pauseCanvas"></param>
-        public void SetInitialization(BattleManager battleManager)
+        public void SetInitialization()
         {
-            this._battleManager = battleManager;
+
         }
 
         /// <summary>

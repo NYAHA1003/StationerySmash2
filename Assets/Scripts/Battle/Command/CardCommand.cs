@@ -8,7 +8,7 @@ using Utill;
 namespace Battle
 {
     [System.Serializable]
-    public class CardCommand : BattleCommand
+    public class CardCommand
     {
         //속성
         public bool IsSelectCard { get; private set; } = false; //카드를 클릭한 상태인지
@@ -46,22 +46,33 @@ namespace Battle
         private UnitDataSO _unitDataSO = null;
         [SerializeField]
         private StarategyDataSO _starategyDataSO = null;
+        [SerializeField]
+        private bool isAlwaysSpawn;
 
         //참조 변수
         private StageData _stageData = null;
         private CardMove _selectCard = null;
         private DeckData _deckData = null;
+        private List<CardMove> _cardList = null;
+        private UnitCommand _commandUnit = null;
+        private CostCommand _commandCost = null;
+        private CameraCommand _commandCamera = null;
+        private MonoBehaviour _managerBase = null;
 
         /// <summary>
         /// 초기화
         /// </summary>
-        public void SetInitialization(BattleManager battleManager, DeckData deckData, int maxCard)
+        public void SetInitialization(MonoBehaviour managerBase, CameraCommand commandCamera, UnitCommand commandUnit, CostCommand commandCost, System.Action updateAction, StageData stageData, DeckData deckData, int maxCard)
         {
             //변수들 설정
-            this._battleManager = battleManager;
+            this._managerBase = managerBase;
             this._deckData = deckData;
-            this._stageData = battleManager.CurrentStageData;
+            this._stageData = stageData;
             this._summonRange = -_stageData.max_Range + _stageData.max_Range / 4;
+            this._commandUnit = commandUnit;
+            this._commandCost = commandCost;
+            this._commandCamera = commandCamera;
+
             SetMaxCard(maxCard);
 
             //유닛 소환 범위 그리기
@@ -71,10 +82,10 @@ namespace Battle
             SetDeckCard();
 
             //업데이트할 함수들 전달
-            battleManager.AddUpdateAction(UpdateUnitAfterImage);
-            battleManager.AddUpdateAction(UpdateSelectCardPos);
-            battleManager.AddUpdateAction(UpdateCardDraw);
-            battleManager.AddUpdateAction(UpdateSummonRange);
+            updateAction += UpdateUnitAfterImage;
+            updateAction += UpdateSelectCardPos;
+            updateAction += UpdateCardDraw;
+            updateAction += UpdateSummonRange;
         }
 
         /// <summary>
@@ -130,16 +141,16 @@ namespace Battle
 
             //카드를 풀링해서 가져옴
             CardMove cardmove = PoolCard();
-            cardmove.Set_UnitData(_deckData.cardDatas[random], _cardIdCount++);
+            cardmove.Set_UnitData(_deckData.cardDatas[random], _cardIdCount++, this);
 
             //카드 리스트에 카드를 전달함
-            _battleManager._cardDatasTemp.Add(cardmove);
+            _cardList.Add(cardmove);
 
             //카드 장수가 2개 이상이면 방금 뽑은 카드가 융합할 수 있는지 카드 비교
-            if (_battleManager._cardDatasTemp.Count > 1)
+            if (_cardList.Count > 1)
             {
-                CardMove targetCard1 = _battleManager._cardDatasTemp[_battleManager._cardDatasTemp.Count - 1];
-                CardMove targetCard2 = _battleManager._cardDatasTemp[_battleManager._cardDatasTemp.Count - 2];
+                CardMove targetCard1 = _cardList[_cardList.Count - 1];
+                CardMove targetCard2 = _cardList[_cardList.Count - 2];
                 FusionCheck(targetCard1, targetCard2);
             }
 
@@ -155,14 +166,14 @@ namespace Battle
         {
             //카드 위치를 반환받는다
             List<PRS> originCardPRS = new List<PRS>();
-            originCardPRS = ReturnRoundPRS(_battleManager._cardDatasTemp.Count, 800, 600);
+            originCardPRS = ReturnRoundPRS(_cardList.Count, 800, 600);
 
             //카드들에게 반환받은 위치를 넣는다
-            for (int i = 0; i < _battleManager._cardDatasTemp.Count; i++)
+            for (int i = 0; i < _cardList.Count; i++)
             {
-                CardMove targetCard = _battleManager._cardDatasTemp[i];
+                CardMove targetCard = _cardList[i];
                 targetCard._originPRS = originCardPRS[i];
-                if (_battleManager._cardDatasTemp[i].Equals(_selectCard))
+                if (_cardList[i].Equals(_selectCard))
                 {
                     continue;
                 }
@@ -183,7 +194,7 @@ namespace Battle
         /// <param name="cardMove"></param>
         public void SubtractCardFind(CardMove cardMove)
         {
-            SubtractCardAt(_battleManager._cardDatasTemp.FindIndex(x => x._id == cardMove._id));
+            SubtractCardAt(_cardList.FindIndex(x => x._id == cardMove._id));
         }
 
         /// <summary>
@@ -198,9 +209,9 @@ namespace Battle
 
             //카드 삭제
             _currentCardCount--;
-            _battleManager._cardDatasTemp[index].transform.SetParent(_cardPoolManager);
-            _battleManager._cardDatasTemp[index].gameObject.SetActive(false);
-            _battleManager._cardDatasTemp.RemoveAt(index);
+            _cardList[index].transform.SetParent(_cardPoolManager);
+            _cardList[index].gameObject.SetActive(false);
+            _cardList.RemoveAt(index);
 
             //삭제하고 카드를 정렬
             SortCard();
@@ -214,7 +225,7 @@ namespace Battle
             //카드 융합 취소
             if (_delayCoroutine != null)
             {
-                _battleManager.StopCoroutine(_delayCoroutine);
+                _managerBase.StopCoroutine(_delayCoroutine);
             }
             //카드들 모두 삭제
             for (; _currentCardCount > 0;)
@@ -300,19 +311,19 @@ namespace Battle
             if (!CheckPossibleSummon())
             {
                 card.RunOriginPRS();
-                _battleManager.CommandCamera.SetCameraIsMove(true);
+                _commandCamera.SetCameraIsMove(true);
                 return;
             }
             //선택한 카드를 Null로 돌림
             _selectCard = null;
 
-            _battleManager.CommandCost.SubtractCost(card.CardCost);
-            SubtractCardAt(_battleManager._cardDatasTemp.FindIndex(x => x._id == card._id));
+            _commandCost.SubtractCost(card.CardCost);
+            SubtractCardAt(_cardList.FindIndex(x => x._id == card._id));
             IsSelectCard = false;
 
             //카드 사용
             Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            if (_battleManager.CommandUnit.eTeam == TeamType.MyTeam)
+            if (_commandUnit.eTeam == TeamType.MyTeam)
             {
                 mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, -_stageData.max_Range, _summonRange);
             }
@@ -321,13 +332,13 @@ namespace Battle
             switch (card._dataBase.cardType)
             {
                 case CardType.SummonUnit:
-                    _battleManager.CommandUnit.SummonUnit(card._dataBase, new Vector3(mouse_Pos.x, 0, 0), card._grade);
+                    _commandUnit.SummonUnit(card._dataBase, new Vector3(mouse_Pos.x, 0, 0), card._grade);
                     break;
                 default:
                 case CardType.Execute:
                 case CardType.SummonTrap:
                 case CardType.Installation:
-                    card._dataBase.strategyData.starategy_State.Run_Card(_battleManager, _battleManager.CommandUnit.eTeam, card._grade, card._dataBase.strategyData.starategyablityData);
+                    card._dataBase.strategyData.starategy_State.Run_Card(_commandUnit.eTeam);
                     break;
             }
 
@@ -350,8 +361,10 @@ namespace Battle
         public void UpdateUnitAfterImage()
         {
             Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            if (_battleManager.CommandUnit.eTeam == TeamType.MyTeam)
+            if (_commandUnit.eTeam == TeamType.MyTeam)
+            {
                 pos.x = Mathf.Clamp(pos.x, -_stageData.max_Range, _summonRange);
+            }
             if (_selectCard == null || _selectCard._dataBase.unitData.unitType == UnitType.None || pos.y < 0)
             {
                 _unitAfterImage.SetActive(false);
@@ -378,11 +391,11 @@ namespace Battle
                 return false;
             }
             //테스트용 소환 조건 해제
-            if (_battleManager.isAnySummon)
+            if (isAlwaysSpawn)
             {
                 return true;
             }
-            if (_battleManager.CommandUnit.eTeam.Equals(TeamType.EnemyTeam))
+            if (_commandUnit.eTeam.Equals(TeamType.EnemyTeam))
             {
                 return true;
             }
@@ -404,7 +417,7 @@ namespace Battle
                     break;
             }
 
-            if (_battleManager.CommandCost.CurrentCost < _selectCard.CardCost)
+            if (_commandCost.CurrentCost < _selectCard.CardCost)
             {
                 return false;
             }
@@ -477,9 +490,9 @@ namespace Battle
             //카드 융합 딜레이 초기화
             if (_delayCoroutine != null)
             {
-                _battleManager.StopCoroutine(_delayCoroutine);
+                _managerBase.StopCoroutine(_delayCoroutine);
             }
-            _delayCoroutine = _battleManager.StartCoroutine(DelayFusion());
+            _delayCoroutine = _managerBase.StartCoroutine(DelayFusion());
         }
 
         /// <summary>
@@ -504,7 +517,7 @@ namespace Battle
                 cardmove_obj.transform.position = _cardSpawnPosition.position;
                 cardmove_obj.gameObject.SetActive(true);
             }
-            cardmove_obj ??= _battleManager.CreateObject(_cardMovePrefeb, _cardSpawnPosition.position, Quaternion.identity).GetComponent<CardMove>();
+            cardmove_obj ??= PoolManager.CreateObject(_cardMovePrefeb, _cardSpawnPosition.position, Quaternion.identity).GetComponent<CardMove>();
             cardmove_obj.transform.SetParent(_cardCanvas);
             cardmove_obj._isFusion = false;
             return cardmove_obj;
@@ -615,10 +628,10 @@ namespace Battle
         {
             CardMove targetCard1 = null;
             CardMove targetCard2 = null;
-            for (int i = 0; i < _battleManager._cardDatasTemp.Count - 1; i++)
+            for (int i = 0; i < _cardList.Count - 1; i++)
             {
-                targetCard1 = _battleManager._cardDatasTemp[i];
-                targetCard2 = _battleManager._cardDatasTemp[i + 1];
+                targetCard1 = _cardList[i];
+                targetCard2 = _cardList[i + 1];
                 if (targetCard1._grade > 2 || targetCard2._grade > 2)
                     continue;
 
@@ -628,7 +641,7 @@ namespace Battle
                     {
                         return;
                     }
-                    _battleManager.StartCoroutine(FusionMove(i));
+                    _managerBase.StartCoroutine(FusionMove(i));
                     return;
                 }
             }
@@ -642,8 +655,8 @@ namespace Battle
         private IEnumerator FusionMove(int index)
         {
             _isFusion = true;
-            CardMove targetCard1 = _battleManager._cardDatasTemp[index];
-            CardMove targetCard2 = _battleManager._cardDatasTemp[index + 1];
+            CardMove targetCard1 = _cardList[index];
+            CardMove targetCard2 = _cardList[index + 1];
             targetCard1._isFusion = true;
             targetCard2._isFusion = true;
 

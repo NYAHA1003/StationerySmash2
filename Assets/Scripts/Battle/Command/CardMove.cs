@@ -6,13 +6,23 @@ using UnityEngine.EventSystems;
 using TMPro;
 using DG.Tweening;
 using Utill;
-
+using Battle;
 
 
 public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
+    //변수
     public int CardCost { get; private set; }
-    
+    public bool _isFusion;
+    public bool _isDontMove;
+    public DataBase _dataBase;
+    public int _grade = 1;
+    public int _id;
+
+    //참조 변수
+    private CardCommand _cardCommand;
+
+    //인스펙터 참조 변수
     [SerializeField]
     private Image _background;
     [SerializeField]
@@ -27,18 +37,10 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private TextMeshProUGUI _nameText;
     [SerializeField]
     private Image _fusionEffect;
-
-    public bool _isFusion;
-    public bool _isDontMove;
-
-    public DataBase _dataBase;
-
-    public int _grade = 1;
-    public int _id;
-
+    [SerializeField]
     private RectTransform _rectTransform;
 
-    private BattleManager _battleManager;
+
 
 
     private bool _isDrag; // 드래그 중인 상태인가
@@ -50,10 +52,10 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// </summary>
     /// <param name="dataBase">유닛 데이터</param>
     /// <param name="id">카드 고유 아이디</param>
-    public void Set_UnitData(DataBase dataBase, int id)
+    public void Set_UnitData(DataBase dataBase, int id, CardCommand cardCommand)
     {
-        _battleManager??= FindObjectOfType<BattleManager>();
         _rectTransform??= GetComponent<RectTransform>();
+        _cardCommand ??= cardCommand;
 
         //기본적인 초기화
         _isDrag = false;
@@ -80,8 +82,6 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             case CardType.SummonUnit:
                 break;
         }
-
-        
     }
 
     public void ShowCard(bool isboolean)
@@ -214,7 +214,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if (_isDrag) return;
 
         _isDrag = true;
-        _battleManager.CommandCard.SelectCard(this);
+        _cardCommand.SelectCard(this);
     }
 
     /// <summary>
@@ -229,12 +229,12 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             
             if (_rectTransform.anchoredPosition.y > 0)
             {
-                _battleManager.CommandCard.SetUseCard(this);
+                _cardCommand.SetUseCard(this);
                 return;
             }
 
             SetCardPRS(_originPRS, 0.3f);
-            _battleManager.CommandCard.SetUnSelectCard(this);
+            _cardCommand.SetUnSelectCard(this);
         }
     }
 

@@ -49,7 +49,7 @@ public class UnitData
 public class StarategyData
 {
     public StarategyType starategyType;
-    public IStarategy starategy_State;
+    public AbstractStarategy starategy_State;
     public float[] starategyablityData = new float[0];
 
     public void Set_State()

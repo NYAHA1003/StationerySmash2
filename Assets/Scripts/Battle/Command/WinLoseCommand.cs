@@ -6,7 +6,7 @@ using DG.Tweening;
 namespace Battle
 {
     [System.Serializable]
-    public class WinLoseCommand : BattleCommand
+    public class WinLoseCommand
     {
         [SerializeField]
         private Canvas _winLoseCanvas;

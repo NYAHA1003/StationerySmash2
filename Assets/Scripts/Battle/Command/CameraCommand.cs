@@ -7,7 +7,7 @@ using Utill;
 namespace Battle
 {
     [System.Serializable]
-    public class CameraCommand : BattleCommand
+    public class CameraCommand
     {
 
         private Vector3 _clickPos = Vector3.zero;
@@ -16,22 +16,31 @@ namespace Battle
 
         private bool _isCameraMove = false;
         private bool _isEffect = false;
-
-        [SerializeField]
-        private Camera _camera = null;
         public float _perspectiveZoomSpeed = 0.5f;       // perspective mode.
         public float _orthoZoomSpeed = 0.5f;        //  orthographic mode.
+
+        //참조 변수
+        private StageData _stageData = null;
+        private WinLoseCommand _commandWinLose = null;
+        private CardCommand _commandCard = null;
+
+        //인스펙터 참조 변수
+        [SerializeField]
+        private Camera _camera = null;
 
         /// <summary>
         /// 초기화
         /// </summary>
         /// <param name="battleManager"></param>
         /// <param name="camera"></param>
-        public void SetInitialization(BattleManager battleManager)
+        public void SetInitialization(CardCommand cardCommand, WinLoseCommand commandWInLose, System.Action updateAction, StageData stageData)
         {
-            this._battleManager = battleManager;
-            battleManager.AddUpdateAction(UpdateCameraPos);
-            battleManager.AddUpdateAction(UpdateCameraScale);
+            _stageData = stageData;
+            _commandWinLose = commandWInLose;
+            _commandCard = cardCommand;
+
+            updateAction += UpdateCameraPos;
+            updateAction += UpdateCameraScale;
         }
 
         /// <summary>
@@ -54,7 +63,7 @@ namespace Battle
 
             if (Input.GetKey(KeyCode.UpArrow))
             {
-                if (_battleManager.CurrentStageData.max_Range - 1 < _camera.orthographicSize)
+                if (_stageData.max_Range - 1 < _camera.orthographicSize)
                     return;
                 _camera.orthographicSize += Time.deltaTime * 10;
             }
@@ -116,7 +125,7 @@ namespace Battle
                 return;
 
             //카드를 클릭한 상태라면
-            if (_battleManager.CommandCard.IsSelectCard)
+            if (_commandCard.IsSelectCard)
             {
                 _isCameraMove = false;
                 return;
@@ -138,13 +147,13 @@ namespace Battle
             if (_isCameraMove)
             {
                 _camera.transform.position = new Vector3(_curPos.x + (_clickPos.x + -_mousePos.x), 0, -10);
-                if (_battleManager.CurrentStageData.max_Range + 1f < _camera.transform.position.x)
+                if (_stageData.max_Range + 1f < _camera.transform.position.x)
                 {
-                    _camera.transform.DOMoveX(_battleManager.CurrentStageData.max_Range, 0.1f);
+                    _camera.transform.DOMoveX(_stageData.max_Range, 0.1f);
                 }
-                if (-_battleManager.CurrentStageData.max_Range - 1f > _camera.transform.position.x)
+                if (-_stageData.max_Range - 1f > _camera.transform.position.x)
                 {
-                    _camera.transform.DOMoveX(-_battleManager.CurrentStageData.max_Range, 0.1f);
+                    _camera.transform.DOMoveX(-_stageData.max_Range, 0.1f);
                 }
             }
         }
@@ -169,7 +178,7 @@ namespace Battle
                     DOTween.To(() => _camera.orthographicSize, x => _camera.orthographicSize = x, 0.6f, 0.05f).SetDelay(0.2f); ;
                     _camera.transform.DORotate(new Vector3(0, 0, Random.Range(-30f, -10f)), 0.07f).SetDelay(0.2f).OnComplete(() =>
                     {
-                        _battleManager.CommandWinLose.SetWinLosePanel(isWin);
+                        _commandWinLose.SetWinLosePanel(isWin);
                     });
                 });
             });

@@ -29,7 +29,7 @@ public abstract class Eff_State
         this.myUnit = myUnit;
         Set_EffType(statusEffect, valueList);
         Set_EffValue(valueList);
-        this.battleManager = myUnit.battleManager;
+        this.battleManager = myUnit._battleManager;
     }
     public void Reset_StateEff(Transform myTrm, Transform mySprTrm, Unit myUnit, AtkType statusEffect, params float[] valueList)
     {
@@ -39,7 +39,7 @@ public abstract class Eff_State
         this.myUnit = myUnit;
         Set_EffType(statusEffect, valueList);
         Set_EffValue(valueList);
-        this.battleManager = myUnit.battleManager;
+        this.battleManager = myUnit._battleManager;
     }
 
     public virtual void Enter() { curEvent = eEvent.UPDATE; }
@@ -94,13 +94,13 @@ public abstract class Eff_State
             case AtkType.Normal:
                 break;
             case AtkType.Stun:
-                UnitCommand.AddEff((Sturn_Eff_State)this);
+                PoolManager.AddEff((Sturn_Eff_State)this);
                 break;
             case AtkType.Ink:
-                UnitCommand.AddEff((Ink_Eff_State)this);
+                PoolManager.AddEff((Ink_Eff_State)this);
                 break;
             case AtkType.SlowDown:
-                UnitCommand.AddEff((SlowDown_Eff_State)this);
+                PoolManager.AddEff((SlowDown_Eff_State)this);
                 break;
         }
 

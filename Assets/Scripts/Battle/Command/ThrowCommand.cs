@@ -6,7 +6,7 @@ using Utill;
 namespace Battle
 {
     [System.Serializable]
-    public class ThrowCommand : BattleCommand
+    public class ThrowCommand
     {
         //인스펙터 참조 변수
         [SerializeField]
@@ -16,8 +16,9 @@ namespace Battle
 
         //참조 변수
         private Unit _throwUnit = null;
-
-        private StageData _stageData;
+        private StageData _stageData = null;
+        private UnitCommand _unitCommand = null;
+        private CameraCommand _cameraCommand = null;
 
         private List<Vector2> _lineZeroPos;
         private Vector2 _direction;
@@ -31,9 +32,8 @@ namespace Battle
         /// <param name="parabola"></param>
         /// <param name="arrow"></param>
         /// <param name="stageData"></param>
-        public void SetInitialization(BattleManager battleManager, StageData stageData)
+        public void SetInitialization(StageData stageData)
         {
-            this._battleManager = battleManager;
             this._stageData = stageData;
             _lineZeroPos = new List<Vector2>(_parabola.positionCount);
             for (int i = 0; i < _parabola.positionCount; i++)
@@ -49,11 +49,11 @@ namespace Battle
         public void PullUnit(Vector2 pos)
         {
             float targetRange = float.MaxValue;
-            for (int i = 1; i < _battleManager._myUnitDatasTemp.Count; i++)
+            for (int i = 1; i < _unitCommand._playerUnitList.Count; i++)
             {
-                if (Vector2.Distance(pos, _battleManager._myUnitDatasTemp[i].transform.position) < targetRange)
+                if (Vector2.Distance(pos, _unitCommand._playerUnitList[i].transform.position) < targetRange)
                 {
-                    _throwUnit = _battleManager._myUnitDatasTemp[i];
+                    _throwUnit = _unitCommand._playerUnitList[i];
                     targetRange = Vector2.Distance(pos, _throwUnit.transform.position);
                 }
             }
@@ -65,7 +65,7 @@ namespace Battle
                     _throwUnit = _throwUnit.Pull_Unit();
                     if (_throwUnit == null)
                     {
-                        _battleManager.CommandCamera.SetCameraIsMove(false);
+                        _cameraCommand.SetCameraIsMove(false);
                     }
                     _pullTime = 2f;
                     return;
@@ -94,7 +94,7 @@ namespace Battle
 
                 //유닛이 다른 행동을 취하게 되면 취소
                 _throwUnit = _throwUnit.Pulling_Unit();
-                _battleManager.CommandCamera.SetCameraIsMove(false);
+                _cameraCommand.SetCameraIsMove(false);
 
                 if (_throwUnit == null)
                 {

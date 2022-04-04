@@ -7,11 +7,18 @@ using TMPro;
 namespace Battle
 {
     [System.Serializable]
-    public class TimeCommand : BattleCommand
+    public class TimeCommand
     {
         //인스펙터 참조 변수
         [SerializeField]
         private TextMeshProUGUI _timeText;
+
+        //참조 변수
+        private UnitCommand _unitCommand = null;
+        private CardCommand _cardCommand = null;
+        private CostCommand _costCommand = null;
+        private Unit _playerPencilCase = null;
+        private Unit _enemyPencilCase = null;
 
         private StageData _stageData;
         private float _timer;
@@ -23,11 +30,11 @@ namespace Battle
         /// </summary>
         /// <param name="battleManager"></param>
         /// <param name="timeText"></param>
-        public void SetInitialization(BattleManager battleManager)
+        public void SetInitialization(System.Action updateAction, StageData stageData)
         {
-            _stageData = battleManager.CurrentStageData;
+            _stageData = stageData;
             _timer = _stageData.timeValue;
-            battleManager.AddUpdateAction(UpdateTime);
+            updateAction += UpdateTime;
         }
 
         /// <summary>
@@ -55,26 +62,26 @@ namespace Battle
         /// </summary>
         public void SetSuddenDeath()
         {
-            _battleManager.CommandCard.ClearCards();
-            _battleManager.CommandUnit.ClearUnit();
+            _cardCommand.ClearCards();
+            _unitCommand.ClearUnit();
 
             if (!_isSuddenDeath)
             {
-                _battleManager.CommandCard.SetMaxCard(8);
-                _battleManager.CommandCost.SetCostSpeed(500);
+                _cardCommand.SetMaxCard(8);
+                _costCommand.SetCostSpeed(500);
                 _isSuddenDeath = true;
                 _timer = 60;
                 return;
             }
 
             //체력 비교
-            if (_battleManager._myUnitDatasTemp[0].hp > _battleManager._enemyUnitDatasTemp[0].hp)
+            if (_playerPencilCase.hp > _enemyPencilCase.hp)
             {
                 Debug.Log("서든데스 승리");
                 _isFinallyEnd = true;
                 return;
             }
-            if (_battleManager._myUnitDatasTemp[0].hp < _battleManager._enemyUnitDatasTemp[0].hp)
+            if (_playerPencilCase.hp < _enemyPencilCase.hp)
             {
                 Debug.Log("서든데스 패배");
                 _isFinallyEnd = true;

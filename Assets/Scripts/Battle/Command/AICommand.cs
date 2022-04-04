@@ -5,20 +5,32 @@ using UnityEngine;
 namespace Battle
 {
     [System.Serializable]
-    public class AICommand : BattleCommand
+    public class AICommand
     {
-        public List<DataBase> enemyCardDataList = new List<DataBase>();
-        public List<Vector2> enemyPos = new List<Vector2>();
-        public List<float> enemyMaxDelay = new List<float>();
-        public List<DataBase> playerCardDataList;
-        public List<Vector2> playerPos;
-        public List<float> playerMaxDelay;
+        //인스펙터 참조 변수
         [SerializeField]
         private AIDataSO _aiEnemyDataSO;
         [SerializeField]
         private AIDataSO _aiPlayerDataSO;
         [SerializeField]
         private StageLog _aiLog;
+        [SerializeField]
+        private bool isEnemyAIOn = false;
+        [SerializeField]
+        private bool isPlayerAIOn = false;
+
+        //참조 변수
+        private List<Unit> _playerUnitList = null;
+        private List<Unit> _enemyUnitList = null;
+        private UnitCommand _unitCommand = null;
+
+        //변수
+        private List<DataBase> enemyCardDataList = new List<DataBase>();
+        private List<Vector2> enemyPos = new List<Vector2>();
+        private List<float> enemyMaxDelay = new List<float>();
+        private List<DataBase> playerCardDataList;
+        private List<Vector2> playerPos;
+        private List<float> playerMaxDelay;
 
         //Enemy용
         private int _enemyCurrentIndex = 0;
@@ -27,8 +39,6 @@ namespace Battle
         private float enemyThrowSpeed = 0.0f;
         private float enemyThrowCurDelay = 0.0f;
         private float enemyThrowMaxDelay = 100.0f;
-        [SerializeField]
-        private bool isEnemyAIOn = false;
 
         //Player용
         private int playerCurrent;
@@ -37,8 +47,6 @@ namespace Battle
         private float playerThrowSpeed = 0.0f;
         private float playerThrowCurDelay = 0.0f;
         private float playerThrowMaxDelay = 100;
-        [SerializeField]
-        private bool isPlayerAIOn = false;
 
         /// <summary>
         /// 초기화
@@ -48,9 +56,9 @@ namespace Battle
         /// <param name="aIplayerDataSO"></param>
         /// <param name="isEnemyAIOn"></param>
         /// <param name="isPlayerAIOn"></param>
-        public void SetInitialization(BattleManager battleManager)
+        public void SetInitialization(UnitCommand unitCommand, System.Action updateAction)
         {
-            this._battleManager = battleManager;
+            this._unitCommand = unitCommand;
 
             //적 AI
             this.enemySummonGrade = _aiEnemyDataSO.summonGrade;
@@ -67,10 +75,10 @@ namespace Battle
             this.playerThrowSpeed = _aiPlayerDataSO.throwSpeed;
 
             //배틀매니저에 업데이트할 함수를 넣는다
-            battleManager.AddUpdateAction(UpdateEnemyAICard);
-            battleManager.AddUpdateAction(UpdateEnemyAIThrow);
-            battleManager.AddUpdateAction(UpdatePlayerAICard);
-            battleManager.AddUpdateAction(UpdatePlayerAIThrow);
+            updateAction += UpdateEnemyAICard;
+            updateAction += UpdateEnemyAIThrow;
+            updateAction += UpdatePlayerAICard;
+            updateAction += UpdatePlayerAIThrow;
         }
 
         /// <summary>
@@ -80,18 +88,18 @@ namespace Battle
         {
             if (!isEnemyAIOn)
                 return;
-            if (_battleManager._enemyUnitDatasTemp.Count < 3)
+            if (_enemyUnitList.Count < 3)
                 return;
             if (enemyThrowCurDelay < enemyThrowMaxDelay)
             {
                 enemyThrowCurDelay += enemyThrowSpeed * Time.deltaTime;
                 return;
             }
-            int selectUnit = Random.Range(2, _battleManager._enemyUnitDatasTemp.Count - 1);
-            Vector2 pos = _battleManager._enemyUnitDatasTemp[selectUnit].transform.position;
+            int selectUnit = Random.Range(2, _enemyUnitList.Count - 1);
+            Vector2 pos = _enemyUnitList[selectUnit].transform.position;
             pos.x += Random.Range(2.0f, 4.0f);
             pos.y -= Random.Range(2.0f, 4.0f);
-            _battleManager._enemyUnitDatasTemp[selectUnit].Throw_Unit(pos);
+            _enemyUnitList[selectUnit].Throw_Unit(pos);
             enemyThrowCurDelay = 0;
         }
 
@@ -107,7 +115,7 @@ namespace Battle
                 enemyCurDelay += Time.deltaTime;
                 return;
             }
-            _battleManager.CommandUnit.SummonUnit(enemyCardDataList[_enemyCurrentIndex], new Vector3(enemyPos[_enemyCurrentIndex].x, 0, 0), enemySummonGrade, Utill.TeamType.EnemyTeam);
+            _unitCommand.SummonUnit(enemyCardDataList[_enemyCurrentIndex], new Vector3(enemyPos[_enemyCurrentIndex].x, 0, 0), enemySummonGrade, Utill.TeamType.EnemyTeam);
             _enemyCurrentIndex++;
             if (_enemyCurrentIndex == enemyMaxDelay.Count)
             {
@@ -123,18 +131,18 @@ namespace Battle
         {
             if (!isPlayerAIOn)
                 return;
-            if (_battleManager._myUnitDatasTemp.Count < 3)
+            if (_playerUnitList.Count < 3)
                 return;
             if (playerThrowCurDelay < playerThrowMaxDelay)
             {
                 playerThrowCurDelay += playerThrowSpeed * Time.deltaTime;
                 return;
             }
-            int selectUnit = Random.Range(2, _battleManager._myUnitDatasTemp.Count - 1);
-            Vector2 pos = _battleManager._myUnitDatasTemp[selectUnit].transform.position;
+            int selectUnit = Random.Range(2, _playerUnitList.Count - 1);
+            Vector2 pos = _playerUnitList[selectUnit].transform.position;
             pos.x -= Random.Range(2.0f, 4.0f);
             pos.y -= Random.Range(2.0f, 4.0f);
-            _battleManager._myUnitDatasTemp[selectUnit].Throw_Unit(pos);
+            _playerUnitList[selectUnit].Throw_Unit(pos);
             playerThrowCurDelay = 0;
         }
 
@@ -150,7 +158,7 @@ namespace Battle
                 playerCurDelay += Time.deltaTime;
                 return;
             }
-            _battleManager.CommandUnit.SummonUnit(playerCardDataList[playerCurrent], new Vector3(playerPos[playerCurrent].x, 0, 0), playerSummonGrade, Utill.TeamType.MyTeam);
+            _unitCommand.SummonUnit(playerCardDataList[playerCurrent], new Vector3(playerPos[playerCurrent].x, 0, 0), playerSummonGrade, Utill.TeamType.MyTeam);
             playerCurrent++;
             if (playerCurrent == playerMaxDelay.Count)
             {

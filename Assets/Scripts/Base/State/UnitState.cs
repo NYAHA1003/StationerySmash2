@@ -23,7 +23,7 @@ public abstract class UnitState
         this.myTrm = myTrm;
         this.mySprTrm = mySprTrm;
         this.myUnit = myUnit;
-        this.battleManager = myUnit.battleManager;
+        this.battleManager = myUnit._battleManager;
     }
 
     public void Change_Trm(Transform myTrm, Transform mySprTrm, Unit myUnit)
@@ -110,13 +110,13 @@ public abstract class UnitState
             case AtkType.Normal:
                 return;
             case AtkType.Stun:
-                myUnit.statEffList.Add(UnitCommand.GetEff<Sturn_Eff_State>(myTrm, mySprTrm, myUnit, atkType, value));
+                myUnit.statEffList.Add(PoolManager.GetEff<Sturn_Eff_State>(myTrm, mySprTrm, myUnit, atkType, value));
                 return;
             case AtkType.Ink:
-                myUnit.statEffList.Add(UnitCommand.GetEff<Ink_Eff_State>(myTrm, mySprTrm, myUnit, atkType, value));
+                myUnit.statEffList.Add(PoolManager.GetEff<Ink_Eff_State>(myTrm, mySprTrm, myUnit, atkType, value));
                 return;
             case AtkType.SlowDown:
-                myUnit.statEffList.Add(UnitCommand.GetEff<SlowDown_Eff_State>(myTrm, mySprTrm, myUnit, atkType, value));
+                myUnit.statEffList.Add(PoolManager.GetEff<SlowDown_Eff_State>(myTrm, mySprTrm, myUnit, atkType, value));
                 return;
         }
     }

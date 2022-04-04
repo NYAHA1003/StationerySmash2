@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 
-public class Starategy_Slowdown : IStarategy
+public class Starategy_Slowdown : AbstractStarategy
 {
-    public void Run_Card(BattleManager battleManager, TeamType eTeam ,int grade, params float[] value)
+    public override void Run_Card(TeamType eTeam)
     {
         if(eTeam == TeamType.MyTeam)
         {
-            Check_Range(battleManager._enemyUnitDatasTemp, value);
+            Check_Range(_battleManager.CommandUnit._enemyUnitList, _card._dataBase.strategyData.starategyablityData);
         }
         else if (eTeam == TeamType.EnemyTeam)
         {
-            Check_Range(battleManager._myUnitDatasTemp, value);
+            Check_Range(_battleManager.CommandUnit._playerUnitList, _card._dataBase.strategyData.starategyablityData);
         }
     }
 

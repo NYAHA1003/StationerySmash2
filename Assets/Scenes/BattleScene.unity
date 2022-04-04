@@ -193,6 +193,49 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -684}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &29504350
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 29504352}
+  - component: {fileID: 29504351}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &29504351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 29504350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b10d6fd74dcacf94ab1db549f3edfca1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &29504352
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 29504350}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.0291057, y: -0.059759036, z: -0.007155087}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &45678498
 GameObject:
   m_ObjectHideFlags: 0
@@ -2072,17 +2115,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 944991233}
   m_CullTransparentMesh: 1
---- !u!114 &961183042 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1620893961092262553, guid: 255f6e8226be8b545a784f4db6787063, type: 3}
-  m_PrefabInstance: {fileID: 1846876096}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 509f157fbcc27074185d8f8988385b1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &969550363
 GameObject:
   m_ObjectHideFlags: 0
@@ -4280,11 +4312,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4837adaeae5a1af439a40f80f13b0aa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _unitDataSO: {fileID: 11400000, guid: 196a1c2a611bf814194df094e01de64f, type: 2}
+  _unitTeamText: {fileID: 1544231457}
   _stageDataSO: {fileID: 11400000, guid: a930bac7dd6fe314a9d2c68dd5b3deef, type: 2}
-  _starategyDataSO: {fileID: 11400000, guid: d5486960d229edc4591f2b1af68a0897, type: 2}
-  _deckData:
-    cardDatas: []
   _commandCard:
     _summonRangeLine: {fileID: 969550364}
     _cardMovePrefeb: {fileID: 1637879170446956799, guid: 8826a6084291dae4ab520c6869beb819, type: 3}
@@ -4297,20 +4326,17 @@ MonoBehaviour:
     _afterImageSpriteRenderer: {fileID: 1551840268}
     _unitDataSO: {fileID: 11400000, guid: 196a1c2a611bf814194df094e01de64f, type: 2}
     _starategyDataSO: {fileID: 11400000, guid: d5486960d229edc4591f2b1af68a0897, type: 2}
-  _cardDatasTemp: []
-  isAnySummon: 0
+    isAlwaysSpawn: 0
   _commandUnit:
     _unitPrefeb: {fileID: 636465713026102458, guid: 255f6e8226be8b545a784f4db6787063, type: 3}
     _unitPoolManager: {fileID: 1213032192}
     _unitParent: {fileID: 1681970528}
+    _poolManager: {fileID: 0}
     eTeam: 1
-  _myUnitDatasTemp: []
-  _enemyUnitDatasTemp: []
-  _unitTeamText: {fileID: 1544231457}
   _commandCamera:
-    _camera: {fileID: 1586630335}
     _perspectiveZoomSpeed: 0.5
     _orthoZoomSpeed: 0.5
+    _camera: {fileID: 1586630335}
   _commandEffect:
     _effectPoolManager: {fileID: 660203832}
     _effectObjectList:
@@ -4325,12 +4351,6 @@ MonoBehaviour:
   _commandTime:
     _timeText: {fileID: 1157790894}
   _commandAI:
-    enemyCardDataList: []
-    enemyPos: []
-    enemyMaxDelay: []
-    playerCardDataList: []
-    playerPos: []
-    playerMaxDelay: []
     _aiEnemyDataSO: {fileID: 11400000, guid: 5d42000c05a0b75478ccb3f7b791c495, type: 2}
     _aiPlayerDataSO: {fileID: 11400000, guid: 80a4ae25dafc1c144a26640b6a05e2e9, type: 2}
     _aiLog: {fileID: 1356909448}
@@ -4341,10 +4361,8 @@ MonoBehaviour:
     _costDelay: 0
     _costText: {fileID: 208719802}
   _commandPencilCase:
-    myPencilCase: {fileID: 2054021051}
-    enemyPencilCase: {fileID: 961183042}
-    pencilCaseDataMy: {fileID: 11400000, guid: 5d00c087bdf0e1b429a2764fd7ead3e6, type: 2}
-    pencilCaseDataEnemy: {fileID: 11400000, guid: 5d00c087bdf0e1b429a2764fd7ead3e6, type: 2}
+    _playerPencilCase: {fileID: 0}
+    _enemyPencilCase: {fileID: 0}
   _commandPause:
     _pauseUI: {fileID: 1476667448}
     _pauseCanvas: {fileID: 1461045864}
@@ -5037,17 +5055,6 @@ RectTransform:
   m_AnchoredPosition: {x: 500, y: -786.8}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2054021051 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1620893961092262553, guid: 255f6e8226be8b545a784f4db6787063, type: 3}
-  m_PrefabInstance: {fileID: 501389743}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 509f157fbcc27074185d8f8988385b1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2061126906
 GameObject:
   m_ObjectHideFlags: 0

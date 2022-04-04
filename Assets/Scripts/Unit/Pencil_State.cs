@@ -217,11 +217,11 @@ public class Pencil_Move_State : Stationary_UnitState
                 break;
             case TeamType.MyTeam:
                 Move_MyTeam();
-                Check_Range(myUnit.battleManager._enemyUnitDatasTemp);
+                Check_Range(myUnit._battleManager.CommandUnit._enemyUnitList);
                 return;
             case TeamType.EnemyTeam:
                 Move_EnemyTeam();
-                Check_Range(myUnit.battleManager._myUnitDatasTemp);
+                Check_Range(myUnit._battleManager.CommandUnit._playerUnitList);
                 return;
         }
     }
@@ -339,7 +339,7 @@ public class Pencil_Attack_State : Stationary_UnitState
         curEvent = eEvent.EXIT;
         if (Random.Range(0,100) <= myUnit.Return_Accuracy())
         {
-            myUnit.battleManager.CommandEffect.SetEffect(EffectType.Attack, new EffData(targetUnit.transform.position, 0.2f));
+            myUnit._battleManager.CommandEffect.SetEffect(EffectType.Attack, new EffData(targetUnit.transform.position, 0.2f));
             AtkData atkData = new AtkData(myUnit, myUnit.Return_Damage(), myUnit.Return_Knockback(), 0, myUnitData.dir, myUnit.eTeam.Equals(TeamType.MyTeam), 0, originAtkType, originValue);
             targetUnit.Run_Damaged(atkData);
             targetUnit = null;
@@ -628,12 +628,12 @@ public class Pencil_Throw_State : Stationary_UnitState
         Check_Wall();
         if (myUnit.eTeam.Equals(TeamType.MyTeam))
         {
-            Check_Collide(myUnit.battleManager._enemyUnitDatasTemp);
+            Check_Collide(myUnit._battleManager.CommandUnit._enemyUnitList);
             return;
         }
         if (myUnit.eTeam.Equals(TeamType.EnemyTeam))
         {
-            Check_Collide(myUnit.battleManager._myUnitDatasTemp);
+            Check_Collide(myUnit._battleManager.CommandUnit._playerUnitList);
             return;
         }
     }

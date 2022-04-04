@@ -7,7 +7,7 @@ using TMPro;
 namespace Battle
 {
     [System.Serializable]
-    public class CostCommand : BattleCommand
+    public class CostCommand
     {
         public int CurrentCost { get; private set; } = 0;
         public int MaxCost { get; private set; } = 2;
@@ -25,10 +25,9 @@ namespace Battle
         /// </summary>
         /// <param name="battleManager"></param>
         /// <param name="cost_CostText"></param>
-        public void SetInitialization(BattleManager battleManager, PencilCaseData pencilCasePlayerData)
+        public void SetInitialization(System.Action updateAction, PencilCaseData pencilCasePlayerData)
         {
-            this._battleManager = battleManager;
-            battleManager.AddUpdateAction(UpdateCost);
+            updateAction += UpdateCost;
             SetCostSpeed(pencilCasePlayerData.costSpeed);
         }
 
