@@ -141,7 +141,7 @@ namespace Battle
 
             //카드를 풀링해서 가져옴
             CardMove cardmove = PoolCard();
-            cardmove.Set_UnitData(_deckData.cardDatas[random], _cardIdCount++, this);
+            cardmove.Set_UnitData(_deckData.cardDatas[random], _cardIdCount++);
 
             //카드 리스트에 카드를 전달함
             _cardList.Add(cardmove);

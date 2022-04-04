@@ -10,15 +10,9 @@ public class PencilCaseUnit : Unit
     public PencilCaseDataSO PencilCaseData => _pencilCaseData;
     public PencilCaseAbilityState AbilityState { get; private set; }
 
-
-    protected override void Start()
-    {
-        base.Start();
-        _battleManager = FindObjectOfType<BattleManager>();
-    }
-
     public override void SetUnitData(DataBase dataBase, TeamType eTeam, StageData stageData, int id, int grade)
     {
+        _battleManager ??= FindObjectOfType<BattleManager>();
         base.SetUnitData(dataBase, eTeam, stageData, id, grade);
         SetPencilCaseAbility(_pencilCaseData.PencilCasedataBase);
     }

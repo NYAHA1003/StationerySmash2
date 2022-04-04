@@ -18,9 +18,10 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public DataBase _dataBase;
     public int _grade = 1;
     public int _id;
+    private bool _isDrag; // 드래그 중인 상태인가
 
     //참조 변수
-    private CardCommand _cardCommand;
+    private BattleManager _battleManager;
 
     //인스펙터 참조 변수
     [SerializeField]
@@ -42,8 +43,6 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
 
 
-
-    private bool _isDrag; // 드래그 중인 상태인가
     
     public PRS _originPRS;
 
@@ -52,10 +51,10 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// </summary>
     /// <param name="dataBase">유닛 데이터</param>
     /// <param name="id">카드 고유 아이디</param>
-    public void Set_UnitData(DataBase dataBase, int id, CardCommand cardCommand)
+    public void Set_UnitData(DataBase dataBase, int id)
     {
         _rectTransform??= GetComponent<RectTransform>();
-        _cardCommand ??= cardCommand;
+        _battleManager ??= FindObjectOfType<BattleManager>();
 
         //기본적인 초기화
         _isDrag = false;
@@ -78,6 +77,8 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             case CardType.Execute:
             case CardType.SummonTrap:
             case CardType.Installation:
+                _dataBase.strategyData.starategy_State.SetBattleManager(_battleManager);
+                _dataBase.strategyData.starategy_State.SetCard(this);
                 break;
             case CardType.SummonUnit:
                 break;
@@ -214,7 +215,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if (_isDrag) return;
 
         _isDrag = true;
-        _cardCommand.SelectCard(this);
+        _battleManager.CommandCard.SelectCard(this);
     }
 
     /// <summary>
@@ -229,12 +230,12 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             
             if (_rectTransform.anchoredPosition.y > 0)
             {
-                _cardCommand.SetUseCard(this);
+                _battleManager.CommandCard.SetUseCard(this);
                 return;
             }
 
             SetCardPRS(_originPRS, 0.3f);
-            _cardCommand.SetUnSelectCard(this);
+            _battleManager.CommandCard.SetUnSelectCard(this);
         }
     }
 
