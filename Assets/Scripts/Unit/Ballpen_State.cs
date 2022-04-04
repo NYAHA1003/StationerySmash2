@@ -269,7 +269,7 @@ public class Ballpen_Throw_State : Pencil_Throw_State
             //originValue[3]은 거리 값
             if (Vector2.Distance(myTrm.position, list[i].transform.position) < originValue[3])
             {
-                list[i].Add_StatusEffect(AtkType.Ink, originValue);
+                list[i].AddStatusEffect(AtkType.Ink, originValue);
             }
         }
     }

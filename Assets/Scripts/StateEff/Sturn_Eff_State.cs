@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 
-public class Sturn_Eff_State : Eff_State
+public class Sturn_Eff_State : EffState
 {
     private float stunTime = 0.0f;
 

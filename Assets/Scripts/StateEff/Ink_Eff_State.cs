@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 
-public class Ink_Eff_State : Eff_State
+public class Ink_Eff_State : EffState
 {
     private float inkTime = 0;
     private float damageSubtractPercent = 0;

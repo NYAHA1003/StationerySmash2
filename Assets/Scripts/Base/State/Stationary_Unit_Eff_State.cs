@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 using Battle;
-public abstract class Eff_State
+public abstract class EffState
 {
     public eState curState { get; protected set; }
     public eEvent curEvent;
@@ -14,29 +14,22 @@ public abstract class Eff_State
     public BattleManager battleManager;
     protected Unit myUnit;
     protected UnitData myUnitData;
+    protected UnitStateEff _unitStateEff = null;
     protected float[] valueList;
     protected IEffect effectObj;
 
-    public Eff_State()
+    public EffState()
     {
     }
 
-    public void Set_StateEff(Transform myTrm, Transform mySprTrm, Unit myUnit, AtkType statusEffect, params float[] valueList)
+    public void SetStateEff(Transform myTrm, Transform mySprTrm, Unit myUnit, AtkType statusEffect, params float[] valueList)
     {
         curEvent = eEvent.ENTER;
         this.myTrm = myTrm;
         this.mySprTrm = mySprTrm;
         this.myUnit = myUnit;
-        Set_EffType(statusEffect, valueList);
-        Set_EffValue(valueList);
-        this.battleManager = myUnit._battleManager;
-    }
-    public void Reset_StateEff(Transform myTrm, Transform mySprTrm, Unit myUnit, AtkType statusEffect, params float[] valueList)
-    {
-        curEvent = eEvent.ENTER;
-        this.myTrm = myTrm;
-        this.mySprTrm = mySprTrm;
-        this.myUnit = myUnit;
+        this._unitStateEff = myUnit.UnitStateEff;
+
         Set_EffType(statusEffect, valueList);
         Set_EffValue(valueList);
         this.battleManager = myUnit._battleManager;
@@ -87,7 +80,7 @@ public abstract class Eff_State
             effectObj = null;
         }
 
-        myUnit.statEffList.Remove(this);
+        _unitStateEff.RemoveStateEff(this);
 
         switch (statusType)
         {

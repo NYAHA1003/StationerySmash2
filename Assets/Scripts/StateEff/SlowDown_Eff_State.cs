@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 
-public class SlowDown_Eff_State : Eff_State
+public class SlowDown_Eff_State : EffState
 {
     private float slowDownTime = 0;
     private float moveSpeedSubtractPercent = 0;

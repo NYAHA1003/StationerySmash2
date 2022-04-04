@@ -47,8 +47,7 @@ public class Unit : MonoBehaviour
     [SerializeField]
     private UnitSprite _unitSprite = null;
     public UnitSprite UnitSprite => _unitSprite;
-    [SerializeField]
-    private UnitStateEff _unitStateEff = null;
+    private UnitStateEff _unitStateEff = new UnitStateEff();
     public UnitStateEff UnitStateEff => _unitStateEff;
 
 
@@ -71,6 +70,7 @@ public class Unit : MonoBehaviour
     /// <param name="id"></param>
     public virtual void SetUnitData(DataBase dataBase, TeamType eTeam, StageData stageData, int id, int grade)
     {
+        _unitStateEff.SetStateEff(this, _unitSprite.SpriteRenderer);
         this.unitData = dataBase.unitData;
         this.eTeam = eTeam;
         collideData = new CollideData();
@@ -132,7 +132,7 @@ public class Unit : MonoBehaviour
     {
         _battleManager.PoolDeleteUnit(this);
         Delete_state();
-        _unitStateEff.Delete_EffStetes();
+        _unitStateEff.DeleteEffStetes();
 
         unitState = null;
 
@@ -214,9 +214,9 @@ public class Unit : MonoBehaviour
     /// </summary>
     /// <param name="atkType"></param>
     /// <param name="value"></param>
-    public void Add_StatusEffect(AtkType atkType, params float[] value)
+    public virtual void AddStatusEffect(AtkType atkType, params float[] value)
     {
-        unitState.Add_StatusEffect(atkType, value);
+        _unitStateEff.AddStatusEffect(atkType, value);
     }
 
 

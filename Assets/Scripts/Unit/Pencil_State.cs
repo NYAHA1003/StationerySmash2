@@ -455,7 +455,7 @@ public class Pencil_Damaged_State : Stationary_UnitState
     {
         if (atkData.atkType != AtkType.Normal)
         {
-            myUnit.Add_StatusEffect(atkData.atkType, atkData.value);
+            myUnit.AddStatusEffect(atkData.atkType, atkData.value);
         }
         myUnit.Set_IsInvincibility(false);
         base.Exit();
@@ -477,7 +477,7 @@ public class Pencil_Die_State : Stationary_UnitState
 
     public override void Enter()
     {
-        myUnit.UnitStateEff.Delete_EffStetes();
+        myUnit.UnitStateEff.DeleteEffStetes();
         myUnit.Set_IsDontThrow(true);
         myUnit.UnitSprite.Show_Canvas(false);
         

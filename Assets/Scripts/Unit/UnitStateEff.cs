@@ -7,28 +7,79 @@ using Battle;
 
 public class UnitStateEff
 {
-    public List<Eff_State> statEffList = new List<Eff_State>();
+    public List<EffState> _statEffList = new List<EffState>();
+    private Unit _unit = null;
+    private Transform _transform = null;
+    private SpriteRenderer _spriteRenderer = null;
+
+    public void SetStateEff(Unit unit, SpriteRenderer spriteRenderer)
+    {
+        _unit = unit;
+        _transform = unit.transform;
+        _spriteRenderer = spriteRenderer;
+    }
 
     /// <summary>
     /// 상태이상 수행
     /// </summary>
     public void ProcessEff()
     {
-        for (int i = 0; i < statEffList.Count; i++)
+        for (int i = 0; i < _statEffList.Count; i++)
         {
-            statEffList[i].Process();
+            _statEffList[i].Process();
         }
     }
 
     /// <summary>
     /// 모든 상태이상 삭제
     /// </summary>
-    public void Delete_EffStetes()
+    public void DeleteEffStetes()
     {
         //모든 상태이상 삭제
-        for (; statEffList.Count > 0;)
+        for (; _statEffList.Count > 0;)
         {
-            statEffList[0].Delete_StatusEffect();
+            _statEffList[0].Delete_StatusEffect();
         }
     }
+
+    /// <summary>
+    /// 효과 추가
+    /// </summary>
+    /// <param name="atkType"></param>
+    /// <param name="value"></param>
+    public virtual void AddStatusEffect(AtkType atkType, params float[] value)
+    {
+        //이미 있는 효과인지 찾기
+        EffState statEffState = _statEffList.Find(x => x.statusType.Equals(atkType));
+        if (statEffState != null)
+        {
+            statEffState.Set_EffValue(value);
+            return;
+        }
+
+        //기존 효과가 없으면 추가
+        switch (atkType)
+        {
+            case AtkType.Normal:
+                return;
+            case AtkType.Stun:
+                _statEffList.Add(PoolManager.GetEff<Sturn_Eff_State>(_transform, _spriteRenderer.transform, _unit, atkType, value));
+                return;
+            case AtkType.Ink:
+                _statEffList.Add(PoolManager.GetEff<Ink_Eff_State>(_transform, _spriteRenderer.transform, _unit, atkType, value));
+                return;
+            case AtkType.SlowDown:
+                _statEffList.Add(PoolManager.GetEff<SlowDown_Eff_State>(_transform, _spriteRenderer.transform, _unit, atkType, value));
+                return;
+        }
+    }
+
+    /// <summary>
+    /// 상태이상 리스트에서 제거
+    /// </summary>
+    public void RemoveStateEff(EffState effState)
+    {
+        _statEffList.Remove(effState);
+    }
+
 }

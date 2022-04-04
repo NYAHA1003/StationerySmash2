@@ -74,12 +74,12 @@ public class PoolManager : MonoBehaviour
     /// <param name="myUnit"></param>
     /// <param name="statusEffect"></param>
     /// <param name="valueList"></param>
-    public static void CreatePoolEff<T>(Transform myTrm, Transform mySprTrm, Unit myUnit, AtkType statusEffect, params float[] valueList) where T : Eff_State, new()
+    public static void CreatePoolEff<T>(Transform myTrm, Transform mySprTrm, Unit myUnit, AtkType statusEffect, params float[] valueList) where T : EffState, new()
     {
         Queue<T> q = new Queue<T>();
 
         T g = new T();
-        g.Set_StateEff(myTrm, mySprTrm, myUnit, statusEffect, valueList);
+        g.SetStateEff(myTrm, mySprTrm, myUnit, statusEffect, valueList);
 
         q.Enqueue(g);
 
@@ -138,7 +138,7 @@ public class PoolManager : MonoBehaviour
     /// <param name="mySprTrm"></param>
     /// <param name="myUnit"></param>
     /// <returns></returns>
-    public static T GetEff<T>(Transform myTrm, Transform mySprTrm, Unit myUnit, AtkType statusEffect, params float[] valueList) where T : Eff_State, new()
+    public static T GetEff<T>(Transform myTrm, Transform mySprTrm, Unit myUnit, AtkType statusEffect, params float[] valueList) where T : EffState, new()
     {
         T item = default(T);
 
@@ -149,12 +149,12 @@ public class PoolManager : MonoBehaviour
             if (q.Count == 0)
             {  //안 사용하는 상태가 없으면 새로운 상태를 만든다
                 item = new T();
-                item.Set_StateEff(myTrm, mySprTrm, myUnit, statusEffect, valueList);
+                item.SetStateEff(myTrm, mySprTrm, myUnit, statusEffect, valueList);
             }
             else
             {
                 item = q.Dequeue();
-                item.Reset_StateEff(myTrm, mySprTrm, myUnit, statusEffect, valueList);
+                item.SetStateEff(myTrm, mySprTrm, myUnit, statusEffect, valueList);
             }
         }
         else
@@ -162,7 +162,7 @@ public class PoolManager : MonoBehaviour
             CreatePoolEff<T>(myTrm, mySprTrm, myUnit, statusEffect, valueList);
             Queue<T> q = (Queue<T>)stateDictionary[typeof(T).Name];
             item = q.Dequeue();
-            item.Reset_StateEff(myTrm, mySprTrm, myUnit, statusEffect, valueList);
+            item.SetStateEff(myTrm, mySprTrm, myUnit, statusEffect, valueList);
         }
 
         //할당
@@ -185,7 +185,7 @@ public class PoolManager : MonoBehaviour
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="state"></param>
-    public static void AddEff<T>(T state) where T : Eff_State
+    public static void AddEff<T>(T state) where T : EffState
     {
         Queue<T> q = (Queue<T>)stateDictionary[typeof(T).Name];
         q.Enqueue(state);

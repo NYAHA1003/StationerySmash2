@@ -119,11 +119,6 @@ public class PencilCase_Idle_State : Stationary_UnitState
     public PencilCase_Idle_State(Transform myTrm, Transform mySprTrm, Unit myUnit) : base(myTrm, mySprTrm, myUnit)
     {
     }
-
-    public override void Add_StatusEffect(AtkType atkType, params float[] value)
-    {
-
-    }
     public override Unit Pull_Unit()
     {
         return null;
@@ -175,10 +170,6 @@ public class PencilCase_Damaged_State : Stationary_UnitState
         float rotate = myUnit.eTeam.Equals(TeamType.MyTeam) ? 360 : -360;
         mySprTrm.DORotate(new Vector3(0, 0, rotate), value[0], RotateMode.FastBeyond360);
     }
-    public override void Add_StatusEffect(AtkType atkType, params float[] value)
-    {
-
-    }
     public override Unit Pull_Unit()
     {
         return null;
@@ -214,11 +205,6 @@ public class PencilCase_Die_State : Stationary_UnitState
         mySprTrm.eulerAngles = Vector3.zero;
         mySprTrm.DOKill();
     }
-    public override void Add_StatusEffect(AtkType atkType, params float[] value)
-    {
-
-    }
-
     public override Unit Pull_Unit()
     {
         return null;
