@@ -14,10 +14,10 @@ namespace Battle
         //참조 변수
         private UnitCommand _unitCommand = null;
         private StageData _stageData = null;
-        private PencilCaseDataSO pencilCaseDataMy;
-        private PencilCaseDataSO pencilCaseDataEnemy;
-        private PencilCaseAbilityState _playerAbilityState;
-        private PencilCaseAbilityState _enemyAbilityState;
+        private PencilCaseDataSO pencilCaseDataMy = null;
+        private PencilCaseDataSO pencilCaseDataEnemy = null;
+        private PencilCaseAbilityState _playerAbilityState = null;
+        private PencilCaseAbilityState _enemyAbilityState = null;
 
         //인스펙터 참조 변수
         [SerializeField]
@@ -41,12 +41,12 @@ namespace Battle
             pencilCaseDataMy = _playerPencilCase.PencilCaseData;
             pencilCaseDataEnemy = _enemyPencilCase.PencilCaseData;
 
-            _playerPencilCase.SetUnitData(_playerPencilCase.PencilCaseData.PencilCasedataBase.pencilCaseData, TeamType.MyTeam, _stageData, -1, 1);
+            _playerPencilCase.SetUnitData(pencilCaseDataMy.PencilCasedataBase.pencilCaseData, TeamType.MyTeam, _stageData, -1, 1);
             _unitCommand._playerUnitList.Add(_playerPencilCase);
             _playerPencilCase.transform.position = new Vector2(-_stageData.max_Range, 0);
             _playerAbilityState = _playerPencilCase.AbilityState;
 
-            _enemyPencilCase.SetUnitData(_enemyPencilCase.PencilCaseData.PencilCasedataBase.pencilCaseData, TeamType.EnemyTeam, _stageData, -2, 1);
+            _enemyPencilCase.SetUnitData(pencilCaseDataEnemy.PencilCasedataBase.pencilCaseData, TeamType.EnemyTeam, _stageData, -2, 1);
             _unitCommand._enemyUnitList.Add(_enemyPencilCase);
             _enemyPencilCase.transform.position = new Vector2(_stageData.max_Range, 0);
             _enemyAbilityState = _enemyPencilCase.AbilityState;
