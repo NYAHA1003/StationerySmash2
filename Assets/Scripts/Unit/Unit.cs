@@ -6,7 +6,10 @@ using Utill;
 using Battle;
 public class Unit : MonoBehaviour
 {
-    //인스펙터 참조 변수
+    //프로퍼티
+    public UnitSprite UnitSprite => _unitSprite;
+    public UnitStateEff UnitStateEff => _unitStateEff;
+
     //참조 변수
     //변수
     public UnitData unitData;
@@ -44,11 +47,10 @@ public class Unit : MonoBehaviour
     protected StageData _stageData;
     protected IStateManager stateManager;
 
+    //인스펙터 참조 변수
     [SerializeField]
     private UnitSprite _unitSprite = null;
-    public UnitSprite UnitSprite => _unitSprite;
     private UnitStateEff _unitStateEff = new UnitStateEff();
-    public UnitStateEff UnitStateEff => _unitStateEff;
 
 
     protected virtual void Start()
@@ -226,7 +228,6 @@ public class Unit : MonoBehaviour
     /// <returns></returns>
     public Unit Pull_Unit()
     {
-        //당기 유닛 선택
         return unitState.Pull_Unit();
     }
 
@@ -236,7 +237,6 @@ public class Unit : MonoBehaviour
     /// <returns></returns>
     public Unit Pulling_Unit()
     {
-        //유닛 당기는 중
         return unitState.Pulling_Unit();
     }
 

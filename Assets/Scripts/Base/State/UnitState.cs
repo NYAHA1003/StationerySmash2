@@ -75,12 +75,12 @@ public abstract class UnitState
     }
     public virtual void Run_Damaged(AtkData atkData)
     {
-        if (atkData.damageId.Equals(-1))
+        if (atkData.damageId == -1)
         {
             //무조건 무시해야할 공격
             return;
         }
-        if (atkData.damageId.Equals(myUnit.myDamagedId))
+        if (atkData.damageId == myUnit.myDamagedId)
         {
             //똑같은 공격 아이디를 지닌 공격은 무시함
             return;

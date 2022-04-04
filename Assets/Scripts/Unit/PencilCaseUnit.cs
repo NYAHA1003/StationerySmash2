@@ -33,4 +33,10 @@ public class PencilCaseUnit : Unit
                 break;
         }
     }
+
+    public override void AddStatusEffect(AtkType atkType, params float[] value)
+    {
+
+    }
+
 }
