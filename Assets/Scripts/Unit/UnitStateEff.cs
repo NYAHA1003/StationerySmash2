@@ -51,7 +51,7 @@ public class UnitStateEff
         //모든 상태이상 삭제
         for (; _statEffList.Count > 0;)
         {
-            _statEffList[0].Delete_StatusEffect();
+            _statEffList[0].DeleteStatusEffect();
         }
     }
 
@@ -63,10 +63,10 @@ public class UnitStateEff
     public virtual void AddStatusEffect(AtkType atkType, params float[] value)
     {
         //이미 있는 효과인지 찾기
-        EffState statEffState = _statEffList.Find(x => x.statusType.Equals(atkType));
+        EffState statEffState = _statEffList.Find(x => x.StatusType.Equals(atkType));
         if (statEffState != null)
         {
-            statEffState.Set_EffValue(value);
+            statEffState.SetEffValue(value);
             return;
         }
 
@@ -79,7 +79,7 @@ public class UnitStateEff
                 _statEffList.Add(PoolManager.GetEff<Sturn_Eff_State>(_transform, _spriteRenderer.transform, _unit, atkType, value));
                 return;
             case AtkType.Ink:
-                _statEffList.Add(PoolManager.GetEff<Ink_Eff_State>(_transform, _spriteRenderer.transform, _unit, atkType, value));
+                _statEffList.Add(PoolManager.GetEff<InkEffState>(_transform, _spriteRenderer.transform, _unit, atkType, value));
                 return;
             case AtkType.SlowDown:
                 _statEffList.Add(PoolManager.GetEff<SlowDown_Eff_State>(_transform, _spriteRenderer.transform, _unit, atkType, value));

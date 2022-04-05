@@ -25,7 +25,6 @@ public class PencilCaseUnit : Unit
         SetPencilCaseAbility(_pencilCaseData.PencilCasedataBase);
     }
 
-
     /// <summary>
     /// 필통 능력 초기화
     /// </summary>

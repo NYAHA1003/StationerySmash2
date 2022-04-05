@@ -115,5 +115,4 @@ public abstract class UnitState
         _stateManager.Set_ThrowPos(pos);
         _stateManager.Set_Throw();
     }
-
 }
