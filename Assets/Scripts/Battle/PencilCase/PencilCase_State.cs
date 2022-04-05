@@ -151,8 +151,8 @@ public class PencilCase_Damaged_State : Stationary_UnitState
         curState = eState.DAMAGED;
         curEvent = eEvent.ENTER;
 
-        myUnit.Subtract_HP(atkData.damage);
-        if (myUnit.hp <= 0)
+        myUnit.SubtractHP(atkData.damage);
+        if (myUnit.UnitStat._hp <= 0)
         {
             _stateManager.Set_Die();
             return;

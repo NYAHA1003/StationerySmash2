@@ -14,8 +14,8 @@ public class SlowDown_Eff_State : EffState
     }
     public override void Enter()
     {
-        myUnit.moveSpeedPercent -= (int)moveSpeedSubtractPercent;
-        myUnit.attackSpeedPercent -= (int)attackSpeedSubtractPercent;
+        myUnit.UnitStat.IncreaseMoveSpeedPercent(-(int)moveSpeedSubtractPercent);
+        myUnit.UnitStat.IncreaseAttackSpeedPercent(-(int)attackSpeedSubtractPercent);
         effectObj = battleManager.CommandEffect.SetEffect(EffectType.Slow, new EffData(new Vector2(myTrm.position.x, myTrm.position.y + 0.1f), slowDownTime, myTrm));
 
         base.Enter();
@@ -33,8 +33,8 @@ public class SlowDown_Eff_State : EffState
 
     public override void Exit()
     {
-        myUnit.moveSpeedPercent += (int)moveSpeedSubtractPercent;
-        myUnit.attackSpeedPercent += (int)attackSpeedSubtractPercent;
+        myUnit.UnitStat.IncreaseMoveSpeedPercent((int)moveSpeedSubtractPercent);
+        myUnit.UnitStat.IncreaseAttackSpeedPercent((int)attackSpeedSubtractPercent);
 
         if (effectObj != null)
         {

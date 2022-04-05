@@ -75,13 +75,13 @@ namespace Battle
             }
 
             //체력 비교
-            if (_playerPencilCase.hp > _enemyPencilCase.hp)
+            if (_playerPencilCase.UnitStat._hp > _enemyPencilCase.UnitStat._hp)
             {
                 Debug.Log("서든데스 승리");
                 _isFinallyEnd = true;
                 return;
             }
-            if (_playerPencilCase.hp < _enemyPencilCase.hp)
+            if (_playerPencilCase.UnitStat._hp < _enemyPencilCase.UnitStat._hp)
             {
                 Debug.Log("서든데스 패배");
                 _isFinallyEnd = true;

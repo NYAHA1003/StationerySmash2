@@ -241,7 +241,7 @@ public class Pencil_Move_State : Stationary_UnitState
     {
         if(myTrm.transform.position.x < _stateManager.GetStageData().max_Range - 0.1f)
         {
-            myTrm.Translate(Vector2.right * myUnit.Return_MoveSpeed() * Time.deltaTime);
+            myTrm.Translate(Vector2.right * myUnit.UnitStat.Return_MoveSpeed() * Time.deltaTime);
         }
     }
 
@@ -249,7 +249,7 @@ public class Pencil_Move_State : Stationary_UnitState
     {
         if (myTrm.transform.position.x > -_stateManager.GetStageData().max_Range + 0.1f)
         {
-            myTrm.Translate(Vector2.left * myUnit.Return_MoveSpeed() * Time.deltaTime);
+            myTrm.Translate(Vector2.left * myUnit.UnitStat.Return_MoveSpeed() * Time.deltaTime);
         }
     }
 
@@ -285,7 +285,7 @@ public class Pencil_Move_State : Stationary_UnitState
         
         if(targetUnit != null)
         {
-            if (Vector2.Distance(myTrm.position, targetUnit.transform.position) < myUnit.Return_Range())
+            if (Vector2.Distance(myTrm.position, targetUnit.transform.position) < myUnit.UnitStat.Return_Range())
             {
                 _stateManager.Set_Attack(targetUnit);
             }
@@ -331,7 +331,7 @@ public class Pencil_Attack_State : Stationary_UnitState
         //쿨타임 감소
         if(max_delay >= cur_delay || targetUnit.isInvincibility)
         {
-            cur_delay += myUnit.Return_AttackSpeed() * Time.deltaTime;
+            cur_delay += myUnit.UnitStat.Return_AttackSpeed() * Time.deltaTime;
             Set_Delay();
             return;
         }
@@ -348,10 +348,10 @@ public class Pencil_Attack_State : Stationary_UnitState
 
         _stateManager.Set_Wait(0.4f);
         curEvent = eEvent.EXIT;
-        if (Random.Range(0,100) <= myUnit.Return_Accuracy())
+        if (Random.Range(0,100) <= myUnit.UnitStat.Return_Accuracy())
         {
             myUnit._battleManager.CommandEffect.SetEffect(EffectType.Attack, new EffData(targetUnit.transform.position, 0.2f));
-            AtkData atkData = new AtkData(myUnit, myUnit.Return_Damage(), myUnit.Return_Knockback(), 0, myUnitData.dir, myUnit.eTeam.Equals(TeamType.MyTeam), 0, originAtkType, originValue);
+            AtkData atkData = new AtkData(myUnit, myUnit.UnitStat.Return_Damage(), myUnit.UnitStat.Return_Knockback(), 0, myUnitData.dir, myUnit.eTeam.Equals(TeamType.MyTeam), 0, originAtkType, originValue);
             targetUnit.Run_Damaged(atkData);
             targetUnit = null;
             return;
@@ -369,7 +369,7 @@ public class Pencil_Attack_State : Stationary_UnitState
     {
         if (targetUnit != null)
         {
-            if (Vector2.Distance(myTrm.position, targetUnit.transform.position) > myUnit.Return_Range())
+            if (Vector2.Distance(myTrm.position, targetUnit.transform.position) > myUnit.UnitStat.Return_Range())
             {
                 _stateManager.Set_Move();
                 return;
@@ -421,8 +421,8 @@ public class Pencil_Damaged_State : Stationary_UnitState
 
         myUnit.Set_IsDontThrow(true);
         myUnit.Set_IsInvincibility(true);
-        myUnit.Subtract_HP(atkData.damage);
-        if (myUnit.hp <= 0)
+        myUnit.SubtractHP(atkData.damage);
+        if (myUnit.UnitStat._hp <= 0)
         {
             _stateManager.Set_Die();
             return;
@@ -433,7 +433,7 @@ public class Pencil_Damaged_State : Stationary_UnitState
 
     private void KnockBack()
     {
-        float calculated_knockback = atkData.Caculated_Knockback(myUnit.Return_Weight(), myUnit.hp, myUnit.maxhp, myUnit.eTeam.Equals(TeamType.MyTeam));
+        float calculated_knockback = atkData.Caculated_Knockback(myUnit.UnitStat.Return_Weight(), myUnit.UnitStat._hp, myUnit.UnitStat._maxHp, myUnit.eTeam.Equals(TeamType.MyTeam));
         float height = atkData.baseKnockback * 0.01f + Utill.Parabola.Caculated_Height((atkData.baseKnockback + atkData.extraKnockback) * 0.15f, atkData.direction, 1);
         float time = atkData.baseKnockback * 0.005f +  Mathf.Abs((atkData.baseKnockback * 0.5f + atkData.extraKnockback)  / (Physics2D.gravity.y ));
         
@@ -616,7 +616,7 @@ public class Pencil_Throw_State : Stationary_UnitState
         }
 
         //초기 벡터
-        float force = Mathf.Clamp(Vector2.Distance(myTrm.position, mousePos), 0, 1) * 4 * (100.0f / myUnit.Return_Weight());
+        float force = Mathf.Clamp(Vector2.Distance(myTrm.position, mousePos), 0, 1) * 4 * (100.0f / myUnit.UnitStat.Return_Weight());
 
         //최고점
         float height = Parabola.Caculated_Height(force, dirx);
@@ -669,13 +669,13 @@ public class Pencil_Throw_State : Stationary_UnitState
     protected virtual void Run_ThrowAttack(Unit targetUnit)
     {
         float dir = Vector2.Angle((Vector2)myTrm.position, (Vector2)targetUnit.transform.position);
-        float extraKnockBack = (targetUnit.weight - myUnit.Return_Weight() * (float)targetUnit.hp / targetUnit.maxhp) * 0.025f;
+        float extraKnockBack = (targetUnit.UnitStat._weight - myUnit.UnitStat.Return_Weight() * (float)targetUnit.UnitStat._hp / targetUnit.UnitStat._maxHp) * 0.025f;
         AtkData atkData = new AtkData(myUnit, 0, 0, 0, 0, true, 0, AtkType.Normal);
         AtkData atkDataMy = new AtkData(myUnit, 0, 0, 0, 0, true, 0, AtkType.Normal);
-        atkData.Reset_Damage(100 + (myUnit.weight > targetUnit.weight ? (Mathf.RoundToInt((float)myUnit.weight - targetUnit.weight) / 2) : Mathf.RoundToInt((float)(targetUnit.weight - myUnit.weight) / 5)));
+        atkData.Reset_Damage(100 + (myUnit.UnitStat._weight > targetUnit.UnitStat._weight ? (Mathf.RoundToInt((float)myUnit.UnitStat._weight - targetUnit.UnitStat._weight) / 2) : Mathf.RoundToInt((float)(targetUnit.UnitStat._weight - myUnit.UnitStat._weight) / 5)));
 
         //무게가 더 클 경우
-        if (myUnit.weight > targetUnit.weight)
+        if (myUnit.UnitStat._weight > targetUnit.UnitStat._weight)
         {
             atkData.Reset_Kncockback(10, extraKnockBack, dir, false);
             atkData.Reset_Type(AtkType.Stun);
@@ -685,7 +685,7 @@ public class Pencil_Throw_State : Stationary_UnitState
         }
 
         //무게가 더 작을 경우
-        if (myUnit.weight < targetUnit.weight)
+        if (myUnit.UnitStat._weight < targetUnit.UnitStat._weight)
         {
             atkData.Reset_Kncockback(0, 0, 0, false);
             atkData.Reset_Type(AtkType.Normal);
@@ -701,7 +701,7 @@ public class Pencil_Throw_State : Stationary_UnitState
         }
 
         //무게가 같을 경우
-        if (myUnit.weight.Equals(targetUnit.weight))
+        if (myUnit.UnitStat._weight.Equals(targetUnit.UnitStat._weight))
         {
             atkData.Reset_Kncockback(10, extraKnockBack, dir, false);
             atkData.Reset_Type(AtkType.Stun);

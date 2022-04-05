@@ -9,33 +9,28 @@ public class Unit : MonoBehaviour
     //프로퍼티
     public UnitSprite UnitSprite => _unitSprite;
     public UnitStateEff UnitStateEff => _unitStateEff;
+    public UnitStat UnitStat => _unitStat;
+    public UnitState unitState { get; protected set; }
+    public float attack_Cur_Delay { get; protected set; }
+
+    //변수
+    private UnitStat _unitStat = new UnitStat();
 
     //참조 변수
-    //변수
     public UnitData unitData;
     public CollideData collideData;
-    public UnitState unitState { get; protected set; }
+    protected StageData _stageData;
+    protected IStateManager stateManager;
 
     public TeamType eTeam;
 
-    public float attack_Cur_Delay { get; protected set; }
     protected Camera mainCam;
 
     public int myDamagedId { get; protected set; } = 0;
     public int damageCount { get; set; } = 0;
     public int myUnitId { get; protected set; } = 0;
-    public int hp { get; protected set; }
-    public int maxhp { get; protected set; }
-    public int weight { get; protected set; }
 
     //스탯 퍼센트
-    public int damagePercent = 100;
-    public int moveSpeedPercent = 100;
-    public int attackSpeedPercent = 100;
-    public int rangePercent = 100;
-    public int accuracyPercent = 100;
-    public int weightPercent = 100;
-    public int knockbackPercent = 100;
     public bool isInvincibility { get; protected set; }
     public bool isDontThrow { get; protected set; }
 
@@ -44,14 +39,11 @@ public class Unit : MonoBehaviour
 
     public BattleManager _battleManager { get; protected set; }
     
-    protected StageData _stageData;
-    protected IStateManager stateManager;
 
     //인스펙터 참조 변수
     [SerializeField]
     private UnitSprite _unitSprite = null;
     private UnitStateEff _unitStateEff = new UnitStateEff();
-
 
     protected virtual void Start()
     {
@@ -95,16 +87,13 @@ public class Unit : MonoBehaviour
         
         
         this._stageData = stageData;
-        this.maxhp = dataBase.unitData.unit_Hp * grade;
-        this.hp = dataBase.unitData.unit_Hp;
-        moveSpeedPercent = 100 * grade;
-        attackSpeedPercent = 100 * grade;
-        damagePercent = 100 * grade;
-        this.weight = dataBase.unitData.unit_Weight;
+        _unitStat.SetUnitData(unitData);
+        _unitStat.SetGradeStat(grade);
+        _unitStat.SetWeight();
         this.myUnitId = id;
 
         //깨짐 이미지
-        _unitSprite.Set_HPSprite(hp, maxhp);
+        _unitSprite.Set_HPSprite(_unitStat._hp, _unitStat._maxHp);
 
         //스테이트 설정
         Add_state();
@@ -171,7 +160,7 @@ public class Unit : MonoBehaviour
                 stateManager = PoolManager.GetItem<PencilStateManager>(transform, _unitSprite.SpriteRenderer.transform, this);
                 break;
             case UnitType.BallPen:
-                stateManager = PoolManager.GetItem<BallpenStateManager>(transform, _unitSprite.SpriteRenderer.transform, this);
+                //stateManager = PoolManager.GetItem<BallpenStateManager>(transform, _unitSprite.SpriteRenderer.transform, this);
                 break;
         }
         stateManager.SetStageData(_stageData);
@@ -189,7 +178,7 @@ public class Unit : MonoBehaviour
                 break;
 
             case UnitType.BallPen:
-                PoolManager.AddItem((BallpenStateManager)stateManager);
+                //PoolManager.AddItem((BallpenStateManager)stateManager);
                 break;
 
             default:
@@ -271,10 +260,10 @@ public class Unit : MonoBehaviour
     /// 체력 감소
     /// </summary>
     /// <param name="damage">줄어들 체력</param>
-    public void Subtract_HP(int damage)
+    public void SubtractHP(int damage)
     {
-        hp -= damage;
-        _unitSprite.Set_HPSprite(hp, maxhp);
+        _unitStat.SubtractHP(damage);
+        _unitSprite.Set_HPSprite(_unitStat._hp, _unitStat._maxHp);
     }
 
 
@@ -285,64 +274,5 @@ public class Unit : MonoBehaviour
     public void Set_AttackDelay(float delay)
     {
         attack_Cur_Delay = delay;
-    }
-
-
-
-    /// <summary>
-    /// 공격력 스탯 반환
-    /// </summary>
-    /// <returns></returns>
-    public int Return_Damage()
-    {
-        return Mathf.RoundToInt(unitData.damage * (float)damagePercent / 100);
-    }
-    /// <summary>
-    /// 이동속도 스탯 반환
-    /// </summary>
-    /// <returns></returns>
-    public float Return_MoveSpeed()
-    {
-        return unitData.moveSpeed * (float)moveSpeedPercent / 100;
-    }
-    /// <summary>
-    /// 공격속도 스탯 반환
-    /// </summary>
-    /// <returns></returns>
-    public float Return_AttackSpeed()
-    {
-        return unitData.attackSpeed * (float)attackSpeedPercent / 100;
-    }
-    /// <summary>
-    /// 사거리 스탯 반환
-    /// </summary>
-    /// <returns></returns>
-    public float Return_Range()
-    {
-        return unitData.range * (float)rangePercent / 100;
-    }
-    /// <summary>
-    /// 무게 스탯 반환
-    /// </summary>
-    /// <returns></returns>
-    public int Return_Weight()
-    {
-        return Mathf.RoundToInt(unitData.unit_Weight * (float)weightPercent / 100);
-    }
-    /// <summary>
-    /// 명중률 스탯 반환
-    /// </summary>
-    /// <returns></returns>
-    public float Return_Accuracy()
-    {
-        return unitData.accuracy * (float)accuracyPercent / 100;
-    }
-    /// <summary>
-    /// 넉백 스탯 반환
-    /// </summary>
-    /// <returns></returns>
-    public int Return_Knockback()
-    {
-        return Mathf.RoundToInt(unitData.knockback * (float)knockbackPercent / 100);
     }
 }

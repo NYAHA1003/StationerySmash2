@@ -121,7 +121,7 @@ namespace Battle
                 _arrow.transform.eulerAngles = new Vector3(0, 0, dir * Mathf.Rad2Deg);
 
                 //초기 벡터
-                _force = Mathf.Clamp(Vector2.Distance(_throwUnit.transform.position, pos), 0, 1) * 4 * (100.0f / _throwUnit.weight);
+                _force = Mathf.Clamp(Vector2.Distance(_throwUnit.transform.position, pos), 0, 1) * 4 * (100.0f / _throwUnit.UnitStat._weight);
 
                 //최고점
                 float height = Utill.Parabola.Caculated_Height(_force, dirx);

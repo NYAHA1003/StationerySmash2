@@ -12,7 +12,7 @@ public class Sturn_Eff_State : EffState
     }
     public override void Enter()
     {
-        stunTime = stunTime + (stunTime * (((float)myUnit.maxhp / (myUnit.hp + 70)) - 1));
+        stunTime = stunTime + (stunTime * (((float)myUnit.UnitStat._maxHp / (myUnit.UnitStat._hp + 70)) - 1));
         myUnit.Set_IsDontThrow(true);
         myUnit.unitState._stateManager.Set_Wait(stunTime);
         myUnit.unitState._stateManager.Set_WaitExtraTime(stunTime);
@@ -48,7 +48,7 @@ public class Sturn_Eff_State : EffState
         if (stunTime < value[0])
         {
             stunTime = value[0];
-            stunTime = stunTime + (stunTime * (((float)myUnit.maxhp / (myUnit.hp + 70)) - 1));
+            stunTime = stunTime + (stunTime * (((float)myUnit.UnitStat._maxHp / (myUnit.UnitStat._hp + 70)) - 1));
         }
     }
 }
