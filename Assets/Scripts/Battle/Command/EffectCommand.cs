@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
-
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.AddressableAssets;
 namespace Battle
 {
     [System.Serializable]
@@ -13,6 +14,29 @@ namespace Battle
         [SerializeField]
         private List<GameObject> _effectObjectList;
 
+        public void Awake()
+        {
+            SetEffectObjectList("Attack");
+            AwitLoadAsset("Attack");
+            SetEffectObjectList("Stun");
+            AwitLoadAsset("Stun");
+            SetEffectObjectList("Slow");
+            AwitLoadAsset("Slow");
+        }
+        public async void AwitLoadAsset(string s)
+        {
+            AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(s);
+            await handle.Task;
+        }
+        private void SetEffectObjectList(string s)
+        {
+            Addressables.LoadAssetAsync<GameObject>(s).Completed +=
+              (AsyncOperationHandle<GameObject> obj) =>
+              {
+                  _effectObjectList.Add(obj.Result);
+                  Addressables.Release(obj);
+              };
+        }
         /// <summary>
         /// √ ±‚»≠
         /// </summary>
