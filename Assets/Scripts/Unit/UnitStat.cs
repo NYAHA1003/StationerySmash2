@@ -15,6 +15,7 @@ public class UnitStat
     public int _hp { get; private set; } = 0;
     public int _maxHp { get; private set; } = 0;
     public int _weight { get; private set; } = 0;
+    public float _attackDelay { get; protected set; } = 0;
 
     /// <summary>
     /// 유닛 데이터 설정
@@ -164,6 +165,23 @@ public class UnitStat
     public void IncreaseKnockBackPercent(int percent)
     {
         _knockbackPercent += percent;
+    }
+
+    /// <summary>
+    /// 공격 딜레이 0으로 초기화
+    /// </summary>
+    public void ResetAttackDelay()
+    {
+        _attackDelay = 0;
+    }
+
+    /// <summary>
+    /// 공격 딜레이 설정
+    /// </summary>
+    /// <param name="delay"></param>
+    public void SetAttackDelay(float delay)
+    {
+        _attackDelay = delay;
     }
 
 }

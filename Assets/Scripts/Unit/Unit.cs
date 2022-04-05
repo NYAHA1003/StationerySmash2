@@ -10,36 +10,30 @@ public class Unit : MonoBehaviour
     public UnitSprite UnitSprite => _unitSprite;
     public UnitStateEff UnitStateEff => _unitStateEff;
     public UnitStat UnitStat => _unitStat;
-    public UnitState unitState { get; protected set; }
-    public float attack_Cur_Delay { get; protected set; }
-
-    //변수
-    private UnitStat _unitStat = new UnitStat();
-
-    //참조 변수
-    public UnitData unitData;
-    public CollideData collideData;
-    protected StageData _stageData;
-    protected IStateManager stateManager;
-
-    public TeamType eTeam;
-
-    protected Camera mainCam;
-
+    public UnitStateChanger UnitStateChanger => _unitStateChanger;
+    public UnitData UnitData => _unitData;
+    public TeamType ETeam => _eTeam;
+    public CollideData _collideData;
+    public BattleManager _battleManager { get; protected set; } = null;
     public int myDamagedId { get; protected set; } = 0;
     public int damageCount { get; set; } = 0;
-    public int myUnitId { get; protected set; } = 0;
+    public int _myUnitId { get; protected set; } = 0;
+    public bool _isInvincibility { get; protected set; } = false;
+    public bool isDontThrow { get; protected set; } = false;
+    
+    //변수
+    private UnitStat _unitStat = new UnitStat();
+    private UnitStateChanger _unitStateChanger = new UnitStateChanger();
+    private TeamType _eTeam = TeamType.Null;
 
-    //스탯 퍼센트
-    public bool isInvincibility { get; protected set; }
-    public bool isDontThrow { get; protected set; }
+    //참조 변수
+    private UnitData _unitData= null;
+    private StageData _stageData = null;
+    private Camera mainCam = null;
 
     //유닛 설정 여부
-    protected bool isSettingEnd;
-
-    public BattleManager _battleManager { get; protected set; }
+    protected bool _isSettingEnd;
     
-
     //인스펙터 참조 변수
     [SerializeField]
     private UnitSprite _unitSprite = null;
@@ -50,6 +44,10 @@ public class Unit : MonoBehaviour
         mainCam = Camera.main;
     }
 
+    /// <summary>
+    /// 배틀매니저 설정
+    /// </summary>
+    /// <param name="battleManager"></param>
     public void SetBattleManager(BattleManager battleManager)
     {
         _battleManager = battleManager;
@@ -65,43 +63,43 @@ public class Unit : MonoBehaviour
     public virtual void SetUnitData(DataBase dataBase, TeamType eTeam, StageData stageData, int id, int grade)
     {
         _unitStateEff.SetStateEff(this, _unitSprite.SpriteRenderer);
-        this.unitData = dataBase.unitData;
-        this.eTeam = eTeam;
-        collideData = new CollideData();
-        collideData.originpoints = dataBase.unitData.colideData.originpoints;
+        _unitData = dataBase.unitData;
+        _eTeam = eTeam;
+        _collideData = new CollideData();
+        _collideData.originpoints = dataBase.unitData.colideData.originpoints;
         _unitSprite.SetUIAndSprite(eTeam, dataBase.card_Sprite);
 
         //딜레이시스템
-        attack_Cur_Delay = 0;
-        _unitSprite.Update_DelayBar(attack_Cur_Delay);
+        _unitStat.ResetAttackDelay();
+        _unitSprite.Update_DelayBar(_unitStat._attackDelay);
         Set_IsInvincibility(false);
         Set_IsDontThrow(false);
         _unitSprite.Show_Canvas(true);
 
-        this.isInvincibility = true;
-        this.isSettingEnd = false;
+        _isInvincibility = true;
+        _isSettingEnd = false;
 
         //팀, 이름 설정
         _unitSprite.SetTeamColor(eTeam);
-        transform.name = dataBase.card_Name + this.eTeam;
+        transform.name = dataBase.card_Name + _eTeam;
         
-        
-        this._stageData = stageData;
-        _unitStat.SetUnitData(unitData);
+        //스탯 설정
+        _stageData = stageData;
+        _unitStat.SetUnitData(_unitData);
         _unitStat.SetGradeStat(grade);
         _unitStat.SetWeight();
-        this.myUnitId = id;
+        _myUnitId = id;
 
         //깨짐 이미지
         _unitSprite.Set_HPSprite(_unitStat._hp, _unitStat._maxHp);
 
         //스테이트 설정
-        Add_state();
+        _unitStateChanger.StateManager.SetStageData(_stageData);
+        _unitStateChanger.SetStateManager(dataBase.unitData.unitType, transform, _unitSprite.SpriteRenderer.transform, this); ;
+        _unitStateChanger.SetUnitState();
 
-        unitState = stateManager.Return_CurrentUnitState();
-
-        this.isInvincibility = false;
-        this.isSettingEnd = true;
+        _isInvincibility = false;
+        _isSettingEnd = true;
     }
 
 
@@ -110,9 +108,11 @@ public class Unit : MonoBehaviour
     /// </summary>
     protected virtual void Update()
     {
-        if (!isSettingEnd) return;
-
-        unitState = unitState.Process();
+        if (!_isSettingEnd)
+        {
+            return;
+        }
+        _unitStateChanger.ProcessState();
         _unitStateEff.ProcessEff();
     }
 
@@ -122,12 +122,11 @@ public class Unit : MonoBehaviour
     public virtual void Delete_Unit()
     {
         _battleManager.PoolDeleteUnit(this);
-        Delete_state();
+        _unitStateChanger.DeleteState(_unitData.unitType);
+        _unitStateChanger.StateNull();
         _unitStateEff.DeleteEffStetes();
 
-        unitState = null;
-
-        switch (eTeam)
+        switch (_eTeam)
         {
             case TeamType.Null:
                 break;
@@ -140,64 +139,13 @@ public class Unit : MonoBehaviour
         }
     }
 
-    
-    /// <summary>
-    /// 스테이트 추가
-    /// </summary>
-    private void Add_state()
-    {
-        switch (unitData.unitType)
-        {
-            case UnitType.PencilCase:
-                stateManager = PoolManager.GetItem<PencilCaseStateManager>(transform, _unitSprite.SpriteRenderer.transform, this);
-                break;
-
-            default:
-            case UnitType.None:
-            case UnitType.Pencil:
-            case UnitType.Eraser:
-            case UnitType.Sharp:
-                stateManager = PoolManager.GetItem<PencilStateManager>(transform, _unitSprite.SpriteRenderer.transform, this);
-                break;
-            case UnitType.BallPen:
-                //stateManager = PoolManager.GetItem<BallpenStateManager>(transform, _unitSprite.SpriteRenderer.transform, this);
-                break;
-        }
-        stateManager.SetStageData(_stageData);
-    }
-
-    /// <summary>
-    /// 스테이트 삭제
-    /// </summary>
-    private void Delete_state()
-    {
-        switch (unitData.unitType)
-        {
-            case UnitType.PencilCase:
-                PoolManager.AddItem((PencilCaseStateManager)stateManager);
-                break;
-
-            case UnitType.BallPen:
-                //PoolManager.AddItem((BallpenStateManager)stateManager);
-                break;
-
-            default:
-            case UnitType.None:
-            case UnitType.Pencil:
-            case UnitType.Eraser:
-            case UnitType.Sharp:
-                PoolManager.AddItem((PencilStateManager)stateManager);
-                break;
-        }
-    }
-
     /// <summary>
     /// 공격 맞음
     /// </summary>
     /// <param name="atkData">공격 데이터</param>
     public void Run_Damaged(AtkData atkData)
     {
-        unitState.Run_Damaged(atkData);
+        _unitStateChanger.UnitState.Run_Damaged(atkData);
     }
 
     /// <summary>
@@ -217,7 +165,7 @@ public class Unit : MonoBehaviour
     /// <returns></returns>
     public Unit Pull_Unit()
     {
-        return unitState.Pull_Unit();
+        return _unitStateChanger.UnitState.Pull_Unit();
     }
 
     /// <summary>
@@ -226,7 +174,7 @@ public class Unit : MonoBehaviour
     /// <returns></returns>
     public Unit Pulling_Unit()
     {
-        return unitState.Pulling_Unit();
+        return _unitStateChanger.UnitState.Pulling_Unit();
     }
 
     /// <summary>
@@ -234,7 +182,7 @@ public class Unit : MonoBehaviour
     /// </summary>
     public void Throw_Unit(Vector2 pos)
     {
-        unitState.Throw_Unit(pos);
+        _unitStateChanger.UnitState.Throw_Unit(pos);
     }
 
 
@@ -244,7 +192,7 @@ public class Unit : MonoBehaviour
     /// <param name="isboolean">True면 무적, False면 비무적</param>
     public void Set_IsInvincibility(bool isboolean)
     {
-        isInvincibility = isboolean;
+        _isInvincibility = isboolean;
     }
 
     /// <summary>
@@ -266,13 +214,4 @@ public class Unit : MonoBehaviour
         _unitSprite.Set_HPSprite(_unitStat._hp, _unitStat._maxHp);
     }
 
-
-    /// <summary>
-    /// 공격 딜레이 설정
-    /// </summary>
-    /// <param name="delay"></param>
-    public void Set_AttackDelay(float delay)
-    {
-        attack_Cur_Delay = delay;
-    }
 }

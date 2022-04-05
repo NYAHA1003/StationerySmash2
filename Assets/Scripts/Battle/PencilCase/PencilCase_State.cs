@@ -167,7 +167,7 @@ public class PencilCase_Damaged_State : Stationary_UnitState
 
     public override void Animation(params float[] value)
     {
-        float rotate = myUnit.eTeam.Equals(TeamType.MyTeam) ? 360 : -360;
+        float rotate = myUnit.ETeam == TeamType.MyTeam ? 360 : -360;
         mySprTrm.DORotate(new Vector3(0, 0, rotate), value[0], RotateMode.FastBeyond360);
     }
     public override Unit Pull_Unit()

@@ -222,7 +222,7 @@ public class Pencil_Move_State : Stationary_UnitState
     public override void Update()
     {
         //¿ì¸® ÆÀ
-        switch (myUnit.eTeam)
+        switch (myUnit.ETeam)
         {
             case TeamType.Null:
                 break;
@@ -261,11 +261,11 @@ public class Pencil_Move_State : Stationary_UnitState
         {
             if (Vector2.Distance(myTrm.position, list[i].transform.position) < targetRange)
             {
-                if (myUnit.eTeam.Equals(TeamType.MyTeam) && myTrm.position.x > list[i].transform.position.x)
+                if (myUnit.ETeam.Equals(TeamType.MyTeam) && myTrm.position.x > list[i].transform.position.x)
                 {
                     continue;
                 }
-                if (!myUnit.eTeam.Equals(TeamType.MyTeam) && myTrm.position.x < list[i].transform.position.x)
+                if (!myUnit.ETeam.Equals(TeamType.MyTeam) && myTrm.position.x < list[i].transform.position.x)
                 {
                     continue;
                 }
@@ -273,7 +273,7 @@ public class Pencil_Move_State : Stationary_UnitState
                 {
                     continue;
                 }
-                if(list[i].isInvincibility)
+                if(list[i]._isInvincibility)
                 {
                     continue;
                 }
@@ -296,7 +296,7 @@ public class Pencil_Move_State : Stationary_UnitState
     public override void Animation(params float[] value)
     {
         mySprTrm.DOKill();
-        float rotate = myUnit.eTeam.Equals(TeamType.MyTeam) ? 30 : -30;
+        float rotate = myUnit.ETeam.Equals(TeamType.MyTeam) ? 30 : -30;
         mySprTrm.eulerAngles = new Vector3(0, 0, 0);
         mySprTrm.DORotate(new Vector3(0, 0, rotate), 0.3f).SetLoops(-1, LoopType.Yoyo);
     }
@@ -320,7 +320,7 @@ public class Pencil_Attack_State : Stationary_UnitState
     {
         curState = eState.ATTACK;
         curEvent = eEvent.ENTER;
-        cur_delay = myUnit.attack_Cur_Delay;
+        cur_delay = myUnit.UnitStat._attackDelay;
         base.Enter();
     }
     public override void Update()
@@ -329,7 +329,7 @@ public class Pencil_Attack_State : Stationary_UnitState
         Check_Range();
 
         //ÄðÅ¸ÀÓ °¨¼Ò
-        if(max_delay >= cur_delay || targetUnit.isInvincibility)
+        if(max_delay >= cur_delay || targetUnit._isInvincibility)
         {
             cur_delay += myUnit.UnitStat.Return_AttackSpeed() * Time.deltaTime;
             Set_Delay();
@@ -351,7 +351,7 @@ public class Pencil_Attack_State : Stationary_UnitState
         if (Random.Range(0,100) <= myUnit.UnitStat.Return_Accuracy())
         {
             myUnit._battleManager.CommandEffect.SetEffect(EffectType.Attack, new EffData(targetUnit.transform.position, 0.2f));
-            AtkData atkData = new AtkData(myUnit, myUnit.UnitStat.Return_Damage(), myUnit.UnitStat.Return_Knockback(), 0, myUnitData.dir, myUnit.eTeam.Equals(TeamType.MyTeam), 0, originAtkType, originValue);
+            AtkData atkData = new AtkData(myUnit, myUnit.UnitStat.Return_Damage(), myUnit.UnitStat.Return_Knockback(), 0, myUnitData.dir, myUnit.ETeam == TeamType.MyTeam, 0, originAtkType, originValue);
             targetUnit.Run_Damaged(atkData);
             targetUnit = null;
             return;
@@ -362,7 +362,7 @@ public class Pencil_Attack_State : Stationary_UnitState
     private void Set_Delay()
     {
         myUnit.UnitSprite.Update_DelayBar(cur_delay / max_delay);
-        myUnit.Set_AttackDelay(cur_delay);
+        myUnit.UnitStat.SetAttackDelay(cur_delay);
     }
 
     private void Check_Range()
@@ -375,12 +375,12 @@ public class Pencil_Attack_State : Stationary_UnitState
                 return;
             }
 
-            if (myUnit.eTeam.Equals(TeamType.MyTeam) && myTrm.position.x > targetUnit.transform.position.x)
+            if (myUnit.ETeam == TeamType.MyTeam & myTrm.position.x > targetUnit.transform.position.x)
             {
                 _stateManager.Set_Move();
                 return;
             }
-            if (myUnit.eTeam.Equals(TeamType.EnemyTeam) && myTrm.position.x < targetUnit.transform.position.x)
+            if (myUnit.ETeam == TeamType.EnemyTeam && myTrm.position.x < targetUnit.transform.position.x)
             {
                 _stateManager.Set_Move();
                 return;
@@ -395,7 +395,7 @@ public class Pencil_Attack_State : Stationary_UnitState
     public override void Animation(params float[] value)
     {
         mySprTrm.DOKill();
-        float rotate = myUnit.eTeam.Equals(TeamType.MyTeam) ? -90 : 90;
+        float rotate = myUnit.ETeam.Equals(TeamType.MyTeam) ? -90 : 90;
         mySprTrm.eulerAngles = new Vector3(0, 0, 0);
         mySprTrm.DORotate(new Vector3(0, 0, rotate), 0.2f).SetLoops(2, LoopType.Yoyo);
     }
@@ -433,7 +433,7 @@ public class Pencil_Damaged_State : Stationary_UnitState
 
     private void KnockBack()
     {
-        float calculated_knockback = atkData.Caculated_Knockback(myUnit.UnitStat.Return_Weight(), myUnit.UnitStat._hp, myUnit.UnitStat._maxHp, myUnit.eTeam.Equals(TeamType.MyTeam));
+        float calculated_knockback = atkData.Caculated_Knockback(myUnit.UnitStat.Return_Weight(), myUnit.UnitStat._hp, myUnit.UnitStat._maxHp, myUnit.ETeam == TeamType.MyTeam);
         float height = atkData.baseKnockback * 0.01f + Utill.Parabola.Caculated_Height((atkData.baseKnockback + atkData.extraKnockback) * 0.15f, atkData.direction, 1);
         float time = atkData.baseKnockback * 0.005f +  Mathf.Abs((atkData.baseKnockback * 0.5f + atkData.extraKnockback)  / (Physics2D.gravity.y ));
         
@@ -462,7 +462,7 @@ public class Pencil_Damaged_State : Stationary_UnitState
     }
     public override void Animation(params float[] value)
     {
-        float rotate = myUnit.eTeam.Equals(TeamType.MyTeam) ? 360 : -360;
+        float rotate = myUnit.ETeam.Equals(TeamType.MyTeam) ? 360 : -360;
         mySprTrm.DORotate(new Vector3(0, 0, rotate), value[0], RotateMode.FastBeyond360);
     }
 }
@@ -514,11 +514,11 @@ public class Pencil_Die_State : Stationary_UnitState
     private void Animation_ScreenKO()
     {
         Vector3 diePos = new Vector3(myTrm.position.x, myTrm.position.y + 0.4f, 0);
-        if (myUnit.eTeam.Equals(TeamType.MyTeam))
+        if (myUnit.ETeam.Equals(TeamType.MyTeam))
         {
             diePos.x -= Random.Range(0.1f, 0.2f);
         }
-        if (myUnit.eTeam.Equals(TeamType.EnemyTeam))
+        if (myUnit.ETeam.Equals(TeamType.EnemyTeam))
         {
             diePos.x += Random.Range(0.1f, 0.2f);
         }
@@ -543,11 +543,11 @@ public class Pencil_Die_State : Stationary_UnitState
     private void Animation_StarKO()
     {
         Vector3 diePos = new Vector3(myTrm.position.x, 1, 0);
-        if (myUnit.eTeam.Equals(TeamType.MyTeam))
+        if (myUnit.ETeam.Equals(TeamType.MyTeam))
         {
             diePos.x += Random.Range(-2f, -1f);
         }
-        if (myUnit.eTeam.Equals(TeamType.EnemyTeam))
+        if (myUnit.ETeam.Equals(TeamType.EnemyTeam))
         {
             diePos.x += Random.Range(1f, 2f);
         }
@@ -565,11 +565,11 @@ public class Pencil_Die_State : Stationary_UnitState
     private void Animation_OutKO()
     {
         Vector3 diePos = new Vector3(myTrm.position.x, myTrm.position.y -2, 0);
-        if (myUnit.eTeam.Equals(TeamType.MyTeam))
+        if (myUnit.ETeam == TeamType.MyTeam)
         {
             diePos.x -= _stateManager.GetStageData().max_Range + 1;
         }
-        if (myUnit.eTeam.Equals(TeamType.EnemyTeam))
+        if (myUnit.ETeam == TeamType.EnemyTeam)
         {
             diePos.x += _stateManager.GetStageData().max_Range + 1;
         }
@@ -637,12 +637,12 @@ public class Pencil_Throw_State : Stationary_UnitState
     public override void Update()
     {
         Check_Wall();
-        if (myUnit.eTeam.Equals(TeamType.MyTeam))
+        if (myUnit.ETeam.Equals(TeamType.MyTeam))
         {
             Check_Collide(myUnit._battleManager.CommandUnit._enemyUnitList);
             return;
         }
-        if (myUnit.eTeam.Equals(TeamType.EnemyTeam))
+        if (myUnit.ETeam.Equals(TeamType.EnemyTeam))
         {
             Check_Collide(myUnit._battleManager.CommandUnit._playerUnitList);
             return;
@@ -654,11 +654,11 @@ public class Pencil_Throw_State : Stationary_UnitState
         for (int i = 0; i < list.Count; i++)
         {
             targetUnit = list[i];
-            if (targetUnit.isInvincibility)
+            if (targetUnit._isInvincibility)
             {
                 continue;
             }
-            float distance = Utill.Collider.FindDistanceBetweenSegments(myUnit.collideData.Set_Pos(myTrm.position), targetUnit.collideData.Set_Pos(targetUnit.transform.position));
+            float distance = Utill.Collider.FindDistanceBetweenSegments(myUnit._collideData.Set_Pos(myTrm.position), targetUnit._collideData.Set_Pos(targetUnit.transform.position));
             if (distance < 0.2f)
             {
                 Run_ThrowAttack(targetUnit);

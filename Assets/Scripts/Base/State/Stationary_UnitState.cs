@@ -14,7 +14,7 @@ public class Stationary_UnitState : UnitState
     public Stationary_UnitState(Transform myTrm, Transform mySprTrm, Unit myUnit) : base(myTrm, mySprTrm, myUnit)
     {
         this.myUnit = myUnit;
-        this.myUnitData = myUnit.unitData;
+        this.myUnitData = myUnit.UnitData;
         originValue = myUnitData.unitablityData;
     }
 

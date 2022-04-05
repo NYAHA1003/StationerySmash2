@@ -78,7 +78,7 @@ namespace Utill
             }
 
             attacker.damageCount++;
-            this.damageId = attacker.myUnitId * 10000 + attacker.damageCount;
+            this.damageId = attacker._myUnitId * 10000 + attacker.damageCount;
 
         }
     }

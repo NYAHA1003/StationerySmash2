@@ -15,6 +15,7 @@ public abstract class EffState
     protected Unit myUnit;
     protected UnitData myUnitData;
     protected UnitStateEff _unitStateEff = null;
+    protected IStateManager _stateManager = null;
     protected float[] valueList;
     protected IEffect effectObj;
 
@@ -29,6 +30,7 @@ public abstract class EffState
         this.mySprTrm = mySprTrm;
         this.myUnit = myUnit;
         this._unitStateEff = myUnit.UnitStateEff;
+        _stateManager = myUnit.UnitStateChanger.StateManager;
 
         Set_EffType(statusEffect, valueList);
         Set_EffValue(valueList);
