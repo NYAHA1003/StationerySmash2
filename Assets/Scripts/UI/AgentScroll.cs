@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-
+/// <summary>
+/// 상속용 클래스
+/// </summary>
 public class AgentScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     protected Scrollbar scrollbar;
@@ -19,22 +21,23 @@ public class AgentScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     private void Awake()
     {
         scrollbar = this.transform.GetChild(1).GetComponent<Scrollbar>();
-        contentTr = gameObject.transform.GetChild(1);
+        contentTr = gameObject.transform.GetChild(0).GetChild(0);
         ChildAwake();
     }
     private void Start()
     {
         distance = 1f / (SIZE - 1);
         for (int i = 0; i < SIZE; i++) pos[i] = distance * i;
+        ChildStart(); 
     }
     private void Update()
     {
         if (!isDrag)
             scrollbar.value = Mathf.Lerp(scrollbar.value, targetPos, 0.1f);
-        ChildeUpdate();
+        ChildUpdate();
     }
 
-    protected virtual void ChildeUpdate()
+    protected virtual void ChildUpdate()
     {
         //nothing 자식용
     }
@@ -46,6 +49,11 @@ public class AgentScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     {
         //nothing 자식용
     }
+
+    /// <summary>
+    /// 스크롤한 정도에 따라 패널 변경 
+    /// </summary>
+    /// <returns></returns>
     float SetPos()
     {
         for (int i = 0; i < SIZE; i++)
@@ -59,7 +67,11 @@ public class AgentScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         }
         return 0;
     }
-    protected void deltaSlide(float deltaValue)
+    /// <summary>
+    /// 스크롤 속도가 빠르면 변경
+    /// </summary>
+    /// <param name="deltaValue"></param>
+    protected void DeltaSlide(float deltaValue)
     {
         if (deltaValue > 18 && curPos - distance >= 0)
         {
@@ -84,7 +96,6 @@ public class AgentScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     {
         isDrag = false;
         targetPos = SetPos();
-
     }
 }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-
+using Util;
 public class ShopScroll : AgentScroll
 {
     [SerializeField]
@@ -15,10 +15,12 @@ public class ShopScroll : AgentScroll
 
     protected override void ChildAwake()
     {
-        EventManager.StartListening(EventType.MoveShopPn, OnMoveShopPanel);
+        EventManager.StartListening(EventsType.MoveShopPn, OnMoveShopPanel);
+        EventManager.StartListening(EventsType.CloaseAllPn, SetOriginScroll);
+        EventManager.StartListening(EventsType.SetOriginShopPn, SetOriginScroll);
     }
 
-    protected override void ChildeUpdate()
+    protected override void ChildUpdate()
     {
         accentSlider.value = Mathf.Lerp(accentSlider.value, scrollbar.value, 0.2f);
     }
@@ -29,32 +31,11 @@ public class ShopScroll : AgentScroll
 
         if (curPos == targetPos)
         {
-            deltaSlide(eventData.delta.x);
+            DeltaSlide(eventData.delta.x);
             SetOriginScroll();
         }
         ChangeBtnSize();
     }
-
-    void SetOriginScroll()
-    {
-        Debug.Log("실행");
-        for (int i = 0; i < SIZE; i++)
-        {
-            if (contentTr.GetChild(i).GetComponent<ScrollScript>() && pos[i] != curPos && pos[i] == targetPos)
-            {
-                yScrollBars[i].value = 1;
-            }
-        }
-    }
-
-    void ChangeBtnSize()
-    {
-        for (int i = 0; i < SIZE; i++)
-        {
-            panelMoveBtns[i].sizeDelta = new Vector2((targetIndex == SIZE - i - 1) ? 320 : 160, panelMoveBtns[SIZE - i - 1].sizeDelta.y);
-        }
-    }
-
     #region 버튼 함수
     public void OnMoveShopPanel(object n)
     {
@@ -65,4 +46,31 @@ public class ShopScroll : AgentScroll
         Debug.Log(pos[(int)n]);
     }
     #endregion
+    /// <summary>
+    /// 상점 스크롤 value 초기화  
+    /// </summary>
+    void SetOriginScroll()
+    {
+        Debug.Log("실행");
+        for (int i = 0; i < SIZE; i++)
+        {
+            if (contentTr.GetChild(i).GetComponent<ScrollScript>()) //&& pos[i] != curPos && pos[i] == targetPos
+            {
+                yScrollBars[i].value = 1;
+            }
+        }
+    }
+
+    /// <summary>
+    ///  상단에 패널 바꾸는 버튼 크기 변경 
+    /// </summary>
+    void ChangeBtnSize()
+    {
+        for (int i = 0; i < SIZE; i++)
+        {
+            panelMoveBtns[i].sizeDelta = new Vector2((targetIndex == SIZE - i - 1) ? 320 : 160, panelMoveBtns[SIZE - i - 1].sizeDelta.y);
+        }
+    }
+
+
 }

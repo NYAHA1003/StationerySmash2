@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Util;
 public class EventParam
 {
     public string str;
@@ -14,8 +14,8 @@ public class EventParam
 public class EventManager : MonoBehaviour
 {
 
-    private Dictionary<EventType, Action> eventDictionary;
-    private Dictionary<EventType, Action<object>> eventParamDictionary; 
+    private Dictionary<EventsType, Action> eventDictionary;
+    private Dictionary<EventsType, Action<object>> eventParamDictionary; 
 
     private static EventManager eventManager;
 
@@ -45,16 +45,16 @@ public class EventManager : MonoBehaviour
     {
         if (eventDictionary == null)
         {
-            eventDictionary = new Dictionary<EventType, Action>();
+            eventDictionary = new Dictionary<EventsType, Action>();
         }
         if(eventParamDictionary == null)
         {
-            eventParamDictionary = new Dictionary<EventType, Action<object>>(); 
+            eventParamDictionary = new Dictionary<EventsType, Action<object>>(); 
         }
 
     }
 
-    public static void StartListening(EventType eventName, Action listener)
+    public static void StartListening(EventsType eventName, Action listener)
     {
         Action thisEvent;
         if (instance.eventDictionary.TryGetValue(eventName, out thisEvent))
@@ -72,14 +72,13 @@ public class EventManager : MonoBehaviour
             instance.eventDictionary.Add(eventName, thisEvent);
         }
     }
-    public static void StartListening(EventType eventName,Action<object> listener)
+    public static void StartListening(EventsType eventName,Action<object> listener)
     {
         Action<object> thisEvent; 
        
         if(instance.eventParamDictionary.TryGetValue(eventName, out thisEvent))
         {
             thisEvent += listener;
-
             instance.eventParamDictionary[eventName] = thisEvent; 
         }
         else
@@ -89,7 +88,7 @@ public class EventManager : MonoBehaviour
         }
     }
 
-    public static void StopListening(EventType eventName, Action listener)
+    public static void StopListening(EventsType eventName, Action listener)
     {
         if (eventManager == null) return;
         Action thisEvent;
@@ -104,7 +103,7 @@ public class EventManager : MonoBehaviour
 
     }
 
-    public static void StopListening(EventType eventName, Action<object> listener)
+    public static void StopListening(EventsType eventName, Action<object> listener)
     {
         if (eventManager == null) return;
         Action<object> thisEvent; 
@@ -115,7 +114,7 @@ public class EventManager : MonoBehaviour
             instance.eventParamDictionary[eventName] = thisEvent; 
         }
     }
-    public static void TriggerEvent(EventType eventName)
+    public static void TriggerEvent(EventsType eventName)
     {
         Action thisEvent = null;
         if (instance.eventDictionary.TryGetValue(eventName, out thisEvent))
@@ -125,7 +124,7 @@ public class EventManager : MonoBehaviour
         }
     }
 
-    public static void TriggerEvent(EventType eventName, object param)
+    public static void TriggerEvent(EventsType eventName, object param)
     {
         Action<object> thisEvent = null;
         if (instance.eventParamDictionary.TryGetValue(eventName, out thisEvent))

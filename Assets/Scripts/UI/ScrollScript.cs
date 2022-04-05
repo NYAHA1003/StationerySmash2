@@ -8,13 +8,13 @@ public class ScrollScript : ScrollRect
 {
 
     bool isXmove;
-    private NestedScrollBar nestedScrollBar;
+    private ShopScroll mainUIScrollBar;
     private ScrollRect xScrollRect;
 
     protected override void Start()
     {
-        nestedScrollBar = GameObject.FindWithTag("NestedScrollManager").GetComponent<NestedScrollBar>();
-        xScrollRect = GameObject.FindWithTag("NestedScrollManager").GetComponent<ScrollRect>();
+        mainUIScrollBar = FindObjectOfType<ShopScroll>().GetComponent<ShopScroll>();
+        xScrollRect = FindObjectOfType<ShopScroll>().GetComponent<ScrollRect>();
 
     }
     public override void OnBeginDrag(PointerEventData eventData)
@@ -24,7 +24,7 @@ public class ScrollScript : ScrollRect
         Debug.Log(isXmove);
         if (isXmove)
         {
-            nestedScrollBar.OnBeginDrag(eventData);
+            mainUIScrollBar.OnBeginDrag(eventData);
             xScrollRect.OnBeginDrag(eventData);
         }
         else
@@ -38,7 +38,7 @@ public class ScrollScript : ScrollRect
     {
         if (isXmove)
         {
-            nestedScrollBar.OnDrag(eventData);
+            mainUIScrollBar.OnDrag(eventData);
             xScrollRect.OnDrag(eventData);
         }
         else
@@ -49,7 +49,7 @@ public class ScrollScript : ScrollRect
     {
         if (isXmove)
         {
-            nestedScrollBar.OnEndDrag(eventData);
+            mainUIScrollBar.OnEndDrag(eventData);
             xScrollRect.OnEndDrag(eventData);
         }
         else

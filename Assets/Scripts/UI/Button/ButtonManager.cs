@@ -1,12 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using TMPro;
-using System.Text;
-using System;
-using static UnityEngine.Debug;
+using Util; 
 
 //public enum PanelType
 //{
@@ -16,22 +9,7 @@ using static UnityEngine.Debug;
 //}
 public class ButtonManager : MonoBehaviour
 {
-
-    private Btn_MainPanel btn_MainPanel;
-
-
-
-    [SerializeField]
-    private TextMeshProUGUI textUnitName;
-    [SerializeField]
-    private TextMeshProUGUI textUpgradeInfo;
-    [SerializeField]
-    private TextMeshProUGUI textCost;
-    [SerializeField]
-    private GameObject descriptionPanel;
-
-    private StringBuilder _stringbuilder = new StringBuilder();
-
+    private Btn_MainPanel2 btn_MainPanel;
     //[Header("메인화면 UI")]
     //[SerializeField]
     //private GameObject deck;
@@ -41,9 +19,13 @@ public class ButtonManager : MonoBehaviour
     //private GameObject cancelPanel;
     //[SerializeField]
     //private GameObject settingPanel; 
+
+    [SerializeField]
+    private Btn_MainPanel2 btn_MainPanel2;
     private void Start()
     {
         // btn_MainPanel = new Btn_MainPanel(this, deck, cardDescription, cancelPanel, settingPanel);
+        btn_MainPanel2.Start(); 
     }
 
     #region 이벤트 매니저 사용하려 했던거 
@@ -72,30 +54,36 @@ public class ButtonManager : MonoBehaviour
     public void OnDeckActive()
     {
         //btn_MainPanel.OnDeckActive();
-        EventManager.TriggerEvent(EventType.ActiveDeck);
+        EventManager.TriggerEvent(EventsType.ActiveDeck);
     }
 
     public void OnDeckDescriptoinActive()
     {
         //btn_MainPanel.OnDeckDescriptoinActive();
-        EventManager.TriggerEvent(EventType.ActiveDescription);
+        EventManager.TriggerEvent(EventsType.ActiveDescription);
     }
 
     public void OnSettingActive()
     {
         //btn_MainPanel.OnSettingActive();
-        EventManager.TriggerEvent(EventType.ActiveSetting);
+        EventManager.TriggerEvent(EventsType.ActiveSetting);
     }
 
     public void OnMoveShopPanel(int iParam)
     {
-        EventManager.TriggerEvent(EventType.MoveShopPn, iParam);
+        EventManager.TriggerEvent(EventsType.MoveShopPn, iParam);
     }
 
     public void OnMoveMainPanel(int iParam)
     {
-        EventManager.TriggerEvent(EventType.MoveMainPn, iParam);
-        EventManager.TriggerEvent(EventType.CloaseAllPn); 
+        EventManager.TriggerEvent(EventsType.MoveMainPn, iParam);
+        EventManager.TriggerEvent(EventsType.CloaseAllPn); 
+    }
+
+    [ContextMenu("s")]
+    public void Test()
+    {
+        EventManager.TriggerEvent(EventsType.SetOriginShopPn);
     }
     #endregion
 }

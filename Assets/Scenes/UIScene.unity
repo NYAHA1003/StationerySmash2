@@ -17686,7 +17686,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1463151795}
   - component: {fileID: 1463151796}
-  - component: {fileID: 1463151797}
   m_Layer: 0
   m_Name: ButtonManager
   m_TagString: Untagged
@@ -17720,26 +17719,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bfcbf47eebd1f644be94f5b4fe377e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textUnitName: {fileID: 0}
-  textUpgradeInfo: {fileID: 0}
-  textCost: {fileID: 0}
-  descriptionPanel: {fileID: 0}
---- !u!114 &1463151797
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1463151794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 467f3e8d25d087341829f15aa27beb35, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deck: {fileID: 1766605521}
-  cardDescription: {fileID: 523620149}
-  cancelPanel: {fileID: 1312883064}
-  settingPanel: {fileID: 1824370777}
+  btn_MainPanel2:
+    deck: {fileID: 1766605521}
+    cardDescription: {fileID: 523620149}
+    settingPanel: {fileID: 1824370777}
 --- !u!1 &1475611887
 GameObject:
   m_ObjectHideFlags: 0
