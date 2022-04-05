@@ -5,13 +5,26 @@ using UnityEngine.UI;
 using Utill;
 using Battle;
 
+/// <summary>
+/// 유닛 상태이상 컴포넌트
+/// </summary>
 public class UnitStateEff
 {
-    public List<EffState> _statEffList = new List<EffState>();
+    //변수
+    private List<EffState> _statEffList = new List<EffState>();
+    
+    //참조 변수
     private Unit _unit = null;
     private Transform _transform = null;
     private SpriteRenderer _spriteRenderer = null;
 
+
+
+    /// <summary>
+    /// 상태이상 컴포넌트 설정
+    /// </summary>
+    /// <param name="unit"></param>
+    /// <param name="spriteRenderer"></param>
     public void SetStateEff(Unit unit, SpriteRenderer spriteRenderer)
     {
         _unit = unit;

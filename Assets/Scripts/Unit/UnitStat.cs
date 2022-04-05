@@ -2,20 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 유닛 스탯 컴포넌트
+/// </summary>
 public class UnitStat
 {
-    public UnitData _unitData;
-    public int _damagePercent { get; private set; } = 100;
-    public int _moveSpeedPercent { get; private set; } = 100;
-    public int _attackSpeedPercent { get; private set; } = 100;
-    public int _rangePercent { get; private set; } = 100;
-    public int _accuracyPercent { get; private set; } = 100;
-    public int _weightPercent { get; private set; } = 100;
-    public int _knockbackPercent { get; private set; } = 100;
-    public int _hp { get; private set; } = 0;
-    public int _maxHp { get; private set; } = 0;
-    public int _weight { get; private set; } = 0;
-    public float _attackDelay { get; protected set; } = 0;
+    //프로퍼티
+
+    public int DamagePercent => _damagePercent; //공격력 퍼센트
+    public int MoveSpeedPercent => _moveSpeedPercent;//이동속도 퍼센트
+    public int AttackSpeedPercent => _attackSpeedPercent;//공격속도 퍼센트
+    public int RangePercent => _rangePercent;//사정거리 퍼센트
+    public int AccuracyPercent => _accuracyPercent;//명중률 퍼센트
+    public int WeightPercent => _weightPercent;//무게 퍼센트
+    public int KnockbackPercent => _knockbackPercent;//넉백 퍼센트
+    public int Hp => _hp;//체력 퍼센트
+    public int MaxHp => _maxHp;//최대체력 퍼센트
+    public int Weight => _weight;//무게
+    public float AttackDelay => _attackDelay;//공격 딜레이
+
+    //변수
+    private int _damagePercent = 100;
+    private int _moveSpeedPercent = 100;
+    private int _attackSpeedPercent = 100;
+    private int _rangePercent = 100;
+    private int _accuracyPercent = 100;
+    private int _weightPercent = 100;
+    private int _knockbackPercent = 100;
+    private int _hp = 0;
+    private int _maxHp = 0;
+    private int _weight = 0;
+    private float _attackDelay = 0;
+
+    //참조 변수
+    private UnitData _unitData = null;
 
     /// <summary>
     /// 유닛 데이터 설정
@@ -52,7 +72,6 @@ public class UnitStat
     {
         _hp -= damage;
     }
-
     /// <summary>
     /// 공격력 스탯 반환
     /// </summary>
@@ -109,7 +128,6 @@ public class UnitStat
     {
         return Mathf.RoundToInt(_unitData.knockback * (float)_knockbackPercent / 100);
     }
-
     /// <summary>
     /// 공격력 퍼센트 조절
     /// </summary>

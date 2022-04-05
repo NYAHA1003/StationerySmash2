@@ -3,28 +3,48 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 
+/// <summary>
+/// 유닛 스테이트변경자 컴포넌트
+/// </summary>
 public class UnitStateChanger
 {
+    //프로퍼티
     public IStateManager StateManager => _stateManager;
     public UnitState UnitState => _unitState;
+
+    //참조변수
     private UnitState _unitState = null;
     private StageData _stageData = null;
     private IStateManager _stateManager = null;
 
+    /// <summary>
+    /// 유닛 스테이트 로직 수행
+    /// </summary>
     public void ProcessState()
     {
         _unitState = _unitState.Process();
     }
+
+    /// <summary>
+    /// 유닛 스테이트 설정
+    /// </summary>
     public void SetUnitState()
     {
         _unitState = _stateManager.Return_CurrentUnitState();
     }
+    /// <summary>
+    /// 스테이지 데이터 설정
+    /// </summary>
+    /// <param name="stageData"></param>
     
     public void SetStageData(StageData stageData)
     {
         _stageData = stageData;
+        _stateManager.SetStageData(_stageData);
     }
-
+    /// <summary>
+    /// 스테이트 Null 설정
+    /// </summary>
     public void StateNull()
     {
         _unitState = null;
@@ -52,7 +72,6 @@ public class UnitStateChanger
                 //stateManager = PoolManager.GetItem<BallpenStateManager>(transform, _unitSprite.SpriteRenderer.transform, this);
                 break;
         }
-        _stateManager.SetStageData(_stageData);
     }
 
 

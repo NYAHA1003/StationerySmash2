@@ -320,7 +320,7 @@ public class Pencil_Attack_State : Stationary_UnitState
     {
         curState = eState.ATTACK;
         curEvent = eEvent.ENTER;
-        cur_delay = myUnit.UnitStat._attackDelay;
+        cur_delay = myUnit.UnitStat.AttackDelay;
         base.Enter();
     }
     public override void Update()
@@ -361,7 +361,7 @@ public class Pencil_Attack_State : Stationary_UnitState
 
     private void Set_Delay()
     {
-        myUnit.UnitSprite.Update_DelayBar(cur_delay / max_delay);
+        myUnit.UnitSprite.UpdateDelayBar(cur_delay / max_delay);
         myUnit.UnitStat.SetAttackDelay(cur_delay);
     }
 
@@ -422,7 +422,7 @@ public class Pencil_Damaged_State : Stationary_UnitState
         myUnit.Set_IsDontThrow(true);
         myUnit.Set_IsInvincibility(true);
         myUnit.SubtractHP(atkData.damage);
-        if (myUnit.UnitStat._hp <= 0)
+        if (myUnit.UnitStat.Hp <= 0)
         {
             _stateManager.Set_Die();
             return;
@@ -433,7 +433,7 @@ public class Pencil_Damaged_State : Stationary_UnitState
 
     private void KnockBack()
     {
-        float calculated_knockback = atkData.Caculated_Knockback(myUnit.UnitStat.Return_Weight(), myUnit.UnitStat._hp, myUnit.UnitStat._maxHp, myUnit.ETeam == TeamType.MyTeam);
+        float calculated_knockback = atkData.Caculated_Knockback(myUnit.UnitStat.Return_Weight(), myUnit.UnitStat.Hp, myUnit.UnitStat.MaxHp, myUnit.ETeam == TeamType.MyTeam);
         float height = atkData.baseKnockback * 0.01f + Utill.Parabola.Caculated_Height((atkData.baseKnockback + atkData.extraKnockback) * 0.15f, atkData.direction, 1);
         float time = atkData.baseKnockback * 0.005f +  Mathf.Abs((atkData.baseKnockback * 0.5f + atkData.extraKnockback)  / (Physics2D.gravity.y ));
         
@@ -479,7 +479,7 @@ public class Pencil_Die_State : Stationary_UnitState
     {
         myUnit.UnitStateEff.DeleteEffStetes();
         myUnit.Set_IsDontThrow(true);
-        myUnit.UnitSprite.Show_Canvas(false);
+        myUnit.UnitSprite.ShowCanvas(false);
         
         //뒤짐
         myUnit.Set_IsInvincibility(true);
@@ -669,13 +669,13 @@ public class Pencil_Throw_State : Stationary_UnitState
     protected virtual void Run_ThrowAttack(Unit targetUnit)
     {
         float dir = Vector2.Angle((Vector2)myTrm.position, (Vector2)targetUnit.transform.position);
-        float extraKnockBack = (targetUnit.UnitStat._weight - myUnit.UnitStat.Return_Weight() * (float)targetUnit.UnitStat._hp / targetUnit.UnitStat._maxHp) * 0.025f;
+        float extraKnockBack = (targetUnit.UnitStat.Weight - myUnit.UnitStat.Return_Weight() * (float)targetUnit.UnitStat.Hp / targetUnit.UnitStat.MaxHp) * 0.025f;
         AtkData atkData = new AtkData(myUnit, 0, 0, 0, 0, true, 0, AtkType.Normal);
         AtkData atkDataMy = new AtkData(myUnit, 0, 0, 0, 0, true, 0, AtkType.Normal);
-        atkData.Reset_Damage(100 + (myUnit.UnitStat._weight > targetUnit.UnitStat._weight ? (Mathf.RoundToInt((float)myUnit.UnitStat._weight - targetUnit.UnitStat._weight) / 2) : Mathf.RoundToInt((float)(targetUnit.UnitStat._weight - myUnit.UnitStat._weight) / 5)));
+        atkData.Reset_Damage(100 + (myUnit.UnitStat.Weight > targetUnit.UnitStat.Weight ? (Mathf.RoundToInt((float)myUnit.UnitStat.Weight - targetUnit.UnitStat.Weight) / 2) : Mathf.RoundToInt((float)(targetUnit.UnitStat.Weight - myUnit.UnitStat.Weight) / 5)));
 
         //무게가 더 클 경우
-        if (myUnit.UnitStat._weight > targetUnit.UnitStat._weight)
+        if (myUnit.UnitStat.Weight > targetUnit.UnitStat.Weight)
         {
             atkData.Reset_Kncockback(10, extraKnockBack, dir, false);
             atkData.Reset_Type(AtkType.Stun);
@@ -685,7 +685,7 @@ public class Pencil_Throw_State : Stationary_UnitState
         }
 
         //무게가 더 작을 경우
-        if (myUnit.UnitStat._weight < targetUnit.UnitStat._weight)
+        if (myUnit.UnitStat.Weight < targetUnit.UnitStat.Weight)
         {
             atkData.Reset_Kncockback(0, 0, 0, false);
             atkData.Reset_Type(AtkType.Normal);
@@ -701,7 +701,7 @@ public class Pencil_Throw_State : Stationary_UnitState
         }
 
         //무게가 같을 경우
-        if (myUnit.UnitStat._weight.Equals(targetUnit.UnitStat._weight))
+        if (myUnit.UnitStat.Weight.Equals(targetUnit.UnitStat.Weight))
         {
             atkData.Reset_Kncockback(10, extraKnockBack, dir, false);
             atkData.Reset_Type(AtkType.Stun);

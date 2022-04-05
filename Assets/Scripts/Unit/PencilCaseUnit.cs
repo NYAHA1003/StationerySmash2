@@ -10,6 +10,14 @@ public class PencilCaseUnit : Unit
     public PencilCaseDataSO PencilCaseData => _pencilCaseData;
     public PencilCaseAbilityState AbilityState { get; private set; }
 
+    /// <summary>
+    /// 필통 데이터 초기화
+    /// </summary>
+    /// <param name="dataBase"></param>
+    /// <param name="eTeam"></param>
+    /// <param name="stageData"></param>
+    /// <param name="id"></param>
+    /// <param name="grade"></param>
     public override void SetUnitData(DataBase dataBase, TeamType eTeam, StageData stageData, int id, int grade)
     {
         _battleManager ??= FindObjectOfType<BattleManager>();
@@ -34,6 +42,11 @@ public class PencilCaseUnit : Unit
         }
     }
 
+    /// <summary>
+    /// 필통은 상태이상을 적용시키지 않음
+    /// </summary>
+    /// <param name="atkType"></param>
+    /// <param name="value"></param>
     public override void AddStatusEffect(AtkType atkType, params float[] value)
     {
 

@@ -92,14 +92,14 @@ public class Unit : MonoBehaviour
 
         //스프라이트 초기화
         _unitSprite.SetUIAndSprite(eTeam, dataBase.card_Sprite);
-        _unitSprite.Update_DelayBar(_unitStat._attackDelay);
-        _unitSprite.Show_Canvas(true);
+        _unitSprite.UpdateDelayBar(_unitStat.AttackDelay);
+        _unitSprite.ShowCanvas(true);
         _unitSprite.SetTeamColor(eTeam);
-        _unitSprite.Set_HPSprite(_unitStat._hp, _unitStat._maxHp);
+        _unitSprite.Set_HPSprite(_unitStat.Hp, _unitStat.MaxHp);
 
         //스테이트 설정
-        _unitStateChanger.SetStageData(_stageData);
         _unitStateChanger.SetStateManager(dataBase.unitData.unitType, transform, _unitSprite.SpriteRenderer.transform, this); ;
+        _unitStateChanger.SetStageData(_stageData);
         _unitStateChanger.SetUnitState();
 
         //설정 끝, 무적판정 제거
@@ -203,7 +203,7 @@ public class Unit : MonoBehaviour
     public void SubtractHP(int damage)
     {
         _unitStat.SubtractHP(damage);
-        _unitSprite.Set_HPSprite(_unitStat._hp, _unitStat._maxHp);
+        _unitSprite.Set_HPSprite(_unitStat.Hp, _unitStat.MaxHp);
     }
 
 
