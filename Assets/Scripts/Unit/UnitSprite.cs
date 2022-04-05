@@ -11,22 +11,23 @@ using Battle;
 /// </summary>
 public class UnitSprite
 {
+
+    //프로퍼티
+    public SpriteRenderer SpriteRenderer => _spriteRenderer;
+
     //인스펙터 참조 변수
     [SerializeField]
-    private Canvas _canvas;
+    private Canvas _canvas = null; //유닛의 캔버스
     [SerializeField]
-    private Image _delayBar;
+    private Image _delayBar = null;
     [SerializeField]
-    private SpriteMask _spriteMask;
+    private SpriteMask _spriteMask = null;
     [SerializeField]
-    private SpriteRenderer _spriteRenderer;
+    private SpriteRenderer _spriteRenderer = null;
     [SerializeField]
-    private SpriteRenderer _hpSpriteRenderer;
+    private SpriteRenderer _hpSpriteRenderer = null;
     [SerializeField]
-    private Sprite[] _hpSprites;
-
-
-    public SpriteRenderer SpriteRenderer => _spriteRenderer;
+    private Sprite[] _hpSprites = null;
 
     /// <summary>
     /// 초기 스프라이트 및 유닛 UI 설정
