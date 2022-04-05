@@ -111,6 +111,7 @@ public class PoolManager : MonoBehaviour
             {  //안 사용하는 상태가 없으면 새로운 상태를 만든다
                 item = new T();
                 item.Set_State(myTrm, mySprTrm, myUnit);
+                item.Reset_State(myTrm, mySprTrm, myUnit);
             }
             else
             {

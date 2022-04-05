@@ -66,11 +66,11 @@ public class UnitStateChanger
             case UnitType.Pencil:
             case UnitType.Eraser:
             case UnitType.Sharp:
+            case UnitType.BallPen:
                 _stateManager = PoolManager.GetItem<PencilStateManager>(transform, spriteRendererTransform, unit);
                 break;
-            case UnitType.BallPen:
                 //stateManager = PoolManager.GetItem<BallpenStateManager>(transform, _unitSprite.SpriteRenderer.transform, this);
-                break;
+                //break;
         }
     }
 

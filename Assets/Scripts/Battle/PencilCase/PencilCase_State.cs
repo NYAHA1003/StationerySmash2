@@ -24,9 +24,9 @@ public class PencilCaseStateManager : IStateManager
     public void Set_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
     {
         //스테이트들을 설정한다
-        IdleState = new PencilCase_Idle_State(myTrm, mySprTrm, myUnit);
-        DamagedState = new PencilCase_Damaged_State(myTrm, mySprTrm, myUnit);
-        DieState = new PencilCase_Die_State(myTrm, mySprTrm, myUnit);
+        IdleState = new PencilCase_Idle_State();
+        DamagedState = new PencilCase_Damaged_State();
+        DieState = new PencilCase_Die_State();
 
         Reset_CurrentUnitState(IdleState);
 
@@ -62,7 +62,7 @@ public class PencilCaseStateManager : IStateManager
     {
         cur_unitState.Set_Event(eEvent.EXIT);
         DamagedState.Set_AtkData(atkData);
-        cur_unitState.nextState = DamagedState;
+        cur_unitState._nextState = DamagedState;
         DamagedState.Reset_State();
         Reset_CurrentUnitState(DamagedState);
     }
@@ -70,7 +70,7 @@ public class PencilCaseStateManager : IStateManager
     public void Set_Die()
     {
         cur_unitState.Set_Event(eEvent.EXIT);
-        cur_unitState.nextState = DieState;
+        cur_unitState._nextState = DieState;
         DieState.Reset_State();
         Reset_CurrentUnitState(DieState);
     }
@@ -78,7 +78,7 @@ public class PencilCaseStateManager : IStateManager
     public void Set_Idle()
     {
         cur_unitState.Set_Event(eEvent.EXIT);
-        cur_unitState.nextState = IdleState;
+        cur_unitState._nextState = IdleState;
         IdleState.Reset_State();
         Reset_CurrentUnitState(IdleState);
     }
@@ -114,11 +114,8 @@ public class PencilCaseStateManager : IStateManager
         return _stageData;
     }
 }
-public class PencilCase_Idle_State : Stationary_UnitState
+public class PencilCase_Idle_State : UnitState
 {
-    public PencilCase_Idle_State(Transform myTrm, Transform mySprTrm, Unit myUnit) : base(myTrm, mySprTrm, myUnit)
-    {
-    }
     public override Unit Pull_Unit()
     {
         return null;
@@ -133,13 +130,9 @@ public class PencilCase_Idle_State : Stationary_UnitState
 
     }
 }
-public class PencilCase_Damaged_State : Stationary_UnitState
+public class PencilCase_Damaged_State : UnitState
 {
     private AtkData atkData;
-
-    public PencilCase_Damaged_State(Transform myTrm, Transform mySprTrm, Unit myUnit) : base(myTrm, mySprTrm, myUnit)
-    {
-    }
 
     public void Set_AtkData(AtkData atkData)
     {
@@ -148,11 +141,11 @@ public class PencilCase_Damaged_State : Stationary_UnitState
 
     public override void Enter()
     {
-        curState = eState.DAMAGED;
-        curEvent = eEvent.ENTER;
+        _curState = eState.DAMAGED;
+        _curEvent = eEvent.ENTER;
 
-        myUnit.SubtractHP(atkData.damage);
-        if (myUnit.UnitStat.Hp <= 0)
+        _myUnit.SubtractHP(atkData.damage);
+        if (_myUnit.UnitStat.Hp <= 0)
         {
             _stateManager.Set_Die();
             return;
@@ -167,8 +160,8 @@ public class PencilCase_Damaged_State : Stationary_UnitState
 
     public override void Animation(params float[] value)
     {
-        float rotate = myUnit.ETeam == TeamType.MyTeam ? 360 : -360;
-        mySprTrm.DORotate(new Vector3(0, 0, rotate), value[0], RotateMode.FastBeyond360);
+        float rotate = _myUnit.ETeam == TeamType.MyTeam ? 360 : -360;
+        _mySprTrm.DORotate(new Vector3(0, 0, rotate), value[0], RotateMode.FastBeyond360);
     }
     public override Unit Pull_Unit()
     {
@@ -184,14 +177,8 @@ public class PencilCase_Damaged_State : Stationary_UnitState
 
     }
 }
-public class PencilCase_Die_State : Stationary_UnitState
+public class PencilCase_Die_State : UnitState
 {
-    public PencilCase_Die_State(Transform myTrm, Transform mySprTrm, Unit myUnit) : base(myTrm, mySprTrm, myUnit)
-    {
-        curState = eState.DIE;
-        curEvent = eEvent.ENTER;
-    }
-
     public override void Enter()
     {
         //battleManager.CommandCamera.WinCamEffect(myTrm.position, myUnit.eTeam != TeamType.MyTeam);
@@ -200,10 +187,10 @@ public class PencilCase_Die_State : Stationary_UnitState
 
     private void Reset_SprTrm()
     {
-        mySprTrm.localPosition = Vector3.zero;
-        mySprTrm.localScale = Vector3.one;
-        mySprTrm.eulerAngles = Vector3.zero;
-        mySprTrm.DOKill();
+        _mySprTrm.localPosition = Vector3.zero;
+        _mySprTrm.localScale = Vector3.one;
+        _mySprTrm.eulerAngles = Vector3.zero;
+        _mySprTrm.DOKill();
     }
     public override Unit Pull_Unit()
     {
