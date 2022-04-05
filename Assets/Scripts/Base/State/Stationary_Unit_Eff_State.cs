@@ -34,7 +34,7 @@ public abstract class EffState
 
         Set_EffType(statusEffect, valueList);
         Set_EffValue(valueList);
-        this.battleManager = myUnit._battleManager;
+        this.battleManager = myUnit.BattleManager;
     }
 
     public virtual void Enter() { curEvent = eEvent.UPDATE; }

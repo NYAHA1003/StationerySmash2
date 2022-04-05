@@ -10,7 +10,7 @@ namespace Utill
         public Vector2[] originpoints;
         private Vector2[] points;
 
-        public Vector2[] Set_Pos(Vector2 trm_Pos)
+        public Vector2[] SetPos(Vector2 trm_Pos)
         {
             Vector2[] points = new Vector2[4];
             points[0] = trm_Pos + originpoints[0];

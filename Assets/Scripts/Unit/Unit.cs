@@ -7,41 +7,41 @@ using Battle;
 public class Unit : MonoBehaviour
 {
     //프로퍼티
-    public UnitSprite UnitSprite => _unitSprite;
-    public UnitStateEff UnitStateEff => _unitStateEff;
-    public UnitStat UnitStat => _unitStat;
-    public UnitStateChanger UnitStateChanger => _unitStateChanger;
-    public UnitData UnitData => _unitData;
-    public TeamType ETeam => _eTeam;
-    public CollideData _collideData;
-    public BattleManager _battleManager { get; protected set; } = null;
-    public int myDamagedId { get; protected set; } = 0;
-    public int damageCount { get; set; } = 0;
-    public int _myUnitId { get; protected set; } = 0;
-    public bool _isInvincibility { get; protected set; } = false;
-    public bool isDontThrow { get; protected set; } = false;
+    public UnitSprite UnitSprite => _unitSprite;//유닛 스프라이트 및 UI 관리
+    public UnitStateEff UnitStateEff => _unitStateEff; //유닛 상태이상 관리
+    public UnitStat UnitStat => _unitStat; // 유닛 스탯 관리
+    public UnitStateChanger UnitStateChanger => _unitStateChanger; //유닛별 스테이트 관리
+    public UnitData UnitData => _unitData; //유닛 데이터
+    public TeamType ETeam => _eTeam; // 유닛의 팀
+    public CollideData CollideData => _collideData; // 유닛의 콜라이더 데이터
+    public BattleManager BattleManager => _battleManager; //배틀매니저 참조
+    public int MyDamagedId { get; protected set; } = 0; // 유닛의 현재 공격 ID
+    public int DamageCount { get; set; } = 0; // 공격카운트
+    public int MyUnitId { get; protected set; } = 0; //유닛의 ID
+    public bool _isInvincibility { get; protected set; } = false; // 무적 & 무시 여부
+    public bool _isDontThrow { get; protected set; } = false; // 던지기 가능 여부
     
     //변수
+    private CollideData _collideData = default; 
+    private UnitStateEff _unitStateEff = new UnitStateEff();
     private UnitStat _unitStat = new UnitStat();
     private UnitStateChanger _unitStateChanger = new UnitStateChanger();
     private TeamType _eTeam = TeamType.Null;
+    protected BattleManager _battleManager = null;    
+    protected bool _isSettingEnd = false;
 
     //참조 변수
     private UnitData _unitData= null;
     private StageData _stageData = null;
-    private Camera mainCam = null;
+    private Camera _mainCam = null;
 
-    //유닛 설정 여부
-    protected bool _isSettingEnd;
-    
     //인스펙터 참조 변수
     [SerializeField]
     private UnitSprite _unitSprite = null;
-    private UnitStateEff _unitStateEff = new UnitStateEff();
 
     protected virtual void Start()
     {
-        mainCam = Camera.main;
+        _mainCam = Camera.main;
     }
 
     /// <summary>
@@ -62,42 +62,47 @@ public class Unit : MonoBehaviour
     /// <param name="id"></param>
     public virtual void SetUnitData(DataBase dataBase, TeamType eTeam, StageData stageData, int id, int grade)
     {
-        _unitStateEff.SetStateEff(this, _unitSprite.SpriteRenderer);
+        //유닛 데이터 받아오기
         _unitData = dataBase.unitData;
-        _eTeam = eTeam;
-        _collideData = new CollideData();
-        _collideData.originpoints = dataBase.unitData.colideData.originpoints;
-        _unitSprite.SetUIAndSprite(eTeam, dataBase.card_Sprite);
-
-        //딜레이시스템
-        _unitStat.ResetAttackDelay();
-        _unitSprite.Update_DelayBar(_unitStat._attackDelay);
-        Set_IsInvincibility(false);
-        Set_IsDontThrow(false);
-        _unitSprite.Show_Canvas(true);
-
-        _isInvincibility = true;
-        _isSettingEnd = false;
 
         //팀, 이름 설정
-        _unitSprite.SetTeamColor(eTeam);
+        _eTeam = eTeam;
         transform.name = dataBase.card_Name + _eTeam;
+
+        //물리판정 설정
+        _collideData = new CollideData();
+        _collideData.originpoints = dataBase.unitData.colideData.originpoints;
+
+        //딜레이시스템
+        Set_IsInvincibility(false);
+        Set_IsDontThrow(false);
         
-        //스탯 설정
+        //스테이지 데이터 가져오기
         _stageData = stageData;
+
+        //스탯 설정
+        _unitStat.ResetAttackDelay();
         _unitStat.SetUnitData(_unitData);
         _unitStat.SetGradeStat(grade);
         _unitStat.SetWeight();
-        _myUnitId = id;
+        MyUnitId = id;
 
-        //깨짐 이미지
+        //상태이상
+        _unitStateEff.SetStateEff(this, _unitSprite.SpriteRenderer);
+
+        //스프라이트 초기화
+        _unitSprite.SetUIAndSprite(eTeam, dataBase.card_Sprite);
+        _unitSprite.Update_DelayBar(_unitStat._attackDelay);
+        _unitSprite.Show_Canvas(true);
+        _unitSprite.SetTeamColor(eTeam);
         _unitSprite.Set_HPSprite(_unitStat._hp, _unitStat._maxHp);
 
         //스테이트 설정
-        _unitStateChanger.StateManager.SetStageData(_stageData);
+        _unitStateChanger.SetStageData(_stageData);
         _unitStateChanger.SetStateManager(dataBase.unitData.unitType, transform, _unitSprite.SpriteRenderer.transform, this); ;
         _unitStateChanger.SetUnitState();
 
+        //설정 끝, 무적판정 제거
         _isInvincibility = false;
         _isSettingEnd = true;
     }
@@ -125,18 +130,7 @@ public class Unit : MonoBehaviour
         _unitStateChanger.DeleteState(_unitData.unitType);
         _unitStateChanger.StateNull();
         _unitStateEff.DeleteEffStetes();
-
-        switch (_eTeam)
-        {
-            case TeamType.Null:
-                break;
-            case TeamType.MyTeam:
-                _battleManager.CommandUnit._playerUnitList.Remove(this);
-                break;
-            case TeamType.EnemyTeam:
-                _battleManager.CommandUnit._enemyUnitList.Remove(this);
-                break;
-        }
+        RemoveUnitList();
     }
 
     /// <summary>
@@ -157,7 +151,6 @@ public class Unit : MonoBehaviour
     {
         _unitStateEff.AddStatusEffect(atkType, value);
     }
-
 
     /// <summary>
     /// 당길 유닛을 선택했을 때
@@ -185,7 +178,6 @@ public class Unit : MonoBehaviour
         _unitStateChanger.UnitState.Throw_Unit(pos);
     }
 
-
     /// <summary>
     /// 무적 여부 설정
     /// </summary>
@@ -201,7 +193,7 @@ public class Unit : MonoBehaviour
     /// <param name="isboolean">True면 던지기 불가능, False면 던지기 가능</param>
     public void Set_IsDontThrow(bool isboolean)
     {
-        isDontThrow = isboolean;
+        _isDontThrow = isboolean;
     }
 
     /// <summary>
@@ -212,6 +204,25 @@ public class Unit : MonoBehaviour
     {
         _unitStat.SubtractHP(damage);
         _unitSprite.Set_HPSprite(_unitStat._hp, _unitStat._maxHp);
+    }
+
+
+    /// <summary>
+    /// 유닛 리스트에서 이 오브젝트를 제거
+    /// </summary>
+    private void RemoveUnitList()
+    {
+        switch (_eTeam)
+        {
+            case TeamType.Null:
+                break;
+            case TeamType.MyTeam:
+                _battleManager.CommandUnit._playerUnitList.Remove(this);
+                break;
+            case TeamType.EnemyTeam:
+                _battleManager.CommandUnit._enemyUnitList.Remove(this);
+                break;
+        }
     }
 
 }

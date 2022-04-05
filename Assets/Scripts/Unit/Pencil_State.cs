@@ -228,11 +228,11 @@ public class Pencil_Move_State : Stationary_UnitState
                 break;
             case TeamType.MyTeam:
                 Move_MyTeam();
-                Check_Range(myUnit._battleManager.CommandUnit._enemyUnitList);
+                Check_Range(myUnit.BattleManager.CommandUnit._enemyUnitList);
                 return;
             case TeamType.EnemyTeam:
                 Move_EnemyTeam();
-                Check_Range(myUnit._battleManager.CommandUnit._playerUnitList);
+                Check_Range(myUnit.BattleManager.CommandUnit._playerUnitList);
                 return;
         }
     }
@@ -350,7 +350,7 @@ public class Pencil_Attack_State : Stationary_UnitState
         curEvent = eEvent.EXIT;
         if (Random.Range(0,100) <= myUnit.UnitStat.Return_Accuracy())
         {
-            myUnit._battleManager.CommandEffect.SetEffect(EffectType.Attack, new EffData(targetUnit.transform.position, 0.2f));
+            myUnit.BattleManager.CommandEffect.SetEffect(EffectType.Attack, new EffData(targetUnit.transform.position, 0.2f));
             AtkData atkData = new AtkData(myUnit, myUnit.UnitStat.Return_Damage(), myUnit.UnitStat.Return_Knockback(), 0, myUnitData.dir, myUnit.ETeam == TeamType.MyTeam, 0, originAtkType, originValue);
             targetUnit.Run_Damaged(atkData);
             targetUnit = null;
@@ -639,12 +639,12 @@ public class Pencil_Throw_State : Stationary_UnitState
         Check_Wall();
         if (myUnit.ETeam.Equals(TeamType.MyTeam))
         {
-            Check_Collide(myUnit._battleManager.CommandUnit._enemyUnitList);
+            Check_Collide(myUnit.BattleManager.CommandUnit._enemyUnitList);
             return;
         }
         if (myUnit.ETeam.Equals(TeamType.EnemyTeam))
         {
-            Check_Collide(myUnit._battleManager.CommandUnit._playerUnitList);
+            Check_Collide(myUnit.BattleManager.CommandUnit._playerUnitList);
             return;
         }
     }
@@ -658,7 +658,7 @@ public class Pencil_Throw_State : Stationary_UnitState
             {
                 continue;
             }
-            float distance = Utill.Collider.FindDistanceBetweenSegments(myUnit._collideData.Set_Pos(myTrm.position), targetUnit._collideData.Set_Pos(targetUnit.transform.position));
+            float distance = Utill.Collider.FindDistanceBetweenSegments(myUnit.CollideData.SetPos(myTrm.position), targetUnit.CollideData.SetPos(targetUnit.transform.position));
             if (distance < 0.2f)
             {
                 Run_ThrowAttack(targetUnit);

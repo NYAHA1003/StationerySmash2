@@ -80,7 +80,7 @@ public abstract class UnitState
             //무조건 무시해야할 공격
             return;
         }
-        if (atkData.damageId == myUnit.myDamagedId)
+        if (atkData.damageId == myUnit.MyDamagedId)
         {
             //똑같은 공격 아이디를 지닌 공격은 무시함
             return;
@@ -89,7 +89,7 @@ public abstract class UnitState
     }
     public virtual Unit Pull_Unit()
     {
-        if (myUnit.isDontThrow)
+        if (myUnit._isDontThrow)
             return null;
         if (curState.Equals(eState.DAMAGED))
         {
@@ -101,7 +101,7 @@ public abstract class UnitState
     }
     public virtual Unit Pulling_Unit()
     {
-        if (myUnit.isDontThrow)
+        if (myUnit._isDontThrow)
             return null;
         if (curState.Equals(eState.DAMAGED))
         {
