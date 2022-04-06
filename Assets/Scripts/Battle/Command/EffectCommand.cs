@@ -13,7 +13,7 @@ namespace Battle
         private Transform _effectPoolManager;
         [SerializeField]
         private List<GameObject> _effectObjectList;
-
+        /*
         public void Awake()
         {
             SetEffectObjectList("Attack");
@@ -37,6 +37,7 @@ namespace Battle
                   Addressables.Release(obj);
               };
         }
+        */
         /// <summary>
         /// √ ±‚»≠
         /// </summary>
