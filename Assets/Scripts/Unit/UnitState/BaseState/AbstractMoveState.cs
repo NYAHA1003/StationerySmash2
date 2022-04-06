@@ -106,9 +106,17 @@ public abstract class AbstractMoveState : AbstractUnitState
             if (Vector2.Distance(_myTrm.position, targetUnit.transform.position) < _myUnit.UnitStat.Return_Range())
             {
                 //사정거리에 상대가 있으면 공격
-                _stateManager.Set_Attack(targetUnit);
+                CheckTargetUnit(targetUnit);
             }
         }
+    }
 
+    /// <summary>
+    /// 사정거리안에 적이 있다
+    /// </summary>
+    /// <param name="targetUnit"></param>
+    protected virtual void CheckTargetUnit(Unit targetUnit)
+    {
+        _stateManager.Set_Attack(targetUnit);
     }
 }
