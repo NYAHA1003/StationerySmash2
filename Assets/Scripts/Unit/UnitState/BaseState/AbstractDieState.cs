@@ -27,7 +27,7 @@ public abstract class AbstractDieState : AbstractUnitState
     /// <summary>
     /// 랜덤으로 3가지 죽음 애니메이션중 하나를 사용
     /// </summary>
-    private void RandomDieAnimation()
+    protected void RandomDieAnimation()
     {
         DieType dietype = Utill.Die.Return_RandomDieType();
         switch (dietype)
@@ -47,7 +47,7 @@ public abstract class AbstractDieState : AbstractUnitState
     /// <summary>
     /// 화면에 부딪치는 죽음
     /// </summary>
-    private void AnimationScreenKO()
+    protected void AnimationScreenKO()
     {
         //날라가는 위치 설정
         Vector3 diePos = new Vector3(_myTrm.position.x, _myTrm.position.y + 0.4f, 0);
@@ -81,7 +81,7 @@ public abstract class AbstractDieState : AbstractUnitState
     /// <summary>
     /// 날라가서 별이 되는 죽음
     /// </summary>
-    private void AnimationStarKO()
+    protected void AnimationStarKO()
     {
         //날라가는 위치 설정
         Vector3 diePos = new Vector3(_myTrm.position.x, 1, 0);
@@ -107,7 +107,7 @@ public abstract class AbstractDieState : AbstractUnitState
     /// <summary>
     /// 스테이지 바깥쪽으로 날라가는 죽음
     /// </summary>
-    private void AnimationOutKO()
+    protected void AnimationOutKO()
     {
         //날라가는 위치 설정
         Vector3 diePos = new Vector3(_myTrm.position.x, _myTrm.position.y - 2, 0);

@@ -18,6 +18,7 @@ public class UnitStat
     public int KnockbackPercent => _knockbackPercent;//넉백 퍼센트
     public int Hp => _hp;//체력 퍼센트
     public int MaxHp => _maxHp;//최대체력 퍼센트
+    public int Grade => _grade; //현재 단계
     public float AttackDelay => _attackDelay;//공격 딜레이
 
     //변수
@@ -31,6 +32,7 @@ public class UnitStat
     private int _hp = 0;
     private int _maxHp = 0;
     private int _weight = 0;
+    private int _grade = 1;
     private float _attackDelay = 0;
 
     //참조 변수
@@ -50,6 +52,7 @@ public class UnitStat
     /// <param name="grade"></param>
     public void SetGradeStat(int grade)
     {
+        _grade = grade;
         _moveSpeedPercent = 100 * grade;
         _attackSpeedPercent = 100 * grade;
         _damagePercent = 100 * grade;

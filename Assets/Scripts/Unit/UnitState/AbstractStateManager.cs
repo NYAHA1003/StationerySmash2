@@ -108,8 +108,6 @@ public abstract class  AbstractStateManager
         _waitState.ResetState();
         Reset_CurrentUnitState(_waitState);
     }
-
-
     public void Set_WaitExtraTime(float extraTime)
     {
         this._waitExtraTime = extraTime;

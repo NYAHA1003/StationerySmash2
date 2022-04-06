@@ -4,7 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using Utill;
 
-public class PencilStateManager : AbstractStateManager
+public class PencilState : AbstractStateManager
 {
     public override void Set_State()
     {
