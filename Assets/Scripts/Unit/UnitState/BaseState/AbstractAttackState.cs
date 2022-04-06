@@ -4,7 +4,7 @@ using UnityEngine;
 using Utill;
 using DG.Tweening;
 
-public class UnitAttackState : UnitState
+public abstract class AbstractAttackState : AbstractUnitState
 {
     private Unit targetUnit;
     private float cur_delay = 0;

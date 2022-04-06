@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 using DG.Tweening;
-public abstract class UnitIdleState : UnitState
+public abstract class AbstractIdleState : AbstractUnitState
 {
     public override void Enter()
     {

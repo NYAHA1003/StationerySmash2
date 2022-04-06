@@ -4,7 +4,7 @@ using UnityEngine;
 using Utill;
 using DG.Tweening;
 
-public abstract class UnitWaitState : UnitState
+public abstract class AbstractWaitState : AbstractUnitState
 {
     private float waitTime;
     private float extraWaitTime;

@@ -4,9 +4,9 @@ using UnityEngine;
 using Utill;
 using DG.Tweening;
 
-public class UnitDamagedState : UnitState
+public abstract class AbstractDamagedState : AbstractUnitState
 {
-    private AtkData atkData;
+    protected AtkData atkData;
 
     public void Set_AtkData(AtkData atkData)
     {

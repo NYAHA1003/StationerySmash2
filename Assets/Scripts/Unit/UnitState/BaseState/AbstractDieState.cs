@@ -4,7 +4,7 @@ using UnityEngine;
 using Utill;
 using DG.Tweening;
 
-public class UnitDieState : UnitState
+public abstract class AbstractDieState : AbstractUnitState
 {
     public override void Enter()
     {

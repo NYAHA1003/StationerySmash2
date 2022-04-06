@@ -45,12 +45,13 @@ public class PoolManager : MonoBehaviour
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="count"></param>
-    public static void CreatePool<T>(Transform myTrm, Transform mySprTrm, Unit myUnit) where T : IStateManager, new()
+    public static void CreatePool<T>(Transform myTrm, Transform mySprTrm, Unit myUnit) where T : AbstractStateManager, new()
     {
         Queue<T> q = new Queue<T>();
 
         T g = new T();
-        g.Set_State(myTrm, mySprTrm, myUnit);
+        g.Set_State();
+        g.Reset_State(myTrm, mySprTrm, myUnit);
 
         q.Enqueue(g);
 
@@ -99,7 +100,7 @@ public class PoolManager : MonoBehaviour
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static T GetItem<T>(Transform myTrm, Transform mySprTrm, Unit myUnit) where T : IStateManager, new()
+    public static T GetItem<T>(Transform myTrm, Transform mySprTrm, Unit myUnit) where T : AbstractStateManager, new()
     {
         T item = default(T);
 
@@ -110,7 +111,7 @@ public class PoolManager : MonoBehaviour
             if (q.Count == 0)
             {  //안 사용하는 상태가 없으면 새로운 상태를 만든다
                 item = new T();
-                item.Set_State(myTrm, mySprTrm, myUnit);
+                item.Set_State();
                 item.Reset_State(myTrm, mySprTrm, myUnit);
             }
             else
@@ -175,7 +176,7 @@ public class PoolManager : MonoBehaviour
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="state"></param>
-    public static void AddItem<T>(T state) where T : IStateManager
+    public static void AddItem<T>(T state) where T : AbstractStateManager
     {
         Queue<T> q = (Queue<T>)stateDictionary[typeof(T).Name];
         q.Enqueue(state);

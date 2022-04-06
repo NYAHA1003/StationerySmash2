@@ -21,7 +21,7 @@ public abstract class EffState
     protected Unit _myUnit = null; //유닛
     protected UnitData _myUnitData = null; // 유닛 데이터
     protected UnitStateEff _unitStateEff = null; // 유닛의 상태이상 컴포트
-    protected IStateManager _stateManager = null; //스테이트 매니저
+    protected AbstractStateManager _stateManager = null; //스테이트 매니저
     protected IEffect _effectObj = null; // 이펙트에 사용되는 오브젝트
     
     //변수

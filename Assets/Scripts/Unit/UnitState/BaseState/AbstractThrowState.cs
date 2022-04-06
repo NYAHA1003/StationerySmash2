@@ -4,7 +4,7 @@ using UnityEngine;
 using Utill;
 using DG.Tweening;
 
-public class UnitThrowState : UnitState
+public abstract class AbstractThrowState : AbstractUnitState
 {
     Vector2 mousePos = Vector2.zero;
 

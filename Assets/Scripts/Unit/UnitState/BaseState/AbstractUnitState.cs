@@ -5,24 +5,24 @@ using DG.Tweening;
 using Utill;
 using Battle;
 
-public abstract class UnitState
+public abstract class AbstractUnitState
 {
     //프로퍼티
     public eState CurState => _curState;
     public eEvent CurEvent => _curEvent;
-    public UnitState NextState => _nextState; // 다음 상태
+    public AbstractUnitState NextState => _nextState; // 다음 상태
     public Transform MyTrm => _myTrm;
     public Transform MySprTrm => _mySprTrm;
     public Unit MyUnit => _myUnit;
-    public IStateManager StateManager => _stateManager;
+    public AbstractStateManager StateManager => _stateManager;
     public UnitData MyUnitData => _myUnitData;
 
 
     //참조형 변수
     protected Transform _myTrm = null;
     protected Transform _mySprTrm = null;
-    public UnitState _nextState = null; // 다음 상태
-    protected IStateManager _stateManager = null;
+    public AbstractUnitState _nextState = null; // 다음 상태
+    protected AbstractStateManager _stateManager = null;
     protected UnitData _myUnitData = null;
     protected Unit _myUnit = null;
 
@@ -49,7 +49,7 @@ public abstract class UnitState
     /// 로직 실행
     /// </summary>
     /// <returns></returns>
-    public virtual UnitState Process()
+    public virtual AbstractUnitState Process()
     {
         if (_curEvent.Equals(eEvent.ENTER))
         {
@@ -73,7 +73,7 @@ public abstract class UnitState
         _curEvent = eEvent;
     }
 
-    public void Set_StateChange(IStateManager stateChange)
+    public void Set_StateChange(AbstractStateManager stateChange)
     {
         this._stateManager = stateChange;
     }

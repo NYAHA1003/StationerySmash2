@@ -9,13 +9,13 @@ using Utill;
 public class UnitStateChanger
 {
     //프로퍼티
-    public IStateManager StateManager => _stateManager;
-    public UnitState UnitState => _unitState;
+    public AbstractStateManager StateManager => _stateManager;
+    public AbstractUnitState UnitState => _unitState;
 
     //참조변수
-    private UnitState _unitState = null;
+    private AbstractUnitState _unitState = null;
     private StageData _stageData = null;
-    private IStateManager _stateManager = null;
+    private AbstractStateManager _stateManager = null;
 
     /// <summary>
     /// 유닛 스테이트 로직 수행
