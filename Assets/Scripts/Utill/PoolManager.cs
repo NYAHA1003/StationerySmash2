@@ -98,7 +98,7 @@ public class PoolManager : MonoBehaviour
     /// <param name="myUnit"></param>
     /// <param name="statusEffect"></param>
     /// <param name="valueList"></param>
-    public static void CreatePoolPencilCase<T>() where T : AbstractPencilCaseAbilityState, new()
+    public static void CreatePoolPencilCase<T>() where T : AbstractPencilCaseAbility, new()
     {
         Queue<T> q = new Queue<T>();
 
@@ -202,7 +202,7 @@ public class PoolManager : MonoBehaviour
     /// <param name="mySprTrm"></param>
     /// <param name="myUnit"></param>
     /// <returns></returns>
-    public static T GetPencilCase<T>() where T : AbstractPencilCaseAbilityState, new()
+    public static T GetPencilCase<T>() where T : AbstractPencilCaseAbility, new()
     {
         T item = default(T);
 

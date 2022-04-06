@@ -64,13 +64,27 @@ public class UnitStateChanger
             default:
             case UnitType.None:
             case UnitType.Pencil:
-            case UnitType.Eraser:
-            case UnitType.Sharp:
-            case UnitType.BallPen:
                 _stateManager = PoolManager.GetUnit<PencilState>(transform, spriteRendererTransform, unit);
                 break;
-                //stateManager = PoolManager.GetItem<BallpenStateManager>(transform, _unitSprite.SpriteRenderer.transform, this);
-                //break;
+            case UnitType.Eraser:
+                _stateManager = PoolManager.GetUnit<EraserState>(transform, spriteRendererTransform, unit);
+                break;
+            case UnitType.Sharp:
+                _stateManager = PoolManager.GetUnit<SharpState>(transform, spriteRendererTransform, unit);
+                break;
+            case UnitType.BallPen:
+                break;
+
+                //필통 관련
+            case UnitType.RedCar:
+                _stateManager = PoolManager.GetUnit<RedCarState>(transform, spriteRendererTransform, unit);
+                break;
+            case UnitType.YellowCar:
+                _stateManager = PoolManager.GetUnit<YellowCarState>(transform, spriteRendererTransform, unit);
+                break;
+            case UnitType.GreenCar:
+                _stateManager = PoolManager.GetUnit<GreenCarState>(transform, spriteRendererTransform, unit);
+                break;
         }
     }
 

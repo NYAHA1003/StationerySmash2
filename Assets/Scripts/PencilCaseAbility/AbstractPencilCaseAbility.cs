@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 
-public abstract class AbstractPencilCaseAbilityState
+public abstract class AbstractPencilCaseAbility
 {
     public BattleManager _battleManager;
 
-    public void SetState(BattleManager battleManager)
+    public virtual void SetState(BattleManager battleManager)
     {
         _battleManager = battleManager;
     }

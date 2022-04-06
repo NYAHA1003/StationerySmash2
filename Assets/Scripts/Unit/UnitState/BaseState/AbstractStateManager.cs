@@ -49,7 +49,7 @@ public abstract class  AbstractStateManager
         Reset_CurrentUnitState(_idleState);
     }
 
-    public void Set_Attack(Unit targetUnit)
+    public virtual void Set_Attack(Unit targetUnit)
     {
         _currrentState.SetEvent(eEvent.EXIT);
         _attackState.Set_Target(targetUnit);
@@ -58,7 +58,7 @@ public abstract class  AbstractStateManager
         Reset_CurrentUnitState(_attackState);
     }
 
-    public void Set_Damaged(AtkData atkData)
+    public virtual void Set_Damaged(AtkData atkData)
     {
         _currrentState.SetEvent(eEvent.EXIT);
         _damagedState.Set_AtkData(atkData);
@@ -67,7 +67,7 @@ public abstract class  AbstractStateManager
         Reset_CurrentUnitState(_damagedState);
     }
 
-    public void Set_Die()
+    public virtual void Set_Die()
     {
         _currrentState.SetEvent(eEvent.EXIT);
         _currrentState._nextState = _dieState;
@@ -75,7 +75,7 @@ public abstract class  AbstractStateManager
         Reset_CurrentUnitState(_dieState);
     }
 
-    public void Set_Idle()
+    public virtual void Set_Idle()
     {
         _currrentState.SetEvent(eEvent.EXIT);
         _currrentState._nextState = _idleState;
@@ -83,7 +83,7 @@ public abstract class  AbstractStateManager
         Reset_CurrentUnitState(_idleState);
     }
 
-    public void Set_Move()
+    public virtual void Set_Move()
     {
         _currrentState.SetEvent(eEvent.EXIT);
         _currrentState._nextState = _moveState;
@@ -91,7 +91,7 @@ public abstract class  AbstractStateManager
         Reset_CurrentUnitState(_moveState);
     }
 
-    public void Set_Throw()
+    public virtual void Set_Throw()
     {
         _currrentState.SetEvent(eEvent.EXIT);
         _currrentState._nextState = _throwState;
@@ -99,7 +99,7 @@ public abstract class  AbstractStateManager
         Reset_CurrentUnitState(_throwState);
     }
 
-    public void Set_Wait(float time)
+    public virtual void Set_Wait(float time)
     {
         _currrentState.SetEvent(eEvent.EXIT);
         _waitState.Set_Time(time);
@@ -108,12 +108,12 @@ public abstract class  AbstractStateManager
         _waitState.ResetState();
         Reset_CurrentUnitState(_waitState);
     }
-    public void Set_WaitExtraTime(float extraTime)
+    public virtual void Set_WaitExtraTime(float extraTime)
     {
         this._waitExtraTime = extraTime;
     }
 
-    public void Set_ThrowPos(Vector2 pos)
+    public virtual void Set_ThrowPos(Vector2 pos)
     {
         this._throwState.SetThrowPos(pos);
     }

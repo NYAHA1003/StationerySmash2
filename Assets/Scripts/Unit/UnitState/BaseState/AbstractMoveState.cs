@@ -47,7 +47,7 @@ public abstract class AbstractMoveState : AbstractUnitState
     /// <summary>
     /// 플레이어 팀의 유닛 이동
     /// </summary>
-    private void MoveMyTeam()
+    protected virtual void MoveMyTeam()
     {
         if (_myTrm.transform.position.x < _stateManager.GetStageData().max_Range - 0.1f)
         {
@@ -58,7 +58,7 @@ public abstract class AbstractMoveState : AbstractUnitState
     /// <summary>
     /// 적 팀의 유닛 이동
     /// </summary>
-    private void MoveEnemyTeam()
+    protected virtual void MoveEnemyTeam()
     {
         if (_myTrm.transform.position.x > -_stateManager.GetStageData().max_Range + 0.1f)
         {
@@ -70,7 +70,7 @@ public abstract class AbstractMoveState : AbstractUnitState
     /// 상대 유닛이 사정거리에 있는지 체크
     /// </summary>
     /// <param name="list"></param>
-    private void CheckRange(List<Unit> list)
+    protected virtual void CheckRange(List<Unit> list)
     {
         float targetRange = float.MaxValue;
         Unit targetUnit = null;

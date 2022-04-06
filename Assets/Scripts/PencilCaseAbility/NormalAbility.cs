@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class NormalAbilityState : AbstractPencilCaseAbilityState
+public class NormalAbility : AbstractPencilCaseAbility
 {
     /// <summary>
     /// 카드를 모두 제거한다

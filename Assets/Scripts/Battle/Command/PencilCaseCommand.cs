@@ -10,14 +10,17 @@ namespace Battle
     {
         public PencilCaseDataSO PencilCaseDataMy => pencilCaseDataMy;
         public PencilCaseDataSO PencilCaseDataEnemy => pencilCaseDataEnemy;
+        public PencilCaseUnit PlayerPencilCase => _playerPencilCase;
+        public PencilCaseUnit EnemyPencilCase => _enemyPencilCase;
+
 
         //참조 변수
         private UnitCommand _unitCommand = null;
         private StageData _stageData = null;
         private PencilCaseDataSO pencilCaseDataMy = null;
         private PencilCaseDataSO pencilCaseDataEnemy = null;
-        private AbstractPencilCaseAbilityState _playerAbilityState = null;
-        private AbstractPencilCaseAbilityState _enemyAbilityState = null;
+        private AbstractPencilCaseAbility _playerAbilityState = null;
+        private AbstractPencilCaseAbility _enemyAbilityState = null;
 
         //인스펙터 참조 변수
         [SerializeField]
