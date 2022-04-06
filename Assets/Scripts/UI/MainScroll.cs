@@ -8,9 +8,9 @@ using Util;
 public class MainScroll : AgentScroll
 {
     [SerializeField]
-    private Slider accentSlider;
+    private Slider _accentSlider; //메인 패널 강조슬라이더 
     [SerializeField]
-    private RectTransform[] panelIcons;
+    private RectTransform[] _panelIcons; //패널 아이콘
     /// <summary>
     /// 부모 클래스에서 발동 
     /// </summary>
@@ -23,8 +23,8 @@ public class MainScroll : AgentScroll
     /// </summary>
     protected override void ChildStart()
     {
-        targetPos = pos[1];
-        targetIndex = 1;
+        _targetPos = pos[1];
+        _targetIndex = 1;
         StressImage();
     }
     /// <summary>
@@ -32,7 +32,7 @@ public class MainScroll : AgentScroll
     /// </summary>
     protected override void ChildUpdate()
     {
-        accentSlider.value = Mathf.Lerp(accentSlider.value, scrollbar.value, 0.2f);
+        _accentSlider.value = Mathf.Lerp(_accentSlider.value, _scrollbar.value, 0.2f);
     }
 
     /// <summary>
@@ -42,7 +42,7 @@ public class MainScroll : AgentScroll
     public override void OnEndDrag(PointerEventData eventData)
     {
         base.OnEndDrag(eventData);
-        if (curPos == targetPos)
+        if (_curPos == _targetPos)
         {
             print(eventData.delta.x);
             DeltaSlide(eventData.delta.y);
@@ -56,14 +56,14 @@ public class MainScroll : AgentScroll
     /// </summary>
     private void StressImage()
     {
-        for (int i = 0; i < panelIcons.Length; i++)
+        for (int i = 0; i < _panelIcons.Length; i++)
         {
-            if (targetIndex == i)
+            if (_targetIndex == i)
             {
-                panelIcons[i].anchoredPosition3D = new Vector3(-80, 0);
-                Debug.Log("현재 타겟 인덱스 : " + targetIndex);
+                _panelIcons[i].anchoredPosition3D = new Vector3(-80, 0);
+                Debug.Log("현재 타겟 인덱스 : " + _targetIndex);
             }
-            else panelIcons[i].anchoredPosition3D = new Vector3(0, 0);
+            else _panelIcons[i].anchoredPosition3D = new Vector3(0, 0);
         }
     }
 
@@ -79,8 +79,8 @@ public class MainScroll : AgentScroll
             Debug.LogError("메인 패널 움직이는 범위 넘어감 0~SIZE-1 사이 값이 아님");
             return;
         }
-        targetIndex = SIZE - (int)n - 1;
-        targetPos = pos[(int)n];
+        _targetIndex = SIZE - (int)n - 1;
+        _targetPos = pos[(int)n];
         StressImage();
     }
     #endregion

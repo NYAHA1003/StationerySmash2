@@ -6,11 +6,11 @@ using Util;
 public class Btn_MainPanel2
 {
     [SerializeField, Header("플레이어 덱"), Space(5)]
-    private GameObject deck;
+    private GameObject _deck;
     [SerializeField, Header("카드 설명"), Space(5)]
-    private GameObject cardDescription;
+    private GameObject _cardDescription;
     [SerializeField, Header("설정 패널"), Space(5)]
-    private GameObject settingPanel;
+    private GameObject _settingPanel;
 
     public void Start()
     {
@@ -29,14 +29,14 @@ public class Btn_MainPanel2
     /// </summary>
     public void OnDeckActive()
     {
-        deck.SetActive(!deck.activeSelf);
+        _deck.SetActive(!_deck.activeSelf);
     }
     /// <summary>
     /// 카드설명 활성화 비활성화 
     /// </summary>
     public void OnCardDescriptoinActive()
     {
-        cardDescription.SetActive(!cardDescription.activeSelf);
+        _cardDescription.SetActive(!_cardDescription.activeSelf);
         //cancelPanel.SetActive(true);
     }
     /// <summary>
@@ -44,7 +44,7 @@ public class Btn_MainPanel2
     /// </summary>
     public void OnSettingActive()
     {
-        settingPanel.SetActive(!settingPanel.activeSelf);
+        _settingPanel.SetActive(!_settingPanel.activeSelf);
     }
 
     /// <summary>
@@ -52,20 +52,20 @@ public class Btn_MainPanel2
     /// </summary>
     public void OnDeckDisabled()
     {
-        deck.SetActive(false);
+        _deck.SetActive(false);
     }
     /// <summary>
     /// 카드 설명창 비활성화 (모든 창 일괄 종료 이벤트에서 사용) 
     /// </summary>
     public void OnCardDescriptionDisabled()
     {
-        cardDescription.SetActive(false);
+        _cardDescription.SetActive(false);
     }
     /// <summary>
     /// 설정창 비활성화  (모든 창 일괄 종료 이벤트에서 사용) 
     /// </summary>
     public void OnSettingDisabled()
     {
-        settingPanel.SetActive(false);
+        _settingPanel.SetActive(false);
     }
 }

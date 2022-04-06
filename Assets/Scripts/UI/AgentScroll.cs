@@ -7,61 +7,52 @@ using UnityEngine.EventSystems;
 /// <summary>
 /// 상속용 클래스
 /// </summary>
-public class AgentScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public abstract class AgentScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    protected Scrollbar scrollbar;
-    protected Transform contentTr;
+    protected Scrollbar _scrollbar;
+    protected Transform _contentTr;
 
     protected const int SIZE = 3;
     protected float[] pos = new float[SIZE];
-    protected float distance, curPos, targetPos;
-    protected bool isDrag;
-    protected int targetIndex;
+    protected float _distance, _curPos, _targetPos;
+    protected bool _isDrag;
+    protected int _targetIndex;
 
     private void Awake()
     {
-        scrollbar = this.transform.GetChild(1).GetComponent<Scrollbar>();
-        contentTr = gameObject.transform.GetChild(0).GetChild(0);
+        _scrollbar = this.transform.GetChild(1).GetComponent<Scrollbar>();
+        _contentTr = gameObject.transform.GetChild(0).GetChild(0);
         ChildAwake();
     }
     private void Start()
     {
-        distance = 1f / (SIZE - 1);
-        for (int i = 0; i < SIZE; i++) pos[i] = distance * i;
+        _distance = 1f / (SIZE - 1);
+        for (int i = 0; i < SIZE; i++) pos[i] = _distance * i;
         ChildStart(); 
     }
     private void Update()
     {
-        if (!isDrag)
-            scrollbar.value = Mathf.Lerp(scrollbar.value, targetPos, 0.1f);
+        if (!_isDrag)
+            _scrollbar.value = Mathf.Lerp(_scrollbar.value, _targetPos, 0.1f);
         ChildUpdate();
     }
 
-    protected virtual void ChildUpdate()
-    {
-        //nothing 자식용
-    }
-    protected virtual void ChildAwake()
-    {
-        //nothing 자식용
-    }
-    protected virtual void ChildStart()
-    {
-        //nothing 자식용
-    }
+    protected abstract void ChildUpdate();
+    protected abstract void ChildAwake();
+    protected abstract void ChildStart();
 
     /// <summary>
     /// 스크롤한 정도에 따라 패널 변경 
     /// </summary>
     /// <returns></returns>
-    float SetPos()
+    private float SetPos()
     {
         for (int i = 0; i < SIZE; i++)
         {
-            if (scrollbar.value < pos[i] + distance * 0.5f && scrollbar.value > pos[i] - distance * 0.5f)
+            if (_scrollbar.value < pos[i] + _distance * 0.5f && _scrollbar.value > pos[i] - _distance * 0.5f)
             {
-                targetIndex = SIZE - i - 1;
-                Debug.Log("타겟인덱스@@" + targetIndex);
+                _targetIndex = SIZE - i - 1;
+                Debug.Log("타겟인덱스@@" + _targetIndex);
                 return pos[i];
             }
         }
@@ -73,29 +64,29 @@ public class AgentScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     /// <param name="deltaValue"></param>
     protected void DeltaSlide(float deltaValue)
     {
-        if (deltaValue > 18 && curPos - distance >= 0)
+        if (deltaValue > 18 && _curPos - _distance >= 0)
         {
-            ++targetIndex;
-            targetPos = curPos - distance;
+            ++_targetIndex;
+            _targetPos = _curPos - _distance;
         }
-        else if (deltaValue < -18 && curPos + distance <= 1.01f)
+        else if (deltaValue < -18 && _curPos + _distance <= 1.01f)
         {
-            --targetIndex;
-            targetPos = curPos + distance;
+            --_targetIndex;
+            _targetPos = _curPos + _distance;
         }
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
-        curPos = SetPos();
+        _curPos = SetPos();
     }
     public void OnDrag(PointerEventData eventData)
     {
-        isDrag = true;
+        _isDrag = true;
     }
     public virtual void OnEndDrag(PointerEventData eventData)
     {
-        isDrag = false;
-        targetPos = SetPos();
+        _isDrag = false;
+        _targetPos = SetPos();
     }
 }
 

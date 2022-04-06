@@ -1,62 +1,75 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using Util;
 public class ShopScroll : AgentScroll
 {
     [SerializeField]
-    private Scrollbar[] yScrollBars;
+    private Scrollbar[] _yScrollBars;
     [SerializeField]
-    private Slider accentSlider;
+    private Slider _accentSlider;
     [SerializeField]
-    private RectTransform[] panelMoveBtns;
-
+    private RectTransform[] _panelMoveBtns;
+    
+    /// <summary>
+    /// 부모 클래스 Awake에서 실행
+    /// </summary>
     protected override void ChildAwake()
     {
+        //이벤트 등록
         EventManager.StartListening(EventsType.MoveShopPn, OnMoveShopPanel);
         EventManager.StartListening(EventsType.CloaseAllPn, SetOriginScroll);
         EventManager.StartListening(EventsType.SetOriginShopPn, SetOriginScroll);
     }
-
+    /// <summary>
+    /// 부모 클래스 Start에서 실행
+    /// </summary>
+    protected override void ChildStart() { }
+    /// <summary>
+    /// 부모 클래스 Update에서 실행
+    /// </summary>
     protected override void ChildUpdate()
     {
-        accentSlider.value = Mathf.Lerp(accentSlider.value, scrollbar.value, 0.2f);
+        //상점패널 상단 강조슬라이더 이동 
+        _accentSlider.value = Mathf.Lerp(_accentSlider.value, _scrollbar.value, 0.2f);
     }
+
     public override void OnEndDrag(PointerEventData eventData)
     {
         base.OnEndDrag(eventData);
         SetOriginScroll();
 
-        if (curPos == targetPos)
+        if (_curPos == _targetPos)
         {
             DeltaSlide(eventData.delta.x);
             SetOriginScroll();
         }
         ChangeBtnSize();
     }
-    #region 버튼 함수
+    /// <summary>
+    /// 상점패널 일반,패키지,재화 이동 
+    /// </summary>
+    /// <param name="n"></param>
     public void OnMoveShopPanel(object n)
     {
-        targetIndex = SIZE - (int)n - 1;
-        targetPos = pos[(int)n];
+        _targetIndex = SIZE - (int)n - 1;
+        _targetPos = pos[(int)n];
         SetOriginScroll();
         ChangeBtnSize();
         Debug.Log(pos[(int)n]);
     }
-    #endregion
+
     /// <summary>
     /// 상점 스크롤 value 초기화  
     /// </summary>
-    void SetOriginScroll()
+    private void SetOriginScroll()
     {
         Debug.Log("실행");
         for (int i = 0; i < SIZE; i++)
         {
-            if (contentTr.GetChild(i).GetComponent<ScrollScript>()) //&& pos[i] != curPos && pos[i] == targetPos
+            if (_contentTr.GetChild(i).GetComponent<ScrollScript>()) //&& pos[i] != curPos && pos[i] == targetPos
             {
-                yScrollBars[i].value = 1;
+                _yScrollBars[i].value = 1;
             }
         }
     }
@@ -64,11 +77,11 @@ public class ShopScroll : AgentScroll
     /// <summary>
     ///  상단에 패널 바꾸는 버튼 크기 변경 
     /// </summary>
-    void ChangeBtnSize()
+    private void ChangeBtnSize()
     {
         for (int i = 0; i < SIZE; i++)
         {
-            panelMoveBtns[i].sizeDelta = new Vector2((targetIndex == SIZE - i - 1) ? 320 : 160, panelMoveBtns[SIZE - i - 1].sizeDelta.y);
+            _panelMoveBtns[i].sizeDelta = new Vector2((_targetIndex == SIZE - i - 1) ? 320 : 160, _panelMoveBtns[SIZE - i - 1].sizeDelta.y);
         }
     }
 
