@@ -6,9 +6,9 @@ using DG.Tweening;
 
 public abstract class AbstractAttackState : AbstractUnitState
 {
-    private Unit _targetUnit = null; //공격할 유닛
-    private float _currentdelay = 0; //현재 딜레이
-    private float _maxdelay = 100; //끝 딜레이
+    protected Unit _targetUnit = null; //공격할 유닛
+    protected float _currentdelay = 0; //현재 딜레이
+    protected float _maxdelay = 100; //끝 딜레이
     public override void Enter()
     {
         _curState = eState.ATTACK;
@@ -47,25 +47,11 @@ public abstract class AbstractAttackState : AbstractUnitState
         this._targetUnit = targetUnit;
     }
 
-    /// <summary>
-    /// 공격할 수 있을 때 까지 대기한다
-    /// </summary>
-    /// <returns>True면 공격, 아니면 딜레이</returns>
-    private bool AttackDelay()
-    {
-        if (_maxdelay >= _currentdelay || _targetUnit._isInvincibility)
-        {
-            _currentdelay += _myUnit.UnitStat.Return_AttackSpeed() * Time.deltaTime;
-            SetUnitDelayAndUI();
-            return false;
-        }
-        return true;
-    }
 
     /// <summary>
     /// 공격
     /// </summary>
-    private void Attack()
+    protected virtual void Attack()
     {
         //공격 애니메이션
         Animation();
@@ -97,10 +83,25 @@ public abstract class AbstractAttackState : AbstractUnitState
     /// <summary>
     /// 유닛의 딜레이랑, 딜레이바 UI 수정
     /// </summary>
-    private void SetUnitDelayAndUI()
+    protected void SetUnitDelayAndUI()
     {
         _myUnit.UnitSprite.UpdateDelayBar(_currentdelay / _maxdelay);
         _myUnit.UnitStat.SetAttackDelay(_currentdelay);
+    }
+
+    /// <summary>
+    /// 공격할 수 있을 때 까지 대기한다
+    /// </summary>
+    /// <returns>True면 공격, 아니면 딜레이</returns>
+    private bool AttackDelay()
+    {
+        if (_maxdelay >= _currentdelay || _targetUnit._isInvincibility)
+        {
+            _currentdelay += _myUnit.UnitStat.Return_AttackSpeed() * Time.deltaTime;
+            SetUnitDelayAndUI();
+            return false;
+        }
+        return true;
     }
 
     /// <summary>
