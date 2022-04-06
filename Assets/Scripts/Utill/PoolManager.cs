@@ -10,7 +10,7 @@ public class PoolManager : MonoBehaviour
     //상태 풀링
     public static Dictionary<string, object> stateDictionary = new Dictionary<string, object>();
 
-    private void Start()
+    private void Awake()
     {
         _battleManager = FindObjectOfType<BattleManager>();
     }

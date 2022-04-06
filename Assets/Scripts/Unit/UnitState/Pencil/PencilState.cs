@@ -27,6 +27,12 @@ public class PencilState : AbstractStateManager
         _dieState.SetStateManager(this);
         _throwState.SetStateManager(this);
     }
+
+    public override void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
+    {
+        base.Reset_State(myTrm, mySprTrm, myUnit);
+        myUnit.SetIsNeverDontThrow(false);
+    }
 }
 
 public class Pencil_Idle_State : AbstractIdleState

@@ -19,6 +19,7 @@ public class Unit : MonoBehaviour
     public int DamageCount { get; set; } = 0; // 공격카운트
     public int MyUnitId { get; protected set; } = 0; //유닛의 ID
     public bool _isInvincibility { get; protected set; } = false; // 무적 & 무시 여부
+    public bool _isNeverDontThrow { get; protected set; } = false; // 절대 던지기 가능 여부
     public bool _isDontThrow { get; protected set; } = false; // 던지기 가능 여부
     
     //변수
@@ -107,7 +108,6 @@ public class Unit : MonoBehaviour
         _isSettingEnd = true;
     }
 
-
     /// <summary>
     /// 유닛 상태 업데이트
     /// </summary>
@@ -195,6 +195,14 @@ public class Unit : MonoBehaviour
     {
         _isDontThrow = isboolean;
     }
+    /// <summary>
+    /// 절대 던지기 가능 설정
+    /// </summary>
+    /// <param name="isboolean">True면 던지기 불가능, False면 던지기 가능</param>
+    public void SetIsNeverDontThrow(bool isboolean)
+    {
+        _isNeverDontThrow = isboolean;
+    }
 
     /// <summary>
     /// 체력 감소
@@ -205,7 +213,6 @@ public class Unit : MonoBehaviour
         _unitStat.SubtractHP(damage);
         _unitSprite.Set_HPSprite(_unitStat.Hp, _unitStat.MaxHp);
     }
-
 
     /// <summary>
     /// 유닛 리스트에서 이 오브젝트를 제거

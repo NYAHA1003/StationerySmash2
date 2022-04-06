@@ -36,6 +36,7 @@ public class EraserState : AbstractStateManager
     {
         base.Reset_State(myTrm, mySprTrm, myUnit);
         SetEraserPieceData(myUnit);
+        myUnit.SetIsNeverDontThrow(false);
     }
 
     private void SetEraserPieceData(Unit myUnit)

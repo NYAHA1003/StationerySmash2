@@ -38,6 +38,24 @@ public class PencilCaseUnit : Unit
             case PencilCaseType.Normal:
                 AbilityState = PoolManager.GetPencilCase<NormalAbility>();
                 break;
+            case PencilCaseType.Traffic:
+                AbilityState = PoolManager.GetPencilCase<TrafficAbility>();
+                break;
+            case PencilCaseType.Wing:
+                break;
+            case PencilCaseType.Soccer:
+                break;
+            case PencilCaseType.Gold:
+                AbilityState = PoolManager.GetPencilCase<GoldAbility>();
+                break;
+            case PencilCaseType.Princess:
+                AbilityState = PoolManager.GetPencilCase<PrincessAbility>();
+                break;
+            case PencilCaseType.Pencil:
+                break;
+            case PencilCaseType.Timer:
+                AbilityState = PoolManager.GetPencilCase<TimerAbility>();
+                break;
         }
     }
 

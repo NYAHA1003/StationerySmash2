@@ -6,8 +6,14 @@ namespace Utill
 {
     public enum PencilCaseType
     {
-        Normal,
-
+        Normal = 0,
+        Traffic,
+        Wing,
+        Soccer,
+        Gold,
+        Princess,
+        Pencil,
+        Timer,
     }
 
 }

@@ -103,7 +103,15 @@ public class UnitStateChanger
             case UnitType.BallPen:
                 //PoolManager.AddItem((BallpenStateManager)stateManager);
                 break;
-
+            case UnitType.RedCar:
+                PoolManager.AddItem((RedCarState)_stateManager);
+                break;
+            case UnitType.YellowCar:
+                PoolManager.AddItem((YellowCarState)_stateManager);
+                break;
+            case UnitType.GreenCar:
+                PoolManager.AddItem((GreenCarState)_stateManager);
+                break;
             default:
             case UnitType.None:
             case UnitType.Pencil:

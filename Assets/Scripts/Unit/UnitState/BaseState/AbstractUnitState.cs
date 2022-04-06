@@ -134,8 +134,14 @@ public abstract class AbstractUnitState
     /// <returns></returns>
     public virtual Unit PullUnit()
     {
-        if (_myUnit._isDontThrow)
+        if (_myUnit._isNeverDontThrow)
+        {
             return null;
+        }
+        if (_myUnit._isDontThrow)
+        {
+            return null;
+        }
         if (_curState.Equals(eState.DAMAGED))
         {
             return null;
@@ -150,6 +156,10 @@ public abstract class AbstractUnitState
     /// <returns></returns>
     public virtual Unit PullingUnit()
     {
+        if (_myUnit._isNeverDontThrow)
+        {
+            return null;
+        }
         if (_myUnit._isDontThrow)
         {
             return null;
@@ -167,6 +177,10 @@ public abstract class AbstractUnitState
     /// <param name="pos"></param>
     public virtual void ThrowUnit(Vector2 pos)
     {
+        if (_myUnit._isNeverDontThrow)
+        {
+            return;
+        }
         _stateManager.Set_ThrowPos(pos);
         _stateManager.Set_Throw();
     }

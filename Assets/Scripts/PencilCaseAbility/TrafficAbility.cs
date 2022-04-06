@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.AddressableAssets;
 
 public class TrafficAbility : AbstractPencilCaseAbility
 {
@@ -15,13 +17,12 @@ public class TrafficAbility : AbstractPencilCaseAbility
     private DataBase _redCarData = null;
     private DataBase _yellowCarData = null;
     private DataBase _greenCarData = null;
+    private UnitDataSO _unitDataSO = null;
 
     public override void SetState(BattleManager battleManager)
     {
-        base.SetState(battleManager);
-        SetRedCar();
-        SetYellowCar();
-        SetGreenCar();
+        _battleManager = battleManager;
+        SetDatas();
     }
 
     /// <summary>
@@ -55,41 +56,26 @@ public class TrafficAbility : AbstractPencilCaseAbility
 
 
     /// <summary>
+    /// 자동차 데이터들 설정
+    /// </summary>
+    private async void SetDatas()
+    {
+        AsyncOperationHandle<UnitDataSO> handle = Addressables.LoadAssetAsync<UnitDataSO>("ProjectileUnitSO");
+        await handle.Task;
+        _unitDataSO = handle.Result;
+        SetRedCar();
+        SetYellowCar();
+        SetGreenCar();
+    }
+
+
+
+    /// <summary>
     /// 빨간차 데이터 설정
     /// </summary>
     private void SetRedCar()
     {
-        _redCarData = new DataBase
-        {
-            cardType = Utill.CardType.SummonUnit,
-            card_Cost = 0,
-            card_Name = "빨간차",
-            //card_Sprite =;
-        };
-        _redCarData.unitData = new UnitData
-        {
-            unitType = Utill.UnitType.RedCar,
-            accuracy = 100,
-            attackSpeed = 1,
-            range = 0.1f,
-            atkType = Utill.AtkType.Normal,
-            damage = 20,
-            moveSpeed = 0.5f,
-            unit_Hp = 100,
-            knockback = 10,
-            unit_Weight = 100,
-            dir = 45,
-        };
-        _redCarData.unitData.colideData = new Utill.CollideData()
-        {
-            originpoints = new Vector2[4]
-            {
-                new Vector2(-0.01f,0.01f),
-                new Vector2(0.01f,0.01f),
-                new Vector2(-0.01f,-0.01f),
-                new Vector2(0.01f,-0.01f),
-            }
-        };
+        _redCarData = _unitDataSO.unitDatas.Find(x => x.unitData.unitType == Utill.UnitType.RedCar);
     }
 
     /// <summary>
@@ -97,37 +83,7 @@ public class TrafficAbility : AbstractPencilCaseAbility
     /// </summary>
     private void SetYellowCar()
     {
-        _yellowCarData = new DataBase
-        {
-            cardType = Utill.CardType.SummonUnit,
-            card_Cost = 0,
-            card_Name = "노란차",
-            //card_Sprite =;
-        };
-        _yellowCarData.unitData = new UnitData
-        {
-            unitType = Utill.UnitType.YellowCar,
-            accuracy = 100,
-            attackSpeed = 1,
-            range = 0.1f,
-            atkType = Utill.AtkType.Normal,
-            damage = 20,
-            moveSpeed = 0.5f,
-            unit_Hp = 100,
-            knockback = 10,
-            unit_Weight = 100,
-            dir = 45,
-        };
-        _yellowCarData.unitData.colideData = new Utill.CollideData()
-        {
-            originpoints = new Vector2[4]
-            {
-                new Vector2(-0.01f,0.01f),
-                new Vector2(0.01f,0.01f),
-                new Vector2(-0.01f,-0.01f),
-                new Vector2(0.01f,-0.01f),
-            }
-        };
+        _yellowCarData = _unitDataSO.unitDatas.Find(x => x.unitData.unitType == Utill.UnitType.YellowCar);
     }
 
     /// <summary>
@@ -135,37 +91,7 @@ public class TrafficAbility : AbstractPencilCaseAbility
     /// </summary>
     private void SetGreenCar()
     {
-        _greenCarData = new DataBase
-        {
-            cardType = Utill.CardType.SummonUnit,
-            card_Cost = 0,
-            card_Name = "노란차",
-            //card_Sprite =;
-        };
-        _greenCarData.unitData = new UnitData
-        {
-            unitType = Utill.UnitType.YellowCar,
-            accuracy = 100,
-            attackSpeed = 1,
-            range = 0.1f,
-            atkType = Utill.AtkType.Normal,
-            damage = 20,
-            moveSpeed = 0.5f,
-            unit_Hp = 100,
-            knockback = 10,
-            unit_Weight = 100,
-            dir = 45,
-        };
-        _greenCarData.unitData.colideData = new Utill.CollideData()
-        {
-            originpoints = new Vector2[4]
-            {
-                new Vector2(-0.01f,0.01f),
-                new Vector2(0.01f,0.01f),
-                new Vector2(-0.01f,-0.01f),
-                new Vector2(0.01f,-0.01f),
-            }
-        };
+        _greenCarData = _unitDataSO.unitDatas.Find(x => x.unitData.unitType == Utill.UnitType.GreenCar);
     }
 
 }
