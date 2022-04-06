@@ -11,6 +11,10 @@ namespace Utill
         Stun,
         Ink,
         SlowDown,
+        Rage,
+        Rtac,
+        Blind,
+        Sick,
     }
     public class AtkData
     {

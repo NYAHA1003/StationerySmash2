@@ -24,7 +24,7 @@ public class CritAttackState : AbstractAttackState
         if (Random.Range(0, 100) <= _myUnit.UnitStat.Return_Accuracy())
         {
             _myUnit.BattleManager.CommandEffect.SetEffect(EffectType.Attack, new EffData(_targetUnit.transform.position, 0.2f));
-            AtkData atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Damage(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, originAtkType, originValue);
+            AtkData atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, originAtkType, originValue);
             if (Random.Range(0, 100) <= _myUnit.UnitStat.Return_Accuracy() / 10)
             {
                 //크리티컬

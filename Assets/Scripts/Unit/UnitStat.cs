@@ -9,26 +9,28 @@ public class UnitStat
 {
     //프로퍼티
 
-    public int DamagePercent => _damagePercent; //공격력 퍼센트
+    public int AttackPercent => _attackPercent; //공격력 퍼센트
     public int MoveSpeedPercent => _moveSpeedPercent;//이동속도 퍼센트
     public int AttackSpeedPercent => _attackSpeedPercent;//공격속도 퍼센트
     public int RangePercent => _rangePercent;//사정거리 퍼센트
     public int AccuracyPercent => _accuracyPercent;//명중률 퍼센트
     public int WeightPercent => _weightPercent;//무게 퍼센트
     public int KnockbackPercent => _knockbackPercent;//넉백 퍼센트
+    public int DamagedPercent => _damagedPercent;//넉백 퍼센트
     public int Hp => _hp;//체력 퍼센트
     public int MaxHp => _maxHp;//최대체력 퍼센트
     public int Grade => _grade; //현재 단계
     public float AttackDelay => _attackDelay;//공격 딜레이
 
     //변수
-    private int _damagePercent = 100;
+    private int _attackPercent = 100;
     private int _moveSpeedPercent = 100;
     private int _attackSpeedPercent = 100;
     private int _rangePercent = 100;
     private int _accuracyPercent = 100;
     private int _weightPercent = 100;
     private int _knockbackPercent = 100;
+    private int _damagedPercent = 100;
     private int _hp = 0;
     private int _maxHp = 0;
     private int _weight = 0;
@@ -55,7 +57,7 @@ public class UnitStat
         _grade = grade;
         _moveSpeedPercent = 100 * grade;
         _attackSpeedPercent = 100 * grade;
-        _damagePercent = 100 * grade;
+        _attackPercent = 100 * grade;
         _maxHp = _unitData.unit_Hp * grade;
         _hp = _maxHp;
     }
@@ -78,9 +80,9 @@ public class UnitStat
     /// 공격력 스탯 반환
     /// </summary>
     /// <returns></returns>
-    public int Return_Damage()
+    public int Return_Attack()
     {
-        return Mathf.RoundToInt(_unitData.damage * (float)_damagePercent / 100);
+        return Mathf.RoundToInt(_unitData.damage * (float)_attackPercent / 100);
     }
     /// <summary>
     /// 이동속도 스탯 반환
@@ -134,9 +136,9 @@ public class UnitStat
     /// 공격력 퍼센트 조절
     /// </summary>
     /// <param name="percent"></param>
-    public void IncreaseDamagePercent(int percent)
+    public void IncreaseAttackPercent(int percent)
     {
-        _damagePercent += percent;
+        _attackPercent += percent;
     }
     /// <summary>
     /// 이동속도 퍼센트 조절
@@ -185,6 +187,14 @@ public class UnitStat
     public void IncreaseKnockBackPercent(int percent)
     {
         _knockbackPercent += percent;
+    }
+    /// <summary>
+    /// 데미지 받는량 퍼센트 조절
+    /// </summary>
+    /// <param name="percent"></param>
+    public void IncreaseDamagedPercent(int percent)
+    {
+        _damagedPercent += percent;
     }
 
     /// <summary>

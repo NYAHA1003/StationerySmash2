@@ -12,7 +12,7 @@ public class InkEffState : EffState
     public override void Enter()
     {
         SprTrm.GetComponent<SpriteRenderer>().color = Color.green;
-        _myUnit.UnitStat.IncreaseDamagePercent(-(int)damageSubtractPercent);
+        _myUnit.UnitStat.IncreaseAttackPercent(-(int)damageSubtractPercent);
         _myUnit.UnitStat.IncreaseAccuracyPercent(-(int)accuracySubtractPercent);
 
         base.Enter();
@@ -24,7 +24,7 @@ public class InkEffState : EffState
 
     public override void Exit()
     {
-        _myUnit.UnitStat.IncreaseDamagePercent((int)damageSubtractPercent);
+        _myUnit.UnitStat.IncreaseAttackPercent((int)damageSubtractPercent);
         _myUnit.UnitStat.IncreaseAccuracyPercent((int)accuracySubtractPercent);
         SprTrm.GetComponent<SpriteRenderer>().color = Color.red;
 
