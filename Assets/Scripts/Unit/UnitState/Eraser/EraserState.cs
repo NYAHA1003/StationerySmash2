@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 using DG.Tweening;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.AddressableAssets;
+
 
 public class EraserState : AbstractStateManager
 {
     public DataBase EraserPieceData => _eraserPieceData;
-    private DataBase _eraserPieceData;
-    private Sprite _eraserPieceSprite;
+    private DataBase _eraserPieceData = null;
+    private UnitDataSO _unitDataSO = null;
 
     public override void Set_State()
     {
@@ -35,24 +38,16 @@ public class EraserState : AbstractStateManager
     public override void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
     {
         base.Reset_State(myTrm, mySprTrm, myUnit);
-        SetEraserPieceData(myUnit);
+        SetEraserPieceData();
         myUnit.SetIsNeverDontThrow(false);
     }
 
-    private void SetEraserPieceData(Unit myUnit)
+    private async void SetEraserPieceData()
     {
-        //지우개조각 스프라이트 가져오기
-        _eraserPieceSprite = null;
-
-        //지우개 조각 데이터 설정
-        _eraserPieceData ??= new DataBase()
-        {
-            card_Cost = 0,
-            card_Name = "지우개 조각",
-            cardType = CardType.SummonUnit,
-            card_Sprite = _eraserPieceSprite
-        };
-        _eraserPieceData.unitData = myUnit.UnitData;
+        AsyncOperationHandle<UnitDataSO> handle = Addressables.LoadAssetAsync<UnitDataSO>("ProjectileUnitSO");
+        await handle.Task;
+        _unitDataSO = handle.Result;
+        _eraserPieceData = _unitDataSO.unitDatas.Find(x => x.unitData.unitType == UnitType.EraserPiece);
     }
 
 }

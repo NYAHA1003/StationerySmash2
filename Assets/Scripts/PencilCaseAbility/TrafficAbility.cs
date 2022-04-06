@@ -48,7 +48,7 @@ public class TrafficAbility : AbstractPencilCaseAbility
 
         //다음 신호등으로 넘어감
         _trafficType++;
-        if (_trafficType >= TrafficType.Green)
+        if (_trafficType > TrafficType.Green)
         {
             _trafficType = TrafficType.Red;
         }

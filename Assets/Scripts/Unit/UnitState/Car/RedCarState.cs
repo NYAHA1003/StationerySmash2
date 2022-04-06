@@ -66,9 +66,52 @@ public class RedCarWaitState : AbstractWaitState
 
 public class RedCarMoveState : IgnoreMoveState
 {
+    protected override void CheckRange(List<Unit> list)
+    {
+        float targetRange = float.MaxValue;
+        Unit targetUnit = null;
+        bool isCollision = false;
+        for (int i = 0; i < list.Count; i++)
+        {
+            Unit enemy = list[i];
+            if (_myUnit.ETeam.Equals(TeamType.MyTeam) && _myTrm.position.x > list[i].transform.position.x)
+            {
+                continue;
+            }
+            if (!_myUnit.ETeam.Equals(TeamType.MyTeam) && _myTrm.position.x < list[i].transform.position.x)
+            {
+                continue;
+            }
+            if (list[i].transform.position.y > _myTrm.transform.position.y)
+            {
+                continue;
+            }
+            if (list[i]._isInvincibility)
+            {
+                continue;
+            }
+
+            targetUnit = list[i];
+            targetRange = Vector2.Distance(_myTrm.position, targetUnit.transform.position);
+
+            if((isCollision && targetRange < 1) || !isCollision && (targetRange < MyUnit.UnitStat.Return_Range()))
+            {
+                isCollision = true;
+                CheckTargetUnit(targetUnit);
+            }
+        }
+        if(isCollision)
+        {
+            //À¯´Ö »èÁ¦
+            ResetSprTrm();
+            _curEvent = eEvent.EXIT;
+            _myUnit.Delete_Unit();
+        }
+    }
     protected override void CheckTargetUnit(Unit targetUnit)
     {
-        AtkData atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, _myUnit.MyUnitId * 1000 + _myUnit.MyDamagedId, originAtkType, originValue);
+
+        AtkData atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, _myUnit.MyUnitId * 1000 + _myUnit.MyDamagedId, AtkType.Stun, 0.1f);
         targetUnit.Run_Damaged(atkData);
     }
 }

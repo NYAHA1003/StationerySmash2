@@ -66,7 +66,7 @@ public class YellowCarMoveState : IgnoreMoveState
 {
     protected override void CheckTargetUnit(Unit targetUnit)
     {
-        AtkData atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, originAtkType, originValue);
+        AtkData atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, AtkType.SlowDown, 1, 20, 20);
         targetUnit.Run_Damaged(atkData);
     }
 }

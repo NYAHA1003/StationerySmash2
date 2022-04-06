@@ -45,5 +45,6 @@ namespace Utill
         RedCar = 1000,
         YellowCar = 1001,
         GreenCar = 1002,
+        EraserPiece,
     }
 }
