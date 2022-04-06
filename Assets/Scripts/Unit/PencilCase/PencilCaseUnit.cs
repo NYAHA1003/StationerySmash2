@@ -8,7 +8,7 @@ public class PencilCaseUnit : Unit
     [SerializeField]
     private PencilCaseDataSO _pencilCaseData;
     public PencilCaseDataSO PencilCaseData => _pencilCaseData;
-    public PencilCaseAbilityState AbilityState { get; private set; }
+    public AbstractPencilCaseAbilityState AbilityState { get; private set; }
 
     /// <summary>
     /// 필통 데이터 초기화
@@ -36,7 +36,7 @@ public class PencilCaseUnit : Unit
         {
             default:
             case PencilCaseType.Normal:
-                AbilityState = new PencilCaseNormalAbilityState(_battleManager);
+                AbilityState = PoolManager.GetPencilCase<NormalAbilityState>();
                 break;
         }
     }

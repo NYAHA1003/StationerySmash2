@@ -9,6 +9,6 @@ public class PencilCaseData
     public int maxCard;
     public float costSpeed;
     public PencilCaseType pencilCaseType;
-    public PencilCaseAbilityState pencilState;
+    public AbstractPencilCaseAbilityState pencilState;
     public DataBase pencilCaseData;
 }

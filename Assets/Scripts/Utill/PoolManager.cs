@@ -34,18 +34,12 @@ public class PoolManager : MonoBehaviour
         return unit;
     }
 
-    public static void PoolToParent(GameObject obj, Transform parent)
-    {
-        obj.transform.SetParent(parent);
-    }
-
-
     /// <summary>
     /// 풀링매니저 생성
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="count"></param>
-    public static void CreatePool<T>(Transform myTrm, Transform mySprTrm, Unit myUnit) where T : AbstractStateManager, new()
+    public static void CreatePoolState<T>(Transform myTrm, Transform mySprTrm, Unit myUnit) where T : AbstractStateManager, new()
     {
         Queue<T> q = new Queue<T>();
 
@@ -96,11 +90,40 @@ public class PoolManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 상태 풀링 매니저 생성
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="myTrm"></param>
+    /// <param name="mySprTrm"></param>
+    /// <param name="myUnit"></param>
+    /// <param name="statusEffect"></param>
+    /// <param name="valueList"></param>
+    public static void CreatePoolPencilCase<T>() where T : AbstractPencilCaseAbilityState, new()
+    {
+        Queue<T> q = new Queue<T>();
+
+        T g = new T();
+        g.SetState(_battleManager);
+
+        q.Enqueue(g);
+
+        try
+        {
+            stateDictionary.Add(typeof(T).Name, q);
+        }
+        catch
+        {
+            stateDictionary.Clear();
+            stateDictionary.Add(typeof(T).Name, q);
+        }
+    }
+
+    /// <summary>
     /// 안 쓰는 상태 가져오기
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static T GetItem<T>(Transform myTrm, Transform mySprTrm, Unit myUnit) where T : AbstractStateManager, new()
+    public static T GetUnit<T>(Transform myTrm, Transform mySprTrm, Unit myUnit) where T : AbstractStateManager, new()
     {
         T item = default(T);
 
@@ -122,7 +145,7 @@ public class PoolManager : MonoBehaviour
         }
         else
         {
-            CreatePool<T>(myTrm, mySprTrm, myUnit);
+            CreatePoolState<T>(myTrm, mySprTrm, myUnit);
             Queue<T> q = (Queue<T>)stateDictionary[typeof(T).Name];
             item = q.Dequeue();
             item.Reset_State(myTrm, mySprTrm, myUnit);
@@ -170,6 +193,45 @@ public class PoolManager : MonoBehaviour
         //할당
         return item;
     }
+
+    /// <summary>
+    /// 안 쓰는 필통능력 가져오기
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="myTrm"></param>
+    /// <param name="mySprTrm"></param>
+    /// <param name="myUnit"></param>
+    /// <returns></returns>
+    public static T GetPencilCase<T>() where T : AbstractPencilCaseAbilityState, new()
+    {
+        T item = default(T);
+
+        if (stateDictionary.ContainsKey(typeof(T).Name))
+        {
+            Queue<T> q = (Queue<T>)stateDictionary[typeof(T).Name];
+
+            if (q.Count == 0)
+            {  //안 사용하는 상태가 없으면 새로운 상태를 만든다
+                item = new T();
+                item.SetState(_battleManager);
+            }
+            else
+            {
+                item = q.Dequeue();
+            }
+        }
+        else
+        {
+            CreatePoolPencilCase<T>();
+            Queue<T> q = (Queue<T>)stateDictionary[typeof(T).Name];
+            item = q.Dequeue();
+        }
+
+        //할당
+        return item;
+    }
+
+
 
     /// <summary>
     /// 다 쓴 상태 반납

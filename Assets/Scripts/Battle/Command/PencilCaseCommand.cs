@@ -16,8 +16,8 @@ namespace Battle
         private StageData _stageData = null;
         private PencilCaseDataSO pencilCaseDataMy = null;
         private PencilCaseDataSO pencilCaseDataEnemy = null;
-        private PencilCaseAbilityState _playerAbilityState = null;
-        private PencilCaseAbilityState _enemyAbilityState = null;
+        private AbstractPencilCaseAbilityState _playerAbilityState = null;
+        private AbstractPencilCaseAbilityState _enemyAbilityState = null;
 
         //인스펙터 참조 변수
         [SerializeField]
@@ -57,7 +57,7 @@ namespace Battle
         /// </summary>
         public void RunPencilCaseAbility()
         {
-            _playerAbilityState.RunPencilCaseAility();
+            _playerAbilityState.RunPencilCaseAbility();
         }
     }
 
