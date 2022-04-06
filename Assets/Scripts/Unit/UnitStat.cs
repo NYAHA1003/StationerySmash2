@@ -18,7 +18,6 @@ public class UnitStat
     public int KnockbackPercent => _knockbackPercent;//넉백 퍼센트
     public int Hp => _hp;//체력 퍼센트
     public int MaxHp => _maxHp;//최대체력 퍼센트
-    public int Weight => _weight;//무게
     public float AttackDelay => _attackDelay;//공격 딜레이
 
     //변수

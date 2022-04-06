@@ -8,32 +8,46 @@ public abstract class AbstractMoveState : AbstractUnitState
 {
     public override void Enter()
     {
-        _myUnit.Set_IsDontThrow(false);
+        _myUnit.SetIsDontThrow(false);
         _curState = eState.MOVE;
         _curEvent = eEvent.ENTER;
+        
+        //이동 애니메이션 시작
         Animation();
+
         base.Enter();
     }
 
     public override void Update()
     {
-        //우리 팀
+        //팀에 따른 이동 및 사정거리 체크
         switch (_myUnit.ETeam)
         {
             case TeamType.Null:
                 break;
             case TeamType.MyTeam:
-                Move_MyTeam();
-                Check_Range(_myUnit.BattleManager.CommandUnit._enemyUnitList);
+                MoveMyTeam();
+                CheckRange(_myUnit.BattleManager.CommandUnit._enemyUnitList);
                 return;
             case TeamType.EnemyTeam:
-                Move_EnemyTeam();
-                Check_Range(_myUnit.BattleManager.CommandUnit._playerUnitList);
+                MoveEnemyTeam();
+                CheckRange(_myUnit.BattleManager.CommandUnit._playerUnitList);
                 return;
         }
     }
 
-    private void Move_MyTeam()
+    public override void Animation(params float[] value)
+    {
+        ResetAnimation();
+        float rotate = _myUnit.ETeam.Equals(TeamType.MyTeam) ? 30 : -30;
+        _mySprTrm.eulerAngles = new Vector3(0, 0, 0);
+        _mySprTrm.DORotate(new Vector3(0, 0, rotate), 0.3f).SetLoops(-1, LoopType.Yoyo);
+    }
+
+    /// <summary>
+    /// 플레이어 팀의 유닛 이동
+    /// </summary>
+    private void MoveMyTeam()
     {
         if (_myTrm.transform.position.x < _stateManager.GetStageData().max_Range - 0.1f)
         {
@@ -41,7 +55,10 @@ public abstract class AbstractMoveState : AbstractUnitState
         }
     }
 
-    private void Move_EnemyTeam()
+    /// <summary>
+    /// 적 팀의 유닛 이동
+    /// </summary>
+    private void MoveEnemyTeam()
     {
         if (_myTrm.transform.position.x > -_stateManager.GetStageData().max_Range + 0.1f)
         {
@@ -49,51 +66,49 @@ public abstract class AbstractMoveState : AbstractUnitState
         }
     }
 
-    private void Check_Range(List<Unit> list)
+    /// <summary>
+    /// 상대 유닛이 사정거리에 있는지 체크
+    /// </summary>
+    /// <param name="list"></param>
+    private void CheckRange(List<Unit> list)
     {
         float targetRange = float.MaxValue;
         Unit targetUnit = null;
         for (int i = 0; i < list.Count; i++)
         {
-            if (Vector2.Distance(_myTrm.position, list[i].transform.position) < targetRange)
+            if (Vector2.Distance(_myTrm.position, list[i].transform.position) >= targetRange)
             {
-                if (_myUnit.ETeam.Equals(TeamType.MyTeam) && _myTrm.position.x > list[i].transform.position.x)
-                {
-                    continue;
-                }
-                if (!_myUnit.ETeam.Equals(TeamType.MyTeam) && _myTrm.position.x < list[i].transform.position.x)
-                {
-                    continue;
-                }
-                if (list[i].transform.position.y > _myTrm.transform.position.y)
-                {
-                    continue;
-                }
-                if (list[i]._isInvincibility)
-                {
-                    continue;
-                }
-
-                targetUnit = list[i];
-                targetRange = Vector2.Distance(_myTrm.position, targetUnit.transform.position);
+                continue;
             }
+            if (_myUnit.ETeam.Equals(TeamType.MyTeam) && _myTrm.position.x > list[i].transform.position.x)
+            {
+                continue;
+            }
+            if (!_myUnit.ETeam.Equals(TeamType.MyTeam) && _myTrm.position.x < list[i].transform.position.x)
+            {
+                continue;
+            }
+            if (list[i].transform.position.y > _myTrm.transform.position.y)
+            {
+                continue;
+            }
+            if (list[i]._isInvincibility)
+            {
+                continue;
+            }
+
+            targetUnit = list[i];
+            targetRange = Vector2.Distance(_myTrm.position, targetUnit.transform.position);
         }
 
         if (targetUnit != null)
         {
             if (Vector2.Distance(_myTrm.position, targetUnit.transform.position) < _myUnit.UnitStat.Return_Range())
             {
+                //사정거리에 상대가 있으면 공격
                 _stateManager.Set_Attack(targetUnit);
             }
         }
 
-    }
-
-    public override void Animation(params float[] value)
-    {
-        _mySprTrm.DOKill();
-        float rotate = _myUnit.ETeam.Equals(TeamType.MyTeam) ? 30 : -30;
-        _mySprTrm.eulerAngles = new Vector3(0, 0, 0);
-        _mySprTrm.DORotate(new Vector3(0, 0, rotate), 0.3f).SetLoops(-1, LoopType.Yoyo);
     }
 }

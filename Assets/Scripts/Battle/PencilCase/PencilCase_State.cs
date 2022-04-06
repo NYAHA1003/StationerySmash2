@@ -14,20 +14,20 @@ public class PencilCaseStateManager : AbstractStateManager
 
         Reset_CurrentUnitState(_idleState);
 
-        _idleState.Set_StateChange(this);
-        _damagedState.Set_StateChange(this);
-        _dieState.Set_StateChange(this);
+        _idleState.SetStateManager(this);
+        _damagedState.SetStateManager(this);
+        _dieState.SetStateManager(this);
     }
 
     public override void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
     {
-        _idleState.Change_Trm(myTrm, mySprTrm, myUnit);
-        _damagedState.Change_Trm(myTrm, mySprTrm, myUnit);
-        _dieState.Change_Trm(myTrm, mySprTrm, myUnit);
+        _idleState.ChangeUnit(myTrm, mySprTrm, myUnit);
+        _damagedState.ChangeUnit(myTrm, mySprTrm, myUnit);
+        _dieState.ChangeUnit(myTrm, mySprTrm, myUnit);
 
-        _idleState.Reset_State();
-        _damagedState.Reset_State();
-        _dieState.Reset_State();
+        _idleState.ResetState();
+        _damagedState.ResetState();
+        _dieState.ResetState();
 
         Set_WaitExtraTime(0);
         Reset_CurrentUnitState(_idleState);
@@ -41,16 +41,16 @@ public class PencilCaseIdleState : AbstractIdleState
         _curEvent = eEvent.ENTER;
     }
 
-    public override Unit Pull_Unit()
+    public override Unit PullUnit()
     {
         return null;
     }
 
-    public override Unit Pulling_Unit()
+    public override Unit PullingUnit()
     {
         return null;
     }
-    public override void Throw_Unit(Vector2 pos)
+    public override void ThrowUnit(Vector2 pos)
     {
 
     }
@@ -62,7 +62,7 @@ public class PencilCaseDamagedState : AbstractDamagedState
         _curState = eState.DAMAGED;
         _curEvent = eEvent.ENTER;
 
-        _myUnit.SubtractHP(atkData.damage);
+        _myUnit.SubtractHP(_atkData.damage);
         if (_myUnit.UnitStat.Hp <= 0)
         {
             _stateManager.Set_Die();
@@ -81,16 +81,16 @@ public class PencilCaseDamagedState : AbstractDamagedState
         float rotate = _myUnit.ETeam == TeamType.MyTeam ? 360 : -360;
         _mySprTrm.DORotate(new Vector3(0, 0, rotate), value[0], RotateMode.FastBeyond360);
     }
-    public override Unit Pull_Unit()
+    public override Unit PullUnit()
     {
         return null;
     }
 
-    public override Unit Pulling_Unit()
+    public override Unit PullingUnit()
     {
         return null;
     }
-    public override void Throw_Unit(Vector2 pos)
+    public override void ThrowUnit(Vector2 pos)
     {
 
     }
@@ -102,16 +102,16 @@ public class PencilCaseDieState : AbstractDieState
         //battleManager.CommandCamera.WinCamEffect(myTrm.position, myUnit.eTeam != TeamType.MyTeam);
         base.Enter();
     }
-    public override Unit Pull_Unit()
+    public override Unit PullUnit()
     {
         return null;
     }
 
-    public override Unit Pulling_Unit()
+    public override Unit PullingUnit()
     {
         return null;
     }
-    public override void Throw_Unit(Vector2 pos)
+    public override void ThrowUnit(Vector2 pos)
     {
         
     }

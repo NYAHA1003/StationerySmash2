@@ -6,61 +6,43 @@ using DG.Tweening;
 
 public abstract class AbstractThrowState : AbstractUnitState
 {
-    Vector2 mousePos = Vector2.zero;
+    protected Vector2 _mousePos = Vector2.zero; // 마우스를 놓은 위치
 
-    public void Set_ThrowPos(Vector2 pos)
-    {
-        mousePos = pos;
-    }
 
     public override void Enter()
     {
-        _myUnit.Set_IsDontThrow(true);
-        //방향
-        Vector2 direction = (Vector2)_myTrm.position - mousePos;
-        float dir = Mathf.Atan2(direction.y, direction.x);
-        float dirx = Mathf.Atan2(direction.y, -direction.x);
+        //또 던지는거 방지
+        _myUnit.SetIsDontThrow(true);
 
-        if (dir < 0)
-        {
-            _stateManager.Set_Wait(0.5f);
-            return;
-        }
+        //유닛 던지기
+        ThrowingUnit();
 
-        //초기 벡터
-        float force = Mathf.Clamp(Vector2.Distance(_myTrm.position, mousePos), 0, 1) * 4 * (100.0f / _myUnit.UnitStat.Return_Weight());
-
-        //최고점
-        float height = Parabola.Caculated_Height(force, dirx);
-        //수평 도달 거리
-        float width = Parabola.Caculated_Width(force, dirx);
-        //수평 도달 시간
-        float time = Parabola.Caculated_Time(force, dir, 3);
-
-        _mySprTrm.DOKill();
-        _myTrm.DOJump(new Vector3(_myTrm.position.x - width, 0, _myTrm.position.z), height, 1, time).OnComplete(() =>
-        {
-            _stateManager.Set_Wait(0.5f);
-        }).SetEase(Utill.Parabola.Return_ParabolaCurve());
 
         base.Enter();
     }
-
     public override void Update()
     {
-        Check_Wall();
-        if (_myUnit.ETeam.Equals(TeamType.MyTeam))
+        //스테이지 끝에 닿았는지 체크
+        CheckWall();
+
+        //상대 유닛이랑 부딪치는지 체크
+        if (_myUnit.ETeam == TeamType.MyTeam)
         {
-            Check_Collide(_myUnit.BattleManager.CommandUnit._enemyUnitList);
+            CheckCollide(_myUnit.BattleManager.CommandUnit._enemyUnitList);
             return;
         }
-        if (_myUnit.ETeam.Equals(TeamType.EnemyTeam))
+        if (_myUnit.ETeam == TeamType.EnemyTeam)
         {
-            Check_Collide(_myUnit.BattleManager.CommandUnit._playerUnitList);
+            CheckCollide(_myUnit.BattleManager.CommandUnit._playerUnitList);
             return;
         }
     }
-    private void Check_Collide(List<Unit> list)
+
+    /// <summary>
+    /// 우닛 물리판정이랑 부딪치는지 체크
+    /// </summary>
+    /// <param name="list"></param>
+    private void CheckCollide(List<Unit> list)
     {
         Unit targetUnit = null;
         for (int i = 0; i < list.Count; i++)
@@ -73,21 +55,83 @@ public abstract class AbstractThrowState : AbstractUnitState
             float distance = Utill.Collider.FindDistanceBetweenSegments(_myUnit.CollideData.SetPos(_myTrm.position), targetUnit.CollideData.SetPos(targetUnit.transform.position));
             if (distance < 0.2f)
             {
-                Run_ThrowAttack(targetUnit);
+                ThrowAttack(targetUnit);
             }
         }
     }
 
-    protected virtual void Run_ThrowAttack(Unit targetUnit)
+    /// <summary>
+    /// 마우스를 놓은 위치 설정
+    /// </summary>
+    /// <param name="pos"></param>
+    public void SetThrowPos(Vector2 pos)
+    {
+        _mousePos = pos;
+    }
+
+    /// <summary>
+    /// 유닛 던지기
+    /// </summary>
+    private void ThrowingUnit()
+    {
+        //던져지는 방향 설정
+        Vector2 direction = (Vector2)_myTrm.position - _mousePos;
+        float dir = Mathf.Atan2(direction.y, direction.x);
+        float dirx = Mathf.Atan2(direction.y, -direction.x);
+
+        //방향이 아래쪽을 향하면 던지기를 취소함
+        if (dir < 0)
+        {
+            _stateManager.Set_Wait(0.5f);
+            return;
+        }
+        //초기 벡터
+        float force = Mathf.Clamp(Vector2.Distance(_myTrm.position, _mousePos), 0, 1) * 4 * (100.0f / _myUnit.UnitStat.Return_Weight());
+        //최고점
+        float height = Parabola.Caculated_Height(force, dirx);
+        //수평 도달 거리
+        float width = Parabola.Caculated_Width(force, dirx);
+        //수평 도달 시간
+        float time = Parabola.Caculated_Time(force, dir, 3);
+        ResetAnimation();
+        _myTrm.DOJump(new Vector3(_myTrm.position.x - width, 0, _myTrm.position.z), height, 1, time).OnComplete(() =>
+        {
+            //땅에 닿으면 대기 상태로 돌아감
+            _stateManager.Set_Wait(0.5f);
+        }).SetEase(Utill.Parabola.Return_ParabolaCurve());
+    }
+
+    /// <summary>
+    /// 부딪힌 유닛에게 던지기 데미지를 가함
+    /// </summary>
+    /// <param name="targetUnit"></param>
+    protected virtual void ThrowAttack(Unit targetUnit)
     {
         float dir = Vector2.Angle((Vector2)_myTrm.position, (Vector2)targetUnit.transform.position);
-        float extraKnockBack = (targetUnit.UnitStat.Weight - _myUnit.UnitStat.Return_Weight() * (float)targetUnit.UnitStat.Hp / targetUnit.UnitStat.MaxHp) * 0.025f;
-        AtkData atkData = new AtkData(_myUnit, 0, 0, 0, 0, true, 0, AtkType.Normal);
-        AtkData atkDataMy = new AtkData(_myUnit, 0, 0, 0, 0, true, 0, AtkType.Normal);
-        atkData.Reset_Damage(100 + (_myUnit.UnitStat.Weight > targetUnit.UnitStat.Weight ? (Mathf.RoundToInt((float)_myUnit.UnitStat.Weight - targetUnit.UnitStat.Weight) / 2) : Mathf.RoundToInt((float)(targetUnit.UnitStat.Weight - _myUnit.UnitStat.Weight) / 5)));
+        float extraKnockBack = (targetUnit.UnitStat.Return_Weight() - _myUnit.UnitStat.Return_Weight() * (float)targetUnit.UnitStat.Hp / targetUnit.UnitStat.MaxHp) * 0.025f;
+        
+        WeightBig(ref targetUnit, ref dir, ref extraKnockBack);
+        WeightSmall(ref targetUnit, ref dir, ref extraKnockBack);
+        WeightEqual(ref targetUnit, ref dir, ref extraKnockBack);
+    }
 
+    /// <summary>
+    /// 무게가 더 클 경우의 던지기 공격
+    /// </summary>
+    /// <param name="targetUnit"></param>
+    /// <param name="dir"></param>
+    /// <param name="extraKnockBack"></param>
+    private void WeightBig(ref Unit targetUnit , ref float dir, ref float extraKnockBack)
+    {
+        AtkData atkData = new AtkData(_myUnit, 0, 0, 0, 0, true, 0, AtkType.Normal);
+
+        //초기데미지 설정
+        SetThrowAttackDamage(ref atkData, targetUnit);
+
+        //기본데미지 100 + 무게
+        atkData.Reset_Damage(100 + (_myUnit.UnitStat.Return_Weight() > targetUnit.UnitStat.Return_Weight() ? (Mathf.RoundToInt((float)_myUnit.UnitStat.Return_Weight() - targetUnit.UnitStat.Return_Weight()) / 2) : Mathf.RoundToInt((float)(targetUnit.UnitStat.Return_Weight() - _myUnit.UnitStat.Return_Weight()) / 5)));
         //무게가 더 클 경우
-        if (_myUnit.UnitStat.Weight > targetUnit.UnitStat.Weight)
+        if (_myUnit.UnitStat.Return_Weight() > targetUnit.UnitStat.Return_Weight())
         {
             atkData.Reset_Kncockback(10, extraKnockBack, dir, false);
             atkData.Reset_Type(AtkType.Stun);
@@ -95,9 +139,25 @@ public abstract class AbstractThrowState : AbstractUnitState
             targetUnit.Run_Damaged(atkData);
             return;
         }
+    }
+
+    /// <summary>
+    /// 무게가 더 작을 경우의 던지기 공격
+    /// </summary>
+    /// <param name="targetUnit"></param>
+    /// <param name="dir"></param>
+    /// <param name="extraKnockBack"></param>
+    private void WeightSmall(ref Unit targetUnit, ref float dir, ref float extraKnockBack)
+    {
+        AtkData atkData = new AtkData(_myUnit, 0, 0, 0, 0, true, 0, AtkType.Normal);
+        AtkData atkDataMy = new AtkData(_myUnit, 0, 0, 0, 0, true, 0, AtkType.Normal);
+
+        //초기데미지 설정
+        SetThrowAttackDamage(ref atkData, targetUnit);
+
 
         //무게가 더 작을 경우
-        if (_myUnit.UnitStat.Weight < targetUnit.UnitStat.Weight)
+        if (_myUnit.UnitStat.Return_Weight() < targetUnit.UnitStat.Return_Weight())
         {
             atkData.Reset_Kncockback(0, 0, 0, false);
             atkData.Reset_Type(AtkType.Normal);
@@ -111,9 +171,24 @@ public abstract class AbstractThrowState : AbstractUnitState
             _myUnit.Run_Damaged(atkDataMy);
             return;
         }
+    }
+
+    /// <summary>
+    /// 무게가 같은 경우의 던지기 공격
+    /// </summary>
+    /// <param name="targetUnit"></param>
+    /// <param name="dir"></param>
+    /// <param name="extraKnockBack"></param>
+    private void WeightEqual(ref Unit targetUnit, ref float dir, ref float extraKnockBack)
+    {
+        AtkData atkData = new AtkData(_myUnit, 0, 0, 0, 0, true, 0, AtkType.Normal);
+        AtkData atkDataMy = new AtkData(_myUnit, 0, 0, 0, 0, true, 0, AtkType.Normal);
+
+        //초기데미지 설정
+        SetThrowAttackDamage(ref atkData, targetUnit);
 
         //무게가 같을 경우
-        if (_myUnit.UnitStat.Weight.Equals(targetUnit.UnitStat.Weight))
+        if (_myUnit.UnitStat.Return_Weight() == targetUnit.UnitStat.Return_Weight())
         {
             atkData.Reset_Kncockback(10, extraKnockBack, dir, false);
             atkData.Reset_Type(AtkType.Stun);
@@ -129,5 +204,24 @@ public abstract class AbstractThrowState : AbstractUnitState
 
             return;
         }
+    }
+
+    /// <summary>
+    /// 공격 데이터의 초기 데미지를 설정
+    /// </summary>
+    /// <param name="atkData"></param>
+    /// <param name="targetUnit"></param>
+    private void SetThrowAttackDamage(ref AtkData atkData, Unit targetUnit)
+    {
+
+        if (_myUnit.UnitStat.Return_Weight() > targetUnit.UnitStat.Return_Weight())
+        {
+            atkData.Reset_Damage(100 + (Mathf.RoundToInt((float)_myUnit.UnitStat.Return_Weight() - targetUnit.UnitStat.Return_Weight()) / 2));
+        }
+        else
+        {
+            atkData.Reset_Damage(100 + Mathf.RoundToInt((float)(targetUnit.UnitStat.Return_Weight() - _myUnit.UnitStat.Return_Weight()) / 5));
+        }
+
     }
 }

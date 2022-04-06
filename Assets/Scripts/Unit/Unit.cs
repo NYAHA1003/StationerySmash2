@@ -74,8 +74,8 @@ public class Unit : MonoBehaviour
         _collideData.originpoints = dataBase.unitData.colideData.originpoints;
 
         //딜레이시스템
-        Set_IsInvincibility(false);
-        Set_IsDontThrow(false);
+        SetIsInvincibility(false);
+        SetIsDontThrow(false);
         
         //스테이지 데이터 가져오기
         _stageData = stageData;
@@ -139,7 +139,7 @@ public class Unit : MonoBehaviour
     /// <param name="atkData">공격 데이터</param>
     public void Run_Damaged(AtkData atkData)
     {
-        _unitStateChanger.UnitState.Run_Damaged(atkData);
+        _unitStateChanger.UnitState.RunDamaged(atkData);
     }
 
     /// <summary>
@@ -158,7 +158,7 @@ public class Unit : MonoBehaviour
     /// <returns></returns>
     public Unit Pull_Unit()
     {
-        return _unitStateChanger.UnitState.Pull_Unit();
+        return _unitStateChanger.UnitState.PullUnit();
     }
 
     /// <summary>
@@ -167,7 +167,7 @@ public class Unit : MonoBehaviour
     /// <returns></returns>
     public Unit Pulling_Unit()
     {
-        return _unitStateChanger.UnitState.Pulling_Unit();
+        return _unitStateChanger.UnitState.PullingUnit();
     }
 
     /// <summary>
@@ -175,14 +175,14 @@ public class Unit : MonoBehaviour
     /// </summary>
     public void Throw_Unit(Vector2 pos)
     {
-        _unitStateChanger.UnitState.Throw_Unit(pos);
+        _unitStateChanger.UnitState.ThrowUnit(pos);
     }
 
     /// <summary>
     /// 무적 여부 설정
     /// </summary>
     /// <param name="isboolean">True면 무적, False면 비무적</param>
-    public void Set_IsInvincibility(bool isboolean)
+    public void SetIsInvincibility(bool isboolean)
     {
         _isInvincibility = isboolean;
     }
@@ -191,7 +191,7 @@ public class Unit : MonoBehaviour
     /// 던지기 가능 설정
     /// </summary>
     /// <param name="isboolean">True면 던지기 불가능, False면 던지기 가능</param>
-    public void Set_IsDontThrow(bool isboolean)
+    public void SetIsDontThrow(bool isboolean)
     {
         _isDontThrow = isboolean;
     }

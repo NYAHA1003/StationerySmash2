@@ -19,13 +19,13 @@ public class PencilStateManager : AbstractStateManager
 
         Reset_CurrentUnitState(_idleState);
 
-        _idleState.Set_StateChange(this);
-        _waitState.Set_StateChange(this);
-        _moveState.Set_StateChange(this);
-        _attackState.Set_StateChange(this);
-        _damagedState.Set_StateChange(this);
-        _dieState.Set_StateChange(this);
-        _throwState.Set_StateChange(this);
+        _idleState.SetStateManager(this);
+        _waitState.SetStateManager(this);
+        _moveState.SetStateManager(this);
+        _attackState.SetStateManager(this);
+        _damagedState.SetStateManager(this);
+        _dieState.SetStateManager(this);
+        _throwState.SetStateManager(this);
     }
 }
 

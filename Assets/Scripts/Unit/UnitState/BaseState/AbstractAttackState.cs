@@ -6,95 +6,129 @@ using DG.Tweening;
 
 public abstract class AbstractAttackState : AbstractUnitState
 {
-    private Unit targetUnit;
-    private float cur_delay = 0;
-    private float max_delay = 100;
-    public void Set_Target(Unit targetUnit)
-    {
-        this.targetUnit = targetUnit;
-    }
-
+    private Unit _targetUnit = null; //공격할 유닛
+    private float _currentdelay = 0; //현재 딜레이
+    private float _maxdelay = 100; //끝 딜레이
     public override void Enter()
     {
         _curState = eState.ATTACK;
         _curEvent = eEvent.ENTER;
-        cur_delay = _myUnit.UnitStat.AttackDelay;
+
+        //공격 딜레이를 유닛의 딜레이로 설정
+        _currentdelay = _myUnit.UnitStat.AttackDelay;
+
         base.Enter();
     }
     public override void Update()
     {
         //상대와의 거리 체크
-        Check_Range();
+        CheckRangeToTarget();
 
         //쿨타임 감소
-        if (max_delay >= cur_delay || targetUnit._isInvincibility)
+        if (AttackDelay())
         {
-            cur_delay += _myUnit.UnitStat.Return_AttackSpeed() * Time.deltaTime;
-            Set_Delay();
-            return;
-        }
-
-        Attack();
-    }
-
-    private void Attack()
-    {
-        Animation();
-
-        cur_delay = 0;
-        Set_Delay();
-
-        _stateManager.Set_Wait(0.4f);
-        _curEvent = eEvent.EXIT;
-        if (Random.Range(0, 100) <= _myUnit.UnitStat.Return_Accuracy())
-        {
-            _myUnit.BattleManager.CommandEffect.SetEffect(EffectType.Attack, new EffData(targetUnit.transform.position, 0.2f));
-            AtkData atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Damage(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, originAtkType, originValue);
-            targetUnit.Run_Damaged(atkData);
-            targetUnit = null;
-            return;
-        }
-        Debug.Log("미스");
-    }
-
-    private void Set_Delay()
-    {
-        _myUnit.UnitSprite.UpdateDelayBar(cur_delay / max_delay);
-        _myUnit.UnitStat.SetAttackDelay(cur_delay);
-    }
-
-    private void Check_Range()
-    {
-        if (targetUnit != null)
-        {
-            if (Vector2.Distance(_myTrm.position, targetUnit.transform.position) > _myUnit.UnitStat.Return_Range())
-            {
-                _stateManager.Set_Move();
-                return;
-            }
-
-            if (_myUnit.ETeam == TeamType.MyTeam & _myTrm.position.x > targetUnit.transform.position.x)
-            {
-                _stateManager.Set_Move();
-                return;
-            }
-            if (_myUnit.ETeam == TeamType.EnemyTeam && _myTrm.position.x < targetUnit.transform.position.x)
-            {
-                _stateManager.Set_Move();
-                return;
-            }
-            if (targetUnit.transform.position.y > _myTrm.position.y)
-            {
-                _stateManager.Set_Move();
-                return;
-            }
+            Attack();
         }
     }
     public override void Animation(params float[] value)
     {
-        _mySprTrm.DOKill();
+        ResetAnimation();
         float rotate = _myUnit.ETeam.Equals(TeamType.MyTeam) ? -90 : 90;
         _mySprTrm.eulerAngles = new Vector3(0, 0, 0);
         _mySprTrm.DORotate(new Vector3(0, 0, rotate), 0.2f).SetLoops(2, LoopType.Yoyo);
+    }
+
+    /// <summary>
+    /// 공격할 유닛 설정
+    /// </summary>
+    /// <param name="targetUnit"></param>
+    public void Set_Target(Unit targetUnit)
+    {
+        this._targetUnit = targetUnit;
+    }
+
+    /// <summary>
+    /// 공격할 수 있을 때 까지 대기한다
+    /// </summary>
+    /// <returns>True면 공격, 아니면 딜레이</returns>
+    private bool AttackDelay()
+    {
+        if (_maxdelay >= _currentdelay || _targetUnit._isInvincibility)
+        {
+            _currentdelay += _myUnit.UnitStat.Return_AttackSpeed() * Time.deltaTime;
+            SetUnitDelayAndUI();
+            return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// 공격
+    /// </summary>
+    private void Attack()
+    {
+        //공격 애니메이션
+        Animation();
+
+        //공격 딜레이 초기화
+        _currentdelay = 0;
+        SetUnitDelayAndUI();
+
+        //대기 상태로 돌아감
+        _stateManager.Set_Wait(0.4f);
+        _curEvent = eEvent.EXIT;
+
+
+        //공격 명중률에 따라 미스가 뜬다.
+        if (Random.Range(0, 100) <= _myUnit.UnitStat.Return_Accuracy())
+        {
+            _myUnit.BattleManager.CommandEffect.SetEffect(EffectType.Attack, new EffData(_targetUnit.transform.position, 0.2f));
+            AtkData atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Damage(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, originAtkType, originValue);
+            _targetUnit.Run_Damaged(atkData);
+            _targetUnit = null;
+            return;
+        }
+        else
+        {
+            Debug.Log("미스");
+        }
+    }
+
+    /// <summary>
+    /// 유닛의 딜레이랑, 딜레이바 UI 수정
+    /// </summary>
+    private void SetUnitDelayAndUI()
+    {
+        _myUnit.UnitSprite.UpdateDelayBar(_currentdelay / _maxdelay);
+        _myUnit.UnitStat.SetAttackDelay(_currentdelay);
+    }
+
+    /// <summary>
+    /// 타겟과의 거리 체크
+    /// </summary>
+    private void CheckRangeToTarget()
+    {
+        if (_targetUnit == null)
+        {
+            return;
+        }
+        if (Vector2.Distance(_myTrm.position, _targetUnit.transform.position) <= _myUnit.UnitStat.Return_Range())
+        {
+            return;
+        }
+
+        if (_myUnit.ETeam == TeamType.MyTeam && _myTrm.position.x <= _targetUnit.transform.position.x)
+        {
+            return;
+        }
+        if (_myUnit.ETeam == TeamType.EnemyTeam && _myTrm.position.x >= _targetUnit.transform.position.x)
+        {
+            return;
+        }
+        if (_targetUnit.transform.position.y <= _myTrm.position.y)
+        {
+            return;
+        }
+        _stateManager.Set_Move();
     }
 }

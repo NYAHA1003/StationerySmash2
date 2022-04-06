@@ -29,21 +29,21 @@ public abstract class  AbstractStateManager
     public abstract void Set_State();
     public virtual void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
     {
-        _idleState.Change_Trm(myTrm, mySprTrm, myUnit);
-        _waitState.Change_Trm(myTrm, mySprTrm, myUnit);
-        _moveState.Change_Trm(myTrm, mySprTrm, myUnit);
-        _attackState.Change_Trm(myTrm, mySprTrm, myUnit);
-        _damagedState.Change_Trm(myTrm, mySprTrm, myUnit);
-        _dieState.Change_Trm(myTrm, mySprTrm, myUnit);
-        _throwState.Change_Trm(myTrm, mySprTrm, myUnit);
+        _idleState.ChangeUnit(myTrm, mySprTrm, myUnit);
+        _waitState.ChangeUnit(myTrm, mySprTrm, myUnit);
+        _moveState.ChangeUnit(myTrm, mySprTrm, myUnit);
+        _attackState.ChangeUnit(myTrm, mySprTrm, myUnit);
+        _damagedState.ChangeUnit(myTrm, mySprTrm, myUnit);
+        _dieState.ChangeUnit(myTrm, mySprTrm, myUnit);
+        _throwState.ChangeUnit(myTrm, mySprTrm, myUnit);
 
-        _idleState.Reset_State();
-        _waitState.Reset_State();
-        _moveState.Reset_State();
-        _attackState.Reset_State();
-        _damagedState.Reset_State();
-        _dieState.Reset_State();
-        _throwState.Reset_State();
+        _idleState.ResetState();
+        _waitState.ResetState();
+        _moveState.ResetState();
+        _attackState.ResetState();
+        _damagedState.ResetState();
+        _dieState.ResetState();
+        _throwState.ResetState();
 
         Set_WaitExtraTime(0);
         Reset_CurrentUnitState(_idleState);
@@ -51,61 +51,61 @@ public abstract class  AbstractStateManager
 
     public void Set_Attack(Unit targetUnit)
     {
-        _currrentState.Set_Event(eEvent.EXIT);
+        _currrentState.SetEvent(eEvent.EXIT);
         _attackState.Set_Target(targetUnit);
         _currrentState._nextState = _attackState;
-        _attackState.Reset_State();
+        _attackState.ResetState();
         Reset_CurrentUnitState(_attackState);
     }
 
     public void Set_Damaged(AtkData atkData)
     {
-        _currrentState.Set_Event(eEvent.EXIT);
+        _currrentState.SetEvent(eEvent.EXIT);
         _damagedState.Set_AtkData(atkData);
         _currrentState._nextState = _damagedState;
-        _damagedState.Reset_State();
+        _damagedState.ResetState();
         Reset_CurrentUnitState(_damagedState);
     }
 
     public void Set_Die()
     {
-        _currrentState.Set_Event(eEvent.EXIT);
+        _currrentState.SetEvent(eEvent.EXIT);
         _currrentState._nextState = _dieState;
-        _dieState.Reset_State();
+        _dieState.ResetState();
         Reset_CurrentUnitState(_dieState);
     }
 
     public void Set_Idle()
     {
-        _currrentState.Set_Event(eEvent.EXIT);
+        _currrentState.SetEvent(eEvent.EXIT);
         _currrentState._nextState = _idleState;
-        _idleState.Reset_State();
+        _idleState.ResetState();
         Reset_CurrentUnitState(_idleState);
     }
 
     public void Set_Move()
     {
-        _currrentState.Set_Event(eEvent.EXIT);
+        _currrentState.SetEvent(eEvent.EXIT);
         _currrentState._nextState = _moveState;
-        _moveState.Reset_State();
+        _moveState.ResetState();
         Reset_CurrentUnitState(_moveState);
     }
 
     public void Set_Throw()
     {
-        _currrentState.Set_Event(eEvent.EXIT);
+        _currrentState.SetEvent(eEvent.EXIT);
         _currrentState._nextState = _throwState;
-        _throwState.Reset_State();
+        _throwState.ResetState();
         Reset_CurrentUnitState(_throwState);
     }
 
     public void Set_Wait(float time)
     {
-        _currrentState.Set_Event(eEvent.EXIT);
+        _currrentState.SetEvent(eEvent.EXIT);
         _waitState.Set_Time(time);
         _waitState.Set_ExtraTime(_waitExtraTime);
         _currrentState._nextState = _waitState;
-        _waitState.Reset_State();
+        _waitState.ResetState();
         Reset_CurrentUnitState(_waitState);
     }
 
@@ -117,7 +117,7 @@ public abstract class  AbstractStateManager
 
     public void Set_ThrowPos(Vector2 pos)
     {
-        this._throwState.Set_ThrowPos(pos);
+        this._throwState.SetThrowPos(pos);
     }
 
     public void SetStageData(StageData stageData)
