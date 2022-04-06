@@ -15,9 +15,11 @@ public class IgnoreMoveState : AbstractMoveState
                 break;
             case TeamType.MyTeam:
                 MoveMyTeam();
+                CheckRange(_myUnit.BattleManager.CommandUnit._enemyUnitList);
                 return;
             case TeamType.EnemyTeam:
                 MoveEnemyTeam();
+                CheckRange(_myUnit.BattleManager.CommandUnit._playerUnitList);
                 return;
         }
     }
