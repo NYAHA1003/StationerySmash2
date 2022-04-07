@@ -94,31 +94,38 @@ public class UnitStateChanger
     /// </summary>
     public void DeleteState(UnitType unitType)
     {
-        switch (unitType)
-        {
-            case UnitType.PencilCase:
-                PoolManager.AddItem((PencilCaseStateManager)_stateManager);
-                break;
+        var type = typeof(PoolManager);
+        var method = type.GetMethod("AddItem");
+        var gMethod = method.MakeGenericMethod(_stateManager.GetType());
+        gMethod.Invoke(null, new object[] { _stateManager });
 
-            case UnitType.BallPen:
-                //PoolManager.AddItem((BallpenStateManager)stateManager);
-                break;
-            case UnitType.RedCar:
-                PoolManager.AddItem((RedCarState)_stateManager);
-                break;
-            case UnitType.YellowCar:
-                PoolManager.AddItem((YellowCarState)_stateManager);
-                break;
-            case UnitType.GreenCar:
-                PoolManager.AddItem((GreenCarState)_stateManager);
-                break;
-            default:
-            case UnitType.None:
-            case UnitType.Pencil:
-            case UnitType.Eraser:
-            case UnitType.Sharp:
-                PoolManager.AddItem((PencilState)_stateManager);
-                break;
-        }
+        //switch (unitType)
+        //{
+        //    case UnitType.PencilCase:
+        //        PoolManager.AddItem((PencilCaseStateManager)_stateManager);
+        //        break;
+
+        //    case UnitType.BallPen:
+        //        //PoolManager.AddItem((BallpenStateManager)stateManager);
+        //        break;
+        //    default:
+        //    case UnitType.None:
+        //    case UnitType.Pencil:
+        //    case UnitType.Eraser:
+        //    case UnitType.Sharp:
+        //        PoolManager.AddItem((PencilState)_stateManager);
+        //        break;
+
+        //    //프로젝타일유닛
+        //    case UnitType.RedCar:
+        //        PoolManager.AddItem((RedCarState)_stateManager);
+        //        break;
+        //    case UnitType.YellowCar:
+        //        PoolManager.AddItem((YellowCarState)_stateManager);
+        //        break;
+        //    case UnitType.GreenCar:
+        //        PoolManager.AddItem((GreenCarState)_stateManager);
+        //        break;
+        //}
     }
 }
