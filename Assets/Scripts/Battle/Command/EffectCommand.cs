@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,31 +14,14 @@ namespace Battle
         private Transform _effectPoolManager;
         [SerializeField]
         private List<GameObject> _effectObjectList;
-        /*
-        public void Awake()
-        {
-            SetEffectObjectList("Attack");
-            AwitLoadAsset("Attack");
-            SetEffectObjectList("Stun");
-            AwitLoadAsset("Stun");
-            SetEffectObjectList("Slow");
-            AwitLoadAsset("Slow");
-        }
-        public async void AwitLoadAsset(string s)
+ 
+        
+        public async Task AwitLoadAssetAsync(string s)
         {
             AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(s);
             await handle.Task;
+            _effectObjectList.Add(handle.Result);
         }
-        private void SetEffectObjectList(string s)
-        {
-            Addressables.LoadAssetAsync<GameObject>(s).Completed +=
-              (AsyncOperationHandle<GameObject> obj) =>
-              {
-                  _effectObjectList.Add(obj.Result);
-                  Addressables.Release(obj);
-              };
-        }
-        */
         /// <summary>
         /// 초기화
         /// </summary>
@@ -45,9 +29,14 @@ namespace Battle
         /// <param name="effect_PoolManager"></param>
         public void SetInitialization()
         {
-
+            AllLoadAssetAsync();
         }
-
+        public async void AllLoadAssetAsync()
+        {
+            await AwitLoadAssetAsync("Attack");
+            await AwitLoadAssetAsync("Stun");
+            await AwitLoadAssetAsync("Slow");
+        }
 
         /// <summary>
         /// 이펙트 설정
