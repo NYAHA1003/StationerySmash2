@@ -10,7 +10,7 @@ public class TimerAbility : AbstractPencilCaseAbility
         {
             Unit unit = _battleManager.CommandUnit._playerUnitList[i];
 
-            unit.AddStatusEffect(Utill.AtkType.Exch, 1, 100, 100);
+            unit.AddStatusEffect(Utill.AtkType.Exch, 2, 1000, 1000);
         }
     }
 }

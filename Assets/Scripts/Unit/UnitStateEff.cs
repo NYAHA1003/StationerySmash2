@@ -96,6 +96,9 @@ public class UnitStateEff
             case AtkType.Sick:
                 _statEffList.Add(PoolManager.GetEff<SickEffState>(_transform, _spriteRenderer.transform, _unit, atkType, value));
                 break;
+            case AtkType.Exch:
+                _statEffList.Add(PoolManager.GetEff<ExchEffState>(_transform, _spriteRenderer.transform, _unit, atkType, value));
+                break;
         }
     }
 
