@@ -15,7 +15,7 @@ public abstract class AbstractDamagedState : AbstractUnitState
         //무적여부, 데미지 적용
         _myUnit.SetIsDontThrow(true);
         _myUnit.SetIsInvincibility(true);
-        _myUnit.BattleManager.CommandEffect.SetEffect(EffectType.Attack, new EffData(_myTrm.transform.position, 0.2f));
+        _myUnit.BattleManager.CommandEffect.SetEffect(_atkData._effectType, new EffData(_myTrm.transform.position, 0.2f));
         _myUnit.SubtractHP(_atkData.damage * (_myUnit.UnitStat.DamagedPercent / 100));
 
         //체력이 0 이하면 죽음 상태로 전환

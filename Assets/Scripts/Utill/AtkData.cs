@@ -36,7 +36,10 @@ namespace Utill
         public AtkType atkType;
         public float[] value;
 
-        public AtkData(Unit attacker, int damage, float baseKnockback, float extraKnockback, float direction, bool isMyTeam, int damageId = 0, AtkType atkType = AtkType.Normal, params float[] value)
+        //¿Ã∆Â∆Æ ≈∏¿‘
+        public EffectType _effectType;
+
+        public AtkData(Unit attacker, int damage, float baseKnockback, float extraKnockback, float direction, bool isMyTeam, int damageId = 0, AtkType atkType = AtkType.Normal, EffectType effectType = EffectType.Attack, params float[] value)
         {
             this.attacker = attacker;
             this.damage = damage;
@@ -45,6 +48,7 @@ namespace Utill
             this.extraKnockback = extraKnockback;
             this.direction = (isMyTeam ? direction : 180 - direction) * Mathf.Deg2Rad;
             this.atkType = atkType;
+            this._effectType = effectType;
             this.value = value;
         }
         public float Caculated_Knockback(int weight, int hp, int maxhp, bool isMyTeam)
