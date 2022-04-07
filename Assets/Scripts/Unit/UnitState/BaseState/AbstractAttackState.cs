@@ -106,7 +106,7 @@ public abstract class AbstractAttackState : AbstractUnitState
     /// <summary>
     /// 타겟과의 거리 체크
     /// </summary>
-    private void CheckRangeToTarget()
+    protected virtual void CheckRangeToTarget()
     {
         if (_targetUnit == null)
         {
