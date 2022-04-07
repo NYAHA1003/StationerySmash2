@@ -29,7 +29,6 @@ public abstract class AbstractUnitState
     //º¯¼ö
     protected eState _curState = eState.IDLE;
     protected eEvent _curEvent = eEvent.ENTER;
-    protected AtkType originAtkType = AtkType.Normal;
     protected float[] originValue = default;
 
     /// <summary>

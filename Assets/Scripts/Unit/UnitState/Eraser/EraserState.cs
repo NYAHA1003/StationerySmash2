@@ -13,7 +13,7 @@ public class EraserState : AbstractStateManager
     private DataBase _eraserPieceData = null;
     private UnitDataSO _unitDataSO = null;
 
-    public override void Set_State()
+    public override void SetState()
     {
         //스테이트들을 설정한다
         _idleState = new EraserIdleState();

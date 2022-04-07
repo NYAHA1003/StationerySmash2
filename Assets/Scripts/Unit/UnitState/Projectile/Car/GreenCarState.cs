@@ -5,7 +5,7 @@ using Utill;
 using DG.Tweening;
 public class GreenCarState : AbstractStateManager
 {
-    public override void Set_State()
+    public override void SetState()
     {
         //스테이트들을 설정한다
         _idleState = new GreenCarIdleState();
@@ -65,7 +65,7 @@ public class GreenCarMoveState : IgnoreMoveState
 {
     protected override void CheckTargetUnit(Unit targetUnit)
     {
-        AtkData atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, originAtkType, originValue);
+        AtkData atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, AtkType.Normal, originValue);
         targetUnit.Run_Damaged(atkData);
     }
 }

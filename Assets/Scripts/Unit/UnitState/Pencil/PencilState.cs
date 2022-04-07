@@ -6,16 +6,16 @@ using Utill;
 
 public class PencilState : AbstractStateManager
 {
-    public override void Set_State()
+    public override void SetState()
     {
         //스테이트들을 설정한다
-        _idleState = new Pencil_Idle_State();
-        _waitState = new Pencil_Wait_State();
-        _moveState = new Pencil_Move_State();
-        _attackState = new Pencil_Attack_State();
-        _damagedState = new Pencil_Damaged_State();
-        _dieState = new Pencil_Die_State();
-        _throwState = new Pencil_Throw_State();
+        _idleState = new PencilIdleState();
+        _waitState = new PencilWaitState();
+        _moveState = new PencilMoveState();
+        _attackState = new PencilAttackState();
+        _damagedState = new PencilDamagedState();
+        _dieState = new PencilDieState();
+        _throwState = new PencilThrowState();
 
         Reset_CurrentUnitState(_idleState);
 
@@ -35,31 +35,31 @@ public class PencilState : AbstractStateManager
     }
 }
 
-public class Pencil_Idle_State : AbstractIdleState
+public class PencilIdleState : AbstractIdleState
 {
 }
 
-public class Pencil_Wait_State : AbstractWaitState
+public class PencilWaitState : AbstractWaitState
 {
 }
 
-public class Pencil_Move_State : AbstractMoveState
+public class PencilMoveState : AbstractMoveState
 {
 }
 
-public class Pencil_Attack_State : AbstractAttackState
+public class PencilAttackState : AbstractAttackState
 {
 }
 
-public class Pencil_Damaged_State : AbstractDamagedState
+public class PencilDamagedState : AbstractDamagedState
 {
 }
 
-public class Pencil_Die_State : AbstractDieState
+public class PencilDieState : AbstractDieState
 {
 }
 
-public class Pencil_Throw_State : AbstractThrowState
+public class PencilThrowState : AbstractThrowState
 {
 
 }

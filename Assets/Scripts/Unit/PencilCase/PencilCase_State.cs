@@ -6,7 +6,7 @@ using Utill;
 
 public class PencilCaseStateManager : AbstractStateManager
 {
-    public override void Set_State()
+    public override void SetState()
     {
         _idleState = new PencilCaseIdleState();
         _damagedState = new PencilCaseDamagedState();

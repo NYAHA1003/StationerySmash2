@@ -44,7 +44,7 @@ public class PoolManager : MonoBehaviour
         Queue<T> q = new Queue<T>();
 
         T g = new T();
-        g.Set_State();
+        g.SetState();
         g.Reset_State(myTrm, mySprTrm, myUnit);
 
         q.Enqueue(g);
@@ -134,7 +134,7 @@ public class PoolManager : MonoBehaviour
             if (q.Count == 0)
             {  //안 사용하는 상태가 없으면 새로운 상태를 만든다
                 item = new T();
-                item.Set_State();
+                item.SetState();
                 item.Reset_State(myTrm, mySprTrm, myUnit);
             }
             else

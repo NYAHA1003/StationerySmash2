@@ -40,7 +40,6 @@ public class UnitData
     public float range;
     public CollideData colideData;
     public UnitType unitType;
-    public AtkType atkType;
     public float[] unitablityData;
 }
 

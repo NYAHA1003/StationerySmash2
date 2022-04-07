@@ -5,7 +5,7 @@ using Util;
 using DG.Tweening;
 public class SharpState : AbstractStateManager
 {
-    public override void Set_State()
+    public override void SetState()
     {
         //스테이트들을 설정한다
         _idleState = new Sharp_Idle_State();

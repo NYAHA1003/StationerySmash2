@@ -26,7 +26,7 @@ public abstract class  AbstractStateManager
         return _currrentState;
     }
 
-    public abstract void Set_State();
+    public abstract void SetState();
     public virtual void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
     {
         _idleState.ChangeUnit(myTrm, mySprTrm, myUnit);

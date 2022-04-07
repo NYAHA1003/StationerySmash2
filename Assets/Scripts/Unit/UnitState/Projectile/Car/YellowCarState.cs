@@ -6,7 +6,7 @@ using DG.Tweening;
 
 public class YellowCarState : AbstractStateManager
 {
-    public override void Set_State()
+    public override void SetState()
     {
         //스테이트들을 설정한다
         _idleState = new YellowCarIdleState();

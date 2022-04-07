@@ -68,7 +68,8 @@ public abstract class AbstractAttackState : AbstractUnitState
         //공격 명중률에 따라 미스가 뜬다.
         if (Random.Range(0, 100) <= _myUnit.UnitStat.Return_Accuracy())
         {
-            AtkData atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, originAtkType, originValue);
+            AtkData atkData = null;
+            SetAttackData(ref atkData);
             _targetUnit.Run_Damaged(atkData);
             _targetUnit = null;
             return;
@@ -86,21 +87,6 @@ public abstract class AbstractAttackState : AbstractUnitState
     {
         _myUnit.UnitSprite.UpdateDelayBar(_currentdelay / _maxdelay);
         _myUnit.UnitStat.SetAttackDelay(_currentdelay);
-    }
-
-    /// <summary>
-    /// 공격할 수 있을 때 까지 대기한다
-    /// </summary>
-    /// <returns>True면 공격, 아니면 딜레이</returns>
-    private bool AttackDelay()
-    {
-        if (_maxdelay >= _currentdelay || _targetUnit._isInvincibility)
-        {
-            _currentdelay += _myUnit.UnitStat.Return_AttackSpeed() * Time.deltaTime;
-            SetUnitDelayAndUI();
-            return false;
-        }
-        return true;
     }
 
     /// <summary>
@@ -131,4 +117,29 @@ public abstract class AbstractAttackState : AbstractUnitState
         }
         _stateManager.Set_Move();
     }
+
+    /// <summary>
+    /// 공격 데이터 설정
+    /// </summary>
+    /// <param name="atkData"></param>
+    protected virtual void SetAttackData(ref AtkData atkData)
+    {
+        atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, AtkType.Normal, originValue);
+    }
+
+    /// <summary>
+    /// 공격할 수 있을 때 까지 대기한다
+    /// </summary>
+    /// <returns>True면 공격, 아니면 딜레이</returns>
+    private bool AttackDelay()
+    {
+        if (_maxdelay >= _currentdelay || _targetUnit._isInvincibility)
+        {
+            _currentdelay += _myUnit.UnitStat.Return_AttackSpeed() * Time.deltaTime;
+            SetUnitDelayAndUI();
+            return false;
+        }
+        return true;
+    }
+
 }
