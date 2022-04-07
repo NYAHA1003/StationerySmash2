@@ -145,6 +145,7 @@ public class PoolManager : MonoBehaviour
         }
         else
         {
+            //한번도 해당 유닛의 관한 상태가 만들어진 적이 없다면 풀매니저를 만든다
             CreatePoolState<T>(myTrm, mySprTrm, myUnit);
             Queue<T> q = (Queue<T>)stateDictionary[typeof(T).Name];
             item = q.Dequeue();
@@ -244,12 +245,20 @@ public class PoolManager : MonoBehaviour
         q.Enqueue(state);
     }
 
-    /// <summary>
-    /// 다 쓴 상태이상 반납
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="state"></param>
-    public static void AddEff<T>(T state) where T : EffState
+    public static void AddUnitState(AbstractStateManager state)
+    {
+        var type = typeof(PoolManager);
+        var method = type.GetMethod("AddItem");
+        var gMethod = method.MakeGenericMethod(state.GetType());
+        gMethod.Invoke(null, new object[] { state });
+    }
+
+        /// <summary>
+        /// 다 쓴 상태이상 반납
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="state"></param>
+        public static void AddEff<T>(T state) where T : EffState
     {
         Queue<T> q = (Queue<T>)stateDictionary[typeof(T).Name];
         q.Enqueue(state);
