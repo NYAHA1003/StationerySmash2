@@ -235,16 +235,20 @@ public class PoolManager : MonoBehaviour
 
 
     /// <summary>
-    /// 다 쓴 상태 반납
+    /// 다 쓴 유닛, 상태이상, 클래스 반납
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="state"></param>
-    public static void AddItem<T>(T state) where T : AbstractStateManager
+    public static void AddItem<T>(T state) where T : class
     {
         Queue<T> q = (Queue<T>)stateDictionary[typeof(T).Name];
         q.Enqueue(state);
     }
 
+    /// <summary>
+    /// 유닛 스테이트매니저 반납
+    /// </summary>
+    /// <param name="state"></param>
     public static void AddUnitState(AbstractStateManager state)
     {
         var type = typeof(PoolManager);
@@ -252,15 +256,15 @@ public class PoolManager : MonoBehaviour
         var gMethod = method.MakeGenericMethod(state.GetType());
         gMethod.Invoke(null, new object[] { state });
     }
-
-        /// <summary>
-        /// 다 쓴 상태이상 반납
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="state"></param>
-        public static void AddEff<T>(T state) where T : EffState
+    /// <summary>
+    /// 상태이상 반납
+    /// </summary>
+    /// <param name="state"></param>
+    public static void AddEffState(EffState state)
     {
-        Queue<T> q = (Queue<T>)stateDictionary[typeof(T).Name];
-        q.Enqueue(state);
+        var type = typeof(PoolManager);
+        var method = type.GetMethod("AddItem");
+        var gMethod = method.MakeGenericMethod(state.GetType());
+        gMethod.Invoke(null, new object[] { state });
     }
 }

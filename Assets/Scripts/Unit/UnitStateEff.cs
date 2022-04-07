@@ -76,13 +76,13 @@ public class UnitStateEff
             case AtkType.Normal:
                 return;
             case AtkType.Stun:
-                _statEffList.Add(PoolManager.GetEff<Sturn_Eff_State>(_transform, _spriteRenderer.transform, _unit, atkType, value));
+                _statEffList.Add(PoolManager.GetEff<SturnEffState>(_transform, _spriteRenderer.transform, _unit, atkType, value));
                 return;
             case AtkType.Ink:
                 _statEffList.Add(PoolManager.GetEff<InkEffState>(_transform, _spriteRenderer.transform, _unit, atkType, value));
                 return;
             case AtkType.SlowDown:
-                _statEffList.Add(PoolManager.GetEff<SlowDown_Eff_State>(_transform, _spriteRenderer.transform, _unit, atkType, value));
+                _statEffList.Add(PoolManager.GetEff<SlowDownEffState>(_transform, _spriteRenderer.transform, _unit, atkType, value));
                 return;
             case AtkType.Rage:
                 _statEffList.Add(PoolManager.GetEff<RageEffState>(_transform, _spriteRenderer.transform, _unit, atkType, value));

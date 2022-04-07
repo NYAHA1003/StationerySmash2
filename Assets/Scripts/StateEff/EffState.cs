@@ -107,22 +107,8 @@ public abstract class EffState
         //유닛 상태이상 컴포넌트의 상태이상 리스트에서 삭제함
         _unitStateEff.RemoveStateEff(this);
 
-        //풀 매니저에 자기 자신을 반납함
-        switch (_statusType)
-        {
-            case AtkType.Normal:
-                break;
-            case AtkType.Stun:
-                PoolManager.AddEff((Sturn_Eff_State)this);
-                break;
-            case AtkType.Ink:
-                PoolManager.AddEff((InkEffState)this);
-                break;
-            case AtkType.SlowDown:
-                PoolManager.AddEff((SlowDown_Eff_State)this);
-                break;
-        }
-
+        //상태이상 반납
+        PoolManager.AddEffState(this);
     }
 
     /// <summary>

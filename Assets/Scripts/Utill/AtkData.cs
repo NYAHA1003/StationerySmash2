@@ -15,6 +15,7 @@ namespace Utill
         Rtac,
         Blind,
         Sick,
+        Exch,
     }
     public class AtkData
     {
