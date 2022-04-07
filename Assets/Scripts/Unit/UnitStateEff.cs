@@ -84,6 +84,18 @@ public class UnitStateEff
             case AtkType.SlowDown:
                 _statEffList.Add(PoolManager.GetEff<SlowDown_Eff_State>(_transform, _spriteRenderer.transform, _unit, atkType, value));
                 return;
+            case AtkType.Rage:
+                _statEffList.Add(PoolManager.GetEff<RageEffState>(_transform, _spriteRenderer.transform, _unit, atkType, value));
+                break;
+            case AtkType.Rtac:
+                _statEffList.Add(PoolManager.GetEff<RtacEffState>(_transform, _spriteRenderer.transform, _unit, atkType, value));
+                break;
+            case AtkType.Blind:
+                _statEffList.Add(PoolManager.GetEff<BlindEffState>(_transform, _spriteRenderer.transform, _unit, atkType, value));
+                break;
+            case AtkType.Sick:
+                _statEffList.Add(PoolManager.GetEff<SickEffState>(_transform, _spriteRenderer.transform, _unit, atkType, value));
+                break;
         }
     }
 

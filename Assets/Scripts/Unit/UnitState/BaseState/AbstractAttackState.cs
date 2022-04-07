@@ -68,7 +68,6 @@ public abstract class AbstractAttackState : AbstractUnitState
         //공격 명중률에 따라 미스가 뜬다.
         if (Random.Range(0, 100) <= _myUnit.UnitStat.Return_Accuracy())
         {
-            _myUnit.BattleManager.CommandEffect.SetEffect(EffectType.Attack, new EffData(_targetUnit.transform.position, 0.2f));
             AtkData atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, originAtkType, originValue);
             _targetUnit.Run_Damaged(atkData);
             _targetUnit = null;
