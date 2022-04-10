@@ -10,5 +10,5 @@ public class PencilCaseData
     public float costSpeed;
     public PencilCaseType pencilCaseType;
     public AbstractPencilCaseAbility pencilState;
-    public DataBase pencilCaseData;
+    public CardData pencilCaseData;
 }

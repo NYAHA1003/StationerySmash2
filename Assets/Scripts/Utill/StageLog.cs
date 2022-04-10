@@ -7,7 +7,7 @@ public class StageLog : MonoBehaviour
     private float time;
     public AIDataSO aIDataSO;
     
-    public void Add_Log(DataBase dataBase)
+    public void Add_Log(CardData dataBase)
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         aIDataSO.cardDataList.Add(dataBase);
