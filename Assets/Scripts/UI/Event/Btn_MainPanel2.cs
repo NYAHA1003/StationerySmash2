@@ -12,10 +12,10 @@ public class Btn_MainPanel2
     [SerializeField, Header("설정 패널"), Space(5)]
     private GameObject _settingPanel;
 
-    public void Start()
+    public void ListenEvent()
     {
         EventManager.StartListening(EventsType.ActiveDeck, OnDeckActive);
-        EventManager.StartListening(EventsType.ActiveDescription, OnCardDescriptoinActive);
+        EventManager.StartListening(EventsType.ActiveCardDescription, OnCardDescriptoinActive);
         EventManager.StartListening(EventsType.ActiveSetting, OnSettingActive);
 
         //활성화되어 있는 모든 패널 닫기 

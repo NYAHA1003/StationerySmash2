@@ -10,7 +10,7 @@ public class ButtonManager : MonoBehaviour
     private Btn_MainPanel2 _btn_MainPanel2; //메인패널에 사용되는 스크립트 
     private void Start()
     {
-        _btn_MainPanel2.Start(); 
+        _btn_MainPanel2.ListenEvent(); 
     }
 
     public void OnDeckActive()
@@ -20,7 +20,7 @@ public class ButtonManager : MonoBehaviour
 
     public void OnDeckDescriptoinActive()
     {
-        EventManager.TriggerEvent(EventsType.ActiveDescription);
+        EventManager.TriggerEvent(EventsType.ActiveCardDescription);
     }
 
     public void OnSettingActive()

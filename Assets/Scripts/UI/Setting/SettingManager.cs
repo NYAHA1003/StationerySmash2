@@ -5,7 +5,9 @@ using UnityEngine;
 public class SettingManager : MonoBehaviour
 {
     [SerializeField]
-
+    private SoundManager soundManager;
+    [SerializeField]
+    private ProfileSetting profile; 
     private void Start()
     {
         
