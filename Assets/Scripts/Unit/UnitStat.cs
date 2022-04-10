@@ -86,6 +86,21 @@ public class UnitStat
     }
 
     /// <summary>
+    /// 보너스 스탯 초기화
+    /// </summary>
+    public void ResetBonusStat()
+    {
+        _bonusMoveSpeed = 0;
+        _bonusAttackSpeed = 0;
+        _bonusMaxHp = 0;
+        _bonusAttack = 0;
+        _bonusKnockback = 0;
+        _bonusAccuracy = 0;
+        _bonusRange = 0;
+        _bonusWeight = 0;
+    }
+
+    /// <summary>
     /// 보너스 이동 속도 설정
     /// </summary>
     /// <param name="add"></param>

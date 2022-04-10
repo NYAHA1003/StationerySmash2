@@ -6,6 +6,6 @@ public class RockSticker : AbstractSticker
 {
     public override void RunStickerAblity()
     {
-        _myUnit.UnitStat.SetBonusMoveSpeed(10);
+        _myUnit.UnitStat.SetBonusMoveSpeed(1);
     }
 }

@@ -85,6 +85,7 @@ public class Unit : MonoBehaviour
         _stageData = stageData;
 
         //Ω∫≈» º≥¡§
+        _unitStat.ResetBonusStat();
         _unitStat.ResetAttackDelay();
         _unitStat.SetUnitData(_unitData);
         _unitStat.SetGradeStat(grade);
