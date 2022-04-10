@@ -14,6 +14,9 @@ public abstract class AbstractAttackState : AbstractUnitState
         _curState = eState.ATTACK;
         _curEvent = eEvent.ENTER;
 
+        //스티커 사용
+        _myUnit.UnitSticker.RunStickerAbility(_curState);
+
         //공격 딜레이를 유닛의 딜레이로 설정
         _currentdelay = _myUnit.UnitStat.AttackDelay;
 

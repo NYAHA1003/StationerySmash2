@@ -26,9 +26,15 @@ public class UnitSticker
 
         //위치 설정
         //SetPosition();
+    }
 
-        //능력 사용
-        _stickerablity?.RunStickerAblity();
+    /// <summary>
+    /// 스티커 능력 사용
+    /// </summary>
+    /// <param name="eState"></param>
+    public void RunStickerAbility(eState eState)
+    {
+        _stickerablity?.RunStickerAblity(eState);
     }
 
     /// <summary>
@@ -57,7 +63,7 @@ public class UnitSticker
             case StickerType.Scissors:
                 break;
         }
-        _stickerablity.SetUnit(_myUnit);
+        _stickerablity.SetSticker(_myUnit);
     }
 
     /// <summary>

@@ -11,8 +11,14 @@ public abstract class AbstractThrowState : AbstractUnitState
 
     public override void Enter()
     {
+        _curState = eState.THROW;
+        _curEvent = eEvent.ENTER;
+
         //또 던지는거 방지
         _myUnit.SetIsDontThrow(true);
+
+        //스티커 사용
+        _myUnit.UnitSticker.RunStickerAbility(_curState);
 
         //유닛 던지기
         ThrowingUnit();
