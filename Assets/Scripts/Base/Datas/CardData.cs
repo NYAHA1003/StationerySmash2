@@ -6,12 +6,13 @@ using UnityEditor;
 using Utill;
 
 [System.Serializable]
-public class DataBase
+public class CardData
 {
     public CardType cardType;
     public string card_Name;
     public int card_Cost;
     public Sprite card_Sprite;
+    public int level;
 
     //½ÇÇàÇü
     [ShowWhen("cardType", new object[] { CardType.Execute, CardType.SummonTrap, CardType.Installation })]

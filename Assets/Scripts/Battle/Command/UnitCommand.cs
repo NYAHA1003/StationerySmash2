@@ -46,7 +46,7 @@ namespace Battle
         /// <param name="dataBase"></param>
         /// <param name="Pos"></param>
         /// <param name="count"></param>
-        public void SummonUnit(DataBase dataBase, Vector3 Pos, int grade, TeamType eTeam = TeamType.Null)
+        public void SummonUnit(CardData dataBase, Vector3 Pos, int grade, TeamType eTeam = TeamType.Null)
         {
             Unit unit = null;
 

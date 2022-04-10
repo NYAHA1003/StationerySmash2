@@ -5,9 +5,9 @@ using UnityEngine;
 [System.Serializable]
 public class DeckData
 {
-    public List<DataBase> cardDatas = new List<DataBase>();
+    public List<CardData> cardDatas = new List<CardData>();
     
-    public void Add_CardData(DataBase data)
+    public void Add_CardData(CardData data)
     {
         data.strategyData.Set_State();
         cardDatas.Add(data);

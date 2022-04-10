@@ -15,7 +15,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public int CardCost { get; private set; }
     public bool _isFusion;
     public bool _isDontMove;
-    public DataBase _dataBase;
+    public CardData _dataBase;
     public int _grade = 1;
     public int _id;
     private bool _isDrag; // 드래그 중인 상태인가
@@ -51,7 +51,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// </summary>
     /// <param name="dataBase">유닛 데이터</param>
     /// <param name="id">카드 고유 아이디</param>
-    public void Set_UnitData(DataBase dataBase, int id)
+    public void Set_UnitData(CardData dataBase, int id)
     {
         _rectTransform??= GetComponent<RectTransform>();
         _battleManager ??= FindObjectOfType<BattleManager>();

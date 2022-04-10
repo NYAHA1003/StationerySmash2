@@ -63,7 +63,7 @@ public class Unit : MonoBehaviour
     /// <param name="eTeam">팀 변수</param>
     /// <param name="battleManager">배틀매니저</param>
     /// <param name="id"></param>
-    public virtual void SetUnitData(DataBase dataBase, TeamType eTeam, StageData stageData, int id, int grade)
+    public virtual void SetUnitData(CardData dataBase, TeamType eTeam, StageData stageData, int id, int grade)
     {
         //유닛 데이터 받아오기
         _unitData = dataBase.unitData;
