@@ -42,6 +42,7 @@ public class PencilCaseUnit : Unit
                 AbilityState = PoolManager.GetPencilCase<TrafficAbility>();
                 break;
             case PencilCaseType.Wing:
+                AbilityState = PoolManager.GetPencilCase<WingAbility>();
                 break;
             case PencilCaseType.Soccer:
                 break;
