@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RockSticker : AbstractSticker
+public class PaperSticker : AbstractSticker
 {
     public override void RunStickerAblity()
     {
-        _myUnit.UnitStat.SetBonusMoveSpeed(10);
+        _myUnit.UnitStat.SetBonusMaxHP(100);
     }
 }

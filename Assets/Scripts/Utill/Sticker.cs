@@ -4,13 +4,16 @@ using UnityEngine;
 
 namespace Utill
 {
+    [System.Serializable]
     public class StickerData
     {
-
+        public StickerType stickerType;
+        public int stickerLevel = 1;
     }
     public enum StickerType
     {
-        Rock = 0,
+        None = 0,
+        Rock = 1,
         Paper,
         Scissors,
 

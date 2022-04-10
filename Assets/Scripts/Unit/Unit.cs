@@ -26,7 +26,6 @@ public class Unit : MonoBehaviour
     //변수
     private CollideData _collideData = default; 
     private UnitStateEff _unitStateEff = new UnitStateEff();
-    private UnitSticker _unitSticker = new UnitSticker();
     private UnitStat _unitStat = new UnitStat();
     private UnitStateChanger _unitStateChanger = new UnitStateChanger();
     private TeamType _eTeam = TeamType.Null;
@@ -41,6 +40,8 @@ public class Unit : MonoBehaviour
     //인스펙터 참조 변수
     [SerializeField]
     private UnitSprite _unitSprite = null;
+    [SerializeField]
+    private UnitSticker _unitSticker = null;
 
     protected virtual void Start()
     {
@@ -105,6 +106,9 @@ public class Unit : MonoBehaviour
         _unitStateChanger.SetStageData(_stageData);
         _unitStateChanger.SetUnitState();
 
+        //스티커 설정
+        _unitSticker.SetSticker(this);
+
         //설정 끝, 무적판정 제거
         _isInvincibility = false;
         _isSettingEnd = true;
@@ -132,6 +136,7 @@ public class Unit : MonoBehaviour
         _unitStateChanger.DeleteState(_unitData.unitType);
         _unitStateChanger.StateNull();
         _unitStateEff.DeleteEffStetes();
+        _unitSticker.DeleteSticekr();
         RemoveUnitList();
     }
 
@@ -233,5 +238,4 @@ public class Unit : MonoBehaviour
                 break;
         }
     }
-
 }
