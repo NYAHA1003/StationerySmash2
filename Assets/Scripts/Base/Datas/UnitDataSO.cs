@@ -10,5 +10,5 @@ using Utill;
 public class UnitDataSO : ScriptableObject
 {
     [Header("임시 유닛 데이터")]
-    public List<DataBase> unitDatas;
+    public List<CardData> unitDatas;
 }

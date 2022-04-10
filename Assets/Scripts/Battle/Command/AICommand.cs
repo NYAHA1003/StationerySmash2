@@ -25,10 +25,10 @@ namespace Battle
         private UnitCommand _unitCommand = null;
 
         //º¯¼ö
-        private List<DataBase> enemyCardDataList = new List<DataBase>();
+        private List<CardData> enemyCardDataList = new List<CardData>();
         private List<Vector2> enemyPos = new List<Vector2>();
         private List<float> enemyMaxDelay = new List<float>();
-        private List<DataBase> playerCardDataList;
+        private List<CardData> playerCardDataList;
         private List<Vector2> playerPos;
         private List<float> playerMaxDelay;
 

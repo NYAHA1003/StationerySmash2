@@ -9,6 +9,7 @@ public class Unit : MonoBehaviour
     //프로퍼티
     public UnitSprite UnitSprite => _unitSprite;//유닛 스프라이트 및 UI 관리
     public UnitStateEff UnitStateEff => _unitStateEff; //유닛 상태이상 관리
+    public UnitSticker UnitSticker => _unitSticker; //유닛 스티커
     public UnitStat UnitStat => _unitStat; // 유닛 스탯 관리
     public UnitStateChanger UnitStateChanger => _unitStateChanger; //유닛별 스테이트 관리
     public UnitData UnitData => _unitData; //유닛 데이터
@@ -25,6 +26,7 @@ public class Unit : MonoBehaviour
     //변수
     private CollideData _collideData = default; 
     private UnitStateEff _unitStateEff = new UnitStateEff();
+    private UnitSticker _unitSticker = new UnitSticker();
     private UnitStat _unitStat = new UnitStat();
     private UnitStateChanger _unitStateChanger = new UnitStateChanger();
     private TeamType _eTeam = TeamType.Null;
@@ -61,7 +63,7 @@ public class Unit : MonoBehaviour
     /// <param name="eTeam">팀 변수</param>
     /// <param name="battleManager">배틀매니저</param>
     /// <param name="id"></param>
-    public virtual void SetUnitData(DataBase dataBase, TeamType eTeam, StageData stageData, int id, int grade)
+    public virtual void SetUnitData(CardData dataBase, TeamType eTeam, StageData stageData, int id, int grade)
     {
         //유닛 데이터 받아오기
         _unitData = dataBase.unitData;

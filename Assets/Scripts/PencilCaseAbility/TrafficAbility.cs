@@ -14,9 +14,9 @@ public class TrafficAbility : AbstractPencilCaseAbility
     }
 
     private TrafficType _trafficType = TrafficType.Red;
-    private DataBase _redCarData = null;
-    private DataBase _yellowCarData = null;
-    private DataBase _greenCarData = null;
+    private CardData _redCarData = null;
+    private CardData _yellowCarData = null;
+    private CardData _greenCarData = null;
     private UnitDataSO _unitDataSO = null;
 
     public override void SetState(BattleManager battleManager)

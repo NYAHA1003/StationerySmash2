@@ -9,8 +9,8 @@ using UnityEngine.AddressableAssets;
 
 public class EraserState : AbstractStateManager
 {
-    public DataBase EraserPieceData => _eraserPieceData;
-    private DataBase _eraserPieceData = null;
+    public CardData EraserPieceData => _eraserPieceData;
+    private CardData _eraserPieceData = null;
     private UnitDataSO _unitDataSO = null;
 
     public override void SetState()

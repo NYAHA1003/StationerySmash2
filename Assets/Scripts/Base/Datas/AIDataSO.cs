@@ -7,7 +7,7 @@ public class AIDataSO : ScriptableObject
 {
     public int summonGrade;
     public float throwSpeed;
-    public List<DataBase> cardDataList;
+    public List<CardData> cardDataList;
     public List<Vector2> pos;
     public List<float> max_Delay;
 }

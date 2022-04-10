@@ -232,8 +232,6 @@ public class PoolManager : MonoBehaviour
         return item;
     }
 
-
-
     /// <summary>
     /// 다 쓴 유닛, 상태이상, 클래스 반납
     /// </summary>
@@ -261,6 +259,18 @@ public class PoolManager : MonoBehaviour
     /// </summary>
     /// <param name="state"></param>
     public static void AddEffState(EffState state)
+    {
+        var type = typeof(PoolManager);
+        var method = type.GetMethod("AddItem");
+        var gMethod = method.MakeGenericMethod(state.GetType());
+        gMethod.Invoke(null, new object[] { state });
+    }
+
+    /// <summary>
+    /// 스티커 반납
+    /// </summary>
+    /// <param name="state"></param>
+    public static void AddSticker(EffState state)
     {
         var type = typeof(PoolManager);
         var method = type.GetMethod("AddItem");

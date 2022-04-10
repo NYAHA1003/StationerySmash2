@@ -18,7 +18,7 @@ public class PencilCaseUnit : Unit
     /// <param name="stageData"></param>
     /// <param name="id"></param>
     /// <param name="grade"></param>
-    public override void SetUnitData(DataBase dataBase, TeamType eTeam, StageData stageData, int id, int grade)
+    public override void SetUnitData(CardData dataBase, TeamType eTeam, StageData stageData, int id, int grade)
     {
         _battleManager ??= FindObjectOfType<BattleManager>();
         base.SetUnitData(dataBase, eTeam, stageData, id, grade);
