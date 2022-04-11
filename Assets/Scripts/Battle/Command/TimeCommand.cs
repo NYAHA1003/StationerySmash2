@@ -38,6 +38,24 @@ namespace Battle
         }
 
         /// <summary>
+        /// 시간 설정
+        /// </summary>
+        /// <param name="time"></param>
+        public void SetTime(float time)
+        {
+            _timer = time;
+        }
+
+        /// <summary>
+        /// 시간 추가 설정
+        /// </summary>
+        /// <param name="time"></param>
+        public void IncreaseTime(float time)
+        {
+            _timer += time;
+        }
+
+        /// <summary>
         /// 시간 업데이트
         /// </summary>
         public void UpdateTime()

@@ -11,4 +11,5 @@ public class PencilCaseData
     public PencilCaseType pencilCaseType;
     public AbstractPencilCaseAbility pencilState;
     public CardData pencilCaseData;
+    public List<BadgeData> _badgeDatas;
 }

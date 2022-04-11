@@ -483,6 +483,13 @@ namespace Battle
         }
 
         /// <summary>
+        /// 최대 카드 추가
+        /// </summary>
+        public void AddMaxCard(int add)
+        {
+            _maxCardCount += add;
+        }
+        /// <summary>
         /// 융합에 딜레이를 설정, 리셋하는 함수
         /// </summary>
         private void SetDelayFusion()
