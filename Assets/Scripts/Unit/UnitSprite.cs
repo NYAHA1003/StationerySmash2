@@ -1,0 +1,103 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using Utill;
+using Battle;
+
+[System.Serializable]
+/// <summary>
+/// 유닛 스프라이트 컴포넌트
+/// </summary>
+public class UnitSprite
+{
+
+    //프로퍼티
+    public SpriteRenderer SpriteRenderer => _spriteRenderer; // 스프라이트렌더러 프로퍼티
+
+    //인스펙터 참조 변수
+    [SerializeField]
+    private Canvas _canvas = null; //유닛의 캔버스
+    [SerializeField]
+    private Image _delayBar = null; //딜레이바
+    [SerializeField]
+    private SpriteMask _spriteMask = null; //유닛 마스크
+    [SerializeField]
+    private SpriteRenderer _spriteRenderer = null; //유닛 스프라이트렌더러
+    [SerializeField]
+    private SpriteRenderer _hpSpriteRenderer = null; //유닛 깨짐이미지 렌더러
+    [SerializeField]
+    private Sprite[] _hpSprites = null; // 유닛 깨짐이미지들
+
+    /// <summary>
+    /// 초기 스프라이트 및 유닛 UI 설정
+    /// </summary>
+    /// <param name="eTeam"></param>
+    /// <param name="sprite"></param>
+    public void SetUIAndSprite(TeamType eTeam, Sprite sprite)
+    {
+        _canvas.worldCamera = Camera.main;
+        _delayBar.rectTransform.anchoredPosition = eTeam.Equals(TeamType.MyTeam) ? new Vector2(-960.15f, -540.15f) : new Vector2(-959.85f, -540.15f);
+        _spriteRenderer.sprite = sprite;
+        _spriteMask.sprite = sprite;
+    }
+
+    /// <summary>
+    /// 체력 비율에 따른 깨짐 이미지
+    /// </summary>
+    public void Set_HPSprite(int hp, int maxhp)
+    {
+        float percent = (float)hp / maxhp;
+
+        if (percent > 0.5f)
+        {
+            _hpSpriteRenderer.sprite = null;
+        }
+        else if (percent > 0.2f)
+        {
+            _hpSpriteRenderer.sprite = _hpSprites[0];
+        }
+        else
+        {
+            _hpSpriteRenderer.sprite = _hpSprites[1];
+        }
+    }
+
+    /// <summary>
+    /// 딜레이바 업데이트
+    /// </summary>
+    /// <param name="delay"></param>
+    public void UpdateDelayBar(float delay)
+    {
+        _delayBar.fillAmount = delay;
+    }
+
+    /// <summary>
+    /// 캔버스 키기 끄기
+    /// </summary>
+    /// <param name="isShow">True면 캔버스 키기 아니면 끄기</param>
+    public void ShowCanvas(bool isShow)
+    {
+        _canvas.gameObject.SetActive(isShow);
+    }
+
+    /// <summary>
+    /// 팀 설정에 따른 색깔 설정
+    /// </summary>
+    /// <param name="eTeam"></param>
+    public void SetTeamColor(TeamType eTeam)
+    {
+        switch (eTeam)
+        {
+            case TeamType.Null:
+                _spriteRenderer.color = Color.white;
+                break;
+            case TeamType.MyTeam:
+                _spriteRenderer.color = Color.red;
+                break;
+            case TeamType.EnemyTeam:
+                _spriteRenderer.color = Color.blue;
+                break;
+        }
+    }
+}

@@ -11,6 +11,11 @@ namespace Utill
         Stun,
         Ink,
         SlowDown,
+        Rage,
+        Rtac,
+        Blind,
+        Sick,
+        Exch,
     }
     public class AtkData
     {
@@ -32,7 +37,10 @@ namespace Utill
         public AtkType atkType;
         public float[] value;
 
-        public AtkData(Unit attacker, int damage, float baseKnockback, float extraKnockback, float direction, bool isMyTeam, int damageId = 0, AtkType atkType = AtkType.Normal, params float[] value)
+        //¿Ã∆Â∆Æ ≈∏¿‘
+        public EffectType _effectType;
+
+        public AtkData(Unit attacker, int damage, float baseKnockback, float extraKnockback, float direction, bool isMyTeam, int damageId = 0, AtkType atkType = AtkType.Normal, EffectType effectType = EffectType.Attack, params float[] value)
         {
             this.attacker = attacker;
             this.damage = damage;
@@ -41,6 +49,7 @@ namespace Utill
             this.extraKnockback = extraKnockback;
             this.direction = (isMyTeam ? direction : 180 - direction) * Mathf.Deg2Rad;
             this.atkType = atkType;
+            this._effectType = effectType;
             this.value = value;
         }
         public float Caculated_Knockback(int weight, int hp, int maxhp, bool isMyTeam)
@@ -76,9 +85,12 @@ namespace Utill
                 this.damageId = damageId;
                 return;
             }
+            else
+            {
 
-            attacker.damageCount++;
-            this.damageId = attacker.myUnitId * 10000 + attacker.damageCount;
+                attacker.DamageCount++;
+                this.damageId = attacker.MyUnitId * 10000 + attacker.DamageCount;
+            }
 
         }
     }

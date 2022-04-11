@@ -5,300 +5,160 @@ using UnityEngine.UI;
 using DG.Tweening;
 using Utill;
 using TMPro;
+using Battle;
+using System;
+
 
 public class BattleManager : MonoBehaviour
 {
-    #region 데이터들
-
-    [SerializeField, Header("공용 데이터들"), Space(30)]
-    private UnitDataSO unitDataSO;
-    [SerializeField]
-    public StageDataSO stageDataSO;
-    [SerializeField]
-    public StarategyDataSO  starategyDataSO;
-    [SerializeField]
-    public DeckData deckData;
-
-    private bool isEndSetting = false;
-
-    public StageData currentStageData
+    public StageData CurrentStageData
     {
         get
         {
-            return stageDataSO.stageDatas[0];
+            return _stageDataSO.stageDatas[0];
         }
 
-        private set {}
+        private set
+        {
+        }
     }
 
-    #endregion
+    public CardCommand CommandCard => _commandCard;
+    public UnitCommand CommandUnit => _commandUnit;
+    public CameraCommand CommandCamera => _commandCamera;
+    public EffectCommand CommandEffect => _commandEffect;
+    public ThrowCommand CommandThrow => _commandThrow;
+    public TimeCommand CommandTime => _commandTime;
+    public AICommand CommandAI => _commandAI;
+    public CostCommand CommandCost => _commandCost;
+    public PencilCaseCommand CommandPencilCase => _commandPencilCase;
+    public PauseCommand CommandPause => _commandPause;
+    public WinLoseCommand CommandWinLose => _commandWinLose;
 
-    #region 카드 시스템 Battle_Card
+    public TextMeshProUGUI _unitTeamText = null;
 
-    public Battle_Card battle_Card { get; private set;}
-
-    [SerializeField, Header("카드시스템 Battle_Card"), Space(30)]
-    public List<CardMove> card_DatasTemp;
     [SerializeField]
-    private GameObject card_cardMove_Prefeb;
-    [SerializeField]
-    private Transform card_PoolManager;
-    [SerializeField]
-    private Transform card_Canvas;
-    [SerializeField]
-    private RectTransform card_SpawnPosition;
-    [SerializeField]
-    private RectTransform card_LeftPosition;
-    [SerializeField]
-    private RectTransform card_RightPosition;
-    [SerializeField]
-    private GameObject card_AfterImage;
-    [SerializeField]
-    private LineRenderer card_SummonRangeLine;
+    private StageDataSO _stageDataSO = null;
+    private DeckData _deckData = null;
+    private bool _isEndSetting = false;
+    private Action _updateAction = () => { };
 
-    [Header("어느 곳이든 유닛 소환 가능")]
-    public bool isAnySummon;
-
-    #endregion
-
-    #region 유닛 시스템 Battle_Unit
-
-    public Battle_Unit battle_Unit { get; private set; }
-
-    [SerializeField, Header("유닛시스템 Battle_Unit"), Space(30)]
-    public List<Unit> unit_MyDatasTemp;
-    public List<Unit> unit_EnemyDatasTemp;
-    [SerializeField]
-    private GameObject unit_Prefeb;
-    [SerializeField]
-    private Transform unit_PoolManager;
-    [SerializeField]
-    private Transform unit_Parent;
-
-    public TextMeshProUGUI unit_teamText;
-
-    #endregion
-
-    #region 카메라 시스템 Battle_Camera
-
-    public Battle_Camera battle_Camera { get; private set; }
-
-    [SerializeField, Header("카메라시스템 Battle_Camera"), Space(30)]
-    public Camera main_Cam;
-
-    #endregion
-
-    #region 이펙트 시스템 Battle_Effect
-
-    public Battle_Effect battle_Effect { get; private set; }
-
-    [SerializeField, Header("이펙트 시스템 Battle_Effect"), Space(30)]
-    private Transform effect_PoolManager;
-    public List<GameObject> effect_ObjList;
-
-    #endregion
-
-    #region 던지기 시스템 Battle_Throw
-
-    public Battle_Throw battle_Throw { get; private set; }
-    [SerializeField, Header("던지기 시스템 Battle_Throw"), Space(30)]
-    private LineRenderer throw_parabola;
-    [SerializeField]
-    private Transform throw_Arrow;
-
-    #endregion
-
-    #region 시간 시스템 Battle_Time
-
-    public Battle_Time battle_Time { get; private set; }
-
-    [SerializeField, Header("시간시스템 Battle_Time"), Space(30)]
-    public TextMeshProUGUI time_TimeText;
-
-
-    #endregion
-
-    #region 스테이지 AI 시스템 Battle_AI
-
-    public Battle_AI battle_AI;
-
-    [SerializeField, Header("AI 시스템 Battle_Ai"), Space(30)]
-    public bool ai_isEnemyActive;
-    public bool ai_isPlayerActive;
-    [SerializeField]
-    public StageLog ai_Log;
-    [SerializeField]
-    public AIDataSO ai_EnemyDataSO;
-    [SerializeField]
-    public AIDataSO ai_PlayerDataSO;
-
-    #endregion
-
-    #region 코스트 시스템 Battle_Cost
-
-    public Battle_Cost battle_Cost { get; private set; }
-
-    [SerializeField, Header("코스트 시스템 Battle_Cost"), Space(30)]
-    public TextMeshProUGUI cost_CostText;
-
-    #endregion
-
-    #region 필통 시스템 Battle_PencilCase
-
-    public Battle_PencilCase battle_PencilCase { get; private set; }
-    [SerializeField, Header("필통시스템 Battle_PencilCase"), Space(30)]
-    public Unit pencilCase_My;
-    public Unit pencilCase_Enemy;
-    public PencilCaseDataSO pencilCase_MyData;
-    public PencilCaseData pencilCase_EnemyData;
-
-
-    #endregion
-
-    #region 일시정지 시스템 Battle_Pause
-
-    public Battle_Pause battle_Pause { get; private set; }
-
+    [SerializeField, Header("카드시스템 BattleCard"), Space(30)]
+    private CardCommand _commandCard = null;
+    [SerializeField, Header("유닛시스템 BattleUnit"), Space(30)]
+    private UnitCommand _commandUnit = null;
+    [SerializeField, Header("카메라시스템 BattleCamera"), Space(30)]
+    private CameraCommand _commandCamera = null;
+    [SerializeField, Header("이펙트 시스템 BattleEffect"), Space(30)]
+    private EffectCommand _commandEffect = null;
+    [SerializeField, Header("던지기 시스템 BattleThrow"), Space(30)]
+    private ThrowCommand _commandThrow = null;
+    [SerializeField, Header("시간시스템 BattleTime"), Space(30)]
+    private TimeCommand _commandTime = null;
+    [SerializeField, Header("AI 시스템 BattleAi"), Space(30)]
+    private AICommand _commandAI = null;
+    [SerializeField, Header("코스트 시스템 BattleCost"), Space(30)]
+    private CostCommand _commandCost = null;
+    [SerializeField, Header("필통시스템 BattlePencilCase"), Space(30)]
+    private PencilCaseCommand _commandPencilCase = null;
     [SerializeField, Header("일시정지시스템 Battle_Pause"), Space(30)]
-    private RectTransform pause_UI;
-    [SerializeField]
-    private Canvas pause_Canvas;
-
-    #endregion
-
-    #region 승리 패배 시스템 Battle_WinLose
-
-    public Battle_WinLose battle_WinLose { get; private set; }
-    [SerializeField, Header("승리패배시스템 Battle_WinLose"), Space(30)]
-    private Canvas winLose_Canvas;
-    [SerializeField]
-    private RectTransform winlose_winPanel;
-    [SerializeField]
-    private RectTransform winlose_losePanel;
-
-    #endregion
+    private PauseCommand _commandPause = null;
+    [SerializeField, Header("승리패배시스템 BattleWinLose"), Space(30)]
+    private WinLoseCommand _commandWinLose = null;
 
     private void Start()
     {
-        deckData = new DeckData();
-        battle_Card = new Battle_Card(this, deckData, unitDataSO, starategyDataSO, card_cardMove_Prefeb, card_PoolManager, card_Canvas, card_SpawnPosition, card_LeftPosition, card_RightPosition, card_AfterImage, card_SummonRangeLine);
-        battle_Camera = new Battle_Camera(this, main_Cam);
-        battle_Unit = new Battle_Unit(this, unit_Prefeb, unit_PoolManager, unit_Parent);
-        battle_Effect = new Battle_Effect(this, effect_PoolManager);
-        battle_Throw = new Battle_Throw(this, throw_parabola, throw_Arrow, currentStageData);
-        battle_AI = new Battle_AI(this, ai_EnemyDataSO, ai_PlayerDataSO, ai_isEnemyActive, ai_isPlayerActive);
-        battle_Time = new Battle_Time(this, time_TimeText);
-        battle_Cost = new Battle_Cost(this, cost_CostText);
-        pencilCase_EnemyData = stageDataSO.enemyPencilCase;
-        battle_PencilCase = new Battle_PencilCase(this, pencilCase_My, pencilCase_Enemy, pencilCase_MyData.pencilCaseData, pencilCase_EnemyData);
-        battle_Pause = new Battle_Pause(this, pause_UI, pause_Canvas);
-        battle_WinLose = new Battle_WinLose(this, winLose_Canvas, winlose_winPanel, winlose_losePanel);
+        _deckData = new DeckData();
 
-        battle_Cost.Set_CostSpeed(pencilCase_MyData.pencilCaseData.costSpeed);
-        battle_Card.Set_MaxCard(pencilCase_MyData.pencilCaseData.maxCard);
+        _commandPencilCase.SetInitialization(CommandUnit, CurrentStageData);
+        _commandCard.SetInitialization(this, CommandCamera, CommandUnit, CommandCost, ref _updateAction, CurrentStageData, _deckData, _commandPencilCase.PencilCaseDataMy.PencilCasedataBase.maxCard);
+        _commandCamera.SetInitialization(CommandCard, CommandWinLose, ref _updateAction, CurrentStageData);
+        _commandUnit.SetInitialization(CurrentStageData);
+        _commandEffect.SetInitialization();
+        _commandThrow.SetInitialization(_commandUnit, _commandCamera, CurrentStageData);
+        _commandAI.SetInitialization(CommandPencilCase, CommandUnit, ref _updateAction);
+        _commandTime.SetInitialization(ref _updateAction, CurrentStageData);
+        _commandCost.SetInitialization(ref _updateAction, _commandPencilCase.PencilCaseDataMy.PencilCasedataBase);
+        _commandPause.SetInitialization();
+        _commandWinLose.SetInitialization(this);
 
-        isEndSetting = true;
+        _isEndSetting = true;
     }
-
     private void Update()
     {
-        if (!isEndSetting)
+        if (!_isEndSetting)
+        {
             return;
+        }
 
-        //시간 시스템
-        battle_Time.Update_Time();
+        //던지기 시스템
+        if (Input.GetMouseButtonDown(0))
+        {
+            _commandThrow.PullUnit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        }
+        else if (Input.GetMouseButton(0))
+        {
+            _commandThrow.DrawParabola(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            _commandThrow.ThrowUnit();
+        }
 
-        //카메라 위치, 크기 조정
-        battle_Camera.Update_CameraPos();
-        battle_Camera.Update_CameraScale();
+        //컴포넌트들의 업데이트가 필요한 함수 재생
+        _updateAction.Invoke();
 
-        //카드 시스템
-        battle_Card.Update_UnitAfterImage();
-        battle_Card.Update_SelectCardPos();
-        battle_Card.Update_CardDrow();
-        battle_Card.Check_PossibleSummon();
-        battle_Card.Update_SummonRange();
+        //테스트용
         if (Input.GetKeyDown(KeyCode.X))
         {
-            battle_Card.Add_OneCard();
+            _commandCard.AddOneCard();
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            battle_Card.Add_AllCard();
+            _commandCard.AddAllCard();
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
-            battle_Card.Clear_Cards();
+            _commandCard.ClearCards();
         }
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
-            battle_Card.Subtract_Card();
+            _commandCard.SubtractLastCard();
         }
 
         //유닛 시스템
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            battle_Unit.Clear_Unit();
+            _commandUnit.ClearUnit();
         }
-
-        //던지기 시스템
-        if(Input.GetMouseButtonDown(0))
-        {
-            battle_Throw.Pull_Unit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        }
-        else if(Input.GetMouseButton(0))
-        {
-            battle_Throw.Draw_Parabola(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        }
-        else if(Input.GetMouseButtonUp(0))
-        {
-            battle_Throw.Throw_Unit();
-        }
-
-        //코스트 시스템
-        battle_Cost.Update_Cost();
-
-        //AI 시스템
-        battle_AI.Update_EnemyAICard();
-        battle_AI.Update_EnemyAIThrow();
-        battle_AI.Update_PlayerAICard();
-        battle_AI.Update_PlayerAIThrow();
-
     }
-
-    #region 공용함수
 
     /// <summary>
-    /// 오브젝트 생성
+    /// 업데이트 액션에 사용할 함수 추가
     /// </summary>
-    /// <param name="prefeb">생성할 프리펩</param>
-    /// <param name="position">생성할 위치</param>
-    /// <param name="quaternion">생성할 때의 각도</param>
-    /// <returns></returns>
-    public GameObject Create_Object(GameObject prefeb, Vector3 position, Quaternion quaternion)
+    /// <param name="method"></param>
+    public void AddUpdateAction(Action method)
     {
-        return Instantiate(prefeb, position, quaternion);
+        _updateAction += method;
     }
 
-    #endregion
-
-    #region 유닛 시스템 함수 Battle_Unit
 
     /// <summary>
     /// 버튼함수. 유닛을 소환할 때의 팀
     /// </summary>
-    public void Change_Team()
+    public void OnChangeTeam()
     {
-        if(battle_Unit.eTeam.Equals(TeamType.MyTeam))
+        //내 팀인지 적팀인지 체크
+        if (CommandUnit.eTeam.Equals(TeamType.MyTeam))
         {
-            battle_Unit.eTeam = Utill.TeamType.EnemyTeam;
-            unit_teamText.text = "적의 팀";
+            CommandUnit.eTeam = Utill.TeamType.EnemyTeam;
+            _unitTeamText.text = "적의 팀";
             return;
         }
-        if (battle_Unit.eTeam.Equals(Utill.TeamType.EnemyTeam))
+        if (CommandUnit.eTeam.Equals(Utill.TeamType.EnemyTeam))
         {
-            battle_Unit.eTeam = Utill.TeamType.MyTeam;
-            unit_teamText.text = "나의 팀";
+            CommandUnit.eTeam = Utill.TeamType.MyTeam;
+            _unitTeamText.text = "나의 팀";
             return;
         }
     }
@@ -307,38 +167,32 @@ public class BattleManager : MonoBehaviour
     /// 유닛 제거
     /// </summary>
     /// <param name="unit">제거할 유닛</param>
-    public void Pool_DeleteUnit(Unit unit)
+    public void PoolDeleteUnit(Unit unit)
     {
-        unit.gameObject.SetActive(false);
-        unit.transform.SetParent(unit_PoolManager);
+        _commandUnit.DeletePoolUnit(unit);
     }
 
-    #endregion
-
-    #region 코스트 시스템 함수 Battle_Cost
-
-    public void Run_UpgradeCostGrade()
+    /// <summary>
+    /// 클릭하면 코스트 단계 증가
+    /// </summary>
+    public void OnUpgradeCostGrade()
     {
-        battle_Cost.Run_UpgradeCostGrade();
+        CommandCost.UpgradeCostGrade();
     }
 
-    #endregion
-
-    #region 필통 시스템 함수 Battle_PencilCase
-
-    public void Run_PencilCaseAbility()
+    /// <summary>
+    /// 클릭하면 필통 능력 사용
+    /// </summary>
+    public void OnPencilCaseAbility()
     {
-        battle_PencilCase.Run_PencilCaseAbility();
+        CommandPencilCase.RunPlayerPencilCaseAbility();
     }
 
-    #endregion
-
-    #region 일시정지 시스템 함수 Battle_Pause
-
-    public void Set_Pause()
+    /// <summary>
+    /// 클릭하면 일시정지함
+    /// </summary>
+    public void OnPause()
     {
-        battle_Pause.Set_Pause();
+        CommandPause.SetPause();
     }
-
-    #endregion
 }

@@ -2,8 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-
+using Util;
 public class EventParam
 {
     public string str;
@@ -11,11 +10,12 @@ public class EventParam
     public float f;
     public bool b; 
 }
+
 public class EventManager : MonoBehaviour
 {
 
-    private Dictionary<EventType, Action> eventDictionary;
-    private Dictionary<EventType, Action<EventParam>> eventParamDictionary; 
+    private Dictionary<EventsType, Action> eventDictionary;
+    private Dictionary<EventsType, Action<object>> eventParamDictionary; 
 
     private static EventManager eventManager;
 
@@ -45,17 +45,18 @@ public class EventManager : MonoBehaviour
     {
         if (eventDictionary == null)
         {
-            eventDictionary = new Dictionary<EventType, Action>();
+            eventDictionary = new Dictionary<EventsType, Action>();
         }
         if(eventParamDictionary == null)
         {
-            eventParamDictionary = new Dictionary<EventType, Action<EventParam>>(); 
+            eventParamDictionary = new Dictionary<EventsType, Action<object>>(); 
         }
+
     }
 
-    public static void StartListening(EventType eventName, Action listener)
+    public static void StartListening(EventsType eventName, Action listener)
     {
-        Action thisEvent;  
+        Action thisEvent;
         if (instance.eventDictionary.TryGetValue(eventName, out thisEvent))
         {
             //기존 이벤트에 더 많은 이벤트 추가 
@@ -71,28 +72,23 @@ public class EventManager : MonoBehaviour
             instance.eventDictionary.Add(eventName, thisEvent);
         }
     }
-    public static void StartListening(EventType eventName,Action<EventParam> listner)
+    public static void StartListening(EventsType eventName,Action<object> listener)
     {
-        Action<EventParam> thisEvent; 
-        //스크립트1에서 StartListening("1", abc); 스크립트2에서 StartListening("1", qwe); 이런식으로 다른 여러곳에서 하나의 이벤트에 등록?하려면  
-        //StartListening 을 하나의 eventName에 여러번 하게 되잖아 
-        //해봤을 때 이게 되는데 왜 되는지 잘 이해가 안가 
-        //함수 호출시 마다 thisEvent 액션 변수가 새로 선언이 되는데 
-        //밑 if문에서 thisEvnet += listener 하면 텅빈 thisEvent에 하나의 Listner만 들어가는게 맞지 않나 
+        Action<object> thisEvent; 
+       
         if(instance.eventParamDictionary.TryGetValue(eventName, out thisEvent))
         {
-            thisEvent += listner;
-
+            thisEvent += listener;
             instance.eventParamDictionary[eventName] = thisEvent; 
         }
         else
         {
-            thisEvent += listner;
-            instance.eventParamDictionary.Add(eventName, listner);
+            thisEvent += listener;
+            instance.eventParamDictionary.Add(eventName, listener);
         }
     }
 
-    public static void StopListening(EventType eventName, Action listener)
+    public static void StopListening(EventsType eventName, Action listener)
     {
         if (eventManager == null) return;
         Action thisEvent;
@@ -104,12 +100,13 @@ public class EventManager : MonoBehaviour
             //이벤트 업데이트 
             instance.eventDictionary[eventName] = thisEvent;
         }
+
     }
 
-    public static void StopListening(EventType eventName, Action<EventParam> listener)
+    public static void StopListening(EventsType eventName, Action<object> listener)
     {
         if (eventManager == null) return;
-        Action<EventParam> thisEvent; 
+        Action<object> thisEvent; 
         if(instance.eventParamDictionary.TryGetValue(eventName, out thisEvent))
         {
             thisEvent -= listener;
@@ -117,13 +114,22 @@ public class EventManager : MonoBehaviour
             instance.eventParamDictionary[eventName] = thisEvent; 
         }
     }
-    public static void TriggerEvent(EventType eventName)
+    public static void TriggerEvent(EventsType eventName)
     {
         Action thisEvent = null;
         if (instance.eventDictionary.TryGetValue(eventName, out thisEvent))
         {
-            //thisEvent.Invoke();
-            instance.eventDictionary[eventName]();
+            thisEvent?.Invoke();
+            //OR USE instance.eventDictionary[eventName]();
+        }
+    }
+
+    public static void TriggerEvent(EventsType eventName, object param)
+    {
+        Action<object> thisEvent = null;
+        if (instance.eventParamDictionary.TryGetValue(eventName, out thisEvent))
+        {
+            thisEvent?.Invoke(param);
             //OR USE instance.eventDictionary[eventName]();
         }
     }

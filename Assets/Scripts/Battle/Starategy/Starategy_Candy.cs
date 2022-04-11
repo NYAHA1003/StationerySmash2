@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 
-public class Starategy_Candy : IStarategy
+public class Starategy_Candy : AbstractStarategy
 {
-    public void Run_Card(BattleManager battleManager, TeamType eTeam, int grade, params float[] value)
+    public override void Run_Card(TeamType eTeam)
     {
         if(eTeam == TeamType.MyTeam)
         {
-            Check_Range(battleManager, battleManager.unit_EnemyDatasTemp, true, value);
+            Check_Range(_battleManager.CommandUnit._enemyUnitList, true, _card._dataBase.strategyData.starategyablityData);
         }
         else if (eTeam == TeamType.EnemyTeam)
         {
-            Check_Range(battleManager, battleManager.unit_MyDatasTemp, false, value);
+            Check_Range(_battleManager.CommandUnit._playerUnitList, false, _card._dataBase.strategyData.starategyablityData);
         }
     }
-    private void Check_Range(BattleManager battleManager, List<Unit> list, bool isMyTeam , params float[] value)
+    private void Check_Range(List<Unit> list, bool isMyTeam , params float[] value)
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         for (int i = 0; i < list.Count; i++)

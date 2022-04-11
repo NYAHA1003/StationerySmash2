@@ -38,8 +38,14 @@ namespace Utill
         None,
         PencilCase,
         Pencil,
-        Eraser,
         Sharp,
+        Eraser,
         BallPen,
+
+        
+        RedCar = 1000,
+        YellowCar = 1001,
+        GreenCar = 1002,
+        EraserPiece,
     }
 }

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 
-public class Starategy_CostUp : IStarategy
+public class Starategy_CostUp : AbstractStarategy
 {
-    public void Run_Card(BattleManager battleManager, TeamType eTeam, int grade, params float[] value)
+    public override void Run_Card(TeamType eTeam)
     {
-        battleManager.battle_Cost.Add_Cost(1 * grade);
+        _battleManager.CommandCost.AddCost(1 * _card._grade);
     }
 }
