@@ -117,6 +117,33 @@ public class PoolManager : MonoBehaviour
             stateDictionary.Add(typeof(T).Name, q);
         }
     }
+    /// <summary>
+    /// 스티커 풀링 매니저 생성
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="myTrm"></param>
+    /// <param name="mySprTrm"></param>
+    /// <param name="myUnit"></param>
+    /// <param name="statusEffect"></param>
+    /// <param name="valueList"></param>
+    public static void CreatePoolSticker<T>() where T : AbstractSticker, new()
+    {
+        Queue<T> q = new Queue<T>();
+
+        T g = new T();
+
+        q.Enqueue(g);
+
+        try
+        {
+            stateDictionary.Add(typeof(T).Name, q);
+        }
+        catch
+        {
+            stateDictionary.Clear();
+            stateDictionary.Add(typeof(T).Name, q);
+        }
+    }
 
     /// <summary>
     /// 안 쓰는 상태 가져오기
@@ -189,6 +216,42 @@ public class PoolManager : MonoBehaviour
             Queue<T> q = (Queue<T>)stateDictionary[typeof(T).Name];
             item = q.Dequeue();
             item.SetStateEff(myTrm, mySprTrm, myUnit, statusEffect, valueList);
+        }
+
+        //할당
+        return item;
+    }
+
+    /// <summary>
+    /// 안 쓰는 상태이상 가져오기
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="myTrm"></param>
+    /// <param name="mySprTrm"></param>
+    /// <param name="myUnit"></param>
+    /// <returns></returns>
+    public static T GetSticker<T>() where T : AbstractSticker, new()
+    {
+        T item = default(T);
+
+        if (stateDictionary.ContainsKey(typeof(T).Name))
+        {
+            Queue<T> q = (Queue<T>)stateDictionary[typeof(T).Name];
+
+            if (q.Count == 0)
+            {  //안 사용하는 상태가 없으면 새로운 상태를 만든다
+                item = new T();
+            }
+            else
+            {
+                item = q.Dequeue();
+            }
+        }
+        else
+        {
+            CreatePoolSticker<T>();
+            Queue<T> q = (Queue<T>)stateDictionary[typeof(T).Name];
+            item = q.Dequeue();
         }
 
         //할당
@@ -270,7 +333,7 @@ public class PoolManager : MonoBehaviour
     /// 스티커 반납
     /// </summary>
     /// <param name="state"></param>
-    public static void AddSticker(EffState state)
+    public static void AddSticker(AbstractSticker state)
     {
         var type = typeof(PoolManager);
         var method = type.GetMethod("AddItem");

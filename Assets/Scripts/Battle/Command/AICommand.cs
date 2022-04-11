@@ -23,6 +23,7 @@ namespace Battle
         private List<Unit> _playerUnitList = null;
         private List<Unit> _enemyUnitList = null;
         private UnitCommand _unitCommand = null;
+        private PencilCaseCommand _pencilCaseCommand = null;
 
         //변수
         private List<CardData> enemyCardDataList = new List<CardData>();
@@ -56,10 +57,11 @@ namespace Battle
         /// <param name="aIplayerDataSO"></param>
         /// <param name="isEnemyAIOn"></param>
         /// <param name="isPlayerAIOn"></param>
-        public void SetInitialization(UnitCommand unitCommand, ref System.Action updateAction)
+        public void SetInitialization(PencilCaseCommand pencilCaseCommand, UnitCommand unitCommand, ref System.Action updateAction)
         {
             this._unitCommand = unitCommand;
-
+            this._pencilCaseCommand = pencilCaseCommand;
+            
             //적 AI
             this.enemySummonGrade = _aiEnemyDataSO.summonGrade;
             this.enemyCardDataList = _aiEnemyDataSO.cardDataList;
@@ -79,7 +81,20 @@ namespace Battle
             updateAction += UpdateEnemyAIThrow;
             updateAction += UpdatePlayerAICard;
             updateAction += UpdatePlayerAIThrow;
+            updateAction += UpdateRunEnemyPencilcaseAbility;
         }
+
+        /// <summary>
+        /// 적 필통 능력 사용
+        /// </summary>
+        public void UpdateRunEnemyPencilcaseAbility()
+        {
+            if(_pencilCaseCommand.EnemyAbilityState.AIAbilityCondition())
+            {
+                _pencilCaseCommand.RunEnemyPencilCaseAbility();
+            }
+        }
+
 
         /// <summary>
         /// 적 AI의 던지기

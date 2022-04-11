@@ -26,7 +26,6 @@ public class Unit : MonoBehaviour
     //변수
     private CollideData _collideData = default; 
     private UnitStateEff _unitStateEff = new UnitStateEff();
-    private UnitSticker _unitSticker = new UnitSticker();
     private UnitStat _unitStat = new UnitStat();
     private UnitStateChanger _unitStateChanger = new UnitStateChanger();
     private TeamType _eTeam = TeamType.Null;
@@ -41,6 +40,8 @@ public class Unit : MonoBehaviour
     //인스펙터 참조 변수
     [SerializeField]
     private UnitSprite _unitSprite = null;
+    [SerializeField]
+    private UnitSticker _unitSticker = null;
 
     protected virtual void Start()
     {
@@ -84,6 +85,7 @@ public class Unit : MonoBehaviour
         _stageData = stageData;
 
         //스탯 설정
+        _unitStat.ResetBonusStat();
         _unitStat.ResetAttackDelay();
         _unitStat.SetUnitData(_unitData);
         _unitStat.SetGradeStat(grade);
@@ -104,6 +106,9 @@ public class Unit : MonoBehaviour
         _unitStateChanger.SetStateManager(dataBase.unitData.unitType, transform, _unitSprite.SpriteRenderer.transform, this); ;
         _unitStateChanger.SetStageData(_stageData);
         _unitStateChanger.SetUnitState();
+
+        //스티커 설정
+        _unitSticker.SetSticker(this);
 
         //설정 끝, 무적판정 제거
         _isInvincibility = false;
@@ -132,6 +137,7 @@ public class Unit : MonoBehaviour
         _unitStateChanger.DeleteState(_unitData.unitType);
         _unitStateChanger.StateNull();
         _unitStateEff.DeleteEffStetes();
+        _unitSticker.DeleteSticekr();
         RemoveUnitList();
     }
 
@@ -142,6 +148,15 @@ public class Unit : MonoBehaviour
     public void Run_Damaged(AtkData atkData)
     {
         _unitStateChanger.UnitState.RunDamaged(atkData);
+    }
+
+    /// <summary>
+    /// 가장 마지막으로 맞은 데미지 아이디 설정
+    /// </summary>
+    /// <param name="id"></param>
+    public void SetDamagedId(int id)
+    {
+        MyDamagedId = id;
     }
 
     /// <summary>
@@ -233,5 +248,4 @@ public class Unit : MonoBehaviour
                 break;
         }
     }
-
 }

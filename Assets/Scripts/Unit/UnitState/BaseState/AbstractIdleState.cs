@@ -10,6 +10,9 @@ public abstract class AbstractIdleState : AbstractUnitState
         _curState = eState.IDLE;
         _curEvent = eEvent.ENTER;
 
+        //스티커 사용
+        _myUnit.UnitSticker.RunStickerAbility(_curState);
+
         //소환시 애니메이션
         Animation();
 

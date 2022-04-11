@@ -36,6 +36,14 @@ public class UnitStat
     private int _weight = 0;
     private int _grade = 1;
     private float _attackDelay = 0;
+    private int _bonusMoveSpeed = 0;
+    private int _bonusAttackSpeed = 0;
+    private int _bonusMaxHp = 0;
+    private int _bonusAttack = 0;
+    private int _bonusKnockback = 0;
+    private int _bonusAccuracy = 0;
+    private int _bonusRange = 0;
+    private int _bonusWeight = 0;
 
     //참조 변수
     private UnitData _unitData = null;
@@ -76,13 +84,102 @@ public class UnitStat
     {
         _hp -= damage;
     }
+
+    /// <summary>
+    /// 보너스 스탯 초기화
+    /// </summary>
+    public void ResetBonusStat()
+    {
+        _bonusMoveSpeed = 0;
+        _bonusAttackSpeed = 0;
+        _bonusMaxHp = 0;
+        _bonusAttack = 0;
+        _bonusKnockback = 0;
+        _bonusAccuracy = 0;
+        _bonusRange = 0;
+        _bonusWeight = 0;
+    }
+
+    /// <summary>
+    /// 보너스 이동 속도 설정
+    /// </summary>
+    /// <param name="add"></param>
+    public void SetBonusMoveSpeed(int add)
+    {
+        _bonusMoveSpeed += add;
+    }
+
+    /// <summary>
+    /// 보너스 공격력 설정
+    /// </summary>
+    /// <param name="add"></param>
+    public void SetBonusAttack(int add)
+    {
+        _bonusAttack += add;
+    }
+
+    /// <summary>
+    /// 보너스 공격 속도 설정
+    /// </summary>
+    /// <param name="add"></param>
+    public void SetBonusAttackSpeed(int add)
+    {
+        _bonusAttackSpeed += add;
+    }
+
+    /// <summary>
+    /// 보너스 최대체력 설정
+    /// </summary>
+    /// <param name="add"></param>
+    public void SetBonusMaxHP(int add)
+    {
+        _bonusMaxHp += add;
+        _hp = _maxHp + _bonusMaxHp;
+    }
+
+    /// <summary>
+    /// 보너스 무게 설정
+    /// </summary>
+    /// <param name="add"></param>
+    public void SetBonusWeight(int add)
+    {
+        _bonusWeight += add;
+    }
+
+    /// <summary>
+    /// 보너스 사정거리 설정
+    /// </summary>
+    /// <param name="add"></param>
+    public void SetBonusRange(int add)
+    {
+        _bonusRange += add;
+    }
+
+    /// <summary>
+    /// 보너스 넉백 설정
+    /// </summary>
+    /// <param name="add"></param>
+    public void SetBonusKnockback(int add)
+    {
+        _bonusKnockback += add;
+    }
+
+    /// <summary>
+    /// 보너스 넉백 설정
+    /// </summary>
+    /// <param name="add"></param>
+    public void SetBonusAccuracy(int add)
+    {
+        _bonusAccuracy += add;
+    }
+
     /// <summary>
     /// 공격력 스탯 반환
     /// </summary>
     /// <returns></returns>
     public int Return_Attack()
     {
-        return Mathf.RoundToInt(_unitData.damage * (float)_attackPercent / 100);
+        return Mathf.RoundToInt((_unitData.damage + _bonusAttack) * (float)_attackPercent / 100);
     }
     /// <summary>
     /// 이동속도 스탯 반환
@@ -90,7 +187,7 @@ public class UnitStat
     /// <returns></returns>
     public float Return_MoveSpeed()
     {
-        return _unitData.moveSpeed * (float)_moveSpeedPercent / 100;
+        return (_unitData.moveSpeed + _bonusMoveSpeed) * (float)_moveSpeedPercent / 100;
     }
     /// <summary>
     /// 공격속도 스탯 반환
@@ -98,7 +195,7 @@ public class UnitStat
     /// <returns></returns>
     public float Return_AttackSpeed()
     {
-        return _unitData.attackSpeed * (float)_attackSpeedPercent / 100;
+        return (_unitData.attackSpeed + _bonusAttackSpeed) * (float)_attackSpeedPercent / 100;
     }
     /// <summary>
     /// 사거리 스탯 반환
@@ -106,7 +203,7 @@ public class UnitStat
     /// <returns></returns>
     public float Return_Range()
     {
-        return _unitData.range * (float)_rangePercent / 100;
+        return (_unitData.range +_bonusRange) * (float)_rangePercent / 100;
     }
     /// <summary>
     /// 무게 스탯 반환
@@ -114,7 +211,7 @@ public class UnitStat
     /// <returns></returns>
     public int Return_Weight()
     {
-        return Mathf.RoundToInt(_unitData.unit_Weight * (float)_weightPercent / 100);
+        return Mathf.RoundToInt((_unitData.unit_Weight + _bonusWeight) * (float)_weightPercent / 100);
     }
     /// <summary>
     /// 명중률 스탯 반환
@@ -122,7 +219,7 @@ public class UnitStat
     /// <returns></returns>
     public float Return_Accuracy()
     {
-        return _unitData.accuracy * (float)_accuracyPercent / 100;
+        return (_unitData.accuracy + _bonusAccuracy) * (float)_accuracyPercent / 100;
     }
     /// <summary>
     /// 넉백 스탯 반환
@@ -130,7 +227,7 @@ public class UnitStat
     /// <returns></returns>
     public int Return_Knockback()
     {
-        return Mathf.RoundToInt(_unitData.knockback * (float)_knockbackPercent / 100);
+        return Mathf.RoundToInt((_unitData.knockback + _bonusKnockback) * (float)_knockbackPercent / 100);
     }
     /// <summary>
     /// 공격력 퍼센트 조절

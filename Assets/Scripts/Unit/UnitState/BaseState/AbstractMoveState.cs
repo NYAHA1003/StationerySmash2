@@ -8,10 +8,14 @@ public abstract class AbstractMoveState : AbstractUnitState
 {
     public override void Enter()
     {
-        _myUnit.SetIsDontThrow(false);
         _curState = eState.MOVE;
         _curEvent = eEvent.ENTER;
-        
+
+        _myUnit.SetIsDontThrow(false);
+
+        //스티커 사용
+        _myUnit.UnitSticker.RunStickerAbility(_curState);
+
         //이동 애니메이션 시작
         Animation();
 

@@ -17,11 +17,12 @@ MonoBehaviour:
     card_Name: "\uC5F0\uD544"
     card_Cost: 0
     card_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+    level: 0
     strategyData:
       starategyType: 0
       starategyablityData: []
     unitData:
-      unit_Hp: 100
+      unit_Hp: 300
       unit_Weight: 100
       knockback: 20
       dir: 45
@@ -36,6 +37,8 @@ MonoBehaviour:
         - {x: 0.016, y: 0.016}
         - {x: -0.016, y: -0.016}
         - {x: 0.016, y: -0.016}
+      stickerData:
+        stickerType: 4
+        stickerLevel: 1
       unitType: 2
-      atkType: 0
       unitablityData: []

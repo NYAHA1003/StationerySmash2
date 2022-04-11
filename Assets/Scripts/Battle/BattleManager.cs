@@ -76,7 +76,7 @@ public class BattleManager : MonoBehaviour
         _commandUnit.SetInitialization(CurrentStageData);
         _commandEffect.SetInitialization();
         _commandThrow.SetInitialization(_commandUnit, _commandCamera, CurrentStageData);
-        _commandAI.SetInitialization(CommandUnit, ref _updateAction);
+        _commandAI.SetInitialization(CommandPencilCase, CommandUnit, ref _updateAction);
         _commandTime.SetInitialization(ref _updateAction, CurrentStageData);
         _commandCost.SetInitialization(ref _updateAction, _commandPencilCase.PencilCaseDataMy.PencilCasedataBase);
         _commandPause.SetInitialization();
@@ -185,7 +185,7 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     public void OnPencilCaseAbility()
     {
-        CommandPencilCase.RunPencilCaseAbility();
+        CommandPencilCase.RunPlayerPencilCaseAbility();
     }
 
     /// <summary>
