@@ -12,6 +12,8 @@ namespace Battle
         public PencilCaseDataSO PencilCaseDataEnemy => pencilCaseDataEnemy;
         public PencilCaseUnit PlayerPencilCase => _playerPencilCase;
         public PencilCaseUnit EnemyPencilCase => _enemyPencilCase;
+        public AbstractPencilCaseAbility PlayerAbilityState => _playerAbilityState;
+        public AbstractPencilCaseAbility EnemyAbilityState => _enemyAbilityState;
 
 
         //참조 변수
@@ -48,20 +50,31 @@ namespace Battle
             _unitCommand._playerUnitList.Add(_playerPencilCase);
             _playerPencilCase.transform.position = new Vector2(-_stageData.max_Range, 0);
             _playerAbilityState = _playerPencilCase.AbilityState;
+            _playerAbilityState.SetTeam(TeamType.MyTeam);
 
             _enemyPencilCase.SetUnitData(pencilCaseDataEnemy.PencilCasedataBase.pencilCaseData, TeamType.EnemyTeam, _stageData, -2, 1);
             _unitCommand._enemyUnitList.Add(_enemyPencilCase);
             _enemyPencilCase.transform.position = new Vector2(_stageData.max_Range, 0);
             _enemyAbilityState = _enemyPencilCase.AbilityState;
+            _enemyAbilityState.SetTeam(TeamType.EnemyTeam);
         }
 
         /// <summary>
-        /// 필통능력 사용
+        /// 플레이어 필통능력 사용
         /// </summary>
-        public void RunPencilCaseAbility()
+        public void RunPlayerPencilCaseAbility()
         {
             _playerAbilityState.RunPencilCaseAbility();
         }
+
+        /// <summary>
+        /// 적 필통능력 사용
+        /// </summary>
+        public void RunEnemyPencilCaseAbility()
+        {
+            _enemyAbilityState.RunPencilCaseAbility();
+        }
+
     }
 
 }

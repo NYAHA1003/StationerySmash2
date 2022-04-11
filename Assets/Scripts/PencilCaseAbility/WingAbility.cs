@@ -17,4 +17,8 @@ public class WingAbility : AbstractPencilCaseAbility
         }
         count++;
     }
+    public override bool AIAbilityCondition()
+    {
+        throw new System.NotImplementedException();
+    }
 }

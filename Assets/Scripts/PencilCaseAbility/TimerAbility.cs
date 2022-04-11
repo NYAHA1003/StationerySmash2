@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utill;
 
 public class TimerAbility : AbstractPencilCaseAbility
 {
@@ -12,5 +13,9 @@ public class TimerAbility : AbstractPencilCaseAbility
 
             unit.AddStatusEffect(Utill.AtkType.Exch, 2, 1000, 1000);
         }
+    }
+    public override bool AIAbilityCondition()
+    {
+        throw new System.NotImplementedException();
     }
 }

@@ -42,7 +42,10 @@ public class UnitSticker
     /// </summary>
     public void DeleteSticekr()
     {
-        PoolManager.AddSticker(_stickerablity);
+        if(_stickerablity != null)
+        {
+            PoolManager.AddSticker(_stickerablity);
+        }
     }
 
     /// <summary>

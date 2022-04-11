@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utill;
 public class NormalAbility : AbstractPencilCaseAbility
 {
     /// <summary>
@@ -9,5 +10,10 @@ public class NormalAbility : AbstractPencilCaseAbility
     public override void RunPencilCaseAbility()
     {
         _battleManager.CommandCard.ClearCards();
+    }
+    public override bool AIAbilityCondition()
+    {
+        //ÀûÀÌ ¸ר ¾¸
+        return false;
     }
 }

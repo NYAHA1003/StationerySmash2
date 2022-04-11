@@ -17,4 +17,8 @@ public class SoccerAbility : AbstractPencilCaseAbility
     {
         yield return new WaitForSeconds(duration);
     }
+    public override bool AIAbilityCondition()
+    {
+        throw new System.NotImplementedException();
+    }
 }

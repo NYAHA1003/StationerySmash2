@@ -30,4 +30,9 @@ public class PencilcaseAbility : AbstractPencilCaseAbility
             grade++;
         }
     }
+
+    public override bool AIAbilityCondition()
+    {
+        throw new System.NotImplementedException();
+    }
 }

@@ -16,4 +16,8 @@ public class PrincessAbility : AbstractPencilCaseAbility
         }
 
     }
+    public override bool AIAbilityCondition()
+    {
+        throw new System.NotImplementedException();
+    }
 }
