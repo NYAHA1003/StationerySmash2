@@ -9,7 +9,7 @@ public class PencilcaseAbility : AbstractPencilCaseAbility
 {
     int grade = 0;
     float coolTime = 5f;
-    DataBase pencil;
+    CardData pencil;
     public async override void SetState(BattleManager battleManager)
     {
         base.SetState(battleManager);
