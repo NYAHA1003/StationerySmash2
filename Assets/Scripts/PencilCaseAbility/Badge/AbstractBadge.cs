@@ -30,7 +30,7 @@ public abstract class AbstractBadge
     /// 배틀매니저 설정
     /// </summary>
     /// <param name="battleManager"></param>
-    public void SetBattleManager(BattleManager battleManager)
+    public virtual void SetBattleManager(BattleManager battleManager)
     {
         _battleManager = battleManager;
     }

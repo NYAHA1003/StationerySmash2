@@ -13,6 +13,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     //변수
     public int CardCost { get; private set; }
+    public int OriginCardCost => _originCardCost;
     public bool _isFusion;
     public bool _isDontMove;
     public CardData _dataBase;
@@ -45,6 +46,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     
     public PRS _originPRS;
+    private int _originCardCost = 0; 
 
     /// <summary>
     /// 카드에 데이터를 전달함
@@ -62,6 +64,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         this._dataBase = dataBase;
         _nameText.text = dataBase.card_Name;
         _costText.text = dataBase.card_Cost.ToString();
+        _originCardCost = dataBase.card_Cost;
         CardCost = dataBase.card_Cost;
         _image.sprite = dataBase.card_Sprite;
         _grade = 1;
@@ -85,6 +88,14 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
     }
 
+    /// <summary>
+    /// 코스트 설정
+    /// </summary>
+    /// <param name="cost"></param>
+    public void SetCost(int cost)
+    {
+        CardCost = cost;
+    }
     public void ShowCard(bool isboolean)
     {
         gameObject.SetActive(isboolean);

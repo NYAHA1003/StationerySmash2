@@ -10,6 +10,10 @@ namespace Battle
     [System.Serializable]
     public class CardCommand
     {
+        //프로퍼티
+        public List<CardMove> CardList => _cardList;
+
+
         //속성
         public bool IsSelectCard { get; private set; } = false; //카드를 클릭한 상태인지
 
@@ -22,6 +26,7 @@ namespace Battle
         private bool _isFusion = false;
         private Coroutine _delayCoroutine = null;
         private int _cardIdCount = 0;
+        public Dictionary<System.Action, System.Action> _actions = new Dictionary<System.Action, System.Action>();
 
         //인스펙터 참조 변수
         [SerializeField]
@@ -98,6 +103,21 @@ namespace Battle
         }
 
         /// <summary>
+        /// 액션 추가
+        /// </summary>
+        /// <param name="method"></param>
+        /// <param name="addMethod"></param>
+        public void AddDictionary(System.Action method, System.Action addMethod)
+        {
+            if(!_actions.TryGetValue(method, out var name))
+            {
+                _actions.Add(method, new System.Action(() => { }));
+
+            }
+            _actions[method] += addMethod;
+        }
+
+        /// <summary>
         /// 유닛 카드를 덱에 담는다
         /// </summary>
         public void SetUnitCardToDeck()
@@ -157,6 +177,11 @@ namespace Battle
             //카드를 정렬하고 융합 딜레이 설정
             SortCard();
             SetDelayFusion();
+
+            if(_actions.TryGetValue(AddOneCard, out var name))
+            {
+                _actions[AddOneCard].Invoke();
+            }
         }
 
         /// <summary>
