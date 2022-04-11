@@ -33,9 +33,11 @@ namespace Battle
         }
         public async void AllLoadAssetAsync()
         {
-            await AwitLoadAssetAsync("Attack");
-            await AwitLoadAssetAsync("Stun");
-            await AwitLoadAssetAsync("Slow");
+            for (int i = 0; i < System.Enum.GetValues(typeof(EffectType)).Length; i++)
+            {
+                string s = System.Enum.GetName(typeof(EffectType), i);
+                await AwitLoadAssetAsync(s);
+            }
         }
 
         /// <summary>
