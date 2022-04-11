@@ -9,11 +9,7 @@ public class DiscountBadge : AbstractBadge
     {
         if(_teamType == TeamType.MyTeam)
         {
-
-        }
-        else if (_teamType == TeamType.EnemyTeam)
-        {
-
+            //_battleManager.CommandCard.AddOneCard();
         }
     }
 }

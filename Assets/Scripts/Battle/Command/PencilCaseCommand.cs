@@ -145,15 +145,19 @@ namespace Battle
                 case BadgeType.None:
                     break;
                 case BadgeType.Health:
-                    abstractBadge = new HealthBadge();  
+                    abstractBadge = PoolManager.GetBadge<HealthBadge>();
                     break;
                 case BadgeType.Discount:
+                    abstractBadge = PoolManager.GetBadge<DiscountBadge>();
                     break;
                 case BadgeType.Increase:
+                    abstractBadge = PoolManager.GetBadge<IncreaseBadge>();
                     break;
                 case BadgeType.TimeUp:
+                    abstractBadge = PoolManager.GetBadge<TimeUpBadge>();
                     break;
                 case BadgeType.TimeDown:
+                    abstractBadge = PoolManager.GetBadge<TimeDownBadge>();
                     break;
             }
             return abstractBadge;

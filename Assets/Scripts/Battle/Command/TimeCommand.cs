@@ -21,7 +21,8 @@ namespace Battle
         private Unit _enemyPencilCase = null;
 
         private StageData _stageData;
-        private float _timer;
+        private float _timer = 0;
+        private float _bonustime = 0;
         private bool _isSuddenDeath;
         private bool _isFinallyEnd;
 
@@ -33,7 +34,7 @@ namespace Battle
         public void SetInitialization(ref System.Action updateAction, StageData stageData)
         {
             _stageData = stageData;
-            _timer = _stageData.timeValue;
+            _timer = _stageData.timeValue + _bonustime;
             updateAction += UpdateTime;
         }
 
@@ -52,7 +53,7 @@ namespace Battle
         /// <param name="time"></param>
         public void IncreaseTime(float time)
         {
-            _timer += time;
+            _bonustime = time;
         }
 
         /// <summary>
@@ -60,10 +61,15 @@ namespace Battle
         /// </summary>
         public void UpdateTime()
         {
-            if (_isFinallyEnd) return;
+            if (_isFinallyEnd)
+            {
+                return;
+            }
 
             if (_stageData.timeType == TimeType.DisabledTime)
+            {
                 return;
+            }
 
             if (_timer > 0)
             {
