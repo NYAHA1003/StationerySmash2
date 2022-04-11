@@ -99,26 +99,29 @@ public abstract class AbstractAttackState : AbstractUnitState
     {
         if (_targetUnit == null)
         {
+            _stateManager.Set_Move();
             return;
         }
-        if (Vector2.Distance(_myTrm.position, _targetUnit.transform.position) <= _myUnit.UnitStat.Return_Range())
+        if (Vector2.Distance(_myTrm.position, _targetUnit.transform.position) > _myUnit.UnitStat.Return_Range())
         {
+            _stateManager.Set_Move();
             return;
         }
-
-        if (_myUnit.ETeam == TeamType.MyTeam && _myTrm.position.x <= _targetUnit.transform.position.x)
+        if (_myUnit.ETeam == TeamType.MyTeam && _myTrm.position.x > _targetUnit.transform.position.x)
         {
+            _stateManager.Set_Move();
             return;
         }
-        if (_myUnit.ETeam == TeamType.EnemyTeam && _myTrm.position.x >= _targetUnit.transform.position.x)
+        if (_myUnit.ETeam == TeamType.EnemyTeam && _myTrm.position.x < _targetUnit.transform.position.x)
         {
+            _stateManager.Set_Move();
             return;
         }
-        if (_targetUnit.transform.position.y <= _myTrm.position.y)
+        if (_targetUnit.transform.position.y > _myTrm.position.y)
         {
+            _stateManager.Set_Move();
             return;
         }
-        _stateManager.Set_Move();
     }
 
     /// <summary>

@@ -16,6 +16,7 @@ namespace Utill
         Rock = 1,
         Paper,
         Scissors,
+        Eraser,
 
     }
 }

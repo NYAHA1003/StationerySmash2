@@ -85,9 +85,12 @@ namespace Utill
                 this.damageId = damageId;
                 return;
             }
+            else
+            {
 
-            attacker.DamageCount++;
-            this.damageId = attacker.MyUnitId * 10000 + attacker.DamageCount;
+                attacker.DamageCount++;
+                this.damageId = attacker.MyUnitId * 10000 + attacker.DamageCount;
+            }
 
         }
     }

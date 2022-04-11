@@ -151,6 +151,15 @@ public class Unit : MonoBehaviour
     }
 
     /// <summary>
+    /// 가장 마지막으로 맞은 데미지 아이디 설정
+    /// </summary>
+    /// <param name="id"></param>
+    public void SetDamagedId(int id)
+    {
+        MyDamagedId = id;
+    }
+
+    /// <summary>
     /// 속성 효과 적용
     /// </summary>
     /// <param name="atkType"></param>

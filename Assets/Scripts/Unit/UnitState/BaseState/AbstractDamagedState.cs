@@ -41,7 +41,7 @@ public abstract class AbstractDamagedState : AbstractUnitState
     public override void Exit()
     {
         //평범한 공격이 아니면 상태이상 적용
-        if (_atkData.atkType != AtkType.Normal)
+        if (_atkData.atkType != AtkType.Normal && _myUnit.UnitStat.Hp > 0)
         {
             _myUnit.AddStatusEffect(_atkData.atkType, _atkData.value);
         }
