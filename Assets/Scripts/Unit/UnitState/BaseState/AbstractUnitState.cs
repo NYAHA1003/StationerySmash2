@@ -124,6 +124,7 @@ public abstract class AbstractUnitState
             //똑같은 공격 아이디를 지닌 공격은 무시함
             return;
         }
+        _myUnit.SetDamagedId(atkData.damageId);
         this._stateManager.Set_Damaged(atkData);
     }
 
@@ -236,6 +237,5 @@ public abstract class AbstractUnitState
             }).SetEase(Utill.Parabola.Return_ParabolaCurve());
         }
     }
-
 }
 

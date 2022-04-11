@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
-public class RockSticker : AbstractSticker
+
+public class ScissorsSticker : AbstractSticker
 {
     public override void SetSticker(Unit unit)
     {
@@ -11,10 +12,10 @@ public class RockSticker : AbstractSticker
     }
     public override void RunStickerAblity(eState eState)
     {
-        if(_matchState != eState)
+        if (_matchState != eState)
         {
             return;
         }
-        _myUnit.UnitStat.SetBonusMoveSpeed(1);
+        _myUnit.UnitStat.SetBonusAttack(20);
     }
 }

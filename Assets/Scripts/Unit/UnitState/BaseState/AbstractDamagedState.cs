@@ -18,6 +18,9 @@ public abstract class AbstractDamagedState : AbstractUnitState
         _myUnit.BattleManager.CommandEffect.SetEffect(_atkData._effectType, new EffData(_myTrm.transform.position, 0.2f));
         _myUnit.SubtractHP(_atkData.damage * (_myUnit.UnitStat.DamagedPercent / 100));
 
+        //스티커 사용
+        _myUnit.UnitSticker.RunStickerAbility(_curState);
+
         //체력이 0 이하면 죽음 상태로 전환
         if (_myUnit.UnitStat.Hp <= 0)
         {
@@ -38,7 +41,7 @@ public abstract class AbstractDamagedState : AbstractUnitState
     public override void Exit()
     {
         //평범한 공격이 아니면 상태이상 적용
-        if (_atkData.atkType != AtkType.Normal)
+        if (_atkData.atkType != AtkType.Normal && _myUnit.UnitStat.Hp > 0)
         {
             _myUnit.AddStatusEffect(_atkData.atkType, _atkData.value);
         }

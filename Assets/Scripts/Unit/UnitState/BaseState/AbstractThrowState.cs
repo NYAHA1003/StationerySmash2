@@ -7,16 +7,25 @@ using DG.Tweening;
 public abstract class AbstractThrowState : AbstractUnitState
 {
     protected Vector2 _mousePos = Vector2.zero; // 마우스를 놓은 위치
-
+    protected int _damageId;
 
     public override void Enter()
     {
+        _curState = eState.THROW;
+        _curEvent = eEvent.ENTER;
+
         //또 던지는거 방지
         _myUnit.SetIsDontThrow(true);
+
+        //스티커 사용
+        _myUnit.UnitSticker.RunStickerAbility(_curState);
 
         //유닛 던지기
         ThrowingUnit();
 
+        //데미지ID 설정
+        _myUnit.DamageCount++;
+        _damageId = _myUnit.MyUnitId * 10000 + _myUnit.DamageCount;
 
         base.Enter();
     }
@@ -109,10 +118,12 @@ public abstract class AbstractThrowState : AbstractUnitState
     {
         float dir = Vector2.Angle((Vector2)_myTrm.position, (Vector2)targetUnit.transform.position);
         float extraKnockBack = (targetUnit.UnitStat.Return_Weight() - _myUnit.UnitStat.Return_Weight() * (float)targetUnit.UnitStat.Hp / targetUnit.UnitStat.MaxHp) * 0.025f;
-        
-        WeightBig(ref targetUnit, ref dir, ref extraKnockBack);
-        WeightSmall(ref targetUnit, ref dir, ref extraKnockBack);
-        WeightEqual(ref targetUnit, ref dir, ref extraKnockBack);
+        AtkData atkData = new AtkData(_myUnit, 0, 0, 0, 0, true, _damageId, AtkType.Normal);
+
+
+        WeightBig(ref atkData, ref targetUnit, ref dir, ref extraKnockBack);
+        WeightSmall(ref atkData, ref targetUnit, ref dir, ref extraKnockBack);
+        WeightEqual(ref atkData,ref targetUnit, ref dir, ref extraKnockBack);
     }
 
     /// <summary>
@@ -121,10 +132,8 @@ public abstract class AbstractThrowState : AbstractUnitState
     /// <param name="targetUnit"></param>
     /// <param name="dir"></param>
     /// <param name="extraKnockBack"></param>
-    private void WeightBig(ref Unit targetUnit , ref float dir, ref float extraKnockBack)
+    private void WeightBig(ref AtkData atkData, ref Unit targetUnit , ref float dir, ref float extraKnockBack)
     {
-        AtkData atkData = new AtkData(_myUnit, 0, 0, 0, 0, true, 0, AtkType.Normal);
-
         //초기데미지 설정
         SetThrowAttackDamage(ref atkData, targetUnit);
 
@@ -147,10 +156,9 @@ public abstract class AbstractThrowState : AbstractUnitState
     /// <param name="targetUnit"></param>
     /// <param name="dir"></param>
     /// <param name="extraKnockBack"></param>
-    private void WeightSmall(ref Unit targetUnit, ref float dir, ref float extraKnockBack)
+    private void WeightSmall(ref AtkData atkData, ref Unit targetUnit, ref float dir, ref float extraKnockBack)
     {
-        AtkData atkData = new AtkData(_myUnit, 0, 0, 0, 0, true, 0, AtkType.Normal);
-        AtkData atkDataMy = new AtkData(_myUnit, 0, 0, 0, 0, true, 0, AtkType.Normal);
+        AtkData atkDataMy = new AtkData(_myUnit, 0, 0, 0, 0, true, _damageId, AtkType.Normal);
 
         //초기데미지 설정
         SetThrowAttackDamage(ref atkData, targetUnit);
@@ -179,10 +187,9 @@ public abstract class AbstractThrowState : AbstractUnitState
     /// <param name="targetUnit"></param>
     /// <param name="dir"></param>
     /// <param name="extraKnockBack"></param>
-    private void WeightEqual(ref Unit targetUnit, ref float dir, ref float extraKnockBack)
+    private void WeightEqual(ref AtkData atkData, ref Unit targetUnit, ref float dir, ref float extraKnockBack)
     {
-        AtkData atkData = new AtkData(_myUnit, 0, 0, 0, 0, true, 0, AtkType.Normal);
-        AtkData atkDataMy = new AtkData(_myUnit, 0, 0, 0, 0, true, 0, AtkType.Normal);
+        AtkData atkDataMy = new AtkData(_myUnit, 0, 0, 0, 0, true, _damageId, AtkType.Normal);
 
         //초기데미지 설정
         SetThrowAttackDamage(ref atkData, targetUnit);
