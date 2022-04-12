@@ -8,13 +8,14 @@ public class UserDeckData : MonoBehaviour
     public SaveDataSO saveData;
     private CardDeckSO cardDeck;
 
+    string json; 
     /// <summary>
     /// 유저 세이브 데이터를 Json화 시켜 저장한다
     /// </summary>
     [ContextMenu("DataToJson")]
     public void DataToJson()    
     {
-        string json = JsonUtility.ToJson(saveData.userSaveData, false);
+         json = JsonUtility.ToJson(saveData.userSaveData, false);
         //json을 저장한다 파일로 유니티에셋파일쪽에
         Debug.Log(json);
         string fileName = "saveData";
@@ -29,6 +30,6 @@ public class UserDeckData : MonoBehaviour
     [ContextMenu("JsonToData")]
     public void JsonToData()
     {
-        saveData.userSaveData = JsonUtility.FromJson<UserSaveData>();
+        saveData.userSaveData = JsonUtility.FromJson<UserSaveData>(json);
     }
 }
