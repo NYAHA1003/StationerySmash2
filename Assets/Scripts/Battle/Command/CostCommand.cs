@@ -7,7 +7,7 @@ using TMPro;
 namespace Battle
 {
     [System.Serializable]
-    public class CostCommand
+    public class CostCommand : BattleCommand
     {
         public int CurrentCost { get; private set; } = 0;
         public int MaxCost { get; private set; } = 2;

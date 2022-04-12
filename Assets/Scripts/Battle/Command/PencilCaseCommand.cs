@@ -6,7 +6,7 @@ using Utill;
 namespace Battle
 {
     [System.Serializable]
-    public class PencilCaseCommand
+    public class PencilCaseCommand : BattleCommand
     {
         public PencilCaseDataSO PencilCaseDataMy => pencilCaseDataMy;
         public PencilCaseDataSO PencilCaseDataEnemy => pencilCaseDataEnemy;

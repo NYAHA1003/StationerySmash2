@@ -7,7 +7,7 @@ using TMPro;
 namespace Battle
 {
     [System.Serializable]
-    public class TimeCommand
+    public class TimeCommand : BattleCommand
     {
         //인스펙터 참조 변수
         [SerializeField]
