@@ -11,6 +11,7 @@ public abstract class AbstractBadge
     protected PencilCaseUnit _pencilCaseUnit;
     protected TeamType _teamType;
     protected BadgeData _badgeData;
+    public BadgeType _bageType;
 
 
     /// <summary>
