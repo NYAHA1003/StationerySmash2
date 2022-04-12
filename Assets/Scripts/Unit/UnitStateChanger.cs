@@ -86,6 +86,7 @@ public class UnitStateChanger
                 _stateManager = PoolManager.GetUnit<GreenCarState>(transform, spriteRendererTransform, unit);
                 break;
         }
+        _stateManager.Set_Idle();
     }
 
 

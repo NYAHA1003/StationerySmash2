@@ -8,6 +8,12 @@ public abstract class AbstractDieState : AbstractUnitState
 {
     public override void Enter()
     {
+        _curState = eState.DIE;
+        _curEvent = eEvent.ENTER;
+
+        //스티커 사용
+        _myUnit.UnitSticker.RunStickerAbility(_curState);
+
         //딜레이바 등의 UI 안 보이게 하고 상태이상 삭제
         _myUnit.UnitStateEff.DeleteEffStetes();
         _myUnit.SetIsDontThrow(true);

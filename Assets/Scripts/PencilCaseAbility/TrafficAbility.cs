@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utill;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
 
@@ -19,9 +20,12 @@ public class TrafficAbility : AbstractPencilCaseAbility
     private CardData _greenCarData = null;
     private UnitDataSO _unitDataSO = null;
 
+    //Ai 변수
+    private float _delay = 0f;
+
     public override void SetState(BattleManager battleManager)
     {
-        _battleManager = battleManager;
+        base.SetState(battleManager);
         SetDatas();
     }
 
@@ -30,18 +34,20 @@ public class TrafficAbility : AbstractPencilCaseAbility
     /// </summary>
     public override void RunPencilCaseAbility()
     {
+        Vector2 pos = _teamType == TeamType.MyTeam ? _battleManager.CommandPencilCase.PlayerPencilCase.transform.position : _battleManager.CommandPencilCase.EnemyPencilCase.transform.position;
+
         switch (_trafficType)
         {
             case TrafficType.Red:
                 //빨간차 소환
-                _battleManager.CommandUnit.SummonUnit(_redCarData, _battleManager.CommandPencilCase.PlayerPencilCase.transform.position, 1, Utill.TeamType.MyTeam);
+                _battleManager.CommandUnit.SummonUnit(_redCarData, pos, 1, _teamType);
                 break;
             case TrafficType.Yellow:
                 //노란차 소한
-                _battleManager.CommandUnit.SummonUnit(_yellowCarData, _battleManager.CommandPencilCase.PlayerPencilCase.transform.position, 1, Utill.TeamType.MyTeam);
+                _battleManager.CommandUnit.SummonUnit(_yellowCarData, pos, 1, _teamType);
                 break;
             case TrafficType.Green:
-                _battleManager.CommandUnit.SummonUnit(_greenCarData, _battleManager.CommandPencilCase.PlayerPencilCase.transform.position, 1, Utill.TeamType.MyTeam);
+                _battleManager.CommandUnit.SummonUnit(_greenCarData, pos, 1, _teamType);
                 //초록차 소환
                 break;
         }
@@ -94,4 +100,14 @@ public class TrafficAbility : AbstractPencilCaseAbility
         _greenCarData = _unitDataSO.unitDatas.Find(x => x.unitData.unitType == Utill.UnitType.GreenCar);
     }
 
+    public override bool AIAbilityCondition()
+    {
+        if(_delay < 3f)
+        {
+            _delay += Time.deltaTime;
+            return false;
+        }
+        _delay = 0f;
+        return true;
+    }
 }

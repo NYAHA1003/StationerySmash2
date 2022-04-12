@@ -9,6 +9,24 @@ public abstract class AbstractWaitState : AbstractUnitState
     private float _waitTime = 0.0f;
     private float _extraWaitTime = 0.0f;
 
+    public override void Enter()
+    {
+        _curState = eState.WAIT;
+        _curEvent = eEvent.ENTER;
+
+        //스티커 사용
+        _myUnit.UnitSticker.RunStickerAbility(_curState);
+
+        //애니메이션 제거
+        ResetAnimation();
+
+        base.Enter();
+    }
+
+    public override void Update()
+    {
+        WaitTimer();
+    }
     /// <summary>
     /// 대기 시간을 설정함
     /// </summary>
@@ -27,21 +45,6 @@ public abstract class AbstractWaitState : AbstractUnitState
         this._waitTime = _waitTime + extraWaitTime;
     }
 
-    public override void Enter()
-    {
-        _curState = eState.WAIT;
-        _curEvent = eEvent.ENTER;
-
-        //애니메이션 제거
-        ResetAnimation();
-
-        base.Enter();
-    }
-
-    public override void Update()
-    {
-        WaitTimer();
-    }
 
     /// <summary>
     /// 대기 유지시간

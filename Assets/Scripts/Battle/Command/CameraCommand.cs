@@ -7,7 +7,7 @@ using Utill;
 namespace Battle
 {
     [System.Serializable]
-    public class CameraCommand
+    public class CameraCommand : BattleCommand
     {
 
         private Vector3 _clickPos = Vector3.zero;

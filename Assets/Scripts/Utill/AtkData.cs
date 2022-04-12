@@ -7,7 +7,7 @@ namespace Utill
 {
     public enum AtkType
     {
-        Normal,
+        Normal = 0,
         Stun,
         Ink,
         SlowDown,
@@ -16,6 +16,10 @@ namespace Utill
         Blind,
         Sick,
         Exch,
+
+        Inherence = 1000,
+        PCKill,
+
     }
     public class AtkData
     {
@@ -85,11 +89,36 @@ namespace Utill
                 this.damageId = damageId;
                 return;
             }
+            else
+            {
 
-            attacker.DamageCount++;
-            this.damageId = attacker.MyUnitId * 10000 + attacker.DamageCount;
+                attacker.DamageCount++;
+                this.damageId = attacker.MyUnitId * 10000 + attacker.DamageCount;
+            }
 
         }
+
+        /// <summary>
+        /// 고유 효과 적용
+        /// </summary>
+        /// <param name="unit"></param>
+        public void RunIncrease(Unit unit)
+        {
+            switch (atkType)
+            {
+                default:
+                case AtkType.Inherence:
+                    break;
+                case AtkType.PCKill:
+                    if (unit.UnitData.unitType == UnitType.PencilCase)
+                    {
+                        Reset_Damage(damage * 2);
+                    }
+                    break;
+            }
+        }
     }
+
+
 }
 

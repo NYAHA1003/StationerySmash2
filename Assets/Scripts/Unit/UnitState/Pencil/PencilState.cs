@@ -47,7 +47,7 @@ public class PencilMoveState : AbstractMoveState
 {
 }
 
-public class PencilAttackState : AbstractAttackState
+public class PencilAttackState : PcKillAttackState
 {
 }
 
