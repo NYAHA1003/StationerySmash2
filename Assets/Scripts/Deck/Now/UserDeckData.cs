@@ -3,16 +3,23 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using Utill; 
+
 public class UserDeckData : MonoBehaviour
 {
     public SaveDataSO saveData; //레벨 데이터(카드 레벨, 보유여부) 
     public CardDeckSO cardDeck; //기준 데이터 
+
+    public GameObject cardPrefab; 
+    
+    /// <summary>
+    /// 카드덱 데이터를 세팅해줍니다 
+    /// </summary>
     public void SetCardData()
     {
         JsonToData();
         for(int i = 0; i < saveData.userSaveData.unitSaveDatas.Count; i++)
         {
-   
+
         }
         //cardDeck.cardDatas
     }
