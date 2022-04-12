@@ -27,8 +27,8 @@ public class Unit : MonoBehaviour
     private CollideData _collideData = default; 
     private UnitStateEff _unitStateEff = new UnitStateEff();
     private UnitStat _unitStat = new UnitStat();
-    private UnitStateChanger _unitStateChanger = new UnitStateChanger();
     private TeamType _eTeam = TeamType.Null;
+    protected UnitStateChanger _unitStateChanger = new UnitStateChanger();
     protected BattleManager _battleManager = null;    
     protected bool _isSettingEnd = false;
 
@@ -145,7 +145,7 @@ public class Unit : MonoBehaviour
     /// 공격 맞음
     /// </summary>
     /// <param name="atkData">공격 데이터</param>
-    public void Run_Damaged(AtkData atkData)
+    public virtual void Run_Damaged(AtkData atkData)
     {
         _unitStateChanger.UnitState.RunDamaged(atkData);
     }
@@ -167,6 +167,15 @@ public class Unit : MonoBehaviour
     public virtual void AddStatusEffect(AtkType atkType, params float[] value)
     {
         _unitStateEff.AddStatusEffect(atkType, value);
+    }
+    /// <summary>
+    /// 속성 고유효과 적용
+    /// </summary>
+    /// <param name="atkType"></param>
+    /// <param name="value"></param>
+    public virtual void AddInherence(AtkData atkData)
+    {
+        atkData.RunIncrease(this);
     }
 
     /// <summary>

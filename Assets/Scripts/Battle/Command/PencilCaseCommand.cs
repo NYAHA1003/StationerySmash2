@@ -159,6 +159,12 @@ namespace Battle
                 case BadgeType.TimeDown:
                     abstractBadge = PoolManager.GetBadge<TimeDownBadge>();
                     break;
+                case BadgeType.Blanket:
+                    abstractBadge = PoolManager.GetBadge<BlanketBadge>();
+                    break;
+                case BadgeType.Thorn:
+                    abstractBadge = PoolManager.GetBadge<ThornBadge>();
+                    break;
             }
             return abstractBadge;
         }

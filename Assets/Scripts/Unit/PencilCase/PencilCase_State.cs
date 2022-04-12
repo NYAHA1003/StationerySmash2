@@ -62,6 +62,12 @@ public class PencilCaseDamagedState : AbstractDamagedState
         _curState = eState.DAMAGED;
         _curEvent = eEvent.ENTER;
 
+        //고유효과 속성이면 효과 적용
+        if (_atkData.atkType > AtkType.Inherence)
+        {
+            _myUnit.AddInherence(_atkData);
+        }
+
         _myUnit.SubtractHP(_atkData.damage);
         if (_myUnit.UnitStat.Hp <= 0)
         {

@@ -12,6 +12,8 @@ namespace Utill
         Increase,
         TimeUp,
         TimeDown,
+        Blanket,
+        Thorn,
     }
 
     [System.Serializable]

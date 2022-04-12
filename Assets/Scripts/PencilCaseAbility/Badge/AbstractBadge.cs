@@ -18,7 +18,7 @@ public abstract class AbstractBadge
     /// </summary>
     /// <param name="pencilCaseUnit"></param>
     /// <param name="badgeData"></param>
-    public void SetBadge(PencilCaseCommand pencilCaseCommand, PencilCaseUnit pencilCaseUnit, TeamType teamType, BadgeData badgeData)
+    public virtual void SetBadge(PencilCaseCommand pencilCaseCommand, PencilCaseUnit pencilCaseUnit, TeamType teamType, BadgeData badgeData)
     {
         _pencilCaseCommand = pencilCaseCommand;
         _teamType = teamType;
