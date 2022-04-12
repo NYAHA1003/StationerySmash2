@@ -29,5 +29,6 @@ public class ThornBadge : AbstractBadge
     public void RunThorn(AtkData atkData)
     {
         atkData.attacker.Run_Damaged(atkData);
+        atkData.Reset_Kncockback(0, 0, 0, true); //true가 아니면 false겠지
     }
 }

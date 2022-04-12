@@ -15,6 +15,10 @@ public class DeckCard : MonoBehaviour
     [SerializeField, Header("유닛용")]
     private Image _stickerImage;
 
+    /// <summary>
+    /// 카드 설정, 만들자마자 해줘야함
+    /// </summary>
+    /// <param name="cardData"></param>
     public void SetCard(CardData cardData)
     {
         _cardImage.sprite = cardData.card_Sprite;

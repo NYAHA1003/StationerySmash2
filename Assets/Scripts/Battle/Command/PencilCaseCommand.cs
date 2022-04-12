@@ -14,6 +14,7 @@ namespace Battle
         public PencilCaseUnit EnemyPencilCase => _enemyPencilCase;
         public AbstractPencilCaseAbility PlayerAbilityState => _playerAbilityState;
         public AbstractPencilCaseAbility EnemyAbilityState => _enemyAbilityState;
+        public List<AbstractBadge> PlayerBadges => _playerBadges;
 
 
         //참조 변수

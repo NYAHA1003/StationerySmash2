@@ -14,6 +14,8 @@ namespace Utill
         TimeDown,
         Blanket,
         Thorn,
+        Magnet_N,
+        Magnet_S,
     }
 
     [System.Serializable]

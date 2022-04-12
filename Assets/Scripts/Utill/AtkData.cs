@@ -17,6 +17,7 @@ namespace Utill
         Sick,
         Exch,
 
+
         Inherence = 1000,
         PCKill,
 
