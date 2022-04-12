@@ -4,8 +4,15 @@ using UnityEngine;
 using Utill;
 
 [System.Serializable]
-public class UserSaveData 
+public class UserSaveData //인벤토리, 돈, 캐시 이런걸 저장할 수도 있다
 {
-    public List<int> unitLevels = new List<int>();
-    public Dictionary<UnitType, bool> haveUnits = new Dictionary<UnitType, bool>();
+    //유닛의 데이터들을 저장
+    public List<SaveData> unitSaveDatas;
+}
+
+[System.Serializable]
+public class SaveData //한 유닛의 저장 데이터
+{
+    public int _level;
+    public UnitType _unitType;
 }
