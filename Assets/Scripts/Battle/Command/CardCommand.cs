@@ -8,8 +8,12 @@ using Utill;
 namespace Battle
 {
     [System.Serializable]
-    public class CardCommand
+    public class CardCommand : BattleCommand
     {
+        //프로퍼티
+        public List<CardMove> CardList => _cardList;
+
+
         //속성
         public bool IsSelectCard { get; private set; } = false; //카드를 클릭한 상태인지
 
@@ -22,7 +26,6 @@ namespace Battle
         private bool _isFusion = false;
         private Coroutine _delayCoroutine = null;
         private int _cardIdCount = 0;
-
         //인스펙터 참조 변수
         [SerializeField]
         private LineRenderer _summonRangeLine = null;
@@ -97,6 +100,7 @@ namespace Battle
             SetStrategyCardToDeck();
         }
 
+
         /// <summary>
         /// 유닛 카드를 덱에 담는다
         /// </summary>
@@ -157,6 +161,8 @@ namespace Battle
             //카드를 정렬하고 융합 딜레이 설정
             SortCard();
             SetDelayFusion();
+
+            RunAction(AddOneCard);
         }
 
         /// <summary>
@@ -482,6 +488,13 @@ namespace Battle
             _maxCardCount = max;
         }
 
+        /// <summary>
+        /// 최대 카드 추가
+        /// </summary>
+        public void AddMaxCard(int add)
+        {
+            _maxCardCount += add;
+        }
         /// <summary>
         /// 융합에 딜레이를 설정, 리셋하는 함수
         /// </summary>

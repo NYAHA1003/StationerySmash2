@@ -9,6 +9,8 @@ public class PencilCaseUnit : Unit
     private PencilCaseDataSO _pencilCaseData;
     public PencilCaseDataSO PencilCaseData => _pencilCaseData;
     public AbstractPencilCaseAbility AbilityState { get; private set; }
+    public Dictionary<System.Action<AtkData>, System.Action<AtkData>> _actionsAtkData = new Dictionary<System.Action<AtkData>, System.Action<AtkData>>();
+
 
     /// <summary>
     /// 필통 데이터 초기화
@@ -70,4 +72,36 @@ public class PencilCaseUnit : Unit
 
     }
 
+    public override void Run_Damaged(AtkData atkData)
+    {
+        _unitStateChanger.UnitState.RunDamaged(atkData);
+        if (_actionsAtkData.TryGetValue(Run_Damaged, out var name))
+        {
+            _actionsAtkData[Run_Damaged].Invoke(atkData);
+        }
+    }
+
+    public override void AddInherence(AtkData atkData)
+    {
+        if (_actionsAtkData.TryGetValue(AddInherence, out var name))
+        {
+            _actionsAtkData[AddInherence].Invoke(atkData);
+        }
+        atkData.RunIncrease(this);
+    }
+
+    /// <summary>
+    /// 공격데이터를 가진 액션 추가
+    /// </summary>
+    /// <param name="method"></param>
+    /// <param name="addMethod"></param>
+    public void AddDictionary(System.Action<AtkData> method, System.Action<AtkData> addMethod)
+    {
+        if (!_actionsAtkData.TryGetValue(method, out var name))
+        {
+            _actionsAtkData.Add(method, new System.Action<AtkData>((x) => { }));
+
+        }
+        _actionsAtkData[method] += addMethod;
+    }
 }

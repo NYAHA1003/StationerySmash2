@@ -6,7 +6,7 @@ using DG.Tweening;
 namespace Battle
 {
     [System.Serializable]
-    public class PauseCommand
+    public class PauseCommand : BattleCommand
     {
         private bool _isActive = false;
 
