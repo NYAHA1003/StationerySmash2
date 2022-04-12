@@ -5,10 +5,6 @@ using UnityEngine;
 
 public class UserDeckData : MonoBehaviour
 {
-<<<<<<< Updated upstream
-    public SaveDataSO saveData;
-    private CardDeckSO cardDeck;
-=======
     public SaveDataSO saveData; //세이브 데이터(카드 레벨, 보유여부) 
     public CardDeckSO standardcardDeck; //기준 데이터 
     public CardDeckSO deckList; //카드 데이터
@@ -38,22 +34,16 @@ public class UserDeckData : MonoBehaviour
 
         }
     }
->>>>>>> Stashed changes
 
-    string json; 
     /// <summary>
     /// 유저 세이브 데이터를 Json화 시켜 저장한다
     /// </summary>
     [ContextMenu("DataToJson")]
     public void DataToJson()    
     {
-<<<<<<< Updated upstream
-         json = JsonUtility.ToJson(saveData.userSaveData, false);
-=======
         //데이터를 json으로 변환
          string json = JsonUtility.ToJson(saveData.userSaveData, true);
 
->>>>>>> Stashed changes
         //json을 저장한다 파일로 유니티에셋파일쪽에
         string fileName = "saveData";
         string path = Application.dataPath + "/" + fileName + ".json";
@@ -67,9 +57,6 @@ public class UserDeckData : MonoBehaviour
     [ContextMenu("JsonToData")]
     public void JsonToData()
     {
-<<<<<<< Updated upstream
-        saveData.userSaveData = JsonUtility.FromJson<UserSaveData>(json);
-=======
         //json 파일 불러오기
         string path = File.ReadAllText(Application.dataPath + "/saveData.json");    
         //json 파일이 없는지 체크
@@ -80,6 +67,5 @@ public class UserDeckData : MonoBehaviour
         
         //유저데이터에 저장
         saveData.userSaveData = JsonUtility.FromJson<UserSaveData>(path);
->>>>>>> Stashed changes
     }
 }
