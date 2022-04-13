@@ -66,7 +66,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         _costText.text = dataBase.card_Cost.ToString();
         _originCardCost = dataBase.card_Cost;
         CardCost = dataBase.card_Cost;
-        _image.sprite = dataBase.card_Sprite;
+        _image.sprite = dataBase.skinData.cardSprite;
         _grade = 1;
         SetUnitGrade();
         _isFusion = false;

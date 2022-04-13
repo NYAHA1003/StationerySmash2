@@ -11,7 +11,7 @@ public class CardData
     public CardType cardType;
     public string card_Name;
     public int card_Cost;
-    public Sprite card_Sprite;
+    public SkinData skinData;
     public int level;
 
     //½ÇÇàÇü
@@ -38,7 +38,7 @@ public class CardData
             cardType = this.cardType,
             card_Name = this.card_Name,
             card_Cost = this.card_Cost,
-            card_Sprite = this.card_Sprite,
+            skinData = this.skinData,
             level = level,
             strategyData = new StarategyData
             {
