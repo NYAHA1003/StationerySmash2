@@ -20,8 +20,8 @@ namespace Battle
         private bool isPlayerAIOn = false;
 
         //참조 변수
-        private List<Unit> _playerUnitList = null;
-        private List<Unit> _enemyUnitList = null;
+        private List<Unit> _playerUnitList = new List<Unit>();
+        private List<Unit> _enemyUnitList = new List<Unit>();
         private UnitCommand _unitCommand = null;
         private PencilCaseCommand _pencilCaseCommand = null;
 

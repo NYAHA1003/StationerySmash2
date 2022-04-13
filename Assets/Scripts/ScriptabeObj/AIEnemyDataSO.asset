@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: AIEnemyDataSO
   m_EditorClassIdentifier: 
   summonGrade: 1
-  throwSpeed: 20
+  throwSpeed: 30
   cardDataList:
   - cardType: 1
     card_Name: "\uC5F0\uD544"
     card_Cost: 0
     card_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+    level: 0
     strategyData:
       starategyType: 0
       starategyablityData: []
@@ -38,13 +39,17 @@ MonoBehaviour:
         - {x: 0.016, y: 0.016}
         - {x: -0.016, y: -0.016}
         - {x: 0.016, y: -0.016}
+      stickerData:
+        sprite: {fileID: 0}
+        stickerType: 0
+        stickerLevel: 1
       unitType: 2
-      atkType: 0
       unitablityData: []
   - cardType: 1
     card_Name: "\uC5F0\uD544"
     card_Cost: 0
     card_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+    level: 0
     strategyData:
       starategyType: 0
       starategyablityData: []
@@ -64,8 +69,11 @@ MonoBehaviour:
         - {x: 0.016, y: 0.016}
         - {x: -0.016, y: -0.016}
         - {x: 0.016, y: -0.016}
+      stickerData:
+        sprite: {fileID: 0}
+        stickerType: 0
+        stickerLevel: 1
       unitType: 2
-      atkType: 0
       unitablityData: []
   pos:
   - {x: 2.8214226, y: 0.30118275}
