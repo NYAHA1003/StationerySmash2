@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AIEnemyDataSO
   m_EditorClassIdentifier: 
   summonGrade: 1
-  throwSpeed: 30
+  throwSpeed: 10
   cardDataList:
   - cardType: 1
     card_Name: "\uC5F0\uD544"
@@ -43,45 +43,11 @@ MonoBehaviour:
         - {x: 0.016, y: -0.016}
       stickerData:
         sprite: {fileID: 0}
-        stickerType: 0
-        stickerLevel: 1
-      unitType: 2
-      unitablityData: []
-  - cardType: 1
-    card_Name: "\uC5F0\uD544"
-    card_Cost: 0
-    skinData:
-      cardSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-      effectType: 0
-    level: 0
-    strategyData:
-      starategyType: 0
-      starategyablityData: []
-    unitData:
-      unit_Hp: 100
-      unit_Weight: 100
-      knockback: 20
-      dir: 45
-      accuracy: 100
-      moveSpeed: 0.1
-      damage: 10
-      attackSpeed: 60
-      range: 1
-      colideData:
-        originpoints:
-        - {x: -0.016, y: 0.016}
-        - {x: 0.016, y: 0.016}
-        - {x: -0.016, y: -0.016}
-        - {x: 0.016, y: -0.016}
-      stickerData:
-        sprite: {fileID: 0}
-        stickerType: 0
+        stickerType: 3
         stickerLevel: 1
       unitType: 2
       unitablityData: []
   pos:
   - {x: 2.8214226, y: 0.30118275}
-  - {x: 2.9333665, y: 0.48242545}
   max_Delay:
-  - 3
-  - 3
+  - 3.8
