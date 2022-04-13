@@ -53,7 +53,7 @@ public class GlueAttackState : AbstractAttackState
 {
     protected override void SetAttackData(ref AtkData atkData)
     {
-        atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, AtkType.SlowDown,EffectType.Attack ,originValue);
+        atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, AtkType.SlowDown, _myUnit.SkinData.effectType, originValue);
     }
 }
 

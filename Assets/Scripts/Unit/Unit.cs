@@ -13,6 +13,7 @@ public class Unit : MonoBehaviour
     public UnitStat UnitStat => _unitStat; // 유닛 스탯 관리
     public UnitStateChanger UnitStateChanger => _unitStateChanger; //유닛별 스테이트 관리
     public UnitData UnitData => _unitData; //유닛 데이터
+    public SkinData SkinData => _skinData; //스킨 데이터
     public TeamType ETeam => _eTeam; // 유닛의 팀
     public CollideData CollideData => _collideData; // 유닛의 콜라이더 데이터
     public BattleManager BattleManager => _battleManager; //배틀매니저 참조
@@ -34,6 +35,7 @@ public class Unit : MonoBehaviour
 
     //참조 변수
     private UnitData _unitData= null;
+    private SkinData _skinData= null;
     private StageData _stageData = null;
     private Camera _mainCam = null;
 
@@ -69,6 +71,9 @@ public class Unit : MonoBehaviour
         //유닛 데이터 받아오기
         _unitData = dataBase.unitData;
 
+        //스킨 데이터 받아오기
+        _skinData = dataBase.skinData;
+
         //팀, 이름 설정
         _eTeam = eTeam;
         transform.name = dataBase.card_Name + _eTeam;
@@ -96,7 +101,7 @@ public class Unit : MonoBehaviour
         _unitStateEff.SetStateEff(this, _unitSprite.SpriteRenderer);
 
         //스프라이트 초기화
-        _unitSprite.SetUIAndSprite(eTeam, dataBase.card_Sprite);
+        _unitSprite.SetUIAndSprite(eTeam, dataBase.skinData.cardSprite);
         _unitSprite.UpdateDelayBar(_unitStat.AttackDelay);
         _unitSprite.ShowCanvas(true);
         _unitSprite.SetTeamColor(eTeam);

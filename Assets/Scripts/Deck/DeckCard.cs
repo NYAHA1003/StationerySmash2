@@ -21,7 +21,7 @@ public class DeckCard : MonoBehaviour
     /// <param name="cardData"></param>
     public void SetCard(CardData cardData)
     {
-        _cardImage.sprite = cardData.card_Sprite;
+        _cardImage.sprite = cardData.skinData.cardSprite;
         _unitNameText.text = cardData.card_Name;
         _CostText.text = $"{cardData.card_Cost}";
 
