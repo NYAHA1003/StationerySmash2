@@ -26,8 +26,6 @@ public abstract class AbstractThrowState : AbstractUnitState
         //데미지ID 설정
         _myUnit.DamageCount++;
         _damageId = _myUnit.MyUnitId * 10000 + _myUnit.DamageCount;
-
-        base.Enter();
     }
     public override void Update()
     {
@@ -91,6 +89,7 @@ public abstract class AbstractThrowState : AbstractUnitState
         //방향이 아래쪽을 향하면 던지기를 취소함
         if (dir < 0)
         {
+            ResetAnimation();
             _stateManager.Set_Wait(0.5f);
             return;
         }
