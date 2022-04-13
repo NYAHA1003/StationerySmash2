@@ -20,8 +20,6 @@ namespace Battle
         private bool isPlayerAIOn = false;
 
         //참조 변수
-        private List<Unit> _playerUnitList = new List<Unit>();
-        private List<Unit> _enemyUnitList = new List<Unit>();
         private UnitCommand _unitCommand = null;
         private PencilCaseCommand _pencilCaseCommand = null;
 
@@ -102,19 +100,23 @@ namespace Battle
         public void UpdateEnemyAIThrow()
         {
             if (!isEnemyAIOn)
+            {
                 return;
-            if (_enemyUnitList.Count < 3)
+            }
+            if (_unitCommand._enemyUnitList.Count < 3)
+            {
                 return;
+            }
             if (enemyThrowCurDelay < enemyThrowMaxDelay)
             {
                 enemyThrowCurDelay += enemyThrowSpeed * Time.deltaTime;
                 return;
             }
-            int selectUnit = Random.Range(2, _enemyUnitList.Count - 1);
-            Vector2 pos = _enemyUnitList[selectUnit].transform.position;
+            int selectUnit = Random.Range(2, _unitCommand._enemyUnitList.Count - 1);
+            Vector2 pos = _unitCommand._enemyUnitList[selectUnit].transform.position;
             pos.x += Random.Range(2.0f, 4.0f);
             pos.y -= Random.Range(2.0f, 4.0f);
-            _enemyUnitList[selectUnit].Throw_Unit(pos);
+            _unitCommand._enemyUnitList[selectUnit].Throw_Unit(pos);
             enemyThrowCurDelay = 0;
         }
 
@@ -146,18 +148,18 @@ namespace Battle
         {
             if (!isPlayerAIOn)
                 return;
-            if (_playerUnitList.Count < 3)
+            if (_unitCommand._playerUnitList.Count < 3)
                 return;
             if (playerThrowCurDelay < playerThrowMaxDelay)
             {
                 playerThrowCurDelay += playerThrowSpeed * Time.deltaTime;
                 return;
             }
-            int selectUnit = Random.Range(2, _playerUnitList.Count - 1);
-            Vector2 pos = _playerUnitList[selectUnit].transform.position;
+            int selectUnit = Random.Range(2, _unitCommand._playerUnitList.Count - 1);
+            Vector2 pos = _unitCommand._playerUnitList[selectUnit].transform.position;
             pos.x -= Random.Range(2.0f, 4.0f);
             pos.y -= Random.Range(2.0f, 4.0f);
-            _playerUnitList[selectUnit].Throw_Unit(pos);
+            _unitCommand._playerUnitList[selectUnit].Throw_Unit(pos);
             playerThrowCurDelay = 0;
         }
 
