@@ -23,12 +23,13 @@ public class UserDeckData : MonoBehaviour
         int count = saveData.userSaveData.unitSaveDatas.Count;
         for (int i = 0; i < count; i++)
         {
-            SaveData saveDataobj = saveData.userSaveData.unitSaveDatas[i];
+            SaveData saveDataobj = saveData.userSaveData.unitSaveDatas[i];  
             //세가지 타입이 세이브데이터와 모두 같은 기준 데이터 찾기
             CardData cardDataobj = standardcardDeck.cardDatas.Find(x => x.cardType == saveDataobj._cardType 
                                             && x.unitData.unitType == saveDataobj._unitType
-                                            && x.strategyData.starategyType == saveDataobj._strategicType);
+                                            || x.strategyData.starategyType == saveDataobj._strategicType);
 
+            if (cardDataobj == null) Debug.Log("X"); 
             //세이브데이터의 레벨만큼 수치를 변경하고 새로운 카드데이터로 만들어 받아 덱리스트에 추가
             deckList.cardDatas.Add(cardDataobj.DeepCopy(saveDataobj._level));
 
