@@ -107,7 +107,13 @@ public abstract class AbstractMoveState : AbstractUnitState
         {
             while(true)
             {
+                if(list.Count == 0)
+                {
+                    return;
+                }
+
                 int find = (lastNum + firstNum) / 2;
+                Debug.Log(find);
 
                 if (_myTrm.position.x < list[find].transform.position.x)
                 {
@@ -118,7 +124,7 @@ public abstract class AbstractMoveState : AbstractUnitState
                     firstNum = find;
                 }
 
-                if (lastNum - firstNum == 1)
+                if (lastNum - firstNum <= 1)
                 {
                     targetUnit = list[lastNum];
                     currentIndex = lastNum;
@@ -129,6 +135,11 @@ public abstract class AbstractMoveState : AbstractUnitState
 
         while (targetUnit._isInvincibility || targetUnit.transform.position.y > _myTrm.transform.position.y)
         {
+            if (list.Count == 0)
+            {
+                return;
+            }
+
             if (currentIndex == list.Count - 1)
             {
                 break;
