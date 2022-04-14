@@ -11,6 +11,9 @@ public abstract class AbstractDieState : AbstractUnitState
         _curState = eState.DIE;
         _curEvent = eEvent.ENTER;
 
+        //유닛리스트에서 제거
+        _myUnit.RemoveUnitList();
+
         //스티커 사용
         _myUnit.UnitSticker.RunStickerAbility(_curState);
 

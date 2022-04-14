@@ -27,7 +27,7 @@ public abstract class AbstractThrowState : AbstractUnitState
         _myUnit.DamageCount++;
         _damageId = _myUnit.MyUnitId * 10000 + _myUnit.DamageCount;
 
-        base.Enter();
+
     }
     public override void Update()
     {
@@ -91,7 +91,9 @@ public abstract class AbstractThrowState : AbstractUnitState
         //방향이 아래쪽을 향하면 던지기를 취소함
         if (dir < 0)
         {
+            ResetAnimation();
             _stateManager.Set_Wait(0.5f);
+            _curEvent = eEvent.EXIT;
             return;
         }
         //초기 벡터
@@ -103,6 +105,9 @@ public abstract class AbstractThrowState : AbstractUnitState
         //수평 도달 시간
         float time = Parabola.Caculated_Time(force, dir, 3);
         ResetAnimation();
+
+        _curEvent = eEvent.UPDATE;
+
         _myTrm.DOJump(new Vector3(_myTrm.position.x - width, 0, _myTrm.position.z), height, 1, time).OnComplete(() =>
         {
             //땅에 닿으면 대기 상태로 돌아감

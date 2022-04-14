@@ -76,33 +76,104 @@ public abstract class AbstractMoveState : AbstractUnitState
     /// <param name="list"></param>
     protected virtual void CheckRange(List<Unit> list)
     {
-        float targetRange = float.MaxValue;
         Unit targetUnit = null;
-        for (int i = 0; i < list.Count; i++)
+        int firstNum = 0;
+        int lastNum = list.Count - 1;
+        int currentIndex = 0;
+        
+        if(list.Count == 0)
         {
-            if (Vector2.Distance(_myTrm.position, list[i].transform.position) >= targetRange)
+            return;
+        }
+
+        if (_myUnit.ETeam == TeamType.MyTeam)
+        {
+            if (_myTrm.position.x < list[lastNum].transform.position.x)
             {
-                continue;
+                targetUnit = list[lastNum];
+                currentIndex = lastNum;
             }
-            if (_myUnit.ETeam.Equals(TeamType.MyTeam) && _myTrm.position.x > list[i].transform.position.x)
+        }
+        else if (_myUnit.ETeam == TeamType.EnemyTeam)
+        {
+            if (_myTrm.position.x > list[lastNum].transform.position.x)
             {
-                continue;
+                targetUnit = list[lastNum];
+                currentIndex = lastNum;
             }
-            if (!_myUnit.ETeam.Equals(TeamType.MyTeam) && _myTrm.position.x < list[i].transform.position.x)
+        }
+
+        if (targetUnit == null)
+        {
+            int loopnum = 0;
+            while (true)
             {
-                continue;
+                if (list.Count == 0)
+                {
+                    return;
+                }
+
+                int find = (lastNum + firstNum) / 2;
+
+                if (_myTrm.position.x == list[find].transform.position.x)
+                {
+                    targetUnit = list[find];
+                    currentIndex = find;
+                    break;
+                }
+
+                if (_myUnit.ETeam == TeamType.MyTeam)
+                {
+                    if (_myTrm.position.x > list[find].transform.position.x)
+                    {
+                        lastNum = find;
+                    }
+                    if (_myTrm.position.x < list[find].transform.position.x)
+                    {
+                        firstNum = find;
+                    }
+                }
+                else if (_myUnit.ETeam == TeamType.EnemyTeam)
+                {
+                    if (_myTrm.position.x < list[find].transform.position.x)
+                    {
+                        lastNum = find;
+                    }
+                    if (_myTrm.position.x > list[find].transform.position.x)
+                    {
+                        firstNum = find;
+                    }
+                }
+
+                if (lastNum - firstNum <= 1)
+                {
+                    targetUnit = list[firstNum];
+                    currentIndex = firstNum;
+                    break;
+                }
+
+                loopnum++;
+                if (loopnum > 10000)
+                {
+                    throw new System.Exception("Infinite Loop");
+                }
+
             }
-            if (list[i].transform.position.y > _myTrm.transform.position.y)
+        }
+
+        while (targetUnit._isInvincibility || targetUnit.transform.position.y > _myTrm.transform.position.y)
+        {
+            if (list.Count == 0)
             {
-                continue;
-            }
-            if (list[i]._isInvincibility)
-            {
-                continue;
+                return;
             }
 
-            targetUnit = list[i];
-            targetRange = Vector2.Distance(_myTrm.position, targetUnit.transform.position);
+            if (currentIndex - 1 < 0)
+            {
+                targetUnit = null;
+                break;
+            }
+            targetUnit = list[--currentIndex];
         }
 
         if (targetUnit != null)

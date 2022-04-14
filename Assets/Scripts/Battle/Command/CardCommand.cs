@@ -13,7 +13,6 @@ namespace Battle
         //프로퍼티
         public List<CardMove> CardList => _cardList;
 
-
         //속성
         public bool IsSelectCard { get; private set; } = false; //카드를 클릭한 상태인지
 
@@ -26,6 +25,7 @@ namespace Battle
         private bool _isFusion = false;
         private Coroutine _delayCoroutine = null;
         private int _cardIdCount = 0;
+
         //인스펙터 참조 변수
         [SerializeField]
         private LineRenderer _summonRangeLine = null;
@@ -99,7 +99,6 @@ namespace Battle
             SetUnitCardToDeck();
             SetStrategyCardToDeck();
         }
-
 
         /// <summary>
         /// 유닛 카드를 덱에 담는다
@@ -645,8 +644,6 @@ namespace Battle
             {
                 targetCard1 = _cardList[i];
                 targetCard2 = _cardList[i + 1];
-                if (targetCard1._grade > 2 || targetCard2._grade > 2)
-                    continue;
 
                 if (FusionCheck(targetCard1, targetCard2))
                 {

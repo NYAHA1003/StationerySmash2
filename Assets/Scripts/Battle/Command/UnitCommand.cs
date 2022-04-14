@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,8 @@ namespace Battle
     [System.Serializable]
     public class UnitCommand : BattleCommand
     {
+        public Transform UnitParent => _unitParent;
+
         //인스펙터 참조 변수
         [SerializeField]
         private GameObject _unitPrefeb;
@@ -35,9 +38,10 @@ namespace Battle
         /// <param name="_unitPrefeb"></param>
         /// <param name="_unitPoolManager"></param>
         /// <param name="_unitParent"></param>
-        public void SetInitialization(StageData stageData)
+        public void SetInitialization(ref System.Action updateAction, StageData stageData)
         {
             _stageData = stageData;
+            updateAction += SortAllUnitList;
         }
 
         /// <summary>
@@ -73,6 +77,16 @@ namespace Battle
         }
 
         /// <summary>
+        /// 모든 유닛 리스트 정렬
+        /// </summary>
+        public void SortAllUnitList()
+        {
+            _playerUnitList = _playerUnitList.OrderBy(x => x.transform.position.x).ToList();
+            _enemyUnitList = _enemyUnitList.OrderBy(x => -x.transform.position.x).ToList();
+        }
+
+
+        /// <summary>
         /// 모든 유닛 삭제
         /// </summary>
         public void ClearUnit()
@@ -87,6 +101,10 @@ namespace Battle
             }
         }
 
+        /// <summary>
+        /// 유닛 제거
+        /// </summary>
+        /// <param name="unit"></param>
         public void DeletePoolUnit(Unit unit)
         {
             unit.gameObject.SetActive(false);

@@ -14,6 +14,8 @@ public abstract class AbstractAttackState : AbstractUnitState
         _curState = eState.ATTACK;
         _curEvent = eEvent.ENTER;
 
+        ResetAnimation();
+
         //스티커 사용
         _myUnit.UnitSticker.RunStickerAbility(_curState);
 

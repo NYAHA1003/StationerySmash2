@@ -68,12 +68,14 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
+        Application.targetFrameRate = 60;
+
         _deckData = new DeckData();
 
         _commandPencilCase.SetInitialization(CommandUnit, CurrentStageData);
         _commandCard.SetInitialization(this, CommandCamera, CommandUnit, CommandCost, ref _updateAction, CurrentStageData, _deckData, _commandPencilCase.PencilCaseDataMy.PencilCasedataBase.maxCard);
         _commandCamera.SetInitialization(CommandCard, CommandWinLose, ref _updateAction, CurrentStageData);
-        _commandUnit.SetInitialization(CurrentStageData);
+        _commandUnit.SetInitialization(ref _updateAction, CurrentStageData);
         _commandEffect.SetInitialization();
         _commandThrow.SetInitialization(_commandUnit, _commandCamera, CurrentStageData);
         _commandAI.SetInitialization(CommandPencilCase, CommandUnit, ref _updateAction);
@@ -84,8 +86,16 @@ public class BattleManager : MonoBehaviour
 
         _isEndSetting = true;
     }
+
+    private void OnGUI()
+    {
+        
+    }
+
     private void Update()
     {
+        Debug.Log("유닛 갯수 : " + _commandUnit.UnitParent.childCount + " FPS : " + 1.0f / Time.deltaTime);
+
         if (!_isEndSetting)
         {
             return;
@@ -162,16 +172,6 @@ public class BattleManager : MonoBehaviour
             return;
         }
     }
-
-    /// <summary>
-    /// 유닛 제거
-    /// </summary>
-    /// <param name="unit">제거할 유닛</param>
-    public void PoolDeleteUnit(Unit unit)
-    {
-        _commandUnit.DeletePoolUnit(unit);
-    }
-
     /// <summary>
     /// 클릭하면 코스트 단계 증가
     /// </summary>

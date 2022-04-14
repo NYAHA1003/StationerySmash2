@@ -138,12 +138,12 @@ public class Unit : MonoBehaviour
     /// </summary>
     public virtual void Delete_Unit()
     {
-        _battleManager.PoolDeleteUnit(this);
+        RemoveUnitList();
+        _battleManager.CommandUnit.DeletePoolUnit(this);
         _unitStateChanger.DeleteState(_unitData.unitType);
         _unitStateChanger.StateNull();
         _unitStateEff.DeleteEffStetes();
         _unitSticker.DeleteSticekr();
-        RemoveUnitList();
     }
 
     /// <summary>
@@ -248,7 +248,7 @@ public class Unit : MonoBehaviour
     /// <summary>
     /// 유닛 리스트에서 이 오브젝트를 제거
     /// </summary>
-    private void RemoveUnitList()
+    public void RemoveUnitList()
     {
         switch (_eTeam)
         {
