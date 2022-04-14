@@ -73,7 +73,7 @@ public class BattleManager : MonoBehaviour
         _commandPencilCase.SetInitialization(CommandUnit, CurrentStageData);
         _commandCard.SetInitialization(this, CommandCamera, CommandUnit, CommandCost, ref _updateAction, CurrentStageData, _deckData, _commandPencilCase.PencilCaseDataMy.PencilCasedataBase.maxCard);
         _commandCamera.SetInitialization(CommandCard, CommandWinLose, ref _updateAction, CurrentStageData);
-        _commandUnit.SetInitialization(CurrentStageData);
+        _commandUnit.SetInitialization(ref _updateAction, CurrentStageData);
         _commandEffect.SetInitialization();
         _commandThrow.SetInitialization(_commandUnit, _commandCamera, CurrentStageData);
         _commandAI.SetInitialization(CommandPencilCase, CommandUnit, ref _updateAction);

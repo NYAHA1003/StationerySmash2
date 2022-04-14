@@ -76,33 +76,64 @@ public abstract class AbstractMoveState : AbstractUnitState
     /// <param name="list"></param>
     protected virtual void CheckRange(List<Unit> list)
     {
-        float targetRange = float.MaxValue;
         Unit targetUnit = null;
-        for (int i = 0; i < list.Count; i++)
+        int firstNum = 0;
+        int lastNum = list.Count - 1;
+        int currentIndex = 0;
+        
+        if(list.Count == 0)
         {
-            if (Vector2.Distance(_myTrm.position, list[i].transform.position) >= targetRange)
-            {
-                continue;
-            }
-            if (_myUnit.ETeam.Equals(TeamType.MyTeam) && _myTrm.position.x > list[i].transform.position.x)
-            {
-                continue;
-            }
-            if (!_myUnit.ETeam.Equals(TeamType.MyTeam) && _myTrm.position.x < list[i].transform.position.x)
-            {
-                continue;
-            }
-            if (list[i].transform.position.y > _myTrm.transform.position.y)
-            {
-                continue;
-            }
-            if (list[i]._isInvincibility)
-            {
-                continue;
-            }
+            return;
+        }
 
-            targetUnit = list[i];
-            targetRange = Vector2.Distance(_myTrm.position, targetUnit.transform.position);
+        if(_myUnit.ETeam == TeamType.MyTeam)
+        {
+            if(_myTrm.position.x < list[firstNum].transform.position.x)
+            {
+                targetUnit = list[lastNum];
+                currentIndex = lastNum;
+            }
+        }
+        else if (_myUnit.ETeam == TeamType.EnemyTeam)
+        {
+            if (_myTrm.position.x > list[lastNum].transform.position.x)
+            {
+                targetUnit = list[lastNum];
+                currentIndex = lastNum;
+            }
+        }
+
+        if(targetUnit == null)
+        {
+            while(true)
+            {
+                int find = (lastNum + firstNum) / 2;
+
+                if (_myTrm.position.x < list[find].transform.position.x)
+                {
+                    lastNum = find;
+                }
+                if (_myTrm.position.x > list[find].transform.position.x)
+                {
+                    firstNum = find;
+                }
+
+                if (lastNum - firstNum == 1)
+                {
+                    targetUnit = list[lastNum];
+                    currentIndex = lastNum;
+                    break;
+                }
+            }
+        }
+
+        while (targetUnit._isInvincibility || targetUnit.transform.position.y > _myTrm.transform.position.y)
+        {
+            if (currentIndex == list.Count - 1)
+            {
+                break;
+            }
+            targetUnit = list[--currentIndex];
         }
 
         if (targetUnit != null)
