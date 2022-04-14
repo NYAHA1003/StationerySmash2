@@ -10,6 +10,8 @@ namespace Battle
     [System.Serializable]
     public class UnitCommand : BattleCommand
     {
+        public Transform UnitParent => _unitParent;
+
         //인스펙터 참조 변수
         [SerializeField]
         private GameObject _unitPrefeb;

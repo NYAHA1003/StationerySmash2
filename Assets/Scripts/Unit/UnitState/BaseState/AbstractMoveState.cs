@@ -86,9 +86,9 @@ public abstract class AbstractMoveState : AbstractUnitState
             return;
         }
 
-        if(_myUnit.ETeam == TeamType.MyTeam)
+        if (_myUnit.ETeam == TeamType.MyTeam)
         {
-            if(_myTrm.position.x < list[firstNum].transform.position.x)
+            if (_myTrm.position.x < list[lastNum].transform.position.x)
             {
                 targetUnit = list[lastNum];
                 currentIndex = lastNum;
@@ -103,33 +103,61 @@ public abstract class AbstractMoveState : AbstractUnitState
             }
         }
 
-        if(targetUnit == null)
+        if (targetUnit == null)
         {
-            while(true)
+            int loopnum = 0;
+            while (true)
             {
-                if(list.Count == 0)
+                if (list.Count == 0)
                 {
                     return;
                 }
 
                 int find = (lastNum + firstNum) / 2;
-                Debug.Log(find);
 
-                if (_myTrm.position.x < list[find].transform.position.x)
+                if (_myTrm.position.x == list[find].transform.position.x)
                 {
-                    lastNum = find;
+                    targetUnit = list[find];
+                    currentIndex = find;
+                    break;
                 }
-                if (_myTrm.position.x > list[find].transform.position.x)
+
+                if (_myUnit.ETeam == TeamType.MyTeam)
                 {
-                    firstNum = find;
+                    if (_myTrm.position.x > list[find].transform.position.x)
+                    {
+                        lastNum = find;
+                    }
+                    if (_myTrm.position.x < list[find].transform.position.x)
+                    {
+                        firstNum = find;
+                    }
+                }
+                else if (_myUnit.ETeam == TeamType.EnemyTeam)
+                {
+                    if (_myTrm.position.x < list[find].transform.position.x)
+                    {
+                        lastNum = find;
+                    }
+                    if (_myTrm.position.x > list[find].transform.position.x)
+                    {
+                        firstNum = find;
+                    }
                 }
 
                 if (lastNum - firstNum <= 1)
                 {
-                    targetUnit = list[lastNum];
-                    currentIndex = lastNum;
+                    targetUnit = list[firstNum];
+                    currentIndex = firstNum;
                     break;
                 }
+
+                loopnum++;
+                if (loopnum > 10000)
+                {
+                    throw new System.Exception("Infinite Loop");
+                }
+
             }
         }
 
@@ -140,8 +168,9 @@ public abstract class AbstractMoveState : AbstractUnitState
                 return;
             }
 
-            if (currentIndex == list.Count - 1)
+            if (currentIndex - 1 < 0)
             {
+                targetUnit = null;
                 break;
             }
             targetUnit = list[--currentIndex];

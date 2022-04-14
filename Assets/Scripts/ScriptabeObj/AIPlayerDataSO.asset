@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AIPlayerDataSO
   m_EditorClassIdentifier: 
   summonGrade: 1
-  throwSpeed: 10
+  throwSpeed: 30
   cardDataList:
   - cardType: 1
     card_Name: "\uC5F0\uD544"
@@ -26,14 +26,14 @@ MonoBehaviour:
       starategyType: 0
       starategyablityData: []
     unitData:
-      unit_Hp: 100
+      unit_Hp: 500
       unit_Weight: 100
       knockback: 20
       dir: 45
       accuracy: 100
-      moveSpeed: 0.1
+      moveSpeed: 1
       damage: 10
-      attackSpeed: 60
+      attackSpeed: 10
       range: 1
       colideData:
         originpoints:
@@ -50,4 +50,4 @@ MonoBehaviour:
   pos:
   - {x: -2.821423, y: 0.30118275}
   max_Delay:
-  - 3.8
+  - 0.05

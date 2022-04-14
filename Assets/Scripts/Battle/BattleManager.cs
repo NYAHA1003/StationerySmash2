@@ -68,6 +68,8 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
+        Application.targetFrameRate = 60;
+
         _deckData = new DeckData();
 
         _commandPencilCase.SetInitialization(CommandUnit, CurrentStageData);
@@ -84,8 +86,16 @@ public class BattleManager : MonoBehaviour
 
         _isEndSetting = true;
     }
+
+    private void OnGUI()
+    {
+        
+    }
+
     private void Update()
     {
+        Debug.Log("유닛 갯수 : " + _commandUnit.UnitParent.childCount + " FPS : " + 1.0f / Time.deltaTime);
+
         if (!_isEndSetting)
         {
             return;
@@ -162,16 +172,6 @@ public class BattleManager : MonoBehaviour
             return;
         }
     }
-
-    /// <summary>
-    /// 유닛 제거
-    /// </summary>
-    /// <param name="unit">제거할 유닛</param>
-    public void PoolDeleteUnit(Unit unit)
-    {
-        _commandUnit.DeletePoolUnit(unit);
-    }
-
     /// <summary>
     /// 클릭하면 코스트 단계 증가
     /// </summary>
