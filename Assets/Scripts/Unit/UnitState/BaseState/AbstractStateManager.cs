@@ -15,6 +15,8 @@ public abstract class  AbstractStateManager
     protected AbstractMoveState _moveState = null;
     protected AbstractWaitState _waitState = null;
     protected AbstractUnitState _currrentState = null;
+    protected List<AbstractUnitState> _abstractUnitStateList = new List<AbstractUnitState>();
+
     protected float _waitExtraTime = 0;
 
     public void Reset_CurrentUnitState(AbstractUnitState unitState)
@@ -27,23 +29,26 @@ public abstract class  AbstractStateManager
     }
 
     public abstract void SetState();
+
+    /// <summary>
+    /// 리스트에 있는 스테이트들 리셋
+    /// </summary>
+    public void SetInStateList()
+    {
+        for(int i = 0; i < _abstractUnitStateList.Count; i++)
+        {
+            _abstractUnitStateList[i].SetStateManager(this);
+            _abstractUnitStateList[i].SetAnimation();
+        }
+    }
+
     public virtual void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
     {
-        _idleState.ChangeUnit(myTrm, mySprTrm, myUnit);
-        _waitState.ChangeUnit(myTrm, mySprTrm, myUnit);
-        _moveState.ChangeUnit(myTrm, mySprTrm, myUnit);
-        _attackState.ChangeUnit(myTrm, mySprTrm, myUnit);
-        _damagedState.ChangeUnit(myTrm, mySprTrm, myUnit);
-        _dieState.ChangeUnit(myTrm, mySprTrm, myUnit);
-        _throwState.ChangeUnit(myTrm, mySprTrm, myUnit);
-
-        _idleState.ResetState();
-        _waitState.ResetState();
-        _moveState.ResetState();
-        _attackState.ResetState();
-        _damagedState.ResetState();
-        _dieState.ResetState();
-        _throwState.ResetState();
+        for(int i = 0; i < _abstractUnitStateList.Count; i++)
+        {
+            _abstractUnitStateList[i].ChangeUnit(myTrm, mySprTrm, myUnit);
+            _abstractUnitStateList[i].ResetState();
+        }
 
         Set_WaitExtraTime(0);
         Reset_CurrentUnitState(_idleState);

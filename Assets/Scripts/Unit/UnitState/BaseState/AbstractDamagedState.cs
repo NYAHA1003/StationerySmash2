@@ -7,6 +7,10 @@ using DG.Tweening;
 public abstract class AbstractDamagedState : AbstractUnitState
 {
     protected AtkData _atkData; //공격받은 데이터
+    private float _animationRotate = 0f; //애니메이션에 사용할 각도
+    private float _animationTime = 0f; // 애니메이션에 사용할 시간
+    private Tweener _animationTweener = null;
+
     public override void Enter()
     {
         _curState = eState.DAMAGED;
@@ -66,11 +70,14 @@ public abstract class AbstractDamagedState : AbstractUnitState
     {
         _atkData = atkData;
     }
-    public override void Animation(params float[] value)
+    public override void Animation()
     {
         ResetAnimation();
-        float rotate = _myUnit.ETeam.Equals(TeamType.MyTeam) ? 360 : -360;
-        _mySprTrm.DORotate(new Vector3(0, 0, rotate), value[0], RotateMode.FastBeyond360);
+        _animationSequence.Restart();
+    }
+    public override void SetAnimation()
+    {
+        _animationSequence.Append(_mySprTrm.DORotate(new Vector3(0, 0, _animationRotate), _animationTime, RotateMode.FastBeyond360));
     }
 
     /// <summary>
@@ -82,10 +89,10 @@ public abstract class AbstractDamagedState : AbstractUnitState
         float calculated_knockback = _atkData.Caculated_Knockback(_myUnit.UnitStat.Return_Weight(), _myUnit.UnitStat.Hp, _myUnit.UnitStat.MaxHp, _myUnit.ETeam == TeamType.MyTeam);
         float height = _atkData.baseKnockback * 0.01f + Utill.Parabola.Caculated_Height((_atkData.baseKnockback + _atkData.extraKnockback) * 0.15f, _atkData.direction, 1);
         float time = _atkData.baseKnockback * 0.005f + Mathf.Abs((_atkData.baseKnockback * 0.5f + _atkData.extraKnockback) / (Physics2D.gravity.y));
-
+        _animationTime = time;
         //회전 애니메이션
         _myTrm.DOKill();
-        Animation(time);
+        Animation();
 
         //날라감
         _myTrm.DOJump(new Vector3(_myTrm.position.x - calculated_knockback, 0, _myTrm.position.z), height, 1, time).OnComplete(() =>

@@ -18,7 +18,7 @@ public class FlyMoveState : AbstractMoveState
         _curEvent = eEvent.UPDATE;
     }
 
-    public override void Animation(params float[] value)
+    public override void Animation()
     {
         ResetAnimation();
         float rotate = _myUnit.ETeam.Equals(TeamType.MyTeam) ? 30 : -30;

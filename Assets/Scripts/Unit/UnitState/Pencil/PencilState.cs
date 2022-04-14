@@ -19,13 +19,15 @@ public class PencilState : AbstractStateManager
 
         Reset_CurrentUnitState(_idleState);
 
-        _idleState.SetStateManager(this);
-        _waitState.SetStateManager(this);
-        _moveState.SetStateManager(this);
-        _attackState.SetStateManager(this);
-        _damagedState.SetStateManager(this);
-        _dieState.SetStateManager(this);
-        _throwState.SetStateManager(this);
+        _abstractUnitStateList.Add(_idleState);
+        _abstractUnitStateList.Add(_waitState);
+        _abstractUnitStateList.Add(_moveState);
+        _abstractUnitStateList.Add(_attackState);
+        _abstractUnitStateList.Add(_damagedState);
+        _abstractUnitStateList.Add(_dieState);
+        _abstractUnitStateList.Add(_throwState);
+
+        SetInStateList();
     }
 
     public override void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)

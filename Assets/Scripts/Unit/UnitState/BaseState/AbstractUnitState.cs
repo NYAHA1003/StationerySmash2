@@ -30,6 +30,7 @@ public abstract class AbstractUnitState
     protected eState _curState = eState.IDLE;
     protected eEvent _curEvent = eEvent.ENTER;
     protected float[] originValue = default;
+    protected Sequence _animationSequence;
 
     /// <summary>
     /// 풀링된 유닛에 맞춰 유닛변수들을 바꿔줌
@@ -98,6 +99,7 @@ public abstract class AbstractUnitState
     {
         _stateManager = stateManager;
     }
+
 
     /// <summary>
     /// 스테이트들을 초기화
@@ -184,12 +186,19 @@ public abstract class AbstractUnitState
         _stateManager.Set_ThrowPos(pos);
         _stateManager.Set_Throw();
     }
+    /// <summary>
+    /// 애니메이션 설정
+    /// </summary>
+    public virtual void SetAnimation()
+    {
+        //애니메이션 시퀀스 설정
+    }
 
     /// <summary>
     /// 애니메이션 함수, 각각의 스테이트에서 오버라이드해서 호출함
     /// </summary>
     /// <param name="value"></param>
-    public virtual void Animation(params float[] value)
+    public virtual void Animation()
     {
         //오버라이드해서 사용
     }
@@ -199,7 +208,7 @@ public abstract class AbstractUnitState
     /// </summary>
     public void ResetAnimation()
     {
-        _mySprTrm.DOKill();
+        _animationSequence.Pause();
         ResetSprTrm();
     }
 
