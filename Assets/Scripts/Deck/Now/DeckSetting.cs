@@ -14,7 +14,7 @@ public class DeckSetting : MonoBehaviour
     private void Start()
     {
         EventManager.StartListening(EventsType.ActiveDeck, UpdateDeck);
-        SetDeck(); 
+        SetDeck();
     }
     
     /// <summary>
