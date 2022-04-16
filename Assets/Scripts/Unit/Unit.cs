@@ -23,7 +23,9 @@ public class Unit : MonoBehaviour
     public bool _isInvincibility { get; protected set; } = false; // 무적 & 무시 여부
     public bool _isNeverDontThrow { get; protected set; } = false; // 절대 던지기 가능 여부
     public bool _isDontThrow { get; protected set; } = false; // 던지기 가능 여부
-    
+
+    public int OrderIndex { get; set; } = 0;
+
     //변수
     private CollideData _collideData = default; 
     private UnitStateEff _unitStateEff = new UnitStateEff();
@@ -66,8 +68,11 @@ public class Unit : MonoBehaviour
     /// <param name="eTeam">팀 변수</param>
     /// <param name="battleManager">배틀매니저</param>
     /// <param name="id"></param>
-    public virtual void SetUnitData(CardData dataBase, TeamType eTeam, StageData stageData, int id, int grade)
+    public virtual void SetUnitData(CardData dataBase, TeamType eTeam, StageData stageData, int id, int grade, int orderIndex)
     {
+        //순서 인덱스
+        OrderIndex = orderIndex;
+
         //유닛 데이터 받아오기
         _unitData = dataBase.unitData;
 
@@ -129,8 +134,33 @@ public class Unit : MonoBehaviour
         {
             return;
         }
+        CheckOrder();
         _unitStateChanger.ProcessState();
         _unitStateEff.ProcessEff();
+    }
+
+    public void CheckOrder()
+    {
+        if(ETeam == TeamType.MyTeam)
+        {
+            if (OrderIndex + 1 < _battleManager.CommandUnit._playerUnitList.Count)
+            {
+                if(transform.position.x > _battleManager.CommandUnit._playerUnitList[OrderIndex + 1].transform.position.x)
+                {
+                    _battleManager.CommandUnit.SortPlayerUnitList();
+                }
+            }
+        }
+        else if (ETeam == TeamType.EnemyTeam)
+        {
+            if (OrderIndex + 1 < _battleManager.CommandUnit._enemyUnitList.Count)
+            {
+                if (-transform.position.x > -_battleManager.CommandUnit._enemyUnitList[OrderIndex + 1].transform.position.x)
+                {
+                    _battleManager.CommandUnit.SortEnemyUnitList();
+                }
+            }
+        }
     }
 
     /// <summary>

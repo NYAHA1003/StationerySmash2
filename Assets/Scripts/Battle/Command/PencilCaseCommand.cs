@@ -52,7 +52,7 @@ namespace Battle
             pencilCaseDataEnemy = _enemyPencilCase.PencilCaseData;
 
             //플레이어 필통
-            _playerPencilCase.SetUnitData(pencilCaseDataMy.PencilCasedataBase.pencilCaseData, TeamType.MyTeam, _stageData, -1, 1);
+            _playerPencilCase.SetUnitData(pencilCaseDataMy.PencilCasedataBase.pencilCaseData, TeamType.MyTeam, _stageData, -1, 1, 0);
             _unitCommand._playerUnitList.Add(_playerPencilCase);
             _playerPencilCase.transform.position = new Vector2(-_stageData.max_Range, 0);
             _playerAbilityState = _playerPencilCase.AbilityState;
@@ -61,7 +61,7 @@ namespace Battle
             RunBadgeAbility(_playerBadges);
 
             //적 필통
-            _enemyPencilCase.SetUnitData(pencilCaseDataEnemy.PencilCasedataBase.pencilCaseData, TeamType.EnemyTeam, _stageData, -2, 1);
+            _enemyPencilCase.SetUnitData(pencilCaseDataEnemy.PencilCasedataBase.pencilCaseData, TeamType.EnemyTeam, _stageData, -2, 1, 0);
             _unitCommand._enemyUnitList.Add(_enemyPencilCase);
             _enemyPencilCase.transform.position = new Vector2(_stageData.max_Range, 0);
             _enemyAbilityState = _enemyPencilCase.AbilityState;

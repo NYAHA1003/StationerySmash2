@@ -41,7 +41,7 @@ namespace Battle
         public void SetInitialization(ref System.Action updateAction, StageData stageData)
         {
             _stageData = stageData;
-            updateAction += SortAllUnitList;
+            //updateAction += SortAllUnitList;
         }
 
         /// <summary>
@@ -53,13 +53,24 @@ namespace Battle
         public void SummonUnit(CardData dataBase, Vector3 Pos, int grade, TeamType eTeam = TeamType.Null)
         {
             Unit unit = null;
-
+            int orderIndex = 0;
             unit = ReturnPoolUnit(Pos);
             if (eTeam == TeamType.Null)
             {
                 eTeam = this.eTeam;
             }
-            unit.SetUnitData(dataBase, eTeam, _stageData, unitIdCount++, grade);
+
+            if(eTeam == TeamType.MyTeam)
+            {
+                orderIndex = _playerUnitList.Count - 1;
+            }
+
+            if (eTeam == TeamType.EnemyTeam)
+            {
+                orderIndex = _enemyUnitList.Count - 1;
+            }
+
+            unit.SetUnitData(dataBase, eTeam, _stageData, unitIdCount++, grade, orderIndex);
 
 
             //유닛 리스트에 추가
@@ -69,9 +80,11 @@ namespace Battle
                     break;
                 case TeamType.MyTeam:
                     _playerUnitList.Add(unit);
+                    SortPlayerUnitList();
                     break;
                 case TeamType.EnemyTeam:
                     _enemyUnitList.Add(unit);
+                    SortEnemyUnitList();
                     break;
             }
         }
@@ -81,8 +94,34 @@ namespace Battle
         /// </summary>
         public void SortAllUnitList()
         {
+            SortPlayerUnitList();
+            SortEnemyUnitList();
+        }
+
+        /// <summary>
+        /// 플레이어 유닛 정렬
+        /// </summary>
+        public void SortPlayerUnitList()
+        {
             _playerUnitList = _playerUnitList.OrderBy(x => x.transform.position.x).ToList();
+            int count = _playerUnitList.Count;
+            for (int i = 0; i < count; i++)
+            {
+                _playerUnitList[i].OrderIndex = i;
+            }
+        }
+
+        /// <summary>
+        /// 적 유닛 정렬
+        /// </summary>
+        public void SortEnemyUnitList()
+        {
             _enemyUnitList = _enemyUnitList.OrderBy(x => -x.transform.position.x).ToList();
+            int count = _enemyUnitList.Count;
+            for (int i = 0; i < count; i++)
+            {
+                _enemyUnitList[i].OrderIndex = i;
+            }
         }
 
 
