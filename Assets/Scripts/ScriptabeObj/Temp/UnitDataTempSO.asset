@@ -16,7 +16,9 @@ MonoBehaviour:
   - cardType: 0
     card_Name: 'Pencil '
     card_Cost: 10
-    card_Sprite: {fileID: 0}
+    skinData:
+      cardSprite: {fileID: 0}
+      effectType: 0
     level: 1
     strategyData:
       starategyType: 0
@@ -33,5 +35,9 @@ MonoBehaviour:
       range: 0
       colideData:
         originpoints: []
+      stickerData:
+        sprite: {fileID: 0}
+        stickerType: 0
+        stickerLevel: 1
       unitType: 0
       unitablityData: []
