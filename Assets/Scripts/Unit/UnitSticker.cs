@@ -33,7 +33,10 @@ public class UnitSticker
     /// </summary>
     public void OrderDraw(int orderIndex)
     {
-        _stickerSprite.sortingOrder = -orderIndex;
+        if(_stickerSprite != null)
+        { 
+            _stickerSprite.sortingOrder = -orderIndex ;
+        }
     }
 
     /// <summary>

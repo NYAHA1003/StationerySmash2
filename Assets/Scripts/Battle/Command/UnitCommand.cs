@@ -120,7 +120,7 @@ namespace Battle
             int count = _enemyUnitList.Count;
             for (int i = 0; i < count; i++)
             {
-                _enemyUnitList[i].OrderIndex = i;
+                _enemyUnitList[i].SetOrderIndex(i);
             }
         }
 
