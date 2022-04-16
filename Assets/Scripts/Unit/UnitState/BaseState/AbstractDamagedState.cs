@@ -71,13 +71,13 @@ public abstract class AbstractDamagedState : AbstractUnitState
     }
     public override void Animation()
     {
-        float rotate = _myUnit.ETeam.Equals(TeamType.MyTeam) ? 360 : -360;
+        float rotate = _myUnit.ETeam.Equals(TeamType.MyTeam) ? -360 : 360;
         _animationTweener.ChangeEndValue(new Vector3(0, 0, rotate), _animationTime);
         _animationTweener.Restart();
     }
     public override void SetAnimation()
     {
-        _animationTweener = _mySprTrm.DORotate(new Vector3(0, 0, 0), _animationTime, RotateMode.FastBeyond360).SetAutoKill(false);
+        _animationTweener = _mySprTrm.DORotate(new Vector3(0, 0, 0), 1, RotateMode.FastBeyond360).SetAutoKill(false);
     }
 
     /// <summary>
