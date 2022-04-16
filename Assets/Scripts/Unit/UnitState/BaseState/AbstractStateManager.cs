@@ -38,7 +38,6 @@ public abstract class  AbstractStateManager
         for(int i = 0; i < _abstractUnitStateList.Count; i++)
         {
             _abstractUnitStateList[i].SetStateManager(this);
-            _abstractUnitStateList[i].SetAnimation();
         }
     }
 
@@ -48,6 +47,7 @@ public abstract class  AbstractStateManager
         {
             _abstractUnitStateList[i].ChangeUnit(myTrm, mySprTrm, myUnit);
             _abstractUnitStateList[i].ResetState();
+            _abstractUnitStateList[i].SetAnimation();
         }
 
         Set_WaitExtraTime(0);

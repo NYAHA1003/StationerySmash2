@@ -106,14 +106,16 @@ public abstract class AbstractThrowState : AbstractUnitState
         //수평 도달 시간
         float time = Parabola.Caculated_Time(force, dir, 3);
         ResetAnimation();
+        ResetKnockBack();
 
         _curEvent = eEvent.UPDATE;
 
-        _myTrm.DOJump(new Vector3(_myTrm.position.x - width, 0, _myTrm.position.z), height, 1, time).OnComplete(() =>
+        SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x - width, 0, _myTrm.position.z), height, 1, time).OnComplete(() =>
         {
             //땅에 닿으면 대기 상태로 돌아감
             _stateManager.Set_Wait(0.5f);
-        }).SetEase(Utill.Parabola.Return_ParabolaCurve());
+        }).SetEase(Utill.Parabola.Return_ParabolaCurve()));
+        
     }
 
     /// <summary>

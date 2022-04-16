@@ -9,7 +9,6 @@ public abstract class AbstractAttackState : AbstractUnitState
     protected Unit _targetUnit = null; //°ø°ÝÇÒ À¯´Ö
     protected float _currentdelay = 0; //ÇöÀç µô·¹ÀÌ
     protected float _maxdelay = 100; //³¡ µô·¹ÀÌ
-    private Tweener _animationTweener;
     public override void Enter()
     {
         _curState = eState.ATTACK;
@@ -41,13 +40,11 @@ public abstract class AbstractAttackState : AbstractUnitState
         ResetAnimation();
         float rotate = _myUnit.ETeam.Equals(TeamType.MyTeam) ? -90 : 90;
         _animationTweener.ChangeEndValue(new Vector3(0, 0, rotate));
-        _mySprTrm.eulerAngles = new Vector3(0, 0, 0);
-        _animationSequence.Restart();
+        _animationTweener.Restart();
     }
     public override void SetAnimation()
     {
-        _animationTweener = _mySprTrm.DORotate(new Vector3(0, 0, 0), 0.2f).SetLoops(2, LoopType.Yoyo);
-        _animationSequence.Append(_animationTweener);
+       _animationTweener = _mySprTrm.DORotate(new Vector3(0, 0, 0), 0.2f).SetLoops(2, LoopType.Yoyo).SetAutoKill(false);
     }
 
     /// <summary>

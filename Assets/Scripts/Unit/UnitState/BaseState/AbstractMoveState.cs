@@ -6,7 +6,7 @@ using DG.Tweening;
 
 public abstract class AbstractMoveState : AbstractUnitState
 {
-    private float _animationRotate = 0f; //애니메이션에 사용할 각도
+
     public override void Enter()
     {
         _curState = eState.MOVE;
@@ -44,13 +44,15 @@ public abstract class AbstractMoveState : AbstractUnitState
     public override void Animation()
     {
         ResetAnimation();
+        float rotate = _myUnit.ETeam.Equals(TeamType.MyTeam) ? 30 : -30;
         _mySprTrm.eulerAngles = new Vector3(0, 0, 0);
-        _animationSequence.Restart();
+        _animationTweener.ChangeEndValue(new Vector3(0, 0, rotate));
+        _animationTweener.Restart();
     }
 
     public override void SetAnimation()
     {
-        _animationSequence.Append(_mySprTrm.DORotate(new Vector3(0, 0, _animationRotate), 0.3f).SetLoops(-1, LoopType.Yoyo));
+       _animationTweener = _mySprTrm.DORotate(new Vector3(0, 0, 0), 0.3f).SetLoops(-1, LoopType.Yoyo).SetAutoKill(false);
     }
 
     /// <summary>

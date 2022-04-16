@@ -30,7 +30,8 @@ public abstract class AbstractUnitState
     protected eState _curState = eState.IDLE;
     protected eEvent _curEvent = eEvent.ENTER;
     protected float[] originValue = default;
-    protected Sequence _animationSequence;
+    protected Tweener _animationTweener = default;
+    protected Sequence _knockbackTweener = DOTween.Sequence();
 
     /// <summary>
     /// 풀링된 유닛에 맞춰 유닛변수들을 바꿔줌
@@ -208,7 +209,7 @@ public abstract class AbstractUnitState
     /// </summary>
     public void ResetAnimation()
     {
-        _animationSequence.Pause();
+        _animationTweener.Pause();
         ResetSprTrm();
     }
 
@@ -223,6 +224,25 @@ public abstract class AbstractUnitState
     }
 
     /// <summary>
+    /// 넉백 애니메이션 제거
+    /// </summary>
+    public void ResetKnockBack()
+    {
+        _knockbackTweener.Pause();
+    }
+
+    /// <summary>
+    /// 넉백 설정 및 재생
+    /// </summary>
+    /// <param name="sequence"></param>
+    public void SetKnockBack(Sequence sequence)
+    {
+        _knockbackTweener = null;
+        _knockbackTweener = sequence;
+        _knockbackTweener.Play();
+    }
+
+    /// <summary>
     /// 스테이지 끝에 닿았는지 체크해서 닿으면 튕겨져 나오게 한다.
     /// </summary>
     public void CheckWall()
@@ -230,20 +250,22 @@ public abstract class AbstractUnitState
         if (_stateManager.GetStageData().max_Range <= _myTrm.position.x)
         {
             //왼쪽으로 튕겨져 나옴
-            _myTrm.DOKill();
-            _myTrm.DOJump(new Vector3(_myTrm.position.x - 0.2f, 0, _myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
+            ResetAnimation();
+            ResetKnockBack();
+            SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x - 0.2f, 0, _myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
             {
                 _stateManager.Set_Wait(0.5f);
-            }).SetEase(Utill.Parabola.Return_ParabolaCurve());
+            }).SetEase(Parabola.Return_ParabolaCurve()));
         }
         if (-_stateManager.GetStageData().max_Range >= _myTrm.position.x)
         {
             //오른쪽으로 튕겨져 나옴
-            _myTrm.DOKill();
-            _myTrm.DOJump(new Vector3(_myTrm.position.x + 0.2f, 0, _myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
+            ResetAnimation();
+            ResetKnockBack();
+            SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x + 0.2f, 0, _myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
             {
                 _stateManager.Set_Wait(0.5f);
-            }).SetEase(Utill.Parabola.Return_ParabolaCurve());
+            }).SetEase(Parabola.Return_ParabolaCurve()));
         }
     }
 }

@@ -6,6 +6,9 @@ using DG.Tweening;
 
 public abstract class AbstractDieState : AbstractUnitState
 {
+    Tweener _animationSKTweenerRotate = default;
+    Tweener _animationSKTweenerJump = default;
+    Tweener _animationSKTweenerScale = default;
     public override void Enter()
     {
         _curState = eState.DIE;
@@ -24,13 +27,36 @@ public abstract class AbstractDieState : AbstractUnitState
 
         //µÚÁü
         _myUnit.SetIsInvincibility(true);
-        _myTrm.DOKill();
-        _mySprTrm.DOKill();
+        ResetAnimation();
 
         //·£´ýÀ¸·Î Á×´Â ¾Ö´Ï¸ÞÀÌ¼Ç Àç»ý
         RandomDieAnimation();
 
         base.Enter();
+    }
+
+    public override void SetAnimation()
+    {
+        base.SetAnimation();
+
+
+        //_animationSKTweenerRotate = _mySprTrm.DOLocalRotate(new Vector3(0, 0, -360), 0.3f, RotateMode.FastBeyond360).SetLoops(3, LoopType.Incremental);
+        ////_animationSKTweenerJump =
+        //_myTrm.DOJump(Vector3.zero, 2f, 1, 1f);
+        //_mySprTrm.DOScale(10, 0.6f).SetDelay(0.3f).SetEase(Utill.Parabola.Return_ScreenKoCurve()).OnComplete(() =>
+        //{
+        //    _mySprTrm.eulerAngles = new Vector3(0, 0, Random.Range(_mySprTrm.eulerAngles.z - 10, _mySprTrm.eulerAngles.z + 10));
+        //    _mySprTrm.DOShakePosition(0.6f, 0.1f, 30).OnComplete(() =>
+        //    {
+        //        _mySprTrm.DOMoveY(-3, 1).OnComplete(() =>
+        //        {
+        //            ResetSprTrm();
+        //            _curEvent = eEvent.EXIT;
+        //            _myUnit.Delete_Unit();
+        //        });
+        //    });
+        //
+        //});
     }
 
     /// <summary>
