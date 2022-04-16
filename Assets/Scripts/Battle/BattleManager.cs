@@ -139,14 +139,7 @@ public class BattleManager : MonoBehaviour
         {
             _commandUnit.ClearUnit();
         }
-    }
 
-    private void FixedUpdate()
-    {
-        if (!_isEndSetting)
-        {
-            return;
-        }
 
         //컴포넌트들의 업데이트가 필요한 함수 재생
         _updateAction.Invoke();
