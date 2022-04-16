@@ -15,11 +15,15 @@ public class UnitSprite
     //프로퍼티
     public SpriteRenderer SpriteRenderer => _spriteRenderer; // 스프라이트렌더러 프로퍼티
 
+    [SerializeField]
+    private GameObject _delayBar;
+    [SerializeField]
+    private GameObject _delayRotate;
+    [SerializeField]
+    private GameObject _delayPart;
+    [SerializeField]
+    private GameObject _delayMask;
     //인스펙터 참조 변수
-    [SerializeField]
-    private Canvas _canvas = null; //유닛의 캔버스
-    [SerializeField]
-    private Image _delayBar = null; //딜레이바
     [SerializeField]
     private SpriteMask _spriteMask = null; //유닛 마스크
     [SerializeField]
@@ -29,6 +33,8 @@ public class UnitSprite
     [SerializeField]
     private Sprite[] _hpSprites = null; // 유닛 깨짐이미지들
 
+    private TeamType _eTeam = TeamType.Null;
+
     /// <summary>
     /// 초기 스프라이트 및 유닛 UI 설정
     /// </summary>
@@ -36,8 +42,9 @@ public class UnitSprite
     /// <param name="sprite"></param>
     public void SetUIAndSprite(TeamType eTeam, Sprite sprite)
     {
-        _canvas.worldCamera = Camera.main;
-        _delayBar.rectTransform.anchoredPosition = eTeam.Equals(TeamType.MyTeam) ? new Vector2(-960.15f, -540.15f) : new Vector2(-959.85f, -540.15f);
+        _eTeam = eTeam;
+        SetDelayBar();
+        
         _spriteRenderer.sprite = sprite;
         _spriteMask.sprite = sprite;
     }
@@ -64,21 +71,61 @@ public class UnitSprite
     }
 
     /// <summary>
+    /// 딜레이바 설정
+    /// </summary>
+    public void SetDelayBar()
+    {
+        _delayPart.SetActive(false);
+        if(_eTeam == TeamType.MyTeam)
+        {
+            _delayPart.transform.rotation = Quaternion.Euler(0, 0, 180);
+            _delayMask.transform.rotation = Quaternion.identity;
+            _delayRotate.transform.rotation = Quaternion.identity;
+            _delayBar.transform.localPosition = new Vector2(-0.1f, 0);
+        }
+        else if(_eTeam == TeamType.EnemyTeam)
+        {
+            _delayPart.transform.rotation = Quaternion.identity;
+            _delayMask.transform.rotation = Quaternion.Euler(0, 0, 180);
+            _delayRotate.transform.rotation = Quaternion.Euler(0, 0, 180);
+            _delayBar.transform.localPosition = new Vector2(0.1f, 0);
+        }
+    }
+
+    /// <summary>
     /// 딜레이바 업데이트
     /// </summary>
     /// <param name="delay"></param>
     public void UpdateDelayBar(float delay)
     {
-        _delayBar.fillAmount = delay;
+        if(_eTeam == TeamType.MyTeam)
+        {
+           _delayRotate.transform.rotation = Quaternion.Euler(0, 0, delay * 360);
+        }
+        else if(_eTeam == TeamType.EnemyTeam)
+        {
+            _delayRotate.transform.rotation = Quaternion.Euler(0, 0, (-delay * 360) + 180);
+        }
+
+        if(delay >= 0.5f)
+        {
+            _delayPart.SetActive(true);
+            _delayMask.SetActive(false);
+        }
+        else
+        {
+            _delayPart.SetActive(false);
+            _delayMask.SetActive(true);
+        }
     }
 
     /// <summary>
-    /// 캔버스 키기 끄기
+    /// 딜레이바 키기 끄기
     /// </summary>
     /// <param name="isShow">True면 캔버스 키기 아니면 끄기</param>
-    public void ShowCanvas(bool isShow)
+    public void ShowUI(bool isShow)
     {
-        _canvas.gameObject.SetActive(isShow);
+        _delayBar.SetActive(isShow);
     }
 
     /// <summary>

@@ -103,7 +103,7 @@ public class Unit : MonoBehaviour
         //스프라이트 초기화
         _unitSprite.SetUIAndSprite(eTeam, dataBase.skinData.cardSprite);
         _unitSprite.UpdateDelayBar(_unitStat.AttackDelay);
-        _unitSprite.ShowCanvas(true);
+        _unitSprite.ShowUI(true);
         _unitSprite.SetTeamColor(eTeam);
         _unitSprite.Set_HPSprite(_unitStat.Hp, _unitStat.MaxHp);
 

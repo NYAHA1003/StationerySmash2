@@ -23,7 +23,7 @@ public abstract class AbstractDieState : AbstractUnitState
         //딜레이바 등의 UI 안 보이게 하고 상태이상 삭제
         _myUnit.UnitStateEff.DeleteEffStetes();
         _myUnit.SetIsDontThrow(true);
-        _myUnit.UnitSprite.ShowCanvas(false);
+        _myUnit.UnitSprite.ShowUI(false);
 
         //뒤짐
         _myUnit.SetIsInvincibility(true);
