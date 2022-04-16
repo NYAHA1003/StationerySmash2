@@ -113,62 +113,107 @@ public abstract class AbstractMoveState : AbstractUnitState
 
         if (targetUnit == null)
         {
-            int loopnum = 0;
-            while (true)
+            BinarySearch(list, posX, lastNum, firstNum, ref targetUnit, out currentIndex);
+        }
+        NextTargetUnit(list, posY, ref targetUnit, ref currentIndex);
+
+        if (targetUnit != null)
+        {
+            if (Vector2.Distance(_myTrm.position, targetUnit.transform.position) < _myUnit.UnitStat.Return_Range())
             {
-                if (list.Count == 0)
-                {
-                    return;
-                }
-
-                int find = (lastNum + firstNum) / 2;
-
-                if (posX == list[find].transform.position.x)
-                {
-                    targetUnit = list[find];
-                    currentIndex = find;
-                    break;
-                }
-
-                if (_myUnit.ETeam == TeamType.MyTeam)
-                {
-                    if (posX > list[find].transform.position.x)
-                    {
-                        lastNum = find;
-                    }
-                    if (posX < list[find].transform.position.x)
-                    {
-                        firstNum = find;
-                    }
-                }
-                else if (_myUnit.ETeam == TeamType.EnemyTeam)
-                {
-                    if (posX < list[find].transform.position.x)
-                    {
-                        lastNum = find;
-                    }
-                    if (posX > list[find].transform.position.x)
-                    {
-                        firstNum = find;
-                    }
-                }
-
-                if (lastNum - firstNum <= 1)
-                {
-                    targetUnit = list[firstNum];
-                    currentIndex = firstNum;
-                    break;
-                }
-
-                loopnum++;
-                if (loopnum > 10000)
-                {
-                    throw new System.Exception("Infinite Loop");
-                }
-
+                //사정거리에 상대가 있으면 공격
+                CheckTargetUnit(targetUnit);
             }
         }
+    }
 
+
+    /// <summary>
+    /// 사정거리안에 적이 있다
+    /// </summary>
+    /// <param name="targetUnit"></param>
+    protected virtual void CheckTargetUnit(Unit targetUnit)
+    {
+        _stateManager.Set_Attack(targetUnit);
+    }
+
+    /// <summary>
+    /// 적 이진 탐색
+    /// </summary>
+    /// <param name="list"></param>
+    /// <param name="posX"></param>
+    /// <param name="lastNum"></param>
+    /// <param name="firstNum"></param>
+    /// <param name="targetUnit"></param>
+    /// <param name="currentIndex"></param>
+    private void BinarySearch(List<Unit> list, float posX, int lastNum, int firstNum, ref Unit targetUnit, out int currentIndex)
+    {
+        int loopnum = 0;
+        float targetPosX = 0;
+        while (true)
+        {
+            if (list.Count == 0)
+            {
+                currentIndex = 0;
+            }
+
+            int find = (lastNum + firstNum) / 2;
+            targetPosX = list[find].transform.position.x;
+
+            if (posX == targetPosX)
+            {
+                targetUnit = list[find];
+                currentIndex = find;
+                break;
+            }
+
+            if (_myUnit.ETeam == TeamType.MyTeam)
+            {
+                if (posX > targetPosX)
+                {
+                    lastNum = find;
+                }
+                else if (posX < targetPosX)
+                {
+                    firstNum = find;
+                }
+            }
+            else if (_myUnit.ETeam == TeamType.EnemyTeam)
+            {
+                if (posX < targetPosX)
+                {
+                    lastNum = find;
+                }
+                else if (posX > targetPosX)
+                {
+                    firstNum = find;
+                }
+            }
+
+            if (lastNum - firstNum <= 1)
+            {
+                targetUnit = list[firstNum];
+                currentIndex = firstNum;
+                break;
+            }
+
+            loopnum++;
+            if (loopnum > 10000)
+            {
+                throw new System.Exception("Infinite Loop");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 공격할 수 없는 적일 때 다음 타겟 찾기
+    /// </summary>
+    /// <param name="list"></param>
+    /// <param name="posY"></param>
+    /// <param name="targetUnit"></param>
+    /// <param name="currentIndex"></param>
+    private void NextTargetUnit(List<Unit> list, float posY, ref Unit targetUnit, ref int currentIndex)
+    {
         while (targetUnit._isInvincibility || targetUnit.transform.position.y > posY)
         {
             if (list.Count == 0)
@@ -183,23 +228,5 @@ public abstract class AbstractMoveState : AbstractUnitState
             }
             targetUnit = list[--currentIndex];
         }
-
-        if (targetUnit != null)
-        {
-            if (Vector2.Distance(_myTrm.position, targetUnit.transform.position) < _myUnit.UnitStat.Return_Range())
-            {
-                //사정거리에 상대가 있으면 공격
-                CheckTargetUnit(targetUnit);
-            }
-        }
-    }
-
-    /// <summary>
-    /// 사정거리안에 적이 있다
-    /// </summary>
-    /// <param name="targetUnit"></param>
-    protected virtual void CheckTargetUnit(Unit targetUnit)
-    {
-        _stateManager.Set_Attack(targetUnit);
     }
 }
