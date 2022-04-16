@@ -31,7 +31,6 @@ public abstract class AbstractUnitState
     protected eEvent _curEvent = eEvent.ENTER;
     protected float[] originValue = default;
     protected Tweener _animationTweener = default;
-    protected Sequence _knockbackTweener = DOTween.Sequence();
 
     /// <summary>
     /// Ç®¸µµÈ À¯´Ö¿¡ ¸ÂÃç À¯´Öº¯¼öµéÀ» ¹Ù²ãÁÜ
@@ -232,22 +231,14 @@ public abstract class AbstractUnitState
     }
 
     /// <summary>
-    /// ³Ë¹é ¾Ö´Ï¸ÞÀÌ¼Ç Á¦°Å
-    /// </summary>
-    public void ResetKnockBack()
-    {
-        _knockbackTweener.Pause();
-    }
-
-    /// <summary>
     /// ³Ë¹é ¼³Á¤ ¹× Àç»ý
     /// </summary>
     /// <param name="sequence"></param>
     public void SetKnockBack(Sequence sequence)
     {
-        _knockbackTweener = null;
-        _knockbackTweener = sequence;
-        _knockbackTweener.Play();
+        _myUnit.KnockbackTweener.Pause();
+        _myUnit.SetKnockBack(sequence);
+        _myUnit.KnockbackTweener.Play();
     }
 
     /// <summary>
@@ -259,7 +250,6 @@ public abstract class AbstractUnitState
         {
             //¿ÞÂÊÀ¸·Î Æ¨°ÜÁ® ³ª¿È
             ResetAllStateAnimation();
-            ResetKnockBack();
             SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x - 0.2f, 0, _myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
             {
                 _stateManager.Set_Wait(0.5f);
@@ -269,7 +259,6 @@ public abstract class AbstractUnitState
         {
             //¿À¸¥ÂÊÀ¸·Î Æ¨°ÜÁ® ³ª¿È
             ResetAllStateAnimation();
-            ResetKnockBack();
             SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x + 0.2f, 0, _myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
             {
                 _stateManager.Set_Wait(0.5f);

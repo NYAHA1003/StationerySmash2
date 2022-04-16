@@ -93,7 +93,6 @@ public abstract class AbstractDamagedState : AbstractUnitState
         //회전 애니메이션
         ResetAllStateAnimation();
         Animation();
-        ResetKnockBack();
 
         SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x - calculated_knockback, 0, _myTrm.position.z), height, 1, time).OnComplete(() =>
         {

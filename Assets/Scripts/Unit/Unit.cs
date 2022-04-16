@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utill;
 using Battle;
+using DG.Tweening;
 public class Unit : MonoBehaviour
 {
     //프로퍼티
@@ -23,7 +24,7 @@ public class Unit : MonoBehaviour
     public bool _isInvincibility { get; protected set; } = false; // 무적 & 무시 여부
     public bool _isNeverDontThrow { get; protected set; } = false; // 절대 던지기 가능 여부
     public bool _isDontThrow { get; protected set; } = false; // 던지기 가능 여부
-
+    public Sequence KnockbackTweener => _knockbackTweener; //넉백에 사용하는 시퀀스
     public int OrderIndex { get; set; } = 0;
 
     //변수
@@ -34,6 +35,7 @@ public class Unit : MonoBehaviour
     protected UnitStateChanger _unitStateChanger = new UnitStateChanger();
     protected BattleManager _battleManager = null;    
     protected bool _isSettingEnd = false;
+    protected Sequence _knockbackTweener;
 
     //참조 변수
     private UnitData _unitData= null;
@@ -70,6 +72,8 @@ public class Unit : MonoBehaviour
     /// <param name="id"></param>
     public virtual void SetUnitData(CardData dataBase, TeamType eTeam, StageData stageData, int id, int grade, int orderIndex)
     {
+        _knockbackTweener = DOTween.Sequence();
+
         //순서 인덱스
         OrderIndex = orderIndex;
 
@@ -184,6 +188,11 @@ public class Unit : MonoBehaviour
     public virtual void Run_Damaged(AtkData atkData)
     {
         _unitStateChanger.UnitState.RunDamaged(atkData);
+    }
+
+    public void SetKnockBack(Sequence sequence)
+    {
+        _knockbackTweener = sequence;
     }
 
     /// <summary>

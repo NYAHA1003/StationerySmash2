@@ -106,7 +106,6 @@ public abstract class AbstractThrowState : AbstractUnitState
         //수평 도달 시간
         float time = Parabola.Caculated_Time(force, dir, 3);
         ResetAllStateAnimation();
-        ResetKnockBack();
 
         _curEvent = eEvent.UPDATE;
 

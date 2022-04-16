@@ -62,7 +62,6 @@ public abstract class AbstractAttackState : AbstractUnitState
     protected virtual void Attack()
     {
         //공격 애니메이션
-        ResetAllStateAnimation();
         Animation();
 
         //공격 딜레이 초기화
