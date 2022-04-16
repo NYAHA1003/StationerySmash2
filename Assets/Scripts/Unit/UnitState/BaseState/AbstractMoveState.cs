@@ -86,15 +86,17 @@ public abstract class AbstractMoveState : AbstractUnitState
         int firstNum = 0;
         int lastNum = list.Count - 1;
         int currentIndex = 0;
-        
-        if(list.Count == 0)
+        float posX = _myTrm.position.x;
+        float posY = _myTrm.position.y;
+
+        if (list.Count == 0)
         {
             return;
         }
 
         if (_myUnit.ETeam == TeamType.MyTeam)
         {
-            if (_myTrm.position.x < list[lastNum].transform.position.x)
+            if (posX < list[lastNum].transform.position.x)
             {
                 targetUnit = list[lastNum];
                 currentIndex = lastNum;
@@ -102,7 +104,7 @@ public abstract class AbstractMoveState : AbstractUnitState
         }
         else if (_myUnit.ETeam == TeamType.EnemyTeam)
         {
-            if (_myTrm.position.x > list[lastNum].transform.position.x)
+            if (posX > list[lastNum].transform.position.x)
             {
                 targetUnit = list[lastNum];
                 currentIndex = lastNum;
@@ -121,7 +123,7 @@ public abstract class AbstractMoveState : AbstractUnitState
 
                 int find = (lastNum + firstNum) / 2;
 
-                if (_myTrm.position.x == list[find].transform.position.x)
+                if (posX == list[find].transform.position.x)
                 {
                     targetUnit = list[find];
                     currentIndex = find;
@@ -130,22 +132,22 @@ public abstract class AbstractMoveState : AbstractUnitState
 
                 if (_myUnit.ETeam == TeamType.MyTeam)
                 {
-                    if (_myTrm.position.x > list[find].transform.position.x)
+                    if (posX > list[find].transform.position.x)
                     {
                         lastNum = find;
                     }
-                    if (_myTrm.position.x < list[find].transform.position.x)
+                    if (posX < list[find].transform.position.x)
                     {
                         firstNum = find;
                     }
                 }
                 else if (_myUnit.ETeam == TeamType.EnemyTeam)
                 {
-                    if (_myTrm.position.x < list[find].transform.position.x)
+                    if (posX < list[find].transform.position.x)
                     {
                         lastNum = find;
                     }
-                    if (_myTrm.position.x > list[find].transform.position.x)
+                    if (posX > list[find].transform.position.x)
                     {
                         firstNum = find;
                     }
@@ -167,7 +169,7 @@ public abstract class AbstractMoveState : AbstractUnitState
             }
         }
 
-        while (targetUnit._isInvincibility || targetUnit.transform.position.y > _myTrm.transform.position.y)
+        while (targetUnit._isInvincibility || targetUnit.transform.position.y > posY)
         {
             if (list.Count == 0)
             {
