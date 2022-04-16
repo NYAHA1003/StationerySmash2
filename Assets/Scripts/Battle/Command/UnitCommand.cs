@@ -107,7 +107,7 @@ namespace Battle
             int count = _playerUnitList.Count;
             for (int i = 0; i < count; i++)
             {
-                _playerUnitList[i].OrderIndex = i;
+                _playerUnitList[i].SetOrderIndex(i);
             }
         }
 

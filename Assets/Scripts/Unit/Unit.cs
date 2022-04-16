@@ -111,6 +111,7 @@ public class Unit : MonoBehaviour
         _unitSprite.ShowUI(true);
         _unitSprite.SetTeamColor(eTeam);
         _unitSprite.Set_HPSprite(_unitStat.Hp, _unitStat.MaxHp);
+        _unitSprite.OrderDraw(orderIndex);
 
         //스테이트 설정
         _unitStateChanger.SetStateManager(dataBase.unitData.unitType, transform, _unitSprite.SpriteRenderer.transform, this); ;
@@ -273,6 +274,13 @@ public class Unit : MonoBehaviour
     {
         _unitStat.SubtractHP(damage);
         _unitSprite.Set_HPSprite(_unitStat.Hp, _unitStat.MaxHp);
+    }
+
+    public void SetOrderIndex(int index)
+    {
+        OrderIndex = index;
+        _unitSprite.OrderDraw(index);
+        _unitSticker.OrderDraw(index);
     }
 
     /// <summary>

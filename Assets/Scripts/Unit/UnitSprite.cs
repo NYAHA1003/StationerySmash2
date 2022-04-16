@@ -50,6 +50,14 @@ public class UnitSprite
     }
 
     /// <summary>
+    /// 오더 인덱스에 따른 레이어 순서 정하기
+    /// </summary>
+    public void OrderDraw(int orderIndex)
+    {
+        _spriteRenderer.sortingOrder = -orderIndex;
+    }
+
+    /// <summary>
     /// 체력 비율에 따른 깨짐 이미지
     /// </summary>
     public void Set_HPSprite(int hp, int maxhp)

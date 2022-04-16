@@ -29,6 +29,14 @@ public class UnitSticker
     }
 
     /// <summary>
+    /// 오더인덱스에 따른 레이어 설정
+    /// </summary>
+    public void OrderDraw(int orderIndex)
+    {
+        _stickerSprite.sortingOrder = -orderIndex;
+    }
+
+    /// <summary>
     /// 스티커 능력 사용
     /// </summary>
     /// <param name="eState"></param>
