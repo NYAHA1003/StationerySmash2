@@ -91,7 +91,7 @@ public abstract class AbstractDamagedState : AbstractUnitState
         float time = _atkData.baseKnockback * 0.005f + Mathf.Abs((_atkData.baseKnockback * 0.5f + _atkData.extraKnockback) / (Physics2D.gravity.y));
         _animationTime = time;
         //회전 애니메이션
-        ResetAnimation();
+        ResetAllStateAnimation();
         Animation();
         ResetKnockBack();
 

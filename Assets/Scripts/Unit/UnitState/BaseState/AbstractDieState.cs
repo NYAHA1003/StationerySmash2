@@ -27,7 +27,7 @@ public abstract class AbstractDieState : AbstractUnitState
 
         //뒤짐
         _myUnit.SetIsInvincibility(true);
-        ResetAnimation();
+        ResetAllStateAnimation();
 
         //랜덤으로 죽는 애니메이션 재생
         RandomDieAnimation();

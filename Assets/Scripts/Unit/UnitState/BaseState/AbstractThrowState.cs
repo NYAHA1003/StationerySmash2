@@ -92,7 +92,7 @@ public abstract class AbstractThrowState : AbstractUnitState
         //방향이 아래쪽을 향하면 던지기를 취소함
         if (dir < 0)
         {
-            ResetAnimation();
+            ResetAllStateAnimation();
             _stateManager.Set_Wait(0.5f);
             _curEvent = eEvent.EXIT;
             return;
@@ -105,7 +105,7 @@ public abstract class AbstractThrowState : AbstractUnitState
         float width = Parabola.Caculated_Width(force, dirx);
         //수평 도달 시간
         float time = Parabola.Caculated_Time(force, dir, 3);
-        ResetAnimation();
+        ResetAllStateAnimation();
         ResetKnockBack();
 
         _curEvent = eEvent.UPDATE;

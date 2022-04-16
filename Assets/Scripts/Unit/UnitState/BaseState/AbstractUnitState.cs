@@ -205,12 +205,20 @@ public abstract class AbstractUnitState
     }
 
     /// <summary>
+    /// 모든 스테이트들의 애니메이션 정지
+    /// </summary>
+    public void ResetAllStateAnimation()
+    {
+        _stateManager.ResetAnimationInStateList();
+        ResetSprTrm();
+    }
+
+    /// <summary>
     /// 애니메이션을 제거하고 스프라이트 위치와 각도를 초기화
     /// </summary>
-    public void ResetAnimation()
+    public void ResetThisStateAnimation()
     {
         _animationTweener.Pause();
-        ResetSprTrm();
     }
 
     /// <summary>
@@ -250,7 +258,7 @@ public abstract class AbstractUnitState
         if (_stateManager.GetStageData().max_Range <= _myTrm.position.x)
         {
             //왼쪽으로 튕겨져 나옴
-            ResetAnimation();
+            ResetAllStateAnimation();
             ResetKnockBack();
             SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x - 0.2f, 0, _myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
             {
@@ -260,7 +268,7 @@ public abstract class AbstractUnitState
         if (-_stateManager.GetStageData().max_Range >= _myTrm.position.x)
         {
             //오른쪽으로 튕겨져 나옴
-            ResetAnimation();
+            ResetAllStateAnimation();
             ResetKnockBack();
             SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x + 0.2f, 0, _myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
             {

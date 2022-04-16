@@ -41,6 +41,17 @@ public abstract class  AbstractStateManager
         }
     }
 
+    /// <summary>
+    /// 리스트에 있는 스테이트들의 애니메이션 정리
+    /// </summary>
+    public void ResetAnimationInStateList()
+    {
+        for (int i = 0; i < _abstractUnitStateList.Count; i++)
+        {
+            _abstractUnitStateList[i].ResetThisStateAnimation();
+        }
+    }
+
     public virtual void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
     {
         for(int i = 0; i < _abstractUnitStateList.Count; i++)

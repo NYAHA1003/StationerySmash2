@@ -18,6 +18,7 @@ public abstract class AbstractMoveState : AbstractUnitState
         _myUnit.UnitSticker.RunStickerAbility(_curState);
 
         //이동 애니메이션 시작
+        ResetAllStateAnimation();
         Animation();
 
         base.Enter();
@@ -43,9 +44,7 @@ public abstract class AbstractMoveState : AbstractUnitState
 
     public override void Animation()
     {
-        ResetAnimation();
         float rotate = _myUnit.ETeam.Equals(TeamType.MyTeam) ? 30 : -30;
-        _mySprTrm.eulerAngles = new Vector3(0, 0, 0);
         _animationTweener.ChangeEndValue(new Vector3(0, 0, rotate));
         _animationTweener.Restart();
     }

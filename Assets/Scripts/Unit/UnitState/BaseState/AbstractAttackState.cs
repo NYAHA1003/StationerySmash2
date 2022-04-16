@@ -14,7 +14,7 @@ public abstract class AbstractAttackState : AbstractUnitState
         _curState = eState.ATTACK;
         _curEvent = eEvent.ENTER;
 
-        ResetAnimation();
+        ResetAllStateAnimation();
 
         //스티커 사용
         _myUnit.UnitSticker.RunStickerAbility(_curState);
@@ -37,7 +37,6 @@ public abstract class AbstractAttackState : AbstractUnitState
     }
     public override void Animation()
     {
-        ResetAnimation();
         float rotate = _myUnit.ETeam.Equals(TeamType.MyTeam) ? -90 : 90;
         _animationTweener.ChangeEndValue(new Vector3(0, 0, rotate));
         _animationTweener.Restart();
@@ -63,6 +62,7 @@ public abstract class AbstractAttackState : AbstractUnitState
     protected virtual void Attack()
     {
         //공격 애니메이션
+        ResetAllStateAnimation();
         Animation();
 
         //공격 딜레이 초기화
