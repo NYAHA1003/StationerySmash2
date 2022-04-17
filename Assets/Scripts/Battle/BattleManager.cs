@@ -94,7 +94,7 @@ public class BattleManager : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("À¯´Ö °¹¼ö : " + _commandUnit.UnitParent.childCount + " FPS : " + 1.0f / Time.deltaTime);
+        //Debug.Log("À¯´Ö °¹¼ö : " + _commandUnit.UnitParent.childCount + " FPS : " + 1.0f / Time.deltaTime);
 
         if (!_isEndSetting)
         {

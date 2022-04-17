@@ -10,7 +10,7 @@ namespace Utill
         public Vector2[] originpoints;
         private Vector2[] points;
 
-        public Vector2[] SetPos(Vector2 trm_Pos)
+        public void SetPos(Vector2 trm_Pos)
         {
             Vector2[] points = new Vector2[4];
             points[0] = trm_Pos + originpoints[0];
@@ -18,11 +18,11 @@ namespace Utill
             points[2] = trm_Pos + originpoints[2];
             points[3] = trm_Pos + originpoints[3];
             this.points = points;
-            return points;
         }
-        public Vector2 Get_Point(int index)
+        public Vector2[] GetPoint(Vector2 pos)
         {
-            return points[index];
+            SetPos(pos);
+            return points;
         }
     }
 

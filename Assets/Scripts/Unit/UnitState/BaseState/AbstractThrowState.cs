@@ -62,7 +62,7 @@ public abstract class AbstractThrowState : AbstractUnitState
             {
                 continue;
             }
-            float distance = Utill.Collider.FindDistanceBetweenSegments(_myUnit.CollideData.SetPos(_myTrm.position), targetUnit.CollideData.SetPos(targetUnit.transform.position));
+            float distance = Utill.Collider.FindDistanceBetweenSegments(_myUnit.CollideData.GetPoint(_myTrm.position), targetUnit.CollideData.GetPoint(targetUnit.transform.position));
             if (distance < 0.2f)
             {
                 ThrowAttack(targetUnit);
