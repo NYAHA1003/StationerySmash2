@@ -258,6 +258,9 @@ namespace Battle
             
             //카드 선택 활성화
             IsSelectCard = true;
+
+            //카드를 융합시킴
+            SetDelayFusion();
         }
 
         /// <summary>
@@ -294,7 +297,7 @@ namespace Battle
             IsSelectCard = false;
 
             //카드를 융합시킴
-            FusionCard();
+            SetDelayFusion();
         }
 
         /// <summary>
@@ -347,9 +350,9 @@ namespace Battle
             //{
             //    _battleManager._aiLog.Add_Log(card._dataBase);
             //}
-            
+
             //카드 융합
-            FusionCard();
+            SetDelayFusion();
         }
 
         /// <summary>
