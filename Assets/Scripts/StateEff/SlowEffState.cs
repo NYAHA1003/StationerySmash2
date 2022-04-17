@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 
-public class SlowDownEffState : EffState
+public class SlowEffState : EffState
 {
     private float slowDownTime = 0; //슬로우 다운 유지 시간
     private float moveSpeedSubtractPercent = 0; //이동속도 퍼센트가 얼마나 느려질 것인가
