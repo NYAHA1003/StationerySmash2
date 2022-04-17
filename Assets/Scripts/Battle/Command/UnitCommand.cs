@@ -103,11 +103,21 @@ namespace Battle
         /// </summary>
         public void SortPlayerUnitList()
         {
+            //리스트 정렬
             _playerUnitList = _playerUnitList.OrderBy(x => x.transform.position.x).ToList();
+            
+            //순서 설정
             int count = _playerUnitList.Count;
             for (int i = 0; i < count; i++)
             {
-                _playerUnitList[i].SetOrderIndex(i);
+                if (i == count - 1)
+                {
+                    _playerUnitList[i].SetOrderIndex(0);
+                }
+                else
+                {
+                    _playerUnitList[i].SetOrderIndex(i);
+                }
             }
         }
 
@@ -116,11 +126,21 @@ namespace Battle
         /// </summary>
         public void SortEnemyUnitList()
         {
+            //리스트 정렬
             _enemyUnitList = _enemyUnitList.OrderBy(x => -x.transform.position.x).ToList();
+
+            //순서 설정
             int count = _enemyUnitList.Count;
             for (int i = 0; i < count; i++)
             {
-                _enemyUnitList[i].SetOrderIndex(i);
+                if(i == count - 1)
+                {
+                    _enemyUnitList[i].SetOrderIndex(0);
+                }
+                else
+                {
+                    _enemyUnitList[i].SetOrderIndex(i);
+                }
             }
         }
 
