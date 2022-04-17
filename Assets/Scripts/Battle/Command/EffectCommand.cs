@@ -14,8 +14,8 @@ namespace Battle
         private Transform _effectPoolManager;
         [SerializeField]
         private List<GameObject> _effectObjectList;
- 
-        
+
+
         public async Task AwitLoadAssetAsync(string s)
         {
             AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(s);
@@ -63,11 +63,31 @@ namespace Battle
                 }
             }
 
-            //없으면 새로 만듦
+            if (IsLimitEffectType(effectType) && effect_Parent.childCount > 6)
+            {
+                float minLifeTime = 10;
+                for (int i = 0; i < effect_Parent.childCount; i++)
+                {
+                    effect_Object = effect_Parent.GetChild(i).GetComponent<EffectObject>();
+                    //제일 짧은 lifeTime 찾기
+                    //if(minLifeTime > effect_Object.)
+
+                }
+
+                effect_Object.SetEffect(effData);
+                return effect_Object._effectState;
+            }
+            //이펙트 없으면 새로 만듦
             effect_Object = PoolManager.CreateObject(_effectObjectList[(int)effectType].gameObject, effData.pos, Quaternion.identity).GetComponent<EffectObject>();
             effect_Object.transform.SetParent(effect_Parent);
             effect_Object.SetEffect(effData);
             return effect_Object._effectState;
+        }
+        private bool IsLimitEffectType(EffectType effectType)
+        {
+            if (effectType == EffectType.Stun)
+                return false;
+            return true;
         }
     }
 

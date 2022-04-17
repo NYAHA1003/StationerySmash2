@@ -44,7 +44,7 @@ public class EffectObject : MonoBehaviour
     {
         if (!_isSettingEnd)
             return;
-
+        _effData.lifeTime -= Time.deltaTime;
         _effectState.Update_Effect(this, _effData);
     }
 
