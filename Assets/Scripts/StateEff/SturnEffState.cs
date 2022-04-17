@@ -10,7 +10,6 @@ public class SturnEffState : EffState
     public override void Enter()
     {
         stunTime = stunTime + (stunTime * (((float)_myUnit.UnitStat.MaxHp / (_myUnit.UnitStat.Hp + 70)) - 1));
-        _myUnit.SetIsDontThrow(true);
         _stateManager.Set_Wait(stunTime);
         _stateManager.Set_WaitExtraTime(stunTime);
 
@@ -51,7 +50,6 @@ public class SturnEffState : EffState
             _stateManager.Set_WaitExtraTime(stunTime);
             return;
         }
-        _myUnit.SetIsDontThrow(false);
         _curEvent = eEvent.EXIT;
     }
 }
