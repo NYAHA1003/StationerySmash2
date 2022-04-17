@@ -294,7 +294,7 @@ namespace Battle
             IsSelectCard = false;
 
             //Ä«µå¸¦ À¶ÇÕ½ÃÅ´
-            FusionCard();
+            SetDelayFusion();
         }
 
         /// <summary>
@@ -347,9 +347,9 @@ namespace Battle
             //{
             //    _battleManager._aiLog.Add_Log(card._dataBase);
             //}
-            
+
             //Ä«µå À¶ÇÕ
-            FusionCard();
+            SetDelayFusion();
         }
 
         /// <summary>
