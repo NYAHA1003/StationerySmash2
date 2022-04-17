@@ -141,7 +141,7 @@ namespace Battle
             {
                 return false;
             }
-            if (box[1].x + 0.05f < inPoint.x)
+            if (box[1].x + 0.2f < inPoint.x)
             {
                 return false;
             }
@@ -149,23 +149,23 @@ namespace Battle
             {
                 return false;
             }
-            if (box[3].x + 0.05f < inPoint.x)
+            if (box[3].x + 0.2f < inPoint.x)
             {
                 return false;
             }
-            if (box[0].y + 0.03f < inPoint.y)
+            if (box[0].y + 0.15f < inPoint.y)
             {
                 return false;
             }
-            if (box[1].y + 0.03f < inPoint.y)
+            if (box[1].y + 0.15f < inPoint.y)
             {
                 return false;
             }
-            if (box[2].y > inPoint.y)
+            if (box[2].y - 0.1f > inPoint.y)
             {
                 return false;
             }
-            if (box[3].y > inPoint.y)
+            if (box[3].y - 0.1f > inPoint.y)
             {
                 return false;
             }
