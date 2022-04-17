@@ -8,7 +8,7 @@ using UnityEngine.AddressableAssets;
 namespace Battle
 {
     [System.Serializable]
-    public class EffectCommand
+    public class EffectCommand : BattleCommand
     {
         [SerializeField]
         private Transform _effectPoolManager;

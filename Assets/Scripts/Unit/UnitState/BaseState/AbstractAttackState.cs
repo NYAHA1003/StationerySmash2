@@ -14,6 +14,8 @@ public abstract class AbstractAttackState : AbstractUnitState
         _curState = eState.ATTACK;
         _curEvent = eEvent.ENTER;
 
+        ResetAllStateAnimation();
+
         //스티커 사용
         _myUnit.UnitSticker.RunStickerAbility(_curState);
 
@@ -33,12 +35,15 @@ public abstract class AbstractAttackState : AbstractUnitState
             Attack();
         }
     }
-    public override void Animation(params float[] value)
+    public override void Animation()
     {
-        ResetAnimation();
         float rotate = _myUnit.ETeam.Equals(TeamType.MyTeam) ? -90 : 90;
-        _mySprTrm.eulerAngles = new Vector3(0, 0, 0);
-        _mySprTrm.DORotate(new Vector3(0, 0, rotate), 0.2f).SetLoops(2, LoopType.Yoyo);
+        _animationTweener.ChangeEndValue(new Vector3(0, 0, rotate));
+        _animationTweener.Restart();
+    }
+    public override void SetAnimation()
+    {
+       _animationTweener = _mySprTrm.DORotate(new Vector3(0, 0, 0), 0.2f).SetLoops(2, LoopType.Yoyo).SetAutoKill(false);
     }
 
     /// <summary>
@@ -130,7 +135,7 @@ public abstract class AbstractAttackState : AbstractUnitState
     /// <param name="atkData"></param>
     protected virtual void SetAttackData(ref AtkData atkData)
     {
-        atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, AtkType.Normal, EffectType.Attack, originValue);
+        atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, AtkType.Normal, _myUnit.SkinData.effectType, originValue);
     }
 
     /// <summary>

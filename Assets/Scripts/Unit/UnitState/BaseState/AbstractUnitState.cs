@@ -30,6 +30,7 @@ public abstract class AbstractUnitState
     protected eState _curState = eState.IDLE;
     protected eEvent _curEvent = eEvent.ENTER;
     protected float[] originValue = default;
+    protected Tweener _animationTweener = default;
 
     /// <summary>
     /// 풀링된 유닛에 맞춰 유닛변수들을 바꿔줌
@@ -98,6 +99,7 @@ public abstract class AbstractUnitState
     {
         _stateManager = stateManager;
     }
+
 
     /// <summary>
     /// 스테이트들을 초기화
@@ -184,23 +186,38 @@ public abstract class AbstractUnitState
         _stateManager.Set_ThrowPos(pos);
         _stateManager.Set_Throw();
     }
+    /// <summary>
+    /// 애니메이션 설정
+    /// </summary>
+    public virtual void SetAnimation()
+    {
+        //애니메이션 시퀀스 설정
+    }
 
     /// <summary>
     /// 애니메이션 함수, 각각의 스테이트에서 오버라이드해서 호출함
     /// </summary>
     /// <param name="value"></param>
-    public virtual void Animation(params float[] value)
+    public virtual void Animation()
     {
         //오버라이드해서 사용
     }
 
     /// <summary>
+    /// 모든 스테이트들의 애니메이션 정지
+    /// </summary>
+    public void ResetAllStateAnimation()
+    {
+        _stateManager.ResetAnimationInStateList();
+        ResetSprTrm();
+    }
+
+    /// <summary>
     /// 애니메이션을 제거하고 스프라이트 위치와 각도를 초기화
     /// </summary>
-    public void ResetAnimation()
+    public void ResetThisStateAnimation()
     {
-        _mySprTrm.DOKill();
-        ResetSprTrm();
+        _animationTweener.Pause();
     }
 
     /// <summary>
@@ -214,6 +231,17 @@ public abstract class AbstractUnitState
     }
 
     /// <summary>
+    /// 넉백 설정 및 재생
+    /// </summary>
+    /// <param name="sequence"></param>
+    public void SetKnockBack(Sequence sequence)
+    {
+        _myUnit.KnockbackTweener.Pause();
+        _myUnit.SetKnockBack(sequence);
+        _myUnit.KnockbackTweener.Play();
+    }
+
+    /// <summary>
     /// 스테이지 끝에 닿았는지 체크해서 닿으면 튕겨져 나오게 한다.
     /// </summary>
     public void CheckWall()
@@ -221,20 +249,20 @@ public abstract class AbstractUnitState
         if (_stateManager.GetStageData().max_Range <= _myTrm.position.x)
         {
             //왼쪽으로 튕겨져 나옴
-            _myTrm.DOKill();
-            _myTrm.DOJump(new Vector3(_myTrm.position.x - 0.2f, 0, _myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
+            ResetAllStateAnimation();
+            SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x - 0.2f, 0, _myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
             {
                 _stateManager.Set_Wait(0.5f);
-            }).SetEase(Utill.Parabola.Return_ParabolaCurve());
+            }).SetEase(Parabola.Return_ParabolaCurve()));
         }
         if (-_stateManager.GetStageData().max_Range >= _myTrm.position.x)
         {
             //오른쪽으로 튕겨져 나옴
-            _myTrm.DOKill();
-            _myTrm.DOJump(new Vector3(_myTrm.position.x + 0.2f, 0, _myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
+            ResetAllStateAnimation();
+            SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x + 0.2f, 0, _myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
             {
                 _stateManager.Set_Wait(0.5f);
-            }).SetEase(Utill.Parabola.Return_ParabolaCurve());
+            }).SetEase(Parabola.Return_ParabolaCurve()));
         }
     }
 }

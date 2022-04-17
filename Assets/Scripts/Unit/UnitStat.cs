@@ -44,6 +44,7 @@ public class UnitStat
     private int _bonusAccuracy = 0;
     private int _bonusRange = 0;
     private int _bonusWeight = 0;
+    private bool _isInvincible = false;
 
     //참조 변수
     private UnitData _unitData = null;
@@ -69,6 +70,10 @@ public class UnitStat
         _maxHp = _unitData.unit_Hp * grade;
         _hp = _maxHp;
     }
+    public void Invincible()
+    {
+        _isInvincible = true;
+    }
     /// <summary>
     /// 무게 설정
     /// </summary>
@@ -80,9 +85,19 @@ public class UnitStat
     /// 체력 감소
     /// </summary>
     /// <param name="damage">줄어들 체력</param>
-    public void SubtractHP(int damage)
+    public void SubtractHP(int damage) //내가 바꿔놓음
     {
+        if(_isInvincible)
+        {
+            _isInvincible = false;
+            return;
+        }
         _hp -= damage;
+    }
+
+    public void RecoveryHPPercent(int recovery)
+    {
+        _hp += _maxHp * (1 + recovery / 100);
     }
 
     /// <summary>
@@ -134,6 +149,15 @@ public class UnitStat
     public void SetBonusMaxHP(int add)
     {
         _bonusMaxHp += add;
+        _hp = _maxHp + _bonusMaxHp;
+    }
+    /// <summary>
+    /// 보너스 최대체력 퍼센트 설정
+    /// </summary>
+    /// <param name="add"></param>
+    public void SetBonusMaxHPPercent(int add)
+    {
+        _bonusMaxHp = _maxHp / 100 * add;
         _hp = _maxHp + _bonusMaxHp;
     }
 

@@ -6,7 +6,7 @@ using Utill;
 namespace Battle
 {
     [System.Serializable]
-    public class ThrowCommand
+    public class ThrowCommand : BattleCommand
     {
         //인스펙터 참조 변수
         [SerializeField]

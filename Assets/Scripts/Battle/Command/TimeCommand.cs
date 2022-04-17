@@ -7,7 +7,7 @@ using TMPro;
 namespace Battle
 {
     [System.Serializable]
-    public class TimeCommand
+    public class TimeCommand : BattleCommand
     {
         //인스펙터 참조 변수
         [SerializeField]
@@ -21,7 +21,8 @@ namespace Battle
         private Unit _enemyPencilCase = null;
 
         private StageData _stageData;
-        private float _timer;
+        private float _timer = 0;
+        private float _bonustime = 0;
         private bool _isSuddenDeath;
         private bool _isFinallyEnd;
 
@@ -33,8 +34,26 @@ namespace Battle
         public void SetInitialization(ref System.Action updateAction, StageData stageData)
         {
             _stageData = stageData;
-            _timer = _stageData.timeValue;
+            _timer = _stageData.timeValue + _bonustime;
             updateAction += UpdateTime;
+        }
+
+        /// <summary>
+        /// 시간 설정
+        /// </summary>
+        /// <param name="time"></param>
+        public void SetTime(float time)
+        {
+            _timer = time;
+        }
+
+        /// <summary>
+        /// 시간 추가 설정
+        /// </summary>
+        /// <param name="time"></param>
+        public void IncreaseTime(float time)
+        {
+            _bonustime = time;
         }
 
         /// <summary>
@@ -42,10 +61,15 @@ namespace Battle
         /// </summary>
         public void UpdateTime()
         {
-            if (_isFinallyEnd) return;
+            if (_isFinallyEnd)
+            {
+                return;
+            }
 
             if (_stageData.timeType == TimeType.DisabledTime)
+            {
                 return;
+            }
 
             if (_timer > 0)
             {

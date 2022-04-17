@@ -11,7 +11,7 @@ public class CardData
     public CardType cardType;
     public string card_Name;
     public int card_Cost;
-    public Sprite card_Sprite;
+    public SkinData skinData;
     public int level;
 
     //실행형
@@ -25,6 +25,51 @@ public class CardData
     //함정 소환형
 
     //설치형
+
+    /// <summary>
+    /// 유닛 깊은 복사 & 레벨에 따른 수치 변경
+    /// </summary>
+    /// <param name="level"></param>
+    /// <returns></returns>
+    public CardData DeepCopy(int level)
+    {
+        CardData cardData = new CardData
+        {
+            cardType = this.cardType,
+            card_Name = this.card_Name,
+            card_Cost = this.card_Cost,
+            skinData = this.skinData,
+            level = level,
+            strategyData = new StarategyData
+            {
+                starategyType = this.strategyData.starategyType,
+                starategy_State = this.strategyData.starategy_State,
+                starategyablityData = this.strategyData.starategyablityData,
+            },
+            unitData = new UnitData
+            {
+                unit_Hp = this.unitData.unit_Hp,
+                unit_Weight = this.unitData.unit_Weight,
+                knockback = this.unitData.knockback,
+                dir = this.unitData.dir,
+                accuracy = this.unitData.accuracy,
+                moveSpeed = this.unitData.moveSpeed,
+                damage = this.unitData.damage,
+                attackSpeed = this.unitData.attackSpeed,
+                range = this.unitData.range,
+                colideData = this.unitData.colideData,
+                stickerData = this.unitData.stickerData,
+                unitType = this.unitData.unitType,
+                unitablityData = this.unitData.unitablityData,
+
+            },
+        };
+
+        //유닛데이터 레벨에 따라 변경
+        cardData.unitData.CalculationLevel(level);
+
+        return cardData;
+    }
 }
 
 [System.Serializable]
@@ -43,6 +88,19 @@ public class UnitData
     public StickerData stickerData;
     public UnitType unitType;
     public float[] unitablityData;
+
+    /// <summary>
+    /// 레벨에 따른 유닛 스탯 증가
+    /// </summary>
+    /// <param name="level"></param>
+    public void CalculationLevel(int level)
+    {
+        unit_Hp *= level;
+        knockback *= level;
+        moveSpeed *= level;
+        damage *= level;
+        attackSpeed *= level;
+    }
 }
 
 

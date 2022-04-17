@@ -54,7 +54,7 @@ public class ButtonManager : MonoBehaviour
     public void OnDeckActive()
     {
         //btn_MainPanel.OnDeckActive();
-        EventManager.TriggerEvent(EventsType.ActiveDeck);
+        EventManager.TriggerEvent(EventsType.ActiveDeck);   
     }
 
     public void OnDeckDescriptoinActive()

@@ -6,6 +6,7 @@ using DG.Tweening;
 
 public abstract class AbstractMoveState : AbstractUnitState
 {
+
     public override void Enter()
     {
         _curState = eState.MOVE;
@@ -17,6 +18,7 @@ public abstract class AbstractMoveState : AbstractUnitState
         _myUnit.UnitSticker.RunStickerAbility(_curState);
 
         //이동 애니메이션 시작
+        ResetAllStateAnimation();
         Animation();
 
         base.Enter();
@@ -40,12 +42,16 @@ public abstract class AbstractMoveState : AbstractUnitState
         }
     }
 
-    public override void Animation(params float[] value)
+    public override void Animation()
     {
-        ResetAnimation();
         float rotate = _myUnit.ETeam.Equals(TeamType.MyTeam) ? 30 : -30;
-        _mySprTrm.eulerAngles = new Vector3(0, 0, 0);
-        _mySprTrm.DORotate(new Vector3(0, 0, rotate), 0.3f).SetLoops(-1, LoopType.Yoyo);
+        _animationTweener.ChangeEndValue(new Vector3(0, 0, rotate));
+        _animationTweener.Restart();
+    }
+
+    public override void SetAnimation()
+    {
+       _animationTweener = _mySprTrm.DORotate(new Vector3(0, 0, 0), 0.3f).SetLoops(-1, LoopType.Yoyo).SetAutoKill(false);
     }
 
     /// <summary>
@@ -76,34 +82,40 @@ public abstract class AbstractMoveState : AbstractUnitState
     /// <param name="list"></param>
     protected virtual void CheckRange(List<Unit> list)
     {
-        float targetRange = float.MaxValue;
         Unit targetUnit = null;
-        for (int i = 0; i < list.Count; i++)
-        {
-            if (Vector2.Distance(_myTrm.position, list[i].transform.position) >= targetRange)
-            {
-                continue;
-            }
-            if (_myUnit.ETeam.Equals(TeamType.MyTeam) && _myTrm.position.x > list[i].transform.position.x)
-            {
-                continue;
-            }
-            if (!_myUnit.ETeam.Equals(TeamType.MyTeam) && _myTrm.position.x < list[i].transform.position.x)
-            {
-                continue;
-            }
-            if (list[i].transform.position.y > _myTrm.transform.position.y)
-            {
-                continue;
-            }
-            if (list[i]._isInvincibility)
-            {
-                continue;
-            }
+        int firstNum = 0;
+        int lastNum = list.Count - 1;
+        int currentIndex = 0;
+        float posX = _myTrm.position.x;
+        float posY = _myTrm.position.y;
 
-            targetUnit = list[i];
-            targetRange = Vector2.Distance(_myTrm.position, targetUnit.transform.position);
+        if (list.Count == 0)
+        {
+            return;
         }
+
+        if (_myUnit.ETeam == TeamType.MyTeam)
+        {
+            if (posX < list[lastNum].transform.position.x)
+            {
+                targetUnit = list[lastNum];
+                currentIndex = lastNum;
+            }
+        }
+        else if (_myUnit.ETeam == TeamType.EnemyTeam)
+        {
+            if (posX > list[lastNum].transform.position.x)
+            {
+                targetUnit = list[lastNum];
+                currentIndex = lastNum;
+            }
+        }
+
+        if (targetUnit == null)
+        {
+            BinarySearch(list, posX, lastNum, firstNum, ref targetUnit, out currentIndex);
+        }
+        NextTargetUnit(list, posY, ref targetUnit, ref currentIndex);
 
         if (targetUnit != null)
         {
@@ -115,6 +127,7 @@ public abstract class AbstractMoveState : AbstractUnitState
         }
     }
 
+
     /// <summary>
     /// 사정거리안에 적이 있다
     /// </summary>
@@ -122,5 +135,98 @@ public abstract class AbstractMoveState : AbstractUnitState
     protected virtual void CheckTargetUnit(Unit targetUnit)
     {
         _stateManager.Set_Attack(targetUnit);
+    }
+
+    /// <summary>
+    /// 적 이진 탐색
+    /// </summary>
+    /// <param name="list"></param>
+    /// <param name="posX"></param>
+    /// <param name="lastNum"></param>
+    /// <param name="firstNum"></param>
+    /// <param name="targetUnit"></param>
+    /// <param name="currentIndex"></param>
+    private void BinarySearch(List<Unit> list, float posX, int lastNum, int firstNum, ref Unit targetUnit, out int currentIndex)
+    {
+        int loopnum = 0;
+        float targetPosX = 0;
+        while (true)
+        {
+            if (list.Count == 0)
+            {
+                currentIndex = 0;
+            }
+
+            int find = (lastNum + firstNum) / 2;
+            targetPosX = list[find].transform.position.x;
+
+            if (posX == targetPosX)
+            {
+                targetUnit = list[find];
+                currentIndex = find;
+                break;
+            }
+
+            if (_myUnit.ETeam == TeamType.MyTeam)
+            {
+                if (posX > targetPosX)
+                {
+                    lastNum = find;
+                }
+                else if (posX < targetPosX)
+                {
+                    firstNum = find;
+                }
+            }
+            else if (_myUnit.ETeam == TeamType.EnemyTeam)
+            {
+                if (posX < targetPosX)
+                {
+                    lastNum = find;
+                }
+                else if (posX > targetPosX)
+                {
+                    firstNum = find;
+                }
+            }
+
+            if (lastNum - firstNum <= 1)
+            {
+                targetUnit = list[firstNum];
+                currentIndex = firstNum;
+                break;
+            }
+
+            loopnum++;
+            if (loopnum > 10000)
+            {
+                throw new System.Exception("Infinite Loop");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 공격할 수 없는 적일 때 다음 타겟 찾기
+    /// </summary>
+    /// <param name="list"></param>
+    /// <param name="posY"></param>
+    /// <param name="targetUnit"></param>
+    /// <param name="currentIndex"></param>
+    private void NextTargetUnit(List<Unit> list, float posY, ref Unit targetUnit, ref int currentIndex)
+    {
+        while (targetUnit._isInvincibility || targetUnit.transform.position.y > posY)
+        {
+            if (list.Count == 0)
+            {
+                return;
+            }
+
+            if (currentIndex - 1 < 0)
+            {
+                targetUnit = null;
+                break;
+            }
+            targetUnit = list[--currentIndex];
+        }
     }
 }

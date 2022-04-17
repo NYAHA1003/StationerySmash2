@@ -11,16 +11,26 @@ using Battle;
 
 public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
+    //프로퍼티
+    public int CardCost => _cardCost; //카드 코스트
+    public int OriginCardCost => _originCardCost; //원래 카드 코스트
+    public int Id => _id; //아이디
+    public CardData DataBase => _dataBase; //카드 데이터
+    public int Grade => _grade; // 카드 등급
+    public bool IsFusion => _isFusion; //융합 중인지
+    public PRS OriginPRS => _originPRS; //카드 위치
+
     //변수
-    public int CardCost { get; private set; }
-    public bool _isFusion;
-    public bool _isDontMove;
-    public CardData _dataBase;
-    public int _grade = 1;
-    public int _id;
+    private int _cardCost = 0;   
+    private int _originCardCost = 0; 
+    private bool _isFusion = false;
+    private int _grade = 1;
+    private int _id = 0;
     private bool _isDrag; // 드래그 중인 상태인가
+    private PRS _originPRS = default;
 
     //참조 변수
+    private CardData _dataBase = null;
     private BattleManager _battleManager;
 
     //인스펙터 참조 변수
@@ -42,10 +52,6 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private RectTransform _rectTransform;
 
 
-
-    
-    public PRS _originPRS;
-
     /// <summary>
     /// 카드에 데이터를 전달함
     /// </summary>
@@ -53,7 +59,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <param name="id">카드 고유 아이디</param>
     public void Set_UnitData(CardData dataBase, int id)
     {
-        _rectTransform??= GetComponent<RectTransform>();
+        _rectTransform ??= GetComponent<RectTransform>();
         _battleManager ??= FindObjectOfType<BattleManager>();
 
         //기본적인 초기화
@@ -62,15 +68,16 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         this._dataBase = dataBase;
         _nameText.text = dataBase.card_Name;
         _costText.text = dataBase.card_Cost.ToString();
-        CardCost = dataBase.card_Cost;
-        _image.sprite = dataBase.card_Sprite;
+        _originCardCost = dataBase.card_Cost;
+        _cardCost = dataBase.card_Cost;
+        _image.sprite = dataBase.skinData.cardSprite;
         _grade = 1;
         SetUnitGrade();
         _isFusion = false;
         _fusionEffect.color = new Color(1, 1, 1, 1);
         _fusionEffect.DOFade(0, 0.8f);
 
-        //유닛별 초기화
+        //카드 종류별 초기화
         switch (dataBase.cardType)
         {
             default:
@@ -85,6 +92,40 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
     }
 
+    /// <summary>
+    /// 카드 위치 설정
+    /// </summary>
+    /// <param name="prs"></param>
+    public void SetOriginPRS(PRS prs)
+    {
+        _originPRS = prs;
+    }
+
+    /// <summary>
+    /// 융합 중인지 설정
+    /// </summary>
+    /// <param name="isfusion"></param>
+    public void SetIsFusion(bool isfusion)
+    {
+        _isFusion = isfusion;
+    }
+
+    /// <summary>
+    /// 아이디 설정
+    /// </summary>
+    public void SetID(int id)
+    {
+        _id = id;
+    }
+
+    /// <summary>
+    /// 코스트 설정
+    /// </summary>
+    /// <param name="cost"></param>
+    public void SetCost(int cost)
+    {
+        _cardCost = cost;
+    }
     public void ShowCard(bool isboolean)
     {
         gameObject.SetActive(isboolean);
@@ -98,8 +139,6 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <param name="isDotween">True면 닷트윈 사용</param>
     public void SetCardPRS(PRS prs, float duration, bool isDotween = true)
     {
-        if (_isDontMove)
-            return;
         if (isDotween)
         {
             _rectTransform.DOAnchorPos(prs.pos, duration);
@@ -211,9 +250,10 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <param name="eventData"></param>
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (_isFusion) return;
-        if (_isDrag) return;
-
+        if (_isDrag)
+        {
+            return;
+        }
         _isDrag = true;
         _battleManager.CommandCard.SelectCard(this);
     }
