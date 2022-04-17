@@ -199,7 +199,7 @@ namespace Battle
         /// <param name="cardMove"></param>
         public void SubtractCardFind(CardMove cardMove)
         {
-            SubtractCardAt(_cardList.FindIndex(x => x._id == cardMove._id));
+            SubtractCardAt(_cardList.FindIndex(x => x.Id == cardMove.Id));
         }
 
         /// <summary>
@@ -249,7 +249,7 @@ namespace Battle
             _summonRangeLine.gameObject.SetActive(true);
 
             //카드가 융합중이면 카드 선택을 취소함
-            if (card._isFusion)
+            if (card.IsFusion)
             {
                 return;
             }
@@ -286,7 +286,7 @@ namespace Battle
             SetSummonRangeLine(false);
 
             //융합중이라면 카드 선택 취소를 취소한다
-            if (card._isFusion)
+            if (card.IsFusion)
             {
                 return;
             }
@@ -323,7 +323,7 @@ namespace Battle
             _selectCard = null;
 
             _commandCost.SubtractCost(card.CardCost);
-            SubtractCardAt(_cardList.FindIndex(x => x._id == card._id));
+            SubtractCardAt(_cardList.FindIndex(x => x.Id == card.Id));
             IsSelectCard = false;
 
             //카드 사용
@@ -334,16 +334,16 @@ namespace Battle
             }
 
 
-            switch (card._dataBase.cardType)
+            switch (card.DataBase.cardType)
             {
                 case CardType.SummonUnit:
-                    _commandUnit.SummonUnit(card._dataBase, new Vector3(mouse_Pos.x, 0, 0), card._grade);
+                    _commandUnit.SummonUnit(card.DataBase, new Vector3(mouse_Pos.x, 0, 0), card.Grade);
                     break;
                 default:
                 case CardType.Execute:
                 case CardType.SummonTrap:
                 case CardType.Installation:
-                    card._dataBase.strategyData.starategy_State.Run_Card(_commandUnit.eTeam);
+                    card.DataBase.strategyData.starategy_State.Run_Card(_commandUnit.eTeam);
                     break;
             }
 
@@ -370,7 +370,7 @@ namespace Battle
             {
                 pos.x = Mathf.Clamp(pos.x, -_stageData.max_Range, _summonRange);
             }
-            if (_selectCard == null || _selectCard._dataBase.unitData.unitType == UnitType.None || pos.y < 0)
+            if (_selectCard == null || _selectCard.DataBase.unitData.unitType == UnitType.None || pos.y < 0)
             {
                 _unitAfterImage.SetActive(false);
                 return;
@@ -382,7 +382,7 @@ namespace Battle
                 _afterImageSpriteRenderer.color = Color.red;
             }
             _unitAfterImage.transform.position = new Vector3(pos.x, 0);
-            _afterImageSpriteRenderer.sprite = _selectCard._dataBase.skinData.cardSprite;
+            _afterImageSpriteRenderer.sprite = _selectCard.DataBase.skinData.cardSprite;
             return;
         }
 
@@ -405,7 +405,7 @@ namespace Battle
                 return true;
             }
 
-            switch (_selectCard._dataBase.cardType)
+            switch (_selectCard.DataBase.cardType)
             {
                 case CardType.Execute:
                     break;
@@ -531,7 +531,7 @@ namespace Battle
             }
             cardmove_obj ??= PoolManager.CreateObject(_cardMovePrefeb, _cardSpawnPosition.position, Quaternion.identity).GetComponent<CardMove>();
             cardmove_obj.transform.SetParent(_cardCanvas);
-            cardmove_obj._isFusion = false;
+            cardmove_obj.SetIsFusion(false);
             return cardmove_obj;
         }
 
@@ -597,38 +597,38 @@ namespace Battle
                 return false;
             }
             //카드 타입이 같은지 체크
-            if (targetCard1._dataBase.cardType != targetCard2._dataBase.cardType)
+            if (targetCard1.DataBase.cardType != targetCard2.DataBase.cardType)
             {
                 return false;
             }
             //유닛 타입이 같은지 체크
-            if (targetCard1._dataBase.unitData.unitType != targetCard2._dataBase.unitData.unitType)
+            if (targetCard1.DataBase.unitData.unitType != targetCard2.DataBase.unitData.unitType)
             {
                 return false;
             }
             //전략 타입이 같은지 체크
-            if (targetCard1._dataBase.strategyData.starategyType != targetCard2._dataBase.strategyData.starategyType)
+            if (targetCard1.DataBase.strategyData.starategyType != targetCard2.DataBase.strategyData.starategyType)
             {
                 return false;
             }
             //등급이 같은지 체크
-            if (targetCard1._grade != targetCard2._grade)
+            if (targetCard1.Grade != targetCard2.Grade)
             {
                 return false;
             }
-            if (targetCard1._grade == 3 || targetCard2._grade == 3)
+            if (targetCard1.Grade == 3 || targetCard2.Grade == 3)
             {
                 return false;
             }
             //융합중인지 체크
-            if (targetCard1._isFusion != targetCard2._isFusion)
+            if (targetCard1.IsFusion != targetCard2.IsFusion)
             {
                 return false;
             }
 
             //융합 중인걸로 체크
-            targetCard1._isFusion = true;
-            targetCard2._isFusion = true;
+            targetCard1.SetIsFusion(true);
+            targetCard2.SetIsFusion(true);
 
             return true;
         }
@@ -667,14 +667,14 @@ namespace Battle
             _isFusion = true;
             CardMove targetCard1 = _cardList[index];
             CardMove targetCard2 = _cardList[index + 1];
-            targetCard1._isFusion = true;
-            targetCard2._isFusion = true;
+            targetCard1.SetIsFusion(true);
+            targetCard2.SetIsFusion(true);
 
             targetCard2.DOKill();
             targetCard2.SetCardPRS(new PRS(targetCard1.transform.localPosition, targetCard1.transform.rotation, Vector3.one * 0.3f), 0.25f);
             targetCard2._isDontMove = true;
 
-            Color color = targetCard1._grade > 1 ? Color.yellow : Color.white;
+            Color color = targetCard1.Grade > 1 ? Color.yellow : Color.white;
             targetCard1.FusionFadeInEffect(color);
             targetCard2.FusionFadeInEffect(color);
 
@@ -684,8 +684,8 @@ namespace Battle
             targetCard1.FusionFadeOutEffect();
             targetCard1.UpgradeUnitGrade();
 
-            targetCard1._isFusion = false;
-            targetCard2._isFusion = false;
+            targetCard1.SetIsFusion(false);
+            targetCard2.SetIsFusion(false);
             targetCard2._isDontMove = false;
 
             SubtractCardFind(targetCard2);

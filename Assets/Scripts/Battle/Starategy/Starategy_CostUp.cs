@@ -7,6 +7,6 @@ public class Starategy_CostUp : AbstractStarategy
 {
     public override void Run_Card(TeamType eTeam)
     {
-        _battleManager.CommandCost.AddCost(1 * _card._grade);
+        _battleManager.CommandCost.AddCost(1 * _card.Grade);
     }
 }
