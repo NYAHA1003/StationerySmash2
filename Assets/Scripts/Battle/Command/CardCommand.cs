@@ -258,6 +258,9 @@ namespace Battle
             
             //카드 선택 활성화
             IsSelectCard = true;
+
+            //카드를 융합시킴
+            SetDelayFusion();
         }
 
         /// <summary>
