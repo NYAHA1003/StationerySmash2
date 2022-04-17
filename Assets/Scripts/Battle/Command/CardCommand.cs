@@ -50,7 +50,7 @@ namespace Battle
         [SerializeField]
         private StarategyDataSO _starategyDataSO = null;
         [SerializeField]
-        private bool isAlwaysSpawn;
+        private bool isAlwaysSpawn = false;
 
         //참조 변수
         private StageData _stageData = null;
@@ -177,12 +177,12 @@ namespace Battle
             for (int i = 0; i < _cardList.Count; i++)
             {
                 CardMove targetCard = _cardList[i];
-                targetCard._originPRS = originCardPRS[i];
+                targetCard.SetOriginPRS(originCardPRS[i]);
                 if (_cardList[i].Equals(_selectCard))
                 {
                     continue;
                 }
-                targetCard.SetCardPRS(targetCard._originPRS, 0.4f);
+                targetCard.SetCardPRS(targetCard.OriginPRS, 0.4f);
             }
         }
 
@@ -248,11 +248,6 @@ namespace Battle
             SetSummonRangeLine(true);
             _summonRangeLine.gameObject.SetActive(true);
 
-            //카드가 융합중이면 카드 선택을 취소함
-            if (card.IsFusion)
-            {
-                return;
-            }
             //해당 카드를 선택된 카드에 넣음
             _selectCard = card;
 
@@ -286,7 +281,7 @@ namespace Battle
             SetSummonRangeLine(false);
 
             //융합중이라면 카드 선택 취소를 취소한다
-            if (card.IsFusion)
+            if (card.IsFusion && card != _selectCard)
             {
                 return;
             }
@@ -591,11 +586,6 @@ namespace Battle
         /// <param name="targetCard2"></param>
         private bool FusionCheck(CardMove targetCard1, CardMove targetCard2)
         {
-            //카드 두개 중 하나가 현재 클릭 중인 카드인지 체크
-            if (targetCard1 == _selectCard || targetCard2 == _selectCard)
-            {
-                return false;
-            }
             //카드 타입이 같은지 체크
             if (targetCard1.DataBase.cardType != targetCard2.DataBase.cardType)
             {
@@ -651,7 +641,7 @@ namespace Battle
                     {
                         return;
                     }
-                    _managerBase.StartCoroutine(FusionMove(i));
+                    _managerBase.StartCoroutine(FusionMove(targetCard1, targetCard2));
                     return;
                 }
             }
@@ -662,33 +652,39 @@ namespace Battle
         /// </summary>
         /// <param name="index">몇 번째 카드가 융합하는지</param>
         /// <returns></returns>
-        private IEnumerator FusionMove(int index)
+        private IEnumerator FusionMove(CardMove targetCard1, CardMove targetCard2)
         {
             _isFusion = true;
-            CardMove targetCard1 = _cardList[index];
-            CardMove targetCard2 = _cardList[index + 1];
             targetCard1.SetIsFusion(true);
             targetCard2.SetIsFusion(true);
 
-            targetCard2.DOKill();
-            targetCard2.SetCardPRS(new PRS(targetCard1.transform.localPosition, targetCard1.transform.rotation, Vector3.one * 0.3f), 0.25f);
-            targetCard2._isDontMove = true;
+            CardMove toCombineCard = targetCard1;
+            CardMove fromCombineCard = targetCard2;
+
+            //두 번째 카드를 선택중일 때
+            if (targetCard2 == _selectCard)
+            {
+                toCombineCard = targetCard2;
+                fromCombineCard = targetCard1;
+            }
+
+            fromCombineCard.DOKill();
+            fromCombineCard.SetCardPRS(new PRS(toCombineCard.transform.localPosition, toCombineCard.transform.rotation, Vector3.one * 0.3f), 0.25f);
 
             Color color = targetCard1.Grade > 1 ? Color.yellow : Color.white;
-            targetCard1.FusionFadeInEffect(color);
-            targetCard2.FusionFadeInEffect(color);
+            toCombineCard.FusionFadeInEffect(color);
+            fromCombineCard.FusionFadeInEffect(color);
 
             yield return new WaitForSeconds(0.23f);
-            targetCard2.ShowCard(false);
+            fromCombineCard.ShowCard(false);
 
-            targetCard1.FusionFadeOutEffect();
-            targetCard1.UpgradeUnitGrade();
+            toCombineCard.FusionFadeOutEffect();
+            toCombineCard.UpgradeUnitGrade();
 
-            targetCard1.SetIsFusion(false);
-            targetCard2.SetIsFusion(false);
-            targetCard2._isDontMove = false;
+            toCombineCard.SetIsFusion(false);
+            fromCombineCard.SetIsFusion(false);
 
-            SubtractCardFind(targetCard2);
+            SubtractCardFind(fromCombineCard);
             SortCard();
             _isFusion = false;
         }

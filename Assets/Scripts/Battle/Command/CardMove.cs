@@ -18,12 +18,12 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public CardData DataBase => _dataBase; //카드 데이터
     public int Grade => _grade; // 카드 등급
     public bool IsFusion => _isFusion; //융합 중인지
+    public PRS OriginPRS => _originPRS; //카드 위치
 
     //변수
     private int _cardCost = 0;   
     private int _originCardCost = 0; 
     private bool _isFusion = false;
-    private bool _isDontMove = false;
     private int _grade = 1;
     private int _id = 0;
     private bool _isDrag; // 드래그 중인 상태인가
@@ -93,6 +93,15 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     }
 
     /// <summary>
+    /// 카드 위치 설정
+    /// </summary>
+    /// <param name="prs"></param>
+    public void SetOriginPRS(PRS prs)
+    {
+        _originPRS = prs;
+    }
+
+    /// <summary>
     /// 융합 중인지 설정
     /// </summary>
     /// <param name="isfusion"></param>
@@ -130,8 +139,6 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <param name="isDotween">True면 닷트윈 사용</param>
     public void SetCardPRS(PRS prs, float duration, bool isDotween = true)
     {
-        if (_isDontMove)
-            return;
         if (isDotween)
         {
             _rectTransform.DOAnchorPos(prs.pos, duration);
@@ -243,9 +250,10 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <param name="eventData"></param>
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (_isFusion) return;
-        if (_isDrag) return;
-
+        if (_isDrag)
+        {
+            return;
+        }
         _isDrag = true;
         _battleManager.CommandCard.SelectCard(this);
     }
