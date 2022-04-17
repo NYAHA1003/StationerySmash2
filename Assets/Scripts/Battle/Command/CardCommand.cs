@@ -667,6 +667,7 @@ namespace Battle
                 toCombineCard = targetCard2;
                 fromCombineCard = targetCard1;
             }
+            fromCombineCard.SetIsFusionFrom(true);
 
             fromCombineCard.DOKill();
             fromCombineCard.SetCardPRS(new PRS(toCombineCard.transform.localPosition, toCombineCard.transform.rotation, Vector3.one * 0.3f), 0.25f);
@@ -683,6 +684,7 @@ namespace Battle
 
             toCombineCard.SetIsFusion(false);
             fromCombineCard.SetIsFusion(false);
+            fromCombineCard.SetIsFusionFrom(false);
 
             SubtractCardFind(fromCombineCard);
             SortCard();
