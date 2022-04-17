@@ -149,13 +149,6 @@ namespace Battle
             //카드 리스트에 카드를 전달함
             _cardList.Add(cardmove);
 
-            //카드 장수가 2개 이상이면 방금 뽑은 카드가 융합할 수 있는지 카드 비교
-            if (_cardList.Count > 1)
-            {
-                CardMove targetCard1 = _cardList[_cardList.Count - 1];
-                CardMove targetCard2 = _cardList[_cardList.Count - 2];
-                FusionCheck(targetCard1, targetCard2);
-            }
 
             //카드를 정렬하고 융합 딜레이 설정
             SortCard();
