@@ -31,7 +31,7 @@ public abstract class AbstractAttackState : AbstractUnitState
         if(!isAttacked)
         {
             //상대와의 거리 체크
-            //CheckRangeToTarget();
+            CheckRangeToTarget();
 
             //쿨타임 감소
             if (AttackDelay())

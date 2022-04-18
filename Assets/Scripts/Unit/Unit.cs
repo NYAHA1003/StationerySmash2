@@ -234,9 +234,6 @@ public class Unit : MonoBehaviour
     /// <returns></returns>
     public Unit Pull_Unit()
     {
-        isThrowring = true;
-        _unitSprite.OrderDraw(-10);
-        _unitSticker.OrderDraw(-10);
         return _unitStateChanger.UnitState.PullUnit();
     }
 
@@ -246,8 +243,6 @@ public class Unit : MonoBehaviour
     /// <returns></returns>
     public Unit Pulling_Unit()
     {
-        _unitSprite.OrderDraw(-10);
-        _unitSticker.OrderDraw(-10);
         return _unitStateChanger.UnitState.PullingUnit();
     }
 

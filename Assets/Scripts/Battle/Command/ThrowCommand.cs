@@ -142,11 +142,16 @@ namespace Battle
                 if (CheckPoints(points, pos))
                 {
                     _throwUnit = _throwUnit.Pull_Unit();
-                    _parabolaBackground.SetActive(true);
 
                     if (_throwUnit == null)
                     {
                         _cameraCommand.SetCameraIsMove(false);
+                    }
+                    else
+                    {
+                        _throwUnit.UnitSprite.OrderDraw(-10);
+                        _throwUnit.UnitSticker.OrderDraw(-10);
+                        _parabolaBackground.SetActive(true);
                     }
 
                     _pullTime = 2f;
@@ -221,13 +226,16 @@ namespace Battle
                     return;
                 }
 
-                //유닛이 다른 행동을 취하게 되면 취소
-                _throwUnit = _throwUnit.Pulling_Unit();
                 _cameraCommand.SetCameraIsMove(false);
 
-                if (_throwUnit == null)
+                //유닛이 다른 행동을 취하게 되면 취소
+                if (_throwUnit.Pulling_Unit() == null)
                 {
+                    _throwUnit.UnitSprite.OrderDraw(_throwUnit.OrderIndex);
+                    _throwUnit.UnitSticker.OrderDraw(_throwUnit.OrderIndex);
+                    _parabolaBackground.SetActive(false);
                     UnDrawParabola();
+                    _throwUnit = _throwUnit.Pulling_Unit();
                     return;
                 }
 
