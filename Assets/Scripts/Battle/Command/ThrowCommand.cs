@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Utill;
 
 namespace Battle
@@ -13,6 +14,10 @@ namespace Battle
         private LineRenderer _parabola;
         [SerializeField]
         private Transform _arrow;
+        [SerializeField]
+        private Image _throwDelayBar;
+        [SerializeField]
+        private GameObject _parabolaBackground = null;
 
         //참조 변수
         private Unit _throwUnit = null;
@@ -24,6 +29,7 @@ namespace Battle
         private Vector2 _direction;
         private float _force;
         private float _pullTime;
+        private float _throwDelay = 0f;
 
         /// <summary>
         /// 초기화
@@ -32,7 +38,7 @@ namespace Battle
         /// <param name="parabola"></param>
         /// <param name="arrow"></param>
         /// <param name="stageData"></param>
-        public void SetInitialization(UnitCommand unitCommand, CameraCommand cameraCommand, StageData stageData)
+        public void SetInitialization(ref System.Action updateAction, UnitCommand unitCommand, CameraCommand cameraCommand, StageData stageData)
         {
             _unitCommand = unitCommand;
             _cameraCommand = cameraCommand;
@@ -42,6 +48,20 @@ namespace Battle
             {
                 _lineZeroPos.Add(Vector2.zero);
             }
+
+            updateAction += UpdateThrowDelay;
+        }
+
+        /// <summary>
+        /// 업데이트 딜레이
+        /// </summary>
+        public void UpdateThrowDelay()
+        {
+            if(_throwDelay <= 5f)
+            {
+                _throwDelay += Time.deltaTime * 5;
+                _throwDelayBar.fillAmount = _throwDelay / 5f;
+            }
         }
 
         /// <summary>
@@ -50,6 +70,11 @@ namespace Battle
         /// <param name="pos"></param>
         public void PullUnit(Vector2 pos)
         {
+            if(_throwDelay < 5f)
+            {
+                return;
+            }
+
             int firstNum = 0;
             int lastNum = _unitCommand._playerUnitList.Count - 1;
             int loopnum = 0;
@@ -107,19 +132,26 @@ namespace Battle
 
             if (_throwUnit != null)
             {
-                if (_throwUnit.UnitData.unitType != UnitType.PencilCase)
+                if (_throwUnit.UnitData.unitType == UnitType.PencilCase)
                 {
-                    Debug.Log("유닛 선택 : " + _throwUnit.OrderIndex);
+                    _throwUnit = null;
+                    return;
                 }
                 Vector2[] points = _throwUnit.CollideData.GetPoint(_throwUnit.transform.position);
                 
                 if (CheckPoints(points, pos))
                 {
                     _throwUnit = _throwUnit.Pull_Unit();
-                    
+
                     if (_throwUnit == null)
                     {
                         _cameraCommand.SetCameraIsMove(false);
+                    }
+                    else
+                    {
+                        _throwUnit.UnitSprite.OrderDraw(-10);
+                        _throwUnit.UnitSticker.OrderDraw(-10);
+                        _parabolaBackground.SetActive(true);
                     }
 
                     _pullTime = 2f;
@@ -174,7 +206,7 @@ namespace Battle
         }
 
         /// <summary>
-        /// 포물선 그리기
+        /// 포물선 그리기 & 던지기 취소 조건
         /// </summary>
         /// <param name="pos"></param>
         public void DrawParabola(Vector2 pos)
@@ -186,18 +218,24 @@ namespace Battle
                 _pullTime -= Time.deltaTime;
                 if (_pullTime < 0)
                 {
+                    _throwUnit.UnitSprite.OrderDraw(_throwUnit.OrderIndex);
+                    _throwUnit.UnitSticker.OrderDraw(_throwUnit.OrderIndex);
                     _throwUnit = null;
+                    _parabolaBackground.SetActive(false);
                     UnDrawParabola();
                     return;
                 }
 
-                //유닛이 다른 행동을 취하게 되면 취소
-                _throwUnit = _throwUnit.Pulling_Unit();
                 _cameraCommand.SetCameraIsMove(false);
 
-                if (_throwUnit == null)
+                //유닛이 다른 행동을 취하게 되면 취소
+                if (_throwUnit.Pulling_Unit() == null)
                 {
+                    _throwUnit.UnitSprite.OrderDraw(_throwUnit.OrderIndex);
+                    _throwUnit.UnitSticker.OrderDraw(_throwUnit.OrderIndex);
+                    _parabolaBackground.SetActive(false);
                     UnDrawParabola();
+                    _throwUnit = _throwUnit.Pulling_Unit();
                     return;
                 }
 
@@ -305,7 +343,9 @@ namespace Battle
             {
                 _throwUnit.Throw_Unit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
                 _throwUnit = null;
+                _parabolaBackground.SetActive(false);
                 UnDrawParabola();
+                _throwDelay = 0f;
             }
         }
     }
