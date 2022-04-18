@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Utill;
 
 namespace Battle
@@ -13,6 +14,8 @@ namespace Battle
         private LineRenderer _parabola;
         [SerializeField]
         private Transform _arrow;
+        [SerializeField]
+        private Image _throwDelayBar; 
 
         //참조 변수
         private Unit _throwUnit = null;
@@ -24,6 +27,7 @@ namespace Battle
         private Vector2 _direction;
         private float _force;
         private float _pullTime;
+        private float _throwDelay = 0f;
 
         /// <summary>
         /// 초기화
@@ -32,7 +36,7 @@ namespace Battle
         /// <param name="parabola"></param>
         /// <param name="arrow"></param>
         /// <param name="stageData"></param>
-        public void SetInitialization(UnitCommand unitCommand, CameraCommand cameraCommand, StageData stageData)
+        public void SetInitialization(ref System.Action updateAction, UnitCommand unitCommand, CameraCommand cameraCommand, StageData stageData)
         {
             _unitCommand = unitCommand;
             _cameraCommand = cameraCommand;
@@ -42,6 +46,20 @@ namespace Battle
             {
                 _lineZeroPos.Add(Vector2.zero);
             }
+
+            updateAction += UpdateThrowDelay;
+        }
+
+        /// <summary>
+        /// 업데이트 딜레이
+        /// </summary>
+        public void UpdateThrowDelay()
+        {
+            if(_throwDelay <= 5f)
+            {
+                _throwDelay += Time.deltaTime;
+                _throwDelayBar.fillAmount = _throwDelay / 5f;
+            }
         }
 
         /// <summary>
@@ -50,6 +68,11 @@ namespace Battle
         /// <param name="pos"></param>
         public void PullUnit(Vector2 pos)
         {
+            if(_throwDelay < 5f)
+            {
+                return;
+            }
+
             int firstNum = 0;
             int lastNum = _unitCommand._playerUnitList.Count - 1;
             int loopnum = 0;
@@ -306,6 +329,7 @@ namespace Battle
                 _throwUnit.Throw_Unit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
                 _throwUnit = null;
                 UnDrawParabola();
+                _throwDelay = 0f;
             }
         }
     }
