@@ -79,7 +79,7 @@ public class UnitSticker
                 _stickerablity = PoolManager.GetSticker<ScissorsSticker>();
                 break;
             case StickerType.Eraser:
-                _stickerablity = PoolManager.GetSticker<EraserSticker>();
+                _stickerablity = PoolManager.GetSticker<EraserPieceSticker>();
                 break;
         }
         _stickerablity.SetSticker(_myUnit);

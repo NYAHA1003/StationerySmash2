@@ -5,28 +5,30 @@ using Utill;
 
 public class ScratchEffState : EffState
 {
-    float ScratchDamage = 10; // 예시로 해놓음
-    float currntScratchDamage = 0;
-    float _scratchTime = 0;
+    float ScratchDamage = 10; // 흡집 스택당 데미지
+    float currntScratchDamage = 0; // 현재 스택데미지
+    float _scratchTime = 1;
+    float timer = 0;
+    bool isScratch = false;
     // Start is called before the first frame update
     public override void Enter()
     {
         SprTrm.GetComponent<SpriteRenderer>().color = Color.green;
-        _myUnit.UnitStat.SubtractHP(-(int)currntScratchDamage);
-
+        isScratch = true;
+        ScratchHit();
         base.Enter();
     }
     public override void Update()
     {
         InkTimer();
-        _myUnit.UnitStat.SubtractHP(-(int)currntScratchDamage); // 초마다 발동으로 바꿔야함
     }
 
     public override void Exit()
     {
         currntScratchDamage += ScratchDamage;
         SprTrm.GetComponent<SpriteRenderer>().color = Color.red;
-
+        isScratch = false;
+        currntScratchDamage = 0;
         base.Exit();
     }
 
@@ -35,12 +37,27 @@ public class ScratchEffState : EffState
         if (_scratchTime < value[0])
         {
             _scratchTime = value[0];
-            //stunTime = stunTime + (stunTime * (((float)_myUnit.UnitStat.MaxHp / (_myUnit.UnitStat.Hp + 70)) - 1));
         }
     }
-
+    
+    public void ScratchHit()
+    {
+        while(true)
+        {
+            if(!isScratch)
+            {
+                break;
+            }
+            timer += Time.deltaTime;
+            if (timer >= _scratchTime)
+            {
+                _myUnit.UnitStat.SubtractHP(-(int)currntScratchDamage);
+                timer = 0;
+            }
+        }
+    }
     /// <summary>
-    /// 잉크 효과 지속시간
+    /// 흠집 효과 지속시간
     /// </summary>
     private void InkTimer()
     {
