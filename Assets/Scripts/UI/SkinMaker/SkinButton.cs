@@ -15,6 +15,8 @@ public class SkinButton : MonoBehaviour
     private Image _skinImage = null;
     [SerializeField]
     private TextMeshProUGUI _skinName = null;
+    [SerializeField]
+    private Button _skinButton = null;
 
     //스킨 데이터
     private SkinMakeData _skinMakeData = null;
@@ -32,8 +34,6 @@ public class SkinButton : MonoBehaviour
         _skinImage.sprite = _skinMakeData.sprite;
         _skinName.text = _skinMakeData.skinName;
         _skinMakerCommand = skinMakerCommand;
-        //버튼에다가 애드리스너 추가
-        //skinMakerCommand.SetSkinMake()
-        //이 함수 추가하면 됨.
+        _skinButton.onClick.AddListener(() => skinMakerCommand.SetSkinMake(skinMakeData));
     }
 }
