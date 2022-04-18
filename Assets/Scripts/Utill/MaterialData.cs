@@ -10,9 +10,12 @@ namespace Utill
         
     }
 
+    [System.Serializable]
     public class MaterialData
     {
+        public Sprite _sprite;
         public MaterialType _materialType;
+        public string name;
         public int _count;
     }
 

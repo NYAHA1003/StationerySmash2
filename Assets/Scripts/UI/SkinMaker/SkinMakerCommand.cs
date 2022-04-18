@@ -12,6 +12,8 @@ public class SkinMakerCommand : MonoBehaviour
     private GameObject _skinButton = null;
     [SerializeField]
     private Image _makeSkinImage = null;
+    [SerializeField]
+    private Transform _materialParent = null;
 
     //º¯¼ö
     public List<SkinMakeData> _skinMakeDatas = new List<SkinMakeData>();
@@ -28,5 +30,18 @@ public class SkinMakerCommand : MonoBehaviour
     public void SetSkinMake(SkinMakeData skinMakeData)
     {
         _makeSkinImage.sprite = skinMakeData.sprite;
+        for(int i = 0; i < _materialParent.childCount; i++)
+        {
+            if(i < skinMakeData._needMaterial.Count)
+            {
+                _materialParent.GetChild(i).gameObject.SetActive(true);
+                _materialParent.GetChild(i).GetComponent<MaterialBox>().SetMaterial(skinMakeData._needMaterial[i]);
+            }
+            else
+            {
+                _materialParent.GetChild(i).gameObject.SetActive(false);
+
+            }
+        }
     }
 }
