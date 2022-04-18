@@ -229,6 +229,8 @@ public class Unit : MonoBehaviour
     /// <returns></returns>
     public Unit Pull_Unit()
     {
+        _unitSprite.OrderDraw(-3);
+        _unitSticker.OrderDraw(-3);
         return _unitStateChanger.UnitState.PullUnit();
     }
 
@@ -246,6 +248,8 @@ public class Unit : MonoBehaviour
     /// </summary>
     public void Throw_Unit(Vector2 pos)
     {
+        UnitSprite.OrderDraw(OrderIndex);
+        UnitSticker.OrderDraw(OrderIndex);
         _unitStateChanger.UnitState.ThrowUnit(pos);
     }
 

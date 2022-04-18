@@ -15,7 +15,9 @@ namespace Battle
         [SerializeField]
         private Transform _arrow;
         [SerializeField]
-        private Image _throwDelayBar; 
+        private Image _throwDelayBar;
+        [SerializeField]
+        private GameObject _parabolaBackground = null;
 
         //참조 변수
         private Unit _throwUnit = null;
@@ -130,16 +132,18 @@ namespace Battle
 
             if (_throwUnit != null)
             {
-                if (_throwUnit.UnitData.unitType != UnitType.PencilCase)
+                if (_throwUnit.UnitData.unitType == UnitType.PencilCase)
                 {
-                    Debug.Log("유닛 선택 : " + _throwUnit.OrderIndex);
+                    _throwUnit = null;
+                    return;
                 }
                 Vector2[] points = _throwUnit.CollideData.GetPoint(_throwUnit.transform.position);
                 
                 if (CheckPoints(points, pos))
                 {
                     _throwUnit = _throwUnit.Pull_Unit();
-                    
+                    _parabolaBackground.SetActive(true);
+
                     if (_throwUnit == null)
                     {
                         _cameraCommand.SetCameraIsMove(false);
@@ -197,7 +201,7 @@ namespace Battle
         }
 
         /// <summary>
-        /// 포물선 그리기
+        /// 포물선 그리기 & 던지기 취소 조건
         /// </summary>
         /// <param name="pos"></param>
         public void DrawParabola(Vector2 pos)
@@ -209,7 +213,10 @@ namespace Battle
                 _pullTime -= Time.deltaTime;
                 if (_pullTime < 0)
                 {
+                    _throwUnit.UnitSprite.OrderDraw(_throwUnit.OrderIndex);
+                    _throwUnit.UnitSticker.OrderDraw(_throwUnit.OrderIndex);
                     _throwUnit = null;
+                    _parabolaBackground.SetActive(false);
                     UnDrawParabola();
                     return;
                 }
@@ -328,6 +335,7 @@ namespace Battle
             {
                 _throwUnit.Throw_Unit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
                 _throwUnit = null;
+                _parabolaBackground.SetActive(false);
                 UnDrawParabola();
                 _throwDelay = 0f;
             }
