@@ -29,7 +29,19 @@ namespace Battle
         /// <param name="effect_PoolManager"></param>
         public void SetInitialization()
         {
+            LoadParent();
             AllLoadAssetAsync();
+        }
+        public void LoadParent()
+        {
+            for (int i = 0; i < System.Enum.GetValues(typeof(EffectType)).Length; i++)
+            {
+                GameObject childObj = new GameObject();
+                string s = i + "_" + System.Enum.GetName(typeof(EffectType), i);
+                childObj.name = s;
+                childObj.transform.parent = _effectPoolManager.transform;
+            }
+
         }
         public async void AllLoadAssetAsync()
         {
@@ -63,17 +75,22 @@ namespace Battle
                 }
             }
 
-            if (IsLimitEffectType(effectType) && effect_Parent.childCount > 6)
+            if (IsLimitEffectType(effectType) && effect_Parent.childCount > 5)
             {
                 float minLifeTime = 10;
+                int minLifeIndex = 0;
                 for (int i = 0; i < effect_Parent.childCount; i++)
                 {
                     effect_Object = effect_Parent.GetChild(i).GetComponent<EffectObject>();
                     //제일 짧은 lifeTime 찾기
-                    //if(minLifeTime > effect_Object.)
-
+                    if (minLifeTime > effData.lifeTime)
+                    {
+                        minLifeTime = effData.lifeTime;
+                        minLifeIndex = i;
+                    }
                 }
 
+                effect_Object = effect_Parent.GetChild(minLifeIndex).GetComponent<EffectObject>();
                 effect_Object.SetEffect(effData);
                 return effect_Object._effectState;
             }
