@@ -9,8 +9,10 @@ public abstract class AbstractAttackState : AbstractUnitState
     protected Unit _targetUnit = null; //공격할 유닛
     protected float _currentdelay = 0; //현재 딜레이
     protected float _maxdelay = 100; //끝 딜레이
+    private bool isAttacked; //공격 중인지
     public override void Enter()
     {
+        isAttacked = false;
         _curState = eState.ATTACK;
         _curEvent = eEvent.ENTER;
 
@@ -26,13 +28,16 @@ public abstract class AbstractAttackState : AbstractUnitState
     }
     public override void Update()
     {
-        //상대와의 거리 체크
-        CheckRangeToTarget();
-
-        //쿨타임 감소
-        if (AttackDelay())
+        if(!isAttacked)
         {
-            Attack();
+            //상대와의 거리 체크
+            //CheckRangeToTarget();
+
+            //쿨타임 감소
+            if (AttackDelay())
+            {
+                Attack();
+            }
         }
     }
     public override void Animation()
@@ -44,6 +49,7 @@ public abstract class AbstractAttackState : AbstractUnitState
     public override void SetAnimation()
     {
        _animationTweener = _mySprTrm.DORotate(new Vector3(0, 0, 0), 0.2f).SetLoops(2, LoopType.Yoyo).SetAutoKill(false);
+       _animationTweener.OnComplete(() => _stateManager.Set_Wait(0.4f)).SetAutoKill(false);
     }
 
     /// <summary>
@@ -61,16 +67,14 @@ public abstract class AbstractAttackState : AbstractUnitState
     /// </summary>
     protected virtual void Attack()
     {
+        isAttacked = true;
+
         //공격 애니메이션
         Animation();
 
         //공격 딜레이 초기화
         _currentdelay = 0;
         SetUnitDelayAndUI();
-
-        //대기 상태로 돌아감
-        _stateManager.Set_Wait(0.4f);
-        _curEvent = eEvent.EXIT;
 
 
         //공격 명중률에 따라 미스가 뜬다.

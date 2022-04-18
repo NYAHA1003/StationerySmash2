@@ -59,7 +59,7 @@ namespace Battle
         {
             if(_throwDelay <= 5f)
             {
-                _throwDelay += Time.deltaTime;
+                _throwDelay += Time.deltaTime * 5;
                 _throwDelayBar.fillAmount = _throwDelay / 5f;
             }
         }

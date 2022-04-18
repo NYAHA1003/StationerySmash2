@@ -229,8 +229,8 @@ public class Unit : MonoBehaviour
     /// <returns></returns>
     public Unit Pull_Unit()
     {
-        _unitSprite.OrderDraw(-3);
-        _unitSticker.OrderDraw(-3);
+        _unitSprite.OrderDraw(-10);
+        _unitSticker.OrderDraw(-10);
         return _unitStateChanger.UnitState.PullUnit();
     }
 
@@ -240,6 +240,8 @@ public class Unit : MonoBehaviour
     /// <returns></returns>
     public Unit Pulling_Unit()
     {
+        _unitSprite.OrderDraw(-10);
+        _unitSticker.OrderDraw(-10);
         return _unitStateChanger.UnitState.PullingUnit();
     }
 
@@ -289,6 +291,11 @@ public class Unit : MonoBehaviour
         _unitSprite.Set_HPSprite(_unitStat.Hp, _unitStat.MaxHp);
     }
 
+
+    /// <summary>
+    /// 보이기 순서 설정
+    /// </summary>
+    /// <param name="index"></param>
     public void SetOrderIndex(int index)
     {
         OrderIndex = index;
