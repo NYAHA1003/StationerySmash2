@@ -8,7 +8,6 @@ using UnityEngine;
 public class UnitStat
 {
     //프로퍼티
-
     public int AttackPercent => _attackPercent; //공격력 퍼센트
     public int MoveSpeedPercent => _moveSpeedPercent;//이동속도 퍼센트
     public int AttackSpeedPercent => _attackSpeedPercent;//공격속도 퍼센트
@@ -16,7 +15,8 @@ public class UnitStat
     public int AccuracyPercent => _accuracyPercent;//명중률 퍼센트
     public int WeightPercent => _weightPercent;//무게 퍼센트
     public int KnockbackPercent => _knockbackPercent;//넉백 퍼센트
-    public int DamagedPercent => _damagedPercent;//넉백 퍼센트
+    public int DamagedPercent => _damagedPercent;// 데미지 퍼센트
+    public int DamageDecrese => _damagedDecrese; // 데미지
     public int Hp => _hp;//체력 퍼센트
     public int MaxHp => _maxHp;//최대체력 퍼센트
     public int Grade => _grade; //현재 단계
@@ -31,6 +31,7 @@ public class UnitStat
     private int _weightPercent = 100;
     private int _knockbackPercent = 100;
     private int _damagedPercent = 100;
+    private int _damagedDecrese = 0;
     private int _hp = 0;
     private int _maxHp = 0;
     private int _weight = 0;
@@ -113,6 +114,7 @@ public class UnitStat
         _bonusAccuracy = 0;
         _bonusRange = 0;
         _bonusWeight = 0;
+        _damagedDecrese = 0;
     }
 
     /// <summary>
@@ -317,7 +319,14 @@ public class UnitStat
     {
         _damagedPercent += percent;
     }
-
+    /// <summary>
+    /// 데미지 받는량 깡으로 조절
+    /// </summary>
+    /// <param name="percent"></param>
+    public void DecreseDamage(int Decresedamage)
+    {
+        _damagedDecrese += Decresedamage;
+    }
     /// <summary>
     /// 공격 딜레이 0으로 초기화
     /// </summary>

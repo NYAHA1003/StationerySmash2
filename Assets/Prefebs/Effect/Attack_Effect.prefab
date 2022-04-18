@@ -222,8 +222,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 1, g: 0.57937706, b: 0, a: 0.69411767}
-      maxColor: {r: 1, g: 0.30852765, b: 0, a: 1}
+      minColor: {r: 0.9607843, g: 0.25507864, b: 0, a: 1}
+      maxColor: {r: 1, g: 0.6129213, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -285,8 +285,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 3
-      minScalar: 2
+      scalar: 1.5
+      minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -976,7 +976,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 2
+        scalar: 1
         minScalar: 30
         maxCurve:
           serializedVersion: 2
@@ -4884,6 +4884,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e0ee132c3cd5bf4ab8d4febb0654c2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particleSys: {fileID: 430091320808335755}
-  delete_time: 0.5
-  default_LifeTime: 0.2
+  _effectType: 0

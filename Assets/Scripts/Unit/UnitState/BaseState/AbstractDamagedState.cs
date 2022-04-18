@@ -25,7 +25,7 @@ public abstract class AbstractDamagedState : AbstractUnitState
         _myUnit.SetIsDontThrow(true);
         _myUnit.SetIsInvincibility(true);
         _myUnit.BattleManager.CommandEffect.SetEffect(_atkData._effectType, new EffData(_myTrm.transform.position, 0.2f));
-        _myUnit.SubtractHP(_atkData.damage * (_myUnit.UnitStat.DamagedPercent / 100));
+        _myUnit.SubtractHP(_atkData.damage * (_myUnit.UnitStat.DamagedPercent / 100) - _myUnit.UnitStat.DamageDecrese); //여기
 
         //스티커 사용
         _myUnit.UnitSticker.RunStickerAbility(_curState);

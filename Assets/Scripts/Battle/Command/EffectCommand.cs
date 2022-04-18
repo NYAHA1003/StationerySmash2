@@ -14,8 +14,8 @@ namespace Battle
         private Transform _effectPoolManager;
         [SerializeField]
         private List<GameObject> _effectObjectList;
- 
-        
+
+
         public async Task AwitLoadAssetAsync(string s)
         {
             AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(s);
@@ -29,7 +29,19 @@ namespace Battle
         /// <param name="effect_PoolManager"></param>
         public void SetInitialization()
         {
+            LoadParent();
             AllLoadAssetAsync();
+        }
+        public void LoadParent()
+        {
+            for (int i = 0; i < System.Enum.GetValues(typeof(EffectType)).Length; i++)
+            {
+                GameObject childObj = new GameObject();
+                string s = i + "_" + System.Enum.GetName(typeof(EffectType), i);
+                childObj.name = s;
+                childObj.transform.parent = _effectPoolManager.transform;
+            }
+
         }
         public async void AllLoadAssetAsync()
         {
@@ -63,11 +75,36 @@ namespace Battle
                 }
             }
 
-            //없으면 새로 만듦
+            if (IsLimitEffectType(effectType) && effect_Parent.childCount > 5)
+            {
+                float minLifeTime = 10;
+                int minLifeIndex = 0;
+                for (int i = 0; i < effect_Parent.childCount; i++)
+                {
+                    effect_Object = effect_Parent.GetChild(i).GetComponent<EffectObject>();
+                    //제일 짧은 lifeTime 찾기
+                    if (minLifeTime > effData.lifeTime)
+                    {
+                        minLifeTime = effData.lifeTime;
+                        minLifeIndex = i;
+                    }
+                }
+
+                effect_Object = effect_Parent.GetChild(minLifeIndex).GetComponent<EffectObject>();
+                effect_Object.SetEffect(effData);
+                return effect_Object._effectState;
+            }
+            //이펙트 없으면 새로 만듦
             effect_Object = PoolManager.CreateObject(_effectObjectList[(int)effectType].gameObject, effData.pos, Quaternion.identity).GetComponent<EffectObject>();
             effect_Object.transform.SetParent(effect_Parent);
             effect_Object.SetEffect(effData);
             return effect_Object._effectState;
+        }
+        private bool IsLimitEffectType(EffectType effectType)
+        {
+            if (effectType == EffectType.Stun)
+                return false;
+            return true;
         }
     }
 

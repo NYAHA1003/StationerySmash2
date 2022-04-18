@@ -16,7 +16,7 @@ namespace Utill
         Blind,
         Sick,
         Exch,
-
+        Scratch,
 
         Inherence = 1000,
         PCKill,

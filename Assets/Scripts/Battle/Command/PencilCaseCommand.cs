@@ -166,6 +166,15 @@ namespace Battle
                 case BadgeType.Thorn:
                     abstractBadge = PoolManager.GetBadge<ThornBadge>();
                     break;
+                case BadgeType.GrowingSeed:
+                    abstractBadge = PoolManager.GetBadge<GrowingSeedBadge>();
+                    break;
+                case BadgeType.Invincibel:
+                    abstractBadge = PoolManager.GetBadge<InvincibleBadge>();
+                    break;
+                case BadgeType.Snack:
+                    abstractBadge = PoolManager.GetBadge<SnackBadge>();
+                    break;
             }
             return abstractBadge;
         }
