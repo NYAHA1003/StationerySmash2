@@ -5,7 +5,7 @@ using Utill;
 
 public class RtacEffState : EffState
 {
-    private float _originRtacTime = 0.0f; //초기 분노 시간
+    private float _originRtacTime = 0.0f; //초기 저항 시간
     private float _rtacTime = 0.0f; // 스턴 시간
     private float damagedSubtractPercent = 0; //데미지받는량 퍼센트가 얼마나 줄어들것인가
     

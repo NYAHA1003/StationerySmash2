@@ -13,7 +13,8 @@ public class SickEffState : EffState
     {
         SprTrm.GetComponent<SpriteRenderer>().color = Color.green;
         _originpercent = _myUnit.UnitStat.MoveSpeedPercent;
-        _myUnit.UnitStat.IncreaseAttackPercent(-_originpercent * 2);
+        _myUnit.UnitStat.IncreaseMoveSpeedPercent(-_originpercent * 2);
+
         
 
         base.Enter();
@@ -25,7 +26,7 @@ public class SickEffState : EffState
 
     public override void Exit()
     {
-        _myUnit.UnitStat.IncreaseAttackPercent(_originpercent * 2);
+        _myUnit.UnitStat.IncreaseMoveSpeedPercent(_originpercent * 2);
         SprTrm.GetComponent<SpriteRenderer>().color = Color.red;
 
         base.Exit();

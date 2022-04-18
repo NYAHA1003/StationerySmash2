@@ -4,18 +4,18 @@ using UnityEngine;
 using Utill;
 using DG.Tweening;
 
-public class ExchEffState : EffState
+public class FastfEffState : EffState
 {
     private bool isAddEff = false;
     private float _exchOneTime = 0.0f; // 교환 첫번째 시간
     private float _exchTwoTime = 0.0f; // 교환 두번쨰 시간
-    private float attackSubtractPercent = 0; //공격력 퍼센트가 얼마나 커지고 줄어들것인가
+    private float attackSpeedSubtractPercent = 0; //공격속도 퍼센트가 얼마나 커지고 줄어들것인가
     private float moveSpeedSubtractPercent = 0;//이동속도 퍼센트가 얼마나 커지고 줄어들것인가
 
     public override void Enter()
     {
         SprTrm.GetComponent<SpriteRenderer>().color = Color.green;
-        _myUnit.UnitStat.IncreaseAttackPercent((int)attackSubtractPercent);
+        _myUnit.UnitStat.IncreaseAttackSpeedPercent((int)attackSpeedSubtractPercent);
         _myUnit.UnitStat.IncreaseMoveSpeedPercent((int)moveSpeedSubtractPercent);
 
         //이펙트 오브젝트 가져오기
@@ -32,7 +32,7 @@ public class ExchEffState : EffState
         }
         if(!isAddEff)
         {
-            _myUnit.UnitStat.IncreaseAttackPercent(-(int)attackSubtractPercent * 2);
+            _myUnit.UnitStat.IncreaseAttackSpeedPercent(-(int)attackSpeedSubtractPercent * 2);
             _myUnit.UnitStat.IncreaseMoveSpeedPercent(-(int)moveSpeedSubtractPercent * 2);
             isAddEff = true;
         }
@@ -45,7 +45,7 @@ public class ExchEffState : EffState
 
     public override void Exit()
     {
-        _myUnit.UnitStat.IncreaseAttackPercent((int)attackSubtractPercent);
+        _myUnit.UnitStat.IncreaseAttackSpeedPercent((int)attackSpeedSubtractPercent);
         _myUnit.UnitStat.IncreaseMoveSpeedPercent((int)moveSpeedSubtractPercent);
         DeleteEffectObject();
         base.Exit();
@@ -55,7 +55,7 @@ public class ExchEffState : EffState
     {
         _exchOneTime = value[0];
         _exchTwoTime = value[0];
-        attackSubtractPercent = value[1];
+        attackSpeedSubtractPercent = value[1];
         moveSpeedSubtractPercent = value[2];
     }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utill;
 using Battle;
+using DG.Tweening;
 public class Unit : MonoBehaviour
 {
     //프로퍼티
@@ -23,15 +24,21 @@ public class Unit : MonoBehaviour
     public bool _isInvincibility { get; protected set; } = false; // 무적 & 무시 여부
     public bool _isNeverDontThrow { get; protected set; } = false; // 절대 던지기 가능 여부
     public bool _isDontThrow { get; protected set; } = false; // 던지기 가능 여부
-    
+    public Sequence KnockbackTweener => _knockbackTweener; //넉백에 사용하는 시퀀스
+    public int OrderIndex { get; set; } = 0;
+    public int ViewIndex => _viewIndex; //뷰 인덱스
+
     //변수
     private CollideData _collideData = default; 
     private UnitStateEff _unitStateEff = new UnitStateEff();
     private UnitStat _unitStat = new UnitStat();
     private TeamType _eTeam = TeamType.Null;
+    private bool isThrowring = false; //던져지는 중인가
     protected UnitStateChanger _unitStateChanger = new UnitStateChanger();
     protected BattleManager _battleManager = null;    
     protected bool _isSettingEnd = false;
+    protected Sequence _knockbackTweener;
+    private int _viewIndex = 0;
 
     //참조 변수
     private UnitData _unitData= null;
@@ -66,8 +73,15 @@ public class Unit : MonoBehaviour
     /// <param name="eTeam">팀 변수</param>
     /// <param name="battleManager">배틀매니저</param>
     /// <param name="id"></param>
-    public virtual void SetUnitData(CardData dataBase, TeamType eTeam, StageData stageData, int id, int grade)
+    public virtual void SetUnitData(CardData dataBase, TeamType eTeam, StageData stageData, int id, int grade, int orderIndex)
     {
+        isThrowring = false;
+
+        _knockbackTweener = DOTween.Sequence();
+
+        //순서 인덱스
+        OrderIndex = orderIndex;
+
         //유닛 데이터 받아오기
         _unitData = dataBase.unitData;
 
@@ -103,9 +117,10 @@ public class Unit : MonoBehaviour
         //스프라이트 초기화
         _unitSprite.SetUIAndSprite(eTeam, dataBase.skinData.cardSprite);
         _unitSprite.UpdateDelayBar(_unitStat.AttackDelay);
-        _unitSprite.ShowCanvas(true);
+        _unitSprite.ShowUI(true);
         _unitSprite.SetTeamColor(eTeam);
         _unitSprite.Set_HPSprite(_unitStat.Hp, _unitStat.MaxHp);
+        _unitSprite.OrderDraw(orderIndex);
 
         //스테이트 설정
         _unitStateChanger.SetStateManager(dataBase.unitData.unitType, transform, _unitSprite.SpriteRenderer.transform, this); ;
@@ -129,8 +144,33 @@ public class Unit : MonoBehaviour
         {
             return;
         }
+        CheckOrder();
         _unitStateChanger.ProcessState();
         _unitStateEff.ProcessEff();
+    }
+
+    public void CheckOrder()
+    {
+        if(ETeam == TeamType.MyTeam)
+        {
+            if (OrderIndex + 1 < _battleManager.CommandUnit._playerUnitList.Count)
+            {
+                if(transform.position.x > _battleManager.CommandUnit._playerUnitList[OrderIndex + 1].transform.position.x)
+                {
+                    _battleManager.CommandUnit.SortPlayerUnitList();
+                }
+            }
+        }
+        else if (ETeam == TeamType.EnemyTeam)
+        {
+            if (OrderIndex + 1 < _battleManager.CommandUnit._enemyUnitList.Count)
+            {
+                if (-transform.position.x > -_battleManager.CommandUnit._enemyUnitList[OrderIndex + 1].transform.position.x)
+                {
+                    _battleManager.CommandUnit.SortEnemyUnitList();
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -138,12 +178,12 @@ public class Unit : MonoBehaviour
     /// </summary>
     public virtual void Delete_Unit()
     {
-        _battleManager.PoolDeleteUnit(this);
+        RemoveUnitList();
+        _battleManager.CommandUnit.DeletePoolUnit(this);
         _unitStateChanger.DeleteState(_unitData.unitType);
         _unitStateChanger.StateNull();
         _unitStateEff.DeleteEffStetes();
         _unitSticker.DeleteSticekr();
-        RemoveUnitList();
     }
 
     /// <summary>
@@ -153,6 +193,11 @@ public class Unit : MonoBehaviour
     public virtual void Run_Damaged(AtkData atkData)
     {
         _unitStateChanger.UnitState.RunDamaged(atkData);
+    }
+
+    public void SetKnockBack(Sequence sequence)
+    {
+        _knockbackTweener = sequence;
     }
 
     /// <summary>
@@ -206,6 +251,9 @@ public class Unit : MonoBehaviour
     /// </summary>
     public void Throw_Unit(Vector2 pos)
     {
+        isThrowring = false;
+        UnitSprite.OrderDraw(_viewIndex);
+        UnitSticker.OrderDraw(_viewIndex);
         _unitStateChanger.UnitState.ThrowUnit(pos);
     }
 
@@ -245,10 +293,39 @@ public class Unit : MonoBehaviour
         _unitSprite.Set_HPSprite(_unitStat.Hp, _unitStat.MaxHp);
     }
 
+
+    /// <summary>
+    /// 보이기 순서 설정
+    /// </summary>
+    /// <param name="index"></param>
+    public void SetOrderIndex(int index)
+    {
+        OrderIndex = index;
+        if(ETeam == TeamType.MyTeam)
+        {
+            if (OrderIndex == _battleManager.CommandUnit._playerUnitList.Count - 1)
+            {
+                _viewIndex = 0;
+            }
+        }
+        else if(ETeam == TeamType.EnemyTeam)
+        {
+            if (OrderIndex == _battleManager.CommandUnit._enemyUnitList.Count - 1)
+            {
+                _viewIndex = 0;
+            }
+        }
+        if(isThrowring)
+        {
+            _unitSprite.OrderDraw(_viewIndex);
+            _unitSticker.OrderDraw(_viewIndex);
+        }
+    }
+
     /// <summary>
     /// 유닛 리스트에서 이 오브젝트를 제거
     /// </summary>
-    private void RemoveUnitList()
+    public void RemoveUnitList()
     {
         switch (_eTeam)
         {

@@ -16,10 +16,12 @@ public class YellowCarState : AbstractStateManager
 
         Reset_CurrentUnitState(_idleState);
 
-        _idleState.SetStateManager(this);
-        _waitState.SetStateManager(this);
-        _moveState.SetStateManager(this);
-        _damagedState.SetStateManager(this);
+        _abstractUnitStateList.Add(_idleState);
+        _abstractUnitStateList.Add(_waitState);
+        _abstractUnitStateList.Add(_moveState);
+        _abstractUnitStateList.Add(_damagedState);
+
+        SetInStateList();
     }
     public override void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
     {

@@ -6,10 +6,16 @@ using DG.Tweening;
 
 public abstract class AbstractDieState : AbstractUnitState
 {
+    Tweener _animationSKTweenerRotate = default;
+    Tweener _animationSKTweenerJump = default;
+    Tweener _animationSKTweenerScale = default;
     public override void Enter()
     {
         _curState = eState.DIE;
         _curEvent = eEvent.ENTER;
+
+        //유닛리스트에서 제거
+        _myUnit.RemoveUnitList();
 
         //스티커 사용
         _myUnit.UnitSticker.RunStickerAbility(_curState);
@@ -17,17 +23,40 @@ public abstract class AbstractDieState : AbstractUnitState
         //딜레이바 등의 UI 안 보이게 하고 상태이상 삭제
         _myUnit.UnitStateEff.DeleteEffStetes();
         _myUnit.SetIsDontThrow(true);
-        _myUnit.UnitSprite.ShowCanvas(false);
+        _myUnit.UnitSprite.ShowUI(false);
 
         //뒤짐
         _myUnit.SetIsInvincibility(true);
-        _myTrm.DOKill();
-        _mySprTrm.DOKill();
+        ResetAllStateAnimation();
 
         //랜덤으로 죽는 애니메이션 재생
         RandomDieAnimation();
 
         base.Enter();
+    }
+
+    public override void SetAnimation()
+    {
+        base.SetAnimation();
+
+
+        //_animationSKTweenerRotate = _mySprTrm.DOLocalRotate(new Vector3(0, 0, -360), 0.3f, RotateMode.FastBeyond360).SetLoops(3, LoopType.Incremental);
+        ////_animationSKTweenerJump =
+        //_myTrm.DOJump(Vector3.zero, 2f, 1, 1f);
+        //_mySprTrm.DOScale(10, 0.6f).SetDelay(0.3f).SetEase(Utill.Parabola.Return_ScreenKoCurve()).OnComplete(() =>
+        //{
+        //    _mySprTrm.eulerAngles = new Vector3(0, 0, Random.Range(_mySprTrm.eulerAngles.z - 10, _mySprTrm.eulerAngles.z + 10));
+        //    _mySprTrm.DOShakePosition(0.6f, 0.1f, 30).OnComplete(() =>
+        //    {
+        //        _mySprTrm.DOMoveY(-3, 1).OnComplete(() =>
+        //        {
+        //            ResetSprTrm();
+        //            _curEvent = eEvent.EXIT;
+        //            _myUnit.Delete_Unit();
+        //        });
+        //    });
+        //
+        //});
     }
 
     /// <summary>

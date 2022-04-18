@@ -18,7 +18,7 @@ public abstract class AbstractWaitState : AbstractUnitState
         _myUnit.UnitSticker.RunStickerAbility(_curState);
 
         //애니메이션 제거
-        ResetAnimation();
+        ResetAllStateAnimation();
 
         base.Enter();
     }

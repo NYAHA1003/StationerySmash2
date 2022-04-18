@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,8 @@ namespace Battle
     [System.Serializable]
     public class UnitCommand : BattleCommand
     {
+        public Transform UnitParent => _unitParent;
+
         //인스펙터 참조 변수
         [SerializeField]
         private GameObject _unitPrefeb;
@@ -35,9 +38,10 @@ namespace Battle
         /// <param name="_unitPrefeb"></param>
         /// <param name="_unitPoolManager"></param>
         /// <param name="_unitParent"></param>
-        public void SetInitialization(StageData stageData)
+        public void SetInitialization(ref System.Action updateAction, StageData stageData)
         {
             _stageData = stageData;
+            //updateAction += SortAllUnitList;
         }
 
         /// <summary>
@@ -49,13 +53,24 @@ namespace Battle
         public void SummonUnit(CardData dataBase, Vector3 Pos, int grade, TeamType eTeam = TeamType.Null)
         {
             Unit unit = null;
-
+            int orderIndex = 0;
             unit = ReturnPoolUnit(Pos);
             if (eTeam == TeamType.Null)
             {
                 eTeam = this.eTeam;
             }
-            unit.SetUnitData(dataBase, eTeam, _stageData, unitIdCount++, grade);
+
+            if(eTeam == TeamType.MyTeam)
+            {
+                orderIndex = _playerUnitList.Count - 1;
+            }
+
+            if (eTeam == TeamType.EnemyTeam)
+            {
+                orderIndex = _enemyUnitList.Count - 1;
+            }
+
+            unit.SetUnitData(dataBase, eTeam, _stageData, unitIdCount++, grade, orderIndex);
 
 
             //유닛 리스트에 추가
@@ -65,12 +80,56 @@ namespace Battle
                     break;
                 case TeamType.MyTeam:
                     _playerUnitList.Add(unit);
+                    SortPlayerUnitList();
                     break;
                 case TeamType.EnemyTeam:
                     _enemyUnitList.Add(unit);
+                    SortEnemyUnitList();
                     break;
             }
         }
+
+        /// <summary>
+        /// 모든 유닛 리스트 정렬
+        /// </summary>
+        public void SortAllUnitList()
+        {
+            SortPlayerUnitList();
+            SortEnemyUnitList();
+        }
+
+        /// <summary>
+        /// 플레이어 유닛 정렬
+        /// </summary>
+        public void SortPlayerUnitList()
+        {
+            //리스트 정렬
+            _playerUnitList = _playerUnitList.OrderBy(x => x.transform.position.x).ToList();
+            
+            //순서 설정
+            int count = _playerUnitList.Count;
+            for (int i = 0; i < count; i++)
+            {
+                _playerUnitList[i].SetOrderIndex(i);
+            }
+        }
+
+        /// <summary>
+        /// 적 유닛 정렬
+        /// </summary>
+        public void SortEnemyUnitList()
+        {
+            //리스트 정렬
+            _enemyUnitList = _enemyUnitList.OrderBy(x => -x.transform.position.x).ToList();
+
+            //순서 설정
+            int count = _enemyUnitList.Count;
+            for (int i = 0; i < count; i++)
+            {
+                _enemyUnitList[i].SetOrderIndex(i);
+            }
+        }
+
 
         /// <summary>
         /// 모든 유닛 삭제
@@ -87,6 +146,10 @@ namespace Battle
             }
         }
 
+        /// <summary>
+        /// 유닛 제거
+        /// </summary>
+        /// <param name="unit"></param>
         public void DeletePoolUnit(Unit unit)
         {
             unit.gameObject.SetActive(false);

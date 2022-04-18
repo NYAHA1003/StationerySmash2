@@ -82,10 +82,9 @@ public class PencilCaseDamagedState : AbstractDamagedState
         _stateManager.Set_Idle();
     }
 
-    public override void Animation(params float[] value)
+    public override void Animation()
     {
-        float rotate = _myUnit.ETeam == TeamType.MyTeam ? 360 : -360;
-        _mySprTrm.DORotate(new Vector3(0, 0, rotate), value[0], RotateMode.FastBeyond360);
+
     }
     public override Unit PullUnit()
     {

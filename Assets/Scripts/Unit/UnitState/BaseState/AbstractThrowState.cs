@@ -27,7 +27,7 @@ public abstract class AbstractThrowState : AbstractUnitState
         _myUnit.DamageCount++;
         _damageId = _myUnit.MyUnitId * 10000 + _myUnit.DamageCount;
 
-        base.Enter();
+
     }
     public override void Update()
     {
@@ -47,6 +47,7 @@ public abstract class AbstractThrowState : AbstractUnitState
         }
     }
 
+
     /// <summary>
     /// 우닛 물리판정이랑 부딪치는지 체크
     /// </summary>
@@ -61,7 +62,7 @@ public abstract class AbstractThrowState : AbstractUnitState
             {
                 continue;
             }
-            float distance = Utill.Collider.FindDistanceBetweenSegments(_myUnit.CollideData.SetPos(_myTrm.position), targetUnit.CollideData.SetPos(targetUnit.transform.position));
+            float distance = Utill.Collider.FindDistanceBetweenSegments(_myUnit.CollideData.GetPoint(_myTrm.position), targetUnit.CollideData.GetPoint(targetUnit.transform.position));
             if (distance < 0.2f)
             {
                 ThrowAttack(targetUnit);
@@ -91,7 +92,9 @@ public abstract class AbstractThrowState : AbstractUnitState
         //방향이 아래쪽을 향하면 던지기를 취소함
         if (dir < 0)
         {
+            ResetAllStateAnimation();
             _stateManager.Set_Wait(0.5f);
+            _curEvent = eEvent.EXIT;
             return;
         }
         //초기 벡터
@@ -102,12 +105,16 @@ public abstract class AbstractThrowState : AbstractUnitState
         float width = Parabola.Caculated_Width(force, dirx);
         //수평 도달 시간
         float time = Parabola.Caculated_Time(force, dir, 3);
-        ResetAnimation();
-        _myTrm.DOJump(new Vector3(_myTrm.position.x - width, 0, _myTrm.position.z), height, 1, time).OnComplete(() =>
+        ResetAllStateAnimation();
+
+        _curEvent = eEvent.UPDATE;
+
+        SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x - width, 0, _myTrm.position.z), height, 1, time).OnComplete(() =>
         {
             //땅에 닿으면 대기 상태로 돌아감
             _stateManager.Set_Wait(0.5f);
-        }).SetEase(Utill.Parabola.Return_ParabolaCurve());
+        }).SetEase(Utill.Parabola.Return_ParabolaCurve()));
+        
     }
 
     /// <summary>
