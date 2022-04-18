@@ -26,16 +26,19 @@ public class Unit : MonoBehaviour
     public bool _isDontThrow { get; protected set; } = false; // 던지기 가능 여부
     public Sequence KnockbackTweener => _knockbackTweener; //넉백에 사용하는 시퀀스
     public int OrderIndex { get; set; } = 0;
+    public int ViewIndex => _viewIndex; //뷰 인덱스
 
     //변수
     private CollideData _collideData = default; 
     private UnitStateEff _unitStateEff = new UnitStateEff();
     private UnitStat _unitStat = new UnitStat();
     private TeamType _eTeam = TeamType.Null;
+    private bool isThrowring = false; //던져지는 중인가
     protected UnitStateChanger _unitStateChanger = new UnitStateChanger();
     protected BattleManager _battleManager = null;    
     protected bool _isSettingEnd = false;
     protected Sequence _knockbackTweener;
+    private int _viewIndex = 0;
 
     //참조 변수
     private UnitData _unitData= null;
@@ -72,6 +75,8 @@ public class Unit : MonoBehaviour
     /// <param name="id"></param>
     public virtual void SetUnitData(CardData dataBase, TeamType eTeam, StageData stageData, int id, int grade, int orderIndex)
     {
+        isThrowring = false;
+
         _knockbackTweener = DOTween.Sequence();
 
         //순서 인덱스
@@ -246,6 +251,9 @@ public class Unit : MonoBehaviour
     /// </summary>
     public void Throw_Unit(Vector2 pos)
     {
+        isThrowring = false;
+        UnitSprite.OrderDraw(_viewIndex);
+        UnitSticker.OrderDraw(_viewIndex);
         _unitStateChanger.UnitState.ThrowUnit(pos);
     }
 
@@ -285,11 +293,33 @@ public class Unit : MonoBehaviour
         _unitSprite.Set_HPSprite(_unitStat.Hp, _unitStat.MaxHp);
     }
 
+
+    /// <summary>
+    /// 보이기 순서 설정
+    /// </summary>
+    /// <param name="index"></param>
     public void SetOrderIndex(int index)
     {
         OrderIndex = index;
-        _unitSprite.OrderDraw(index);
-        _unitSticker.OrderDraw(index);
+        if(ETeam == TeamType.MyTeam)
+        {
+            if (OrderIndex == _battleManager.CommandUnit._playerUnitList.Count - 1)
+            {
+                _viewIndex = 0;
+            }
+        }
+        else if(ETeam == TeamType.EnemyTeam)
+        {
+            if (OrderIndex == _battleManager.CommandUnit._enemyUnitList.Count - 1)
+            {
+                _viewIndex = 0;
+            }
+        }
+        if(isThrowring)
+        {
+            _unitSprite.OrderDraw(_viewIndex);
+            _unitSticker.OrderDraw(_viewIndex);
+        }
     }
 
     /// <summary>
