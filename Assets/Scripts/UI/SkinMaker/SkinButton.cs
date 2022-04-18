@@ -32,5 +32,8 @@ public class SkinButton : MonoBehaviour
         _skinImage.sprite = _skinMakeData.sprite;
         _skinName.text = _skinMakeData.skinName;
         _skinMakerCommand = skinMakerCommand;
+        //버튼에다가 애드리스너 추가
+        //skinMakerCommand.SetSkinMake()
+        //이 함수 추가하면 됨.
     }
 }
