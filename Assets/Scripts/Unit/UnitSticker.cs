@@ -76,11 +76,24 @@ public class UnitSticker
                 _stickerablity = PoolManager.GetSticker<PaperSticker>();
                 break;
             case StickerType.Scissors:
-                _stickerablity = PoolManager.GetSticker<ScissorsSticker>();
+                _stickerablity = PoolManager.GetSticker<ScissorsPinkingSticker>();
                 break;
             case StickerType.Eraser:
                 _stickerablity = PoolManager.GetSticker<EraserPieceSticker>();
                 break;
+            case StickerType.Armor:
+                _stickerablity = PoolManager.GetSticker<ArmorSticker>();
+                break;
+            case StickerType.Run:
+                _stickerablity = PoolManager.GetSticker<RunSticker>();
+                break;
+            case StickerType.Heal:
+                _stickerablity = PoolManager.GetSticker<HealSticker>();
+                break;
+            case StickerType.LongSee:
+                _stickerablity = PoolManager.GetSticker<LongSeeSticker>();
+                break;
+
         }
         _stickerablity.SetSticker(_myUnit);
     }

@@ -18,6 +18,10 @@ namespace Utill
         Paper,
         Scissors,
         Eraser,
+        Armor,
+        Run,
+        Heal,
+        LongSee,
 
     }
 }
