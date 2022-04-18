@@ -33,6 +33,7 @@ public class SoundManager : MonoBehaviour
         _bgmSlider.value = bgmValue;
         _effectSoundSlider.value = effectValue; 
     }   
+
     public void OnSetAudio(int soundType)
     {
         float sound = _bgmSlider.value;

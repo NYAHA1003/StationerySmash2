@@ -9,12 +9,14 @@ public enum ProfileImageType
     Pencil,
     Eraser
 }
-
-public class ProfileSetting 
+[System.Serializable]
+public class ProfileSetting : IEvent
 {
+    [Header("유저")]
     [SerializeField]
     private User _user;
-
+    
+    [Header("닉네임 입력란")]
     //닉네임 입력란 
     [SerializeField]
     private Image inputField;

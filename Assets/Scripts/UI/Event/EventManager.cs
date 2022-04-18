@@ -51,7 +51,6 @@ public class EventManager : MonoBehaviour
         {
             eventParamDictionary = new Dictionary<EventsType, Action<object>>(); 
         }
-
     }
 
     public static void StartListening(EventsType eventName, Action listener)
