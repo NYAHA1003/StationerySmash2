@@ -110,14 +110,7 @@ namespace Battle
             int count = _playerUnitList.Count;
             for (int i = 0; i < count; i++)
             {
-                if (i == count - 1)
-                {
-                    _playerUnitList[i].SetOrderIndex(0);
-                }
-                else
-                {
-                    _playerUnitList[i].SetOrderIndex(i);
-                }
+                _playerUnitList[i].SetOrderIndex(i);
             }
         }
 
@@ -133,14 +126,7 @@ namespace Battle
             int count = _enemyUnitList.Count;
             for (int i = 0; i < count; i++)
             {
-                if(i == count - 1)
-                {
-                    _enemyUnitList[i].SetOrderIndex(0);
-                }
-                else
-                {
-                    _enemyUnitList[i].SetOrderIndex(i);
-                }
+                _enemyUnitList[i].SetOrderIndex(i);
             }
         }
 
