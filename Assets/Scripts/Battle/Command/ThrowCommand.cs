@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Utill;
 
 namespace Battle
@@ -13,6 +14,10 @@ namespace Battle
         private LineRenderer _parabola;
         [SerializeField]
         private Transform _arrow;
+        [SerializeField]
+        private Image _throwDelayBar;
+        [SerializeField]
+        private GameObject _parabolaBackground = null;
 
         //참조 변수
         private Unit _throwUnit = null;
@@ -24,6 +29,7 @@ namespace Battle
         private Vector2 _direction;
         private float _force;
         private float _pullTime;
+        private float _throwDelay = 0f;
 
         /// <summary>
         /// 초기화
@@ -32,7 +38,7 @@ namespace Battle
         /// <param name="parabola"></param>
         /// <param name="arrow"></param>
         /// <param name="stageData"></param>
-        public void SetInitialization(UnitCommand unitCommand, CameraCommand cameraCommand, StageData stageData)
+        public void SetInitialization(ref System.Action updateAction, UnitCommand unitCommand, CameraCommand cameraCommand, StageData stageData)
         {
             _unitCommand = unitCommand;
             _cameraCommand = cameraCommand;
@@ -42,6 +48,20 @@ namespace Battle
             {
                 _lineZeroPos.Add(Vector2.zero);
             }
+
+            updateAction += UpdateThrowDelay;
+        }
+
+        /// <summary>
+        /// 업데이트 딜레이
+        /// </summary>
+        public void UpdateThrowDelay()
+        {
+            if(_throwDelay <= 5f)
+            {
+                _throwDelay += Time.deltaTime * 5;
+                _throwDelayBar.fillAmount = _throwDelay / 5f;
+            }
         }
 
         /// <summary>
@@ -50,25 +70,90 @@ namespace Battle
         /// <param name="pos"></param>
         public void PullUnit(Vector2 pos)
         {
-            float targetRange = float.MaxValue;
-            for (int i = 1; i < _unitCommand._playerUnitList.Count; i++)
+            if(_throwDelay < 5f)
             {
-                if (Vector2.Distance(pos, _unitCommand._playerUnitList[i].transform.position) < targetRange)
+                return;
+            }
+
+            int firstNum = 0;
+            int lastNum = _unitCommand._playerUnitList.Count - 1;
+            int loopnum = 0;
+            int count = _unitCommand._playerUnitList.Count;
+            List<Unit> list = _unitCommand._playerUnitList;
+            float targetPosX = 0;
+            _throwUnit = null;
+            if(pos.x >= list[lastNum].transform.position.x - 0.3f)
+            {
+                _throwUnit = list[lastNum];
+            }
+            else if (pos.x <= list[firstNum].transform.position.x )
+            {
+                _throwUnit = list[firstNum];
+            }
+
+            while (_throwUnit == null)
+            {
+                if (count == 0)
                 {
-                    _throwUnit = _unitCommand._playerUnitList[i];
-                    targetRange = Vector2.Distance(pos, _throwUnit.transform.position);
+                    _throwUnit = null;
+                    return;
+                }
+
+                int find = (lastNum + firstNum) / 2;
+                targetPosX = list[find].transform.position.x;
+
+                if (pos.x == targetPosX)
+                {
+                    _throwUnit = list[find];
+                    break;
+                }
+
+                if (pos.x > targetPosX)
+                {
+                    firstNum = find;
+                }
+                else if (pos.x < targetPosX)
+                {
+                    lastNum = find;
+                }
+
+                if (lastNum - firstNum <= 1)
+                {
+                    _throwUnit = list[lastNum];
+                    break;
+                }
+
+                loopnum++;
+                if (loopnum > 10000)
+                {
+                    throw new System.Exception("Infinite Loop");
                 }
             }
 
             if (_throwUnit != null)
             {
-                if (Vector2.Distance(pos, _throwUnit.transform.position) < 0.1f)
+                if (_throwUnit.UnitData.unitType == UnitType.PencilCase)
+                {
+                    _throwUnit = null;
+                    return;
+                }
+                Vector2[] points = _throwUnit.CollideData.GetPoint(_throwUnit.transform.position);
+                
+                if (CheckPoints(points, pos))
                 {
                     _throwUnit = _throwUnit.Pull_Unit();
+
                     if (_throwUnit == null)
                     {
                         _cameraCommand.SetCameraIsMove(false);
                     }
+                    else
+                    {
+                        _throwUnit.UnitSprite.OrderDraw(-10);
+                        _throwUnit.UnitSticker.OrderDraw(-10);
+                        _parabolaBackground.SetActive(true);
+                    }
+
                     _pullTime = 2f;
                     return;
                 }
@@ -77,7 +162,51 @@ namespace Battle
         }
 
         /// <summary>
-        /// 포물선 그리기
+        /// 인포인트가 아웃 포인트 안에 있는지 체크
+        /// </summary>
+        /// <param name="outPoint"></param>
+        /// <param name="inPoint"></param>
+        /// <returns></returns>
+        public bool CheckPoints(Vector2[] box, Vector2 inPoint)
+        {
+            if(box[0].x - 0.2f > inPoint.x)
+            {
+                return false;
+            }
+            if (box[1].x + 0.2f < inPoint.x)
+            {
+                return false;
+            }
+            if (box[2].x - 0.2f > inPoint.x)
+            {
+                return false;
+            }
+            if (box[3].x + 0.2f < inPoint.x)
+            {
+                return false;
+            }
+            if (box[0].y + 0.15f < inPoint.y)
+            {
+                return false;
+            }
+            if (box[1].y + 0.15f < inPoint.y)
+            {
+                return false;
+            }
+            if (box[2].y - 0.1f > inPoint.y)
+            {
+                return false;
+            }
+            if (box[3].y - 0.1f > inPoint.y)
+            {
+                return false;
+            }
+            return true;
+
+        }
+
+        /// <summary>
+        /// 포물선 그리기 & 던지기 취소 조건
         /// </summary>
         /// <param name="pos"></param>
         public void DrawParabola(Vector2 pos)
@@ -89,18 +218,24 @@ namespace Battle
                 _pullTime -= Time.deltaTime;
                 if (_pullTime < 0)
                 {
+                    _throwUnit.UnitSprite.OrderDraw(_throwUnit.OrderIndex);
+                    _throwUnit.UnitSticker.OrderDraw(_throwUnit.OrderIndex);
                     _throwUnit = null;
+                    _parabolaBackground.SetActive(false);
                     UnDrawParabola();
                     return;
                 }
 
-                //유닛이 다른 행동을 취하게 되면 취소
-                _throwUnit = _throwUnit.Pulling_Unit();
                 _cameraCommand.SetCameraIsMove(false);
 
-                if (_throwUnit == null)
+                //유닛이 다른 행동을 취하게 되면 취소
+                if (_throwUnit.Pulling_Unit() == null)
                 {
+                    _throwUnit.UnitSprite.OrderDraw(_throwUnit.OrderIndex);
+                    _throwUnit.UnitSticker.OrderDraw(_throwUnit.OrderIndex);
+                    _parabolaBackground.SetActive(false);
                     UnDrawParabola();
+                    _throwUnit = _throwUnit.Pulling_Unit();
                     return;
                 }
 
@@ -208,7 +343,9 @@ namespace Battle
             {
                 _throwUnit.Throw_Unit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
                 _throwUnit = null;
+                _parabolaBackground.SetActive(false);
                 UnDrawParabola();
+                _throwDelay = 0f;
             }
         }
     }

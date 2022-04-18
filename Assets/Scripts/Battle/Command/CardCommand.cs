@@ -149,13 +149,6 @@ namespace Battle
             //카드 리스트에 카드를 전달함
             _cardList.Add(cardmove);
 
-            //카드 장수가 2개 이상이면 방금 뽑은 카드가 융합할 수 있는지 카드 비교
-            if (_cardList.Count > 1)
-            {
-                CardMove targetCard1 = _cardList[_cardList.Count - 1];
-                CardMove targetCard2 = _cardList[_cardList.Count - 2];
-                FusionCheck(targetCard1, targetCard2);
-            }
 
             //카드를 정렬하고 융합 딜레이 설정
             SortCard();
@@ -258,6 +251,9 @@ namespace Battle
             
             //카드 선택 활성화
             IsSelectCard = true;
+
+            //카드를 융합시킴
+            SetDelayFusion();
         }
 
         /// <summary>
@@ -294,7 +290,7 @@ namespace Battle
             IsSelectCard = false;
 
             //카드를 융합시킴
-            FusionCard();
+            SetDelayFusion();
         }
 
         /// <summary>
@@ -347,9 +343,9 @@ namespace Battle
             //{
             //    _battleManager._aiLog.Add_Log(card._dataBase);
             //}
-            
+
             //카드 융합
-            FusionCard();
+            SetDelayFusion();
         }
 
         /// <summary>
@@ -667,6 +663,7 @@ namespace Battle
                 toCombineCard = targetCard2;
                 fromCombineCard = targetCard1;
             }
+            fromCombineCard.SetIsFusionFrom(true);
 
             fromCombineCard.DOKill();
             fromCombineCard.SetCardPRS(new PRS(toCombineCard.transform.localPosition, toCombineCard.transform.rotation, Vector3.one * 0.3f), 0.25f);
@@ -683,6 +680,7 @@ namespace Battle
 
             toCombineCard.SetIsFusion(false);
             fromCombineCard.SetIsFusion(false);
+            fromCombineCard.SetIsFusionFrom(false);
 
             SubtractCardFind(fromCombineCard);
             SortCard();

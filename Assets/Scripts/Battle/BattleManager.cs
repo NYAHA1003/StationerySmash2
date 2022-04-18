@@ -77,7 +77,7 @@ public class BattleManager : MonoBehaviour
         _commandCamera.SetInitialization(CommandCard, CommandWinLose, ref _updateAction, CurrentStageData);
         _commandUnit.SetInitialization(ref _updateAction, CurrentStageData);
         _commandEffect.SetInitialization();
-        _commandThrow.SetInitialization(_commandUnit, _commandCamera, CurrentStageData);
+        _commandThrow.SetInitialization(ref _updateAction, _commandUnit, _commandCamera, CurrentStageData);
         _commandAI.SetInitialization(CommandPencilCase, CommandUnit, ref _updateAction);
         _commandTime.SetInitialization(ref _updateAction, CurrentStageData);
         _commandCost.SetInitialization(ref _updateAction, _commandPencilCase.PencilCaseDataMy.PencilCasedataBase);
@@ -94,7 +94,7 @@ public class BattleManager : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("À¯´Ö °¹¼ö : " + _commandUnit.UnitParent.childCount + " FPS : " + 1.0f / Time.deltaTime);
+        //  Debug.Log("À¯´Ö °¹¼ö : " + _commandUnit.UnitParent.childCount + " FPS : " + 1.0f / Time.deltaTime);
 
         if (!_isEndSetting)
         {

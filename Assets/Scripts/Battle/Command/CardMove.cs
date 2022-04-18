@@ -18,12 +18,14 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public CardData DataBase => _dataBase; //카드 데이터
     public int Grade => _grade; // 카드 등급
     public bool IsFusion => _isFusion; //융합 중인지
+    public bool IsFusionFrom => _isFusionFrom; //융합할 때 이 카드가 이동하는지
     public PRS OriginPRS => _originPRS; //카드 위치
 
     //변수
     private int _cardCost = 0;   
     private int _originCardCost = 0; 
     private bool _isFusion = false;
+    private bool _isFusionFrom = false;
     private int _grade = 1;
     private int _id = 0;
     private bool _isDrag; // 드래그 중인 상태인가
@@ -108,6 +110,15 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public void SetIsFusion(bool isfusion)
     {
         _isFusion = isfusion;
+    }
+
+    /// <summary>
+    /// 융합하러 이동하는 애인지 설정
+    /// </summary>
+    /// <param name="isfrom"></param>
+    public void SetIsFusionFrom(bool isfrom)
+    {
+        _isFusionFrom = isfrom;
     }
 
     /// <summary>
@@ -250,6 +261,10 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <param name="eventData"></param>
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (_isFusionFrom)
+        {
+            return;
+        }
         if (_isDrag)
         {
             return;
