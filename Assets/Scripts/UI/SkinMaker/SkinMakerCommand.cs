@@ -43,21 +43,39 @@ public class SkinMakerCommand : MonoBehaviour
             else
             {
                 _materialParent.GetChild(i).gameObject.SetActive(false);
-
             }
         }
 
-        //CheckCreate(skinMakeData);
+        if(CheckCanCreate(skinMakeData))
+        {
+            Debug.Log("제작 가능");
+        }
+        else
+        {
+            Debug.Log("제작 불가능");
+        }
     }
 
     /// <summary>
     /// 재료를 다 모았는지 체크한다
     /// </summary>
-    private void CheckCreate(SkinMakeData skinMakeData)
+    private bool CheckCanCreate(SkinMakeData skinMakeData)
     {
         for (int i = 0; i < skinMakeData._needMaterial.Count; i++)
         {
-
+            MaterialData inventoryData = _skinTestInventory._materialDatas.Find(x => x._materialType == skinMakeData._needMaterial[i]._materialType);
+            if (inventoryData != null)
+            {
+                if(inventoryData._count < skinMakeData._needMaterial[i]._count)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
+        return true;
     }
 }
