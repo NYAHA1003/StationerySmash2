@@ -17,10 +17,16 @@ public class SkinMakerCommand : MonoBehaviour
     private Transform _materialParent = null;
     [SerializeField]
     private SkinTestInventory _skinTestInventory = null;
+    [SerializeField]
+    private Button _skinMakeButton = null;
 
     //변수
     public List<SkinMakeData> _skinMakeDatas = new List<SkinMakeData>();
-    
+    private bool _isCanCrate = false;
+
+    //참조 변수 
+    private SkinMakeData _selectSkinData = null;
+
     private void Start()
     {
         for(int i = 0; i < _skinMakeDatas.Count; i++)
@@ -28,19 +34,59 @@ public class SkinMakerCommand : MonoBehaviour
             SkinButton skinButton = Instantiate(_skinButton, _skinParent).GetComponent<SkinButton>();
             skinButton.SetSkinData(_skinMakeDatas[i], this);
         }
+        _skinMakeButton.onClick.AddListener(() => OnCreate());
+    }
+
+    /// <summary>
+    /// 스킨 제작
+    /// </summary>
+    public void OnCreate()
+    {
+        if(_isCanCrate)
+        {
+            //재료 소모
+            for(int i = 0; i < _selectSkinData._needMaterial.Count; i++)
+            {
+                MaterialData materialData = _selectSkinData._needMaterial[i];
+                _skinTestInventory._materialDatas.Find(x => x._materialType == materialData._materialType)._count -= materialData._count;
+            }
+            SetMaterialBoxs(_selectSkinData);
+        }
+        else
+        {
+            //재료가 부족하거나 이미 제작했습니다
+        }
     }
 
     public void SetSkinMake(SkinMakeData skinMakeData)
     {
+        _selectSkinData = skinMakeData;
         _makeSkinImage.sprite = skinMakeData.sprite;
-        for(int i = 0; i < _materialParent.childCount; i++)
+        SetMaterialBoxs(skinMakeData);
+        if (CheckCanCreate(skinMakeData))
         {
-            if(i < skinMakeData._needMaterial.Count)
+            _isCanCrate = true;
+        }
+        else
+        {
+            _isCanCrate = false;
+        }
+    }
+
+    /// <summary>
+    /// 필요 아이템들 나타낸다.
+    /// </summary>
+    /// <param name="skinMakeData"></param>
+    public void SetMaterialBoxs(SkinMakeData skinMakeData)
+    {
+        for (int i = 0; i < _materialParent.childCount; i++)
+        {
+            if (i < skinMakeData._needMaterial.Count)
             {
                 _materialParent.GetChild(i).gameObject.SetActive(true);
                 MaterialData materialData = _skinTestInventory._materialDatas.Find(x => x._materialType == skinMakeData._needMaterial[i]._materialType);
                 int inventoryCount = 0;
-                if(materialData != null)
+                if (materialData != null)
                 {
                     inventoryCount = materialData._count;
                 }
@@ -50,15 +96,6 @@ public class SkinMakerCommand : MonoBehaviour
             {
                 _materialParent.GetChild(i).gameObject.SetActive(false);
             }
-        }
-
-        if(CheckCanCreate(skinMakeData))
-        {
-            Debug.Log("제작 가능");
-        }
-        else
-        {
-            Debug.Log("제작 불가능");
         }
     }
 
