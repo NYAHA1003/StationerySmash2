@@ -26,12 +26,12 @@ public class MaterialBox : MonoBehaviour
     /// 재료 설정
     /// </summary>
     /// <param name="materialData"></param>
-    public void SetMaterial(MaterialData materialData)
+    public void SetMaterial(MaterialData materialData, int inventoryCount)
     {
         _materialData = materialData;
         _materialImage.sprite = materialData._sprite;
         _materialNameText.text = materialData.name;
-        _materialCountText.text = materialData._count.ToString();
+        _materialCountText.text = $"{inventoryCount} / {materialData._count}";
     }
 
 

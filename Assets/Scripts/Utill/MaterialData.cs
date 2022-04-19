@@ -7,7 +7,16 @@ namespace Utill
     public enum MaterialType
     {
         None = 0,
-        
+        ClothPiece,
+        PlasticPiece,
+        GlassPiece,
+        WaterDrop,
+        Sticky,
+        Sparkling,
+        Snowball,
+        Sunlight,
+        Seam,
+        Sugar,
     }
 
     [System.Serializable]

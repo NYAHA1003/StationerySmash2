@@ -38,7 +38,13 @@ public class SkinMakerCommand : MonoBehaviour
             if(i < skinMakeData._needMaterial.Count)
             {
                 _materialParent.GetChild(i).gameObject.SetActive(true);
-                _materialParent.GetChild(i).GetComponent<MaterialBox>().SetMaterial(skinMakeData._needMaterial[i]);
+                MaterialData materialData = _skinTestInventory._materialDatas.Find(x => x._materialType == skinMakeData._needMaterial[i]._materialType);
+                int inventoryCount = 0;
+                if(materialData != null)
+                {
+                    inventoryCount = materialData._count;
+                }
+                _materialParent.GetChild(i).GetComponent<MaterialBox>().SetMaterial(skinMakeData._needMaterial[i], inventoryCount);
             }
             else
             {
