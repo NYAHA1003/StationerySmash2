@@ -45,7 +45,7 @@ public class UnitStat
     private int _bonusAccuracy = 0;
     private int _bonusRange = 0;
     private int _bonusWeight = 0;
-    private bool _isInvincible = false;
+    public bool _isInvincible = false;
 
     //참조 변수
     private UnitData _unitData = null;
@@ -70,6 +70,10 @@ public class UnitStat
         _attackPercent = 100 * grade;
         _maxHp = _unitData.unit_Hp * grade;
         _hp = _maxHp;
+    }
+    public void GradeUp(int grade)
+    {
+        _grade += grade;
     }
     public void Invincible()
     {
@@ -115,6 +119,16 @@ public class UnitStat
         _bonusRange = 0;
         _bonusWeight = 0;
         _damagedDecrese = 0;
+    }
+    /// <summary>
+    /// 잃은 체력의 일정 퍼센트 돌려주기
+    /// </summary>
+    /// <param name="return"></param>
+    public int LostHpPenrcent(int percent)
+    {
+        int lostHPpercent;
+        lostHPpercent = (1 - _hp / _maxHp) * percent;
+        return lostHPpercent;
     }
 
     /// <summary>
