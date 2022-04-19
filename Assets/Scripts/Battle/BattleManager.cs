@@ -87,11 +87,6 @@ public class BattleManager : MonoBehaviour
         _isEndSetting = true;
     }
 
-    private void OnGUI()
-    {
-        
-    }
-
     private void Update()
     {
         //  Debug.Log("유닛 갯수 : " + _commandUnit.UnitParent.childCount + " FPS : " + 1.0f / Time.deltaTime);
@@ -142,7 +137,7 @@ public class BattleManager : MonoBehaviour
 
 
         //컴포넌트들의 업데이트가 필요한 함수 재생
-        _updateAction.Invoke();
+        //_updateAction.Invoke();
     }
 
     /// <summary>

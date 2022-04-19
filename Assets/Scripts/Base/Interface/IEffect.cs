@@ -17,7 +17,7 @@ public class Effect_Attack : IEffect
     private ParticleSystem particleSys;
     [SerializeField]
     private float delete_time = 0.5f;
-    public void Set_Effect(EffectObject effObj, EffData effData)
+    public virtual void Set_Effect(EffectObject effObj, EffData effData)
     {
         particleSys ??= effObj.GetComponent<ParticleSystem>();
 
@@ -51,7 +51,7 @@ public class Effect_Stun : IEffect
 {
     private float angle = 0, starX = 0, starY = 0, speed = 5f, width = 0.2f, height = 0.05f;
 
-    EffectObject effObj;
+    protected EffectObject effObj;
 
     [SerializeField]
     private float delete_time = 0.5f;
@@ -75,7 +75,7 @@ public class Effect_Stun : IEffect
         this.effObj.Invoke("Delete_Effect", delete_time);
     }
 
-    public void Update_Effect(EffectObject effObj, EffData effData)
+    public virtual void Update_Effect(EffectObject effObj, EffData effData)
     {
         angle += Time.deltaTime * speed;
         starX = Mathf.Cos(angle) * width + effData.trm.position.x;
@@ -88,6 +88,11 @@ public class Effect_Stun : IEffect
     }
 }
 
-public class Effect_Slow : Effect_Attack
+public class Effect_Slow : Effect_Stun
 {
+    
+   public override void Update_Effect(EffectObject effObj, EffData effData)
+    {
+        this.effObj.transform.position = new Vector3(effData.trm.position.x, effData.trm.position.y, 0);
+    }
 }

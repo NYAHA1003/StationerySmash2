@@ -16,6 +16,9 @@ namespace Utill
         Thorn,
         Magnet_N,
         Magnet_S,
+        GrowingSeed,
+        Invincibel,
+        Snack,
     }
 
     [System.Serializable]

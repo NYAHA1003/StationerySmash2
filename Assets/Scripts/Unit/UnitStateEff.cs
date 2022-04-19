@@ -99,6 +99,9 @@ public class UnitStateEff
             case AtkType.Exch:
                 _statEffList.Add(PoolManager.GetEff<FastfEffState>(_transform, _spriteRenderer.transform, _unit, atkType, value));
                 break;
+            case AtkType.Scratch:
+                _statEffList.Add(PoolManager.GetEff<ScratchEffState>(_transform, _spriteRenderer.transform, _unit, atkType, value));
+                break;
         }
     }
 
