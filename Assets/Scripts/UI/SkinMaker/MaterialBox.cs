@@ -15,8 +15,10 @@ public class MaterialBox : MonoBehaviour
     [SerializeField]
     private Image _materialImage = null;
     [SerializeField]
-    private TextMeshProUGUI _materialText = null;
-    
+    private TextMeshProUGUI _materialNameText = null;
+    [SerializeField]
+    private TextMeshProUGUI _materialCountText = null;
+
     //º¯¼ö
     public MaterialData _materialData = null;
 
@@ -28,7 +30,8 @@ public class MaterialBox : MonoBehaviour
     {
         _materialData = materialData;
         _materialImage.sprite = materialData._sprite;
-        _materialText.text = materialData.name;
+        _materialNameText.text = materialData.name;
+        _materialCountText.text = materialData._count.ToString();
     }
 
 

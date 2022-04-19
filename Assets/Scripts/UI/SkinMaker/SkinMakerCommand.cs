@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Utill;
 
 public class SkinMakerCommand : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class SkinMakerCommand : MonoBehaviour
     private Image _makeSkinImage = null;
     [SerializeField]
     private Transform _materialParent = null;
+    [SerializeField]
+    private SkinTestInventory _skinTestInventory = null;
 
     //변수
     public List<SkinMakeData> _skinMakeDatas = new List<SkinMakeData>();
@@ -42,6 +45,19 @@ public class SkinMakerCommand : MonoBehaviour
                 _materialParent.GetChild(i).gameObject.SetActive(false);
 
             }
+        }
+
+        //CheckCreate(skinMakeData);
+    }
+
+    /// <summary>
+    /// 재료를 다 모았는지 체크한다
+    /// </summary>
+    private void CheckCreate(SkinMakeData skinMakeData)
+    {
+        for (int i = 0; i < skinMakeData._needMaterial.Count; i++)
+        {
+
         }
     }
 }
