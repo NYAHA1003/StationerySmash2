@@ -34,6 +34,6 @@ public class SkinButton : MonoBehaviour
         _skinImage.sprite = _skinMakeData.sprite;
         _skinName.text = _skinMakeData.skinName;
         _skinMakerCommand = skinMakerCommand;
-        _skinButton.onClick.AddListener(() => skinMakerCommand.SetSkinMake(skinMakeData));
+        _skinButton.onClick.AddListener(() => skinMakerCommand.SetSkinMakeButtonAndBoxs(skinMakeData));
     }
 }
