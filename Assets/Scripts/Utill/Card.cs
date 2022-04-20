@@ -12,6 +12,11 @@ namespace Utill
         Installation,
     }
 
+    public enum CardNamingType
+    {
+        None = 0,
+    }
+
     public enum StarategyType
     {
         None,

@@ -373,7 +373,7 @@ namespace Battle
                 _afterImageSpriteRenderer.color = Color.red;
             }
             _unitAfterImage.transform.position = new Vector3(pos.x, 0);
-            _afterImageSpriteRenderer.sprite = _selectCard.DataBase.skinData.cardSprite;
+            _afterImageSpriteRenderer.sprite = _selectCard.DataBase.skinData._cardSprite;
             return;
         }
 

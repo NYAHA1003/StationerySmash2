@@ -6,5 +6,6 @@ using Utill;
 
 public class SkinTestInventory : MonoBehaviour
 {
-    public List<MaterialData> _materialDatas;
+    public List<SkinData> _haveSkin = new List<SkinData>();
+    public List<MaterialData> _materialDatas = new List<MaterialData>();
 }

@@ -139,7 +139,7 @@ public abstract class AbstractAttackState : AbstractUnitState
     /// <param name="atkData"></param>
     protected virtual void SetAttackData(ref AtkData atkData)
     {
-        atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, AtkType.Normal, _myUnit.SkinData.effectType, originValue);
+        atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, AtkType.Normal, _myUnit.SkinData._effectType, originValue);
     }
 
     /// <summary>
