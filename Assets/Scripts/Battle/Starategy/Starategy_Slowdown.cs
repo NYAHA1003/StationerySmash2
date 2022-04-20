@@ -22,9 +22,17 @@ public class Starategy_Slowdown : AbstractStarategy
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         for(int i = 0; i < list.Count; i++)
         {
-            if(Vector2.Distance(list[i].transform.position, mousePos) < value[3])
+            //value[3] = ¹üÀ§
+            try
             {
-                list[i].AddStatusEffect(Utill.AtkType.SlowDown, value);
+                if (Vector2.Distance(list[i].transform.position, mousePos) < value[3])
+                {
+                    list[i].AddStatusEffect(Utill.AtkType.SlowDown, value);
+                }
+            }
+            catch
+            {
+                int a = 0;
             }
         }
     }

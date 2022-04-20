@@ -111,7 +111,7 @@ public class StarategyData
     public AbstractStarategy starategy_State;
     public float[] starategyablityData = new float[0];
 
-    public void Set_State()
+    public void Set_State(params float[] values)
     {
 
         switch (starategyType)
@@ -130,6 +130,11 @@ public class StarategyData
             case StarategyType.InstallRage:
                 starategy_State = new Starategy_Rage();
                 break;
+        }
+        //논이 아닌 경우 셋 밸류를 해준다.
+        if(starategyType != StarategyType.None)
+        {
+            starategy_State.SetValuse(starategyablityData);
         }
     }
 }
