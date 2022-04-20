@@ -6,6 +6,6 @@ public class DeckActive : AbstractButton
 {
     public override AbstractButton SetCurrentBtn()
     {
-        throw new System.NotImplementedException();
+        return this; 
     }
 }

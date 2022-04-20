@@ -9,13 +9,14 @@ public abstract class AbstractButton : MonoBehaviour
     public  ActiveBehavior activeBehavior;
     public UndoBehavior undoBehavior;
 
+    public GameObject ActivePanel; 
     public void PerformActive(AbstractButton btn)
     {
-        btn.gameObject.SetActive(true); 
+        btn.ActivePanel.gameObject.SetActive(true); 
     }
     public void PerformUndo(AbstractButton btn)
     {
-        btn.gameObject.SetActive(false); 
+        btn.ActivePanel.gameObject.SetActive(false); 
     }
     public abstract AbstractButton SetCurrentBtn();  
 }
