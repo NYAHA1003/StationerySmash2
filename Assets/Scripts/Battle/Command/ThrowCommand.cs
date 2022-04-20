@@ -59,7 +59,7 @@ namespace Battle
         {
             if(_throwGauge <= 200f)
             {
-                _throwGauge += Time.deltaTime * 5;
+                IncreaseThrowGauge(Time.deltaTime * 10);
                 _throwDelayBar.fillAmount = _throwGauge / 200f;
             }
         }
@@ -70,11 +70,6 @@ namespace Battle
         /// <param name="pos"></param>
         public void PullUnit(Vector2 pos)
         {
-            if(_throwGauge < 5f)
-            {
-                return;
-            }
-
             int firstNum = 0;
             int lastNum = _unitCommand._playerUnitList.Count - 1;
             int loopnum = 0;
@@ -133,6 +128,11 @@ namespace Battle
             if (_throwUnit != null)
             {
                 if (_throwUnit.UnitData.unitType == UnitType.PencilCase)
+                {
+                    _throwUnit = null;
+                    return;
+                }
+                if(_throwGauge < _throwUnit.UnitStat.Return_Weight())
                 {
                     _throwUnit = null;
                     return;
@@ -342,10 +342,27 @@ namespace Battle
             if (_throwUnit != null)
             {
                 _throwUnit.Throw_Unit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-                _throwGauge -= _throwUnit.UnitStat.Return_Weight();
+                IncreaseThrowGauge(-_throwUnit.UnitStat.Return_Weight());
                 _throwUnit = null;
                 _parabolaBackground.SetActive(false);
                 UnDrawParabola();
+            }
+        }
+
+        /// <summary>
+        /// 던지기 게이지 증감
+        /// </summary>
+        /// <param name="add"></param>
+        public void IncreaseThrowGauge(float add)
+        {
+            _throwGauge += add;
+            if(_throwGauge < 0)
+            {
+                _throwGauge = 0;
+            }
+            else if(_throwGauge > 200)
+            {
+                _throwGauge = 200;
             }
         }
     }
