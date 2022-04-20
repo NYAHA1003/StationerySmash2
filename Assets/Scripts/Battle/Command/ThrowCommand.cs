@@ -342,10 +342,10 @@ namespace Battle
             if (_throwUnit != null)
             {
                 _throwUnit.Throw_Unit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                _throwGauge -= _throwUnit.UnitStat.Return_Weight();
                 _throwUnit = null;
                 _parabolaBackground.SetActive(false);
                 UnDrawParabola();
-                _throwGauge -= _throwUnit.UnitStat.Return_Weight();
             }
         }
     }
