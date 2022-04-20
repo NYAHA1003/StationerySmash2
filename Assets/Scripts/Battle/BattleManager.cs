@@ -137,7 +137,7 @@ public class BattleManager : MonoBehaviour
 
 
         //컴포넌트들의 업데이트가 필요한 함수 재생
-        //_updateAction.Invoke();
+        _updateAction.Invoke();
     }
 
     /// <summary>

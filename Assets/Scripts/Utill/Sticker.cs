@@ -22,6 +22,11 @@ namespace Utill
         Run,
         Heal,
         LongSee,
-
+        Heavy,
+        Invincible,
+        PencilNew,
+        ScissorPinking,
+        RustyRuller,
+        PlasticPen,
     }
 }

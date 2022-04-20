@@ -6,13 +6,14 @@ using Utill;
 public class ScratchEffState : EffState
 {
     float ScratchDamage = 10; // 흡집 스택당 데미지
-    float currntScratchDamage = 0; // 현재 스택데미지
-    float _scratchTime = 1;
+    float ScratchStack = 0; // 현재 스택
+    float _scratchTime = 5;
     float timer = 0;
     bool isScratch = false;
     // Start is called before the first frame update
     public override void Enter()
     {
+        ScratchStack++;
         SprTrm.GetComponent<SpriteRenderer>().color = Color.green;
         isScratch = true;
         ScratchHit();
@@ -25,10 +26,9 @@ public class ScratchEffState : EffState
 
     public override void Exit()
     {
-        currntScratchDamage += ScratchDamage;
         SprTrm.GetComponent<SpriteRenderer>().color = Color.red;
         isScratch = false;
-        currntScratchDamage = 0;
+        ScratchStack = 0;
         base.Exit();
     }
 
@@ -51,7 +51,7 @@ public class ScratchEffState : EffState
             timer += Time.deltaTime;
             if (timer >= _scratchTime)
             {
-                _myUnit.UnitStat.SubtractHP(-(int)currntScratchDamage);
+                _myUnit.UnitStat.SubtractHP(-1 * (int)ScratchDamage * (int)ScratchStack);
                 timer = 0;
             }
         }
