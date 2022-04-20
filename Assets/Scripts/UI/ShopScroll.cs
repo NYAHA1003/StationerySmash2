@@ -39,7 +39,7 @@ public class ShopScroll : AgentScroll
     #region 버튼 함수
     public void OnMoveShopPanel(object n)
     {
-        targetIndex = SIZE - (int)n - 1;
+        targetIndex = Size - (int)n - 1;
         targetPos = pos[(int)n];
         SetOriginScroll();
         ChangeBtnSize();
@@ -52,7 +52,7 @@ public class ShopScroll : AgentScroll
     void SetOriginScroll()
     {
         Debug.Log("실행");
-        for (int i = 0; i < SIZE; i++)
+        for (int i = 0; i < Size; i++)
         {
             if (contentTr.GetChild(i).GetComponent<ScrollScript>()) //&& pos[i] != curPos && pos[i] == targetPos
             {
@@ -66,9 +66,9 @@ public class ShopScroll : AgentScroll
     /// </summary>
     void ChangeBtnSize()
     {
-        for (int i = 0; i < SIZE; i++)
+        for (int i = 0; i < Size; i++)
         {
-            panelMoveBtns[i].sizeDelta = new Vector2((targetIndex == SIZE - i - 1) ? 320 : 160, panelMoveBtns[SIZE - i - 1].sizeDelta.y);
+            panelMoveBtns[i].sizeDelta = new Vector2((targetIndex == Size - i - 1) ? 320 : 160, panelMoveBtns[Size - i - 1].sizeDelta.y);
         }
     }
 
