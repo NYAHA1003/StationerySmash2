@@ -29,7 +29,7 @@ namespace Battle
         private Vector2 _direction;
         private float _force;
         private float _pullTime;
-        private float _throwDelay = 0f;
+        private float _throwGauge = 0f;
 
         /// <summary>
         /// √ ±‚»≠
@@ -57,10 +57,10 @@ namespace Battle
         /// </summary>
         public void UpdateThrowDelay()
         {
-            if(_throwDelay <= 5f)
+            if(_throwGauge <= 200f)
             {
-                _throwDelay += Time.deltaTime * 5;
-                _throwDelayBar.fillAmount = _throwDelay / 5f;
+                _throwGauge += Time.deltaTime * 5;
+                _throwDelayBar.fillAmount = _throwGauge / 200f;
             }
         }
 
@@ -70,7 +70,7 @@ namespace Battle
         /// <param name="pos"></param>
         public void PullUnit(Vector2 pos)
         {
-            if(_throwDelay < 5f)
+            if(_throwGauge < 5f)
             {
                 return;
             }
@@ -345,7 +345,7 @@ namespace Battle
                 _throwUnit = null;
                 _parabolaBackground.SetActive(false);
                 UnDrawParabola();
-                _throwDelay = 0f;
+                _throwGauge -= _throwUnit.UnitStat.Return_Weight();
             }
         }
     }
