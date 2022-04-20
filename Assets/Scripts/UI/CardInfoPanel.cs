@@ -42,31 +42,43 @@ public class CardInfoPanel : MonoBehaviour
     {
         _selectCardData = cardData;
 
+        //카드 타입에 따라 설명창 설정
         switch (_selectCardData.cardType)
         {
             case CardType.Execute:
+                SetCardExecute(cardData);
                 break;
             case CardType.SummonUnit:
+                SetCardSummonUnit(cardData);
                 break;
             case CardType.SummonTrap:
+                SetCardSummonTrap(cardData);
                 break;
             case CardType.Installation:
+                SetCardInstallation(cardData);
                 break;
         }
     }
 
     public void SetCardExecute(CardData cardData)
     {
+        _unitStatTexts.SetActive(false);
 
+        //이름, 이미지, 설명 설정
+        _nameText.text = cardData.card_Name;
+        _cardImage.sprite = cardData.skinData.cardSprite;
+        _descriptionText.text = cardData.card_Description;
     }
     public void SetCardSummonUnit(CardData cardData)
     {
         _unitStatTexts.SetActive(true);
 
+        //이름, 이미지, 설명 설정
         _nameText.text = cardData.card_Name;
         _cardImage.sprite = cardData.skinData.cardSprite;
         _descriptionText.text = cardData.card_Description;
 
+        //스탯 텍스트 설정
         _hpText.text = cardData.unitData.unit_Hp.ToString();
         _attackText.text = cardData.unitData.damage.ToString();
         _attackSpeedText.text = cardData.unitData.attackSpeed.ToString();
@@ -75,10 +87,20 @@ public class CardInfoPanel : MonoBehaviour
     }
     public void SetCardSummonTrap(CardData cardData)
     {
+        _unitStatTexts.SetActive(false);
 
+        //이름, 이미지, 설명 설정
+        _nameText.text = cardData.card_Name;
+        _cardImage.sprite = cardData.skinData.cardSprite;
+        _descriptionText.text = cardData.card_Description;
     }
     public void SetCardInstallation(CardData cardData)
     {
+        _unitStatTexts.SetActive(false);
 
+        //이름, 이미지, 설명 설정
+        _nameText.text = cardData.card_Name;
+        _cardImage.sprite = cardData.skinData.cardSprite;
+        _descriptionText.text = cardData.card_Description;
     }
 }
