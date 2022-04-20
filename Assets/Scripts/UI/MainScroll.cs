@@ -67,22 +67,22 @@ public class MainScroll : AgentScroll
         }
     }
 
-
+    #region 버튼 함수
     /// <summary>
     /// 상점,메인,스테이지창 중 한곳으로 이동하는 것 
     /// </summary>
     /// <param name="n">0=상점 1=메인 2=스테이지</param>
     public void OnMoveMainPanel(object n)
     {
-        if ((int)n < 0 || (int)n > SIZE - 1)
+        if ((int)n < 0 || (int)n > Size-1)
         {
             Debug.LogError("메인 패널 움직이는 범위 넘어감 0~SIZE-1 사이 값이 아님");
             return;
         }
-        targetIndex = SIZE - (int)n - 1;
+        targetIndex = Size - (int)n - 1;
         targetPos = pos[(int)n];
         StressImage();
     }
-
+    #endregion
 }
 
