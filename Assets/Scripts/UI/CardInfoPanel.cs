@@ -10,6 +10,7 @@ public class CardInfoPanel : MonoBehaviour
 {
     //카드 스탯 텍스트들
     //유닛일 때만 사용
+    private GameObject _unitStatTexts = null;
     private TextMeshProUGUI _hpText = null;
     private TextMeshProUGUI _attackText = null;
     private TextMeshProUGUI _attackSpeedText = null;
@@ -60,7 +61,17 @@ public class CardInfoPanel : MonoBehaviour
     }
     public void SetCardSummonUnit(CardData cardData)
     {
+        _unitStatTexts.SetActive(true);
 
+        _nameText.text = cardData.card_Name;
+        _cardImage.sprite = cardData.skinData.cardSprite;
+        _descriptionText.text = cardData.card_Description;
+
+        _hpText.text = cardData.unitData.unit_Hp.ToString();
+        _attackText.text = cardData.unitData.damage.ToString();
+        _attackSpeedText.text = cardData.unitData.attackSpeed.ToString();
+        _moveSpeedText.text = cardData.unitData.moveSpeed.ToString();
+        _weightText.text = cardData.unitData.unit_Weight.ToString();
     }
     public void SetCardSummonTrap(CardData cardData)
     {

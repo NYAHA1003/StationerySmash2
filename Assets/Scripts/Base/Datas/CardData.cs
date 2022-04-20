@@ -10,6 +10,7 @@ public class CardData
 {
     public CardType cardType;
     public string card_Name;
+    public string card_Description;
     public int card_Cost;
     public SkinData skinData;
     public int level;
