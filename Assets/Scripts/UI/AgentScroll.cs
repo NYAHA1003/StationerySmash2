@@ -12,8 +12,15 @@ public class AgentScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     protected Scrollbar scrollbar;
     protected Transform contentTr;
 
-    protected const int SIZE = 3;
-    protected float[] pos = new float[SIZE];
+    //protected const int Size = 3;
+    protected int size = 3; 
+    protected int Size
+    {
+        get => size;
+        set => size = value; 
+    }
+    //protected float[] pos = new float[Size];
+    protected List<float> pos = new List<float>(); 
     protected float distance, curPos, targetPos;
     protected bool isDrag;
     protected int targetIndex;
@@ -26,8 +33,12 @@ public class AgentScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     }
     private void Start()
     {
-        distance = 1f / (SIZE - 1);
-        for (int i = 0; i < SIZE; i++) pos[i] = distance * i;
+        distance = 1f / (Size - 1);
+        //for (int i = 0; i < Size; i++) pos[i] = distance * i;
+        for(int i = 0; i < Size; i++)
+        {
+            pos.Add(distance * i);
+        }
         ChildStart(); 
     }
     private void Update()
@@ -56,11 +67,11 @@ public class AgentScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     /// <returns></returns>
     float SetPos()
     {
-        for (int i = 0; i < SIZE; i++)
+        for (int i = 0; i < Size; i++)
         {
             if (scrollbar.value < pos[i] + distance * 0.5f && scrollbar.value > pos[i] - distance * 0.5f)
             {
-                targetIndex = SIZE - i - 1;
+                targetIndex = Size - i - 1;
                 Debug.Log("≈∏∞Ÿ¿Œµ¶Ω∫@@" + targetIndex);
                 return pos[i];
             }
