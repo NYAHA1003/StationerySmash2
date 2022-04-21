@@ -8,6 +8,8 @@ public class SkinMakerCommand : MonoBehaviour
 {
     //인스펙터 변수
     [SerializeField]
+    private GameObject skinPn;
+    [SerializeField]
     private Transform _skinParent = null; // 스킨 선택 버튼 관리 부모
     [SerializeField]
     private GameObject _skinButtonPrefeb = null; //스킨 선택 버튼 프리펩
@@ -38,8 +40,13 @@ public class SkinMakerCommand : MonoBehaviour
 
         //스킨 제작버튼에 함수 추가
         _skinMakeButton.onClick.AddListener(() => OnCreate());
+        EventManager.StartListening(Util.EventsType.ActiveSkinPn, OnActiveSkinPn);
     }
 
+    private void OnActiveSkinPn()
+    {
+        skinPn.SetActive(!skinPn.activeSelf);
+    }
     /// <summary>
     /// 스킨 제작 콜백 함수
     /// </summary>
