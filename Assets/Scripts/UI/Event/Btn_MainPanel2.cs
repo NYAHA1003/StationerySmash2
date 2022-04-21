@@ -15,7 +15,7 @@ public class Btn_MainPanel2
     public void Start()
     {
         EventManager.StartListening(EventsType.ActiveDeck, OnDeckActive);
-        EventManager.StartListening(EventsType.ActiveCardDescription, OnCardDescriptoinActive);
+        //EventManager.StartListening(EventsType.ActiveCardDescription, OnCardDescriptoinActive);
         EventManager.StartListening(EventsType.ActiveSetting, OnSettingActive);
 
         //활성화되어 있는 모든 패널 닫기 
