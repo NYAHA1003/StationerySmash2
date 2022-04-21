@@ -34,8 +34,6 @@ public class CardInfoPanel : MonoBehaviour
 
     //½ºÅ²  
     [SerializeField]
-    private SkinTestInventory _skinTestInventory = null;
-    [SerializeField]
     private GameObject _skinButtonPrefeb = null;
     [SerializeField]
     private Transform _buttonParent = null;

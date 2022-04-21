@@ -8,6 +8,9 @@ public class SkinMakerCommand : MonoBehaviour
 {
     //인스펙터 변수
     [SerializeField]
+    private SaveDataSO _saveDataSO;
+
+    [SerializeField]
     private Transform _skinParent = null; // 스킨 선택 버튼 관리 부모
     [SerializeField]
     private GameObject _skinButtonPrefeb = null; //스킨 선택 버튼 프리펩
@@ -15,8 +18,6 @@ public class SkinMakerCommand : MonoBehaviour
     private Image _currentMakeSkinImage = null; //현재 선택한 스킨 이미지 
     [SerializeField]
     private Transform _materialParent = null; //필요 재료 박스 관리 부모
-    [SerializeField]
-    private SkinTestInventory _skinTestInventory = null; //임시 인벤토리
     [SerializeField]
     private Button _skinMakeButton = null; // 스킨 제작 버튼
 
@@ -52,7 +53,7 @@ public class SkinMakerCommand : MonoBehaviour
             for(int i = 0; i < _selectSkinData._needMaterial.Count; i++)
             {
                 MaterialData materialData = _selectSkinData._needMaterial[i];
-                _skinTestInventory._materialDatas.Find(x => x._materialType == materialData._materialType)._count -= materialData._count;
+                _saveDataSO.userSaveData._materialDatas.Find(x => x._materialType == materialData._materialType)._count -= materialData._count;
             }
             SetMaterialBoxs(_selectSkinData);
         }
@@ -101,7 +102,7 @@ public class SkinMakerCommand : MonoBehaviour
                 _materialParent.GetChild(i).gameObject.SetActive(true);
                 
                 //재료 데이터가 있는지 탐색
-                MaterialData materialData = _skinTestInventory._materialDatas.Find(x => x._materialType == skinMakeData._needMaterial[i]._materialType);
+                MaterialData materialData = _saveDataSO.userSaveData._materialDatas.Find(x => x._materialType == skinMakeData._needMaterial[i]._materialType);
                 int haveMaterialCount = 0;
                 
                 //인벤토리에 재료가 있다면 그거의 갯수로 바꾼다
@@ -128,7 +129,7 @@ public class SkinMakerCommand : MonoBehaviour
     {
         for (int i = 0; i < skinMakeData._needMaterial.Count; i++)
         {
-            MaterialData haveMaterialData = _skinTestInventory._materialDatas.Find(x => x._materialType == skinMakeData._needMaterial[i]._materialType);
+            MaterialData haveMaterialData = _saveDataSO.userSaveData._materialDatas.Find(x => x._materialType == skinMakeData._needMaterial[i]._materialType);
             if (haveMaterialData != null)
             {
                 if(haveMaterialData._count < skinMakeData._needMaterial[i]._count)
