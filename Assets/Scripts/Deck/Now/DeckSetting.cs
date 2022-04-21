@@ -8,13 +8,20 @@ public class DeckSetting : MonoBehaviour
     [SerializeField]
     private UserDeckData userDeckData;
     [SerializeField]
-    private DeckCard cardPrefab;
-
-    private List<DeckCard> deckCards = new List<DeckCard>();
+    private GameObject cardPrefab;
+    [SerializeField]
+    private GameObject cardDescription;
+    [SerializeField]
+    private GameObject deckScroll; 
+    public List<GameObject> deckCards = new List<GameObject>();
+    private void Awake()
+    {
+        SetDeck();
+    }
     private void Start()
     {
         EventManager.StartListening(EventsType.ActiveDeck, UpdateDeck);
-        SetDeck();
+        EventManager.StartListening(EventsType.ActiveCardInfoPn, OnActiveCardInfoPn);
     }
     
     /// <summary>
@@ -26,8 +33,8 @@ public class DeckSetting : MonoBehaviour
         userDeckData.SetCardData();
         for (int i = 0; i < userDeckData.deckList.cardDatas.Count; i++)
         {
-            DeckCard cardObj = CreateCard();
-            cardObj.SetCard(userDeckData.deckList.cardDatas[i]);
+            GameObject cardObj = CreateCard();
+            cardObj.GetComponent<DeckCard>().SetCard(userDeckData.deckList.cardDatas[i]);
             deckCards.Add(cardObj);
         }
     }
@@ -40,17 +47,24 @@ public class DeckSetting : MonoBehaviour
         for (int i = 0; i < deckCards.Count; i++)
         {
             if (deckCards[i] == null) deckCards[i] = CreateCard();
-            deckCards[i].SetCard(userDeckData.deckList.cardDatas[i]);
+            deckCards[i].GetComponent<DeckCard>().SetCard(userDeckData.deckList.cardDatas[i]);
         }
     }
     /// <summary>
     /// 덱에 카드 생성 
     /// </summary>
     /// <returns></returns>
-    public DeckCard CreateCard()
+    public GameObject CreateCard()
     {
-        DeckCard cardObj = Instantiate(cardPrefab);
-        cardObj.transform.SetParent(gameObject.transform.GetChild(0).GetChild(0), false);
+        GameObject cardObj = Instantiate(cardPrefab, deckScroll.transform.GetChild(0).GetChild(0),false);
         return cardObj;
+    }
+
+    /// <summary>
+    /// 카드 정보 패널 활성화
+    /// </summary>
+    private void OnActiveCardInfoPn()
+    {
+        cardDescription.SetActive(!cardDescription.activeSelf);
     }
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using Util;
 using UnityEngine.UI;
+using System.Collections.Generic;
 //public enum PanelType
 //{
 //    Sticker,
@@ -16,22 +17,34 @@ public class ButtonManager : MonoBehaviour
 
     [Header("¹öÆ°")]
     [SerializeField]
-    private Button skinPanel; 
+    private List<Button> cardInfoBtns = new List<Button>();
 
+    [SerializeField]
+    private DeckSetting deckSetting; 
     private void Start()
     {
         btn_MainPanel2.Start();
-        AddListeners(); 
+        AddDeckCards(); 
+        AddListeners();
     }
-    
     private void AddListeners()
     {
-        skinPanel.onClick.AddListener(
-            () =>
-            {
-                EventManager.TriggerEvent(EventsType.ActiveSkinPn);
-                Debug.Log("qq");
-                });
+        Debug.Log(deckSetting.deckCards.Count);
+        for(int i = 0;i < deckSetting.deckCards.Count; i++)
+        {
+            cardInfoBtns[i].onClick.AddListener(
+           () =>
+           {
+               OnSkinActive();
+           });
+        }
+    }
+    private void AddDeckCards()
+    {
+        for (int i = 0; i < deckSetting.deckCards.Count; i++)
+        {
+            cardInfoBtns.Add(deckSetting.deckCards[i].GetComponent<Button>());
+        }
 
     }
     public void OnDeckActive()
@@ -50,7 +63,7 @@ public class ButtonManager : MonoBehaviour
     }
     public void OnSkinActive()
     {
-        EventManager.TriggerEvent(EventsType.ActiveSkinPn);
+        EventManager.TriggerEvent(EventsType.ActiveCardInfoPn);
     }
     public void OnMoveShopPanel(int iParam)
     {

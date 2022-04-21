@@ -23,6 +23,7 @@ public class TempBtnManager : MonoBehaviour
         currentButton.PerformUndo(currentButton);
         abstractButtons.Pop();
     }
+
     public void SetCurrentButton()
     {
         currentButton = EventSystem.current.currentSelectedGameObject.GetComponent<AbstractButton>().SetCurrentBtn();
