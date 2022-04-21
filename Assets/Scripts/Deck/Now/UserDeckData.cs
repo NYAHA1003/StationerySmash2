@@ -20,10 +20,10 @@ public class UserDeckData : MonoBehaviour
 
         //카드 데이터 초기화
         deckList.cardDatas.Clear();
-        int count = saveData.userSaveData.unitSaveDatas.Count;
+        int count = saveData.userSaveData._unitSaveDatas.Count;
         for (int i = 0; i < count; i++)
         {
-            SaveData saveDataobj = saveData.userSaveData.unitSaveDatas[i];  
+            SaveData saveDataobj = saveData.userSaveData._unitSaveDatas[i];  
             //세가지 타입이 세이브데이터와 모두 같은 기준 데이터 찾기
             CardData cardDataobj = standardcardDeck.cardDatas.Find(x => x.cardType == saveDataobj._cardType 
                                             && x.unitData.unitType == saveDataobj._unitType
