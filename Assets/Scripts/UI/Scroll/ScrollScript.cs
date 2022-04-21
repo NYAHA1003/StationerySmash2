@@ -1,13 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.UI; 
 
-/// <summary>
-/// 스크롤뷰에서 하위 스크롤뷰 패널을 사용할 때
-/// </summary>
-public class ChildScrollView : ScrollRect
+public class ScrollScript : ScrollRect
 {
     [SerializeField]
     private bool isHorizontalMove = false; //이 스크롤뷰타 수직으로 이동할 때, 그냥 인스펙터에서 안 보임 Debug로 열어서 수정
@@ -23,12 +20,12 @@ public class ChildScrollView : ScrollRect
         agentScroll = GetComponentInParent<AgentScroll>();
         parentScrollRect = agentScroll.GetComponent<ScrollRect>();
 
-        if(isAutoSizeInContent)
+        if (isAutoSizeInContent)
         {
             var rect = GetComponent<RectTransform>();
             float size = 0;
-            
-            if(isHorizontalMove)
+
+            if (isHorizontalMove)
             {
                 size = content.transform.childCount * content.GetChild(0).GetComponent<RectTransform>().sizeDelta.x;
                 rect.sizeDelta = new Vector2(size, rect.sizeDelta.y);
@@ -38,7 +35,7 @@ public class ChildScrollView : ScrollRect
                 size = content.transform.childCount * content.GetChild(0).GetComponent<RectTransform>().sizeDelta.y;
                 rect.sizeDelta = new Vector2(rect.sizeDelta.x, size);
             }
-            
+
         }
     }
     //
@@ -46,8 +43,8 @@ public class ChildScrollView : ScrollRect
     public override void OnBeginDrag(PointerEventData eventData)
     {
         // 드래그 시작하는 순간 수평이동이 크면 부모가 드래그 시작한 것, 수직이동이 크면 자식이 드래그 시작한 것
-        
-        if(isHorizontalMove)
+
+        if (isHorizontalMove)
         {
             forParent = Mathf.Abs(eventData.delta.y) > Mathf.Abs(eventData.delta.x);
         }
