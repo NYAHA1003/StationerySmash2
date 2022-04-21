@@ -13,39 +13,42 @@ public class ShopScroll : AgentScroll
     [SerializeField]
     private RectTransform[] panelMoveBtns;
 
-    protected override void ChildAwake()
+    protected override void SettingAwake()
     {
+        base.SettingAwake();
+
         EventManager.StartListening(EventsType.MoveShopPn, OnMoveShopPanel);
         EventManager.StartListening(EventsType.CloaseAllPn, SetOriginScroll);
         EventManager.StartListening(EventsType.SetOriginShopPn, SetOriginScroll);
     }
 
-    protected override void ChildUpdate()
+    protected override void SettingUpdate()
     {
-        accentSlider.value = Mathf.Lerp(accentSlider.value, scrollbar.value, 0.2f);
+        base.SettingUpdate();
+
+        accentSlider.value = Mathf.Lerp(accentSlider.value, _scrollbar.value, 0.2f);
     }
     public override void OnEndDrag(PointerEventData eventData)
     {
         base.OnEndDrag(eventData);
         SetOriginScroll();
 
-        if (curPos == targetPos)
+        if (_curPos == _targetPos)
         {
             DeltaSlide(eventData.delta.x);
             SetOriginScroll();
         }
         ChangeBtnSize();
     }
-    #region 버튼 함수
     public void OnMoveShopPanel(object n)
     {
-        targetIndex = Size - (int)n - 1;
-        targetPos = pos[(int)n];
+        _targetIndex = Size - (int)n - 1;
+        _targetPos = _pos[(int)n];
         SetOriginScroll();
         ChangeBtnSize();
-        Debug.Log(pos[(int)n]);
+        Debug.Log(_pos[(int)n]);
     }
-    #endregion
+
     /// <summary>
     /// 상점 스크롤 value 초기화  
     /// </summary>
@@ -54,7 +57,7 @@ public class ShopScroll : AgentScroll
         Debug.Log("실행");
         for (int i = 0; i < Size; i++)
         {
-            if (contentTr.GetChild(i).GetComponent<ScrollScript>()) //&& pos[i] != curPos && pos[i] == targetPos
+            if (_contentTrm.GetChild(i).GetComponent<ScrollScript>()) //&& pos[i] != curPos && pos[i] == targetPos
             {
                 yScrollBars[i].value = 1;
             }
@@ -68,7 +71,7 @@ public class ShopScroll : AgentScroll
     {
         for (int i = 0; i < Size; i++)
         {
-            panelMoveBtns[i].sizeDelta = new Vector2((targetIndex == Size - i - 1) ? 320 : 160, panelMoveBtns[Size - i - 1].sizeDelta.y);
+            panelMoveBtns[i].sizeDelta = new Vector2((_targetIndex == Size - i - 1) ? 320 : 160, panelMoveBtns[Size - i - 1].sizeDelta.y);
         }
     }
 

@@ -42,10 +42,15 @@ public class CardInfoPanel : MonoBehaviour
     private Transform _buttonParent = null;
 
     //스티커 착용창
+    [SerializeField]
+    private GameObject _stickerPanel = null;
     //유닛일 때만 사용
 
     //미리보기창
 
+    //스크롤 조절창
+    [SerializeField]
+    private SkinScroll _skinScroll = null;
 
     private CardData _selectCardData;
 
@@ -81,6 +86,7 @@ public class CardInfoPanel : MonoBehaviour
     public void SetCardExecute(CardData cardData)
     {
         _unitStatTexts.SetActive(false);
+        _stickerPanel.SetActive(false);
 
         //이름, 이미지, 설명 설정
         _nameText.text = cardData.card_Name;
@@ -94,6 +100,7 @@ public class CardInfoPanel : MonoBehaviour
     public void SetCardSummonUnit(CardData cardData)
     {
         _unitStatTexts.SetActive(true);
+        _stickerPanel.SetActive(true);
 
         //이름, 이미지, 설명 설정
         _nameText.text = cardData.card_Name;
@@ -114,6 +121,7 @@ public class CardInfoPanel : MonoBehaviour
     public void SetCardSummonTrap(CardData cardData)
     {
         _unitStatTexts.SetActive(false);
+        _stickerPanel.SetActive(false);
 
         //이름, 이미지, 설명 설정
         _nameText.text = cardData.card_Name;
@@ -127,6 +135,7 @@ public class CardInfoPanel : MonoBehaviour
     public void SetCardInstallation(CardData cardData)
     {
         _unitStatTexts.SetActive(false);
+        _stickerPanel.SetActive(false);
 
         //이름, 이미지, 설명 설정
         _nameText.text = cardData.card_Name;

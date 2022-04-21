@@ -11,28 +11,23 @@ public class MainScroll : AgentScroll
     private Slider accentSlider;
     [SerializeField]
     private RectTransform[] panelIcons;
-    /// <summary>
-    /// 부모 클래스에서 발동 
-    /// </summary>
-    protected override void ChildAwake()
+
+    protected override void SettingAwake()
     {
+        base.SettingAwake();
         EventManager.StartListening(EventsType.MoveMainPn, OnMoveMainPanel);
     }
-    /// <summary>
-    /// 부모 클래스에서 발동
-    /// </summary>
-    protected override void ChildStart()
+    protected override void SettingStart()
     {
-        targetPos = pos[1];
-        targetIndex = 1;
+        base.SettingStart();
+        _targetPos = _pos[1];
+        _targetIndex = 1;
         StressImage();
     }
-    /// <summary>
-    /// 부모 클래스에서 발동 
-    /// </summary>
-    protected override void ChildUpdate()
+    protected override void SettingUpdate()
     {
-        accentSlider.value = Mathf.Lerp(accentSlider.value, scrollbar.value, 0.2f);
+        base.SettingUpdate();
+        accentSlider.value = Mathf.Lerp(accentSlider.value, _scrollbar.value, 0.2f);
     }
 
     /// <summary>
@@ -42,7 +37,7 @@ public class MainScroll : AgentScroll
     public override void OnEndDrag(PointerEventData eventData)
     {
         base.OnEndDrag(eventData);
-        if (curPos == targetPos)
+        if (_curPos == _targetPos)
         {
             print(eventData.delta.x);
             DeltaSlide(eventData.delta.y);
@@ -58,31 +53,29 @@ public class MainScroll : AgentScroll
     {
         for (int i = 0; i < panelIcons.Length; i++)
         {
-            if (targetIndex == i)
+            if (_targetIndex == i)
             {
                 panelIcons[i].anchoredPosition3D = new Vector3(-80, 0);
-                Debug.Log("현재 타겟 인덱스 : " + targetIndex);
+                Debug.Log("현재 타겟 인덱스 : " + _targetIndex);
             }
             else panelIcons[i].anchoredPosition3D = new Vector3(0, 0);
         }
     }
 
-    #region 버튼 함수
     /// <summary>
     /// 상점,메인,스테이지창 중 한곳으로 이동하는 것 
     /// </summary>
     /// <param name="n">0=상점 1=메인 2=스테이지</param>
     public void OnMoveMainPanel(object n)
     {
-        if ((int)n < 0 || (int)n > Size-1)
+        if ((int)n < 0 || (int)n > Size - 1)
         {
             Debug.LogError("메인 패널 움직이는 범위 넘어감 0~SIZE-1 사이 값이 아님");
             return;
         }
-        targetIndex = Size - (int)n - 1;
-        targetPos = pos[(int)n];
+        _targetIndex = Size - (int)n - 1;
+        _targetPos = _pos[(int)n];
         StressImage();
     }
-    #endregion
 }
 
