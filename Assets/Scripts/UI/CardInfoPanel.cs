@@ -10,30 +10,47 @@ public class CardInfoPanel : MonoBehaviour
 {
     //카드 스탯 텍스트들
     //유닛일 때만 사용
+    [SerializeField]
     private GameObject _unitStatTexts = null;
+    [SerializeField]
     private TextMeshProUGUI _hpText = null;
+    [SerializeField]
     private TextMeshProUGUI _attackText = null;
+    [SerializeField]
     private TextMeshProUGUI _attackSpeedText = null;
+    [SerializeField]
     private TextMeshProUGUI _moveSpeedText = null;
+    [SerializeField]
     private TextMeshProUGUI _weightText = null;
 
     //카드 설명창 
+    [SerializeField]
     private TextMeshProUGUI _nameText = null;
+    [SerializeField]
     private TextMeshProUGUI _descriptionText = null;
 
     //카드 이미지
+    [SerializeField]
     private Image _cardImage;
 
-    //스킨
-    public SkinTestInventory _skinTestInventory = null;
-    public GameObject _skinButtonPrefeb = null;
-    public Transform _buttonParent = null;
+    //스킨  
+    [SerializeField]
+    private SkinTestInventory _skinTestInventory = null;
+    [SerializeField]
+    private GameObject _skinButtonPrefeb = null;
+    [SerializeField]
+    private Transform _buttonParent = null;
 
     //스티커 착용창
+    [SerializeField]
+    private GameObject _stickerPanel = null;
     //유닛일 때만 사용
 
     //미리보기창
 
+    //스크롤 조절창
+    [SerializeField]
+    private SkinScroll _skinScroll = null;
 
     private CardData _selectCardData;
 
@@ -69,6 +86,7 @@ public class CardInfoPanel : MonoBehaviour
     public void SetCardExecute(CardData cardData)
     {
         _unitStatTexts.SetActive(false);
+        _stickerPanel.SetActive(false);
 
         //이름, 이미지, 설명 설정
         _nameText.text = cardData.card_Name;
@@ -82,6 +100,7 @@ public class CardInfoPanel : MonoBehaviour
     public void SetCardSummonUnit(CardData cardData)
     {
         _unitStatTexts.SetActive(true);
+        _stickerPanel.SetActive(true);
 
         //이름, 이미지, 설명 설정
         _nameText.text = cardData.card_Name;
@@ -102,6 +121,7 @@ public class CardInfoPanel : MonoBehaviour
     public void SetCardSummonTrap(CardData cardData)
     {
         _unitStatTexts.SetActive(false);
+        _stickerPanel.SetActive(false);
 
         //이름, 이미지, 설명 설정
         _nameText.text = cardData.card_Name;
@@ -115,6 +135,7 @@ public class CardInfoPanel : MonoBehaviour
     public void SetCardInstallation(CardData cardData)
     {
         _unitStatTexts.SetActive(false);
+        _stickerPanel.SetActive(false);
 
         //이름, 이미지, 설명 설정
         _nameText.text = cardData.card_Name;
@@ -161,8 +182,10 @@ public class CardInfoPanel : MonoBehaviour
             {
                 skinButton = Instantiate(_skinButtonPrefeb, _buttonParent).GetComponent<Button>();
             }
+
             skinButton.onClick.RemoveAllListeners();
-            
+            skinButton.GetComponent<CardChangeSkinButton>().SetButtonImages(skinList[i]);
+
             //스킨 함수들을 넣어준다
             skinButton.onClick.AddListener(() => OnSetSkin(skinList[i]));
         }
