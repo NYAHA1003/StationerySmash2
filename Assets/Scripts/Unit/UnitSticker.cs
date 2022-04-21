@@ -64,7 +64,7 @@ public class UnitSticker
     /// </summary>
     private void SetStickerAbility()
     {
-        switch (_unitData.stickerData.stickerType)
+        switch (_unitData.stickerData._stickerType)
         {
             case StickerType.None:
                 _stickerablity = null;

@@ -8,8 +8,7 @@ using Utill;
 
 public class CardInfoPanel : MonoBehaviour
 {
-    //카드 스탯 텍스트들
-    //유닛일 때만 사용
+    //카드 스탯 텍스트들 유닛일 때 적용
     [SerializeField]
     private GameObject _unitStatTexts = null;
     [SerializeField]
@@ -41,18 +40,18 @@ public class CardInfoPanel : MonoBehaviour
     [SerializeField]
     private Transform _buttonParent = null;
 
-    //스티커 착용창
+    //스티커 착용창 유닛일 때만 사용
     [SerializeField]
     private GameObject _stickerPanel = null;
-    //유닛일 때만 사용
-
-    //미리보기창
+    [SerializeField]
+    private StickerInfoPanel _stickerInfoPanel = null;
 
     //스크롤 조절창
     [SerializeField]
     private SkinScroll _skinScroll = null;
 
-    private CardData _selectCardData;
+
+    private CardData _selectCardData = null;
 
     // 유저 데이터
     [SerializeField]

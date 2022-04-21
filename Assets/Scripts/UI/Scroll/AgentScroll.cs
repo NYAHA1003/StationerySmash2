@@ -24,6 +24,9 @@ public class AgentScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     protected Scrollbar _scrollbar = null;
     protected Transform _contentTrm = null;
     protected List<float> _pos = new List<float>();
+    [SerializeField]
+    private List<IScroll> _scrollObservers = new List<IScroll>();
+
 
     //변수 - 변수별로 무슨 역할인지 주석을 달아주세요
     protected float _distance = 0f;
@@ -70,6 +73,15 @@ public class AgentScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         _isDrag = false;
         _targetPos = SetPos();
     }
+    /// <summary>
+    /// 관찰자 추가
+    /// </summary>
+    /// <param name="observer"></param>
+    public void AddObserver(IScroll observer)
+    {
+        _scrollObservers.Add(observer);
+    }
+
     /// <summary>
     /// Awake에서 사용하는 설정
     /// </summary>
@@ -118,7 +130,20 @@ public class AgentScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             --_targetIndex;
             _targetPos = _curPos + _distance;
         }
+        NotifyToObserver();
     }
+
+    /// <summary>
+    /// 관찰자들에게 현재 인덱스를 전달
+    /// </summary>
+    protected void NotifyToObserver()
+    {
+        for (int i = 0; i < _scrollObservers.Count; i++)
+        {
+            _scrollObservers[i].Notify(_targetIndex);
+        }
+    }
+
     /// <summary>
     /// 스크롤한 정도에 따라 패널 변경 
     /// </summary>
@@ -131,6 +156,7 @@ public class AgentScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             {
                 _targetIndex = Size - i - 1;
                 Debug.Log("타겟인덱스@@" + _targetIndex);
+                NotifyToObserver();
                 return _pos[i];
             }
         }

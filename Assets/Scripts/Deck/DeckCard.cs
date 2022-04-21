@@ -29,7 +29,7 @@ public class DeckCard : MonoBehaviour
         {
             if(cardData.unitData?.stickerData != null)
             {
-                _stickerImage.sprite = cardData.unitData.stickerData.sprite;
+                _stickerImage.sprite = cardData.unitData.stickerData._sprite;
             }
         }
     }
