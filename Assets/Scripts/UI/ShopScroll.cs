@@ -57,7 +57,7 @@ public class ShopScroll : AgentScroll
         Debug.Log("½ÇÇà");
         for (int i = 0; i < Size; i++)
         {
-            if (_contentTrm.GetChild(i).GetComponent<ScrollScript>()) //&& pos[i] != curPos && pos[i] == targetPos
+            if (_contentTrm.GetChild(i).GetComponent<ScrollScript>()) 
             {
                 yScrollBars[i].value = 1;
             }

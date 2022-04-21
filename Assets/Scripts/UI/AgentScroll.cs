@@ -76,7 +76,7 @@ public class AgentScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     protected virtual void SettingAwake()
     {
         _scrollbar = transform.GetComponentInChildren<Scrollbar>();
-        _contentTrm = _scrollbar.transform.GetChild(0).GetChild(0);
+        _contentTrm = transform.GetChild(0).GetChild(0);
     }
 
     /// <summary>
