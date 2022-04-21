@@ -7,9 +7,11 @@ namespace Utill
     [System.Serializable]
     public class StickerData
     {
-        public Sprite sprite;
-        public StickerType stickerType;
-        public int stickerLevel = 1;
+        public Sprite _sprite;
+        public string _name;
+        public string _decription;
+        public StickerType _stickerType;
+        public int _stickerLevel = 1;
     }
     public enum StickerType
     {
