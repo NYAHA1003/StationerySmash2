@@ -6,7 +6,7 @@ using Utill;
 namespace Battle
 {
     [System.Serializable]
-    public class PencilCaseCommand : BattleCommand
+    public class PencilCaseComponent : BattleComponent
     {
         public PencilCaseDataSO PencilCaseDataMy => pencilCaseDataMy;
         public PencilCaseDataSO PencilCaseDataEnemy => pencilCaseDataEnemy;
@@ -18,7 +18,7 @@ namespace Battle
 
 
         //참조 변수
-        private UnitCommand _unitCommand = null;
+        private UnitComponent _unitCommand = null;
         private StageData _stageData = null;
         private PencilCaseDataSO pencilCaseDataMy = null;
         private PencilCaseDataSO pencilCaseDataEnemy = null;
@@ -43,7 +43,7 @@ namespace Battle
         /// <param name="pencilCase_Enemy"></param>
         /// <param name="pencilCaseDataMy"></param>
         /// <param name="pencilCaseDataEnemy"></param>
-        public void SetInitialization(UnitCommand unitCommand, StageData stageData)
+        public void SetInitialization(UnitComponent unitCommand, StageData stageData)
         {
             this._unitCommand = unitCommand;
             this._stageData = stageData;

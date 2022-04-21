@@ -6,7 +6,7 @@ using Battle;
 
 public class ThornBadge : AbstractBadge
 {
-    public override void SetBadge(PencilCaseCommand pencilCaseCommand, PencilCaseUnit pencilCaseUnit, TeamType teamType, BadgeData badgeData)
+    public override void SetBadge(PencilCaseComponent pencilCaseCommand, PencilCaseUnit pencilCaseUnit, TeamType teamType, BadgeData badgeData)
     {
         base.SetBadge(pencilCaseCommand, pencilCaseUnit, teamType, badgeData);
         _pencilCaseUnit.AddDictionary(_pencilCaseUnit.AddInherence, RunThorn);

@@ -6,7 +6,7 @@ using DG.Tweening;
 using Utill;
 using TMPro;
 
-public class CreditCommand : MonoBehaviour
+public class CreditComponent : MonoBehaviour
 {
     [SerializeField]
     private RectTransform _creditTextTrm = null;

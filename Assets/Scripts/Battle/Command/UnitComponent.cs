@@ -8,7 +8,7 @@ using Utill;
 namespace Battle
 {
     [System.Serializable]
-    public class UnitCommand : BattleCommand
+    public class UnitComponent : BattleComponent
     {
         public Transform UnitParent => _unitParent;
 

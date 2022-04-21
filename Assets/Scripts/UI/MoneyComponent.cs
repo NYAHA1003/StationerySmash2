@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 
-public class MoneyCommand : MonoBehaviour, IUserData
+public class MoneyComponent : MonoBehaviour, IUserData
 {
     [SerializeField]
     private SaveDataSO _saveDataSO = null;

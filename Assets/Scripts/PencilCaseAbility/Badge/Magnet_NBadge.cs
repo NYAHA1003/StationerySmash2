@@ -12,7 +12,7 @@ public class Magnet_NBadge : AbstractBadge
         base.SetBattleManager(battleManager);
     }
 
-    public override void SetBadge(PencilCaseCommand pencilCaseCommand, PencilCaseUnit pencilCaseUnit, TeamType teamType, BadgeData badgeData)
+    public override void SetBadge(PencilCaseComponent pencilCaseCommand, PencilCaseUnit pencilCaseUnit, TeamType teamType, BadgeData badgeData)
     {
         base.SetBadge(pencilCaseCommand, pencilCaseUnit, teamType, badgeData);
         if(teamType == TeamType.MyTeam)

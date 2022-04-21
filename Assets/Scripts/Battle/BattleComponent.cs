@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 using Battle;
-public class BattleCommand
+public class BattleComponent
 {
     public Dictionary<System.Action, System.Action> _actions = new Dictionary<System.Action, System.Action>();
 

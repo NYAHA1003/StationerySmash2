@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 
-public class DalgonaCommand : MonoBehaviour, IUserData
+public class DalgonaComponent : MonoBehaviour, IUserData
 {
     [SerializeField]
     private SaveDataSO _saveDataSO = null;

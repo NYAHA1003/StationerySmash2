@@ -8,7 +8,7 @@ using Utill;
 namespace Battle
 {
     [System.Serializable]
-    public class CardCommand : BattleCommand
+    public class CardComponent : BattleComponent
     {
         //프로퍼티
         public List<CardMove> CardList => _cardList;
@@ -57,15 +57,15 @@ namespace Battle
         private CardMove _selectCard = null;
         private DeckData _deckData = null;
         private List<CardMove> _cardList = new List<CardMove>();
-        private UnitCommand _commandUnit = null;
-        private CostCommand _commandCost = null;
-        private CameraCommand _commandCamera = null;
+        private UnitComponent _commandUnit = null;
+        private CostComponent _commandCost = null;
+        private CameraComponent _commandCamera = null;
         private MonoBehaviour _managerBase = null;
 
         /// <summary>
         /// 초기화
         /// </summary>
-        public void SetInitialization(MonoBehaviour managerBase, CameraCommand commandCamera, UnitCommand commandUnit, CostCommand commandCost, ref System.Action updateAction, StageData stageData, DeckData deckData, int maxCard)
+        public void SetInitialization(MonoBehaviour managerBase, CameraComponent commandCamera, UnitComponent commandUnit, CostComponent commandCost, ref System.Action updateAction, StageData stageData, DeckData deckData, int maxCard)
         {
             //변수들 설정
             this._managerBase = managerBase;

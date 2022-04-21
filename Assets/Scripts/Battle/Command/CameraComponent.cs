@@ -7,7 +7,7 @@ using Utill;
 namespace Battle
 {
     [System.Serializable]
-    public class CameraCommand : BattleCommand
+    public class CameraComponent : BattleComponent
     {
 
         private Vector3 _clickPos = Vector3.zero;
@@ -21,8 +21,8 @@ namespace Battle
 
         //참조 변수
         private StageData _stageData = null;
-        private WinLoseCommand _commandWinLose = null;
-        private CardCommand _commandCard = null;
+        private WinLoseComponent _commandWinLose = null;
+        private CardComponent _commandCard = null;
 
         //인스펙터 참조 변수
         [SerializeField]
@@ -33,7 +33,7 @@ namespace Battle
         /// </summary>
         /// <param name="battleManager"></param>
         /// <param name="camera"></param>
-        public void SetInitialization(CardCommand cardCommand, WinLoseCommand commandWInLose, ref System.Action updateAction, StageData stageData)
+        public void SetInitialization(CardComponent cardCommand, WinLoseComponent commandWInLose, ref System.Action updateAction, StageData stageData)
         {
             _stageData = stageData;
             _commandWinLose = commandWInLose;

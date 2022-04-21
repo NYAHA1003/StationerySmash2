@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SNSCommand : MonoBehaviour
+public class SNSComponent : MonoBehaviour
 {
     public enum SNSType
     {

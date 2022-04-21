@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Battle
 {
     [System.Serializable]
-    public class AICommand
+    public class AIComponent
     {
         //인스펙터 참조 변수
         [SerializeField]
@@ -20,8 +20,8 @@ namespace Battle
         private bool isPlayerAIOn = false;
 
         //참조 변수
-        private UnitCommand _unitCommand = null;
-        private PencilCaseCommand _pencilCaseCommand = null;
+        private UnitComponent _unitCommand = null;
+        private PencilCaseComponent _pencilCaseCommand = null;
 
         //변수
         private List<CardData> enemyCardDataList = new List<CardData>();
@@ -55,7 +55,7 @@ namespace Battle
         /// <param name="aIplayerDataSO"></param>
         /// <param name="isEnemyAIOn"></param>
         /// <param name="isPlayerAIOn"></param>
-        public void SetInitialization(PencilCaseCommand pencilCaseCommand, UnitCommand unitCommand, ref System.Action updateAction)
+        public void SetInitialization(PencilCaseComponent pencilCaseCommand, UnitComponent unitCommand, ref System.Action updateAction)
         {
             this._unitCommand = unitCommand;
             this._pencilCaseCommand = pencilCaseCommand;

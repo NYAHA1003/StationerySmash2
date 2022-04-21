@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utill;
 
-public class SkinMakerCommand : MonoBehaviour
+public class SkinMakerComponent : MonoBehaviour
 {
     //인스펙터 변수
     [SerializeField]

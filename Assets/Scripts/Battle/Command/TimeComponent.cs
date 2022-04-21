@@ -7,16 +7,16 @@ using TMPro;
 namespace Battle
 {
     [System.Serializable]
-    public class TimeCommand : BattleCommand
+    public class TimeComponent : BattleComponent
     {
         //인스펙터 참조 변수
         [SerializeField]
         private TextMeshProUGUI _timeText;
 
         //참조 변수
-        private UnitCommand _unitCommand = null;
-        private CardCommand _cardCommand = null;
-        private CostCommand _costCommand = null;
+        private UnitComponent _unitCommand = null;
+        private CardComponent _cardCommand = null;
+        private CostComponent _costCommand = null;
         private Unit _playerPencilCase = null;
         private Unit _enemyPencilCase = null;
 

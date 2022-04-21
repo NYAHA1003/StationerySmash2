@@ -7,7 +7,7 @@ using Battle;
 public abstract class AbstractBadge 
 {
     protected BattleManager _battleManager;
-    protected PencilCaseCommand _pencilCaseCommand;
+    protected PencilCaseComponent _pencilCaseCommand;
     protected PencilCaseUnit _pencilCaseUnit;
     protected TeamType _teamType;
     protected BadgeData _badgeData;
@@ -19,7 +19,7 @@ public abstract class AbstractBadge
     /// </summary>
     /// <param name="pencilCaseUnit"></param>
     /// <param name="badgeData"></param>
-    public virtual void SetBadge(PencilCaseCommand pencilCaseCommand, PencilCaseUnit pencilCaseUnit, TeamType teamType, BadgeData badgeData)
+    public virtual void SetBadge(PencilCaseComponent pencilCaseCommand, PencilCaseUnit pencilCaseUnit, TeamType teamType, BadgeData badgeData)
     {
         _pencilCaseCommand = pencilCaseCommand;
         _teamType = teamType;

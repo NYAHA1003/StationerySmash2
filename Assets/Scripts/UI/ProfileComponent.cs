@@ -8,7 +8,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
 
 
-public class ProfileCommand : MonoBehaviour, IUserData
+public class ProfileComponent : MonoBehaviour, IUserData
 {
     [SerializeField]
     private SaveDataSO _saveDataSO = null;

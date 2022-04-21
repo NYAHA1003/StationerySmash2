@@ -7,7 +7,7 @@ using Utill;
 namespace Battle
 {
     [System.Serializable]
-    public class ThrowCommand : BattleCommand
+    public class ThrowComponent : BattleComponent
     {
         //인스펙터 참조 변수
         [SerializeField]
@@ -22,8 +22,8 @@ namespace Battle
         //참조 변수
         private Unit _throwUnit = null;
         private StageData _stageData = null;
-        private UnitCommand _unitCommand = null;
-        private CameraCommand _cameraCommand = null;
+        private UnitComponent _unitCommand = null;
+        private CameraComponent _cameraCommand = null;
 
         private List<Vector2> _lineZeroPos;
         private Vector2 _direction;
@@ -38,7 +38,7 @@ namespace Battle
         /// <param name="parabola"></param>
         /// <param name="arrow"></param>
         /// <param name="stageData"></param>
-        public void SetInitialization(ref System.Action updateAction, UnitCommand unitCommand, CameraCommand cameraCommand, StageData stageData)
+        public void SetInitialization(ref System.Action updateAction, UnitComponent unitCommand, CameraComponent cameraCommand, StageData stageData)
         {
             _unitCommand = unitCommand;
             _cameraCommand = cameraCommand;

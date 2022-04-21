@@ -6,7 +6,7 @@ using DG.Tweening;
 using Utill;
 using TMPro;
 
-public class WarrningCommand : MonoBehaviour
+public class WarrningComponent : MonoBehaviour
 {
     //인스펙터 변수
     [SerializeField]
