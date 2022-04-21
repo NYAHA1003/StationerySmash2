@@ -8,14 +8,14 @@ public class EventParam
     public string str;
     public int i;
     public float f;
-    public bool b; 
+    public bool b;
 }
 
 public class EventManager : MonoBehaviour
 {
 
     private Dictionary<EventsType, Action> eventDictionary;
-    private Dictionary<EventsType, Action<object>> eventParamDictionary; 
+    private Dictionary<EventsType, Action<object>> eventParamDictionary;
 
     private static EventManager eventManager;
 
@@ -33,7 +33,7 @@ public class EventManager : MonoBehaviour
                 }
                 else
                 {
-                    eventManager.Init();
+                    eventManager.Initialize();
                 }
             }
 
@@ -41,19 +41,24 @@ public class EventManager : MonoBehaviour
         }
     }
 
-    void Init()
+    void Initialize()
     {
         if (eventDictionary == null)
         {
             eventDictionary = new Dictionary<EventsType, Action>();
         }
-        if(eventParamDictionary == null)
+        if (eventParamDictionary == null)
         {
-            eventParamDictionary = new Dictionary<EventsType, Action<object>>(); 
+            eventParamDictionary = new Dictionary<EventsType, Action<object>>();
         }
 
     }
 
+    /// <summary>
+    /// 이벤트 함수 등록하기 
+    /// </summary>
+    /// <param name="eventName"></param>
+    /// <param name="listener"></param>
     public static void StartListening(EventsType eventName, Action listener)
     {
         Action thisEvent;
@@ -72,14 +77,14 @@ public class EventManager : MonoBehaviour
             instance.eventDictionary.Add(eventName, thisEvent);
         }
     }
-    public static void StartListening(EventsType eventName,Action<object> listener)
+    public static void StartListening(EventsType eventName, Action<object> listener)
     {
-        Action<object> thisEvent; 
-       
-        if(instance.eventParamDictionary.TryGetValue(eventName, out thisEvent))
+        Action<object> thisEvent;
+
+        if (instance.eventParamDictionary.TryGetValue(eventName, out thisEvent))
         {
             thisEvent += listener;
-            instance.eventParamDictionary[eventName] = thisEvent; 
+            instance.eventParamDictionary[eventName] = thisEvent;
         }
         else
         {
@@ -88,9 +93,17 @@ public class EventManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 이벤트 함수 해제하기 
+    /// </summary>
+    /// <param name="eventName"></param>
+    /// <param name="listener"></param>
     public static void StopListening(EventsType eventName, Action listener)
     {
-        if (eventManager == null) return;
+        if (eventManager == null)
+        {
+            return;
+        }
         Action thisEvent;
         if (instance.eventDictionary.TryGetValue(eventName, out thisEvent))
         {
@@ -105,22 +118,28 @@ public class EventManager : MonoBehaviour
 
     public static void StopListening(EventsType eventName, Action<object> listener)
     {
-        if (eventManager == null) return;
-        Action<object> thisEvent; 
-        if(instance.eventParamDictionary.TryGetValue(eventName, out thisEvent))
+        if (eventManager == null)
+        {
+            return;
+        }
+        Action<object> thisEvent;
+        if (instance.eventParamDictionary.TryGetValue(eventName, out thisEvent))
         {
             thisEvent -= listener;
 
-            instance.eventParamDictionary[eventName] = thisEvent; 
+            instance.eventParamDictionary[eventName] = thisEvent;
         }
     }
+    /// <summary>
+    /// 이벤트 함수 실행 
+    /// </summary>
+    /// <param name="eventName"></param>
     public static void TriggerEvent(EventsType eventName)
     {
         Action thisEvent = null;
         if (instance.eventDictionary.TryGetValue(eventName, out thisEvent))
         {
             thisEvent?.Invoke();
-            //OR USE instance.eventDictionary[eventName]();
         }
     }
 
@@ -130,7 +149,6 @@ public class EventManager : MonoBehaviour
         if (instance.eventParamDictionary.TryGetValue(eventName, out thisEvent))
         {
             thisEvent?.Invoke(param);
-            //OR USE instance.eventDictionary[eventName]();
         }
     }
 }

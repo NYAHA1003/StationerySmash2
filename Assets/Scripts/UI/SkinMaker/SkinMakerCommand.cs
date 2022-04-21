@@ -39,7 +39,9 @@ public class SkinMakerCommand : MonoBehaviour
 
         //스킨 제작버튼에 함수 추가
         _skinMakeButton.onClick.AddListener(() => OnCreate());
+
     }
+
 
     /// <summary>
     /// 스킨 제작 콜백 함수

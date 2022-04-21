@@ -51,6 +51,13 @@ public class CardInfoPanel : MonoBehaviour
 
     private CardData _selectCardData = null;
 
+    // 유저 데이터
+    [SerializeField]
+    private UserDeckData userDeckData; 
+    private void Start()
+    {
+        EventManager.StartListening(Util.EventsType.ActiveCardDescription, SetCardsDatas);
+    }
     /// <summary>
     /// 카드데이터 설정
     /// </summary>
@@ -76,6 +83,16 @@ public class CardInfoPanel : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 카드 데이터 설정
+    /// </summary>
+    public void SetCardsDatas()
+    {
+        for (int i = 0; i < userDeckData.deckList.cardDatas.Count; i++)
+        {
+            SetCardInfoPanel(userDeckData.deckList.cardDatas[i]);
+        }
+    }
     /// <summary>
     /// 발동형 카드의 UI 설정
     /// </summary>
