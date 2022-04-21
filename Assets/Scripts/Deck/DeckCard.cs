@@ -14,6 +14,8 @@ public class DeckCard : MonoBehaviour
     private TextMeshProUGUI _CostText;
     [SerializeField, Header("유닛용")]
     private Image _stickerImage;
+
+    public CardData _cardData { get; private set; }
     
     /// <summary>
     /// 카드 설정, 만들자마자 해줘야함
@@ -21,6 +23,7 @@ public class DeckCard : MonoBehaviour
     /// <param name="cardData"></param>
     public void SetCard(CardData cardData)
     {
+        _cardData = cardData;
         _cardImage.sprite = cardData.skinData._cardSprite;
         _unitNameText.text = cardData.card_Name;
         _CostText.text = $"{cardData.card_Cost}";

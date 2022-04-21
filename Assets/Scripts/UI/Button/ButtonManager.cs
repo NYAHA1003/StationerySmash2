@@ -2,12 +2,7 @@ using UnityEngine;
 using Util;
 using UnityEngine.UI;
 using System.Collections.Generic;
-//public enum PanelType
-//{
-//    Sticker,
-//    Ttagji,
-//    Dalgona
-//}
+
 public class ButtonManager : MonoBehaviour
 {
     private Btn_MainPanel2 btn_MainPanel;
@@ -25,17 +20,20 @@ public class ButtonManager : MonoBehaviour
     {
         btn_MainPanel2.Start();
         AddDeckCards(); 
-        AddListeners();
+        AddButtonEvent();
     }
-    private void AddListeners()
+    private void AddButtonEvent()
     {
-        Debug.Log(deckSetting.deckCards.Count);
-        for(int i = 0;i < deckSetting.deckCards.Count; i++)
+        for(int i = 0;i < cardInfoBtns.Count; i++)
         {
-            cardInfoBtns[i].onClick.AddListener(
+            //참조 오류 방지용 캐싱
+            int index = i;
+
+            //카드 정보창을 여는 함수 호출
+            cardInfoBtns[index].onClick.AddListener(
            () =>
            {
-               OnSkinActive();
+               OnDeckDescriptoinActive(cardInfoBtns[index].GetComponent<DeckCard>());
            });
         }
     }
@@ -52,18 +50,14 @@ public class ButtonManager : MonoBehaviour
         EventManager.TriggerEvent(EventsType.ActiveDeck);   
     }
         
-    public void OnDeckDescriptoinActive()
+    public void OnDeckDescriptoinActive(DeckCard deckCard)
     {
-        EventManager.TriggerEvent(EventsType.ActiveCardDescription);
+        EventManager.TriggerEvent(EventsType.ActiveCardDescription, deckCard);
     }
 
     public void OnSettingActive()
     {
         EventManager.TriggerEvent(EventsType.ActiveSetting);
-    }
-    public void OnSkinActive()
-    {
-        EventManager.TriggerEvent(EventsType.ActiveCardInfoPn);
     }
     public void OnMoveShopPanel(int iParam)
     {

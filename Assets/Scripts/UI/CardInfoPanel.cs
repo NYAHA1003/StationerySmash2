@@ -8,6 +8,9 @@ using Utill;
 
 public class CardInfoPanel : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject _cardInfoPanel = null;
+
     //카드 스탯 텍스트들 유닛일 때 적용
     [SerializeField]
     private GameObject _unitStatTexts = null;
@@ -56,43 +59,34 @@ public class CardInfoPanel : MonoBehaviour
     private UserDeckData userDeckData; 
     private void Start()
     {
-        EventManager.StartListening(Util.EventsType.ActiveCardDescription, SetCardsDatas);
+        EventManager.StartListening(Util.EventsType.ActiveCardDescription, (x) => OnSetCardInfoPanel((DeckCard)x));
     }
     /// <summary>
     /// 카드데이터 설정
     /// </summary>
-    public void SetCardInfoPanel(CardData cardData)
+    public void OnSetCardInfoPanel(DeckCard deckCard)
     {
-        _selectCardData = cardData;
+        _cardInfoPanel.SetActive(true);
+        _selectCardData = deckCard._cardData;
 
         //카드 타입에 따라 설명창 설정
         switch (_selectCardData.cardType)
         {
             case CardType.Execute:
-                SetCardExecute(cardData);
+                SetCardExecute(_selectCardData);
                 break;
             case CardType.SummonUnit:
-                SetCardSummonUnit(cardData);
+                SetCardSummonUnit(_selectCardData);
                 break;
             case CardType.SummonTrap:
-                SetCardSummonTrap(cardData);
+                SetCardSummonTrap(_selectCardData);
                 break;
             case CardType.Installation:
-                SetCardInstallation(cardData);
+                SetCardInstallation(_selectCardData);
                 break;
         }
     }
 
-    /// <summary>
-    /// 카드 데이터 설정
-    /// </summary>
-    public void SetCardsDatas()
-    {
-        for (int i = 0; i < userDeckData.deckList.cardDatas.Count; i++)
-        {
-            SetCardInfoPanel(userDeckData.deckList.cardDatas[i]);
-        }
-    }
     /// <summary>
     /// 발동형 카드의 UI 설정
     /// </summary>

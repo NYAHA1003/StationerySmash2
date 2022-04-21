@@ -2057,6 +2057,46 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 151300484}
   m_CullTransparentMesh: 1
+--- !u!1 &166450595
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 166450596}
+  m_Layer: 5
+  m_Name: CardInfoPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &166450596
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 166450595}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1344999561}
+  - {fileID: 738385082}
+  - {fileID: 585717367}
+  - {fileID: 431433045}
+  - {fileID: 1948963418}
+  m_Father: {fileID: 1262810704}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &171091384
 GameObject:
   m_ObjectHideFlags: 0
@@ -6821,7 +6861,7 @@ RectTransform:
   - {fileID: 286198370}
   - {fileID: 1170034367}
   - {fileID: 749793264}
-  m_Father: {fileID: 1262810704}
+  m_Father: {fileID: 166450596}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
@@ -8983,13 +9023,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 585717366}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 150405945}
   - {fileID: 306788583}
-  m_Father: {fileID: 1262810704}
+  m_Father: {fileID: 166450596}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -11401,13 +11441,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 738385081}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 792055966}
   - {fileID: 800541733}
-  m_Father: {fileID: 1262810704}
+  m_Father: {fileID: 166450596}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -18001,12 +18041,12 @@ GameObject:
   - component: {fileID: 1262810704}
   - component: {fileID: 1262810705}
   m_Layer: 5
-  m_Name: CardInfoPanel
+  m_Name: CardInfoComponent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1262810704
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18018,11 +18058,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1344999561}
-  - {fileID: 738385082}
-  - {fileID: 585717367}
-  - {fileID: 431433045}
-  - {fileID: 1948963418}
+  - {fileID: 166450596}
   m_Father: {fileID: 314574448867026221}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -18043,6 +18079,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77515630a08ca524e840443b0b71726b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cardInfoPanel: {fileID: 166450595}
   _unitStatTexts: {fileID: 1074787225}
   _hpText: {fileID: 1432802485}
   _attackText: {fileID: 1994855821}
@@ -18052,11 +18089,10 @@ MonoBehaviour:
   _nameText: {fileID: 800541734}
   _descriptionText: {fileID: 838596229}
   _cardImage: {fileID: 1417466896}
-  _skinTestInventory: {fileID: 0}
   _skinButtonPrefeb: {fileID: 0}
   _buttonParent: {fileID: 0}
-  _stickerPanel: {fileID: 0}
-  _stickerInfoPanel: {fileID: 0}
+  _stickerPanel: {fileID: 835974899}
+  _stickerInfoPanel: {fileID: 1948963419}
   _skinScroll: {fileID: 0}
   userDeckData: {fileID: 0}
 --- !u!1 &1273654588
@@ -19543,12 +19579,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1344999560}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 838596228}
-  m_Father: {fileID: 1262810704}
+  m_Father: {fileID: 166450596}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -21105,7 +21141,7 @@ MonoBehaviour:
     cardDescription: {fileID: 523620149}
     settingPanel: {fileID: 1824370777}
   cardInfoBtns: []
-  deckSetting: {fileID: 0}
+  deckSetting: {fileID: 1477759876}
 --- !u!1 &1475611887
 GameObject:
   m_ObjectHideFlags: 0
@@ -21322,6 +21358,7 @@ MonoBehaviour:
   userDeckData: {fileID: 464130973}
   cardPrefab: {fileID: 8766642164964650835, guid: 4ac97bee17e46f74898c328d87cb7587, type: 3}
   cardDescription: {fileID: 1262810703}
+  deckScroll: {fileID: 1909490284}
   deckCards: []
 --- !u!4 &1477759877
 Transform:
@@ -28455,7 +28492,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1948963417}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -28464,7 +28501,7 @@ RectTransform:
   - {fileID: 1336851269}
   - {fileID: 719277806}
   - {fileID: 13227438}
-  m_Father: {fileID: 1262810704}
+  m_Father: {fileID: 166450596}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

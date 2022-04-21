@@ -21,7 +21,6 @@ public class DeckSetting : MonoBehaviour
     private void Start()
     {
         EventManager.StartListening(EventsType.ActiveDeck, UpdateDeck);
-        EventManager.StartListening(EventsType.ActiveCardInfoPn, OnActiveCardInfoPn);
     }
     
     /// <summary>
