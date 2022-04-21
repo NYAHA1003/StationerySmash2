@@ -130,6 +130,7 @@ public class AgentScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             --_targetIndex;
             _targetPos = _curPos + _distance;
         }
+        NotifyToObserver();
     }
 
     /// <summary>

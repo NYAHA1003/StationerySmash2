@@ -40,7 +40,7 @@ public class PreviewVideoControll : MonoBehaviour, IScroll
     /// </summary>
     public void StopVideo()
     {
-        _previewVideo.Pause();
+        _previewVideo.Stop();
     }
 
     /// <summary>
