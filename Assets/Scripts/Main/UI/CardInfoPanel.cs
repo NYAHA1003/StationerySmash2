@@ -98,7 +98,7 @@ public class CardInfoPanel : MonoBehaviour
 
         //이름, 이미지, 설명 설정
         _nameText.text = cardData.card_Name;
-        _cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType).Result;
+        _cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
         _descriptionText.text = cardData.card_Description;
     }
     /// <summary>
@@ -112,7 +112,7 @@ public class CardInfoPanel : MonoBehaviour
 
         //이름, 이미지, 설명 설정
         _nameText.text = cardData.card_Name;
-        _cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType).Result;
+        _cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
         _descriptionText.text = cardData.card_Description;
 
         //스탯 텍스트 설정
@@ -133,7 +133,7 @@ public class CardInfoPanel : MonoBehaviour
 
         //이름, 이미지, 설명 설정
         _nameText.text = cardData.card_Name;
-        _cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType).Result;
+        _cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
         _descriptionText.text = cardData.card_Description;
     }
     /// <summary>
@@ -147,7 +147,7 @@ public class CardInfoPanel : MonoBehaviour
 
         //이름, 이미지, 설명 설정
         _nameText.text = cardData.card_Name;
-        _cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType).Result;
+        _cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
         _descriptionText.text = cardData.card_Description;
     }
 

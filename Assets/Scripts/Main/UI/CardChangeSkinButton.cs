@@ -19,6 +19,6 @@ public class CardChangeSkinButton : MonoBehaviour
     public void SetButtonImages(SkinData skinData)
     {
         _skinNameText.text = skinData._cardNamingType.ToString();
-        _skinImage.sprite = SkinData.GetSkin(skinData._skinType).Result;
+        _skinImage.sprite = SkinData.GetSkin(skinData._skinType);
     }
 }

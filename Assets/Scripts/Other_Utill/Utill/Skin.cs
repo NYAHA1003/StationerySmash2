@@ -9,7 +9,7 @@ namespace Utill
 {
     public enum SkinType
     {
-        None = 0,
+        SpriteNone = 0,
         PencilNormal = 100,
         SharpNormal = 200,
         EraserNormal = 300,
@@ -20,7 +20,7 @@ namespace Utill
     {
         public static Dictionary<SkinType, Sprite> _spriteDictionary = new Dictionary<SkinType, Sprite>();
         public static Dictionary<CardNamingType, List<SkinData>> skinDictionary = new Dictionary<CardNamingType, List<SkinData>>();
-        public SkinType _skinType = SkinType.None;
+        public SkinType _skinType = SkinType.SpriteNone;
         public EffectType _effectType = EffectType.Attack;
         public CardNamingType _cardNamingType = CardNamingType.None;
 
@@ -52,28 +52,33 @@ namespace Utill
         /// </summary>
         /// <param name="skinType"></param>
         /// <returns></returns>
-        public static async Task<Sprite> GetSkin(SkinType skinType)
+        public static async Sprite GetSkin(SkinType skinType)
         {
-            if(_spriteDictionary.TryGetValue(skinType, out var sprite))
+            if (_spriteDictionary.TryGetValue(skinType, out var sprite))
             {
                 return sprite;
             }
             else
             {
-                await AwitLoadAssetAsync(skinType);
-                return _spriteDictionary[skinType];
+                await ReturnSprite(skinType);
+                Sprite spriteResult = null;
+                _spriteDictionary.TryGetValue(skinType, out spriteResult);
+                return spriteResult;
             }
         }
-        /// <summary>
-        /// 스킨 타입의 스프라이트를 등록한다.
-        /// </summary>
-        /// <param name="skinType"></param>
-        /// <returns></returns>
-        public static async Task AwitLoadAssetAsync(SkinType skinType)
+
+        public static Task<Sprite> ReturnSprite(SkinType skinType)
         {
-            AsyncOperationHandle<Sprite> handle = Addressables.LoadAssetAsync<Sprite>(skinType);
-            await handle.Task;
-            _spriteDictionary[skinType] = handle.Result;
+            string name = System.Enum.GetName(typeof(SkinType), skinType);
+            Sprite sprite = null;
+            Addressables.LoadAssetAsync<Sprite>(name).Completed +=
+            (AsyncOperationHandle<Sprite> obj) =>
+            {
+                sprite = obj.Result;
+                _spriteDictionary.Add(skinType, obj.Result);
+                Addressables.Release(obj);
+            };
+            return Task.FromResult(sprite);
         }
     }
 }
