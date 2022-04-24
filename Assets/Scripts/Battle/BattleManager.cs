@@ -11,6 +11,7 @@ using System;
 
 public class BattleManager : MonoBehaviour
 {
+    //프로퍼티들
     public StageData CurrentStageData
     {
         get
@@ -37,12 +38,14 @@ public class BattleManager : MonoBehaviour
 
     public TextMeshProUGUI _unitTeamText = null;
 
-    [SerializeField]
-    private StageDataSO _stageDataSO = null;
-    private DeckData _deckData = null;
+    //변수
     private bool _isEndSetting = false;
     private Action _updateAction = () => { };
 
+    //인스펙터 변수
+    [SerializeField]
+    private StageDataSO _stageDataSO = null;
+    //컴포넌트들
     [SerializeField, Header("카드시스템 BattleCard"), Space(30)]
     private CardComponent _commandCard = null;
     [SerializeField, Header("유닛시스템 BattleUnit"), Space(30)]
@@ -68,12 +71,11 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
+        //프레임 60 고정
         Application.targetFrameRate = 60;
 
-        _deckData = new DeckData();
-
         _commandPencilCase.SetInitialization(CommandUnit, CurrentStageData);
-        _commandCard.SetInitialization(this, CommandCamera, CommandUnit, CommandCost, ref _updateAction, CurrentStageData, _deckData, _commandPencilCase.PencilCaseDataMy.PencilCasedataBase.maxCard);
+        _commandCard.SetInitialization(this, CommandCamera, CommandUnit, CommandCost, ref _updateAction, CurrentStageData, _commandPencilCase.PencilCaseDataMy.PencilCasedataBase.maxCard);
         _commandCamera.SetInitialization(CommandCard, CommandWinLose, ref _updateAction, CurrentStageData);
         _commandUnit.SetInitialization(ref _updateAction, CurrentStageData);
         _commandEffect.SetInitialization();

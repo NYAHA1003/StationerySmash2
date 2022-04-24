@@ -7,7 +7,7 @@ using Utill;
 public class UserSaveData //인벤토리, 돈, 캐시 이런걸 저장할 수도 있다
 {
     //카드 데이터 저장
-    public List<SaveData> _unitSaveDatas = new List<SaveData>();
+    public List<CardSaveData> _unitSaveDatas = new List<CardSaveData>();
     //가지고 있는 스킨
     public List<SkinData> _haveSkinList = new List<SkinData>();
     //현재 프로필
@@ -25,10 +25,11 @@ public class UserSaveData //인벤토리, 돈, 캐시 이런걸 저장할 수도 있다
 }
 
 [System.Serializable]
-public class SaveData //한 카드의 저장 데이터
+public class CardSaveData //한 카드의 저장 데이터
 {
-    public int _level;
-    public CardType _cardType;
-    public StarategyType _strategicType;
-    public UnitType _unitType;
+    public int _level = 0;
+    public CardType _cardType = CardType.Execute;
+    public StarategyType _strategicType = StarategyType.None;
+    public UnitType _unitType = UnitType.None;
+    public StickerType stickerType = StickerType.None;
 }

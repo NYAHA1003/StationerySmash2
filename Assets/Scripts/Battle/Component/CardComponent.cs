@@ -46,16 +46,14 @@ namespace Battle
         [SerializeField]
         private SpriteRenderer _afterImageSpriteRenderer = null;
         [SerializeField]
-        private UnitDataSO _unitDataSO = null;
+        private bool _isAlwaysSpawn = false;
         [SerializeField]
-        private StarategyDataSO _starategyDataSO = null;
-        [SerializeField]
-        private bool isAlwaysSpawn = false;
+        private CardDeckSO _cardDeckSO = null;
 
         //참조 변수
         private StageData _stageData = null;
         private CardMove _selectCard = null;
-        private DeckData _deckData = null;
+        private DeckData _deckData = new DeckData();
         private List<CardMove> _cardList = new List<CardMove>();
         private UnitComponent _commandUnit = null;
         private CostComponent _commandCost = null;
@@ -65,11 +63,10 @@ namespace Battle
         /// <summary>
         /// 초기화
         /// </summary>
-        public void SetInitialization(MonoBehaviour managerBase, CameraComponent commandCamera, UnitComponent commandUnit, CostComponent commandCost, ref System.Action updateAction, StageData stageData, DeckData deckData, int maxCard)
+        public void SetInitialization(MonoBehaviour managerBase, CameraComponent commandCamera, UnitComponent commandUnit, CostComponent commandCost, ref System.Action updateAction, StageData stageData, int maxCard)
         {
             //변수들 설정
             this._managerBase = managerBase;
-            this._deckData = deckData;
             this._stageData = stageData;
             this._summonRange = -_stageData.max_Range + _stageData.max_Range / 4;
             this._commandUnit = commandUnit;
@@ -96,29 +93,10 @@ namespace Battle
         /// </summary>
         public void SetDeckCard()
         {
-            SetUnitCardToDeck();
-            SetStrategyCardToDeck();
-        }
-
-        /// <summary>
-        /// 유닛 카드를 덱에 담는다
-        /// </summary>
-        public void SetUnitCardToDeck()
-        {
-            for (int i = 0; i < _unitDataSO.unitDatas.Count; i++)
+            int count = _cardDeckSO.cardDatas.Count;
+            for(int i = 0; i < count; i++)
             {
-                _deckData.Add_CardData(_unitDataSO.unitDatas[i]);
-            }
-        }
-
-        /// <summary>
-        /// 전략 카드를 덱에 담는다
-        /// </summary>
-        public void SetStrategyCardToDeck()
-        {
-            for (int i = 0; i < _starategyDataSO.starategyDatas.Count; i++)
-            {
-                _deckData.Add_CardData(_starategyDataSO.starategyDatas[i]);
+                _deckData.Add_CardData(_cardDeckSO.cardDatas[i]);
             }
         }
 
@@ -138,6 +116,12 @@ namespace Battle
         /// </summary>
         public void AddOneCard()
         {
+            //카드가 없으면 뽑지 않는다
+            if(_deckData.cardDatas.Count == 0)
+            {
+                return;
+            }
+
             //카드 데이터를 랜덤으로 선택함
             int random = Random.Range(0, _deckData.cardDatas.Count);
             _currentCardCount++;
@@ -387,7 +371,7 @@ namespace Battle
                 return false;
             }
             //테스트용 소환 조건 해제
-            if (isAlwaysSpawn)
+            if (_isAlwaysSpawn)
             {
                 return true;
             }
