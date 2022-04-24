@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 public abstract class AbstractBtn
 {
-    protected abstract void Execute();
-    protected abstract void Undo(); 
+    protected GameObject panel;
+    public abstract void Execute(GameObject panel);
+    public abstract void Undo();
 }
+
