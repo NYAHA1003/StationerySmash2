@@ -15,14 +15,17 @@ MonoBehaviour:
   PencilCasedataBase:
     maxCard: 5
     costSpeed: 100
-    pencilCaseType: 0
+    pencilCaseType: 7
     pencilCaseData:
       cardType: 1
       card_Name: PencilCase
+      card_Description: 
       card_Cost: 0
       skinData:
-        cardSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-        effectType: 0
+        _skinId: 0
+        _cardSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+        _effectType: 0
+        _cardNamingType: 0
       level: 0
       strategyData:
         starategyType: 0
@@ -44,11 +47,11 @@ MonoBehaviour:
           - {x: -0.01, y: -0.01}
           - {x: 0.01, y: -0.01}
         stickerData:
-          sprite: {fileID: 0}
-          stickerType: 0
-          stickerLevel: 1
+          _sprite: {fileID: 0}
+          _name: 
+          _decription: 
+          _stickerType: 0
+          _stickerLevel: 1
         unitType: 1
         unitablityData: []
-    _badgeDatas:
-    - _badgeType: 0
-      _level: 0
+    _badgeDatas: []
