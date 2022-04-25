@@ -48,7 +48,7 @@ public class UnitSprite
         SetDelayBar();
         
         _spriteRenderer.sprite = sprite;
-        _throwSpriteRenderer.sprite = sprite;
+        //_throwSpriteRenderer.sprite = sprite;
         _spriteMask.sprite = sprite;
     }
 
@@ -58,6 +58,7 @@ public class UnitSprite
     public void OrderDraw(int orderIndex)
     {
         _spriteRenderer.sortingOrder = -orderIndex;
+        _throwSpriteRenderer.sortingOrder = -(orderIndex + 10);
     }
 
     /// <summary>
