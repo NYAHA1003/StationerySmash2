@@ -96,7 +96,8 @@ namespace Battle
             int count = _cardDeckSO.cardDatas.Count;
             for(int i = 0; i < count; i++)
             {
-                _deckData.Add_CardData(_cardDeckSO.cardDatas[i]);
+                CardData cardData = _cardDeckSO.cardDatas[i];
+                _deckData.Add_CardData(cardData);
             }
         }
 
@@ -357,7 +358,7 @@ namespace Battle
                 _afterImageSpriteRenderer.color = Color.red;
             }
             _unitAfterImage.transform.position = new Vector3(pos.x, 0);
-            _afterImageSpriteRenderer.sprite = _selectCard.DataBase.skinData._cardSprite;
+            _afterImageSpriteRenderer.sprite = SkinData.GetSkin(_selectCard.DataBase.skinData._skinType);
             return;
         }
 
