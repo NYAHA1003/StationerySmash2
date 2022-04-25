@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
@@ -52,33 +53,28 @@ namespace Utill
         /// </summary>
         /// <param name="skinType"></param>
         /// <returns></returns>
-        public static async Sprite GetSkin(SkinType skinType)
+        public static Sprite GetSkin(SkinType skinType)
         {
-            if (_spriteDictionary.TryGetValue(skinType, out var sprite))
+            return _spriteDictionary[skinType];
+        }
+
+        /// <summary>
+        /// 스킨의 스프라이트를 등록한다.
+        /// </summary>
+        /// <param name="skinType"></param>
+        public async Task SetSkin(SkinType skinType)
+        {
+            if(_spriteDictionary.TryGetValue(skinType, out var data))
             {
-                return sprite;
+                return;
             }
             else
             {
-                await ReturnSprite(skinType);
-                Sprite spriteResult = null;
-                _spriteDictionary.TryGetValue(skinType, out spriteResult);
-                return spriteResult;
+                string name = System.Enum.GetName(typeof(SkinType), skinType);
+                var handle = Addressables.LoadAssetAsync<Sprite>(name);
+                await handle.Task;
+                _spriteDictionary.Add(skinType, handle.Result);
             }
-        }
-
-        public static Task<Sprite> ReturnSprite(SkinType skinType)
-        {
-            string name = System.Enum.GetName(typeof(SkinType), skinType);
-            Sprite sprite = null;
-            Addressables.LoadAssetAsync<Sprite>(name).Completed +=
-            (AsyncOperationHandle<Sprite> obj) =>
-            {
-                sprite = obj.Result;
-                _spriteDictionary.Add(skinType, obj.Result);
-                Addressables.Release(obj);
-            };
-            return Task.FromResult(sprite);
         }
     }
 }

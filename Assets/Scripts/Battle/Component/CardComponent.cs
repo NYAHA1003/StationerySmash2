@@ -96,7 +96,8 @@ namespace Battle
             int count = _cardDeckSO.cardDatas.Count;
             for(int i = 0; i < count; i++)
             {
-                _deckData.Add_CardData(_cardDeckSO.cardDatas[i]);
+                CardData cardData = _cardDeckSO.cardDatas[i];
+                _deckData.Add_CardData(cardData);
             }
         }
 
