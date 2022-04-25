@@ -61,6 +61,19 @@ namespace Battle
             {
                 IncreaseThrowGauge(Time.deltaTime * 10);
                 _throwDelayBar.fillAmount = _throwGauge / 200f;
+                CheckCanThrow();
+            }
+        }
+
+        /// <summary>
+        /// 던지기 가능한 유닛들의 시각적 효과를 설정한다.
+        /// </summary>
+        public void CheckCanThrow()
+        {
+            int count = _unitCommand._playerUnitList.Count;
+            for (int i = 1; i < count; i++)
+            {
+                _unitCommand._playerUnitList[i].SetThrowRenderer(_throwGauge);
             }
         }
 

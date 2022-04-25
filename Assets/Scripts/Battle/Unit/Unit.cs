@@ -339,4 +339,20 @@ public class Unit : MonoBehaviour
                 break;
         }
     }
+
+    /// <summary>
+    /// 던지기 게이지에 따른 던지기 가능여부
+    /// </summary>
+    /// <param name="gauge"></param>
+    public void SetThrowRenderer(float gauge)
+    {
+        if(_unitStat.Return_Weight() <= gauge)
+        {
+            _unitSprite.SetThrowRenderer(true);
+        }
+        else
+        {
+            _unitSprite.SetThrowRenderer(false);
+        }
+    }
 }
