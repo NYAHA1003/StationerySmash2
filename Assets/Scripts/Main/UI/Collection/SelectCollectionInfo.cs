@@ -17,7 +17,6 @@ public class SelectCollectionInfo : MonoBehaviour
     private Button _createButton = null;
     [SerializeField]
     private Button _closeButton = null;
-
     private CollectionData _collectionData = null;
 
 

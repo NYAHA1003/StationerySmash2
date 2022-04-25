@@ -7,6 +7,9 @@ namespace Utill
     public enum CollectionType
     {
         None = 0,
+        Normal,
+        Skin,
+
     }
 
     public enum CollectionThemeType
@@ -19,6 +22,7 @@ namespace Utill
     {
         public string _name = "";
         public Sprite _collectionSprite = null;
+        public CollectionType _collectionType = CollectionType.None;
         public CollectionThemeType _collectionThemeType = CollectionThemeType.None;
         public List<CardNamingType> _needCardNamingType = null;
     }
