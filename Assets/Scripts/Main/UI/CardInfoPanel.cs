@@ -98,7 +98,7 @@ public class CardInfoPanel : MonoBehaviour
 
         //이름, 이미지, 설명 설정
         _nameText.text = cardData.card_Name;
-        _cardImage.sprite = cardData.skinData._cardSprite;
+        _cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
         _descriptionText.text = cardData.card_Description;
     }
     /// <summary>
@@ -112,7 +112,7 @@ public class CardInfoPanel : MonoBehaviour
 
         //이름, 이미지, 설명 설정
         _nameText.text = cardData.card_Name;
-        _cardImage.sprite = cardData.skinData._cardSprite;
+        _cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
         _descriptionText.text = cardData.card_Description;
 
         //스탯 텍스트 설정
@@ -133,7 +133,7 @@ public class CardInfoPanel : MonoBehaviour
 
         //이름, 이미지, 설명 설정
         _nameText.text = cardData.card_Name;
-        _cardImage.sprite = cardData.skinData._cardSprite;
+        _cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
         _descriptionText.text = cardData.card_Description;
     }
     /// <summary>
@@ -147,7 +147,7 @@ public class CardInfoPanel : MonoBehaviour
 
         //이름, 이미지, 설명 설정
         _nameText.text = cardData.card_Name;
-        _cardImage.sprite = cardData.skinData._cardSprite;
+        _cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
         _descriptionText.text = cardData.card_Description;
     }
 
@@ -158,7 +158,7 @@ public class CardInfoPanel : MonoBehaviour
     public void OnSetSkin(SkinData skinData)
     {
         //인벤토리에 해당 스킨을 가지고 오기
-        SkinData getSkinData = SkinData.GetSkinDataList(skinData._cardNamingType)?.Find(x => x._skinId == skinData._skinId);
+        SkinData getSkinData = SkinData.GetSkinDataList(skinData._cardNamingType)?.Find(x => x._skinType == skinData._skinType);
         
         //스킨데이터가 있다면 유닛 데이터의 스킨데이터를 변경
         if(getSkinData != null)

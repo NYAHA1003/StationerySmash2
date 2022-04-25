@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Utill;
 
 public class DeckCard : MonoBehaviour
 {
@@ -24,7 +25,7 @@ public class DeckCard : MonoBehaviour
     public void SetCard(CardData cardData)
     {
         _cardData = cardData;
-        _cardImage.sprite = cardData.skinData._cardSprite;
+        _cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
         _unitNameText.text = cardData.card_Name;
         _CostText.text = $"{cardData.card_Cost}";
 

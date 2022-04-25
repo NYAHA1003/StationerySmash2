@@ -9,34 +9,30 @@ public class CollectionInfo : MonoBehaviour
 {
     //인스펙터 참조 변수
     [SerializeField]
-    private CollectionInfo _selectCollectionInfo = null;
+    private SelectCollectionInfo _selectCollectionInfo = null;
     [SerializeField]
     private TextMeshProUGUI _nameText = null;
     [SerializeField]
     private Image _collectionImage = null;
     [SerializeField]
     private Button _selectButton = null;
-    [SerializeField]
-    private bool isSelectInfo = false;
 
     private CollectionData _collectionData = null;
+
+    private bool _isHave = false;
 
 
     private void Start()
     {
-        if(!isSelectInfo)
-        {
-            _selectButton.onClick.AddListener(() => OnSelectCollectionInfo());
-        }
+        _selectButton.onClick.AddListener(() => OnSelectCollectionInfo());
     }
 
     /// <summary>
     /// 컬렉션 데이터 설정
     /// </summary>
-    public void SetCollection(CollectionData collectionData)
+    public void SetCollection(CollectionData collectionData, bool isHave)
     {
-        gameObject.SetActive(true);
-
+        _isHave = isHave;
         if(collectionData == null)
         {
             _collectionData = null;
@@ -46,7 +42,14 @@ public class CollectionInfo : MonoBehaviour
         else
         {
             _collectionData = collectionData;
-            _nameText.text = collectionData._name;
+            if(_isHave)
+            {
+                _nameText.text = collectionData._name + "가지고 있음";
+            }
+            else
+            {
+                _nameText.text = collectionData._name;
+            }
             _collectionImage.sprite = collectionData._collectionSprite;
         }
     }
@@ -69,6 +72,7 @@ public class CollectionInfo : MonoBehaviour
             return;
         }
         //컬렉션 선택창을 킨다
-        _selectCollectionInfo.SetCollection(_collectionData);
+        _selectCollectionInfo.SetCollection(_collectionData, _isHave);
+        _selectCollectionInfo.OnOpenPanel();
     }
 }
