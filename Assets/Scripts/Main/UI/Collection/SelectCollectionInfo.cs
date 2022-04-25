@@ -5,24 +5,26 @@ using UnityEngine.UI;
 using Utill;
 using TMPro;
 
-public class CollectionInfo : MonoBehaviour
+
+public class SelectCollectionInfo : MonoBehaviour
 {
     //인스펙터 참조 변수
-    [SerializeField]
-    private SelectCollectionInfo _selectCollectionInfo = null;
     [SerializeField]
     private TextMeshProUGUI _nameText = null;
     [SerializeField]
     private Image _collectionImage = null;
     [SerializeField]
-    private Button _selectButton = null;
+    private Button _createButton = null;
+    [SerializeField]
+    private Button _closeButton = null;
 
     private CollectionData _collectionData = null;
 
 
     private void Start()
     {
-        _selectButton.onClick.AddListener(() => OnSelectCollectionInfo());
+        _createButton.onClick.AddListener(() => OnCreate());
+        _closeButton.onClick.AddListener(() => OnClosePanel());
     }
 
     /// <summary>
@@ -30,9 +32,7 @@ public class CollectionInfo : MonoBehaviour
     /// </summary>
     public void SetCollection(CollectionData collectionData)
     {
-        gameObject.SetActive(true);
-
-        if(collectionData == null)
+        if (collectionData == null)
         {
             _collectionData = null;
             _nameText.text = "없음";
@@ -45,26 +45,26 @@ public class CollectionInfo : MonoBehaviour
             _collectionImage.sprite = collectionData._collectionSprite;
         }
     }
+    /// <summary>
+    /// 컬렉션을 제작
+    /// </summary>
+    public void OnCreate()
+    {
+
+    }
 
     /// <summary>
     /// 컬렉션 정보 창을 닫는다.
     /// </summary>
-    public void ClosePanel()
+    public void OnClosePanel()
     {
         gameObject.SetActive(false);
     }
-
     /// <summary>
-    /// 컬렉션 정보창을 눌렀을 때
+    /// 컬렉션 정보 창을 연다.
     /// </summary>
-    public void OnSelectCollectionInfo()
+    public void OnOpenPanel()
     {
-        if(_collectionData == null)
-        {
-            return;
-        }
-        //컬렉션 선택창을 킨다
-        _selectCollectionInfo.SetCollection(_collectionData);
-        _selectCollectionInfo.OnOpenPanel();
+        gameObject.SetActive(true);
     }
 }

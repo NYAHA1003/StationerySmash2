@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utill;
 
-public class CollectionCommand : MonoBehaviour
+public class CollectionComponent : MonoBehaviour
 {
     //인스펙터 변수
     [SerializeField]
@@ -12,7 +12,7 @@ public class CollectionCommand : MonoBehaviour
     [SerializeField]
     private CollectionInfo _collectionInfo2 = null;
     [SerializeField]
-    private CollectionInfo _selectCollectionInfo = null;
+    private SelectCollectionInfo _selectCollectionInfo = null;
     [SerializeField]
     private CollectionDataSO _collectionDataSO = null;
     [SerializeField]
@@ -26,6 +26,7 @@ public class CollectionCommand : MonoBehaviour
 
     public void Start()
     {
+        ResetData();
         _nextButton.onClick.AddListener(() => OnNextData());
         _peviousButton.onClick.AddListener(() => OnPeviousData());
     }
@@ -58,6 +59,14 @@ public class CollectionCommand : MonoBehaviour
         _collectionIndex1--;
         _collectionIndex2--;
 
+        _collectionInfo1.SetCollection(_collectionDataSO._collectionDatas[_collectionIndex1] ?? null);
+        _collectionInfo2.SetCollection(_collectionDataSO._collectionDatas[_collectionIndex2] ?? null);
+    }
+    /// <summary>
+    /// 현재 데이터 리셋
+    /// </summary>
+    public void ResetData()
+    {
         _collectionInfo1.SetCollection(_collectionDataSO._collectionDatas[_collectionIndex1] ?? null);
         _collectionInfo2.SetCollection(_collectionDataSO._collectionDatas[_collectionIndex2] ?? null);
     }
