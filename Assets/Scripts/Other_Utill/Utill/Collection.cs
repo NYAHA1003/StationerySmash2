@@ -25,5 +25,7 @@ namespace Utill
         public CollectionType _collectionType = CollectionType.None;
         public CollectionThemeType _collectionThemeType = CollectionThemeType.None;
         public List<CardNamingType> _needCardNamingType = null;
+        public List<int> _needCardNamingCount = null;
+        public List<SkinType> _needSkinTypes = null;
     }
 }

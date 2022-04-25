@@ -25,6 +25,8 @@ public class CollectionComponent : MonoBehaviour
     private Button _changeNormalButton = null;
     [SerializeField]
     private Button _changeSkinButton = null;
+    [SerializeField]
+    private SaveDataSO _saveDataSO = null;
 
     //참조 변수
     private CollectionDataSO _currentCollectionData = null;
@@ -56,8 +58,7 @@ public class CollectionComponent : MonoBehaviour
         _collectionIndex1++;
         _collectionIndex2++;
 
-        _collectionInfo1.SetCollection(_currentCollectionData._collectionDatas?[_collectionIndex1]);
-        _collectionInfo2.SetCollection(_currentCollectionData._collectionDatas?[_collectionIndex2]);
+        ResetData();
     }
 
     /// <summary>
@@ -70,18 +71,20 @@ public class CollectionComponent : MonoBehaviour
             return;
         }
         _collectionIndex1--;
-        _collectionIndex2--;
-
-        _collectionInfo1.SetCollection(_currentCollectionData._collectionDatas[_collectionIndex1] ?? null);
-        _collectionInfo2.SetCollection(_currentCollectionData._collectionDatas[_collectionIndex2] ?? null);
+        _collectionIndex2--; 
+        
+        ResetData();
     }
     /// <summary>
     /// 현재 데이터 리셋
     /// </summary>
     public void ResetData()
     {
-        _collectionInfo1.SetCollection(_currentCollectionData._collectionDatas[_collectionIndex1] ?? null);
-        _collectionInfo2.SetCollection(_currentCollectionData._collectionDatas[_collectionIndex2] ?? null);
+        CollectionData collectionData1 = _currentCollectionData._collectionDatas[_collectionIndex1];
+        CollectionData collectionData2 = _currentCollectionData._collectionDatas[_collectionIndex2];
+
+        _collectionInfo1.SetCollection(collectionData1, ContainHaveCollectionType(collectionData1._collectionThemeType));
+        _collectionInfo2.SetCollection(collectionData2, ContainHaveCollectionType(collectionData2._collectionThemeType));
     }
 
     /// <summary>
@@ -104,5 +107,14 @@ public class CollectionComponent : MonoBehaviour
         _collectionIndex1 = 0;
         _collectionIndex2 = 1;
         ResetData();
+    }
+
+    /// <summary>
+    /// 해당 콜렉션을 가지고 있는지
+    /// </summary>
+    /// <returns></returns>
+    private bool ContainHaveCollectionType(CollectionThemeType collectionThemeType)
+    {
+        return _saveDataSO.userSaveData._haveCollectionDatas.Contains(collectionThemeType);
     }
 }

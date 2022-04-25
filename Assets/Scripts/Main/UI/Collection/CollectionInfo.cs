@@ -19,6 +19,8 @@ public class CollectionInfo : MonoBehaviour
 
     private CollectionData _collectionData = null;
 
+    private bool _isHave = false;
+
 
     private void Start()
     {
@@ -28,10 +30,9 @@ public class CollectionInfo : MonoBehaviour
     /// <summary>
     /// 컬렉션 데이터 설정
     /// </summary>
-    public void SetCollection(CollectionData collectionData)
+    public void SetCollection(CollectionData collectionData, bool isHave)
     {
-        gameObject.SetActive(true);
-
+        _isHave = isHave;
         if(collectionData == null)
         {
             _collectionData = null;
@@ -41,7 +42,14 @@ public class CollectionInfo : MonoBehaviour
         else
         {
             _collectionData = collectionData;
-            _nameText.text = collectionData._name;
+            if(_isHave)
+            {
+                _nameText.text = collectionData._name + "가지고 있음";
+            }
+            else
+            {
+                _nameText.text = collectionData._name;
+            }
             _collectionImage.sprite = collectionData._collectionSprite;
         }
     }
@@ -64,7 +72,7 @@ public class CollectionInfo : MonoBehaviour
             return;
         }
         //컬렉션 선택창을 킨다
-        _selectCollectionInfo.SetCollection(_collectionData);
+        _selectCollectionInfo.SetCollection(_collectionData, _isHave);
         _selectCollectionInfo.OnOpenPanel();
     }
 }
