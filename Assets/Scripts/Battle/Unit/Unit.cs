@@ -214,7 +214,7 @@ public class Unit : MonoBehaviour
     /// </summary>
     /// <param name="atkType"></param>
     /// <param name="value"></param>
-    public virtual void AddStatusEffect(AtkType atkType, params float[] value)
+    public virtual void AddStatusEffect(EffAttackType atkType, params float[] value)
     {
         _unitStateEff.AddStatusEffect(atkType, value);
     }

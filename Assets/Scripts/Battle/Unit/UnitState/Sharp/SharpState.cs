@@ -33,6 +33,7 @@ public class SharpState : AbstractStateManager
         _abstractUnitStateList.Add(_throwState);
 
         SetInStateList();
+
     }
     public override void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
     {

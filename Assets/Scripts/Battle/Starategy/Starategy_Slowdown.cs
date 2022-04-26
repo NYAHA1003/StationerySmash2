@@ -27,7 +27,7 @@ public class Starategy_Slowdown : AbstractStarategy
             {
                 if (Vector2.Distance(list[i].transform.position, mousePos) < value[3])
                 {
-                    list[i].AddStatusEffect(Utill.AtkType.SlowDown, value);
+                    list[i].AddStatusEffect(Utill.EffAttackType.SlowDown, value);
                 }
             }
             catch

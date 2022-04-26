@@ -11,7 +11,7 @@ public class TimerAbility : AbstractPencilCaseAbility
         {
             Unit unit = _battleManager.CommandUnit._playerUnitList[i];
 
-            unit.AddStatusEffect(Utill.AtkType.Exch, 2, 1000, 1000);
+            unit.AddStatusEffect(Utill.EffAttackType.Exch, 2, 1000, 1000);
         }
     }
     public override bool AIAbilityCondition()

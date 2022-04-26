@@ -67,7 +67,7 @@ public class PencilCaseUnit : Unit
     /// </summary>
     /// <param name="atkType"></param>
     /// <param name="value"></param>
-    public override void AddStatusEffect(AtkType atkType, params float[] value)
+    public override void AddStatusEffect(EffAttackType atkType, params float[] value)
     {
 
     }

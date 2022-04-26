@@ -35,6 +35,9 @@ public class EraserState : AbstractStateManager
         _abstractUnitStateList.Add(_throwState);
 
         SetInStateList();
+
+        //공격 타입 설정
+        _attackState.SetAttackType(AttackType.Range);
     }
 
     public override void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)

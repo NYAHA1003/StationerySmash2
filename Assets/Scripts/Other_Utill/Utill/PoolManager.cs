@@ -69,7 +69,7 @@ public class PoolManager : MonoBehaviour
     /// <param name="myUnit"></param>
     /// <param name="statusEffect"></param>
     /// <param name="valueList"></param>
-    public static void CreatePoolEff<T>(Transform myTrm, Transform mySprTrm, Unit myUnit, AtkType statusEffect, params float[] valueList) where T : EffState, new()
+    public static void CreatePoolEff<T>(Transform myTrm, Transform mySprTrm, Unit myUnit, EffAttackType statusEffect, params float[] valueList) where T : EffState, new()
     {
         Queue<T> q = new Queue<T>();
 
@@ -221,7 +221,7 @@ public class PoolManager : MonoBehaviour
     /// <param name="mySprTrm"></param>
     /// <param name="myUnit"></param>
     /// <returns></returns>
-    public static T GetEff<T>(Transform myTrm, Transform mySprTrm, Unit myUnit, AtkType statusEffect, params float[] valueList) where T : EffState, new()
+    public static T GetEff<T>(Transform myTrm, Transform mySprTrm, Unit myUnit, EffAttackType statusEffect, params float[] valueList) where T : EffState, new()
     {
         T item = default(T);
 

@@ -28,7 +28,7 @@ public class BlanketBadge : AbstractBadge
     /// <param name="atkData"></param>
     public void PCKillCancle(AtkData atkData)
     {
-        if(atkData.atkType == AtkType.PCKill)
+        if(atkData.atkType == EffAttackType.PCKill)
         {
             atkData.Reset_Damage(atkData.damage / 2);
         }

@@ -125,7 +125,7 @@ public abstract class AbstractThrowState : AbstractUnitState
     {
         float dir = Vector2.Angle((Vector2)_myTrm.position, (Vector2)targetUnit.transform.position);
         float extraKnockBack = (targetUnit.UnitStat.Return_Weight() - _myUnit.UnitStat.Return_Weight() * (float)targetUnit.UnitStat.Hp / targetUnit.UnitStat.MaxHp) * 0.025f;
-        AtkData atkData = new AtkData(_myUnit, 0, 0, 0, 0, true, _damageId, AtkType.Normal);
+        AtkData atkData = new AtkData(_myUnit, 0, 0, 0, 0, true, _damageId, EffAttackType.Normal);
 
 
         WeightBig(ref atkData, ref targetUnit, ref dir, ref extraKnockBack);
@@ -150,7 +150,7 @@ public abstract class AbstractThrowState : AbstractUnitState
         if (_myUnit.UnitStat.Return_Weight() > targetUnit.UnitStat.Return_Weight())
         {
             atkData.Reset_Kncockback(10, extraKnockBack, dir, false);
-            atkData.Reset_Type(AtkType.Stun);
+            atkData.Reset_Type(EffAttackType.Stun);
             atkData.Reset_Value(1);
             targetUnit.Run_Damaged(atkData);
             return;
@@ -165,7 +165,7 @@ public abstract class AbstractThrowState : AbstractUnitState
     /// <param name="extraKnockBack"></param>
     private void WeightSmall(ref AtkData atkData, ref Unit targetUnit, ref float dir, ref float extraKnockBack)
     {
-        AtkData atkDataMy = new AtkData(_myUnit, 0, 0, 0, 0, true, _damageId, AtkType.Normal);
+        AtkData atkDataMy = new AtkData(_myUnit, 0, 0, 0, 0, true, _damageId, EffAttackType.Normal);
 
         //초기데미지 설정
         SetThrowAttackDamage(ref atkData, targetUnit);
@@ -175,12 +175,12 @@ public abstract class AbstractThrowState : AbstractUnitState
         if (_myUnit.UnitStat.Return_Weight() < targetUnit.UnitStat.Return_Weight())
         {
             atkData.Reset_Kncockback(0, 0, 0, false);
-            atkData.Reset_Type(AtkType.Normal);
+            atkData.Reset_Type(EffAttackType.Normal);
             atkData.Reset_Value(null);
             targetUnit.Run_Damaged(atkData);
 
             atkDataMy.Reset_Kncockback(20, 0, dir, true);
-            atkDataMy.Reset_Type(AtkType.Stun);
+            atkDataMy.Reset_Type(EffAttackType.Stun);
             atkDataMy.Reset_Value(1);
             atkDataMy.Reset_Damage(0);
             _myUnit.Run_Damaged(atkDataMy);
@@ -196,7 +196,7 @@ public abstract class AbstractThrowState : AbstractUnitState
     /// <param name="extraKnockBack"></param>
     private void WeightEqual(ref AtkData atkData, ref Unit targetUnit, ref float dir, ref float extraKnockBack)
     {
-        AtkData atkDataMy = new AtkData(_myUnit, 0, 0, 0, 0, true, _damageId, AtkType.Normal);
+        AtkData atkDataMy = new AtkData(_myUnit, 0, 0, 0, 0, true, _damageId, EffAttackType.Normal);
 
         //초기데미지 설정
         SetThrowAttackDamage(ref atkData, targetUnit);
@@ -205,13 +205,13 @@ public abstract class AbstractThrowState : AbstractUnitState
         if (_myUnit.UnitStat.Return_Weight() == targetUnit.UnitStat.Return_Weight())
         {
             atkData.Reset_Kncockback(10, extraKnockBack, dir, false);
-            atkData.Reset_Type(AtkType.Stun);
+            atkData.Reset_Type(EffAttackType.Stun);
             atkData.Reset_Value(1);
             targetUnit.Run_Damaged(atkData);
 
 
             atkDataMy.Reset_Kncockback(20, 0, dir, true);
-            atkDataMy.Reset_Type(AtkType.Normal);
+            atkDataMy.Reset_Type(EffAttackType.Normal);
             atkDataMy.Reset_Value(1);
             atkDataMy.Reset_Damage(0);
             _myUnit.Run_Damaged(atkDataMy);
