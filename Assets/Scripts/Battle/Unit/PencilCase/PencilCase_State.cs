@@ -104,8 +104,15 @@ public class PencilCaseDieState : AbstractDieState
 {
     public override void Enter()
     {
-        //battleManager.CommandCamera.WinCamEffect(myTrm.position, myUnit.eTeam != TeamType.MyTeam);
-        base.Enter();
+        //快府 评老 版快
+        if(_myUnit.ETeam == TeamType.MyTeam)
+        {
+            _myUnit.BattleManager.CommandWinLose.SendEndGame(false);
+        }
+        else if(_myUnit.ETeam == TeamType.EnemyTeam)
+        {
+            _myUnit.BattleManager.CommandWinLose.SendEndGame(true);
+        }
     }
     public override Unit PullUnit()
     {

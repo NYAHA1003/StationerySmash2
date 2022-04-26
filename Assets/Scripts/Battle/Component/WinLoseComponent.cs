@@ -19,6 +19,8 @@ namespace Battle
         [SerializeField]
         private RectTransform _loseText;
 
+        private List<IWinLose> _observers = new List<IWinLose>(); //관찰자들
+
         /// <summary>
         /// 초기화
         /// </summary>
@@ -30,6 +32,27 @@ namespace Battle
         {
 
         }
+
+        /// <summary>
+        /// 관찰자들에게 게임이 종료됨을 알린다.
+        /// </summary>
+        public void SendEndGame(bool isWin)
+		{
+            int count = _observers.Count;
+            for (int i = 0; i < count; i++)
+			{
+                //게임이 끝났음을 모든 관찰자들에게 전달
+                _observers[i].Notify(isWin);
+			}
+		}
+
+        /// <summary>
+        /// 관찰자를 등록한다
+        /// </summary>
+        public void AddObservers(IWinLose observer)
+		{
+            _observers.Add(observer);
+		}
 
         /// <summary>
         /// 승리,패배 패널 키기

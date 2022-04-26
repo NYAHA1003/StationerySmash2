@@ -7,7 +7,7 @@ using Utill;
 namespace Battle
 {
     [System.Serializable]
-    public class CameraComponent : BattleComponent
+    public class CameraComponent : BattleComponent, IWinLose
     {
 
         private Vector3 _clickPos = Vector3.zero;
@@ -27,6 +27,10 @@ namespace Battle
         //인스펙터 참조 변수
         [SerializeField]
         private Camera _camera = null;
+        [SerializeField]
+        private Transform _myPencilCase = null;
+        [SerializeField]
+        private Transform _enemyPencilCase = null;
 
         /// <summary>
         /// 초기화
@@ -41,6 +45,9 @@ namespace Battle
 
             updateAction += UpdateCameraPos;
             updateAction += UpdateCameraScale;
+
+            //관찰자를 등록한다
+            _commandWinLose.AddObservers(this);
         }
 
         /// <summary>
@@ -164,7 +171,9 @@ namespace Battle
         public void WinCamEffect(Vector2 pos, bool isWin)
         {
             if (_isEffect)
+			{
                 return;
+			}
             _isEffect = true;
             float time = Vector2.Distance(_camera.transform.position, pos) / 5;
             _camera.transform.DOMove(new Vector3(pos.x, pos.y, -10), time);
@@ -183,6 +192,22 @@ namespace Battle
                 });
             });
         }
-    }
+
+        /// <summary>
+        /// 승리에 따라 필통이 파괴되는 연출을 사용한다.
+        /// </summary>
+        /// <param name="isWin"></param>
+		public void Notify(bool isWin)
+		{
+            if(isWin)
+			{
+                WinCamEffect(_enemyPencilCase.position, isWin);
+			}
+            else
+			{
+                WinCamEffect(_myPencilCase.position, isWin);
+			}
+        }
+	}
 
 }
