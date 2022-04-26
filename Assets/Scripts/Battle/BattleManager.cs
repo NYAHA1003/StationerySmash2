@@ -70,6 +70,8 @@ public class BattleManager : MonoBehaviour
     private WinLoseComponent _commandWinLose = null;
     [SerializeField, Header("스프라이트로딩시스템 BattleSetSkin"), Space(30)]
     private SetSkinComponent _loadingComponent = null;
+    [SerializeField, Header("인트로시스템 BattleIntro"), Space(30)]
+    private IntroComponent _introComponent = null;
 
     private IEnumerator Start()
     {
@@ -80,6 +82,7 @@ public class BattleManager : MonoBehaviour
         {
             yield return null;
         }
+
 
         _commandPencilCase.SetInitialization(CommandUnit, CurrentStageData);
         _commandCard.SetInitialization(this, CommandCamera, CommandUnit, CommandCost, ref _updateAction, CurrentStageData, _commandPencilCase.PencilCaseDataMy.PencilCasedataBase.maxCard);
@@ -94,13 +97,21 @@ public class BattleManager : MonoBehaviour
         _commandWinLose.SetInitialization(this);
 
         _isEndSetting = true;
+
+        StartCoroutine(_introComponent.SetIntro());
+
+        while (!_introComponent.isEndIntro)
+        {
+            yield return null;
+        }
+
     }
 
     private void Update()
     {
         //  Debug.Log("유닛 갯수 : " + _commandUnit.UnitParent.childCount + " FPS : " + 1.0f / Time.deltaTime);
 
-        if (!_isEndSetting || !_loadingComponent.IsAllSetSkin)
+        if (!_isEndSetting || !_loadingComponent.IsAllSetSkin || !_introComponent.isEndIntro)
         {
             return;
         }

@@ -7,8 +7,7 @@ public abstract class AbstractStarategy
 {
     protected BattleManager _battleManager;
     protected CardMove _card;
-
-
+    protected StarategyData _starategyData;
     public void SetBattleManager(BattleManager battleManager)
     {
         this._battleManager = battleManager;
@@ -18,6 +17,10 @@ public abstract class AbstractStarategy
     {
         this._card = card;
     }
-
+    
+    public void SetValuse(params float[] valuse)
+    {
+        _starategyData.starategyablityData = valuse;
+    }
     public abstract void Run_Card(TeamType eTeam);
 }
