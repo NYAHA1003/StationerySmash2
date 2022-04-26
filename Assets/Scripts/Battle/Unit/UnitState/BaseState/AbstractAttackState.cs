@@ -20,9 +20,6 @@ public abstract class AbstractAttackState : AbstractUnitState
 
         ResetAllStateAnimation();
 
-        //스티커 사용
-        _myUnit.UnitSticker.RunStickerAbility(_curState);
-
         //공격 딜레이를 유닛의 딜레이로 설정
         _currentdelay = _myUnit.UnitStat.AttackDelay;
 
@@ -85,8 +82,11 @@ public abstract class AbstractAttackState : AbstractUnitState
             AtkData atkData = null;
             SetAttackData(ref atkData);
 
+            //스티커 사용
+            _myUnit.UnitSticker.RunAttackStickerAbility(_curState, ref atkData);
+
             //공격 유형에 따라 공격
-			switch (_myUnitData.attackType)
+            switch (_myUnitData.attackType)
 			{
 				case AttackType.Normal:
                     NormalAttack(atkData);

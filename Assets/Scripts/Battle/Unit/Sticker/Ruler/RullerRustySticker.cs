@@ -7,14 +7,9 @@ public class RullerRustySticker : AbstractSticker
     public override void SetSticker(Unit unit)
     {
         base.SetSticker(unit);
-        _matchState = eState.IDLE;
     }
-    public override void RunStickerAblity(eState eState)
+    public override void RunStickerAblity()
     {
-        if (_matchState != eState)
-        {
-            return;
-        }
         _myUnit.UnitStat.IncreaseWeightPercent(100);
     }
 }

@@ -18,7 +18,7 @@ public abstract class AbstractThrowState : AbstractUnitState
         _myUnit.SetIsDontThrow(true);
 
         //스티커 사용
-        _myUnit.UnitSticker.RunStickerAbility(_curState);
+        _myUnit.UnitSticker.RunThrowStickerAbility(_curState);
 
         //유닛 던지기
         ThrowingUnit();

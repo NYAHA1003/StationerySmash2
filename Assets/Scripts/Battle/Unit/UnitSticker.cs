@@ -40,13 +40,119 @@ public class UnitSticker
     }
 
     /// <summary>
-    /// 스티커 능력 사용
+    /// 생성 스티커 능력 사용
     /// </summary>
     /// <param name="eState"></param>
-    public void RunStickerAbility(eState eState)
+    public void RunIdleStickerAbility(eState eState)
     {
-        _stickerablity?.RunStickerAblity(eState);
+        if(_stickerablity == null)
+		{
+            return;
+		}
+        if(eState != eState.IDLE)
+		{
+            return;
+		}
+        _stickerablity?.RunStickerAblity();
     }
+    /// <summary>
+    /// 이동 스티커 능력 사용
+    /// </summary>
+    /// <param name="eState"></param>
+    public void RunMoveStickerAbility(eState eState)
+    {
+        if (_stickerablity == null)
+        {
+            return;
+        }
+        if (eState != eState.MOVE)
+        {
+            return;
+        }
+        _stickerablity?.RunStickerAblity();
+    }
+    /// <summary>
+    /// 공격 스티커 능력 사용
+    /// </summary>
+    /// <param name="eState"></param>
+    public void RunAttackStickerAbility(eState eState, ref AtkData atkData)
+    {
+        if (_stickerablity == null)
+        {
+            return;
+        }
+        if (eState != eState.ATTACK)
+        {
+            return;
+        }
+        (_stickerablity as AbstractAttackSticker).RunAttackStickerAblity(ref atkData);
+    }
+    /// <summary>
+    /// 데미지입음 스티커 능력 사용
+    /// </summary>
+    /// <param name="eState"></param>
+    public void RunDamagedStickerAbility(eState eState, ref AtkData atkData)
+    {
+        if (_stickerablity == null)
+        {
+            return;
+        }
+        if (eState != eState.DAMAGED)
+        {
+            return;
+        }
+        (_stickerablity as AbstractDamagedSticker).RunDamagedStickerAblity(ref atkData);
+    }
+    /// <summary>
+    /// 죽음 스티커 능력 사용
+    /// </summary>
+    /// <param name="eState"></param>
+    public void RunDieStickerAbility(eState eState)
+    {
+        if (_stickerablity == null)
+        {
+            return;
+        }
+        if (eState != eState.DIE)
+        {
+            return;
+        }
+        _stickerablity?.RunStickerAblity();
+    }
+    /// <summary>
+    /// 대기 스티커 능력 사용
+    /// </summary>
+    /// <param name="eState"></param>
+    public void RunWaitStickerAbility(eState eState)
+    {
+        if (_stickerablity == null)
+        {
+            return;
+        }
+        if (eState != eState.WAIT)
+        {
+            return;
+        }
+        _stickerablity?.RunStickerAblity();
+    }
+
+    /// <summary>
+    /// 던지기 스티커 능력 사용
+    /// </summary>
+    /// <param name="eState"></param>
+    public void RunThrowStickerAbility(eState eState)
+    {
+        if (_stickerablity == null)
+        {
+            return;
+        }
+        if (eState != eState.THROW)
+        {
+            return;
+        }
+        _stickerablity?.RunStickerAblity();
+    }
+
 
     /// <summary>
     /// 스티커 능력 반납

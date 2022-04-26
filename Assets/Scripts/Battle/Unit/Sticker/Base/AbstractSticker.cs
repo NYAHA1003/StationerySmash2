@@ -7,7 +7,6 @@ using Utill;
 [System.Serializable]
 public abstract class AbstractSticker
 {
-    protected eState _matchState = eState.IDLE;
     protected Unit _myUnit = null;
 
     public virtual void SetSticker(Unit unit)
@@ -15,6 +14,5 @@ public abstract class AbstractSticker
         _myUnit = unit;
     }
 
-    public abstract void RunStickerAblity(eState eState);
-
+    public abstract void RunStickerAblity();
 }

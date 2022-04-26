@@ -9,15 +9,10 @@ public class PencilNewSticker : AbstractSticker
     public override void SetSticker(Unit unit)
     {
         base.SetSticker(unit);
-        _matchState = eState.ATTACK;
     }
 
-    public override void RunStickerAblity(eState eState)
+    public override void RunStickerAblity()
     {
-        if (_matchState != eState)
-        {
-            return;
-        }
         _myUnit.UnitStat.IncreaseAttackPercent(_myUnit.UnitStat.LostHpPenrcent(ATKpercent));
         _myUnit.UnitStat.IncreaseWeightPercent(-1 * _myUnit.UnitStat.LostHpPenrcent(Weightpercent));
     }

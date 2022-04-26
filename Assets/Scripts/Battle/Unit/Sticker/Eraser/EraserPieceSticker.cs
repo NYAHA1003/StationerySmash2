@@ -13,17 +13,12 @@ public class EraserPieceSticker : AbstractSticker
     public override void SetSticker(Unit unit)
     {
         base.SetSticker(unit);
-        _matchState = eState.DIE;
         _battleManager = unit.BattleManager;
         SetEarserPieceData();
     }
 
-    public override void RunStickerAblity(eState eState)
+    public override void RunStickerAblity()
     {
-        if (_matchState != eState)
-        {
-            return;
-        }
         _myUnit.BattleManager.CommandUnit.SummonUnit(_eraserPieceData, _myUnit.transform.position, _myUnit.UnitStat.Grade, _myUnit.ETeam);
         _myUnit.UnitStat.SetBonusMaxHP(100);
     }

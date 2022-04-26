@@ -11,7 +11,7 @@ public abstract class AbstractIdleState : AbstractUnitState
         _curEvent = eEvent.ENTER;
 
         //스티커 사용
-        _myUnit.UnitSticker.RunStickerAbility(_curState);
+        _myUnit.UnitSticker.RunIdleStickerAbility(_curState);
 
         //소환시 애니메이션
         Animation();

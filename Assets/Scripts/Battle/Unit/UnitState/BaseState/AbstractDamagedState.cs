@@ -28,7 +28,7 @@ public abstract class AbstractDamagedState : AbstractUnitState
         _myUnit.SubtractHP(_atkData.damage * (_myUnit.UnitStat.DamagedPercent / 100) - _myUnit.UnitStat.DamageDecrese); //여기
 
         //스티커 사용
-        _myUnit.UnitSticker.RunStickerAbility(_curState);
+        _myUnit.UnitSticker.RunDamagedStickerAbility(_curState, ref _atkData);
 
         //체력이 0 이하면 죽음 상태로 전환
         if (_myUnit.UnitStat.Hp <= 0)
