@@ -16,6 +16,8 @@ public class LoadingManager : MonoBehaviour
     private TextMeshProUGUI tip_Text;
     [Range (0, 5)]
     public float repeatTerm;
+    [SerializeField, Header("스프라이트로딩시스템 BattleSetSkin"), Space(30)]
+    private SetSkinComponent _loadingComponent = null;
     private void Awake()
     {
         StartCoroutine(Random_Tips());
@@ -23,6 +25,7 @@ public class LoadingManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(LoadSceneProcess());
+        _loadingComponent.LoadSkin();
     }
     /// <summary>
     /// 씬 로드하는 함수

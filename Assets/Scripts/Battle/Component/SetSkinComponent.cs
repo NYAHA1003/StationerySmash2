@@ -21,7 +21,11 @@ public class SetSkinComponent : MonoBehaviour
     [SerializeField]
     private PencilCaseDataSO _enemyPencilCase = null;
 
-    public async void Start()
+    public void Start()
+    {
+        LoadSkin();   
+    }
+    public async void LoadSkin()
     {
         await _playerPencilCase.PencilCasedataBase.pencilCaseData.skinData.SetSkin(_playerPencilCase.PencilCasedataBase.pencilCaseData.skinData._skinType);
         await _enemyPencilCase.PencilCasedataBase.pencilCaseData.skinData.SetSkin(_enemyPencilCase.PencilCasedataBase.pencilCaseData.skinData._skinType);
