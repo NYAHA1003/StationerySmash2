@@ -15,7 +15,16 @@ public abstract class AbstractIdleState : AbstractUnitState
 
         //소환시 애니메이션
         Animation();
+        
+        //대기상태로 만든다
+        IdleToWaitTime();
+    }
 
+    /// <summary>
+    /// 대기 상태로 넘어갔을 때 대기 시간
+    /// </summary>
+    protected virtual void IdleToWaitTime()
+    {
         //대기 상태로 만든다
         _stateManager.Set_Wait(0.5f);
     }

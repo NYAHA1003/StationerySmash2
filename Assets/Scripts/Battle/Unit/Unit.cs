@@ -346,7 +346,7 @@ public class Unit : MonoBehaviour
     /// <param name="gauge"></param>
     public void SetThrowRenderer(float gauge)
     {
-        if(_unitStat.Return_Weight() <= gauge)
+        if(_unitStat.Return_Weight() <= gauge && !isThrowring && !_isDontThrow && !_isNeverDontThrow)
         {
             _unitSprite.SetThrowRenderer(true);
         }

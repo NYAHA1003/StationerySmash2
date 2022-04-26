@@ -85,6 +85,9 @@ public class UnitStateChanger
             case UnitType.GreenCar:
                 _stateManager = PoolManager.GetUnit<GreenCarState>(transform, spriteRendererTransform, unit);
                 break;
+            case UnitType.SharpSim:
+                _stateManager = PoolManager.GetUnit<SharpsimState>(transform, spriteRendererTransform, unit);
+                break;
         }
         _stateManager.Set_Idle();
     }

@@ -52,5 +52,6 @@ namespace Utill
         YellowCar = 1001,
         GreenCar = 1002,
         EraserPiece,
+        SharpSim,
     }
 }
