@@ -18,6 +18,7 @@
         ActiveProfileImgPn, // 프로필 이미지 패널 활성화 
         ChangeProfileImage, // 유저 이미지 변경 
         ChabgeUserName, // 유저 닉네임 변경 
+        DeckSetting // 덱 세팅
         
 
 

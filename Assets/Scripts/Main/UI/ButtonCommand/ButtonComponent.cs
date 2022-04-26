@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Utill;
 /// <summary>
 /// 버튼 커맨드에 사용되는 버튼 Enum 
 /// </summary>
@@ -35,6 +35,12 @@ class ButtonComponent : MonoBehaviour
     private ActiveCommand deckButtonCommand;
     private ActiveCommand cardDescriptionButtonCommand;
     private ActiveCommand SettingButtonCommand;
+
+    private void Awake()
+    {
+        EventManager.StartListening(EventsType.DeckSetting, (x) => OnActiveBtn((ButtonType)x));
+
+    }
     private void Start()
     {
         Initialized();
@@ -77,22 +83,9 @@ class ButtonComponent : MonoBehaviour
     {
         Debug.Log(buttonType);
         activeButtons.Push(allBtns[(int)buttonType]);
-        try
-        {
-            activeButtons.Peek().Execute(activePanels[(int)buttonType]);
-        }
-        catch(NullReferenceException e)
-        {
-            Debug.Log(activeButtons.Count); 
-            for(int i= 0; i < activeButtons.Count;i++)
-            {
-                Debug.Log(i);
-                Debug.Log(activePanels[i].name);
-                Debug.Log(activeButtons.Peek().GetType().Name);
-                activeButtons.Peek().Execute(activePanels[(int)buttonType]);
-            }
-        }
+        activeButtons.Peek().Execute(activePanels[(int)buttonType]);
     }
+
     /// <summary>
     /// 패널 비활성화시킬 때 발동되는 버튼함수 
     /// </summary>

@@ -139,7 +139,12 @@ public class EventManager : MonoBehaviour
         Action thisEvent = null;
         if (instance.eventDictionary.TryGetValue(eventName, out thisEvent))
         {
+            Debug.Log("이벤트 실행!");
             thisEvent?.Invoke();
+        }
+        else
+        {
+            Debug.LogError("빈 이벤트입니다");
         }
     }
 
