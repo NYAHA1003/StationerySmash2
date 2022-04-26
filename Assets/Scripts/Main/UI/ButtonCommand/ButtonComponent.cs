@@ -1,9 +1,10 @@
-ï»¿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// ë²„íŠ¼ ì»¤ë§¨ë“œì— ì‚¬ìš©ë˜ëŠ” ë²„íŠ¼ Enum 
+/// ¹öÆ° Ä¿¸Çµå¿¡ »ç¿ëµÇ´Â ¹öÆ° Enum 
 /// </summary>
 [System.Serializable]
 enum ButtonType
@@ -13,37 +14,41 @@ enum ButtonType
     setting
 }
 
-// ButtonType ìˆœì„œëŒ€ë¡œ allBtnsì— Addí•´ì£¼ì–´ì•¼ í•¨ 
+// ButtonType ¼ø¼­´ë·Î allBtns¿¡ AddÇØÁÖ¾î¾ß ÇÔ 
 class ButtonComponent : MonoBehaviour
 {
 
-    private Stack<AbstractBtn> activeButtons = new Stack<AbstractBtn>(); // í™œì„±í™” ì‹œí‚¨ ë²„íŠ¼ë“¤ì„ ë„£ì–´ë‘˜ ìŠ¤íƒ
-    private List<AbstractBtn> allBtns = new List<AbstractBtn>(); // ê¸°ë³¸ì ìœ¼ë¡œ ì„¸íŒ…í•´ë‘ëŠ” ëª¨ë“  ë²„íŠ¼ë“¤ 
+    private Stack<AbstractBtn> activeButtons = new Stack<AbstractBtn>(); // È°¼ºÈ­ ½ÃÅ² ¹öÆ°µéÀ» ³Ö¾îµÑ ½ºÅÃ
+    private List<AbstractBtn> allBtns = new List<AbstractBtn>(); // ±âº»ÀûÀ¸·Î ¼¼ÆÃÇØµÎ´Â ¸ğµç ¹öÆ°Ä¿¸Çµåµé 
 
-    [Header("í´ë¦­í•  ë²„íŠ¼ë“¤")]
+    [Header("Å¬¸¯ÇÒ ¹öÆ°µé")]
     [SerializeField]
     private Button[] clickBtns;
-    [Header("ìº”ìŠ¬ ë²„íŠ¼ë“¤")]
+    [Header("Äµ½½ ¹öÆ°µé")]
     [SerializeField]
     private Button[] cancelBtns;
-    [Header("í™œì„±í™”í•  íŒ¨ë„ë“¤")]
+    [Header("È°¼ºÈ­ÇÒ ÆĞ³Îµé")]
     [SerializeField]
     private GameObject[] activePanels;
 
 
     private ActiveCommand deckButtonCommand;
     private ActiveCommand cardDescriptionButtonCommand;
-    private ActiveCommand SettingButtonCommand; 
+    private ActiveCommand SettingButtonCommand;
     private void Start()
     {
         Initialized();
     }
 
     /// <summary>
-    ///  ì‚¬ìš©í•  ë²„íŠ¼ ì»¤ë§¨ë“œë“¤ ì´ˆê¸°í™” 
+    ///  »ç¿ëÇÒ ¹öÆ° Ä¿¸Çµåµé ÃÊ±âÈ­ 
     /// </summary>
     private void Initialized()
     {
+        deckButtonCommand = new ActiveCommand();
+        cardDescriptionButtonCommand = new ActiveCommand();
+        SettingButtonCommand = new ActiveCommand();
+
         allBtns.Add(deckButtonCommand);
         allBtns.Add(cardDescriptionButtonCommand);
         allBtns.Add(SettingButtonCommand);
@@ -65,17 +70,31 @@ class ButtonComponent : MonoBehaviour
         }
     }
     /// <summary>
-    /// íŒ¨ë„ í™œì„±í™”ì‹œí‚¬ ë•Œ ë°œë™ë˜ëŠ” ë²„íŠ¼í•¨ìˆ˜ 
+    /// ÆĞ³Î È°¼ºÈ­½ÃÅ³ ¶§ ¹ßµ¿µÇ´Â ¹öÆ°ÇÔ¼ö 
     /// </summary>
     /// <param name="buttonType"></param>
     public void OnActiveBtn(ButtonType buttonType)
     {
         Debug.Log(buttonType);
         activeButtons.Push(allBtns[(int)buttonType]);
-        activeButtons.Peek().Execute(activePanels[(int)buttonType]);
+        try
+        {
+            activeButtons.Peek().Execute(activePanels[(int)buttonType]);
+        }
+        catch(NullReferenceException e)
+        {
+            Debug.Log(activeButtons.Count); 
+            for(int i= 0; i < activeButtons.Count;i++)
+            {
+                Debug.Log(i);
+                Debug.Log(activePanels[i].name);
+                Debug.Log(activeButtons.Peek().GetType().Name);
+                activeButtons.Peek().Execute(activePanels[(int)buttonType]);
+            }
+        }
     }
     /// <summary>
-    /// íŒ¨ë„ ë¹„í™œì„±í™”ì‹œí‚¬ ë•Œ ë°œë™ë˜ëŠ” ë²„íŠ¼í•¨ìˆ˜ 
+    /// ÆĞ³Î ºñÈ°¼ºÈ­½ÃÅ³ ¶§ ¹ßµ¿µÇ´Â ¹öÆ°ÇÔ¼ö 
     /// </summary>
     public void OnUndoBtn()
     {
@@ -83,7 +102,7 @@ class ButtonComponent : MonoBehaviour
     }
 
     /// <summary>
-    /// í™œì„±í™”ë˜ì–´ ìˆëŠ” ëª¨ë“  íŒ¨ë„ ë¹„í™œì„±í™”
+    /// È°¼ºÈ­µÇ¾î ÀÖ´Â ¸ğµç ÆĞ³Î ºñÈ°¼ºÈ­
     /// </summary>
     public void CloseAllPanels()
     {
