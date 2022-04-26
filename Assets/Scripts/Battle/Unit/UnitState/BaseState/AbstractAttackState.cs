@@ -10,7 +10,6 @@ public abstract class AbstractAttackState : AbstractUnitState
     protected Unit _targetUnit = null; //공격할 유닛
     protected float _currentdelay = 0; //현재 딜레이
     protected float _maxdelay = 100; //끝 딜레이
-    protected AttackType _attackType = AttackType.Normal; //공격 유형
     private bool isAttacked; //공격 중인지
 
     public override void Enter()
@@ -56,14 +55,6 @@ public abstract class AbstractAttackState : AbstractUnitState
     }
 
     /// <summary>
-    /// 공격 유형 설정
-    /// </summary>
-    public void SetAttackType(AttackType attackType)
-	{
-        _attackType = attackType;
-	}
-
-    /// <summary>
     /// 공격할 유닛 설정
     /// </summary>
     /// <param name="targetUnit"></param>
@@ -95,7 +86,7 @@ public abstract class AbstractAttackState : AbstractUnitState
             SetAttackData(ref atkData);
 
             //공격 유형에 따라 공격
-			switch (_attackType)
+			switch (_myUnitData.attackType)
 			{
 				case AttackType.Normal:
                     NormalAttack(atkData);
