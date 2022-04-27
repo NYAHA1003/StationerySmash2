@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
+using System.Threading.Tasks;
 using Util;
 using TMPro;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.AddressableAssets;
 
 namespace Util
 {
@@ -45,11 +48,11 @@ public class SoundManager : MonoBehaviour
     [SerializeField]
     private AudioMixer _audioMixer;
     [SerializeField]
-    private List<AudioSource> effSources;
+    private List<AudioClip> effClips;
     [SerializeField]
     private AudioSource bgmAudioSource;
     [SerializeField]
-    private List<AudioSource> bgmSources;
+    private List<AudioClip> bgmClips;
     [SerializeField]
     private Slider _bgmSlider;
     [SerializeField]
@@ -62,8 +65,14 @@ public class SoundManager : MonoBehaviour
     private Button EffBtn;
     [SerializeField]
     private Button BgmBtn;
+    [SerializeField]
+    private GameObject BGMSOURCEPrefab;
+    [SerializeField]
+    private GameObject[] GetChild;
+    [SerializeField]
+    private List<AudioSource> effSources;
 
-    
+
     private bool iseffSound = false;
     private bool isbgmSound = false;
     private float effValue = 0;
@@ -75,11 +84,13 @@ public class SoundManager : MonoBehaviour
     [SerializeField]
     int maxValue = 0;
 
-    private void Awake()
+    private void Start()
     {
         SetFuntionSound_UI();
         BGMSliderText(_bgmSlider.value);
         EFFSliderText(_effectSoundSlider.value);
+        CreateSoundSorces();
+        PlayEffValum();
     }
 
     private void OnEnable()
@@ -87,29 +98,83 @@ public class SoundManager : MonoBehaviour
         _audioMixer.GetFloat("BGM", out float bgmValue);
         _audioMixer.GetFloat("EFF", out float effectValue);
         _bgmSlider.value = bgmValue;
-        _effectSoundSlider.value = effectValue; 
-    }   
+        _effectSoundSlider.value = effectValue;
+        
+    }
 
-    /*public void OnSetAudio(int soundType)
+    public async Task EFFAssetAsync(string s)
     {
-        sound[0] = _bgmSlider.value;
-        sound[1] = _effectSoundSlider.value;
-        switch (soundType)
+        AsyncOperationHandle<AudioClip> handle = Addressables.LoadAssetAsync<AudioClip>(s);
+        await handle.Task;
+        effClips.Add(handle.Result);
+    }
+
+    public async Task BGMAssetAsync(string s)
+    {
+        AsyncOperationHandle<AudioClip> handle = Addressables.LoadAssetAsync<AudioClip>(s);
+        await handle.Task;
+        bgmClips.Add(handle.Result);
+    }
+
+    public async void AllLoadAssetAsync()
+    {
+        for (int i = 0; i < System.Enum.GetValues(typeof(EffSoundType)).Length; i++)
         {
-            case (int)SoundType.Bgm:
-                _audioMixer.SetFloat("BGM", Mathf.Log10(sound[soundType]) * 20);
-                break;
-            case (int)SoundType.Effect:
-                _audioMixer.SetFloat("Effect", Mathf.Log10(sound[soundType]) * 20);
-                break; 
+            string s = System.Enum.GetName(typeof(EffSoundType), i);
+            await EFFAssetAsync(s);
         }
-       
-        //PlayerPrefs.SetFloat("Bgm",);
-        //PlayerPrefs.SetFloat("Effect",);
-    }*/
-    public void PlayEffValum(int sound)
+        for (int i = 0; i < System.Enum.GetValues(typeof(BGMSoundType)).Length; i++)
+        {
+            string s = System.Enum.GetName(typeof(BGMSoundType), i);
+            await BGMAssetAsync(s);
+        }
+    }
+
+    /// <summary>
+    /// 타입의 갯수만큼 오디오 소스를 생성한다
+    /// </summary>
+    private void CreateSoundSorces()
     {
-        effSources[sound].Play();
+        for (int i = 0; i < System.Enum.GetValues(typeof(EffSoundType)).Length; i++)
+        {
+            CreateSoundSource();
+        }
+    }
+
+    /// <summary>
+    /// 오디오 소스를 생성한다
+    /// </summary>
+    private void CreateSoundSource()
+    {
+        GameObject obj = Instantiate(BGMSOURCEPrefab, transform);
+
+        //오디오소스 컴포넌트를 리스트에 넣어준다
+        AudioSource audio = obj.GetComponent<AudioSource>();
+        effSources.Add(audio);
+    }
+
+    public GameObject[] GetChildren()
+    {
+        GameObject[] children = new GameObject[gameObject.transform.childCount];
+
+        for (int i = 0; i < gameObject.transform.childCount; i++)
+        {
+            children[i] = gameObject.transform.GetChild(i).gameObject;
+        }
+
+        return children;
+    }
+
+    /// <summary>
+    /// 오디오 소스들에게 클립을 넣어준다
+    /// </summary>
+    public void PlayEffValum()
+    {
+        int count = effClips.Count;
+        for (int i = 0; i < count; i++)
+        {
+            effSources[i].clip = effClips[i];
+        }
     }
 
     private void SetFuntionSound_UI()
@@ -119,6 +184,7 @@ public class SoundManager : MonoBehaviour
         _bgmSlider.onValueChanged.AddListener(BGMSliderText);
         BgmBtn.onClick.AddListener(BGMBtnClick);
         EffBtn.onClick.AddListener(EFFBtnClick);
+        AllLoadAssetAsync();
     }
 
     private void ResetFunctionSound_UI()
