@@ -16,6 +16,8 @@ public class CollectionInfo : MonoBehaviour
     private Image _collectionImage = null;
     [SerializeField]
     private Button _selectButton = null;
+    [SerializeField]
+    private GameObject _checkSign = null;
 
     private CollectionData _collectionData = null;
 
@@ -42,13 +44,14 @@ public class CollectionInfo : MonoBehaviour
         else
         {
             _collectionData = collectionData;
-            if(_isHave)
+            _nameText.text = collectionData._name;
+            if (_isHave)
             {
-                _nameText.text = collectionData._name + "가지고 있음";
+                _checkSign.SetActive(true);
             }
             else
             {
-                _nameText.text = collectionData._name;
+                _checkSign.SetActive(false);
             }
             _collectionImage.sprite = collectionData._collectionSprite;
         }
