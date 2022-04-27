@@ -17,10 +17,12 @@ MonoBehaviour:
   cardDataList:
   - cardType: 1
     card_Name: "\uC5F0\uD544"
+    card_Description: 
     card_Cost: 0
     skinData:
-      cardSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-      effectType: 0
+      _skinType: 0
+      _effectType: 0
+      _cardNamingType: 0
     level: 0
     strategyData:
       starategyType: 0
@@ -31,7 +33,7 @@ MonoBehaviour:
       knockback: 20
       dir: 45
       accuracy: 100
-      moveSpeed: 1
+      moveSpeed: 0.1
       damage: 1
       attackSpeed: 50
       range: 1
@@ -42,9 +44,13 @@ MonoBehaviour:
         - {x: -0.016, y: -0.016}
         - {x: 0.016, y: -0.016}
       stickerData:
-        sprite: {fileID: 0}
-        stickerType: 3
-        stickerLevel: 1
+        _sprite: {fileID: 0}
+        _name: 
+        _decription: 
+        _onlyUnitType: 0
+        _stickerType: 0
+        _stickerLevel: 1
+      attackType: 0
       unitType: 2
       unitablityData: []
   pos:

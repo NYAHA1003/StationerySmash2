@@ -18,6 +18,10 @@ namespace Battle
         private Image _throwDelayBar;
         [SerializeField]
         private GameObject _parabolaBackground = null;
+        [SerializeField]
+        private TrailRenderer _throwTrail = null;
+        [SerializeField]
+        private PencilCaseDataSO _playerPencilCaseDataSO = null;
 
         //참조 변수
         private Unit _throwUnit = null;
@@ -30,6 +34,7 @@ namespace Battle
         private float _force;
         private float _pullTime;
         private float _throwGauge = 0f;
+        private float _throwGaugeSpeed = 0f;
 
         /// <summary>
         /// 초기화
@@ -44,6 +49,7 @@ namespace Battle
             _cameraCommand = cameraCommand;
             this._stageData = stageData;
             _lineZeroPos = new List<Vector2>(_parabola.positionCount);
+            _throwGaugeSpeed = _playerPencilCaseDataSO.PencilCasedataBase.throwGaugeSpeed;
             for (int i = 0; i < _parabola.positionCount; i++)
             {
                 _lineZeroPos.Add(Vector2.zero);
@@ -59,7 +65,7 @@ namespace Battle
         {
             if(_throwGauge <= 200f)
             {
-                IncreaseThrowGauge(Time.deltaTime * 10);
+                IncreaseThrowGauge(Time.deltaTime * _throwGaugeSpeed);
                 _throwDelayBar.fillAmount = _throwGauge / 200f;
                 CheckCanThrow();
             }
@@ -356,7 +362,9 @@ namespace Battle
             {
                 _throwUnit.Throw_Unit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
                 IncreaseThrowGauge(-_throwUnit.UnitStat.Return_Weight());
-                _throwUnit = null;
+                _throwTrail.transform.SetParent(_throwUnit.transform);
+                _throwTrail.transform.localPosition = Vector2.zero;
+                _throwTrail.Clear();
                 _parabolaBackground.SetActive(false);
                 UnDrawParabola();
             }
@@ -378,6 +386,19 @@ namespace Battle
                 _throwGauge = 200;
             }
         }
+
+        /// <summary>
+        /// 던지기가 끝났을 때 선택된 유닛을 Null로 바꾼다
+        /// </summary>
+        /// <param name="unit"></param>
+        public void EndThrowTarget(Unit unit)
+		{
+            if(unit == _throwUnit)
+			{
+                _throwUnit = null;
+                _throwTrail.transform.SetParent(null);
+            }
+		}
     }
 
 }
