@@ -78,7 +78,7 @@ public class UnitSticker
     /// <param name="eState"></param>
     public void RunDamagedStickerAbility(eState eState, ref AtkData atkData)
     {
-        if (CheckRunSticker<AbstractDamagedSticker>(eState.THROW, eState))
+        if (CheckRunSticker<AbstractDamagedSticker>(eState.DAMAGED, eState))
         {
             (_stickerablity as AbstractDamagedSticker).RunDamagedStickerAblity(ref atkData);
         }
@@ -219,6 +219,10 @@ public class UnitSticker
         {
             return false;
         }
+        if(_stickerData._onlyUnitType != _unitData.unitType && _stickerData._onlyUnitType != UnitType.None)
+		{
+            return false;
+		}
         return true;
     }
 }
