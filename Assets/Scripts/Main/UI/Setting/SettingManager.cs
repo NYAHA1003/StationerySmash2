@@ -10,7 +10,7 @@ public class SettingManager : MonoBehaviour
 {
     [Header("사운드 매니저")]
     [SerializeField]
-    private SoundManager soundManager;
+    private SoundComponent soundManager;
     [Header("프로필")]
     [SerializeField]
     private ProfileSetting profile;
