@@ -51,12 +51,12 @@ public class CollectionComponent : MonoBehaviour
     /// </summary>
     public void OnNextData()
     {
-        if (_collectionIndex2 == _normalCollectionDataSO._collectionDatas.Count - 1)
+        if (_collectionIndex2 + 2 >= _normalCollectionDataSO._collectionDatas.Count - 1)
         {
             return;
         }
-        _collectionIndex1++;
-        _collectionIndex2++;
+        _collectionIndex1 += 2;
+        _collectionIndex2 += 2;
 
         ResetData();
     }
@@ -66,12 +66,12 @@ public class CollectionComponent : MonoBehaviour
     /// </summary>
     public void OnPeviousData()
     {
-        if (_collectionIndex1 == 0)
+        if (_collectionIndex1 <= 0)
         {
             return;
         }
-        _collectionIndex1--;
-        _collectionIndex2--; 
+        _collectionIndex1 -= 2;
+        _collectionIndex2 -= 2; 
         
         ResetData();
     }
