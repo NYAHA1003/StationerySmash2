@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Util;
+using Utill;
 [System.Serializable]
 public class Btn_MainPanel2
 {

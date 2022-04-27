@@ -59,7 +59,7 @@ public class CardInfoPanel : MonoBehaviour
     private UserDeckData userDeckData; 
     private void Start()
     {
-        EventManager.StartListening(Util.EventsType.ActiveCardDescription, (x) => OnSetCardInfoPanel((DeckCard)x));
+        EventManager.StartListening(EventsType.ActiveCardDescription, (x) => OnSetCardInfoPanel((DeckCard)x));
     }
     /// <summary>
     /// 카드데이터 설정

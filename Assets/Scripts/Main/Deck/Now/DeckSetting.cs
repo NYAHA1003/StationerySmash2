@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Util;
+using UnityEngine.UI;
+using Utill;
 
 public class DeckSetting : MonoBehaviour
 {
@@ -13,13 +14,14 @@ public class DeckSetting : MonoBehaviour
     private GameObject cardDescription;
     [SerializeField]
     private GameObject deckScroll; 
+
     public List<GameObject> deckCards = new List<GameObject>();
     private void Awake()
     {
-        SetDeck();
     }
     private void Start()
     {
+        SetDeck();
         EventManager.StartListening(EventsType.ActiveDeck, UpdateDeck);
     }
     
@@ -33,14 +35,18 @@ public class DeckSetting : MonoBehaviour
         for (int i = 0; i < userDeckData.deckList.cardDatas.Count; i++)
         {
             GameObject cardObj = CreateCard();
-            cardObj.GetComponent<DeckCard>().SetCard(userDeckData.deckList.cardDatas[i]);
+            //cardObj.GetComponent<DeckCard>().SetCard(userDeckData.deckList.cardDatas[i]);
+            cardObj.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                EventManager.TriggerEvent(EventsType.DeckSetting, ButtonType.cardDescription);
+            });
             deckCards.Add(cardObj);
         }
     }
     /// <summary>
     /// 게임 실행중 덱 업데이트 (카드 추가)
     /// </summary>
-    public void UpdateDeck()
+    public void UpdateDeck() //나중에 카드 추가 기능만들 때 이벤트로 같이 넘겨줄거야 
     {
         userDeckData.SetCardData();
         for (int i = 0; i < deckCards.Count; i++)

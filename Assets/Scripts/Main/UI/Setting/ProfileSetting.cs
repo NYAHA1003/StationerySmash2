@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using Util; 
+using Utill; 
 public enum ProfileImageType
 {
     Pencil,
