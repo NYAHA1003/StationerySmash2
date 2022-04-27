@@ -16,6 +16,7 @@ namespace Utill
 		deck,
 		setting,
 		collection,
+		skin,
 		cardDescription,
 	}
 
@@ -42,9 +43,12 @@ class ButtonComponent : MonoBehaviour
 
 	private ActiveCommand deckButtonCommand;
 	private ActiveCommand SettingButtonCommand;
-	private ActiveCommand collectionButtonCommand; 
+	private ActiveCommand collectionButtonCommand;
+	private ActiveCommand skinButtonCommand;
 	private ActiveCommand cardDescriptionButtonCommand;
 
+	private int unSetCount = 1; //이 스크립트가 아닌 다른 스크립트에서 버튼 생성및 함수등록해준 커맨드수
+	private List<ActiveCommand> buttonCommands = new List<ActiveCommand>(); 
 	private void Awake()
 	{
 		EventManager.StartListening(EventsType.DeckSetting, (x) => OnActiveBtn((ButtonType)x)); 
@@ -60,16 +64,11 @@ class ButtonComponent : MonoBehaviour
 	/// </summary>
 	private void Initialized()
 	{
-		deckButtonCommand = new ActiveCommand();
-		SettingButtonCommand = new ActiveCommand();
-		collectionButtonCommand = new ActiveCommand(); 
-		cardDescriptionButtonCommand = new ActiveCommand();
-
-
-		allBtns.Add(deckButtonCommand);
-		allBtns.Add(SettingButtonCommand);
-		allBtns.Add(collectionButtonCommand); 
-		allBtns.Add(cardDescriptionButtonCommand );
+		for(int i =0; i < clickBtns.Length + unSetCount; i++)
+		{
+			buttonCommands.Add(new ActiveCommand());
+			allBtns.Add(buttonCommands[i]);
+		}
 		AddListner();
 
 	}
