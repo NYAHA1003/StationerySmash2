@@ -244,7 +244,7 @@ public abstract class AbstractUnitState
     /// <summary>
     /// 스테이지 끝에 닿았는지 체크해서 닿으면 튕겨져 나오게 한다.
     /// </summary>
-    public void CheckWall()
+    public bool CheckWall()
     {
         if (_stateManager.GetStageData().max_Range <= _myTrm.position.x)
         {
@@ -254,6 +254,7 @@ public abstract class AbstractUnitState
             {
                 _stateManager.Set_Wait(0.5f);
             }).SetEase(Parabola.Return_ParabolaCurve()));
+            return true;
         }
         if (-_stateManager.GetStageData().max_Range >= _myTrm.position.x)
         {
@@ -263,7 +264,9 @@ public abstract class AbstractUnitState
             {
                 _stateManager.Set_Wait(0.5f);
             }).SetEase(Parabola.Return_ParabolaCurve()));
+            return true;
         }
+        return false;
     }
 }
 

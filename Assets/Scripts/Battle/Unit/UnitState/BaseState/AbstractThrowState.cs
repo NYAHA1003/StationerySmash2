@@ -32,7 +32,10 @@ public abstract class AbstractThrowState : AbstractUnitState
     public override void Update()
     {
         //스테이지 끝에 닿았는지 체크
-        CheckWall();
+        if(CheckWall())
+		{
+            EndThrow();
+		}
 
         //상대 유닛이랑 부딪치는지 체크
         if (_myUnit.ETeam == TeamType.MyTeam)
@@ -49,7 +52,7 @@ public abstract class AbstractThrowState : AbstractUnitState
 
 
     /// <summary>
-    /// 우닛 물리판정이랑 부딪치는지 체크
+    /// 유닛 물리판정이랑 부딪치는지 체크
     /// </summary>
     /// <param name="list"></param>
     private void CheckCollide(List<Unit> list)
@@ -65,6 +68,7 @@ public abstract class AbstractThrowState : AbstractUnitState
             float distance = Utill.Collider.FindDistanceBetweenSegments(_myUnit.CollideData.GetPoint(_myTrm.position), targetUnit.CollideData.GetPoint(targetUnit.transform.position));
             if (distance < 0.2f)
             {
+                EndThrow();
                 ThrowAttack(targetUnit);
             }
         }
@@ -111,6 +115,7 @@ public abstract class AbstractThrowState : AbstractUnitState
 
         SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x - width, 0, _myTrm.position.z), height, 1, time).OnComplete(() =>
         {
+            EndThrow();
             //땅에 닿으면 대기 상태로 돌아감
             _stateManager.Set_Wait(0.5f);
         }).SetEase(Utill.Parabola.Return_ParabolaCurve()));
@@ -238,4 +243,12 @@ public abstract class AbstractThrowState : AbstractUnitState
         }
 
     }
+
+    /// <summary>
+    /// 던지기가 끝남
+    /// </summary>
+    private void EndThrow()
+	{
+        _myUnit.BattleManager.CommandThrow.EndThrowTarget(_myUnit);
+	}
 }
