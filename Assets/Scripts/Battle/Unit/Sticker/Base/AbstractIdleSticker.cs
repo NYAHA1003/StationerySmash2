@@ -5,8 +5,12 @@ using Utill;
 
 public class AbstractIdleSticker : AbstractSticker
 {
-	public override void RunStickerAblity()
+	/// <summary>
+	/// 생성 스티커
+	/// </summary>
+	/// <param name="atkData"></param>
+	public virtual void RunIdleStickerAblity()
 	{
-		throw new System.NotImplementedException();
+		//null;
 	}
 }

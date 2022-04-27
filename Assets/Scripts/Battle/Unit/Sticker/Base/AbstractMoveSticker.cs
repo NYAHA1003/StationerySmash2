@@ -5,8 +5,12 @@ using Utill;
 
 public class AbstractMoveSticker : AbstractSticker
 {
-	public override void RunStickerAblity()
+	/// <summary>
+	/// 이동 스티커
+	/// </summary>
+	/// <param name="atkData"></param>
+	public virtual void RunMoveStickerAblity()
 	{
-		throw new System.NotImplementedException();
+		//null;
 	}
 }

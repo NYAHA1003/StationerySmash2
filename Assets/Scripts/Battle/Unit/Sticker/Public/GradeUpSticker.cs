@@ -2,14 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
-public class GradeUpSticker : AbstractSticker
+public class GradeUpSticker : AbstractIdleSticker
 {
     int levelUp = 1;
-    public override void SetSticker(Unit unit)
-    {
-        base.SetSticker(unit);
-    }
-    public override void RunStickerAblity()
+    public override void RunIdleStickerAblity()
     {
         _myUnit.UnitStat.GradeUp(levelUp);
 

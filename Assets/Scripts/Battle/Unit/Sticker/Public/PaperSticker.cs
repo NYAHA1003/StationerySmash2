@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
-public class PaperSticker : AbstractSticker
+public class PaperSticker : AbstractIdleSticker
 {
     public override void SetSticker(Unit unit)
     {
         base.SetSticker(unit);
     }
 
-    public override void RunStickerAblity()
+    public override void RunIdleStickerAblity()
     {
         _myUnit.UnitStat.SetBonusMaxHP(100);
     }

@@ -5,11 +5,6 @@ using Utill;
 
 public class AbstractAttackSticker : AbstractSticker
 {
-	public override void RunStickerAblity()
-	{
-		//null;
-	}
-
 	/// <summary>
 	/// 공격 스티커
 	/// </summary>

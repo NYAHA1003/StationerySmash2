@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
-public class PenPlasticSticker : AbstractSticker
+public class PenPlasticSticker : AbstractDamagedSticker
 {
     private int plusHp = 15;
     private int damageDecrese = -10;
@@ -10,7 +10,7 @@ public class PenPlasticSticker : AbstractSticker
     {
         base.SetSticker(unit);
     }
-    public override void RunStickerAblity()
+	public override void RunDamagedStickerAblity(ref AtkData atkData)
     {
         _myUnit.UnitStat.SetBonusMaxHPPercent(plusHp);
         _myUnit.UnitStat.IncreaseDamagedPercent(damageDecrese);

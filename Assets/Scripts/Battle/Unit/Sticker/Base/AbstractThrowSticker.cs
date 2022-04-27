@@ -5,8 +5,12 @@ using Utill;
 
 public class AbstractThrowSticker : AbstractSticker
 {
-	public override void RunStickerAblity()
+	/// <summary>
+	/// 던지기 스티커
+	/// </summary>
+	/// <param name="atkData"></param>
+	public virtual void RunThrowStickerAblity()
 	{
-		throw new System.NotImplementedException();
+		//null;
 	}
 }

@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
-public class RullerRustySticker : AbstractSticker
+public class RullerRustySticker : AbstractIdleSticker
 {
     public override void SetSticker(Unit unit)
     {
         base.SetSticker(unit);
     }
-    public override void RunStickerAblity()
+    public override void RunIdleStickerAblity()
     {
         _myUnit.UnitStat.IncreaseWeightPercent(100);
     }

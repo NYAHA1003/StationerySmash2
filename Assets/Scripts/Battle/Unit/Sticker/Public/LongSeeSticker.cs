@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
-public class LongSeeSticker : AbstractSticker
+public class LongSeeSticker : AbstractIdleSticker
 {
     public override void SetSticker(Unit unit)
     {
         base.SetSticker(unit);
     }
 
-    public override void RunStickerAblity()
+    public override void RunIdleStickerAblity()
     {
-        _myUnit.UnitStat.SetBonusRange(1);
+        _myUnit.UnitStat.SetBonusRange(0.1f);
     }
 }

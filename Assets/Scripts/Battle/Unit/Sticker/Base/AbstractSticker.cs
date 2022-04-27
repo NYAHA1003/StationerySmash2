@@ -13,6 +13,4 @@ public abstract class AbstractSticker
     {
         _myUnit = unit;
     }
-
-    public abstract void RunStickerAblity();
 }

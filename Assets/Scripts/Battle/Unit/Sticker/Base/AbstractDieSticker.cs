@@ -1,15 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
 
-public class AbstractWaitSticker : AbstractSticker
+public class AbstractDieSticker : AbstractSticker
 {
 	/// <summary>
-	/// 대기 스티커
+	/// 죽음 스티커
 	/// </summary>
 	/// <param name="atkData"></param>
-	public virtual void RunWaitStickerAblity()
+	public virtual void RunDieStickerAblity()
 	{
 		//null;
 	}
