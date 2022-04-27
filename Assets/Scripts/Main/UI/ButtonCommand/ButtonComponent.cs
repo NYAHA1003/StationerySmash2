@@ -15,6 +15,7 @@ namespace Utill
 	{
 		deck,
 		setting,
+		collection,
 		cardDescription,
 	}
 
@@ -40,8 +41,9 @@ class ButtonComponent : MonoBehaviour
 
 
 	private ActiveCommand deckButtonCommand;
-	private ActiveCommand cardDescriptionButtonCommand;
 	private ActiveCommand SettingButtonCommand;
+	private ActiveCommand collectionButtonCommand; 
+	private ActiveCommand cardDescriptionButtonCommand;
 
 	private void Awake()
 	{
@@ -60,10 +62,13 @@ class ButtonComponent : MonoBehaviour
 	{
 		deckButtonCommand = new ActiveCommand();
 		SettingButtonCommand = new ActiveCommand();
+		collectionButtonCommand = new ActiveCommand(); 
 		cardDescriptionButtonCommand = new ActiveCommand();
+
 
 		allBtns.Add(deckButtonCommand);
 		allBtns.Add(SettingButtonCommand);
+		allBtns.Add(collectionButtonCommand); 
 		allBtns.Add(cardDescriptionButtonCommand );
 		AddListner();
 
