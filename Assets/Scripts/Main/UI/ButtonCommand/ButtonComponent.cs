@@ -40,7 +40,7 @@ class ButtonComponent : MonoBehaviour
 	[SerializeField]
 	private GameObject[] activePanels;
 
-
+	//어떤 버튼커맨드들을 사용하는지 직관적으로 알기위함 
 	private ActiveCommand deckButtonCommand;
 	private ActiveCommand SettingButtonCommand;
 	private ActiveCommand collectionButtonCommand;
