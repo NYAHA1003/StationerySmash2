@@ -6,10 +6,12 @@ using DG.Tweening;
 
 public abstract class AbstractAttackState : AbstractUnitState
 {
+
     protected Unit _targetUnit = null; //공격할 유닛
     protected float _currentdelay = 0; //현재 딜레이
     protected float _maxdelay = 100; //끝 딜레이
     private bool isAttacked; //공격 중인지
+
     public override void Enter()
     {
         isAttacked = false;
@@ -17,9 +19,6 @@ public abstract class AbstractAttackState : AbstractUnitState
         _curEvent = eEvent.ENTER;
 
         ResetAllStateAnimation();
-
-        //스티커 사용
-        _myUnit.UnitSticker.RunStickerAbility(_curState);
 
         //공격 딜레이를 유닛의 딜레이로 설정
         _currentdelay = _myUnit.UnitStat.AttackDelay;
@@ -82,13 +81,64 @@ public abstract class AbstractAttackState : AbstractUnitState
         {
             AtkData atkData = null;
             SetAttackData(ref atkData);
-            _targetUnit.Run_Damaged(atkData);
+
+            //스티커 사용
+            _myUnit.UnitSticker.RunAttackStickerAbility(_curState, ref atkData);
+
+            //공격 유형에 따라 공격
+            switch (_myUnitData.attackType)
+			{
+				case AttackType.Normal:
+                    NormalAttack(atkData);
+                    break;
+				case AttackType.Range:
+                    if(_myUnit.ETeam == TeamType.MyTeam)
+					{
+                        RangeAttack(atkData, _myUnit.BattleManager.CommandUnit._enemyUnitList);
+					}
+                    else if (_myUnit.ETeam == TeamType.EnemyTeam)
+                    {
+                        RangeAttack(atkData, _myUnit.BattleManager.CommandUnit._playerUnitList);
+                    }
+					break;
+            }
             _targetUnit = null;
             return;
-        }
-        else
+		}
+		else
         {
             Debug.Log("미스");
+        }
+	}
+
+    /// <summary>
+    /// 노말 공격
+    /// </summary>
+    protected void NormalAttack(AtkData atkData)
+    {
+        _targetUnit.Run_Damaged(atkData);
+    }
+
+    /// <summary>
+    /// 범위 공격
+    /// </summary>
+    protected void RangeAttack(AtkData atkData, List<Unit> list)
+    {
+        for (int targetIndex = _targetUnit.OrderIndex; targetIndex >= 0; targetIndex--)
+        {
+            if(list[targetIndex]._isInvincibility || list[targetIndex].transform.position.y > _myTrm.transform.position.y)
+			{
+                continue;
+			}
+
+            if (Vector2.Distance(_myTrm.position, list[targetIndex].transform.position) < _myUnit.UnitStat.Return_Range())
+            {
+                list[targetIndex].Run_Damaged(atkData);
+            }
+            else
+			{
+                break;
+			}
         }
     }
 
@@ -139,7 +189,7 @@ public abstract class AbstractAttackState : AbstractUnitState
     /// <param name="atkData"></param>
     protected virtual void SetAttackData(ref AtkData atkData)
     {
-        atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, AtkType.Normal, _myUnit.SkinData._effectType, originValue);
+        atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, EffAttackType.Normal, _myUnit.SkinData._effectType, originValue);
     }
 
     /// <summary>

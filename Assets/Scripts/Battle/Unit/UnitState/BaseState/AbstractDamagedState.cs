@@ -16,7 +16,7 @@ public abstract class AbstractDamagedState : AbstractUnitState
         _curEvent = eEvent.ENTER;
 
         //고유효과 속성이면 효과 적용
-        if (_atkData.atkType > AtkType.Inherence)
+        if (_atkData.atkType > EffAttackType.Inherence)
         {
             _myUnit.AddInherence(_atkData);
         }
@@ -28,7 +28,7 @@ public abstract class AbstractDamagedState : AbstractUnitState
         _myUnit.SubtractHP(_atkData.damage * (_myUnit.UnitStat.DamagedPercent / 100) - _myUnit.UnitStat.DamageDecrese); //여기
 
         //스티커 사용
-        _myUnit.UnitSticker.RunStickerAbility(_curState);
+        _myUnit.UnitSticker.RunDamagedStickerAbility(_curState, ref _atkData);
 
         //체력이 0 이하면 죽음 상태로 전환
         if (_myUnit.UnitStat.Hp <= 0)
@@ -50,7 +50,7 @@ public abstract class AbstractDamagedState : AbstractUnitState
     public override void Exit()
     {
         //평범한 공격이 아니면 상태이상 적용
-        if (_atkData.atkType != AtkType.Normal && _atkData.atkType <= AtkType.Inherence && _myUnit.UnitStat.Hp > 0)
+        if (_atkData.atkType != EffAttackType.Normal && _atkData.atkType <= EffAttackType.Inherence && _myUnit.UnitStat.Hp > 0)
         {
             _myUnit.AddStatusEffect(_atkData.atkType, _atkData.value);
         }

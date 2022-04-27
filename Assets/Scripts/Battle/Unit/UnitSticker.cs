@@ -40,13 +40,84 @@ public class UnitSticker
     }
 
     /// <summary>
-    /// 스티커 능력 사용
+    /// 생성 스티커 능력 사용
     /// </summary>
     /// <param name="eState"></param>
-    public void RunStickerAbility(eState eState)
+    public void RunIdleStickerAbility(eState eState)
     {
-        _stickerablity?.RunStickerAblity(eState);
+        if (CheckRunSticker<AbstractIdleSticker>(eState.IDLE, eState))
+        {
+            (_stickerablity as AbstractIdleSticker).RunIdleStickerAblity();
+        }
     }
+    /// <summary>
+    /// 이동 스티커 능력 사용
+    /// </summary>
+    /// <param name="eState"></param>
+    public void RunMoveStickerAbility(eState eState)
+    {
+        if (CheckRunSticker<AbstractMoveSticker>(eState.MOVE, eState))
+        {
+            (_stickerablity as AbstractMoveSticker).RunMoveStickerAblity();
+        }
+    }
+    /// <summary>
+    /// 공격 스티커 능력 사용
+    /// </summary>
+    /// <param name="eState"></param>
+    public void RunAttackStickerAbility(eState eState, ref AtkData atkData)
+    {
+        if (CheckRunSticker<AbstractAttackSticker>(eState.ATTACK, eState))
+        {
+            (_stickerablity as AbstractAttackSticker).RunAttackStickerAblity(ref atkData);
+        }
+    }
+    /// <summary>
+    /// 데미지입음 스티커 능력 사용
+    /// </summary>
+    /// <param name="eState"></param>
+    public void RunDamagedStickerAbility(eState eState, ref AtkData atkData)
+    {
+        if (CheckRunSticker<AbstractDamagedSticker>(eState.DAMAGED, eState))
+        {
+            (_stickerablity as AbstractDamagedSticker).RunDamagedStickerAblity(ref atkData);
+        }
+    }
+    /// <summary>
+    /// 죽음 스티커 능력 사용
+    /// </summary>
+    /// <param name="eState"></param>
+    public void RunDieStickerAbility(eState eState)
+    {
+        if (CheckRunSticker<AbstractDieSticker>(eState.DIE, eState))
+        {
+            (_stickerablity as AbstractDieSticker).RunDieStickerAblity();
+        }
+    }
+    /// <summary>
+    /// 대기 스티커 능력 사용
+    /// </summary>
+    /// <param name="eState"></param>
+    public void RunWaitStickerAbility(eState eState)
+    {
+        if (CheckRunSticker<AbstractWaitSticker>(eState.WAIT, eState))
+        {
+            (_stickerablity as AbstractWaitSticker).RunWaitStickerAblity();
+        }
+    }
+
+    /// <summary>
+    /// 던지기 스티커 능력 사용
+    /// </summary>
+    /// <param name="eState"></param>
+    public void RunThrowStickerAbility(eState eState)
+    {
+        if(CheckRunSticker<AbstractThrowSticker>(eState.THROW, eState))
+        {
+            (_stickerablity as AbstractThrowSticker).RunThrowStickerAblity();
+        }
+    }
+
 
     /// <summary>
     /// 스티커 능력 반납
@@ -94,10 +165,10 @@ public class UnitSticker
                 _stickerablity = PoolManager.GetSticker<LongSeeSticker>();
                 break;
             case StickerType.Heavy:
-                _stickerablity = PoolManager.GetSticker<HeavySticker>();
+                //_stickerablity = PoolManager.GetSticker<HeavySticker>();
                 break;
             case StickerType.Invincible:
-                _stickerablity = PoolManager.GetSticker<InvincibleSticker>();
+                //_stickerablity = PoolManager.GetSticker<InvincibleSticker>();
                 break;
             case StickerType.PencilNew:
                 _stickerablity = PoolManager.GetSticker<PencilNewSticker>();
@@ -132,5 +203,26 @@ public class UnitSticker
             case UnitType.BallPen:
                 break;
         }
+    }
+
+    /// <summary>
+    /// 스티커를 실행해도 되는지
+    /// </summary>
+    /// <returns></returns>
+    private bool CheckRunSticker<T>(eState thisESate, eState eState) where T : AbstractSticker
+    {
+        if (_stickerablity == null)
+        {
+            return false;
+        }
+        if (eState != thisESate || !(_stickerablity is T))
+        {
+            return false;
+        }
+        if(_stickerData._onlyUnitType != _unitData.unitType && _stickerData._onlyUnitType != UnitType.None)
+		{
+            return false;
+		}
+        return true;
     }
 }

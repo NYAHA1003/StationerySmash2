@@ -93,7 +93,7 @@ public class BallPenThrowState : AbstractThrowState
             Unit targetUnit = list[i];
             if(Vector2.Distance(_myTrm.position, targetUnit.transform.position) <= _inkRange)
             {
-                targetUnit.AddStatusEffect(Utill.AtkType.Ink, 1, 20, 20);
+                targetUnit.AddStatusEffect(Utill.EffAttackType.Ink, 1, 20, 20);
             }
         }
     }

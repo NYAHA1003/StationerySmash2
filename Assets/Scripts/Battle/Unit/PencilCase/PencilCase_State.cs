@@ -63,7 +63,7 @@ public class PencilCaseDamagedState : AbstractDamagedState
         _curEvent = eEvent.ENTER;
 
         //고유효과 속성이면 효과 적용
-        if (_atkData.atkType > AtkType.Inherence)
+        if (_atkData.atkType > EffAttackType.Inherence)
         {
             _myUnit.AddInherence(_atkData);
         }
@@ -104,8 +104,15 @@ public class PencilCaseDieState : AbstractDieState
 {
     public override void Enter()
     {
-        //battleManager.CommandCamera.WinCamEffect(myTrm.position, myUnit.eTeam != TeamType.MyTeam);
-        base.Enter();
+        //우리 팀일 경우
+        if(_myUnit.ETeam == TeamType.MyTeam)
+        {
+            _myUnit.BattleManager.CommandWinLose.SendEndGame(false);
+        }
+        else if(_myUnit.ETeam == TeamType.EnemyTeam)
+        {
+            _myUnit.BattleManager.CommandWinLose.SendEndGame(true);
+        }
     }
     public override Unit PullUnit()
     {

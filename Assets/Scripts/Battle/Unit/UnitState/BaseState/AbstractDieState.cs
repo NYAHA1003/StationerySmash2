@@ -18,7 +18,7 @@ public abstract class AbstractDieState : AbstractUnitState
         _myUnit.RemoveUnitList();
 
         //스티커 사용
-        _myUnit.UnitSticker.RunStickerAbility(_curState);
+        _myUnit.UnitSticker.RunDieStickerAbility(_curState);
 
         //딜레이바 등의 UI 안 보이게 하고 상태이상 삭제
         _myUnit.UnitStateEff.DeleteEffStetes();

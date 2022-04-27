@@ -15,7 +15,7 @@ public abstract class AbstractMoveState : AbstractUnitState
         _myUnit.SetIsDontThrow(false);
 
         //스티커 사용
-        _myUnit.UnitSticker.RunStickerAbility(_curState);
+        _myUnit.UnitSticker.RunMoveStickerAbility(_curState);
 
         //이동 애니메이션 시작
         ResetAllStateAnimation();

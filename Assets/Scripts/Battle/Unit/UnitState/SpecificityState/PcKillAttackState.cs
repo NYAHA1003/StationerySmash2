@@ -9,6 +9,6 @@ public class PcKillAttackState : AbstractAttackState
     protected override void SetAttackData(ref AtkData atkData)
     {
         base.SetAttackData(ref atkData);
-        atkData.Reset_Type(AtkType.PCKill);
+        atkData.Reset_Type(EffAttackType.PCKill);
     }
 }

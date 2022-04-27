@@ -87,6 +87,7 @@ public class UnitData
     public float range;
     public CollideData colideData;
     public StickerData stickerData;
+    public AttackType attackType;
     public UnitType unitType;
     public float[] unitablityData;
 

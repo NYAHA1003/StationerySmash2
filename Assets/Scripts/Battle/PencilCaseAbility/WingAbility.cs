@@ -8,7 +8,7 @@ public class WingAbility : AbstractPencilCaseAbility
     int count = 0;
     public override void RunPencilCaseAbility()
     {
-        AtkData atkData = new AtkData(_battleManager.CommandPencilCase.PlayerPencilCase, 0, 10, 0, 45, true, 13200 + count, AtkType.Normal, EffectType.Attack);
+        AtkData atkData = new AtkData(_battleManager.CommandPencilCase.PlayerPencilCase, 0, 10, 0, 45, true, 13200 + count, EffAttackType.Normal, EffectType.Attack);
         
         for(int i = 0; i < _battleManager.CommandUnit._enemyUnitList.Count; i++)
         {

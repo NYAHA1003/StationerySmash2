@@ -2,22 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
-public class PencilNewSticker : AbstractSticker
+public class PencilNewSticker : AbstractDamagedSticker
 {
     int ATKpercent = 50; // 잃은 hp 공격력 변환 퍼센트
     int Weightpercent = 50;
     public override void SetSticker(Unit unit)
     {
         base.SetSticker(unit);
-        _matchState = eState.ATTACK;
     }
 
-    public override void RunStickerAblity(eState eState)
+    public override void RunDamagedStickerAblity(ref AtkData atkData)
     {
-        if (_matchState != eState)
-        {
-            return;
-        }
         _myUnit.UnitStat.IncreaseAttackPercent(_myUnit.UnitStat.LostHpPenrcent(ATKpercent));
         _myUnit.UnitStat.IncreaseWeightPercent(-1 * _myUnit.UnitStat.LostHpPenrcent(Weightpercent));
     }

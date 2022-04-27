@@ -5,7 +5,12 @@ using UnityEngine;
 
 namespace Utill
 {
-    public enum AtkType
+    public enum AttackType
+    {
+        Normal = 0,
+        Range,
+    }
+    public enum EffAttackType
     {
         Normal = 0,
         Stun,
@@ -39,13 +44,13 @@ namespace Utill
         public float direction; // 디그리값. 라디안으로 주지 마셈
 
         //공격 속성
-        public AtkType atkType;
+        public EffAttackType atkType;
         public float[] value;
 
         //이펙트 타입
         public EffectType _effectType;
 
-        public AtkData(Unit attacker, int damage, float baseKnockback, float extraKnockback, float direction, bool isMyTeam, int damageId = 0, AtkType atkType = AtkType.Normal, EffectType effectType = EffectType.Attack, params float[] value)
+        public AtkData(Unit attacker, int damage, float baseKnockback, float extraKnockback, float direction, bool isMyTeam, int damageId = 0, EffAttackType atkType = EffAttackType.Normal, EffectType effectType = EffectType.Attack, params float[] value)
         {
             this.attacker = attacker;
             this.damage = damage;
@@ -69,7 +74,7 @@ namespace Utill
             this.direction = (isMyTeam ? direction : 180 - direction) * Mathf.Deg2Rad;
         }
 
-        public void Reset_Type(AtkType atkType)
+        public void Reset_Type(EffAttackType atkType)
         {
             this.atkType = atkType;
         }
@@ -108,9 +113,9 @@ namespace Utill
             switch (atkType)
             {
                 default:
-                case AtkType.Inherence:
+                case EffAttackType.Inherence:
                     break;
-                case AtkType.PCKill:
+                case EffAttackType.PCKill:
                     if (unit.UnitData.unitType == UnitType.PencilCase)
                     {
                         Reset_Damage(damage * 2);

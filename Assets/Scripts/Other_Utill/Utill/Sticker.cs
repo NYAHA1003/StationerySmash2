@@ -10,6 +10,7 @@ namespace Utill
         public Sprite _sprite;
         public string _name;
         public string _decription;
+        public UnitType _onlyUnitType;
         public StickerType _stickerType;
         public int _stickerLevel = 1;
     }

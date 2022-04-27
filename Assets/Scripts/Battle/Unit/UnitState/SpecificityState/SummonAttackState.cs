@@ -13,6 +13,7 @@ public class SummonAttackState : AbstractAttackState
     {
         //공격 애니메이션
         Animation();
+        Summon();
 
         //공격 딜레이 초기화
         _currentdelay = 0;
@@ -21,5 +22,13 @@ public class SummonAttackState : AbstractAttackState
         //대기 상태로 돌아감
         _stateManager.Set_Wait(0.4f);
         _curEvent = eEvent.EXIT;
+    }
+
+    /// <summary>
+    /// 유닛 소환
+    /// </summary>
+    protected virtual void Summon()
+    {
+
     }
 }

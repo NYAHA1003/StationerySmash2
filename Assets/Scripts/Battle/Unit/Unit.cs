@@ -214,7 +214,7 @@ public class Unit : MonoBehaviour
     /// </summary>
     /// <param name="atkType"></param>
     /// <param name="value"></param>
-    public virtual void AddStatusEffect(AtkType atkType, params float[] value)
+    public virtual void AddStatusEffect(EffAttackType atkType, params float[] value)
     {
         _unitStateEff.AddStatusEffect(atkType, value);
     }
@@ -346,7 +346,7 @@ public class Unit : MonoBehaviour
     /// <param name="gauge"></param>
     public void SetThrowRenderer(float gauge)
     {
-        if(_unitStat.Return_Weight() <= gauge)
+        if(_unitStat.Return_Weight() <= gauge && !isThrowring && !_isDontThrow && !_isNeverDontThrow)
         {
             _unitSprite.SetThrowRenderer(true);
         }

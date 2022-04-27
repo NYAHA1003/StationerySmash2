@@ -3,20 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 
-public class ArmorSticker : AbstractSticker
+public class ArmorSticker : AbstractIdleSticker
 {
-    public override void SetSticker(Unit unit)
+    public override void RunIdleStickerAblity()
     {
-        base.SetSticker(unit);
-        _matchState = eState.IDLE;
-    }
-
-    public override void RunStickerAblity(eState eState)
-    {
-        if (_matchState != eState)
-        {
-            return;
-        }
         _myUnit.UnitStat.DecreseDamage(5);
     }
 }

@@ -15,7 +15,7 @@ public abstract class AbstractWaitState : AbstractUnitState
         _curEvent = eEvent.ENTER;
 
         //스티커 사용
-        _myUnit.UnitSticker.RunStickerAbility(_curState);
+        _myUnit.UnitSticker.RunWaitStickerAbility(_curState);
 
         //애니메이션 제거
         ResetAllStateAnimation();

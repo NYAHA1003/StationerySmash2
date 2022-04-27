@@ -301,4 +301,14 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         SetCardPRS(_originPRS, 0.3f);
     }
+
+    /// <summary>
+    /// 선택중인 카드라면 강제로 사용하지 않게 한다
+    /// </summary>
+    public void DontUseCard()
+	{
+        //원래 위치로 돌아간다
+        RunOriginPRS();
+
+    }
 }

@@ -2,20 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
-public class HealSticker : AbstractSticker
+public class HealSticker : AbstractIdleSticker
 {
     public override void SetSticker(Unit unit)
     {
         base.SetSticker(unit);
-        _matchState = eState.IDLE;
     }
 
-    public override void RunStickerAblity(eState eState)
+    public override void RunIdleStickerAblity()
     {
-        if (_matchState != eState)
-        {
-            return;
-        }
+        //코루틴으로 변경 예정
         _myUnit.UnitStat.SubtractHP(-3);
     }
 }
