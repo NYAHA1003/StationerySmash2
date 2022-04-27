@@ -14,8 +14,8 @@ namespace Utill
 	enum ButtonType
 	{
 		deck,
+		setting,
 		cardDescription,
-		setting
 	}
 
 }
@@ -59,12 +59,12 @@ class ButtonComponent : MonoBehaviour
 	private void Initialized()
 	{
 		deckButtonCommand = new ActiveCommand();
-		cardDescriptionButtonCommand = new ActiveCommand();
 		SettingButtonCommand = new ActiveCommand();
+		cardDescriptionButtonCommand = new ActiveCommand();
 
 		allBtns.Add(deckButtonCommand);
-		allBtns.Add(cardDescriptionButtonCommand);
 		allBtns.Add(SettingButtonCommand);
+		allBtns.Add(cardDescriptionButtonCommand );
 		AddListner();
 
 	}
