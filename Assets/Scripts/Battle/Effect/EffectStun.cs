@@ -20,6 +20,7 @@ public class EffectStun : IEffect
         {
             throw new System.Exception("EffData가 이상함");
         }
+        effObj.PlaySound(effData);
 
         this.effObj ??= effObj;
 

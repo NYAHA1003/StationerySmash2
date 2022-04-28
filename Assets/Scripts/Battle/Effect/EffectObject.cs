@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using Main.Setting;
 namespace Battle.Effect
 {
@@ -24,16 +25,16 @@ namespace Battle.Effect
 			switch (_effectType)
 			{
 				case EffectType.Attack:
-					_effectState ??= new Effect_Attack();
+					_effectState ??= new EffectAttack();
 					break;
 				case EffectType.Stun:
-					_effectState ??= new Effect_Stun();
+					_effectState ??= new EffectStun();
 					break;
 				case EffectType.Ink:
 					//effectState ??= new Effect_Slow();
 					break;
 				case EffectType.Slow:
-					_effectState ??= new Effect_Slow();
+					_effectState ??= new EffectSlow();
 					break;
 			}
 

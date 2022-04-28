@@ -16,6 +16,7 @@ namespace Battle.Effect
 		private float delete_time = 0.5f;
 		public virtual void Set_Effect(EffectObject effObj, EffData effData)
 		{
+			effObj.PlaySound(effData);
 			particleSys ??= effObj.GetComponent<ParticleSystem>();
 
 			effObj.CancelInvoke();
@@ -32,6 +33,7 @@ namespace Battle.Effect
 			effObj.transform.position = effData.pos;
 
 			effObj.Invoke("Delete_Effect", delete_time);
+
 		}
 
 		public void Update_Effect(EffectObject effObj, EffData effData)
