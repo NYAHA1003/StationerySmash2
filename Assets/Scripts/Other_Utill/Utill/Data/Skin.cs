@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
 
-namespace Utill
+namespace Utill.Data
 {
     public enum SkinType
     {

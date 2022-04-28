@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utill.Data;
+using Utill.Tool;
 
 namespace Battle
 {
@@ -132,7 +134,7 @@ namespace Battle
                 enemyCurDelay += Time.deltaTime;
                 return;
             }
-            _unitCommand.SummonUnit(enemyCardDataList[_enemyCurrentIndex], new Vector3(enemyPos[_enemyCurrentIndex].x, 0, 0), enemySummonGrade, Utill.TeamType.EnemyTeam);
+            _unitCommand.SummonUnit(enemyCardDataList[_enemyCurrentIndex], new Vector3(enemyPos[_enemyCurrentIndex].x, 0, 0), enemySummonGrade, TeamType.EnemyTeam);
             _enemyCurrentIndex++;
             if (_enemyCurrentIndex == enemyMaxDelay.Count)
             {
@@ -175,7 +177,7 @@ namespace Battle
                 playerCurDelay += Time.deltaTime;
                 return;
             }
-            _unitCommand.SummonUnit(playerCardDataList[playerCurrent], new Vector3(playerPos[playerCurrent].x, 0, 0), playerSummonGrade, Utill.TeamType.MyTeam);
+            _unitCommand.SummonUnit(playerCardDataList[playerCurrent], new Vector3(playerPos[playerCurrent].x, 0, 0), playerSummonGrade, TeamType.MyTeam);
             playerCurrent++;
             if (playerCurrent == playerMaxDelay.Count)
             {

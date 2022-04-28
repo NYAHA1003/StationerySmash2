@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using DG.Tweening;
 
 namespace Battle.Units
@@ -68,7 +69,7 @@ namespace Battle.Units
 				{
 					continue;
 				}
-				float distance = Utill.Collider.FindDistanceBetweenSegments(_myUnit.CollideData.GetPoint(_myTrm.position), targetUnit.CollideData.GetPoint(targetUnit.transform.position));
+				float distance = Collider.FindDistanceBetweenSegments(_myUnit.CollideData.GetPoint(_myTrm.position), targetUnit.CollideData.GetPoint(targetUnit.transform.position));
 				if (distance < 0.2f)
 				{
 					EndThrow();
@@ -121,7 +122,7 @@ namespace Battle.Units
 				EndThrow();
 			//땅에 닿으면 대기 상태로 돌아감
 			_stateManager.Set_Wait(0.5f);
-			}).SetEase(Utill.Parabola.Return_ParabolaCurve()));
+			}).SetEase(Parabola.Return_ParabolaCurve()));
 
 		}
 

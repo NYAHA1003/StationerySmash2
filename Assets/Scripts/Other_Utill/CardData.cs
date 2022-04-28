@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using Battle.Starategy;
 
 [System.Serializable]

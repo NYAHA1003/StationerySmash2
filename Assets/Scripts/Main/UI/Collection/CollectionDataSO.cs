@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 
 [CreateAssetMenu(fileName = "CollectionDataSO ", menuName = "Scriptable Object/CollectionDataSO")]
 public class CollectionDataSO : ScriptableObject

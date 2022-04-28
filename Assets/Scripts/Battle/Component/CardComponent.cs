@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 
 namespace Battle
 {

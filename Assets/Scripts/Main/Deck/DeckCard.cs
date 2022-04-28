@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 
 public class DeckCard : MonoBehaviour
 {
@@ -29,7 +30,7 @@ public class DeckCard : MonoBehaviour
         _unitNameText.text = cardData.card_Name;
         _CostText.text = $"{cardData.card_Cost}";
 
-        if(cardData.cardType == Utill.CardType.SummonUnit)
+        if(cardData.cardType == CardType.SummonUnit)
         {
             if(cardData.unitData?.stickerData != null)
             {

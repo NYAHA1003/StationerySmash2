@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 
 [System.Serializable]
 public class UserSaveData //인벤토리, 돈, 캐시 이런걸 저장할 수도 있다

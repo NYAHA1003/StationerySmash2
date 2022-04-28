@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 
 [System.Serializable]
 public class MaterialBox : MonoBehaviour

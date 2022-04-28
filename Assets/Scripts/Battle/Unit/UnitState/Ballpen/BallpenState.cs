@@ -96,7 +96,7 @@ namespace Battle.Units
 				Unit targetUnit = list[i];
 				if (Vector2.Distance(_myTrm.position, targetUnit.transform.position) <= _inkRange)
 				{
-					targetUnit.AddStatusEffect(Utill.EffAttackType.Ink, 1, 20, 20);
+					targetUnit.AddStatusEffect(EffAttackType.Ink, 1, 20, 20);
 				}
 			}
 		}

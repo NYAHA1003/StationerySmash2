@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.UI;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 
 public class PreviewVideoControll : MonoBehaviour, IScroll
 {

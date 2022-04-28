@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 
 public class CardInfoPanel : MonoBehaviour
 {

@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 namespace Battle.Starategy
 {
 
@@ -30,7 +31,7 @@ namespace Battle.Starategy
                 {
                     if (Vector2.Distance(list[i].transform.position, mousePos) < value[3])
                     {
-                        list[i].AddStatusEffect(Utill.EffAttackType.SlowDown, value);
+                        list[i].AddStatusEffect(EffAttackType.SlowDown, value);
                     }
                 }
                 catch

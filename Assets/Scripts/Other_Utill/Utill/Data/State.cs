@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Utill
+namespace Utill.Data
 {
     public enum eState  // 가질 수 있는 상태 나열
     {

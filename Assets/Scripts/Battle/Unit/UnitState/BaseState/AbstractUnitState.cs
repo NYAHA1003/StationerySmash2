@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using Battle;
 
 namespace Battle.Units
