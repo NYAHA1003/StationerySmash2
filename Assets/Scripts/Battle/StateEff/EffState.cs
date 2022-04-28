@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 using Battle;
+using Battle.Units;
 public abstract class EffState
 {
     //프로퍼티

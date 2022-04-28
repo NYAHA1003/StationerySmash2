@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
+using Battle;
+using Battle.Units;
 
 /// <summary>
 /// 유닛 스테이트변경자 컴포넌트
