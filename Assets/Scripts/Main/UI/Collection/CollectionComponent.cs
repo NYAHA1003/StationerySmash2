@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Utill;
-
+using Main.Deck;
 public class CollectionComponent : MonoBehaviour
 {
     //인스펙터 변수

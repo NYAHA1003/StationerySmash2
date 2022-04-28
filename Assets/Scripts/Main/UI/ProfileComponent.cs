@@ -6,7 +6,7 @@ using TMPro;
 using DG.Tweening;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
-
+using Main.Deck;
 
 public class ProfileComponent : MonoBehaviour, IUserData
 {

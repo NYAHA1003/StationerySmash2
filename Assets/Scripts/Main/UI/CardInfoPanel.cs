@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using Utill;
+using Main.Deck;
+using Main.Card;
 
 public class CardInfoPanel : MonoBehaviour
 {

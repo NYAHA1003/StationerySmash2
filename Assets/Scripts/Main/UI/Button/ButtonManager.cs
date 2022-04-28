@@ -2,6 +2,7 @@ using UnityEngine;
 using Utill;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using Main.Deck;
 
 public class ButtonManager : MonoBehaviour
 {

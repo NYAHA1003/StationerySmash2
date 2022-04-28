@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using Utill;
+using Main.Deck;
 
 namespace Battle
 {

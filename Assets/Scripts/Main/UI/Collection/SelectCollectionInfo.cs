@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utill;
 using TMPro;
-
+using Main.Deck;
 
 public class SelectCollectionInfo : MonoBehaviour
 {
