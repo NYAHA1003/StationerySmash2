@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill.Data;
-using Utill.Tool;
-
+using Utill;
+using Main.Setting;
 namespace Battle.Effect
 {
 
@@ -25,16 +24,16 @@ namespace Battle.Effect
 			switch (_effectType)
 			{
 				case EffectType.Attack:
-					_effectState ??= new EffectAttack();
+					_effectState ??= new Effect_Attack();
 					break;
 				case EffectType.Stun:
-					_effectState ??= new EffectStun();
+					_effectState ??= new Effect_Stun();
 					break;
 				case EffectType.Ink:
 					//effectState ??= new Effect_Slow();
 					break;
 				case EffectType.Slow:
-					_effectState ??= new EffectSlow();
+					_effectState ??= new Effect_Slow();
 					break;
 			}
 
@@ -43,7 +42,25 @@ namespace Battle.Effect
 
 			_isSettingEnd = true;
 		}
+		public void PlaySound(EffData effData)
+		{
+			//재활용 가능한 코드. 아직 사용 안 함
 
+			//for (int i = 0; i < System.Enum.GetValues(typeof(EffectType)).Length; i++)
+			//{
+			//    string effType = System.Enum.GetName(typeof(EffectType), i);
+			//    //enum가져와서 playSound
+			//    foreach (EffSoundType eff in Sound._effectSoundDictionary.Keys)
+			//    {
+			//        string soundType = System.Enum.GetName(typeof(EffSoundType), eff);
+			//        if (effType == soundType)
+			//        {
+			//            Sound.PlayEff(i);
+			//        }
+			//    }
+			//}
+			Sound.PlayEff((int)EffSoundType.Attack);
+		}
 		private void Update()
 		{
 			if (!_isSettingEnd)

@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 using System.Threading.Tasks;
-using Utill.Data;
-using Utill.Tool;
+using Utill;
 using TMPro;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
@@ -21,6 +20,9 @@ namespace Main.Setting
         private List<AudioSource> _effSources;
         [SerializeField]
         private List<AudioSource> _bgmSources;
+        
+        private static List<AudioSource> _staticEffSources;
+        private static List<AudioSource> _staticBgmSources;
 
         public static Dictionary<EffSoundType, AudioClip> _effectSoundDictionary = new Dictionary<EffSoundType, AudioClip>();
         public static Dictionary<BGMSoundType, AudioClip> _bgmSoundDictionary = new Dictionary<BGMSoundType, AudioClip>();
@@ -31,6 +33,9 @@ namespace Main.Setting
             CreateSoundSorces();
             PlayEffInput();
             PlayBgmInput();
+
+            _staticBgmSources = _bgmSources;
+            _staticEffSources = _effSources;
         }
 
         /// <summary>
@@ -167,6 +172,16 @@ namespace Main.Setting
             {
                 _bgmSources[i].clip = GetBGMSound((BGMSoundType)i);
             }
+        }
+
+        public void PlayBgm(int num)
+        {
+            _staticBgmSources[num].Play();
+        }
+
+        public static void PlayEff(int num)
+        {
+            _staticEffSources[num].Play();
         }
     }
 }

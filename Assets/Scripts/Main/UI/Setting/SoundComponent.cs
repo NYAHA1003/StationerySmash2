@@ -145,5 +145,10 @@ namespace Main.Setting
             isbgmSound = false;
             return;
         }
+
+        private void MusicStart()
+        {
+            
+        }
     }
 }
