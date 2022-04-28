@@ -2,27 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using Main.Event;
-
-/// <summary>
-/// 버튼 커맨드에 사용되는 버튼 Enum 
-/// </summary>
-/// 
-namespace Utill
-{
-	[System.Serializable]
-	enum ButtonType
-	{
-		deck,
-		setting,
-		collection,
-		skin,
-		stage,
-		cardDescription,
-	}
-
-}
 
 // 활성화 버튼 추가할시 ButtonType추가,ActiveCommand로 변수 만든후 Init에서 생성하고 allBtns에 넣어준다
 // ButtonType 순서대로 allBtns에 Add해주어야 함 

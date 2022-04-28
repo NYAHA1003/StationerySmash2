@@ -26,7 +26,7 @@ namespace Utill.Data
         }
     }
 
-    public static class Collider
+    public static class UnitCollider
     {
         private static float Check_Dir(float dir1, float dir2)
         {

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using Main.Event;
 
 namespace Main.Setting

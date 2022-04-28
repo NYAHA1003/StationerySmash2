@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using Main.Event;
 
 namespace Main.Scroll

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using Utill.Data;
 using Utill.Tool;
+using Main.Deck;
 
 namespace Battle
 {

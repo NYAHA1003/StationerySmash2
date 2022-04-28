@@ -1,4 +1,4 @@
-﻿namespace Utill
+﻿namespace Utill.Data
 {
     public enum EventsType
     {

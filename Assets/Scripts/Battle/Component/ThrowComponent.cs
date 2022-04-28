@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 
 namespace Battle
 {
@@ -278,11 +279,11 @@ namespace Battle
                 _force = Mathf.Clamp(Vector2.Distance(_throwUnit.transform.position, pos), 0, 1) * 4 * (100.0f / _throwUnit.UnitStat.Return_Weight());
 
                 //최고점
-                float height = Utill.Parabola.Caculated_Height(_force, dirx);
+                float height = Parabola.Caculated_Height(_force, dirx);
                 //수평 도달 거리
-                float width = Utill.Parabola.Caculated_Width(_force, dirx);
+                float width = Parabola.Caculated_Width(_force, dirx);
                 //수평 도달 시간
-                float time = Utill.Parabola.Caculated_Time(_force, dir, 2);
+                float time = Parabola.Caculated_Time(_force, dir, 2);
 
                 List<Vector2> linePos = SetParabolaPos(_parabola.positionCount, width, _force, dir, time);
 
@@ -337,7 +338,7 @@ namespace Battle
             for (int i = 0; i < count; i++)
             {
                 Vector3 pos = Vector3.Lerp((Vector2)_throwUnit.transform.position, new Vector2(_throwUnit.transform.position.x - width, 0), objLerps[i]);
-                pos.y = Utill.Parabola.Caculated_TimeToPos(force, dir_rad, timeLerps[i]);
+                pos.y = Parabola.Caculated_TimeToPos(force, dir_rad, timeLerps[i]);
 
                 if (i > 0)
                 {

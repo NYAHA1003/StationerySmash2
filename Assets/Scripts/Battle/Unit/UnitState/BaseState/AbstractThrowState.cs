@@ -69,7 +69,7 @@ namespace Battle.Units
 				{
 					continue;
 				}
-				float distance = Collider.FindDistanceBetweenSegments(_myUnit.CollideData.GetPoint(_myTrm.position), targetUnit.CollideData.GetPoint(targetUnit.transform.position));
+				float distance = UnitCollider.FindDistanceBetweenSegments(_myUnit.CollideData.GetPoint(_myTrm.position), targetUnit.CollideData.GetPoint(targetUnit.transform.position));
 				if (distance < 0.2f)
 				{
 					EndThrow();

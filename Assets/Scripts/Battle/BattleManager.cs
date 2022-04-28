@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using TMPro;
 using Battle;
 using System;
@@ -180,13 +181,13 @@ namespace Battle
 			//³» ÆÀÀÎÁö ÀûÆÀÀÎÁö Ã¼Å©
 			if (CommandUnit.eTeam.Equals(TeamType.MyTeam))
 			{
-				CommandUnit.eTeam = Utill.TeamType.EnemyTeam;
+				CommandUnit.eTeam = TeamType.EnemyTeam;
 				_unitTeamText.text = "ÀûÀÇ ÆÀ";
 				return;
 			}
-			if (CommandUnit.eTeam.Equals(Utill.TeamType.EnemyTeam))
+			if (CommandUnit.eTeam.Equals(TeamType.EnemyTeam))
 			{
-				CommandUnit.eTeam = Utill.TeamType.MyTeam;
+				CommandUnit.eTeam = TeamType.MyTeam;
 				_unitTeamText.text = "³ªÀÇ ÆÀ";
 				return;
 			}

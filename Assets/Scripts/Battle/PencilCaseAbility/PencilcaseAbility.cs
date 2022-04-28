@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 namespace Battle.PCAbility
 {
     public class PencilcaseAbility : AbstractPencilCaseAbility
@@ -16,7 +17,7 @@ namespace Battle.PCAbility
             base.SetState(battleManager);
             AsyncOperationHandle<UnitDataSO> unitList = Addressables.LoadAssetAsync<UnitDataSO>("ProjectileUnitSO");
             await unitList.Task;
-            pencil = unitList.Result.unitDatas.Find(x => x.unitData.unitType == Utill.UnitType.Pencil);
+            pencil = unitList.Result.unitDatas.Find(x => x.unitData.unitType == UnitType.Pencil);
         }
         public override void RunPencilCaseAbility()
         {

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 
 namespace Main.Deck
 {
@@ -31,7 +32,7 @@ namespace Main.Deck
             _unitNameText.text = cardData.card_Name;
             _CostText.text = $"{cardData.card_Cost}";
 
-            if (cardData.cardType == Utill.CardType.SummonUnit)
+            if (cardData.cardType == CardType.SummonUnit)
             {
                 if (cardData.unitData?.stickerData != null)
                 {

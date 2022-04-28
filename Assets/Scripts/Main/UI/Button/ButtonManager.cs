@@ -1,5 +1,6 @@
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using Main.Deck;
