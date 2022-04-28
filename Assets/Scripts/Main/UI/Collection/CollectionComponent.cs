@@ -35,7 +35,7 @@ public class CollectionComponent : MonoBehaviour
     private int _collectionIndex1 = 0;
     private int _collectionIndex2 = 1;
 
-    public void Start()
+    public void Awake()
     {
         _currentCollectionData = _normalCollectionDataSO;
         ResetData();
@@ -46,10 +46,18 @@ public class CollectionComponent : MonoBehaviour
         _changeSkinButton.onClick.AddListener(() => OnChangeCollection(CollectionType.Skin));
     }
 
-    /// <summary>
-    /// 다음 데이터 가지고 오기
-    /// </summary>
-    public void OnNextData()
+	private void OnEnable()
+    {
+        _collectionIndex1 = 0;
+        _collectionIndex2 = 1;
+
+        ResetData();
+    }
+
+	/// <summary>
+	/// 다음 데이터 가지고 오기
+	/// </summary>
+	public void OnNextData()
     {
         if (_collectionIndex2 + 2 >= _normalCollectionDataSO._collectionDatas.Count - 1)
         {
@@ -66,7 +74,7 @@ public class CollectionComponent : MonoBehaviour
     /// </summary>
     public void OnPeviousData()
     {
-        if (_collectionIndex1 <= 0)
+        if (_collectionIndex1 - 2 < 0)
         {
             return;
         }
