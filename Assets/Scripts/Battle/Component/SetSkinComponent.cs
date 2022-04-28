@@ -21,14 +21,42 @@ public class SetSkinComponent : MonoBehaviour
     [SerializeField]
     private PencilCaseDataSO _enemyPencilCase = null;
 
-    public async void Start()
+    public  void Start()
     {
+        SetSkinNowHave();
+        //SetSkinAll();
+    }
+
+    /// <summary>
+    /// 현재 있는 것만 스프라이트들을 불러온다
+    /// </summary>
+    private async void SetSkinNowHave()
+    {
+        //배틀 테스트 용으로 사용
         await _playerPencilCase.PencilCasedataBase.pencilCaseData.skinData.SetSkin(_playerPencilCase.PencilCasedataBase.pencilCaseData.skinData._skinType);
         await _enemyPencilCase.PencilCasedataBase.pencilCaseData.skinData.SetSkin(_enemyPencilCase.PencilCasedataBase.pencilCaseData.skinData._skinType);
+
         for (int i = 0; i < _cardDeckSO.cardDatas.Count; i++)
         {
             CardData cardData = _cardDeckSO.cardDatas[i];
             await cardData.skinData.SetSkin(cardData.skinData._skinType);
+        }
+
+        _isAllSetSkin = true;
+    }
+
+    /// <summary>
+    /// 모든 스프라이트를 불러온다
+    /// </summary>
+    private async void SetSkinAll()
+    {
+        await _playerPencilCase.PencilCasedataBase.pencilCaseData.skinData.SetSkin(_playerPencilCase.PencilCasedataBase.pencilCaseData.skinData._skinType);
+        await _enemyPencilCase.PencilCasedataBase.pencilCaseData.skinData.SetSkin(_enemyPencilCase.PencilCasedataBase.pencilCaseData.skinData._skinType);
+
+        for (int i = 0; i < System.Enum.GetValues(typeof(SkinType)).Length; i++)
+        {
+            CardData cardData = _cardDeckSO.cardDatas[i];
+            await cardData.skinData.SetSkin((SkinType)i);
         }
 
         _isAllSetSkin = true;
