@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Utill;
+using Main.Event;
 public class ShopScroll : AgentScroll
 {
     [SerializeField]

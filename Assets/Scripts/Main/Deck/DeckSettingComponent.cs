@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Utill;
+using Main.Event;
 
 namespace Main.Deck
 {

@@ -3,8 +3,8 @@ using Utill;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using Main.Deck;
-
-public class ButtonManager : MonoBehaviour
+using Main.Event;
+    public class ButtonManager : MonoBehaviour
 {
     private Btn_MainPanel2 btn_MainPanel;
 

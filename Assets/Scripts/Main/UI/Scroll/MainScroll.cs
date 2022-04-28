@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using Utill;
+using Main.Event;
 public class MainScroll : AgentScroll
 {
     [SerializeField]
