@@ -43,6 +43,7 @@ namespace Main.Deck
                 cardObj.GetComponent<Button>().onClick.AddListener(() =>
                 {
                     EventManager.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
+                    EventManager.TriggerEvent(EventsType.DeckSetting, ButtonType.cardDescription);
                 });
                 deckCards.Add(cardObj);
             }
