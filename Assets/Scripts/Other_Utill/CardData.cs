@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Utill;
+using Battle.Starategy;
 
 [System.Serializable]
 public class CardData

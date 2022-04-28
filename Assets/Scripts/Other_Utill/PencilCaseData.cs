@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
+using Battle.PCAbility;
 
 [System.Serializable]
 public class PencilCaseData

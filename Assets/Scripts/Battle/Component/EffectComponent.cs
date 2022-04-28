@@ -5,6 +5,8 @@ using UnityEngine;
 using Utill;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
+using Battle.Effect;
+
 namespace Battle
 {
     [System.Serializable]

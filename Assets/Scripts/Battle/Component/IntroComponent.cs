@@ -6,6 +6,10 @@ using Utill;
 using DG.Tweening;
 using TMPro;
 
+namespace Battle
+{
+
+
 [System.Serializable]
 public class IntroComponent
 {
@@ -36,5 +40,6 @@ public class IntroComponent
         yield return new WaitForSeconds(0.5f);
         _countText.gameObject.SetActive(false);
         _isEndIntro = true;
+    }
     }
 }

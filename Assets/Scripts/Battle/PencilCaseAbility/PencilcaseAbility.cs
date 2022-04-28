@@ -4,35 +4,37 @@ using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
 using Utill;
-
-public class PencilcaseAbility : AbstractPencilCaseAbility
+namespace Battle.PCAbility
 {
-    int grade = 0;
-    float coolTime = 5f;
-    CardData pencil;
-    public async override void SetState(BattleManager battleManager)
+    public class PencilcaseAbility : AbstractPencilCaseAbility
     {
-        base.SetState(battleManager);
-        AsyncOperationHandle<UnitDataSO> unitList = Addressables.LoadAssetAsync<UnitDataSO>("ProjectileUnitSO");
-        await unitList.Task;
-        pencil = unitList.Result.unitDatas.Find(x => x.unitData.unitType == Utill.UnitType.Pencil);
-    }
-    public override void RunPencilCaseAbility()
-    {
-        _battleManager.CommandUnit.SummonUnit(pencil, _battleManager.CommandPencilCase.PlayerPencilCase.gameObject.transform.position, grade, TeamType.MyTeam);
-        grade = 0;
-    }
-    private IEnumerator gradeUp()
-    {
-        while(true)
+        int grade = 0;
+        float coolTime = 5f;
+        CardData pencil;
+        public async override void SetState(BattleManager battleManager)
         {
-            yield return new WaitForSeconds(coolTime);
-            grade++;
+            base.SetState(battleManager);
+            AsyncOperationHandle<UnitDataSO> unitList = Addressables.LoadAssetAsync<UnitDataSO>("ProjectileUnitSO");
+            await unitList.Task;
+            pencil = unitList.Result.unitDatas.Find(x => x.unitData.unitType == Utill.UnitType.Pencil);
         }
-    }
+        public override void RunPencilCaseAbility()
+        {
+            _battleManager.CommandUnit.SummonUnit(pencil, _battleManager.CommandPencilCase.PlayerPencilCase.gameObject.transform.position, grade, TeamType.MyTeam);
+            grade = 0;
+        }
+        private IEnumerator gradeUp()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(coolTime);
+                grade++;
+            }
+        }
 
-    public override bool AIAbilityCondition()
-    {
-        throw new System.NotImplementedException();
+        public override bool AIAbilityCondition()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

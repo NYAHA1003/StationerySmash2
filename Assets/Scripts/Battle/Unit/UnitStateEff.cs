@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utill;
 using Battle;
+using Battle.StateEff;
 
 /// <summary>
 /// 유닛 상태이상 컴포넌트

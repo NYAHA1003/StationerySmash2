@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
+using Battle;
+using Battle.PCAbility;
 
 public class PencilCaseUnit : Unit
 {

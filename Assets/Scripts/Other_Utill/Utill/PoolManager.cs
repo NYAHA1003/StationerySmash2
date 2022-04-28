@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
+using Battle;
+using Battle.PCAbility;
+using Battle.StateEff;
 using Battle.Units;
 
 public class PoolManager : MonoBehaviour

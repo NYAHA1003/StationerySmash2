@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
-
+using Battle;
 public class DiscountBadge : AbstractBadge
 {
     private bool isSet = false;

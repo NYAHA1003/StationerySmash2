@@ -2,20 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
-
-public class TimerAbility : AbstractPencilCaseAbility
+namespace Battle.PCAbility
 {
-    public override void RunPencilCaseAbility()
-    {
-        for (int i = 0; i < _battleManager.CommandUnit._playerUnitList.Count; i++)
-        {
-            Unit unit = _battleManager.CommandUnit._playerUnitList[i];
 
-            unit.AddStatusEffect(Utill.EffAttackType.Exch, 2, 1000, 1000);
-        }
-    }
-    public override bool AIAbilityCondition()
+
+    public class TimerAbility : AbstractPencilCaseAbility
     {
-        throw new System.NotImplementedException();
+        public override void RunPencilCaseAbility()
+        {
+            for (int i = 0; i < _battleManager.CommandUnit._playerUnitList.Count; i++)
+            {
+                Unit unit = _battleManager.CommandUnit._playerUnitList[i];
+
+                unit.AddStatusEffect(Utill.EffAttackType.Exch, 2, 1000, 1000);
+            }
+        }
+        public override bool AIAbilityCondition()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using Utill;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
-
+using Battle;
 public class EraserPieceSticker : AbstractDieSticker
 {
     private BattleManager _battleManager;
