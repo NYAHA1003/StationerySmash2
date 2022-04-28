@@ -4,13 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utill;
 
-[System.Serializable]
-public abstract class AbstractSticker
-{
-    protected Unit _myUnit = null;
 
-    public virtual void SetSticker(Unit unit)
+namespace Battle.Sticker
+{
+
+
+    [System.Serializable]
+    public abstract class AbstractSticker
     {
-        _myUnit = unit;
+        protected Unit _myUnit = null;
+
+        public virtual void SetSticker(Unit unit)
+        {
+            _myUnit = unit;
+        }
     }
 }

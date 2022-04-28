@@ -2,17 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
-public class PenPlasticSticker : AbstractDamagedSticker
+
+namespace Battle.Sticker
 {
-    private int plusHp = 15;
-    private int damageDecrese = -10;
-    public override void SetSticker(Unit unit)
+
+
+    public class PenPlasticSticker : AbstractDamagedSticker
     {
-        base.SetSticker(unit);
-    }
-	public override void RunDamagedStickerAblity(ref AtkData atkData)
-    {
-        _myUnit.UnitStat.SetBonusMaxHPPercent(plusHp);
-        _myUnit.UnitStat.IncreaseDamagedPercent(damageDecrese);
+        private int plusHp = 15;
+        private int damageDecrese = -10;
+        public override void SetSticker(Unit unit)
+        {
+            base.SetSticker(unit);
+        }
+        public override void RunDamagedStickerAblity(ref AtkData atkData)
+        {
+            _myUnit.UnitStat.SetBonusMaxHPPercent(plusHp);
+            _myUnit.UnitStat.IncreaseDamagedPercent(damageDecrese);
+        }
     }
 }

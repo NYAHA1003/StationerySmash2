@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
+using Battle.Sticker;
 
 [System.Serializable]
 public class UnitSticker

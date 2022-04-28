@@ -2,14 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
-public class RockSticker : AbstractIdleSticker
+namespace Battle.Sticker
 {
-    public override void SetSticker(Unit unit)
+
+
+    public class RockSticker : AbstractIdleSticker
     {
-        base.SetSticker(unit);
-    }
-    public override void RunIdleStickerAblity()
-    {
-        _myUnit.UnitStat.SetBonusMoveSpeed(1);
+        public override void SetSticker(Unit unit)
+        {
+            base.SetSticker(unit);
+        }
+        public override void RunIdleStickerAblity()
+        {
+            _myUnit.UnitStat.SetBonusMoveSpeed(1);
+        }
     }
 }

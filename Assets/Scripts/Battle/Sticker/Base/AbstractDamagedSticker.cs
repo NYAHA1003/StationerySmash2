@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 
-public class AbstractDamagedSticker : AbstractSticker
+namespace Battle.Sticker
 {
-	/// <summary>
-	/// 데미지 받음 스티커
-	/// </summary>
-	/// <param name="atkData"></param>
-	public virtual void RunDamagedStickerAblity(ref AtkData atkData)
+
+	public class AbstractDamagedSticker : AbstractSticker
 	{
-		//null;
+		/// <summary>
+		/// 데미지 받음 스티커
+		/// </summary>
+		/// <param name="atkData"></param>
+		public virtual void RunDamagedStickerAblity(ref AtkData atkData)
+		{
+			//null;
+		}
 	}
+
 }

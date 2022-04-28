@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 
-public class AbstractIdleSticker : AbstractSticker
+namespace Battle.Sticker
 {
-	/// <summary>
-	/// 积己 胶萍目
-	/// </summary>
-	/// <param name="atkData"></param>
-	public virtual void RunIdleStickerAblity()
+
+
+	public class AbstractIdleSticker : AbstractSticker
 	{
-		//null;
+		/// <summary>
+		/// 积己 胶萍目
+		/// </summary>
+		/// <param name="atkData"></param>
+		public virtual void RunIdleStickerAblity()
+		{
+			//null;
+		}
 	}
 }

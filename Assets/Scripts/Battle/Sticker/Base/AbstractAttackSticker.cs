@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 
+namespace Battle.Sticker
+{
+
 public class AbstractAttackSticker : AbstractSticker
 {
 	/// <summary>
@@ -12,5 +15,6 @@ public class AbstractAttackSticker : AbstractSticker
 	public virtual void RunAttackStickerAblity(ref AtkData atkData)
 	{
 		//null;
+	}
 	}
 }

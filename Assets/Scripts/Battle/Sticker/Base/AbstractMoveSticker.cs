@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 
-public class AbstractMoveSticker : AbstractSticker
+namespace Battle.Sticker
 {
-	/// <summary>
-	/// 이동 스티커
-	/// </summary>
-	/// <param name="atkData"></param>
-	public virtual void RunMoveStickerAblity()
+
+
+	public class AbstractMoveSticker : AbstractSticker
 	{
-		//null;
+		/// <summary>
+		/// 이동 스티커
+		/// </summary>
+		/// <param name="atkData"></param>
+		public virtual void RunMoveStickerAblity()
+		{
+			//null;
+		}
 	}
 }

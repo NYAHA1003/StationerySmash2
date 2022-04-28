@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 
-public class AbstractThrowSticker : AbstractSticker
+namespace Battle.Sticker
 {
-	/// <summary>
-	/// 던지기 스티커
-	/// </summary>
-	/// <param name="atkData"></param>
-	public virtual void RunThrowStickerAblity()
+
+
+	public class AbstractThrowSticker : AbstractSticker
 	{
-		//null;
+		/// <summary>
+		/// 던지기 스티커
+		/// </summary>
+		/// <param name="atkData"></param>
+		public virtual void RunThrowStickerAblity()
+		{
+			//null;
+		}
 	}
 }
