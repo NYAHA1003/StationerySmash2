@@ -19,6 +19,7 @@ public class Effect_Attack : IEffect
     private float delete_time = 0.5f;
     public virtual void Set_Effect(EffectObject effObj, EffData effData)
     {
+        effObj.PlaySound(effData);
         particleSys ??= effObj.GetComponent<ParticleSystem>();
 
         effObj.CancelInvoke();
@@ -35,6 +36,7 @@ public class Effect_Attack : IEffect
         effObj.transform.position = effData.pos;
 
         effObj.Invoke("Delete_Effect", delete_time);
+        
     }
 
     public void Update_Effect(EffectObject effObj, EffData effData)
@@ -61,6 +63,8 @@ public class Effect_Stun : IEffect
         {
             throw new System.Exception("EffData가 이상함");
         }
+
+        effObj.PlaySound(effData);
 
         this.effObj ??= effObj;
 
