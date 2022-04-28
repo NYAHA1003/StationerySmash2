@@ -11,6 +11,7 @@ namespace Main.Deck
     {
 
         public List<CardSaveData> _unitSaveDatas = new List<CardSaveData>();    //카드 데이터 저장
+        public List<CardSaveData> _ingameSaveDatas = new List<CardSaveData>();    //인게임덱 카드 데이터 저장
         public List<SkinType> _haveSkinList = new List<SkinType>();    //가지고 있는 스킨
         public ProfileType _currentProfileType = ProfileType.None;    //현재 프로필
         public List<ProfileType> _haveProfileList = new List<ProfileType>();    //가지고 있는 프로필
@@ -31,5 +32,18 @@ namespace Main.Deck
         public StarategyType _strategicType = StarategyType.None;
         public UnitType _unitType = UnitType.None;
         public StickerType stickerType = StickerType.None;
+
+        public static CardSaveData CopyDataToCardData(CardData cardData)
+		{
+            CardSaveData cardSaveData = new CardSaveData();
+            cardSaveData._level = cardData.level;
+            cardSaveData._count = 0;
+            cardSaveData._cardType = cardData.cardType;
+            cardSaveData._cardNamingType = cardData.skinData._cardNamingType;
+            cardSaveData._unitType = cardData.unitData.unitType;
+            cardSaveData._strategicType = cardData.strategyData.starategyType;
+            cardSaveData.stickerType = cardData.unitData.stickerData._stickerType;
+            return cardSaveData;
+		}
     }
 }

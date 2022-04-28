@@ -40,7 +40,7 @@ namespace Battle.Units
 		public override void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
 		{
 			base.Reset_State(myTrm, mySprTrm, myUnit);
-			_sharpsimPieceData = AddressableTool.ReturnProjectileUnit(UnitType.SharpSim).Result;
+			_sharpsimPieceData = AddressableTool.ReturnProjectileUnitAsync(UnitType.SharpSim).Result;
 			myUnit.SetIsNeverDontThrow(false);
 		}
 	}
