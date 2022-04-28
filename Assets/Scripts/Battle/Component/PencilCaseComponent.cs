@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
+using Battle.Badge;
 using Battle.PCAbility;
 
 namespace Battle

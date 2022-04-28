@@ -4,31 +4,36 @@ using UnityEngine;
 using Utill;
 using Battle;
 
-public class ThornBadge : AbstractBadge
+namespace Battle.Badge
 {
-    public override void SetBadge(PencilCaseComponent pencilCaseCommand, PencilCaseUnit pencilCaseUnit, TeamType teamType, BadgeData badgeData)
-    {
-        base.SetBadge(pencilCaseCommand, pencilCaseUnit, teamType, badgeData);
-        _pencilCaseUnit.AddDictionary(_pencilCaseUnit.AddInherence, RunThorn);
-    }
 
-    public override void SetBattleManager(BattleManager battleManager)
-    {
-        base.SetBattleManager(battleManager);
-    }
+	public class ThornBadge : AbstractBadge
+	{
+		public override void SetBadge(PencilCaseComponent pencilCaseCommand, PencilCaseUnit pencilCaseUnit, TeamType teamType, BadgeData badgeData)
+		{
+			base.SetBadge(pencilCaseCommand, pencilCaseUnit, teamType, badgeData);
+			_pencilCaseUnit.AddDictionary(_pencilCaseUnit.AddInherence, RunThorn);
+		}
 
-    public override void RunBadgeAbility()
-    {
-        //throw new System.NotImplementedException();
-    }
+		public override void SetBattleManager(BattleManager battleManager)
+		{
+			base.SetBattleManager(battleManager);
+		}
 
-    /// <summary>
-    /// PCKill 무효
-    /// </summary>
-    /// <param name="atkData"></param>
-    public void RunThorn(AtkData atkData)
-    {
-        atkData.attacker.Run_Damaged(atkData);
-        atkData.Reset_Kncockback(0, 0, 0, true); //true가 아니면 false겠지
-    }
+		public override void RunBadgeAbility()
+		{
+			//throw new System.NotImplementedException();
+		}
+
+		/// <summary>
+		/// PCKill 무효
+		/// </summary>
+		/// <param name="atkData"></param>
+		public void RunThorn(AtkData atkData)
+		{
+			atkData.attacker.Run_Damaged(atkData);
+			atkData.Reset_Kncockback(0, 0, 0, true); //true가 아니면 false겠지
+		}
+	}
+
 }

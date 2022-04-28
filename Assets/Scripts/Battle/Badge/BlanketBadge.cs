@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 
+namespace Battle.Badge
+{
+
 public class BlanketBadge : AbstractBadge
 {
     public override void SetBadge(PencilCaseComponent pencilCaseCommand, PencilCaseUnit pencilCaseUnit, TeamType teamType, BadgeData badgeData)
@@ -32,5 +35,6 @@ public class BlanketBadge : AbstractBadge
         {
             atkData.Reset_Damage(atkData.damage / 2);
         }
+    }
     }
 }

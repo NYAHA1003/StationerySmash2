@@ -6,6 +6,7 @@ using Battle;
 using Battle.PCAbility;
 using Battle.StateEff;
 using Battle.Units;
+using Battle.Badge;
 
 public class PoolManager : MonoBehaviour
 {
