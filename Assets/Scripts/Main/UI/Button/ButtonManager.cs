@@ -15,7 +15,7 @@ public class ButtonManager : MonoBehaviour
     private List<Button> cardInfoBtns = new List<Button>();
 
     [SerializeField]
-    private DeckSetting deckSetting; 
+    private DeckSettingComponent deckSetting; 
     private void Start()
     {
         btn_MainPanel2.Start();

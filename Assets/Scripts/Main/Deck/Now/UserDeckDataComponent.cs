@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class UserDeckData : MonoBehaviour
+public class UserDeckDataComponent : MonoBehaviour
 {
     public SaveDataSO saveData; //세이브 데이터(카드 레벨, 보유여부) 
     public CardDeckSO standardcardDeck; //기준 데이터 

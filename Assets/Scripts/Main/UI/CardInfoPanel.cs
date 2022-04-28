@@ -56,7 +56,7 @@ public class CardInfoPanel : MonoBehaviour
 
     // 유저 데이터
     [SerializeField]
-    private UserDeckData userDeckData; 
+    private UserDeckDataComponent userDeckData; 
     private void Start()
     {
         EventManager.StartListening(EventsType.ActiveCardDescription, (x) => OnSetCardInfoPanel((DeckCard)x));

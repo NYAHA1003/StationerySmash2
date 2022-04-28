@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utill;
 
-public class DeckSetting : MonoBehaviour
+public class DeckSettingComponent : MonoBehaviour
 {
     [SerializeField]
-    private UserDeckData userDeckData;
+    private UserDeckDataComponent userDeckData;
     [SerializeField]
     private GameObject cardPrefab;
     [SerializeField]
