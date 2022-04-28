@@ -32,6 +32,7 @@ namespace Utill.Data
 
         public Unit attacker;
 
+        public static int damageCount;
         public int damage;
 
         //데미지 아이디
@@ -97,9 +98,15 @@ namespace Utill.Data
             }
             else
             {
-
-                attacker.DamageCount++;
-                this.damageId = attacker.MyUnitId * 10000 + attacker.DamageCount;
+                if(attacker != null)
+                {
+                    attacker.DamageCount++;
+                    this.damageId = attacker.MyUnitId * 10000 + attacker.DamageCount;
+                }
+                else
+				{
+                    this.damageId = 30000 + damageCount++;
+				}
             }
 
         }

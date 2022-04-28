@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AIEnemyDataSO
   m_EditorClassIdentifier: 
   summonGrade: 1
-  throwSpeed: 0
+  throwSpeed: 30
   cardDataList:
   - cardType: 1
     card_Name: "\uC5F0\uD544"
@@ -22,13 +22,13 @@ MonoBehaviour:
     skinData:
       _skinType: 0
       _effectType: 0
-      _cardNamingType: 0
+      _cardNamingType: 100
     level: 0
     strategyData:
       starategyType: 0
       starategyablityData: []
     unitData:
-      unit_Hp: 500
+      unit_Hp: 400
       unit_Weight: 75
       knockback: 20
       dir: 45

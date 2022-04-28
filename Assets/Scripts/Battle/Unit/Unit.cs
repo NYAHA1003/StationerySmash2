@@ -193,7 +193,10 @@ public class Unit : MonoBehaviour
     /// <param name="atkData">공격 데이터</param>
     public virtual void Run_Damaged(AtkData atkData)
     {
-        _unitStateChanger.UnitState.RunDamaged(atkData);
+        if (_unitStateChanger.UnitState != null)
+        {
+            _unitStateChanger.UnitState.RunDamaged(atkData);
+        }
     }
 
     public void SetKnockBack(Sequence sequence)
