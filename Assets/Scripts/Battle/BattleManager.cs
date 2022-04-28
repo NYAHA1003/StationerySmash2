@@ -71,8 +71,6 @@ namespace Battle
 		private PauseComponent _commandPause = null;
 		[SerializeField, Header("승리패배시스템 BattleWinLose"), Space(30)]
 		private WinLoseComponent _commandWinLose = null;
-		[SerializeField, Header("스프라이트로딩시스템 BattleSetSkin"), Space(30)]
-		private SetSkinComponent _loadingComponent = null;
 		[SerializeField, Header("인트로시스템 BattleIntro"), Space(30)]
 		private IntroComponent _introComponent = null;
 
@@ -80,12 +78,6 @@ namespace Battle
 		{
 			//프레임 60 고정
 			Application.targetFrameRate = 60;
-
-			while (!_loadingComponent.IsAllSetSkin)
-			{
-				yield return null;
-			}
-
 
 			_commandPencilCase.SetInitialization(CommandUnit, CurrentStageData);
 			_commandCard.SetInitialization(this, CommandWinLose, CommandCamera, CommandUnit, CommandCost, ref _updateAction, CurrentStageData, _commandPencilCase.PencilCaseDataMy.PencilCasedataBase.maxCard);
@@ -114,7 +106,7 @@ namespace Battle
 		{
 			//  Debug.Log("유닛 갯수 : " + _commandUnit.UnitParent.childCount + " FPS : " + 1.0f / Time.deltaTime);
 
-			if (!_isEndSetting || !_loadingComponent.IsAllSetSkin || !_introComponent.isEndIntro)
+			if (!_isEndSetting ||  !_introComponent.isEndIntro)
 			{
 				return;
 			}

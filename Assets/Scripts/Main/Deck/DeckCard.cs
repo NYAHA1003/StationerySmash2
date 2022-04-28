@@ -28,7 +28,7 @@ namespace Main.Deck
         public void SetCard(CardData cardData)
         {
             _cardData = cardData;
-            _cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
+            //_cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
             _unitNameText.text = cardData.card_Name;
             _CostText.text = $"{cardData.card_Cost}";
 

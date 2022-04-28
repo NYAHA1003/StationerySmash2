@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using Main.Deck;
+using Utill.Data;
 
 namespace Main.Deck
 {
@@ -11,6 +12,7 @@ namespace Main.Deck
         public SaveDataSO saveData; //세이브 데이터(카드 레벨, 보유여부) 
         public CardDeckSO standardcardDeck; //기준 데이터 
         public CardDeckSO deckList; //카드 데이터
+        public CardDeckSO inGameDeckList; //카드 데이터
 
         /// <summary>
         /// 카드덱 데이터를 세팅해줍니다 
@@ -28,15 +30,43 @@ namespace Main.Deck
             {
                 CardSaveData saveDataobj = saveData.userSaveData._unitSaveDatas[i];
                 //세가지 타입이 세이브데이터와 모두 같은 기준 데이터 찾기
-                CardData cardDataobj = standardcardDeck.cardDatas.Find(x => x.cardType == saveDataobj._cardType
-                                                && x.unitData.unitType == saveDataobj._unitType
-                                                || x.strategyData.starategyType == saveDataobj._strategicType);
+                CardData cardDataobj = standardcardDeck.cardDatas.Find(x => x.skinData._cardNamingType == saveDataobj._cardNamingType);
 
-                if (cardDataobj == null) Debug.Log("X");
-                //세이브데이터의 레벨만큼 수치를 변경하고 새로운 카드데이터로 만들어 받아 덱리스트에 추가
-                deckList.cardDatas.Add(cardDataobj.DeepCopy(saveDataobj._level));
-
+                if (cardDataobj != null)
+                {
+                    //세이브데이터의 레벨만큼 수치를 변경하고 새로운 카드데이터로 만들어 받아 덱리스트에 추가
+                    deckList.cardDatas.Add(cardDataobj.DeepCopy(saveDataobj._level));
+                }
             }
+        }
+
+        /// <summary>
+        /// 덱에 카드를 추가한다
+        /// </summary>
+        public void AddCardInDeck(CardData cardData, int level)
+		{
+            inGameDeckList.cardDatas.Add(cardData.DeepCopy(level));
+        }
+        /// <summary>
+        /// 덱에 카드를 해제한다
+        /// </summary>
+        public void RemoveCardInDeck(CardNamingType cardNamingType)
+        {
+            inGameDeckList.cardDatas.RemoveAt(inGameDeckList.cardDatas.FindIndex(x => x.skinData._cardNamingType == cardNamingType));
+        }
+
+
+        /// <summary>
+        /// 카드가 이미 장착되어 있는지 확인한다
+        /// </summary>
+        /// <returns></returns>
+        public bool ReturnAlreadyEquipCard(CardNamingType cardNamingType)
+		{
+            if(inGameDeckList.cardDatas.Find(x => x.skinData._cardNamingType == cardNamingType) != null)
+			{
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -62,15 +92,18 @@ namespace Main.Deck
         public void JsonToData()
         {
             //json 파일 불러오기
-            string path = File.ReadAllText(Application.dataPath + "/saveData.json");
-            //json 파일이 없는지 체크
-            if (path == null)
+            try
             {
-                return;
-            }
+                string path = File.ReadAllText(Application.dataPath + "/saveData.json");
 
-            //유저데이터에 저장
-            saveData.userSaveData = JsonUtility.FromJson<UserSaveData>(path);
+
+                //유저데이터에 저장
+                saveData.userSaveData = JsonUtility.FromJson<UserSaveData>(path);
+            }
+            catch
+			{
+                //에러 뜨면 파일이 없음
+			}
         }
     }
 }

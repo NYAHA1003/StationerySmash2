@@ -15,6 +15,8 @@ namespace Utill.Data
     public enum CardNamingType
     {
         None = 0,
+        Pencil = 100,
+        Sharp = 200,
     }
 
     public enum StarategyType

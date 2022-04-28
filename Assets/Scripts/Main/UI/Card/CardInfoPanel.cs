@@ -57,15 +57,19 @@ using Main.Skin;
         [SerializeField]
         private SkinScroll _skinScroll = null;
 
+        //장착버튼
+        [SerializeField]
+        private Button _equipButton = null;
 
         private CardData _selectCardData = null;
 
         // 유저 데이터
         [SerializeField]
-        private UserDeckDataComponent userDeckData;
+        private UserDeckDataComponent _userDeckData;
         private void Start()
         {
             EventManager.StartListening(EventsType.ActiveCardDescription, (x) => OnSetCardInfoPanel((DeckCard)x));
+            _equipButton.onClick.AddListener(() => OnEquipCardInDeck());
         }
         /// <summary>
         /// 카드데이터 설정
@@ -173,6 +177,23 @@ using Main.Skin;
             }
 
         }
+
+        /// <summary>
+        /// 덱에 카드를 장착하거나 해제한다
+        /// </summary>
+        public void OnEquipCardInDeck()
+		{
+            if(_userDeckData.ReturnAlreadyEquipCard(_selectCardData.skinData._cardNamingType))
+			{
+                //해제
+                _userDeckData.RemoveCardInDeck(_selectCardData.skinData._cardNamingType);
+            }
+            else
+			{
+                //장착
+                _userDeckData.AddCardInDeck(_selectCardData, _selectCardData.level);
+            }
+		}
 
         /// <summary>
         /// 카드가 가진 스킨리스트 쫙 생성

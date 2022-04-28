@@ -39,10 +39,10 @@ namespace Main.Deck
             for (int i = 0; i < userDeckData.deckList.cardDatas.Count; i++)
             {
                 GameObject cardObj = CreateCard();
-                //cardObj.GetComponent<DeckCard>().SetCard(userDeckData.deckList.cardDatas[i]);
+                cardObj.GetComponent<DeckCard>().SetCard(userDeckData.deckList.cardDatas[i]);
                 cardObj.GetComponent<Button>().onClick.AddListener(() =>
                 {
-                    EventManager.TriggerEvent(EventsType.DeckSetting, ButtonType.cardDescription);
+                    EventManager.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
                 });
                 deckCards.Add(cardObj);
             }
