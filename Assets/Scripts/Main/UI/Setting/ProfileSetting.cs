@@ -5,62 +5,66 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Utill;
 using Main.Event;
-public enum ProfileImageType
+
+namespace Main.Setting
 {
-    Pencil,
-    Eraser
-}
-[System.Serializable]
-public class ProfileSetting : IEvent
-{
-    [Header("유저")]
-    [SerializeField]
-    private User _user;
-    
-    [Header("닉네임 입력란")]
-    //닉네임 입력란 
-    [SerializeField]
-    private Image inputField;
-    [SerializeField]
-    private TextMesh inputNameText;
-    [SerializeField]
-    private Button inputNameBtn;
+    public enum ProfileImageType
+    {
+        Pencil,
+        Eraser
+    }
+    [System.Serializable]
+    public class ProfileSetting : IEvent
+    {
+        [Header("유저")]
+        [SerializeField]
+        private User _user;
 
-    [SerializeField]
-    private Image[] ProfileImages;
-    [SerializeField]
-    private GameObject ProfilePanel;
+        [Header("닉네임 입력란")]
+        //닉네임 입력란 
+        [SerializeField]
+        private Image inputField;
+        [SerializeField]
+        private TextMesh inputNameText;
+        [SerializeField]
+        private Button inputNameBtn;
 
-    public void ListenEvent()
-    {
-        EventManager.StartListening(EventsType.ActiveProfileImgPn, OnActiveProfileImgPn);
-        EventManager.StartListening(EventsType.ChangeProfileImage, OnChangeProfileImage);
-        EventManager.StartListening(EventsType.ChabgeUserName, OnChangeUserName);
-        EventManager.StartListening(EventsType.CloaseAllPn, OnProfileDisabled);
-    }
-    public void OnChangeUserName()
-    {
-        _user.userName = inputNameText.text; 
-        //저장 
-    }
-    public void OnChangeProfileImage(object profileImgType)
-    {
-        //_user.profileImage = EventSystem.current.currentSelectedGameObject.GetComponent<Image>().sprite;
-        _user.profileImage = ReturnProfileImg((ProfileImageType)profileImgType); ;
-        ProfilePanel.SetActive(false); 
-        //저장
-    }
-    private Sprite ReturnProfileImg(ProfileImageType profileImgType)
-    {
-        return ProfileImages[(int)profileImgType].sprite; 
-    }
-    public void OnActiveProfileImgPn()
-    {
-        ProfilePanel.SetActive(!ProfilePanel.activeSelf);
-    }
+        [SerializeField]
+        private Image[] ProfileImages;
+        [SerializeField]
+        private GameObject ProfilePanel;
 
-    public void OnProfileDisabled()
-    {
-        ProfilePanel.SetActive(false); 
+        public void ListenEvent()
+        {
+            EventManager.StartListening(EventsType.ActiveProfileImgPn, OnActiveProfileImgPn);
+            EventManager.StartListening(EventsType.ChangeProfileImage, OnChangeProfileImage);
+            EventManager.StartListening(EventsType.ChabgeUserName, OnChangeUserName);
+            EventManager.StartListening(EventsType.CloaseAllPn, OnProfileDisabled);
+        }
+        public void OnChangeUserName()
+        {
+            _user.userName = inputNameText.text;
+            //저장 
+        }
+        public void OnChangeProfileImage(object profileImgType)
+        {
+            //_user.profileImage = EventSystem.current.currentSelectedGameObject.GetComponent<Image>().sprite;
+            _user.profileImage = ReturnProfileImg((ProfileImageType)profileImgType); ;
+            ProfilePanel.SetActive(false);
+            //저장
+        }
+        private Sprite ReturnProfileImg(ProfileImageType profileImgType)
+        {
+            return ProfileImages[(int)profileImgType].sprite;
+        }
+        public void OnActiveProfileImgPn()
+        {
+            ProfilePanel.SetActive(!ProfilePanel.activeSelf);
+        }
+
+        public void OnProfileDisabled()
+        {
+            ProfilePanel.SetActive(false);
+        }
     }
 }

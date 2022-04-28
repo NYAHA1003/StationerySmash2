@@ -8,8 +8,8 @@ using Utill;
 using Main.Deck;
 using Main.Card;
 using Main.Event;
-
-namespace Main.Card
+using Main.Skin;
+    namespace Main.Card
 {
     public class CardInfoPanel : MonoBehaviour
     {
