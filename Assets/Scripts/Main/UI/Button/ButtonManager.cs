@@ -2,8 +2,9 @@ using UnityEngine;
 using Utill;
 using UnityEngine.UI;
 using System.Collections.Generic;
-
-public class ButtonManager : MonoBehaviour
+using Main.Deck;
+using Main.Event;
+    public class ButtonManager : MonoBehaviour
 {
     private Btn_MainPanel2 btn_MainPanel;
 

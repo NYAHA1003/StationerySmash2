@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.UI;
-using Utill.Data;
-using Utill.Tool;
+using Utill;
+using Main.Scroll;
 
-public class PreviewVideoControll : MonoBehaviour, IScroll
+    public class PreviewVideoControll : MonoBehaviour, IScroll
 {
     [SerializeField]
     private AgentScroll _scrollObj;

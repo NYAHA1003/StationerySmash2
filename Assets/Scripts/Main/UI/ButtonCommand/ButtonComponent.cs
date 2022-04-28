@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Utill;
+using Main.Event;
 
 /// <summary>
 /// 버튼 커맨드에 사용되는 버튼 Enum 

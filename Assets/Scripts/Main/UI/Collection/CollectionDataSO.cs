@@ -4,8 +4,11 @@ using UnityEngine;
 using Utill.Data;
 using Utill.Tool;
 
-[CreateAssetMenu(fileName = "CollectionDataSO ", menuName = "Scriptable Object/CollectionDataSO")]
-public class CollectionDataSO : ScriptableObject
+namespace Main.Collection
 {
-    public List<CollectionData> _collectionDatas = new List<CollectionData>();
+    [CreateAssetMenu(fileName = "CollectionDataSO ", menuName = "Scriptable Object/CollectionDataSO")]
+    public class CollectionDataSO : ScriptableObject
+    {
+        public List<CollectionData> _collectionDatas = new List<CollectionData>();
+    }
 }

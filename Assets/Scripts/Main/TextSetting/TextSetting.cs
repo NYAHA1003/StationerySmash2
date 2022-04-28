@@ -3,36 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using static LanguageSingleton;
 
-public class TextSetting : MonoBehaviour
+namespace Main.TextSetting
 {
-    //색깔 변경 기능
-    public Color textColor;
-    //외곽선 수정 기능
-    public Color outLineColor;
-    [Range(0.0f, 1f)]
-    public float outline;
+    using static LanguageSingleton;
 
-    private TextMeshProUGUI tmpGUI;
-
-    private void Start()
+    public class TextSetting : MonoBehaviour
     {
-        tmpGUI = GetComponent<TextMeshProUGUI>();
-    }
+        //색깔 변경 기능
+        public Color textColor;
+        //외곽선 수정 기능
+        public Color outLineColor;
+        [Range(0.0f, 1f)]
+        public float outline;
 
+        private TextMeshProUGUI tmpGUI;
 
-    [ContextMenu("텍스트 설정 적용하기")]
-    public void Set_Text()
-    {
-        if(tmpGUI == null)
+        private void Start()
         {
             tmpGUI = GetComponent<TextMeshProUGUI>();
         }
-        tmpGUI.outlineColor = outLineColor;
-        tmpGUI.material.SetColor("_OutlineColor", outLineColor);
-        tmpGUI.material.SetFloat("_FaceDilate", outline - 0.1f);
-        tmpGUI.material.SetFloat("_OutlineWidth", outline);
-    }
 
+
+        [ContextMenu("텍스트 설정 적용하기")]
+        public void Set_Text()
+        {
+            if (tmpGUI == null)
+            {
+                tmpGUI = GetComponent<TextMeshProUGUI>();
+            }
+            tmpGUI.outlineColor = outLineColor;
+            tmpGUI.material.SetColor("_OutlineColor", outLineColor);
+            tmpGUI.material.SetFloat("_FaceDilate", outline - 0.1f);
+            tmpGUI.material.SetFloat("_OutlineWidth", outline);
+        }
+
+    }
 }
