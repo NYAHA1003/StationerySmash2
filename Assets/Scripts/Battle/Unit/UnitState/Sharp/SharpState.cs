@@ -4,8 +4,6 @@ using UnityEngine;
 using Utill.Data;
 using Utill.Tool;
 using DG.Tweening;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.AddressableAssets;
 
 namespace Battle.Units
 {
@@ -42,15 +40,8 @@ namespace Battle.Units
 		public override void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
 		{
 			base.Reset_State(myTrm, mySprTrm, myUnit);
-			SetShartsim();
+			_sharpsimPieceData = AddressableTool.ReturnProjectileUnit(UnitType.SharpSim).Result;
 			myUnit.SetIsNeverDontThrow(false);
-		}
-		private async void SetShartsim()
-		{
-			AsyncOperationHandle<UnitDataSO> handle = Addressables.LoadAssetAsync<UnitDataSO>("ProjectileUnitSO");
-			await handle.Task;
-			_unitDataSO = handle.Result;
-			_sharpsimPieceData = _unitDataSO.unitDatas.Find(x => x.unitData.unitType == UnitType.SharpSim);
 		}
 	}
 

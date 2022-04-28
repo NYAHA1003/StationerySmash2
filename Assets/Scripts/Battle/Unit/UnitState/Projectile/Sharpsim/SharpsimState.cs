@@ -4,8 +4,6 @@ using UnityEngine;
 using Utill.Data;
 using Utill.Tool;
 using DG.Tweening;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.AddressableAssets;
 
 
 namespace Battle.Units
