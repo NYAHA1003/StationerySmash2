@@ -5,79 +5,84 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using Main.Deck;
 using Main.Event;
-    public class ButtonManager : MonoBehaviour
+using Main.Buttons;
+
+namespace Main.Buttons
 {
-    private Btn_MainPanel2 btn_MainPanel;
-
-    [SerializeField]
-    private Btn_MainPanel2 btn_MainPanel2;
-
-    [Header("버튼")]
-    [SerializeField]
-    private List<Button> cardInfoBtns = new List<Button>();
-
-    [SerializeField]
-    private DeckSettingComponent deckSetting; 
-    private void Start()
+    public class ButtonManager : MonoBehaviour
     {
-        btn_MainPanel2.Start();
-        AddDeckCards(); 
-        AddButtonEvent();
-    }
-    private void AddButtonEvent()
-    {
-        for(int i = 0;i < cardInfoBtns.Count; i++)
+        private Btn_MainPanel2 btn_MainPanel;
+
+        [SerializeField]
+        private Btn_MainPanel2 btn_MainPanel2;
+
+        [Header("버튼")]
+        [SerializeField]
+        private List<Button> cardInfoBtns = new List<Button>();
+
+        [SerializeField]
+        private DeckSettingComponent deckSetting;
+        private void Start()
         {
-            //참조 오류 방지용 캐싱
-            int index = i;
-
-            //카드 정보창을 여는 함수 호출
-            cardInfoBtns[index].onClick.AddListener(
-           () =>
-           {
-               OnDeckDescriptoinActive(cardInfoBtns[index].GetComponent<DeckCard>());
-           });
+            btn_MainPanel2.Start();
+            AddDeckCards();
+            AddButtonEvent();
         }
-    }
-    private void AddDeckCards()
-    {
-        for (int i = 0; i < deckSetting.deckCards.Count; i++)
+        private void AddButtonEvent()
         {
-            cardInfoBtns.Add(deckSetting.deckCards[i].GetComponent<Button>());
+            for (int i = 0; i < cardInfoBtns.Count; i++)
+            {
+                //참조 오류 방지용 캐싱
+                int index = i;
+
+                //카드 정보창을 여는 함수 호출
+                cardInfoBtns[index].onClick.AddListener(
+               () =>
+               {
+                   OnDeckDescriptoinActive(cardInfoBtns[index].GetComponent<DeckCard>());
+               });
+            }
+        }
+        private void AddDeckCards()
+        {
+            for (int i = 0; i < deckSetting.deckCards.Count; i++)
+            {
+                cardInfoBtns.Add(deckSetting.deckCards[i].GetComponent<Button>());
+            }
+
+        }
+        public void OnDeckActive()
+        {
+            EventManager.TriggerEvent(EventsType.ActiveDeck);
         }
 
-    }
-    public void OnDeckActive()
-    {
-        EventManager.TriggerEvent(EventsType.ActiveDeck);   
-    }
-        
-    public void OnDeckDescriptoinActive(DeckCard deckCard)
-    {
-        EventManager.TriggerEvent(EventsType.ActiveCardDescription, deckCard);
-    }
+        public void OnDeckDescriptoinActive(DeckCard deckCard)
+        {
+            EventManager.TriggerEvent(EventsType.ActiveCardDescription, deckCard);
+        }
 
-    public void OnSettingActive()
-    {
-        EventManager.TriggerEvent(EventsType.ActiveSetting);
-    }
-    public void OnMoveShopPanel(int iParam)
-    {
-        EventManager.TriggerEvent(EventsType.MoveShopPn, iParam);
-    }
+        public void OnSettingActive()
+        {
+            EventManager.TriggerEvent(EventsType.ActiveSetting);
+        }
+        public void OnMoveShopPanel(int iParam)
+        {
+            EventManager.TriggerEvent(EventsType.MoveShopPn, iParam);
+        }
 
-    public void OnMoveMainPanel(int iParam)
-    {
-        EventManager.TriggerEvent(EventsType.MoveMainPn, iParam);
-        EventManager.TriggerEvent(EventsType.CloaseAllPn); 
-    }
+        public void OnMoveMainPanel(int iParam)
+        {
+            EventManager.TriggerEvent(EventsType.MoveMainPn, iParam);
+            EventManager.TriggerEvent(EventsType.CloaseAllPn);
+        }
 
-    [ContextMenu("s")]
-    public void Test()
-    {
-        EventManager.TriggerEvent(EventsType.SetOriginShopPn);
-    }
+        [ContextMenu("s")]
+        public void Test()
+        {
+            EventManager.TriggerEvent(EventsType.SetOriginShopPn);
+        }
 
 
 
+    }
 }
