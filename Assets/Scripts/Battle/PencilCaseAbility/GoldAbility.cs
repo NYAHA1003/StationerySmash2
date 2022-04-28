@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
+namespace Battle.PCAbility
+{
 
 public class GoldAbility : AbstractPencilCaseAbility
 {
@@ -14,4 +16,6 @@ public class GoldAbility : AbstractPencilCaseAbility
         //ÀûÀÌ ¸ר ¾¸
         return false;
     }
+}
+
 }

@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using Battle;
 
 [System.Serializable]
@@ -15,6 +16,7 @@ public class UnitSprite
     //프로퍼티
     public SpriteRenderer SpriteRenderer => _spriteRenderer; // 스프라이트렌더러 프로퍼티
 
+    //인스펙터 참조 변수
     [SerializeField]
     private GameObject _delayBar;
     [SerializeField]
@@ -23,13 +25,14 @@ public class UnitSprite
     private GameObject _delayPart;
     [SerializeField]
     private GameObject _delayMask;
-    //인스펙터 참조 변수
     [SerializeField]
     private SpriteMask _spriteMask = null; //유닛 마스크
     [SerializeField]
     private SpriteRenderer _spriteRenderer = null; //유닛 스프라이트렌더러
     [SerializeField]
     private SpriteRenderer _hpSpriteRenderer = null; //유닛 깨짐이미지 렌더러
+    [SerializeField]
+    private SpriteRenderer _throwSpriteRenderer = null; //유닛 던지기 가능 렌더러
     [SerializeField]
     private Sprite[] _hpSprites = null; // 유닛 깨짐이미지들
 
@@ -46,6 +49,7 @@ public class UnitSprite
         SetDelayBar();
         
         _spriteRenderer.sprite = sprite;
+        //_throwSpriteRenderer.sprite = sprite;
         _spriteMask.sprite = sprite;
     }
 
@@ -55,6 +59,16 @@ public class UnitSprite
     public void OrderDraw(int orderIndex)
     {
         _spriteRenderer.sortingOrder = -orderIndex;
+        _throwSpriteRenderer.sortingOrder = -(orderIndex + 10);
+    }
+
+    /// <summary>
+    /// 던지기 렌더러 키기 끄기
+    /// </summary>
+    /// <param name="isActive"></param>
+    public void SetThrowRenderer(bool isActive)
+    {
+        _throwSpriteRenderer.gameObject.SetActive(isActive);
     }
 
     /// <summary>

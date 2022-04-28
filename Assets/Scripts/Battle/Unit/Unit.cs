@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using Battle;
 using DG.Tweening;
 public class Unit : MonoBehaviour
@@ -115,7 +116,7 @@ public class Unit : MonoBehaviour
         _unitStateEff.SetStateEff(this, _unitSprite.SpriteRenderer);
 
         //스프라이트 초기화
-        _unitSprite.SetUIAndSprite(eTeam, dataBase.skinData._cardSprite);
+        _unitSprite.SetUIAndSprite(eTeam, SkinData.GetSkin(dataBase.skinData._skinType));
         _unitSprite.UpdateDelayBar(_unitStat.AttackDelay);
         _unitSprite.ShowUI(true);
         _unitSprite.SetTeamColor(eTeam);
@@ -214,7 +215,7 @@ public class Unit : MonoBehaviour
     /// </summary>
     /// <param name="atkType"></param>
     /// <param name="value"></param>
-    public virtual void AddStatusEffect(AtkType atkType, params float[] value)
+    public virtual void AddStatusEffect(EffAttackType atkType, params float[] value)
     {
         _unitStateEff.AddStatusEffect(atkType, value);
     }
@@ -337,6 +338,22 @@ public class Unit : MonoBehaviour
             case TeamType.EnemyTeam:
                 _battleManager.CommandUnit._enemyUnitList.Remove(this);
                 break;
+        }
+    }
+
+    /// <summary>
+    /// 던지기 게이지에 따른 던지기 가능여부
+    /// </summary>
+    /// <param name="gauge"></param>
+    public void SetThrowRenderer(float gauge)
+    {
+        if(_unitStat.Return_Weight() <= gauge && !isThrowring && !_isDontThrow && !_isNeverDontThrow)
+        {
+            _unitSprite.SetThrowRenderer(true);
+        }
+        else
+        {
+            _unitSprite.SetThrowRenderer(false);
         }
     }
 }

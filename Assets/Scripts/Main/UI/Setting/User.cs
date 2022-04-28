@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Util; 
-namespace Util
+using Utill; 
+namespace Utill
 {
     public enum LanguageType
     {

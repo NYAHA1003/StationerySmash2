@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
+using Battle.Starategy;
 
 [System.Serializable]
 public class CardData
@@ -87,6 +89,7 @@ public class UnitData
     public float range;
     public CollideData colideData;
     public StickerData stickerData;
+    public AttackType attackType;
     public UnitType unitType;
     public float[] unitablityData;
 

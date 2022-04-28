@@ -43,7 +43,7 @@ public class UnitStat
     private int _bonusAttack = 0;
     private int _bonusKnockback = 0;
     private int _bonusAccuracy = 0;
-    private int _bonusRange = 0;
+    private float _bonusRange = 0;
     private int _bonusWeight = 0;
     public bool _isInvincible = false;
 
@@ -190,7 +190,7 @@ public class UnitStat
     /// 보너스 사정거리 설정
     /// </summary>
     /// <param name="add"></param>
-    public void SetBonusRange(int add)
+    public void SetBonusRange(float add)
     {
         _bonusRange += add;
     }

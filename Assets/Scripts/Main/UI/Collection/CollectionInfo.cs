@@ -2,73 +2,84 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using TMPro;
 
-public class CollectionInfo : MonoBehaviour
+namespace Main.Collection
 {
-    //인스펙터 참조 변수
-    [SerializeField]
-    private CollectionInfo _selectCollectionInfo = null;
-    [SerializeField]
-    private TextMeshProUGUI _nameText = null;
-    [SerializeField]
-    private Image _collectionImage = null;
-    [SerializeField]
-    private Button _selectButton = null;
-    [SerializeField]
-    private bool isSelectInfo = false;
-
-    private CollectionData _collectionData = null;
-
-
-    private void Start()
+    public class CollectionInfo : MonoBehaviour
     {
-        if(!isSelectInfo)
+        //인스펙터 참조 변수
+        [SerializeField]
+        private SelectCollectionInfo _selectCollectionInfo = null;
+        [SerializeField]
+        private TextMeshProUGUI _nameText = null;
+        [SerializeField]
+        private Image _collectionImage = null;
+        [SerializeField]
+        private Button _selectButton = null;
+        [SerializeField]
+        private GameObject _checkSign = null;
+
+        private CollectionData _collectionData = null;
+
+        private bool _isHave = false;
+
+
+        private void Start()
         {
             _selectButton.onClick.AddListener(() => OnSelectCollectionInfo());
         }
-    }
 
-    /// <summary>
-    /// 컬렉션 데이터 설정
-    /// </summary>
-    public void SetCollection(CollectionData collectionData)
-    {
-        gameObject.SetActive(true);
-
-        if(collectionData == null)
+        /// <summary>
+        /// 컬렉션 데이터 설정
+        /// </summary>
+        public void SetCollection(CollectionData collectionData, bool isHave)
         {
-            _collectionData = null;
-            _nameText.text = "없음";
-            _collectionImage.sprite = null;
+            _isHave = isHave;
+            if (collectionData == null)
+            {
+                _collectionData = null;
+                _nameText.text = "없음";
+                _collectionImage.sprite = null;
+            }
+            else
+            {
+                _collectionData = collectionData;
+                _nameText.text = collectionData._name;
+                if (_isHave)
+                {
+                    _checkSign.SetActive(true);
+                }
+                else
+                {
+                    _checkSign.SetActive(false);
+                }
+                _collectionImage.sprite = collectionData._collectionSprite;
+            }
         }
-        else
-        {
-            _collectionData = collectionData;
-            _nameText.text = collectionData._name;
-            _collectionImage.sprite = collectionData._collectionSprite;
-        }
-    }
 
-    /// <summary>
-    /// 컬렉션 정보 창을 닫는다.
-    /// </summary>
-    public void ClosePanel()
-    {
-        gameObject.SetActive(false);
-    }
-
-    /// <summary>
-    /// 컬렉션 정보창을 눌렀을 때
-    /// </summary>
-    public void OnSelectCollectionInfo()
-    {
-        if(_collectionData == null)
+        /// <summary>
+        /// 컬렉션 정보 창을 닫는다.
+        /// </summary>
+        public void ClosePanel()
         {
-            return;
+            gameObject.SetActive(false);
         }
-        //컬렉션 선택창을 킨다
-        _selectCollectionInfo.SetCollection(_collectionData);
+
+        /// <summary>
+        /// 컬렉션 정보창을 눌렀을 때
+        /// </summary>
+        public void OnSelectCollectionInfo()
+        {
+            if (_collectionData == null)
+            {
+                return;
+            }
+            //컬렉션 선택창을 킨다
+            _selectCollectionInfo.SetCollection(_collectionData, _isHave);
+            _selectCollectionInfo.OnOpenPanel();
+        }
     }
 }

@@ -1,127 +1,133 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using DG.Tweening;
 
-public class RedCarState : AbstractStateManager
+
+namespace Battle.Units
 {
 
-    public override void SetState()
-    {
-        //스테이트들을 설정한다
-        _idleState = new RedCarIdleState();
-        _waitState = new RedCarWaitState();
-        _moveState = new RedCarMoveState();
-        _damagedState = new RedCarDamagedState();
+	public class RedCarState : AbstractStateManager
+	{
 
-        Reset_CurrentUnitState(_idleState);
+		public override void SetState()
+		{
+			//스테이트들을 설정한다
+			_idleState = new RedCarIdleState();
+			_waitState = new RedCarWaitState();
+			_moveState = new RedCarMoveState();
+			_damagedState = new RedCarDamagedState();
 
-        _abstractUnitStateList.Add(_idleState);
-        _abstractUnitStateList.Add(_waitState);
-        _abstractUnitStateList.Add(_moveState);
-        _abstractUnitStateList.Add(_damagedState);
+			Reset_CurrentUnitState(_idleState);
 
-        SetInStateList();
-    }
-    public override void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
-    {
-        myUnit.SetIsNeverDontThrow(true);
-        _idleState.ChangeUnit(myTrm, mySprTrm, myUnit);
-        _waitState.ChangeUnit(myTrm, mySprTrm, myUnit);
-        _moveState.ChangeUnit(myTrm, mySprTrm, myUnit);
-        _damagedState.ChangeUnit(myTrm, mySprTrm, myUnit);
+			_abstractUnitStateList.Add(_idleState);
+			_abstractUnitStateList.Add(_waitState);
+			_abstractUnitStateList.Add(_moveState);
+			_abstractUnitStateList.Add(_damagedState);
 
-        _idleState.ResetState();
-        _waitState.ResetState();
-        _moveState.ResetState();
-        _damagedState.ResetState();
+			SetInStateList();
+		}
+		public override void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
+		{
+			myUnit.SetIsNeverDontThrow(true);
+			_idleState.ChangeUnit(myTrm, mySprTrm, myUnit);
+			_waitState.ChangeUnit(myTrm, mySprTrm, myUnit);
+			_moveState.ChangeUnit(myTrm, mySprTrm, myUnit);
+			_damagedState.ChangeUnit(myTrm, mySprTrm, myUnit);
 
-        Set_WaitExtraTime(0);
-        Reset_CurrentUnitState(_idleState);
-    }
+			_idleState.ResetState();
+			_waitState.ResetState();
+			_moveState.ResetState();
+			_damagedState.ResetState();
 
-    public override void Set_Die()
-    {
-        //죽는거 없음
-    }
+			Set_WaitExtraTime(0);
+			Reset_CurrentUnitState(_idleState);
+		}
+
+		public override void Set_Die()
+		{
+			//죽는거 없음
+		}
 
 
-    public override void Set_Throw()
-    {
-        //던지기 무시
-    }
+		public override void Set_Throw()
+		{
+			//던지기 무시
+		}
 
-    public override void Set_ThrowPos(Vector2 pos)
-    {
-        //던지기 무시
-    }
-}
+		public override void Set_ThrowPos(Vector2 pos)
+		{
+			//던지기 무시
+		}
+	}
 
-public class RedCarIdleState : AbstractIdleState
-{
-}
+	public class RedCarIdleState : AbstractIdleState
+	{
+	}
 
-public class RedCarWaitState : AbstractWaitState
-{
-}
+	public class RedCarWaitState : AbstractWaitState
+	{
+	}
 
-public class RedCarMoveState : IgnoreMoveState
-{
-    protected override void CheckRange(List<Unit> list)
-    {
-        float targetRange = float.MaxValue;
-        Unit targetUnit = null;
-        bool isCollision = false;
-        for (int i = 0; i < list.Count; i++)
-        {
-            Unit enemy = list[i];
-            if (_myUnit.ETeam.Equals(TeamType.MyTeam) && _myTrm.position.x > list[i].transform.position.x)
-            {
-                continue;
-            }
-            if (!_myUnit.ETeam.Equals(TeamType.MyTeam) && _myTrm.position.x < list[i].transform.position.x)
-            {
-                continue;
-            }
-            if (list[i].transform.position.y > _myTrm.transform.position.y)
-            {
-                continue;
-            }
-            if (list[i]._isInvincibility)
-            {
-                continue;
-            }
+	public class RedCarMoveState : IgnoreMoveState
+	{
+		protected override void CheckRange(List<Unit> list)
+		{
+			float targetRange = float.MaxValue;
+			Unit targetUnit = null;
+			bool isCollision = false;
+			for (int i = 0; i < list.Count; i++)
+			{
+				Unit enemy = list[i];
+				if (_myUnit.ETeam.Equals(TeamType.MyTeam) && _myTrm.position.x > list[i].transform.position.x)
+				{
+					continue;
+				}
+				if (!_myUnit.ETeam.Equals(TeamType.MyTeam) && _myTrm.position.x < list[i].transform.position.x)
+				{
+					continue;
+				}
+				if (list[i].transform.position.y > _myTrm.transform.position.y)
+				{
+					continue;
+				}
+				if (list[i]._isInvincibility)
+				{
+					continue;
+				}
 
-            targetUnit = list[i];
-            targetRange = Vector2.Distance(_myTrm.position, targetUnit.transform.position);
+				targetUnit = list[i];
+				targetRange = Vector2.Distance(_myTrm.position, targetUnit.transform.position);
 
-            if((isCollision && targetRange < 1) || !isCollision && (targetRange < MyUnit.UnitStat.Return_Range()))
-            {
-                isCollision = true;
-                CheckTargetUnit(targetUnit);
-            }
-        }
-        if(isCollision)
-        {
-            //유닛 삭제
-            ResetSprTrm();
-            _curEvent = eEvent.EXIT;
-            _myUnit.Delete_Unit();
-        }
-    }
-    protected override void CheckTargetUnit(Unit targetUnit)
-    {
+				if ((isCollision && targetRange < 1) || !isCollision && (targetRange < MyUnit.UnitStat.Return_Range()))
+				{
+					isCollision = true;
+					CheckTargetUnit(targetUnit);
+				}
+			}
+			if (isCollision)
+			{
+				//유닛 삭제
+				ResetSprTrm();
+				_curEvent = eEvent.EXIT;
+				_myUnit.Delete_Unit();
+			}
+		}
+		protected override void CheckTargetUnit(Unit targetUnit)
+		{
 
-        AtkData atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, _myUnit.MyUnitId * 1000 + _myUnit.MyDamagedId, AtkType.Stun, EffectType.Attack, 0.1f);
-        targetUnit.Run_Damaged(atkData);
-    }
-}
+			AtkData atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, _myUnit.MyUnitId * 1000 + _myUnit.MyDamagedId, EffAttackType.Stun, EffectType.Attack, 0.1f);
+			targetUnit.Run_Damaged(atkData);
+		}
+	}
 
-public class RedCarDamagedState : AbstractDamagedState
-{
-    public override void Enter()
-    {
-        _stateManager.Set_Wait(0.1f);
-    }
+	public class RedCarDamagedState : AbstractDamagedState
+	{
+		public override void Enter()
+		{
+			_stateManager.Set_Wait(0.1f);
+		}
+	}
 }

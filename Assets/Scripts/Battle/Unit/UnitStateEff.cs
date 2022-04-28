@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using Battle;
+using Battle.StateEff;
 
 /// <summary>
 /// 유닛 상태이상 컴포넌트
@@ -60,7 +62,7 @@ public class UnitStateEff
     /// </summary>
     /// <param name="atkType"></param>
     /// <param name="value"></param>
-    public virtual void AddStatusEffect(AtkType atkType, params float[] value)
+    public virtual void AddStatusEffect(EffAttackType atkType, params float[] value)
     {
         //이미 있는 효과인지 찾기
         EffState statEffState = _statEffList.Find(x => x.StatusType.Equals(atkType));
@@ -73,33 +75,33 @@ public class UnitStateEff
         //기존 효과가 없으면 추가
         switch (atkType)
         {
-            case AtkType.Normal:
+            case EffAttackType.Normal:
                 return;
-            case AtkType.Stun:
+            case EffAttackType.Stun:
                 _statEffList.Add(PoolManager.GetEff<StunEffState>(_transform, _spriteRenderer.transform, _unit, atkType, value));
                 return;
-            case AtkType.Ink:
+            case EffAttackType.Ink:
                 _statEffList.Add(PoolManager.GetEff<InkEffState>(_transform, _spriteRenderer.transform, _unit, atkType, value));
                 return;
-            case AtkType.SlowDown:
+            case EffAttackType.SlowDown:
                 _statEffList.Add(PoolManager.GetEff<SlowEffState>(_transform, _spriteRenderer.transform, _unit, atkType, value));
                 return;
-            case AtkType.Rage:
+            case EffAttackType.Rage:
                 _statEffList.Add(PoolManager.GetEff<RageEffState>(_transform, _spriteRenderer.transform, _unit, atkType, value));
                 break;
-            case AtkType.Rtac:
+            case EffAttackType.Rtac:
                 _statEffList.Add(PoolManager.GetEff<RtacEffState>(_transform, _spriteRenderer.transform, _unit, atkType, value));
                 break;
-            case AtkType.Blind:
+            case EffAttackType.Blind:
                 _statEffList.Add(PoolManager.GetEff<BlindEffState>(_transform, _spriteRenderer.transform, _unit, atkType, value));
                 break;
-            case AtkType.Sick:
+            case EffAttackType.Sick:
                 _statEffList.Add(PoolManager.GetEff<SickEffState>(_transform, _spriteRenderer.transform, _unit, atkType, value));
                 break;
-            case AtkType.Exch:
+            case EffAttackType.Exch:
                 _statEffList.Add(PoolManager.GetEff<FastfEffState>(_transform, _spriteRenderer.transform, _unit, atkType, value));
                 break;
-            case AtkType.Scratch:
+            case EffAttackType.Scratch:
                 _statEffList.Add(PoolManager.GetEff<ScratchEffState>(_transform, _spriteRenderer.transform, _unit, atkType, value));
                 break;
         }

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
+using Main.Deck;
 
 namespace Battle
 {
     [System.Serializable]
-    public class CardComponent : BattleComponent
+    public class CardComponent : BattleComponent, IWinLose
     {
         //프로퍼티
         public List<CardMove> CardList => _cardList;
@@ -25,6 +27,7 @@ namespace Battle
         private bool _isFusion = false;
         private Coroutine _delayCoroutine = null;
         private int _cardIdCount = 0;
+        private bool _isDontUse = false;
 
         //인스펙터 참조 변수
         [SerializeField]
@@ -57,13 +60,14 @@ namespace Battle
         private List<CardMove> _cardList = new List<CardMove>();
         private UnitComponent _commandUnit = null;
         private CostComponent _commandCost = null;
+        private WinLoseComponent _commandWinLose = null;
         private CameraComponent _commandCamera = null;
         private MonoBehaviour _managerBase = null;
 
         /// <summary>
         /// 초기화
         /// </summary>
-        public void SetInitialization(MonoBehaviour managerBase, CameraComponent commandCamera, UnitComponent commandUnit, CostComponent commandCost, ref System.Action updateAction, StageData stageData, int maxCard)
+        public void SetInitialization(MonoBehaviour managerBase, WinLoseComponent commandWinLose, CameraComponent commandCamera, UnitComponent commandUnit, CostComponent commandCost, ref System.Action updateAction, StageData stageData, int maxCard)
         {
             //변수들 설정
             this._managerBase = managerBase;
@@ -72,6 +76,10 @@ namespace Battle
             this._commandUnit = commandUnit;
             this._commandCost = commandCost;
             this._commandCamera = commandCamera;
+            this._commandWinLose = commandWinLose;
+
+            //관찰자 등록한다
+            this._commandWinLose.AddObservers(this);
 
             SetMaxCard(maxCard);
 
@@ -96,7 +104,8 @@ namespace Battle
             int count = _cardDeckSO.cardDatas.Count;
             for(int i = 0; i < count; i++)
             {
-                _deckData.Add_CardData(_cardDeckSO.cardDatas[i]);
+                CardData cardData = _cardDeckSO.cardDatas[i];
+                _deckData.Add_CardData(cardData);
             }
         }
 
@@ -116,6 +125,12 @@ namespace Battle
         /// </summary>
         public void AddOneCard()
         {
+            //카드를 사용할 수 없다
+            if(_isDontUse)
+			{
+                return;
+			}
+
             //카드가 없으면 뽑지 않는다
             if(_deckData.cardDatas.Count == 0)
             {
@@ -222,6 +237,12 @@ namespace Battle
         /// <param name="card"></param>
         public void SelectCard(CardMove card)
         {
+            //카드를 사용할 수 없다
+            if (_isDontUse)
+            {
+                return;
+            }
+
             SetSummonRangeLine(true);
             _summonRangeLine.gameObject.SetActive(true);
 
@@ -283,12 +304,11 @@ namespace Battle
         /// <param name="card"></param>
         public void SetUseCard(CardMove card)
         {
-            
             //소환할 수 있는지 체크 및 소환 범위 그리기 없앰
             SetSummonRangeLine(false);
 
             //카드를 사용할 수 있는지 체크함
-            if (!CheckPossibleSummon())
+            if (!CheckPossibleSummon() || _isDontUse)
             {
                 card.RunOriginPRS();
                 _commandCamera.SetCameraIsMove(true);
@@ -357,7 +377,7 @@ namespace Battle
                 _afterImageSpriteRenderer.color = Color.red;
             }
             _unitAfterImage.transform.position = new Vector3(pos.x, 0);
-            _afterImageSpriteRenderer.sprite = _selectCard.DataBase.skinData._cardSprite;
+            _afterImageSpriteRenderer.sprite = SkinData.GetSkin(_selectCard.DataBase.skinData._skinType);
             return;
         }
 
@@ -679,6 +699,17 @@ namespace Battle
             _summonRangeLine.SetPosition(0, new Vector2(-_stageData.max_Range, 0));
             _summonRangeLine.SetPosition(1, new Vector2(_summonRange, 0));
         }
-    }
+
+		public void Notify(bool isWin)
+		{
+            _isDontUse = true;
+
+            if(_selectCard != null)
+			{
+                _selectCard.DontUseCard();
+                _selectCard = null;
+			}
+        }
+	}
 
 }
