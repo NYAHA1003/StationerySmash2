@@ -44,7 +44,7 @@ namespace Main.Deck
                 if (cardDataobj != null)
                 {
                     //세이브데이터의 레벨만큼 수치를 변경하고 새로운 카드데이터로 만들어 받아 덱리스트에 추가
-                    deckList.cardDatas.Add(cardDataobj.DeepCopy(saveDataobj._level));
+                    deckList.cardDatas.Add(cardDataobj.DeepCopy(saveDataobj._level, saveDataobj._skinType));
                 }
             }
         }
@@ -75,7 +75,7 @@ namespace Main.Deck
         /// </summary>
         public void AddCardInDeck(CardData cardData, int level)
 		{
-            inGameDeckList.cardDatas.Add(cardData.DeepCopy(level));
+            inGameDeckList.cardDatas.Add(cardData.DeepCopy(level, cardData.skinData._skinType));
             saveData.userSaveData._ingameSaveDatas.Add(CardSaveData.CopyDataToCardData(cardData));
         }
         /// <summary>
