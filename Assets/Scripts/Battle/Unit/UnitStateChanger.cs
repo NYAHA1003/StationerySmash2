@@ -72,10 +72,10 @@ public class UnitStateChanger
             case UnitType.Eraser:
                 _stateManager = PoolManager.GetUnit<EraserState>(transform, spriteRendererTransform, unit);
                 break;
-            case UnitType.Sharp:
+            case UnitType.MechaPencil:
                 _stateManager = PoolManager.GetUnit<SharpState>(transform, spriteRendererTransform, unit);
                 break;
-            case UnitType.BallPen:
+            case UnitType.Pen:
                 break;
 
                 //필통 관련
