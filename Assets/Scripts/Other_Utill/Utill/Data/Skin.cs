@@ -55,7 +55,15 @@ namespace Utill.Data
         /// <returns></returns>
         public static Sprite GetSkin(SkinType skinType)
         {
-            return _spriteDictionary[skinType];
+            Sprite sprite = null;
+            if(_spriteDictionary.TryGetValue(skinType, out sprite))
+			{
+                return _spriteDictionary[skinType];
+			}
+            else
+			{
+                return null;
+			}
         }
 
         /// <summary>
