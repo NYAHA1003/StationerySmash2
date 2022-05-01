@@ -31,7 +31,7 @@ namespace Battle
 
         //인스펙터 참조 변수
         [SerializeField]
-        private LineRenderer _summonRangeLine = null;
+        private GameObject _summonRangeImage = null;
         [SerializeField]
         private GameObject _cardMovePrefeb = null;
         [SerializeField]
@@ -244,7 +244,7 @@ namespace Battle
             }
 
             SetSummonRangeLine(true);
-            _summonRangeLine.gameObject.SetActive(true);
+            _summonRangeImage.gameObject.SetActive(true);
 
             //해당 카드를 선택된 카드에 넣음
             _selectCard = card;
@@ -452,7 +452,7 @@ namespace Battle
         /// <param name="isActive"></param>
         public void SetSummonRangeLine(bool isActive)
         {
-            _summonRangeLine.gameObject.SetActive(isActive);
+            _summonRangeImage.gameObject.SetActive(isActive);
         }
 
         /// <summary>
@@ -696,8 +696,8 @@ namespace Battle
         /// </summary>
         private void DrawSummonRangeLinePos()
         {
-            _summonRangeLine.SetPosition(0, new Vector2(-_stageData.max_Range, 0));
-            _summonRangeLine.SetPosition(1, new Vector2(_summonRange, 0));
+            _summonRangeImage.transform.position = new Vector2(-_stageData.max_Range, 0);
+            _summonRangeImage.transform.localScale = new Vector2(_summonRange, 1);
         }
 
 		public void Notify(bool isWin)
