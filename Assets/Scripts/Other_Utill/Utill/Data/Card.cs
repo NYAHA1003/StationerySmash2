@@ -44,12 +44,20 @@ namespace Utill.Data
     {
         None,
         PencilCase,
-        Pencil,
-        Sharp,
-        Eraser,
-        BallPen,
 
-        
+        Pencil,
+        MechaPencil,
+        Eraser,
+        Scissors,
+        Glue,
+        Ruler,
+        Cutterknife,
+        Postit,
+        MechaPencilLead,
+        Pen,
+
+
+
         RedCar = 1000,
         YellowCar = 1001,
         GreenCar = 1002,
