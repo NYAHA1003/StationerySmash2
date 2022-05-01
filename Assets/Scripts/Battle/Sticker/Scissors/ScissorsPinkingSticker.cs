@@ -1,17 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 
-public class ScissorsPinkingSticker: AbstractAttackSticker
+namespace Battle.Sticker
 {
-    int scratchStack = 0;
-    public override void SetSticker(Unit unit)
+
+
+    public class ScissorsPinkingSticker : AbstractAttackSticker
     {
-        base.SetSticker(unit);
-    }
-    public override void RunAttackStickerAblity(ref AtkData atkData)
-    {
-        _myUnit.UnitStat.SubtractHP(_myUnit.UnitStat.MaxHp / 200 * 3 * scratchStack); // 고쳐야함
+        int scratchStack = 0;
+        public override void SetSticker(Unit unit)
+        {
+            base.SetSticker(unit);
+        }
+        public override void RunAttackStickerAblity(ref AtkData atkData)
+        {
+            _myUnit.UnitStat.SubtractHP(_myUnit.UnitStat.MaxHp / 200 * 3 * scratchStack); // 고쳐야함
+        }
     }
 }

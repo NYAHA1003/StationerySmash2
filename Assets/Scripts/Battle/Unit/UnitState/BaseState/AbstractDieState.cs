@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using DG.Tweening;
 
 
@@ -31,36 +32,12 @@ namespace Battle.Units
 
 			//µÚÁü
 			_myUnit.SetIsInvincibility(true);
-			ResetAllStateAnimation();
 
 			//·£´ýÀ¸·Î Á×´Â ¾Ö´Ï¸ÞÀÌ¼Ç Àç»ý
+			_stateManager.SetAnimation(eState.DIE);
 			RandomDieAnimation();
 
 			base.Enter();
-		}
-
-		public override void SetAnimation()
-		{
-			base.SetAnimation();
-
-
-			//_animationSKTweenerRotate = _mySprTrm.DOLocalRotate(new Vector3(0, 0, -360), 0.3f, RotateMode.FastBeyond360).SetLoops(3, LoopType.Incremental);
-			////_animationSKTweenerJump =
-			//_myTrm.DOJump(Vector3.zero, 2f, 1, 1f);
-			//_mySprTrm.DOScale(10, 0.6f).SetDelay(0.3f).SetEase(Utill.Parabola.Return_ScreenKoCurve()).OnComplete(() =>
-			//{
-			//    _mySprTrm.eulerAngles = new Vector3(0, 0, Random.Range(_mySprTrm.eulerAngles.z - 10, _mySprTrm.eulerAngles.z + 10));
-			//    _mySprTrm.DOShakePosition(0.6f, 0.1f, 30).OnComplete(() =>
-			//    {
-			//        _mySprTrm.DOMoveY(-3, 1).OnComplete(() =>
-			//        {
-			//            ResetSprTrm();
-			//            _curEvent = eEvent.EXIT;
-			//            _myUnit.Delete_Unit();
-			//        });
-			//    });
-			//
-			//});
 		}
 
 		/// <summary>
@@ -68,7 +45,7 @@ namespace Battle.Units
 		/// </summary>
 		protected void RandomDieAnimation()
 		{
-			DieType dietype = Utill.Die.Return_RandomDieType();
+			DieType dietype = Die.Return_RandomDieType();
 			switch (dietype)
 			{
 				case DieType.StarKo:
@@ -101,7 +78,7 @@ namespace Battle.Units
 
 			_mySprTrm.DOLocalRotate(new Vector3(0, 0, -360), 0.3f, RotateMode.FastBeyond360).SetLoops(3, LoopType.Incremental);
 			_myTrm.DOJump(diePos, 2f, 1, 1f);
-			_mySprTrm.DOScale(10, 0.6f).SetDelay(0.3f).SetEase(Utill.Parabola.Return_ScreenKoCurve()).OnComplete(() =>
+			_mySprTrm.DOScale(10, 0.6f).SetDelay(0.3f).SetEase(Parabola.Return_ScreenKoCurve()).OnComplete(() =>
 			{
 				_mySprTrm.eulerAngles = new Vector3(0, 0, Random.Range(_mySprTrm.eulerAngles.z - 10, _mySprTrm.eulerAngles.z + 10));
 				_mySprTrm.DOShakePosition(0.6f, 0.1f, 30).OnComplete(() =>

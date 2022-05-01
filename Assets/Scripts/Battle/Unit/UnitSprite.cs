@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using Battle;
 
 [System.Serializable]
@@ -19,11 +20,11 @@ public class UnitSprite
     [SerializeField]
     private GameObject _delayBar;
     [SerializeField]
-    private GameObject _delayRotate;
+    private SpriteRenderer _delayRotate;
     [SerializeField]
-    private GameObject _delayPart;
+    private SpriteRenderer _delayPart;
     [SerializeField]
-    private GameObject _delayMask;
+    private SpriteMask _delayMask;
     [SerializeField]
     private SpriteMask _spriteMask = null; //À¯´Ö ¸¶½ºÅ©
     [SerializeField]
@@ -59,6 +60,10 @@ public class UnitSprite
     {
         _spriteRenderer.sortingOrder = -orderIndex;
         _throwSpriteRenderer.sortingOrder = -(orderIndex + 10);
+        _delayPart.sortingOrder = -orderIndex;
+        _delayRotate.sortingOrder = -orderIndex;
+        _delayMask.frontSortingOrder = Mathf.Abs(orderIndex) + 1;
+        _delayMask.backSortingOrder = -_delayMask.frontSortingOrder;
     }
 
     /// <summary>
@@ -96,7 +101,7 @@ public class UnitSprite
     /// </summary>
     public void SetDelayBar()
     {
-        _delayPart.SetActive(false);
+        _delayPart.gameObject.SetActive(false);
         if(_eTeam == TeamType.MyTeam)
         {
             _delayPart.transform.rotation = Quaternion.Euler(0, 0, 180);
@@ -130,13 +135,13 @@ public class UnitSprite
 
         if(delay >= 0.5f)
         {
-            _delayPart.SetActive(true);
-            _delayMask.SetActive(false);
+            _delayPart.gameObject.SetActive(true);
+            _delayMask.gameObject.SetActive(false);
         }
         else
         {
-            _delayPart.SetActive(false);
-            _delayMask.SetActive(true);
+            _delayPart.gameObject.SetActive(false);
+            _delayMask.gameObject.SetActive(true);
         }
     }
 

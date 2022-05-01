@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using DG.Tweening;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.AddressableAssets;
 
 namespace Battle.Units
 {
@@ -13,7 +12,6 @@ namespace Battle.Units
 	{
 		public CardData EraserPieceData => _eraserPieceData;
 		private CardData _eraserPieceData = null;
-		private UnitDataSO _unitDataSO = null;
 
 		public override void SetState()
 		{
@@ -42,16 +40,8 @@ namespace Battle.Units
 		public override void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
 		{
 			base.Reset_State(myTrm, mySprTrm, myUnit);
-			SetEraserPieceData();
+			_eraserPieceData = AddressableTool.ReturnProjectileUnitAsync(UnitType.EraserPiece).Result;
 			myUnit.SetIsNeverDontThrow(false);
-		}
-
-		private async void SetEraserPieceData()
-		{
-			AsyncOperationHandle<UnitDataSO> handle = Addressables.LoadAssetAsync<UnitDataSO>("ProjectileUnitSO");
-			await handle.Task;
-			_unitDataSO = handle.Result;
-			_eraserPieceData = _unitDataSO.unitDatas.Find(x => x.unitData.unitType == UnitType.EraserPiece);
 		}
 
 	}

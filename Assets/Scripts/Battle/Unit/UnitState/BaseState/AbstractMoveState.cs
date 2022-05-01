@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using DG.Tweening;
 
 namespace Battle.Units
@@ -21,8 +22,7 @@ namespace Battle.Units
 			_myUnit.UnitSticker.RunMoveStickerAbility(_curState);
 
 			//이동 애니메이션 시작
-			ResetAllStateAnimation();
-			Animation();
+			Animation(eState.MOVE);
 
 			base.Enter();
 		}
@@ -43,18 +43,6 @@ namespace Battle.Units
 					CheckRange(_myUnit.BattleManager.CommandUnit._playerUnitList);
 					return;
 			}
-		}
-
-		public override void Animation()
-		{
-			float rotate = _myUnit.ETeam.Equals(TeamType.MyTeam) ? 30 : -30;
-			_animationTweener.ChangeEndValue(new Vector3(0, 0, rotate));
-			_animationTweener.Restart();
-		}
-
-		public override void SetAnimation()
-		{
-			_animationTweener = _mySprTrm.DORotate(new Vector3(0, 0, 0), 0.3f).SetLoops(-1, LoopType.Yoyo).SetAutoKill(false);
 		}
 
 		/// <summary>

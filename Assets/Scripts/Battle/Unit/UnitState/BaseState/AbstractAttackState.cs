@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using DG.Tweening;
 
 namespace Battle.Units
@@ -20,8 +21,7 @@ namespace Battle.Units
 			isAttacked = false;
 			_curState = eState.ATTACK;
 			_curEvent = eEvent.ENTER;
-
-			ResetAllStateAnimation();
+			Animation(eState.WAIT);
 
 			//공격 딜레이를 유닛의 딜레이로 설정
 			_currentdelay = _myUnit.UnitStat.AttackDelay;
@@ -42,17 +42,6 @@ namespace Battle.Units
 				}
 			}
 		}
-		public override void Animation()
-		{
-			float rotate = _myUnit.ETeam.Equals(TeamType.MyTeam) ? -90 : 90;
-			_animationTweener.ChangeEndValue(new Vector3(0, 0, rotate));
-			_animationTweener.Restart();
-		}
-		public override void SetAnimation()
-		{
-			_animationTweener = _mySprTrm.DORotate(new Vector3(0, 0, 0), 0.2f).SetLoops(2, LoopType.Yoyo).SetAutoKill(false);
-			_animationTweener.OnComplete(() => _stateManager.Set_Wait(0.4f)).SetAutoKill(false);
-		}
 
 		/// <summary>
 		/// 공격할 유닛 설정
@@ -72,7 +61,7 @@ namespace Battle.Units
 			isAttacked = true;
 
 			//공격 애니메이션
-			Animation();
+			Animation(eState.ATTACK);
 
 			//공격 딜레이 초기화
 			_currentdelay = 0;

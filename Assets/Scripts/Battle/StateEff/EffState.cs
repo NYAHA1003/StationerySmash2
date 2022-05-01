@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using Battle;
+using Battle.Effect;
 using Battle.Units;
 namespace Battle.StateEff
 {

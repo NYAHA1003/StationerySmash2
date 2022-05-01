@@ -1,20 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class InvincibleBadge : AbstractBadge
+namespace Battle.Badge
 {
-    Unit unit;
-    public override void RunBadgeAbility()
-    {
-        while (true)
-        {
-            _pencilCaseUnit.UnitStat.Invincible();
-            Wait();
-        }
-    }
-    private IEnumerator Wait()
-    {
-        yield return new WaitForSeconds(60f);
-    }
+
+	public class InvincibleBadge : AbstractBadge
+	{
+		Unit unit;
+		public override void RunBadgeAbility()
+		{
+			while (true)
+			{
+				_pencilCaseUnit.UnitStat.Invincible();
+				Wait();
+			}
+		}
+		private IEnumerator Wait()
+		{
+			yield return new WaitForSeconds(60f);
+		}
+	}
+
 }

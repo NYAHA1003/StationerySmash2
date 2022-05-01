@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: 45678501}
   - component: {fileID: 45678500}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: RetryButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -595,7 +595,7 @@ GameObject:
   - component: {fileID: 322093681}
   - component: {fileID: 322093680}
   m_Layer: 5
-  m_Name: Button
+  m_Name: BackHomeButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1177,7 +1177,7 @@ GameObject:
   - component: {fileID: 411735908}
   - component: {fileID: 411735907}
   m_Layer: 5
-  m_Name: Button
+  m_Name: BackHomeButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1855,7 +1855,7 @@ GameObject:
   - component: {fileID: 884655215}
   - component: {fileID: 884655214}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: RetryButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3732,8 +3732,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ca9dfcaee3e9714aa5111b5a814ad91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bgmClips: []
-  _effClips: []
   _SoundSourcePrefab: {fileID: 3715893860413015012, guid: 4abfd13701b4bf64bbadcd865c0ce5bd, type: 3}
   _effSources: []
   _bgmSources: []
@@ -3749,7 +3747,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1452281134
 GameObject:
@@ -4609,6 +4607,7 @@ GameObject:
   - component: {fileID: 1615569215}
   - component: {fileID: 1615569216}
   - component: {fileID: 1615569217}
+  - component: {fileID: 1615569218}
   m_Layer: 0
   m_Name: BattleManager
   m_TagString: Untagged
@@ -4655,7 +4654,7 @@ MonoBehaviour:
     _unitAfterImage: {fileID: 1551840266}
     _afterImageSpriteRenderer: {fileID: 1551840268}
     _isAlwaysSpawn: 0
-    _cardDeckSO: {fileID: 11400000, guid: 5e34cc2e62886a64f8c645bcb65715ec, type: 2}
+    _cardDeckSO: {fileID: 11400000, guid: a9ba1975aca3e5e4a8b597af167db5f0, type: 2}
   _commandUnit:
     _unitPrefeb: {fileID: 636465713026102458, guid: 255f6e8226be8b545a784f4db6787063, type: 3}
     _unitPoolManager: {fileID: 1213032192}
@@ -4684,8 +4683,6 @@ MonoBehaviour:
     _aiEnemyDataSO: {fileID: 11400000, guid: 5d42000c05a0b75478ccb3f7b791c495, type: 2}
     _aiPlayerDataSO: {fileID: 11400000, guid: 80a4ae25dafc1c144a26640b6a05e2e9, type: 2}
     _aiLog: {fileID: 1356909448}
-    isEnemyAIOn: 1
-    isPlayerAIOn: 0
   _commandCost:
     _costSpeed: 200
     _costDelay: 0
@@ -4702,7 +4699,11 @@ MonoBehaviour:
     _losePanel: {fileID: 367118909}
     _winText: {fileID: 405313986}
     _loseText: {fileID: 1437500680}
-  _loadingComponent: {fileID: 1615569217}
+    _loseRetryButton: {fileID: 45678500}
+    _loseBackHomeButton: {fileID: 411735907}
+    _winRetryButton: {fileID: 884655214}
+    _winBackHomeButton: {fileID: 322093680}
+    _sceneLoadComponent: {fileID: 1615569218}
   _introComponent:
     _countText: {fileID: 99729029}
 --- !u!114 &1615569216
@@ -4732,6 +4733,18 @@ MonoBehaviour:
   _cardDeckSO: {fileID: 11400000, guid: 5e34cc2e62886a64f8c645bcb65715ec, type: 2}
   _playerPencilCase: {fileID: 11400000, guid: 5d00c087bdf0e1b429a2764fd7ead3e6, type: 2}
   _enemyPencilCase: {fileID: 11400000, guid: 29d6f343362978f4a9363d7b70a0b057, type: 2}
+--- !u!114 &1615569218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1615569213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d34571128a34f32488106aa38cf9fec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1669006649
 GameObject:
   m_ObjectHideFlags: 0

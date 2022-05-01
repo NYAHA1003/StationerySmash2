@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 
-public class ArmorSticker : AbstractIdleSticker
+namespace Battle.Sticker
 {
-    public override void RunIdleStickerAblity()
+
+
+    public class ArmorSticker : AbstractIdleSticker
     {
-        _myUnit.UnitStat.DecreseDamage(5);
+        public override void RunIdleStickerAblity()
+        {
+            _myUnit.UnitStat.DecreseDamage(5);
+        }
     }
+
 }

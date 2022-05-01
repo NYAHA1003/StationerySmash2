@@ -2,14 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AbstractDieSticker : AbstractSticker
+namespace Battle.Sticker
 {
-	/// <summary>
-	/// Á×À½ ½ºÆ¼Ä¿
-	/// </summary>
-	/// <param name="atkData"></param>
-	public virtual void RunDieStickerAblity()
+
+	public class AbstractDieSticker : AbstractSticker
 	{
-		//null;
+		/// <summary>
+		/// Á×À½ ½ºÆ¼Ä¿
+		/// </summary>
+		/// <param name="atkData"></param>
+		public virtual void RunDieStickerAblity()
+		{
+			//null;
+		}
 	}
 }

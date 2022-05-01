@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using DG.Tweening;
 
 namespace Battle.Units
@@ -20,8 +21,8 @@ namespace Battle.Units
 			//스티커 사용
 			_myUnit.UnitSticker.RunWaitStickerAbility(_curState);
 
-			//애니메이션 제거
-			ResetAllStateAnimation();
+			//애니메이션
+			_stateManager.SetAnimation(eState.WAIT);
 
 			base.Enter();
 		}

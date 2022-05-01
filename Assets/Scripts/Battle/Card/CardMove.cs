@@ -5,7 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 using DG.Tweening;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using Battle;
 
 

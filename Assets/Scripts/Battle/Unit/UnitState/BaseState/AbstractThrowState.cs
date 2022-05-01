@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using DG.Tweening;
 
 namespace Battle.Units
@@ -18,6 +19,7 @@ namespace Battle.Units
 			_curEvent = eEvent.ENTER;
 
 			//또 던지는거 방지
+			_stateManager.SetAnimation(eState.THROW);
 			_myUnit.SetIsDontThrow(true);
 
 			//스티커 사용
@@ -68,7 +70,7 @@ namespace Battle.Units
 				{
 					continue;
 				}
-				float distance = Utill.Collider.FindDistanceBetweenSegments(_myUnit.CollideData.GetPoint(_myTrm.position), targetUnit.CollideData.GetPoint(targetUnit.transform.position));
+				float distance = UnitCollider.FindDistanceBetweenSegments(_myUnit.CollideData.GetPoint(_myTrm.position), targetUnit.CollideData.GetPoint(targetUnit.transform.position));
 				if (distance < 0.2f)
 				{
 					EndThrow();
@@ -99,7 +101,6 @@ namespace Battle.Units
 			//방향이 아래쪽을 향하면 던지기를 취소함
 			if (dir < 0)
 			{
-				ResetAllStateAnimation();
 				_stateManager.Set_Wait(0.5f);
 				_curEvent = eEvent.EXIT;
 				return;
@@ -112,7 +113,6 @@ namespace Battle.Units
 			float width = Parabola.Caculated_Width(force, dirx);
 			//수평 도달 시간
 			float time = Parabola.Caculated_Time(force, dir, 3);
-			ResetAllStateAnimation();
 
 			_curEvent = eEvent.UPDATE;
 
@@ -121,7 +121,7 @@ namespace Battle.Units
 				EndThrow();
 			//땅에 닿으면 대기 상태로 돌아감
 			_stateManager.Set_Wait(0.5f);
-			}).SetEase(Utill.Parabola.Return_ParabolaCurve()));
+			}).SetEase(Parabola.Return_ParabolaCurve()));
 
 		}
 

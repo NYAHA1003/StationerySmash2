@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 namespace Battle.PCAbility
 {
 
@@ -14,7 +15,7 @@ namespace Battle.PCAbility
             {
                 Unit unit = _battleManager.CommandUnit._playerUnitList[i];
 
-                unit.AddStatusEffect(Utill.EffAttackType.Exch, 2, 1000, 1000);
+                unit.AddStatusEffect(EffAttackType.Exch, 2, 1000, 1000);
             }
         }
         public override bool AIAbilityCondition()

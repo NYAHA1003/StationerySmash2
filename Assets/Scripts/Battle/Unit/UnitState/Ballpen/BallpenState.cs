@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using DG.Tweening;
 
 namespace Battle.Units
@@ -29,14 +30,6 @@ namespace Battle.Units
 			_damagedState.SetStateManager(this);
 			_dieState.SetStateManager(this);
 			_throwState.SetStateManager(this);
-
-			_idleState.SetAnimation();
-			_waitState.SetAnimation();
-			_moveState.SetAnimation();
-			_attackState.SetAnimation();
-			_damagedState.SetAnimation();
-			_dieState.SetAnimation();
-			_throwState.SetAnimation();
 		}
 
 		public override void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
@@ -96,7 +89,7 @@ namespace Battle.Units
 				Unit targetUnit = list[i];
 				if (Vector2.Distance(_myTrm.position, targetUnit.transform.position) <= _inkRange)
 				{
-					targetUnit.AddStatusEffect(Utill.EffAttackType.Ink, 1, 20, 20);
+					targetUnit.AddStatusEffect(EffAttackType.Ink, 1, 20, 20);
 				}
 			}
 		}

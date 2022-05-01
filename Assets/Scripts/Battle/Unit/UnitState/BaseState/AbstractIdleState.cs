@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using DG.Tweening;
 
 
@@ -19,7 +20,7 @@ namespace Battle.Units
 			_myUnit.UnitSticker.RunIdleStickerAbility(_curState);
 
 			//소환시 애니메이션
-			Animation();
+			Animation(eState.IDLE);
 
 			//대기상태로 만든다
 			IdleToWaitTime();

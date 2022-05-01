@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 
 namespace Battle.Units
 {
@@ -83,11 +84,6 @@ namespace Battle.Units
 		public override void Update()
 		{
 			_stateManager.Set_Idle();
-		}
-
-		public override void Animation()
-		{
-
 		}
 		public override Unit PullUnit()
 		{

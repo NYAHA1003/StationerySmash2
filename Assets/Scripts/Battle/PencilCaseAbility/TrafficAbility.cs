@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
 
@@ -85,7 +86,7 @@ namespace Battle.PCAbility
         /// </summary>
         private void SetRedCar()
         {
-            _redCarData = _unitDataSO.unitDatas.Find(x => x.unitData.unitType == Utill.UnitType.RedCar);
+            _redCarData = _unitDataSO.unitDatas.Find(x => x.unitData.unitType == UnitType.RedCar);
         }
 
         /// <summary>
@@ -93,7 +94,7 @@ namespace Battle.PCAbility
         /// </summary>
         private void SetYellowCar()
         {
-            _yellowCarData = _unitDataSO.unitDatas.Find(x => x.unitData.unitType == Utill.UnitType.YellowCar);
+            _yellowCarData = _unitDataSO.unitDatas.Find(x => x.unitData.unitType == UnitType.YellowCar);
         }
 
         /// <summary>
@@ -101,7 +102,7 @@ namespace Battle.PCAbility
         /// </summary>
         private void SetGreenCar()
         {
-            _greenCarData = _unitDataSO.unitDatas.Find(x => x.unitData.unitType == Utill.UnitType.GreenCar);
+            _greenCarData = _unitDataSO.unitDatas.Find(x => x.unitData.unitType == UnitType.GreenCar);
         }
 
         public override bool AIAbilityCondition()

@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using Battle;
 using DG.Tweening;
 public class Unit : MonoBehaviour
@@ -27,6 +28,7 @@ public class Unit : MonoBehaviour
     public Sequence KnockbackTweener => _knockbackTweener; //넉백에 사용하는 시퀀스
     public int OrderIndex { get; set; } = 0;
     public int ViewIndex => _viewIndex; //뷰 인덱스
+    public Animator Animator => _animator; //애니메이터
 
     //변수
     private CollideData _collideData = default; 
@@ -51,6 +53,8 @@ public class Unit : MonoBehaviour
     private UnitSprite _unitSprite = null;
     [SerializeField]
     private UnitSticker _unitSticker = null;
+    [SerializeField]
+    private Animator _animator = null;
 
     protected virtual void Start()
     {
@@ -192,7 +196,10 @@ public class Unit : MonoBehaviour
     /// <param name="atkData">공격 데이터</param>
     public virtual void Run_Damaged(AtkData atkData)
     {
-        _unitStateChanger.UnitState.RunDamaged(atkData);
+        if (_unitStateChanger.UnitState != null)
+        {
+            _unitStateChanger.UnitState.RunDamaged(atkData);
+        }
     }
 
     public void SetKnockBack(Sequence sequence)

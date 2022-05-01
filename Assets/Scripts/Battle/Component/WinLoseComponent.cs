@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using DG.Tweening;
 
 namespace Battle
@@ -18,6 +20,16 @@ namespace Battle
         private RectTransform _winText;
         [SerializeField]
         private RectTransform _loseText;
+        [SerializeField]
+        private Button _loseRetryButton;
+        [SerializeField]
+        private Button _loseBackHomeButton;
+        [SerializeField]
+        private Button _winRetryButton;
+        [SerializeField]
+        private Button _winBackHomeButton;
+        [SerializeField]
+        private SceneLoadComponenet _sceneLoadComponent;
 
         private List<IWinLose> _observers = new List<IWinLose>(); //ฐüย๛ภฺต้
 
@@ -28,9 +40,12 @@ namespace Battle
         /// <param name="winLoseCanvas"></param>
         /// <param name="winPanel"></param>
         /// <param name="losePanel"></param>
-        public void SetInitialization(BattleManager battleManager)
+        public void SetInitialization()
         {
-
+            _winRetryButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadBattle());
+            _winBackHomeButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadMain());
+            _loseRetryButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadBattle());
+            _loseBackHomeButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadMain());
         }
 
         /// <summary>

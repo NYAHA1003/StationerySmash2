@@ -2,7 +2,11 @@ using Battle;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
+
+namespace Battle.Badge
+{
 
 public class BlanketBadge : AbstractBadge
 {
@@ -32,5 +36,6 @@ public class BlanketBadge : AbstractBadge
         {
             atkData.Reset_Damage(atkData.damage / 2);
         }
+    }
     }
 }

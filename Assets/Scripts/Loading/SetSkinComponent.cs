@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
+using Main.Card;
+using Main.Deck;
 
 [System.Serializable]
 public class SetSkinComponent : MonoBehaviour

@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 
-public class AbstractWaitSticker : AbstractSticker
+namespace Battle.Sticker
 {
-	/// <summary>
-	/// 대기 스티커
-	/// </summary>
-	/// <param name="atkData"></param>
-	public virtual void RunWaitStickerAblity()
+
+
+	public class AbstractWaitSticker : AbstractSticker
 	{
-		//null;
+		/// <summary>
+		/// 대기 스티커
+		/// </summary>
+		/// <param name="atkData"></param>
+		public virtual void RunWaitStickerAblity()
+		{
+			//null;
+		}
 	}
 }

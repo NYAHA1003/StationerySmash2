@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using TMPro;
 using Battle;
 using System;
@@ -70,8 +71,6 @@ namespace Battle
 		private PauseComponent _commandPause = null;
 		[SerializeField, Header("승리패배시스템 BattleWinLose"), Space(30)]
 		private WinLoseComponent _commandWinLose = null;
-		[SerializeField, Header("스프라이트로딩시스템 BattleSetSkin"), Space(30)]
-		private SetSkinComponent _loadingComponent = null;
 		[SerializeField, Header("인트로시스템 BattleIntro"), Space(30)]
 		private IntroComponent _introComponent = null;
 
@@ -79,12 +78,6 @@ namespace Battle
 		{
 			//프레임 60 고정
 			Application.targetFrameRate = 60;
-
-			while (!_loadingComponent.IsAllSetSkin)
-			{
-				yield return null;
-			}
-
 
 			_commandPencilCase.SetInitialization(CommandUnit, CurrentStageData);
 			_commandCard.SetInitialization(this, CommandWinLose, CommandCamera, CommandUnit, CommandCost, ref _updateAction, CurrentStageData, _commandPencilCase.PencilCaseDataMy.PencilCasedataBase.maxCard);
@@ -96,7 +89,7 @@ namespace Battle
 			_commandTime.SetInitialization(ref _updateAction, CurrentStageData);
 			_commandCost.SetInitialization(ref _updateAction, _commandPencilCase.PencilCaseDataMy.PencilCasedataBase);
 			_commandPause.SetInitialization();
-			_commandWinLose.SetInitialization(this);
+			_commandWinLose.SetInitialization();
 
 			_isEndSetting = true;
 
@@ -113,7 +106,7 @@ namespace Battle
 		{
 			//  Debug.Log("유닛 갯수 : " + _commandUnit.UnitParent.childCount + " FPS : " + 1.0f / Time.deltaTime);
 
-			if (!_isEndSetting || !_loadingComponent.IsAllSetSkin || !_introComponent.isEndIntro)
+			if (!_isEndSetting ||  !_introComponent.isEndIntro)
 			{
 				return;
 			}
@@ -180,13 +173,13 @@ namespace Battle
 			//내 팀인지 적팀인지 체크
 			if (CommandUnit.eTeam.Equals(TeamType.MyTeam))
 			{
-				CommandUnit.eTeam = Utill.TeamType.EnemyTeam;
+				CommandUnit.eTeam = TeamType.EnemyTeam;
 				_unitTeamText.text = "적의 팀";
 				return;
 			}
-			if (CommandUnit.eTeam.Equals(Utill.TeamType.EnemyTeam))
+			if (CommandUnit.eTeam.Equals(TeamType.EnemyTeam))
 			{
-				CommandUnit.eTeam = Utill.TeamType.MyTeam;
+				CommandUnit.eTeam = TeamType.MyTeam;
 				_unitTeamText.text = "나의 팀";
 				return;
 			}

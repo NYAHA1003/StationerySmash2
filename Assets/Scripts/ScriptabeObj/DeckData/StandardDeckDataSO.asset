@@ -14,101 +14,78 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardDatas:
   - cardType: 1
-    card_Name: 1
+    card_Name: "\uC5F0\uD544"
     card_Description: 
-    card_Cost: 1
+    card_Cost: 0
     skinData:
-      _skinId: 0
-      _cardSprite: {fileID: 21300000, guid: bbf2ea69e3ca72641b0c16d401ae24e6, type: 3}
+      _skinType: 100
       _effectType: 0
-      _cardNamingType: 0
-    level: 1
+      _cardNamingType: 100
+    level: 0
     strategyData:
       starategyType: 0
       starategyablityData: []
     unitData:
-      unit_Hp: 1
-      unit_Weight: 1
-      knockback: 1
-      dir: 1
-      accuracy: 1
-      moveSpeed: 1
-      damage: 1
-      attackSpeed: 1
-      range: 1
+      unit_Hp: 400
+      unit_Weight: 75
+      knockback: 20
+      dir: 45
+      accuracy: 100
+      moveSpeed: 0.1
+      damage: 100
+      attackSpeed: 50
+      range: 0.1
       colideData:
-        originpoints: []
+        originpoints:
+        - {x: -0.016, y: 0.016}
+        - {x: 0.016, y: 0.016}
+        - {x: -0.016, y: -0.016}
+        - {x: 0.016, y: -0.016}
       stickerData:
         _sprite: {fileID: 0}
         _name: 
         _decription: 
+        _onlyUnitType: 0
         _stickerType: 0
         _stickerLevel: 1
+      attackType: 0
       unitType: 2
       unitablityData: []
   - cardType: 1
-    card_Name: 1
+    card_Name: "\uC0E4\uD504"
     card_Description: 
-    card_Cost: 1
+    card_Cost: 0
     skinData:
-      _skinId: 0
-      _cardSprite: {fileID: 21300000, guid: b45b3667de1d9e34d9451555c3567877, type: 3}
+      _skinType: 200
       _effectType: 0
-      _cardNamingType: 0
-    level: 1
+      _cardNamingType: 200
+    level: 0
     strategyData:
       starategyType: 0
       starategyablityData: []
     unitData:
-      unit_Hp: 2
-      unit_Weight: 2
-      knockback: 2
-      dir: 2
-      accuracy: 2
-      moveSpeed: 2
-      damage: 2
-      attackSpeed: 2
-      range: 2
-      colideData:
-        originpoints: []
-      stickerData:
-        _sprite: {fileID: 0}
-        _name: 
-        _decription: 
-        _stickerType: 0
-        _stickerLevel: 1
-      unitType: 3
-      unitablityData: []
-  - cardType: 1
-    card_Name: 1
-    card_Description: 
-    card_Cost: 1
-    skinData:
-      _skinId: 0
-      _cardSprite: {fileID: 21300000, guid: 347e000d27a719243b9ca4d8faec3c07, type: 3}
-      _effectType: 0
-      _cardNamingType: 0
-    level: 1
-    strategyData:
-      starategyType: 0
-      starategyablityData: []
-    unitData:
-      unit_Hp: 1
-      unit_Weight: 1
-      knockback: 1
-      dir: 1
-      accuracy: 1
-      moveSpeed: 1
-      damage: 1
-      attackSpeed: 1
+      unit_Hp: 500
+      unit_Weight: 75
+      knockback: 20
+      dir: 45
+      accuracy: 100
+      moveSpeed: 0.1
+      damage: 100
+      attackSpeed: 50
       range: 1
       colideData:
-        originpoints: []
+        originpoints:
+        - {x: -0.016, y: 0.016}
+        - {x: 0.016, y: 0.016}
+        - {x: -0.016, y: -0.016}
+        - {x: 0.016, y: -0.016}
       stickerData:
         _sprite: {fileID: 0}
         _name: 
         _decription: 
+        _onlyUnitType: 0
         _stickerType: 0
         _stickerLevel: 1
-      unitType: 4
+      attackType: 0
+      unitType: 3
       unitablityData: []

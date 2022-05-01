@@ -1,16 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using DG.Tweening;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.AddressableAssets;
 
 
 namespace Battle.Units
 {
-
-
 	public class SharpsimState : AbstractStateManager
 	{
 		public override void SetState()
@@ -29,6 +26,13 @@ namespace Battle.Units
 			_abstractUnitStateList.Add(_damagedState);
 
 			SetInStateList();
+		}
+
+		public override void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
+		{
+			base.Reset_State(myTrm, mySprTrm, myUnit);
+			myUnit.SetIsNeverDontThrow(true);
+			myUnit.SetIsInvincibility(true);
 		}
 
 		public override void Set_Die()
@@ -64,7 +68,7 @@ namespace Battle.Units
 	{
 		protected override void CheckTargetUnit(Unit targetUnit)
 		{
-			AtkData atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, EffAttackType.Normal, EffectType.Attack, originValue);
+			AtkData atkData = new AtkData(null, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, EffAttackType.Normal, EffectType.Attack, originValue);
 			targetUnit.Run_Damaged(atkData);
 
 			//¿Ø¥÷ ªË¡¶

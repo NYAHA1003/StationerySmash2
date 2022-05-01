@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
+using Battle.Badge;
 using Battle.PCAbility;
 
 namespace Battle

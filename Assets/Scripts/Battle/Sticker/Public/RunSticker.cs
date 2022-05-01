@@ -2,15 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
-public class RunSticker : AbstractIdleSticker
-{
-    public override void SetSticker(Unit unit)
-    {
-        base.SetSticker(unit);
-    }
 
-    public override void RunIdleStickerAblity()
+namespace Battle.Sticker
+{
+
+    public class RunSticker : AbstractIdleSticker
     {
-        _myUnit.UnitStat.SetBonusMoveSpeed(1);
+        public override void SetSticker(Unit unit)
+        {
+            base.SetSticker(unit);
+        }
+
+        public override void RunIdleStickerAblity()
+        {
+            _myUnit.UnitStat.SetBonusMoveSpeed(1);
+        }
     }
 }

@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using DG.Tweening;
 
 namespace Battle.Units
@@ -15,7 +16,7 @@ namespace Battle.Units
 		protected override void Attack()
 		{
 			//공격 애니메이션
-			Animation();
+			Animation(eState.ATTACK);
 			Summon();
 
 			//공격 딜레이 초기화
