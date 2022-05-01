@@ -31,7 +31,7 @@ namespace Battle
 
         //인스펙터 참조 변수
         [SerializeField]
-        private LineRenderer _summonRangeLine = null;
+        private GameObject _summonRangeImage = null;
         [SerializeField]
         private GameObject _cardMovePrefeb = null;
         [SerializeField]
@@ -84,7 +84,7 @@ namespace Battle
             SetMaxCard(maxCard);
 
             //유닛 소환 범위 그리기
-            DrawSummonRangeLinePos();
+            DrawSummonRange();
 
             //덱에 카드정보들 전달
             SetDeckCard();
@@ -244,7 +244,7 @@ namespace Battle
             }
 
             SetSummonRangeLine(true);
-            _summonRangeLine.gameObject.SetActive(true);
+            _summonRangeImage.gameObject.SetActive(true);
 
             //해당 카드를 선택된 카드에 넣음
             _selectCard = card;
@@ -442,8 +442,8 @@ namespace Battle
             }
             Debug.Log("범위 늘어남");
             _summonRangeDelay = 30f;
-            _summonRange = _summonRange + _stageData.max_Range / 4;
-            DrawSummonRangeLinePos();
+            _summonRange += _stageData.max_Range / 4;
+            DrawSummonRange();
         }
 
         /// <summary>
@@ -452,7 +452,7 @@ namespace Battle
         /// <param name="isActive"></param>
         public void SetSummonRangeLine(bool isActive)
         {
-            _summonRangeLine.gameObject.SetActive(isActive);
+            _summonRangeImage.gameObject.SetActive(isActive);
         }
 
         /// <summary>
@@ -692,12 +692,12 @@ namespace Battle
         }
 
         /// <summary>
-        /// 소환 범위 임시 라인 렌더링
+        /// 소환 범위 렌더링
         /// </summary>
-        private void DrawSummonRangeLinePos()
+        private void DrawSummonRange()
         {
-            _summonRangeLine.SetPosition(0, new Vector2(-_stageData.max_Range, 0));
-            _summonRangeLine.SetPosition(1, new Vector2(_summonRange, 0));
+            _summonRangeImage.transform.position = new Vector2(-_stageData.max_Range, 0);
+            _summonRangeImage.transform.localScale = new Vector2(Mathf.Abs(_stageData.max_Range + _summonRange), 0.5f);
         }
 
 		public void Notify(bool isWin)
