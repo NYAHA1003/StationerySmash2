@@ -89,7 +89,7 @@ namespace Battle
 			_commandTime.SetInitialization(ref _updateAction, CurrentStageData);
 			_commandCost.SetInitialization(ref _updateAction, _commandPencilCase.PencilCaseDataMy.PencilCasedataBase);
 			_commandPause.SetInitialization();
-			_commandWinLose.SetInitialization(this);
+			_commandWinLose.SetInitialization();
 
 			_isEndSetting = true;
 
