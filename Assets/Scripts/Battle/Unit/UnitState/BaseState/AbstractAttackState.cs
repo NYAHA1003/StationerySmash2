@@ -21,6 +21,7 @@ namespace Battle.Units
 			isAttacked = false;
 			_curState = eState.ATTACK;
 			_curEvent = eEvent.ENTER;
+			Animation(eState.WAIT);
 
 			//공격 딜레이를 유닛의 딜레이로 설정
 			_currentdelay = _myUnit.UnitStat.AttackDelay;
