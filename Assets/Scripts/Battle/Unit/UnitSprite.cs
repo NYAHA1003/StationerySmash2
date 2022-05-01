@@ -62,7 +62,8 @@ public class UnitSprite
         _throwSpriteRenderer.sortingOrder = -(orderIndex + 10);
         _delayPart.sortingOrder = -orderIndex;
         _delayRotate.sortingOrder = -orderIndex;
-        _delayMask.backSortingOrder = -(orderIndex + 1);
+        _delayMask.frontSortingOrder = Mathf.Abs(orderIndex) + 1;
+        _delayMask.backSortingOrder = -_delayMask.frontSortingOrder;
     }
 
     /// <summary>
