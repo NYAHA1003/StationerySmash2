@@ -30,14 +30,6 @@ namespace Battle.Units
 			_damagedState.SetStateManager(this);
 			_dieState.SetStateManager(this);
 			_throwState.SetStateManager(this);
-
-			_idleState.SetAnimation();
-			_waitState.SetAnimation();
-			_moveState.SetAnimation();
-			_attackState.SetAnimation();
-			_damagedState.SetAnimation();
-			_dieState.SetAnimation();
-			_throwState.SetAnimation();
 		}
 
 		public override void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)

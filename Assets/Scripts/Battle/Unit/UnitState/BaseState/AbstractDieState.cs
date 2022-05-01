@@ -32,7 +32,7 @@ namespace Battle.Units
 
 			//뒤짐
 			_myUnit.SetIsInvincibility(true);
-			ResetAllStateAnimation();
+			KillAnimation();
 
 			//랜덤으로 죽는 애니메이션 재생
 			RandomDieAnimation();

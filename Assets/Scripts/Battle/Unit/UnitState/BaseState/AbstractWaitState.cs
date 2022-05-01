@@ -22,7 +22,7 @@ namespace Battle.Units
 			_myUnit.UnitSticker.RunWaitStickerAbility(_curState);
 
 			//애니메이션 제거
-			ResetAllStateAnimation();
+			KillAnimation();
 
 			base.Enter();
 		}

@@ -22,7 +22,7 @@ namespace Battle.Units
 			_curState = eState.ATTACK;
 			_curEvent = eEvent.ENTER;
 
-			ResetAllStateAnimation();
+			KillAnimation();
 
 			//°ø°İ µô·¹ÀÌ¸¦ À¯´ÖÀÇ µô·¹ÀÌ·Î ¼³Á¤
 			_currentdelay = _myUnit.UnitStat.AttackDelay;
@@ -46,13 +46,13 @@ namespace Battle.Units
 		public override void Animation()
 		{
 			float rotate = _myUnit.ETeam.Equals(TeamType.MyTeam) ? -90 : 90;
-			_animationTweener.ChangeEndValue(new Vector3(0, 0, rotate));
-			_animationTweener.Restart();
+			_stateManager.PauseAnimation();
+			_stateManager.AnimationTweener.ChangeEndValue(new Vector3(0, 0, rotate));
+			_stateManager.RestartAnimation();
 		}
 		public override void SetAnimation()
 		{
-			_animationTweener = _mySprTrm.DORotate(new Vector3(0, 0, 0), 0.2f).SetLoops(2, LoopType.Yoyo).SetAutoKill(false);
-			_animationTweener.OnComplete(() => _stateManager.Set_Wait(0.4f)).SetAutoKill(false);
+			_stateManager.SetAnimation(_mySprTrm.DORotate(new Vector3(0, 0, 0), 0.2f).SetLoops(2, LoopType.Yoyo).SetAutoKill(false).OnComplete(() => _stateManager.Set_Wait(0.4f)).SetAutoKill(false));
 		}
 
 		/// <summary>

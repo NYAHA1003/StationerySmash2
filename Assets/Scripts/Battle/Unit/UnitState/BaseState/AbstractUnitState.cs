@@ -34,7 +34,6 @@ namespace Battle.Units
 		protected eState _curState = eState.IDLE;
 		protected eEvent _curEvent = eEvent.ENTER;
 		protected float[] originValue = default;
-		protected Tweener _animationTweener = default;
 
 		/// <summary>
 		/// 풀링된 유닛에 맞춰 유닛변수들을 바꿔줌
@@ -208,22 +207,13 @@ namespace Battle.Units
 		}
 
 		/// <summary>
-		/// 모든 스테이트들의 애니메이션 정지
+		/// 애니메이션 정지
 		/// </summary>
-		public void ResetAllStateAnimation()
+		public void KillAnimation()
 		{
-			_stateManager.ResetAnimationInStateList();
+			_stateManager.PauseAnimation();
 			ResetSprTrm();
 		}
-
-		/// <summary>
-		/// 애니메이션을 제거하고 스프라이트 위치와 각도를 초기화
-		/// </summary>
-		public void ResetThisStateAnimation()
-		{
-			_animationTweener.Pause();
-		}
-
 		/// <summary>
 		/// 스프라이트 트랜스폼 초기화
 		/// </summary>
@@ -253,7 +243,7 @@ namespace Battle.Units
 			if (_stateManager.GetStageData().max_Range <= _myTrm.position.x)
 			{
 				//왼쪽으로 튕겨져 나옴
-				ResetAllStateAnimation();
+				KillAnimation();
 				SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x - 0.2f, 0, _myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
 				{
 					_stateManager.Set_Wait(0.5f);
@@ -263,7 +253,7 @@ namespace Battle.Units
 			if (-_stateManager.GetStageData().max_Range >= _myTrm.position.x)
 			{
 				//오른쪽으로 튕겨져 나옴
-				ResetAllStateAnimation();
+				KillAnimation();
 				SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x + 0.2f, 0, _myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
 				{
 					_stateManager.Set_Wait(0.5f);

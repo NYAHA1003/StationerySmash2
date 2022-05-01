@@ -100,7 +100,7 @@ namespace Battle.Units
 			//방향이 아래쪽을 향하면 던지기를 취소함
 			if (dir < 0)
 			{
-				ResetAllStateAnimation();
+				KillAnimation();
 				_stateManager.Set_Wait(0.5f);
 				_curEvent = eEvent.EXIT;
 				return;
@@ -113,7 +113,7 @@ namespace Battle.Units
 			float width = Parabola.Caculated_Width(force, dirx);
 			//수평 도달 시간
 			float time = Parabola.Caculated_Time(force, dir, 3);
-			ResetAllStateAnimation();
+			KillAnimation();
 
 			_curEvent = eEvent.UPDATE;
 

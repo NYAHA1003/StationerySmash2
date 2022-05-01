@@ -17,7 +17,7 @@ namespace Battle.Units
 			_curEvent = eEvent.ENTER;
 
 			//이동 애니메이션 시작
-			ResetAllStateAnimation();
+			KillAnimation();
 			Animation();
 
 			_curEvent = eEvent.UPDATE;

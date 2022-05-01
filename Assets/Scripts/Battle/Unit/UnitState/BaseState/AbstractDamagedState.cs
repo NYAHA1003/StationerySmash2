@@ -75,12 +75,12 @@ namespace Battle.Units
 		public override void Animation()
 		{
 			float rotate = _myUnit.ETeam.Equals(TeamType.MyTeam) ? -360 : 360;
-			_animationTweener.ChangeEndValue(new Vector3(0, 0, rotate), _animationTime);
-			_animationTweener.Restart();
+			_stateManager.AnimationTweener.ChangeEndValue(new Vector3(0, 0, rotate), _animationTime);
+			_stateManager.RestartAnimation();
 		}
 		public override void SetAnimation()
 		{
-			_animationTweener = _mySprTrm.DORotate(new Vector3(0, 0, 0), 1, RotateMode.FastBeyond360).SetAutoKill(false);
+			_stateManager.SetAnimation(_mySprTrm.DORotate(new Vector3(0, 0, 0), 1, RotateMode.FastBeyond360).SetAutoKill(false));
 		}
 
 		/// <summary>
@@ -94,7 +94,7 @@ namespace Battle.Units
 			float time = _atkData.baseKnockback * 0.005f + Mathf.Abs((_atkData.baseKnockback * 0.5f + _atkData.extraKnockback) / (Physics2D.gravity.y));
 			_animationTime = time;
 			//회전 애니메이션
-			ResetAllStateAnimation();
+			KillAnimation();
 			Animation();
 
 			SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x - calculated_knockback, 0, _myTrm.position.z), height, 1, time).OnComplete(() =>

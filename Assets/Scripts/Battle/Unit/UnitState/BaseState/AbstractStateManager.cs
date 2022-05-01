@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill.Data;
 using Utill.Tool;
-
+using DG.Tweening;
 
 namespace Battle.Units
 {
@@ -11,6 +11,7 @@ namespace Battle.Units
 	public abstract class AbstractStateManager
 	{
 		public StageData _stageData { get; private set; } = null;
+		public Tweener AnimationTweener => _animationTweener;
 
 		protected AbstractIdleState _idleState = null;
 		protected AbstractAttackState _attackState = null;
@@ -21,6 +22,7 @@ namespace Battle.Units
 		protected AbstractWaitState _waitState = null;
 		protected AbstractUnitState _currrentState = null;
 		protected List<AbstractUnitState> _abstractUnitStateList = new List<AbstractUnitState>();
+		protected Tweener _animationTweener = default;
 
 		protected float _waitExtraTime = 0;
 
@@ -49,12 +51,22 @@ namespace Battle.Units
 		/// <summary>
 		/// 리스트에 있는 스테이트들의 애니메이션 정리
 		/// </summary>
-		public void ResetAnimationInStateList()
+		public void PauseAnimation()
 		{
-			for (int i = 0; i < _abstractUnitStateList.Count; i++)
-			{
-				_abstractUnitStateList[i].ResetThisStateAnimation();
-			}
+			_animationTweener.Pause();
+		}
+
+		/// <summary>
+		/// 리스트에 있는 스테이트들의 애니메이션 정리
+		/// </summary>
+		public void RestartAnimation()
+		{
+			_animationTweener.Restart();
+		}
+
+		public void SetAnimation(Tweener tween)
+		{
+			_animationTweener = tween;
 		}
 
 		public virtual void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
@@ -63,7 +75,6 @@ namespace Battle.Units
 			{
 				_abstractUnitStateList[i].ChangeUnit(myTrm, mySprTrm, myUnit);
 				_abstractUnitStateList[i].ResetState();
-				_abstractUnitStateList[i].SetAnimation();
 			}
 
 			Set_WaitExtraTime(0);
@@ -76,6 +87,8 @@ namespace Battle.Units
 			_attackState.Set_Target(targetUnit);
 			_currrentState._nextState = _attackState;
 			_attackState.ResetState();
+			PauseAnimation();
+			_attackState.SetAnimation();
 			Reset_CurrentUnitState(_attackState);
 		}
 
@@ -85,6 +98,8 @@ namespace Battle.Units
 			_damagedState.Set_AtkData(atkData);
 			_currrentState._nextState = _damagedState;
 			_damagedState.ResetState();
+			PauseAnimation();
+			_damagedState.SetAnimation();
 			Reset_CurrentUnitState(_damagedState);
 		}
 
@@ -93,6 +108,8 @@ namespace Battle.Units
 			_currrentState.SetEvent(eEvent.EXIT);
 			_currrentState._nextState = _dieState;
 			_dieState.ResetState();
+			PauseAnimation();
+			_dieState.SetAnimation();
 			Reset_CurrentUnitState(_dieState);
 		}
 
@@ -101,6 +118,8 @@ namespace Battle.Units
 			_currrentState.SetEvent(eEvent.EXIT);
 			_currrentState._nextState = _idleState;
 			_idleState.ResetState();
+			PauseAnimation();
+			_idleState.SetAnimation();
 			Reset_CurrentUnitState(_idleState);
 		}
 
@@ -109,6 +128,8 @@ namespace Battle.Units
 			_currrentState.SetEvent(eEvent.EXIT);
 			_currrentState._nextState = _moveState;
 			_moveState.ResetState();
+			PauseAnimation();
+			_moveState.SetAnimation();
 			Reset_CurrentUnitState(_moveState);
 		}
 
@@ -117,6 +138,8 @@ namespace Battle.Units
 			_currrentState.SetEvent(eEvent.EXIT);
 			_currrentState._nextState = _throwState;
 			_throwState.ResetState();
+			PauseAnimation();
+			_throwState.SetAnimation();
 			Reset_CurrentUnitState(_throwState);
 		}
 
@@ -127,6 +150,8 @@ namespace Battle.Units
 			_waitState.Set_ExtraTime(_waitExtraTime);
 			_currrentState._nextState = _waitState;
 			_waitState.ResetState();
+			PauseAnimation();
+			_waitState.SetAnimation();
 			Reset_CurrentUnitState(_waitState);
 		}
 		public virtual void Set_WaitExtraTime(float extraTime)

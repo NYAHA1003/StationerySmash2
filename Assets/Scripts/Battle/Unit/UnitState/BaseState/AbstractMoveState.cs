@@ -22,7 +22,7 @@ namespace Battle.Units
 			_myUnit.UnitSticker.RunMoveStickerAbility(_curState);
 
 			//이동 애니메이션 시작
-			ResetAllStateAnimation();
+			KillAnimation();
 			Animation();
 
 			base.Enter();
@@ -49,13 +49,13 @@ namespace Battle.Units
 		public override void Animation()
 		{
 			float rotate = _myUnit.ETeam.Equals(TeamType.MyTeam) ? 30 : -30;
-			_animationTweener.ChangeEndValue(new Vector3(0, 0, rotate));
-			_animationTweener.Restart();
+			_stateManager.AnimationTweener.ChangeEndValue(new Vector3(0, 0, rotate));
+			_stateManager.RestartAnimation();
 		}
 
 		public override void SetAnimation()
 		{
-			_animationTweener = _mySprTrm.DORotate(new Vector3(0, 0, 0), 0.3f).SetLoops(-1, LoopType.Yoyo).SetAutoKill(false);
+			_stateManager.SetAnimation(_mySprTrm.DORotate(new Vector3(0, 0, 0), 0.3f).SetLoops(-1, LoopType.Yoyo).SetAutoKill(false));
 		}
 
 		/// <summary>
