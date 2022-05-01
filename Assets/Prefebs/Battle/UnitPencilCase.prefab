@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6689670858915618946}
   - component: {fileID: 8019216100231083923}
   - component: {fileID: 9035108390232783170}
+  - component: {fileID: 419525194533582819}
   m_Layer: 0
   m_Name: SpriteRenderer
   m_TagString: Untagged
@@ -135,6 +136,25 @@ SpriteMask:
   m_BackSortingOrder: 0
   m_IsCustomRangeActive: 1
   m_SpriteSortPoint: 0
+--- !u!95 &419525194533582819
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52367101223760387}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 978f52adc22a16040b6ef17e938714f7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &587420503430284080
 GameObject:
   m_ObjectHideFlags: 0
@@ -194,6 +214,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 6cda7522cc8add94fa78297d4817de54, type: 3}
   _unitSticker:
     _stickerSprite: {fileID: 0}
+  _animator: {fileID: 419525194533582819}
   _pencilCaseData: {fileID: 11400000, guid: 5d00c087bdf0e1b429a2764fd7ead3e6, type: 2}
 --- !u!1 &1581974196471083041
 GameObject:

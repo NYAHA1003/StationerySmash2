@@ -21,8 +21,8 @@ namespace Battle.Units
 			//스티커 사용
 			_myUnit.UnitSticker.RunWaitStickerAbility(_curState);
 
-			//애니메이션 제거
-			KillAnimation();
+			//애니메이션
+			_stateManager.SetAnimation(eState.WAIT);
 
 			base.Enter();
 		}

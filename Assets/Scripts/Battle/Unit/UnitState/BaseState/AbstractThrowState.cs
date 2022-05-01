@@ -19,6 +19,7 @@ namespace Battle.Units
 			_curEvent = eEvent.ENTER;
 
 			//또 던지는거 방지
+			_stateManager.SetAnimation(eState.THROW);
 			_myUnit.SetIsDontThrow(true);
 
 			//스티커 사용
@@ -100,7 +101,6 @@ namespace Battle.Units
 			//방향이 아래쪽을 향하면 던지기를 취소함
 			if (dir < 0)
 			{
-				KillAnimation();
 				_stateManager.Set_Wait(0.5f);
 				_curEvent = eEvent.EXIT;
 				return;
@@ -113,7 +113,6 @@ namespace Battle.Units
 			float width = Parabola.Caculated_Width(force, dirx);
 			//수평 도달 시간
 			float time = Parabola.Caculated_Time(force, dir, 3);
-			KillAnimation();
 
 			_curEvent = eEvent.UPDATE;
 

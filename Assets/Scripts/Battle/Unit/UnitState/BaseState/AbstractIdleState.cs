@@ -20,7 +20,7 @@ namespace Battle.Units
 			_myUnit.UnitSticker.RunIdleStickerAbility(_curState);
 
 			//소환시 애니메이션
-			Animation();
+			Animation(eState.IDLE);
 
 			//대기상태로 만든다
 			IdleToWaitTime();

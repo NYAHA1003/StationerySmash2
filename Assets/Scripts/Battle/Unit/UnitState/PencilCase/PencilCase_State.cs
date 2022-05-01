@@ -85,11 +85,6 @@ namespace Battle.Units
 		{
 			_stateManager.Set_Idle();
 		}
-
-		public override void Animation()
-		{
-
-		}
 		public override Unit PullUnit()
 		{
 			return null;

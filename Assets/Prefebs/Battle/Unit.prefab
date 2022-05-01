@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6639921959460017928}
   - component: {fileID: 8050812612465737753}
   - component: {fileID: 9047985439711252168}
+  - component: {fileID: 5044457158034247384}
   m_Layer: 0
   m_Name: SpriteRenderer
   m_TagString: Untagged
@@ -136,6 +137,25 @@ SpriteMask:
   m_BackSortingOrder: 0
   m_IsCustomRangeActive: 1
   m_SpriteSortPoint: 0
+--- !u!95 &5044457158034247384
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20770314376398217}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 978f52adc22a16040b6ef17e938714f7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &636465713026102458
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,6 +215,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 6cda7522cc8add94fa78297d4817de54, type: 3}
   _unitSticker:
     _stickerSprite: {fileID: 870177129349497915}
+  _animator: {fileID: 5044457158034247384}
 --- !u!1 &1089523553830267325
 GameObject:
   m_ObjectHideFlags: 0

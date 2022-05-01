@@ -189,31 +189,17 @@ namespace Battle.Units
 			_stateManager.Set_ThrowPos(pos);
 			_stateManager.Set_Throw();
 		}
-		/// <summary>
-		/// 애니메이션 설정
-		/// </summary>
-		public virtual void SetAnimation()
-		{
-			//애니메이션 시퀀스 설정
-		}
 
 		/// <summary>
 		/// 애니메이션 함수, 각각의 스테이트에서 오버라이드해서 호출함
 		/// </summary>
 		/// <param name="value"></param>
-		public virtual void Animation()
+		public void Animation(eState eState)
 		{
 			//오버라이드해서 사용
+			_stateManager.SetAnimation(eState);
 		}
 
-		/// <summary>
-		/// 애니메이션 정지
-		/// </summary>
-		public void KillAnimation()
-		{
-			_stateManager.PauseAnimation();
-			ResetSprTrm();
-		}
 		/// <summary>
 		/// 스프라이트 트랜스폼 초기화
 		/// </summary>
@@ -243,7 +229,6 @@ namespace Battle.Units
 			if (_stateManager.GetStageData().max_Range <= _myTrm.position.x)
 			{
 				//왼쪽으로 튕겨져 나옴
-				KillAnimation();
 				SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x - 0.2f, 0, _myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
 				{
 					_stateManager.Set_Wait(0.5f);
@@ -253,7 +238,6 @@ namespace Battle.Units
 			if (-_stateManager.GetStageData().max_Range >= _myTrm.position.x)
 			{
 				//오른쪽으로 튕겨져 나옴
-				KillAnimation();
 				SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x + 0.2f, 0, _myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
 				{
 					_stateManager.Set_Wait(0.5f);

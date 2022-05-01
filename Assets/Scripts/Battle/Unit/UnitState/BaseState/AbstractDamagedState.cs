@@ -72,16 +72,6 @@ namespace Battle.Units
 		{
 			_atkData = atkData;
 		}
-		public override void Animation()
-		{
-			float rotate = _myUnit.ETeam.Equals(TeamType.MyTeam) ? -360 : 360;
-			_stateManager.AnimationTweener.ChangeEndValue(new Vector3(0, 0, rotate), _animationTime);
-			_stateManager.RestartAnimation();
-		}
-		public override void SetAnimation()
-		{
-			_stateManager.SetAnimation(_mySprTrm.DORotate(new Vector3(0, 0, 0), 1, RotateMode.FastBeyond360).SetAutoKill(false));
-		}
 
 		/// <summary>
 		/// 넉백 적용
@@ -94,8 +84,7 @@ namespace Battle.Units
 			float time = _atkData.baseKnockback * 0.005f + Mathf.Abs((_atkData.baseKnockback * 0.5f + _atkData.extraKnockback) / (Physics2D.gravity.y));
 			_animationTime = time;
 			//회전 애니메이션
-			KillAnimation();
-			Animation();
+			Animation(eState.DAMAGED);
 
 			SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x - calculated_knockback, 0, _myTrm.position.z), height, 1, time).OnComplete(() =>
 			{

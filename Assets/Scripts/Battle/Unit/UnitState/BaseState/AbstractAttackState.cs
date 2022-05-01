@@ -22,8 +22,6 @@ namespace Battle.Units
 			_curState = eState.ATTACK;
 			_curEvent = eEvent.ENTER;
 
-			KillAnimation();
-
 			//공격 딜레이를 유닛의 딜레이로 설정
 			_currentdelay = _myUnit.UnitStat.AttackDelay;
 
@@ -42,17 +40,6 @@ namespace Battle.Units
 					Attack();
 				}
 			}
-		}
-		public override void Animation()
-		{
-			float rotate = _myUnit.ETeam.Equals(TeamType.MyTeam) ? -90 : 90;
-			_stateManager.PauseAnimation();
-			_stateManager.AnimationTweener.ChangeEndValue(new Vector3(0, 0, rotate));
-			_stateManager.RestartAnimation();
-		}
-		public override void SetAnimation()
-		{
-			_stateManager.SetAnimation(_mySprTrm.DORotate(new Vector3(0, 0, 0), 0.2f).SetLoops(2, LoopType.Yoyo).SetAutoKill(false).OnComplete(() => _stateManager.Set_Wait(0.4f)).SetAutoKill(false));
 		}
 
 		/// <summary>
@@ -73,7 +60,7 @@ namespace Battle.Units
 			isAttacked = true;
 
 			//공격 애니메이션
-			Animation();
+			Animation(eState.ATTACK);
 
 			//공격 딜레이 초기화
 			_currentdelay = 0;
