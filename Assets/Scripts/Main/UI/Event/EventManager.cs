@@ -7,14 +7,6 @@ using Utill.Tool;
 
 namespace Main.Event
 {
-    public class EventParam
-    {
-        public string str;
-        public int i;
-        public float f;
-        public bool b;
-    }
-
     public class EventManager : MonoBehaviour
     {
 
@@ -87,7 +79,7 @@ namespace Main.Event
 
             if (instance.eventParamDictionary.TryGetValue(eventName, out thisEvent))
             {
-                thisEvent += listener;
+                thisEvent += listener;  
                 instance.eventParamDictionary[eventName] = thisEvent;
             }
             else
@@ -158,6 +150,10 @@ namespace Main.Event
             if (instance.eventParamDictionary.TryGetValue(eventName, out thisEvent))
             {
                 thisEvent?.Invoke(param);
+            }
+            else
+            {
+                Debug.LogError("빈 이벤트입니다");
             }
         }
     }

@@ -235,6 +235,7 @@ GameObject:
   - component: {fileID: 5376504173762278386}
   - component: {fileID: 5376504173762278385}
   - component: {fileID: 5376504173762278387}
+  - component: {fileID: 1880888177392068865}
   m_Layer: 5
   m_Name: DailyCard
   m_TagString: Untagged
@@ -346,6 +347,23 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1880888177392068865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5376504173762278384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06f9283153407da4199e8737dedf4661, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dailyItemInfo: {fileID: 11400000, guid: 405f651dfa7e68f4ea6132a0206b50a9, type: 2}
+  _itemSprite: {fileID: 0}
+  _priceText: {fileID: 0}
+  _itemNameText: {fileID: 0}
+  _countText: {fileID: 0}
 --- !u!1 &5674739781966698811
 GameObject:
   m_ObjectHideFlags: 0

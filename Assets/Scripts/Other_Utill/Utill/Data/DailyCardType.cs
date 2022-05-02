@@ -3,6 +3,7 @@
     // 일일상점의 카드타입 
     public enum DailyCardType
     {
+        Free, // 무료 
         Pencil, // 연필 
         Sharp, // 샤프
         Eraser, // 지우개
