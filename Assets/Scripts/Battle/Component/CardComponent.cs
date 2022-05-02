@@ -33,7 +33,7 @@ namespace Battle
         [SerializeField]
         private GameObject _summonRangeImage = null;
         [SerializeField]
-        private SpriteRenderer _summonArrow = null;
+        private RectTransform _summonArrow = null;
         [SerializeField]
         private GameObject _cardMovePrefeb = null;
         [SerializeField]
@@ -403,9 +403,11 @@ namespace Battle
         {
             //소환 화살표 적용
             _summonArrow.gameObject.SetActive(isActive);
-            _summonArrow.transform.position = new Vector3(pos.x, 0);
-            float ySize = Mathf.Clamp(pos.y * 2f, 0.8f, 2f);
-            _summonArrow.size = new Vector2(0.35f, ySize);
+            _summonArrow.transform.position = pos;
+            _summonArrow.anchoredPosition = new Vector2(_summonArrow.anchoredPosition.x, Mathf.Clamp(_summonArrow.anchoredPosition.y, 520, 1000));
+            _summonArrow.sizeDelta = new Vector2(_summonArrow.sizeDelta.x, _summonArrow.anchoredPosition.y);
+            //float ySize = Mathf.Clamp(pos.y * 2f, 0.8f, 2f);
+            //_summonArrow.size = new Vector2(0.35f, ySize);
             return;
         }
 

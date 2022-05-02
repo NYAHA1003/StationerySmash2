@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using Utill.Data;
 using Utill.Tool;
+
 namespace Battle.Starategy
 {
 
@@ -36,7 +38,7 @@ namespace Battle.Starategy
                 }
                 catch
                 {
-                    int a = 0;
+                    //int a = 0;
                 }
             }
         }

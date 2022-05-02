@@ -97,6 +97,11 @@ namespace Battle
             List<Unit> list = _unitCommand._playerUnitList;
             float targetPosX = 0;
             _throwUnit = null;
+            if(list.Count == 0)
+			{
+                return;
+			}
+
             if(pos.x >= list[lastNum].transform.position.x - 0.3f)
             {
                 _throwUnit = list[lastNum];

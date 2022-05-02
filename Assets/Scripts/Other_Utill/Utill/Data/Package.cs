@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Utill.Data
 {
-    public enum PakageType
+    public enum PackageType
     {
         CommonPack,
         ShinyPack,

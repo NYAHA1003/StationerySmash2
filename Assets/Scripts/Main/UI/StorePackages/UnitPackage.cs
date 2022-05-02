@@ -8,11 +8,11 @@ using UnityEngine.UI;
 
 namespace store
 {
-    public class StorePakage : MonoBehaviour
+    public class UnitPackage : MonoBehaviour
     {
         private List<bool> _IsHave = new List<bool>();
         private List<int> _NHnum = new List<int>();
-        private List<int> _UnitList = new List<int>();
+        private List<int> _UnitAmountList = new List<int>();
 
         //임시 보유 데이터 선언 시작
         private bool _Pencil = true;
@@ -103,7 +103,7 @@ namespace store
         /// </summary>
         private void CommonButtonClick()
         {
-            SetPakageSelect(PakageType.CommonPack);
+            SetPakageSelect(PackageType.CommonPack);
             RandomUnitSummons();
             RandomNewUnit();
         }
@@ -113,7 +113,7 @@ namespace store
         /// </summary>
         private void ShinyButtonClick()
         {
-            SetPakageSelect(PakageType.ShinyPack);
+            SetPakageSelect(PackageType.ShinyPack);
             RandomUnitSummons();
             RandomNewUnit();
         }
@@ -123,7 +123,7 @@ namespace store
         /// </summary>
         private void LegendaryButtonClick()
         {
-            SetPakageSelect(PakageType.LegendaryPack);
+            SetPakageSelect(PackageType.LegendaryPack);
             RandomUnitSummons();
             RandomNewUnit();
         }
@@ -132,30 +132,30 @@ namespace store
         /// 패키지를 골랐을때 여러가지 값을 대입
         /// </summary>
         /// <param name="pack"></param>
-        public void SetPakageSelect(PakageType pack)
+        public void SetPakageSelect(PackageType pack)
         {
             switch (pack)
             {
-                case PakageType.CommonPack:
+                case PackageType.CommonPack:
                     _min = 2; _max = 3;
                     _newPercent = 1;
                     _useMoney = 500;
-                    _CurrentUnitAmount = 20;
-                    _unitMaxAmount = _CurrentUnitAmount;
+                    _unitMaxAmount = 20;
+                    _CurrentUnitAmount = _unitMaxAmount;
                     break;
-                case PakageType.ShinyPack:
+                case PackageType.ShinyPack:
                     _min = 4; _max = 5;
                     _newPercent = 4;
                     _useDalgona = 10;
-                    _CurrentUnitAmount = 70;
-                    _unitMaxAmount = _CurrentUnitAmount;
+                    _unitMaxAmount = 70;
+                    _CurrentUnitAmount = _unitMaxAmount;
                     break;
-                case PakageType.LegendaryPack:
+                case PackageType.LegendaryPack:
                     _min = 6; _max = 8;
                     _newPercent = 10;
                     _useDalgona = 45;
-                    _CurrentUnitAmount = 300;
-                    _unitMaxAmount = _CurrentUnitAmount;
+                    _unitMaxAmount = 300;
+                    _CurrentUnitAmount = _unitMaxAmount; 
                     break;
                 default:
                     break;
@@ -170,34 +170,31 @@ namespace store
         private void RandomUnitSummons()
         {
             int temp = 0;
-            int quantity;
+            int quantity = 0;
 
-
-            _UnitList.Clear();
-            _NHnum.Clear();
+            _UnitAmountList.Clear();
             HaveUnit();
             Shuffle();
+            QuantityOverCheck();
+
+
+            int devide = _unitMaxAmount / _Quantity;
 
             for (int i = 0; i < _Quantity; i++)                                            //위에서 랜덤으로 정해진 수량만큼 실행
             {
                 if (i == _Quantity - 1)                                                    //마지막 팩에는 남은 카드갯수만큼 넣어준다.
                 {
-                    _UnitList[i] = _CurrentUnitAmount;
+                    _UnitAmountList.Add(_CurrentUnitAmount);
+                    Debug.Log($"학용품 번호 : {_NHnum[i]}, 학용품 수량 : {_UnitAmountList[i]}");
                     return;
                 }
 
-                quantity = Random.Range(1, _CurrentUnitAmount / _Quantity + temp);         //이번에 나올 수량
-                _CurrentUnitAmount -= quantity;                                            //남아있는 뽑힐 유닛 갯수에서 나온 수량을 뺌
-                _UnitList[i] = quantity;                                                    //유닛별 수량 넣어주기 
-
-                temp = _CurrentUnitAmount / _Quantity - quantity;                          //다음에 추가될 수량
-                if (temp < 0)
-                {
-                    temp = 0;
-                }
-
+                quantity = Random.Range(devide/2 + temp, devide + temp);                   //이번에 나올 수량
+                _CurrentUnitAmount -= quantity;                                            //남아있는 뽑힐 유닛 갯수에서 나온 수량을 뺌                                         
+                _UnitAmountList.Add(quantity);                                             //유닛별 수량 넣어주기
+                temp = devide - quantity;                                                  //다음에 추가될 수량
+                Debug.Log($"학용품 번호 : {_NHnum[i]}, 학용품 수량 : {_UnitAmountList[i]}");
             }
-            //유닛 소환한거 출력하기 해야함
         }
 
         /// <summary>
@@ -205,17 +202,18 @@ namespace store
         /// </summary>
         private void RandomNewUnit()
         {
-            _NHnum.Clear();
+            
             if (_newPercent >= _newChPercent)                               //캐릭터 확률이 랜덤 숫자보다 클경우
             {
                 NotHaveUnit();
+                if (_NHnum.Count != 0)
+                {
+                    _newCharacter = _NHnum[Random.Range(0, _NHnum.Count)];     //없는 유닛들중 새로운 유닛을 선택
+                    _IsHave[_newCharacter] = true;                             //유닛을 생성
+                    Debug.Log($"{_newCharacter}번 캐릭터가 뽑혔습니다.");
+                }
             }
-
-            if (_NHnum.Count != 0)
-            {
-                _newCharacter = _NHnum[Random.Range(0, _NHnum.Count)];     //없는 유닛들중 새로운 유닛을 선택
-                _IsHave[_newCharacter] = true;                             //유닛을 생성
-            }
+            
         } //제일 나중에 들어가야 하는 함수임
 
         /// <summary>
@@ -226,37 +224,60 @@ namespace store
             int temp = 0;
             for (int i = 0; i < 100; i++)
             {
-                int change = Random.Range(0, _IsHave.Count);
-                int change1 = Random.Range(0, _IsHave.Count);
+                int change = Random.Range(0, _NHnum.Count);
+                int change1 = Random.Range(0, _NHnum.Count);
                 temp = _NHnum[change];
                 _NHnum[change] = _NHnum[change1];
                 _NHnum[change1] = temp;
             }
         }
 
-        private void HaveUnit()
+        /// <summary>
+        /// 가지고 있는 유닛 배열로 가져오기 
+        /// </summary>
+        private void HaveUnit() 
         {
-            int j = 0;
+            int j = -1;
+
+            _NHnum.Clear();
 
             for (int i = 0; i < _IsHave.Count; i++)
             {
                 if (_IsHave[i])
                 {
-                    _NHnum[j++] = i; //가지고 있는 캐릭터들 가져오기
+                    j++;
+                    _NHnum.Add(i); 
                 }
             }
         }
-        
+
+        /// <summary>
+        /// 가지고 있지 않은 유닛 배열로 가져오기 
+        /// </summary>
         private void NotHaveUnit()
         {
-            int j = 0;
+            int j = -1;
+
+            _NHnum.Clear();
 
             for (int i = 0; i < _IsHave.Count; i++)
             {
                 if (!_IsHave[i])
                 {
-                    _NHnum[j++] = i;
+                    j++;
+                    _NHnum.Add(i);
                 }
+            }
+        }
+
+        /// <summary>
+        /// 수량이 가지고 있는 캐릭터의 갯수보다 크다면 최댓값을 캐릭터의 갯수로 고정 
+        /// </summary>
+        private void QuantityOverCheck()
+        {
+            if (_Quantity > _NHnum.Count)
+            {
+                _Quantity = _NHnum.Count;
             }
         }
     }
