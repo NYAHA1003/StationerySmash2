@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 
 namespace Main.Skin
 {
-    public class SkinButton : MonoBehaviour
+    /// <summary>
+    /// 스킨 데이터 설정 버튼 클래스
+    /// </summary>
+    public class SkinDataButton : MonoBehaviour
     {
         //프로퍼티
         public SkinMakeData SkinMakeData => _skinMakeData;

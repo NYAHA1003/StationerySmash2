@@ -37,8 +37,5 @@ namespace Main.Skin
             _materialNameText.text = materialData.name;
             _materialCountText.text = $"{inventoryCount} / {materialData._count}";
         }
-
-
-
     }
 }

@@ -55,7 +55,7 @@ using Main.Skin;
 
         //스크롤 조절창
         [SerializeField]
-        private SkinScroll _skinScroll = null;
+        private CardDescriptionScroll _skinScroll = null;
 
         //장착버튼
         [SerializeField]

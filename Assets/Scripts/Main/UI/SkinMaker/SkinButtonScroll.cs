@@ -6,7 +6,10 @@ using UnityEngine.EventSystems;
 
 namespace Main.Skin
 {
-    public class ButtonScroll : MonoBehaviour
+    /// <summary>
+    /// 스킨 세트 버튼 스크롤에 대한 클래스  
+    /// </summary>
+    public class SkinButtonScroll : MonoBehaviour
     {
         //인스펙터 변수
         [SerializeField]
@@ -19,6 +22,8 @@ namespace Main.Skin
         private float _transitionTime = 0.5f; // 전환에 걸리는 시간
         [SerializeField]
         private int _currentIndex = 0;
+        [SerializeField]
+        private SkinMakerComponent _skinMakerComponent = null;
 
         //상수
         private const int LEFT = 1;
@@ -70,15 +75,6 @@ namespace Main.Skin
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                LeftTransition();
-            }
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                RightTransition();
-            }
-
             if (_isTransiting)
             {
                 _progress += Time.deltaTime / _transitionTime;
@@ -111,39 +107,38 @@ namespace Main.Skin
                 return;
 			}
 
-            switch(_currentIndex)
+            if(_currentIndex == 0)
 			{
-                case 0:
-                    if(index == 1)
-                    {
-                        RightTransition();
-                    }
-                    else if (index == 2)
-                    {
-                        LeftTransition();
-                    }
-                    break;
-                case 1:
-                    if (index == 0)
-                    {
-                        LeftTransition();
-                    }
-                    else if (index == 2)
-                    {
-                        RightTransition();
-                    }
-                    break;
-                case 2:
-                    if (index == 0)
-                    {
-                        RightTransition();
-                    }
-                    else if (index == 1)
-                    {
-                        LeftTransition();
-                    }
-                    break;
+                if(index == _buttonList.Count - 1)
+				{
+                    LeftTransition();
+                }
+                else
+				{
+                    RightTransition();
+
+                }
+			}
+            else if(_currentIndex == _buttonList.Count - 1)
+            {
+                if (index == 0)
+                {
+                    RightTransition();
+                }
+                else
+                {
+                    LeftTransition();
+                }
             }
+            else if(_currentIndex < index)
+            {
+                RightTransition();
+            }
+            else if (_currentIndex > index)
+            {
+                LeftTransition();
+            }
+            _skinMakerComponent.SetSkinMakeDatas(index);
         }
 
         /// <summary>

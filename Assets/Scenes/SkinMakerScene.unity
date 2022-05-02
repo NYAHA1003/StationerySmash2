@@ -5079,6 +5079,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 336204263}
   m_CullTransparentMesh: 1
+--- !u!114 &338564783 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2761839015050888785, guid: 7229e061cf6a4c5479b7a12c6435cfac, type: 3}
+  m_PrefabInstance: {fileID: 2761839015668164859}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 731904064c3f3704fad5f28432257ff8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &339905873
 GameObject:
   m_ObjectHideFlags: 0
@@ -21580,6 +21591,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1717002038}
   m_CullTransparentMesh: 1
+--- !u!224 &1732771046 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8317829926143335093, guid: bf420e9c39c5a7d43b099607c70fecc0, type: 3}
+  m_PrefabInstance: {fileID: 8317829926562887217}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1734535079
 GameObject:
   m_ObjectHideFlags: 0
@@ -35647,7 +35663,7 @@ PrefabInstance:
     - target: {fileID: 2761839015050888785, guid: 7229e061cf6a4c5479b7a12c6435cfac, type: 3}
       propertyPath: _skinParent
       value: 
-      objectReference: {fileID: 1916292340}
+      objectReference: {fileID: 1732771046}
     - target: {fileID: 2761839015050888785, guid: 7229e061cf6a4c5479b7a12c6435cfac, type: 3}
       propertyPath: _materialParent
       value: 
@@ -35657,9 +35673,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1091950442}
     - target: {fileID: 2761839015050888785, guid: 7229e061cf6a4c5479b7a12c6435cfac, type: 3}
+      propertyPath: _skinMakeDataSO
+      value: 
+      objectReference: {fileID: 11400000, guid: b5ca0a6aa9f25c54bae3f210f1cb8706, type: 2}
+    - target: {fileID: 2761839015050888785, guid: 7229e061cf6a4c5479b7a12c6435cfac, type: 3}
       propertyPath: _currentMakeSkinImage
       value: 
       objectReference: {fileID: 1892629466}
+    - target: {fileID: 2761839015050888785, guid: 7229e061cf6a4c5479b7a12c6435cfac, type: 3}
+      propertyPath: _skinMakeDatas.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2761839015050888785, guid: 7229e061cf6a4c5479b7a12c6435cfac, type: 3}
+      propertyPath: _skinMakeDatas.Array.data[0].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: faabc6cf714cf1644b77ad4af7e91202, type: 3}
+    - target: {fileID: 2761839015050888785, guid: 7229e061cf6a4c5479b7a12c6435cfac, type: 3}
+      propertyPath: _skinMakeDatas.Array.data[0].skinName
+      value: "\uAC00\uC704"
+      objectReference: {fileID: 0}
     - target: {fileID: 2761839015050888786, guid: 7229e061cf6a4c5479b7a12c6435cfac, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -38804,6 +38836,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8317829927281626676, guid: bf420e9c39c5a7d43b099607c70fecc0, type: 3}
+      propertyPath: _skinMakerComponent
+      value: 
+      objectReference: {fileID: 338564783}
     - target: {fileID: 8317829927468835233, guid: bf420e9c39c5a7d43b099607c70fecc0, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -38823,6 +38859,10 @@ PrefabInstance:
     - target: {fileID: 8317829927870970562, guid: bf420e9c39c5a7d43b099607c70fecc0, type: 3}
       propertyPath: m_Name
       value: SkinPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 8317829927870970562, guid: bf420e9c39c5a7d43b099607c70fecc0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8317829927870970565, guid: bf420e9c39c5a7d43b099607c70fecc0, type: 3}
       propertyPath: m_Pivot.x
