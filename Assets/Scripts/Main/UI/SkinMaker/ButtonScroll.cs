@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace Main.Skin
 {
@@ -23,6 +25,7 @@ namespace Main.Skin
         private const int RIGHT = -1;
 
         //변수
+        private List<Button> _buttonList = new List<Button>();
         private List<RectTransform> _targetList = new List<RectTransform>();
         private List<RectTransform> _imposterList = new List<RectTransform>();
         private RectTransform _currentImposter;
@@ -39,14 +42,18 @@ namespace Main.Skin
         private void OnEnable()
         {
             //켜질 때 콘텐츠 리스트 초기화
+            _buttonList.Clear();
             _targetList.Clear();
             int childCount = transform.childCount;
 
             //콘텐츠들을 리스트에 추가
             for (int i = 0; i < childCount; i++)
             {
+                int j = i;
                 Transform child = transform.GetChild(i);
                 _targetList.Add(child.GetComponent<RectTransform>());
+                _buttonList.Add(child.GetComponent<Button>());
+                _buttonList[j].onClick.AddListener(() => OnChangeSkinSet(j));
             }
 
             //콘텐츠 카운트와 회전카운트, 중심 인덱스 설정
@@ -90,6 +97,52 @@ namespace Main.Skin
                     if (_currentIndex < 0) _currentIndex += _targetCount;
                     OnTransitionEnd();
                 }
+            }
+        }
+
+        /// <summary>
+        /// 버튼 순서에 따라 왼쪽 오른쪽 여부가 결정된다
+        /// </summary>
+        /// <param name="index"></param>
+        public void OnChangeSkinSet(int index)
+		{
+            if(index == _currentIndex)
+			{
+                return;
+			}
+
+            switch(_currentIndex)
+			{
+                case 0:
+                    if(index == 1)
+                    {
+                        RightTransition();
+                    }
+                    else if (index == 2)
+                    {
+                        LeftTransition();
+                    }
+                    break;
+                case 1:
+                    if (index == 0)
+                    {
+                        LeftTransition();
+                    }
+                    else if (index == 2)
+                    {
+                        RightTransition();
+                    }
+                    break;
+                case 2:
+                    if (index == 0)
+                    {
+                        RightTransition();
+                    }
+                    else if (index == 1)
+                    {
+                        LeftTransition();
+                    }
+                    break;
             }
         }
 
