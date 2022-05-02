@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace store
 {
-    public class StorePakage : MonoBehaviour
+    public class StorePackage : MonoBehaviour
     {
         private List<bool> _IsHave = new List<bool>();
         private List<int> _NHnum = new List<int>();
@@ -103,7 +103,7 @@ namespace store
         /// </summary>
         private void CommonButtonClick()
         {
-            SetPakageSelect(PakageType.CommonPack);
+            SetPakageSelect(PackageType.CommonPack);
             RandomUnitSummons();
             RandomNewUnit();
         }
@@ -113,7 +113,7 @@ namespace store
         /// </summary>
         private void ShinyButtonClick()
         {
-            SetPakageSelect(PakageType.ShinyPack);
+            SetPakageSelect(PackageType.ShinyPack);
             RandomUnitSummons();
             RandomNewUnit();
         }
@@ -123,7 +123,7 @@ namespace store
         /// </summary>
         private void LegendaryButtonClick()
         {
-            SetPakageSelect(PakageType.LegendaryPack);
+            SetPakageSelect(PackageType.LegendaryPack);
             RandomUnitSummons();
             RandomNewUnit();
         }
@@ -132,25 +132,25 @@ namespace store
         /// 패키지를 골랐을때 여러가지 값을 대입
         /// </summary>
         /// <param name="pack"></param>
-        public void SetPakageSelect(PakageType pack)
+        public void SetPakageSelect(PackageType pack)
         {
             switch (pack)
             {
-                case PakageType.CommonPack:
+                case PackageType.CommonPack:
                     _min = 2; _max = 3;
                     _newPercent = 1;
                     _useMoney = 500;
                     _unitMaxAmount = 20;
                     _CurrentUnitAmount = _unitMaxAmount;
                     break;
-                case PakageType.ShinyPack:
+                case PackageType.ShinyPack:
                     _min = 4; _max = 5;
                     _newPercent = 4;
                     _useDalgona = 10;
                     _unitMaxAmount = 70;
                     _CurrentUnitAmount = _unitMaxAmount;
                     break;
-                case PakageType.LegendaryPack:
+                case PackageType.LegendaryPack:
                     _min = 6; _max = 8;
                     _newPercent = 10;
                     _useDalgona = 45;
@@ -176,11 +176,8 @@ namespace store
             _UnitAmountList.Clear();
             HaveUnit();
             Shuffle();
+            QuantityOverCheck();
 
-            if(_Quantity > _NHnum.Count)
-            {
-                _Quantity = _NHnum.Count;
-            }
 
             devide = _unitMaxAmount / _Quantity;
 
@@ -236,7 +233,10 @@ namespace store
             }
         }
 
-        private void HaveUnit() //수량보다 가지고 있는게 적을때는?
+        /// <summary>
+        /// 가지고 있는 유닛 배열로 가져오기 
+        /// </summary>
+        private void HaveUnit() 
         {
             int j = -1;
 
@@ -247,11 +247,14 @@ namespace store
                 if (_IsHave[i])
                 {
                     j++;
-                    _NHnum.Add(i); //가지고 있는 캐릭터들 가져오기
+                    _NHnum.Add(i); 
                 }
             }
         }
-        
+
+        /// <summary>
+        /// 가지고 있지 않은 유닛 배열로 가져오기 
+        /// </summary>
         private void NotHaveUnit()
         {
             int j = -1;
@@ -265,6 +268,17 @@ namespace store
                     j++;
                     _NHnum.Add(i);
                 }
+            }
+        }
+
+        /// <summary>
+        /// 수량이 가지고 있는 캐릭터의 갯수보다 크다면 최댓값을 캐릭터의 갯수로 고정 
+        /// </summary>
+        private void QuantityOverCheck()
+        {
+            if (_Quantity > _NHnum.Count)
+            {
+                _Quantity = _NHnum.Count;
             }
         }
     }
