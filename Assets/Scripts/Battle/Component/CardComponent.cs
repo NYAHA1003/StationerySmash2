@@ -31,7 +31,9 @@ namespace Battle
 
         //인스펙터 참조 변수
         [SerializeField]
-        private LineRenderer _summonRangeLine = null;
+        private GameObject _summonRangeImage = null;
+        [SerializeField]
+        private SpriteRenderer _summonArrow = null;
         [SerializeField]
         private GameObject _cardMovePrefeb = null;
         [SerializeField]
@@ -84,7 +86,7 @@ namespace Battle
             SetMaxCard(maxCard);
 
             //유닛 소환 범위 그리기
-            DrawSummonRangeLinePos();
+            DrawSummonRange();
 
             //덱에 카드정보들 전달
             SetDeckCard();
@@ -244,7 +246,7 @@ namespace Battle
             }
 
             SetSummonRangeLine(true);
-            _summonRangeLine.gameObject.SetActive(true);
+            _summonRangeImage.gameObject.SetActive(true);
 
             //해당 카드를 선택된 카드에 넣음
             _selectCard = card;
@@ -360,24 +362,50 @@ namespace Battle
         /// <param name="isDelete"></param>
         public void UpdateUnitAfterImage()
         {
+            //마우스 위치를 가져온다
             Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            
+            //소환할 유닛이 자신의 유닛인지 체크해서 범위 제한
             if (_commandUnit.eTeam == TeamType.MyTeam)
             {
                 pos.x = Mathf.Clamp(pos.x, -_stageData.max_Range, _summonRange);
             }
+
+            //소환 미리보기가 될 수 있는지 체크
             if (_selectCard == null || _selectCard.DataBase.unitData.unitType == UnitType.None || pos.y < 0)
             {
+                SetSummonArrowImage(false, pos);
                 _unitAfterImage.SetActive(false);
                 return;
             }
+
+            //소환 미리보기 적용
             _unitAfterImage.SetActive(true);
             _afterImageSpriteRenderer.color = Color.white;
+
             if (CheckPossibleSummon())
             {
                 _afterImageSpriteRenderer.color = Color.red;
             }
+
             _unitAfterImage.transform.position = new Vector3(pos.x, 0);
             _afterImageSpriteRenderer.sprite = SkinData.GetSkin(_selectCard.DataBase.skinData._skinType);
+
+            //소환 화살표 적용
+            SetSummonArrowImage(true, pos);
+            return;
+        }
+
+        /// <summary>
+        /// 소환 화살표 설정
+        /// </summary>
+        public void SetSummonArrowImage(bool isActive, Vector2 pos)
+        {
+            //소환 화살표 적용
+            _summonArrow.gameObject.SetActive(isActive);
+            _summonArrow.transform.position = new Vector3(pos.x, 0);
+            float ySize = Mathf.Clamp(pos.y * 2f, 0.8f, 2f);
+            _summonArrow.size = new Vector2(0.35f, ySize);
             return;
         }
 
@@ -442,8 +470,8 @@ namespace Battle
             }
             Debug.Log("범위 늘어남");
             _summonRangeDelay = 30f;
-            _summonRange = _summonRange + _stageData.max_Range / 4;
-            DrawSummonRangeLinePos();
+            _summonRange += _stageData.max_Range / 4;
+            DrawSummonRange();
         }
 
         /// <summary>
@@ -452,7 +480,7 @@ namespace Battle
         /// <param name="isActive"></param>
         public void SetSummonRangeLine(bool isActive)
         {
-            _summonRangeLine.gameObject.SetActive(isActive);
+            _summonRangeImage.gameObject.SetActive(isActive);
         }
 
         /// <summary>
@@ -692,12 +720,12 @@ namespace Battle
         }
 
         /// <summary>
-        /// 소환 범위 임시 라인 렌더링
+        /// 소환 범위 렌더링
         /// </summary>
-        private void DrawSummonRangeLinePos()
+        private void DrawSummonRange()
         {
-            _summonRangeLine.SetPosition(0, new Vector2(-_stageData.max_Range, 0));
-            _summonRangeLine.SetPosition(1, new Vector2(_summonRange, 0));
+            _summonRangeImage.transform.position = new Vector2(-_stageData.max_Range, 0);
+            _summonRangeImage.transform.localScale = new Vector2(Mathf.Abs(_stageData.max_Range + _summonRange), 0.5f);
         }
 
 		public void Notify(bool isWin)
