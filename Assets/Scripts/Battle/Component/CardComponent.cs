@@ -33,6 +33,8 @@ namespace Battle
         [SerializeField]
         private GameObject _summonRangeImage = null;
         [SerializeField]
+        private SpriteRenderer _summonArrow = null;
+        [SerializeField]
         private GameObject _cardMovePrefeb = null;
         [SerializeField]
         private Transform _cardPoolManager = null;
@@ -360,24 +362,50 @@ namespace Battle
         /// <param name="isDelete"></param>
         public void UpdateUnitAfterImage()
         {
+            //마우스 위치를 가져온다
             Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            
+            //소환할 유닛이 자신의 유닛인지 체크해서 범위 제한
             if (_commandUnit.eTeam == TeamType.MyTeam)
             {
                 pos.x = Mathf.Clamp(pos.x, -_stageData.max_Range, _summonRange);
             }
+
+            //소환 미리보기가 될 수 있는지 체크
             if (_selectCard == null || _selectCard.DataBase.unitData.unitType == UnitType.None || pos.y < 0)
             {
+                SetSummonArrowImage(false, pos);
                 _unitAfterImage.SetActive(false);
                 return;
             }
+
+            //소환 미리보기 적용
             _unitAfterImage.SetActive(true);
             _afterImageSpriteRenderer.color = Color.white;
+
             if (CheckPossibleSummon())
             {
                 _afterImageSpriteRenderer.color = Color.red;
             }
+
             _unitAfterImage.transform.position = new Vector3(pos.x, 0);
             _afterImageSpriteRenderer.sprite = SkinData.GetSkin(_selectCard.DataBase.skinData._skinType);
+
+            //소환 화살표 적용
+            SetSummonArrowImage(true, pos);
+            return;
+        }
+
+        /// <summary>
+        /// 소환 화살표 설정
+        /// </summary>
+        public void SetSummonArrowImage(bool isActive, Vector2 pos)
+        {
+            //소환 화살표 적용
+            _summonArrow.gameObject.SetActive(isActive);
+            _summonArrow.transform.position = new Vector3(pos.x, 0);
+            float ySize = Mathf.Clamp(pos.y * 2f, 0.8f, 2f);
+            _summonArrow.size = new Vector2(0.35f, ySize);
             return;
         }
 
