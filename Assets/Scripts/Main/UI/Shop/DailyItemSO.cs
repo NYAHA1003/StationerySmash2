@@ -8,9 +8,7 @@ public class DailyItemInfo
     public DailyCardType dailyCardType;
     public Sprite itemSprite; 
     public string card_Name;
-    public string card_Description;
     public int card_price;
-    public int count;
 }
 
 [CreateAssetMenu(fileName = "DailyItem", menuName = "Scriptable Object/DailyItemDataSO")]

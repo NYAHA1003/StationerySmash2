@@ -3,18 +3,11 @@
     // 일일상점의 카드타입 
     public enum DailyCardType
     {
-        Free, // 무료 
-        Pencil, // 연필 
-        Sharp, // 샤프
-        Eraser, // 지우개
-        Scissors, // 가위
-        Glue, // 풀
-        Ruler, // 자
-        Boxcutter, // 커터칼
-        Postit, // 포스트잇
-        Sharplead, // 샤프심
-        ballpointPen, // 볼펜
-        EraserPiece, // 지우개 조각
-        PostitSheet // 포스트잇 조각
+        StationerySheet, // 학용품조각
+        StickerSheet, // 스티커 조각
+        BadgeSheet, // 뱃지 조각
+        NewStationary, // 신규 학용품
+        NewSticker, // 신규 스티커
+        NewBadge // 신규 뱃지 
     }
 }
