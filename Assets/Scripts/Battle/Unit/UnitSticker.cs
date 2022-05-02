@@ -198,11 +198,11 @@ public class UnitSticker
             case UnitType.Pencil:
                 _stickerSprite.transform.position = Vector2.zero;
                 break;
-            case UnitType.Sharp:
+            case UnitType.MechaPencil:
                 break;
             case UnitType.Eraser:
                 break;
-            case UnitType.BallPen:
+            case UnitType.Pen:
                 break;
         }
     }
