@@ -19,8 +19,9 @@ public class SaveManager : MonoSingleton<SaveManager>
 
 	private void Awake()
 	{
-        if(_instance.isLoadData)
+        if(!_instance.isLoadData)
 		{
+            isLoadData = true;
             LoadData();
 		}
 	}
