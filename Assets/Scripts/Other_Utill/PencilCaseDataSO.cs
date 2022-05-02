@@ -7,4 +7,6 @@ using UnityEngine;
 public class PencilCaseDataSO : ScriptableObject
 {
     public PencilCaseData PencilCasedataBase;
+
+    public object PencilCaseData { get; internal set; }
 }
