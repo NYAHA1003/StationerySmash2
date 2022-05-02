@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace store
 {
-    public class StorePackage : MonoBehaviour
+    public class UnitPackage : MonoBehaviour
     {
         private List<bool> _IsHave = new List<bool>();
         private List<int> _NHnum = new List<int>();
