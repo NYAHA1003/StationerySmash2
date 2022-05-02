@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
+using Battle;
+using Battle.Units;
 
 /// <summary>
 /// 유닛 스테이트변경자 컴포넌트
@@ -69,10 +72,10 @@ public class UnitStateChanger
             case UnitType.Eraser:
                 _stateManager = PoolManager.GetUnit<EraserState>(transform, spriteRendererTransform, unit);
                 break;
-            case UnitType.Sharp:
+            case UnitType.MechaPencil:
                 _stateManager = PoolManager.GetUnit<SharpState>(transform, spriteRendererTransform, unit);
                 break;
-            case UnitType.BallPen:
+            case UnitType.Pen:
                 break;
 
                 //필통 관련
@@ -84,6 +87,9 @@ public class UnitStateChanger
                 break;
             case UnitType.GreenCar:
                 _stateManager = PoolManager.GetUnit<GreenCarState>(transform, spriteRendererTransform, unit);
+                break;
+            case UnitType.SharpSim:
+                _stateManager = PoolManager.GetUnit<SharpsimState>(transform, spriteRendererTransform, unit);
                 break;
         }
         _stateManager.Set_Idle();

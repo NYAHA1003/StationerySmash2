@@ -1,7 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using Utill.Data;
+using Utill.Tool;
+using Battle.Badge;
+using Battle.PCAbility;
 
 namespace Battle
 {
@@ -30,6 +35,9 @@ namespace Battle
         private PencilCaseUnit _playerPencilCase = null;
         [SerializeField]
         private PencilCaseUnit _enemyPencilCase = null;
+        [SerializeField]
+        private Button _pencilCaseAbilityButton = null;
+
 
         //변수
         private List<AbstractBadge> _playerBadges = new List<AbstractBadge>();
@@ -68,6 +76,8 @@ namespace Battle
             _enemyAbilityState.SetTeam(TeamType.EnemyTeam);
             SetEnemyBadgeAbility();
             RunBadgeAbility(_enemyBadges);
+
+            _pencilCaseAbilityButton.onClick.AddListener(() => OnPencilCaseAbility());
         }
 
         /// <summary>
@@ -177,6 +187,14 @@ namespace Battle
                     break;
             }
             return abstractBadge;
+        }
+
+        /// <summary>
+        /// 클릭하면 필통 능력 사용
+        /// </summary>
+        public void OnPencilCaseAbility()
+        {
+            RunPlayerPencilCaseAbility();
         }
 
     }

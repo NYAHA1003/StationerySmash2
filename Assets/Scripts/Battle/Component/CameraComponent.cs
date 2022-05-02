@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using DG.Tweening;
 using Utill;
 
 namespace Battle
 {
     [System.Serializable]
-    public class CameraComponent : BattleComponent
+    public class CameraComponent : BattleComponent, IWinLose
     {
 
         private Vector3 _clickPos = Vector3.zero;
@@ -18,6 +20,7 @@ namespace Battle
         private bool _isEffect = false;
         public float _perspectiveZoomSpeed = 0.5f;       // perspective mode.
         public float _orthoZoomSpeed = 0.5f;        //  orthographic mode.
+        public float _moveSpeed = 1f;
 
         //참조 변수
         private StageData _stageData = null;
@@ -26,7 +29,13 @@ namespace Battle
 
         //인스펙터 참조 변수
         [SerializeField]
-        private Camera _camera = null;
+        private UnityEngine.Camera _camera = null;
+        [SerializeField]
+        private Transform _myPencilCase = null;
+        [SerializeField]
+        private Transform _enemyPencilCase = null;
+        [SerializeField]
+        private EventTrigger eventTrigger;
 
         /// <summary>
         /// 초기화
@@ -39,8 +48,11 @@ namespace Battle
             _commandWinLose = commandWInLose;
             _commandCard = cardCommand;
 
-            updateAction += UpdateCameraPos;
             updateAction += UpdateCameraScale;
+            updateAction += UpdateCameraPos;
+
+            //관찰자를 등록한다
+            _commandWinLose.AddObservers(this);
         }
 
         /// <summary>
@@ -122,7 +134,9 @@ namespace Battle
         public void UpdateCameraPos()
         {
             if (_isEffect)
+			{
                 return;
+			}
 
             //카드를 클릭한 상태라면
             if (_commandCard.IsSelectCard)
@@ -131,22 +145,8 @@ namespace Battle
                 return;
             }
 
-            _mousePos = Input.mousePosition * 0.005f;
-
-            if (Input.GetMouseButtonDown(0) && Input.mousePosition.y > _camera.pixelHeight * 0.3f)
-            {
-                _clickPos = _mousePos;
-                _curPos = _camera.transform.position;
-                _isCameraMove = true;
-            }
-            else if (Input.GetMouseButtonUp(0))
-            {
-                _isCameraMove = false;
-            }
-
             if (_isCameraMove)
             {
-                _camera.transform.position = new Vector3(_curPos.x + (_clickPos.x + -_mousePos.x), 0, -10);
                 if (_stageData.max_Range + 1f < _camera.transform.position.x)
                 {
                     _camera.transform.DOMoveX(_stageData.max_Range, 0.1f);
@@ -159,12 +159,46 @@ namespace Battle
         }
 
         /// <summary>
+        /// 왼쪽으로 카메라 이동
+        /// </summary>
+        public void OnLeftMove()
+        {
+            if (_commandCard.IsSelectCard)
+            {
+                return;
+            }
+            _camera.transform.Translate(Vector3.left * _moveSpeed * Time.deltaTime);
+        }
+
+        /// <summary>
+        /// 오른쪽으로 카메라 이동
+        /// </summary>
+        public void OnRightMove()
+        {
+            if (_isEffect)
+            {
+                return;
+            }
+            if (_commandCard.IsSelectCard)
+            {
+                return;
+            }
+            _camera.transform.Translate(Vector3.right * _moveSpeed * Time.deltaTime);
+        }
+
+        /// <summary>
         /// 승리 카메라 이펙트
         /// </summary>
         public void WinCamEffect(Vector2 pos, bool isWin)
         {
             if (_isEffect)
+            {
                 return;
+            }
+            if (_isEffect)
+			{
+                return;
+			}
             _isEffect = true;
             float time = Vector2.Distance(_camera.transform.position, pos) / 5;
             _camera.transform.DOMove(new Vector3(pos.x, pos.y, -10), time);
@@ -183,6 +217,22 @@ namespace Battle
                 });
             });
         }
-    }
+
+        /// <summary>
+        /// 승리에 따라 필통이 파괴되는 연출을 사용한다.
+        /// </summary>
+        /// <param name="isWin"></param>
+		public void Notify(bool isWin)
+		{
+            if(isWin)
+			{
+                WinCamEffect(_enemyPencilCase.position, isWin);
+			}
+            else
+			{
+                WinCamEffect(_myPencilCase.position, isWin);
+			}
+        }
+	}
 
 }

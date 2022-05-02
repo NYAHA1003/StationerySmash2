@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 
 namespace Battle
 {
@@ -18,6 +19,10 @@ namespace Battle
         private Image _throwDelayBar;
         [SerializeField]
         private GameObject _parabolaBackground = null;
+        [SerializeField]
+        private TrailRenderer _throwTrail = null;
+        [SerializeField]
+        private PencilCaseDataSO _playerPencilCaseDataSO = null;
 
         //참조 변수
         private Unit _throwUnit = null;
@@ -30,6 +35,7 @@ namespace Battle
         private float _force;
         private float _pullTime;
         private float _throwGauge = 0f;
+        private float _throwGaugeSpeed = 0f;
 
         /// <summary>
         /// 초기화
@@ -44,6 +50,7 @@ namespace Battle
             _cameraCommand = cameraCommand;
             this._stageData = stageData;
             _lineZeroPos = new List<Vector2>(_parabola.positionCount);
+            _throwGaugeSpeed = _playerPencilCaseDataSO.PencilCasedataBase.throwGaugeSpeed;
             for (int i = 0; i < _parabola.positionCount; i++)
             {
                 _lineZeroPos.Add(Vector2.zero);
@@ -59,7 +66,7 @@ namespace Battle
         {
             if(_throwGauge <= 200f)
             {
-                IncreaseThrowGauge(Time.deltaTime * 10);
+                IncreaseThrowGauge(Time.deltaTime * _throwGaugeSpeed);
                 _throwDelayBar.fillAmount = _throwGauge / 200f;
                 CheckCanThrow();
             }
@@ -90,6 +97,11 @@ namespace Battle
             List<Unit> list = _unitCommand._playerUnitList;
             float targetPosX = 0;
             _throwUnit = null;
+            if(list.Count == 0)
+			{
+                return;
+			}
+
             if(pos.x >= list[lastNum].transform.position.x - 0.3f)
             {
                 _throwUnit = list[lastNum];
@@ -272,11 +284,11 @@ namespace Battle
                 _force = Mathf.Clamp(Vector2.Distance(_throwUnit.transform.position, pos), 0, 1) * 4 * (100.0f / _throwUnit.UnitStat.Return_Weight());
 
                 //최고점
-                float height = Utill.Parabola.Caculated_Height(_force, dirx);
+                float height = Parabola.Caculated_Height(_force, dirx);
                 //수평 도달 거리
-                float width = Utill.Parabola.Caculated_Width(_force, dirx);
+                float width = Parabola.Caculated_Width(_force, dirx);
                 //수평 도달 시간
-                float time = Utill.Parabola.Caculated_Time(_force, dir, 2);
+                float time = Parabola.Caculated_Time(_force, dir, 2);
 
                 List<Vector2> linePos = SetParabolaPos(_parabola.positionCount, width, _force, dir, time);
 
@@ -331,7 +343,7 @@ namespace Battle
             for (int i = 0; i < count; i++)
             {
                 Vector3 pos = Vector3.Lerp((Vector2)_throwUnit.transform.position, new Vector2(_throwUnit.transform.position.x - width, 0), objLerps[i]);
-                pos.y = Utill.Parabola.Caculated_TimeToPos(force, dir_rad, timeLerps[i]);
+                pos.y = Parabola.Caculated_TimeToPos(force, dir_rad, timeLerps[i]);
 
                 if (i > 0)
                 {
@@ -356,7 +368,9 @@ namespace Battle
             {
                 _throwUnit.Throw_Unit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
                 IncreaseThrowGauge(-_throwUnit.UnitStat.Return_Weight());
-                _throwUnit = null;
+                _throwTrail.transform.SetParent(_throwUnit.transform);
+                _throwTrail.transform.localPosition = Vector2.zero;
+                _throwTrail.Clear();
                 _parabolaBackground.SetActive(false);
                 UnDrawParabola();
             }
@@ -378,6 +392,19 @@ namespace Battle
                 _throwGauge = 200;
             }
         }
+
+        /// <summary>
+        /// 던지기가 끝났을 때 선택된 유닛을 Null로 바꾼다
+        /// </summary>
+        /// <param name="unit"></param>
+        public void EndThrowTarget(Unit unit)
+		{
+            if(unit == _throwUnit)
+			{
+                _throwUnit = null;
+                _throwTrail.transform.SetParent(null);
+            }
+		}
     }
 
 }

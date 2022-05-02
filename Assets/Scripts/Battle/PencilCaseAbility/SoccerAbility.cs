@@ -2,23 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill;
-
-public class SoccerAbility : AbstractPencilCaseAbility
+namespace Battle.PCAbility
 {
-    float speed = 10;
-    float duration = 4;
-    public override void RunPencilCaseAbility()
+
+    public class SoccerAbility : AbstractPencilCaseAbility
     {
-        _battleManager.CommandCost.AddCostSpeed(speed);
-        Wait();
-        _battleManager.CommandCost.AddCostSpeed(-speed);
-    }
-    public IEnumerator Wait()
-    {
-        yield return new WaitForSeconds(duration);
-    }
-    public override bool AIAbilityCondition()
-    {
-        throw new System.NotImplementedException();
+        float speed = 10;
+        float duration = 4;
+        public override void RunPencilCaseAbility()
+        {
+            _battleManager.CommandCost.AddCostSpeed(speed);
+            Wait();
+            _battleManager.CommandCost.AddCostSpeed(-speed);
+        }
+        public IEnumerator Wait()
+        {
+            yield return new WaitForSeconds(duration);
+        }
+        public override bool AIAbilityCondition()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using DG.Tweening;
 
 namespace Battle
@@ -18,6 +20,18 @@ namespace Battle
         private RectTransform _winText;
         [SerializeField]
         private RectTransform _loseText;
+        [SerializeField]
+        private Button _loseRetryButton;
+        [SerializeField]
+        private Button _loseBackHomeButton;
+        [SerializeField]
+        private Button _winRetryButton;
+        [SerializeField]
+        private Button _winBackHomeButton;
+        [SerializeField]
+        private SceneLoadComponenet _sceneLoadComponent;
+
+        private List<IWinLose> _observers = new List<IWinLose>(); //관찰자들
 
         /// <summary>
         /// 초기화
@@ -26,10 +40,34 @@ namespace Battle
         /// <param name="winLoseCanvas"></param>
         /// <param name="winPanel"></param>
         /// <param name="losePanel"></param>
-        public void SetInitialization(BattleManager battleManager)
+        public void SetInitialization()
         {
-
+            _winRetryButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadBattle());
+            _winBackHomeButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadMain());
+            _loseRetryButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadBattle());
+            _loseBackHomeButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadMain());
         }
+
+        /// <summary>
+        /// 관찰자들에게 게임이 종료됨을 알린다.
+        /// </summary>
+        public void SendEndGame(bool isWin)
+		{
+            int count = _observers.Count;
+            for (int i = 0; i < count; i++)
+			{
+                //게임이 끝났음을 모든 관찰자들에게 전달
+                _observers[i].Notify(isWin);
+			}
+		}
+
+        /// <summary>
+        /// 관찰자를 등록한다
+        /// </summary>
+        public void AddObservers(IWinLose observer)
+		{
+            _observers.Add(observer);
+		}
 
         /// <summary>
         /// 승리,패배 패널 키기

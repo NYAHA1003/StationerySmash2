@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
-
-public class Starategy_Rage : AbstractStarategy
+using Utill.Data;
+using Utill.Tool;
+namespace Battle.Starategy
 {
-    public override void Run_Card(TeamType eTeam)
+
+
+    public class Starategy_Rage : AbstractStarategy
     {
-        _battleManager.CommandCost.AddCost(3);
+        public override void Run_Card(TeamType eTeam)
+        {
+            _battleManager.CommandCost.AddCost(3);
+        }
     }
 }

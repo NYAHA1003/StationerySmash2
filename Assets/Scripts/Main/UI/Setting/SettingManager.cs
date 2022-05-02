@@ -2,76 +2,79 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IEvent
+namespace Main.Setting
 {
-    void ListenEvent();
-}
-public class SettingManager : MonoBehaviour
-{
-    [Header("사운드 매니저")]
-    [SerializeField]
-    private SoundManager soundManager;
-    [Header("프로필")]
-    [SerializeField]
-    private ProfileSetting profile;
-
-    private List<IEvent> events = new List<IEvent>(); 
-    private void Start()
+    public interface IEvent
     {
-        events.Add(profile);
-
-        ListenAll(); 
+        void ListenEvent();
     }
-    /// <summary>
-    /// 이벤트를 사용하는 클래스가 이벤트에 함수를 등록
-    /// </summary>
-    private void ListenAll()
+    public class SettingManager : MonoBehaviour
     {
-        foreach (IEvent ievent in events)
-            ievent.ListenEvent(); 
-    }
-    public void OnYoutube()
-    {
+        [Header("사운드 매니저")]
+        [SerializeField]
+        private SoundComponent soundManager;
+        [Header("프로필")]
+        [SerializeField]
+        private ProfileSetting profile;
 
-    }
-    public void OnDiscord()
-    {
+        private List<IEvent> events = new List<IEvent>();
+        private void Start()
+        {
+            events.Add(profile);
 
-    }
-    public void OnNaverCafe()
-    {
+            ListenAll();
+        }
+        /// <summary>
+        /// 이벤트를 사용하는 클래스가 이벤트에 함수를 등록
+        /// </summary>
+        private void ListenAll()
+        {
+            foreach (IEvent ievent in events)
+                ievent.ListenEvent();
+        }
+        public void OnYoutube()
+        {
 
-    }
-    public void OnChangeProfileImage()
-    {
+        }
+        public void OnDiscord()
+        {
 
-    }
-    public void OnChangeNickname()
-    {
+        }
+        public void OnNaverCafe()
+        {
 
-    }
-    public void OnEffectSound()
-    {
+        }
+        public void OnChangeProfileImage()
+        {
 
-    }
-    public void OnBgm()
-    {
+        }
+        public void OnChangeNickname()
+        {
 
-    }
-    public void OnInputCoupon()
-    {
+        }
+        public void OnEffectSound()
+        {
 
-    }
-    public void OnTutorial()
-    {
+        }
+        public void OnBgm()
+        {
 
-    }
-    public void OnCredit()
-    {
+        }
+        public void OnInputCoupon()
+        {
 
-    }
-    public void OnLanguage()
-    {
+        }
+        public void OnTutorial()
+        {
 
+        }
+        public void OnCredit()
+        {
+
+        }
+        public void OnLanguage()
+        {
+
+        }
     }
 }

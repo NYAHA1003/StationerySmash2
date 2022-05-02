@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
-
+using Main.Deck;
 public class MoneyComponent : MonoBehaviour, IUserData
 {
     [SerializeField]

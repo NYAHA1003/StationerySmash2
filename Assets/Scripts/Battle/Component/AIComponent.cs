@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utill.Data;
+using Utill.Tool;
 
 namespace Battle
 {
@@ -14,9 +16,7 @@ namespace Battle
         private AIDataSO _aiPlayerDataSO;
         [SerializeField]
         private StageLog _aiLog;
-        [SerializeField]
         private bool isEnemyAIOn = false;
-        [SerializeField]
         private bool isPlayerAIOn = false;
 
         //참조 변수
@@ -66,6 +66,7 @@ namespace Battle
             this.enemyPos = _aiEnemyDataSO.pos;
             this.enemyMaxDelay = _aiEnemyDataSO.max_Delay;
             this.enemyThrowSpeed = _aiEnemyDataSO.throwSpeed;
+            this.isEnemyAIOn = _aiEnemyDataSO.isAIOn;
 
             //테스트용 Player AI
             this.playerSummonGrade = _aiPlayerDataSO.summonGrade;
@@ -73,6 +74,7 @@ namespace Battle
             this.playerPos = _aiPlayerDataSO.pos;
             this.playerMaxDelay = _aiPlayerDataSO.max_Delay;
             this.playerThrowSpeed = _aiPlayerDataSO.throwSpeed;
+            this.isPlayerAIOn = _aiPlayerDataSO.isAIOn;
 
             //배틀매니저에 업데이트할 함수를 넣는다
             updateAction += UpdateEnemyAICard;
@@ -132,7 +134,7 @@ namespace Battle
                 enemyCurDelay += Time.deltaTime;
                 return;
             }
-            _unitCommand.SummonUnit(enemyCardDataList[_enemyCurrentIndex], new Vector3(enemyPos[_enemyCurrentIndex].x, 0, 0), enemySummonGrade, Utill.TeamType.EnemyTeam);
+            _unitCommand.SummonUnit(enemyCardDataList[_enemyCurrentIndex], new Vector3(enemyPos[_enemyCurrentIndex].x, 0, 0), enemySummonGrade, TeamType.EnemyTeam);
             _enemyCurrentIndex++;
             if (_enemyCurrentIndex == enemyMaxDelay.Count)
             {
@@ -175,7 +177,7 @@ namespace Battle
                 playerCurDelay += Time.deltaTime;
                 return;
             }
-            _unitCommand.SummonUnit(playerCardDataList[playerCurrent], new Vector3(playerPos[playerCurrent].x, 0, 0), playerSummonGrade, Utill.TeamType.MyTeam);
+            _unitCommand.SummonUnit(playerCardDataList[playerCurrent], new Vector3(playerPos[playerCurrent].x, 0, 0), playerSummonGrade, TeamType.MyTeam);
             playerCurrent++;
             if (playerCurrent == playerMaxDelay.Count)
             {

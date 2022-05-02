@@ -1,24 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
-
-public class WingAbility : AbstractPencilCaseAbility
+using Utill.Data;
+using Utill.Tool;
+namespace Battle.PCAbility
 {
-    int count = 0;
-    public override void RunPencilCaseAbility()
+
+
+    public class WingAbility : AbstractPencilCaseAbility
     {
-        AtkData atkData = new AtkData(_battleManager.CommandPencilCase.PlayerPencilCase, 0, 10, 0, 45, true, 13200 + count, AtkType.Normal, EffectType.Attack);
-        
-        for(int i = 0; i < _battleManager.CommandUnit._enemyUnitList.Count; i++)
+        int count = 0;
+        public override void RunPencilCaseAbility()
         {
-            Unit unit = _battleManager.CommandUnit._enemyUnitList[i];
-            unit.Run_Damaged(atkData);
+            AtkData atkData = new AtkData(_battleManager.CommandPencilCase.PlayerPencilCase, 0, 10, 0, 45, true, 13200 + count, EffAttackType.Normal, EffectType.Attack);
+
+            for (int i = 0; i < _battleManager.CommandUnit._enemyUnitList.Count; i++)
+            {
+                Unit unit = _battleManager.CommandUnit._enemyUnitList[i];
+                unit.Run_Damaged(atkData);
+            }
+            count++;
         }
-        count++;
-    }
-    public override bool AIAbilityCondition()
-    {
-        throw new System.NotImplementedException();
+        public override bool AIAbilityCondition()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

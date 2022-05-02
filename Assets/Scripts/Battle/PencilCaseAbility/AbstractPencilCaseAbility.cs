@@ -1,7 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
+
+namespace Battle.PCAbility
+{
 
 public abstract class AbstractPencilCaseAbility
 {
@@ -31,4 +35,5 @@ public abstract class AbstractPencilCaseAbility
     /// AI의 필통 능력 발동 조건
     /// </summary>
     public abstract bool AIAbilityCondition();
+    }
 }
