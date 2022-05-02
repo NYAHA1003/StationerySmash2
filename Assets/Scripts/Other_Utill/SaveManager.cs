@@ -8,11 +8,27 @@ using Utill.Data;
 public class SaveManager : MonoSingleton<SaveManager>
 { 
     public SaveDataSO _saveData;
+    private bool isLoadData = false;
+    public bool IsLoadData
+	{
+        get
+		{
+            return isLoadData;
+		}
+	}
 
-    /// <summary>
-    /// 저장된 Json 데이터를 불러오기
-    /// </summary>
-    public void LoadData()
+	private void Awake()
+	{
+        if(_instance.isLoadData)
+		{
+            LoadData();
+		}
+	}
+
+	/// <summary>
+	/// 저장된 Json 데이터를 불러오기
+	/// </summary>
+	public void LoadData()
     {
         //json 파일 불러오기
         try
@@ -41,5 +57,6 @@ public class SaveManager : MonoSingleton<SaveManager>
         string fileName = "saveData";
         string path = Application.dataPath + "/" + fileName + ".json";
         File.WriteAllText(path, json);
+        _saveData.DeliverDataToObserver();
     }
 }

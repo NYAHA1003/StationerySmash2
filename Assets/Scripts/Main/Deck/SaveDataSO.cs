@@ -33,6 +33,13 @@ namespace Main.Deck
             }
         }
 
+        /// <summary>
+        /// 모든 관찰자를 제거
+        /// </summary>
+        public void ClearObserver()
+		{
+            _userDataObservers.Clear();
+        }
 
     }
 }
