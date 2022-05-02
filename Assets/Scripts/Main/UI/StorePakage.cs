@@ -104,7 +104,7 @@ namespace store
         private void CommonButtonClick()
         {
             SetPakageSelect(PakageType.CommonPack);
-            //RandomUnitSummons();
+            RandomUnitSummons();
             RandomNewUnit();
         }
 
@@ -114,7 +114,7 @@ namespace store
         private void ShinyButtonClick()
         {
             SetPakageSelect(PakageType.ShinyPack);
-            //RandomUnitSummons();
+            RandomUnitSummons();
             RandomNewUnit();
         }
 
@@ -124,7 +124,7 @@ namespace store
         private void LegendaryButtonClick()
         {
             SetPakageSelect(PakageType.LegendaryPack);
-            //RandomUnitSummons();
+            RandomUnitSummons();
             RandomNewUnit();
         }
 
@@ -167,14 +167,13 @@ namespace store
         /// <summary>
         /// 랜덤 유닛을 소환하는 함수
         /// </summary>
-        /*private void RandomUnitSummons()
+        private void RandomUnitSummons()
         {
             int temp = 0;
             int quantity = 0;
-            int devide = _unitMaxAmount / _Quantity;
+            int devide = 0;
 
             _UnitAmountList.Clear();
-            _NHnum.Clear();
             HaveUnit();
             Shuffle();
 
@@ -183,39 +182,34 @@ namespace store
                 _Quantity = _NHnum.Count;
             }
 
+            devide = _unitMaxAmount / _Quantity;
+
             for (int i = 0; i < _Quantity; i++)                                            //위에서 랜덤으로 정해진 수량만큼 실행
             {
                 if (i == _Quantity - 1)                                                    //마지막 팩에는 남은 카드갯수만큼 넣어준다.
                 {
-                    _UnitAmountList[i] = _CurrentUnitAmount;
+                    _UnitAmountList.Add(_CurrentUnitAmount);
+                    Debug.Log($"학용품 번호 : {_NHnum[i]}, 학용품 수량 : {_UnitAmountList[i]}");
                     return;
                 }
 
-                quantity = Random.Range(1 + temp, devide + temp);         //이번에 나올 수량
-                _CurrentUnitAmount -= quantity;                                            //남아있는 뽑힐 유닛 갯수에서 나온 수량을 뺌
-                _UnitAmountList[i] = quantity;                                                    //유닛별 수량 넣어주기 
-
-                if(temp < 0)
-                {
-                    temp = 0;
-                }
-
-                temp = devide - quantity;                          //다음에 추가될 수량
-
+                quantity = Random.Range(devide/2 + temp, devide + temp);                   //이번에 나올 수량
+                _CurrentUnitAmount -= quantity;                                            //남아있는 뽑힐 유닛 갯수에서 나온 수량을 뺌                                         
+                _UnitAmountList.Add(quantity);                                             //유닛별 수량 넣어주기
+                temp = devide - quantity;                                                  //다음에 추가될 수량
                 Debug.Log($"학용품 번호 : {_NHnum[i]}, 학용품 수량 : {_UnitAmountList[i]}");
             }
-            //유닛 소환한거 출력하기 해야함
-        }*/
+        }
 
         /// <summary>
         /// 신규 유닛 획득 함수
         /// </summary>
         private void RandomNewUnit()
         {
-            _NHnum.Clear();
-            NotHaveUnit();
+            
             if (_newPercent >= _newChPercent)                               //캐릭터 확률이 랜덤 숫자보다 클경우
             {
+                NotHaveUnit();
                 if (_NHnum.Count != 0)
                 {
                     _newCharacter = _NHnum[Random.Range(0, _NHnum.Count)];     //없는 유닛들중 새로운 유닛을 선택
@@ -246,12 +240,14 @@ namespace store
         {
             int j = -1;
 
+            _NHnum.Clear();
+
             for (int i = 0; i < _IsHave.Count; i++)
             {
                 if (_IsHave[i])
                 {
                     j++;
-                    _NHnum[j] = i; //가지고 있는 캐릭터들 가져오기
+                    _NHnum.Add(i); //가지고 있는 캐릭터들 가져오기
                 }
             }
         }
@@ -260,12 +256,14 @@ namespace store
         {
             int j = -1;
 
+            _NHnum.Clear();
+
             for (int i = 0; i < _IsHave.Count; i++)
             {
                 if (!_IsHave[i])
                 {
                     j++;
-                    _NHnum[j] = i;
+                    _NHnum.Add(i);
                 }
             }
         }
