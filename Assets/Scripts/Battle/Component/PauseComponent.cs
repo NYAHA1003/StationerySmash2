@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.EventSystems;
 
 namespace Battle
 {
@@ -13,7 +15,17 @@ namespace Battle
         [SerializeField]
         private RectTransform _pauseUI;
         [SerializeField]
-        private Canvas _pauseCanvas;
+        private Canvas _pauseCanvas = null;
+        [SerializeField]
+        private Button _puaseButton = null;
+        [SerializeField]
+        private Button _puaseBackgroundButton = null;
+        [SerializeField]
+        private Button _retryButton = null;
+        [SerializeField]
+        private Button _backhomeButton = null;
+        [SerializeField]
+        private SceneLoadComponenet _sceneLoadComponent;
 
         /// <summary>
         /// 초기화
@@ -23,6 +35,10 @@ namespace Battle
         /// <param name="pauseCanvas"></param>
         public void SetInitialization()
         {
+            _puaseButton.onClick.AddListener(() => OnPause());
+            _puaseBackgroundButton.onClick.AddListener(() => OnPause());
+            _retryButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadBattle());
+            _backhomeButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadMain());
 
         }
 
@@ -54,7 +70,13 @@ namespace Battle
             _pauseUI.DOAnchorPosX(0, 1).SetUpdate(true);
         }
 
-
+        /// <summary>
+        /// 클릭하면 일시정지함
+        /// </summary>
+        public void OnPause()
+        {
+            SetPause();
+        }
     }
 
 }
