@@ -43,17 +43,13 @@ namespace Main.Buttons
                });
             }
         }
+
         private void AddDeckCards()
         {
             for (int i = 0; i < deckSetting.deckCards.Count; i++)
             {
                 cardInfoBtns.Add(deckSetting.deckCards[i].GetComponent<Button>());
             }
-
-        }
-        public void OnDeckActive()
-        {
-            EventManager.TriggerEvent(EventsType.ActiveDeck);
         }
 
         public void OnDeckDescriptoinActive(DeckCard deckCard)
@@ -61,10 +57,6 @@ namespace Main.Buttons
             EventManager.TriggerEvent(EventsType.ActiveCardDescription, deckCard);
         }
 
-        public void OnSettingActive()
-        {
-            EventManager.TriggerEvent(EventsType.ActiveSetting);
-        }
         public void OnMoveShopPanel(int iParam)
         {
             EventManager.TriggerEvent(EventsType.MoveShopPn, iParam);
@@ -75,14 +67,6 @@ namespace Main.Buttons
             EventManager.TriggerEvent(EventsType.MoveMainPn, iParam);
             EventManager.TriggerEvent(EventsType.CloaseAllPn);
         }
-
-        [ContextMenu("s")]
-        public void Test()
-        {
-            EventManager.TriggerEvent(EventsType.SetOriginShopPn);
-        }
-
-
 
     }
 }

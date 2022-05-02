@@ -39,7 +39,7 @@ public class DailyShop : MonoBehaviour
         int enumLength = Enum.GetValues(typeof(DailyCardType)).Length; 
         for (int i = 0; i < 600; i++)
         {
-            dailyCardTypes.Add(DailyCardType.);
+            //dailyCardTypes.Add(DailyCardType.);
         }
         int index1,index2;
         DailyCardType temp; 
@@ -84,7 +84,7 @@ public class DailyShop : MonoBehaviour
         for (int i = 0; i < dailyCardCount; i++)
         {
             DailyItem paidDailyCard = Instantiate(dailyItemPrefab, transform);
-            paidDailyCard.SetCardInfo(dailyCardTypes[i]);
+            //paidDailyCard.SetCardInfo(dailyCardTypes[i]);
         }
     }
 

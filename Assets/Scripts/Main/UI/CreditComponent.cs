@@ -38,7 +38,6 @@ public class CreditComponent : MonoBehaviour
     [ContextMenu("SetCreditt")]
     public void SetCredit()
     {
-
         Initialized();
         StartCredit();
     }

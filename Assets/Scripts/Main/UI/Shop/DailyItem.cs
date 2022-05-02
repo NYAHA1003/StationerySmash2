@@ -26,33 +26,7 @@ public class DailyItem : MonoBehaviour
         _itemNameText.text = dailyItemInfo.card_Name;
         _countText.text = (dailyItemInfo.card_price * count).ToString();
 
-        switch (dailyCardType)
-        {
-            case DailyCardType.Pencil:
-                break;
-            case DailyCardType.Sharp:
-                break;
-            case DailyCardType.Eraser:
-                break;
-            case DailyCardType.Scissors:
-                break;
-            case DailyCardType.Glue:
-                break;
-            case DailyCardType.Ruler:
-                break;
-            case DailyCardType.Boxcutter:
-                break;
-            case DailyCardType.Postit:
-                break;
-            case DailyCardType.Sharplead:
-                break;
-            case DailyCardType.ballpointPen:
-                break;
-            case DailyCardType.EraserPiece:
-                break;
-            case DailyCardType.PostitSheet:
-                break;
-        }
+  
     }
 
 }

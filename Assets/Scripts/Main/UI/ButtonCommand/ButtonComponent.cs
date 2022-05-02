@@ -57,7 +57,7 @@ namespace Main.Buttons
 				allBtns.Add(buttonCommands[i]);
 			}
 			AddListner();
-
+				
 		}
 
 		/// <summary>
