@@ -12,7 +12,7 @@ namespace store
     {
         private List<bool> _IsHave = new List<bool>();
         private List<int> _NHnum = new List<int>();
-        private List<int> _UnitList = new List<int>();
+        private List<int> _UnitAmountList = new List<int>();
 
         //임시 보유 데이터 선언 시작
         private bool _Pencil = true;
@@ -104,7 +104,7 @@ namespace store
         private void CommonButtonClick()
         {
             SetPakageSelect(PakageType.CommonPack);
-            RandomUnitSummons();
+            //RandomUnitSummons();
             RandomNewUnit();
         }
 
@@ -114,7 +114,7 @@ namespace store
         private void ShinyButtonClick()
         {
             SetPakageSelect(PakageType.ShinyPack);
-            RandomUnitSummons();
+            //RandomUnitSummons();
             RandomNewUnit();
         }
 
@@ -124,7 +124,7 @@ namespace store
         private void LegendaryButtonClick()
         {
             SetPakageSelect(PakageType.LegendaryPack);
-            RandomUnitSummons();
+            //RandomUnitSummons();
             RandomNewUnit();
         }
 
@@ -140,22 +140,22 @@ namespace store
                     _min = 2; _max = 3;
                     _newPercent = 1;
                     _useMoney = 500;
-                    _CurrentUnitAmount = 20;
-                    _unitMaxAmount = _CurrentUnitAmount;
+                    _unitMaxAmount = 20;
+                    _CurrentUnitAmount = _unitMaxAmount;
                     break;
                 case PakageType.ShinyPack:
                     _min = 4; _max = 5;
                     _newPercent = 4;
                     _useDalgona = 10;
-                    _CurrentUnitAmount = 70;
-                    _unitMaxAmount = _CurrentUnitAmount;
+                    _unitMaxAmount = 70;
+                    _CurrentUnitAmount = _unitMaxAmount;
                     break;
                 case PakageType.LegendaryPack:
                     _min = 6; _max = 8;
                     _newPercent = 10;
                     _useDalgona = 45;
-                    _CurrentUnitAmount = 300;
-                    _unitMaxAmount = _CurrentUnitAmount;
+                    _unitMaxAmount = 300;
+                    _CurrentUnitAmount = _unitMaxAmount; 
                     break;
                 default:
                     break;
@@ -167,38 +167,45 @@ namespace store
         /// <summary>
         /// 랜덤 유닛을 소환하는 함수
         /// </summary>
-        private void RandomUnitSummons()
+        /*private void RandomUnitSummons()
         {
             int temp = 0;
-            int quantity;
+            int quantity = 0;
+            int devide = _unitMaxAmount / _Quantity;
 
-
-            _UnitList.Clear();
+            _UnitAmountList.Clear();
             _NHnum.Clear();
             HaveUnit();
             Shuffle();
+
+            if(_Quantity > _NHnum.Count)
+            {
+                _Quantity = _NHnum.Count;
+            }
 
             for (int i = 0; i < _Quantity; i++)                                            //위에서 랜덤으로 정해진 수량만큼 실행
             {
                 if (i == _Quantity - 1)                                                    //마지막 팩에는 남은 카드갯수만큼 넣어준다.
                 {
-                    _UnitList[i] = _CurrentUnitAmount;
+                    _UnitAmountList[i] = _CurrentUnitAmount;
                     return;
                 }
 
-                quantity = Random.Range(1, _CurrentUnitAmount / _Quantity + temp);         //이번에 나올 수량
+                quantity = Random.Range(1 + temp, devide + temp);         //이번에 나올 수량
                 _CurrentUnitAmount -= quantity;                                            //남아있는 뽑힐 유닛 갯수에서 나온 수량을 뺌
-                _UnitList[i] = quantity;                                                    //유닛별 수량 넣어주기 
+                _UnitAmountList[i] = quantity;                                                    //유닛별 수량 넣어주기 
 
-                temp = _CurrentUnitAmount / _Quantity - quantity;                          //다음에 추가될 수량
-                if (temp < 0)
+                if(temp < 0)
                 {
                     temp = 0;
                 }
 
+                temp = devide - quantity;                          //다음에 추가될 수량
+
+                Debug.Log($"학용품 번호 : {_NHnum[i]}, 학용품 수량 : {_UnitAmountList[i]}");
             }
             //유닛 소환한거 출력하기 해야함
-        }
+        }*/
 
         /// <summary>
         /// 신규 유닛 획득 함수
@@ -206,16 +213,17 @@ namespace store
         private void RandomNewUnit()
         {
             _NHnum.Clear();
+            NotHaveUnit();
             if (_newPercent >= _newChPercent)                               //캐릭터 확률이 랜덤 숫자보다 클경우
             {
-                NotHaveUnit();
+                if (_NHnum.Count != 0)
+                {
+                    _newCharacter = _NHnum[Random.Range(0, _NHnum.Count)];     //없는 유닛들중 새로운 유닛을 선택
+                    _IsHave[_newCharacter] = true;                             //유닛을 생성
+                    Debug.Log($"{_newCharacter}번 캐릭터가 뽑혔습니다.");
+                }
             }
-
-            if (_NHnum.Count != 0)
-            {
-                _newCharacter = _NHnum[Random.Range(0, _NHnum.Count)];     //없는 유닛들중 새로운 유닛을 선택
-                _IsHave[_newCharacter] = true;                             //유닛을 생성
-            }
+            
         } //제일 나중에 들어가야 하는 함수임
 
         /// <summary>
@@ -226,36 +234,38 @@ namespace store
             int temp = 0;
             for (int i = 0; i < 100; i++)
             {
-                int change = Random.Range(0, _IsHave.Count);
-                int change1 = Random.Range(0, _IsHave.Count);
+                int change = Random.Range(0, _NHnum.Count);
+                int change1 = Random.Range(0, _NHnum.Count);
                 temp = _NHnum[change];
                 _NHnum[change] = _NHnum[change1];
                 _NHnum[change1] = temp;
             }
         }
 
-        private void HaveUnit()
+        private void HaveUnit() //수량보다 가지고 있는게 적을때는?
         {
-            int j = 0;
+            int j = -1;
 
             for (int i = 0; i < _IsHave.Count; i++)
             {
                 if (_IsHave[i])
                 {
-                    _NHnum[j++] = i; //가지고 있는 캐릭터들 가져오기
+                    j++;
+                    _NHnum[j] = i; //가지고 있는 캐릭터들 가져오기
                 }
             }
         }
         
         private void NotHaveUnit()
         {
-            int j = 0;
+            int j = -1;
 
             for (int i = 0; i < _IsHave.Count; i++)
             {
                 if (!_IsHave[i])
                 {
-                    _NHnum[j++] = i;
+                    j++;
+                    _NHnum[j] = i;
                 }
             }
         }
