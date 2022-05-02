@@ -19,6 +19,7 @@ public class SceneLoadComponenet : MonoBehaviour
     public void SceneLoadMain()
     {
         DOTween.KillAll();
+        Time.timeScale = 1f;
         LoadingManager.LoadScene("MainScene");
     }
 }

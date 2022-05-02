@@ -29,6 +29,7 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
                         instance = new GameObject(typeof(T).ToString()).AddComponent<T>();
                         DontDestroyOnLoad(instance);
                     }
+                    DontDestroyOnLoad(instance);
                 }
             }
             return instance;
@@ -43,7 +44,7 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         if(instance == this)
         {
-        shuttingDown = true;
+            shuttingDown = true;
         }
     }
 }

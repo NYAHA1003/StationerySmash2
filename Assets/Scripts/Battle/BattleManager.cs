@@ -184,29 +184,6 @@ namespace Battle
 				return;
 			}
 		}
-		/// <summary>
-		/// 클릭하면 코스트 단계 증가
-		/// </summary>
-		public void OnUpgradeCostGrade()
-		{
-			CommandCost.UpgradeCostGrade();
-		}
-
-		/// <summary>
-		/// 클릭하면 필통 능력 사용
-		/// </summary>
-		public void OnPencilCaseAbility()
-		{
-			CommandPencilCase.RunPlayerPencilCaseAbility();
-		}
-
-		/// <summary>
-		/// 클릭하면 일시정지함
-		/// </summary>
-		public void OnPause()
-		{
-			CommandPause.SetPause();
-		}
 	}
 
 }
