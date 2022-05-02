@@ -403,7 +403,7 @@ namespace Battle
         {
             //소환 화살표 적용
             _summonArrow.gameObject.SetActive(isActive);
-            _summonArrow.transform.position = Input.mousePosition;
+            _summonArrow.transform.position = pos;
             _summonArrow.sizeDelta = new Vector2(_summonArrow.sizeDelta.x, _summonArrow.anchoredPosition.y);
             //float ySize = Mathf.Clamp(pos.y * 2f, 0.8f, 2f);
             //_summonArrow.size = new Vector2(0.35f, ySize);
