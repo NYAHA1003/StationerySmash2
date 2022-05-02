@@ -21,8 +21,7 @@ namespace Main.Deck
         [ContextMenu("SetCardData")]
         public void SetCardData()
         {
-            //레벨데이터 json파일 읽어옴
-            SaveManager._instance.LoadData();
+            //세이브 데이터의 유저 저장 데이터를 가져온다
             _userSaveData = SaveManager._instance._saveData.userSaveData;
 
             //카드 데이터 초기화
