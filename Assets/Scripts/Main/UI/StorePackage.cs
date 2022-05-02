@@ -171,7 +171,6 @@ namespace store
         {
             int temp = 0;
             int quantity = 0;
-            int devide = 0;
 
             _UnitAmountList.Clear();
             HaveUnit();
@@ -179,7 +178,7 @@ namespace store
             QuantityOverCheck();
 
 
-            devide = _unitMaxAmount / _Quantity;
+            int devide = _unitMaxAmount / _Quantity;
 
             for (int i = 0; i < _Quantity; i++)                                            //위에서 랜덤으로 정해진 수량만큼 실행
             {
