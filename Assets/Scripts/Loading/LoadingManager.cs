@@ -25,7 +25,7 @@ public class LoadingManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(LoadSceneProcess());
-        _loadingComponent.LoadSkin();
+        //_loadingComponent.LoadSkin();      이름 없다고 오류남. 추후 처리
     }
     /// <summary>
     /// 씬 로드하는 함수
