@@ -94,11 +94,11 @@ namespace Main.Deck
         public void SetHaveDeck()
         {
             _userDeckData.SetCardData();
-            for (int i = 0; i < _userDeckData.deckList.cardDatas.Count; i++)
+            for (int i = 0; i < _userDeckData._deckList.cardDatas.Count; i++)
             {
                 GameObject cardObj = PoolHaveCard();
                 Button cardButton = cardObj.GetComponent<Button>();
-                cardObj.GetComponent<DeckCard>().SetCard(_userDeckData.deckList.cardDatas[i]);
+                cardObj.GetComponent<DeckCard>().SetCard(_userDeckData._deckList.cardDatas[i]);
                 cardButton.onClick.RemoveAllListeners();
                 cardButton.onClick.AddListener(() =>
                 {
@@ -115,11 +115,11 @@ namespace Main.Deck
         public void SetEquipDeck()
         {
             _userDeckData.SetCardData();
-            for (int i = 0; i < _userDeckData.inGameDeckList.cardDatas.Count; i++)
+            for (int i = 0; i < _userDeckData._inGameDeckList.cardDatas.Count; i++)
             {
                 GameObject cardObj = PoolEquipCard();
                 Button cardButton = cardObj.GetComponent<Button>();
-                cardObj.GetComponent<DeckCard>().SetCard(_userDeckData.inGameDeckList.cardDatas[i]);
+                cardObj.GetComponent<DeckCard>().SetCard(_userDeckData._inGameDeckList.cardDatas[i]);
                 cardButton.onClick.RemoveAllListeners();
                 cardButton.GetComponent<Button>().onClick.AddListener(() =>
                 {
@@ -142,7 +142,7 @@ namespace Main.Deck
 				{
                     _haveDeckCards[i] = PoolHaveCard();
 				}
-                _haveDeckCards[i].GetComponent<DeckCard>().SetCard(_userDeckData.deckList.cardDatas[i]);
+                _haveDeckCards[i].GetComponent<DeckCard>().SetCard(_userDeckData._deckList.cardDatas[i]);
             }
         }
         /// <summary>
