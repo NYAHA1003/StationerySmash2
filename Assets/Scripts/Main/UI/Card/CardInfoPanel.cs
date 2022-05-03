@@ -60,6 +60,8 @@ using Main.Skin;
         //장착버튼
         [SerializeField]
         private Button _equipButton = null;
+        [SerializeField]
+        private TextMeshProUGUI _equipText = null;
 
         private CardData _selectCardData = null;
 
@@ -69,6 +71,7 @@ using Main.Skin;
         private void Start()
         {
             EventManager.StartListening(EventsType.ActiveCardDescription, (x) => OnSetCardInfoPanel((DeckCard)x));
+            SetEquipText();
             _equipButton.onClick.AddListener(() => OnEquipCardInDeck());
         }
         /// <summary>
@@ -78,6 +81,7 @@ using Main.Skin;
         {
             _cardInfoPanel.SetActive(true);
             _selectCardData = deckCard._cardData;
+            SetEquipText();
 
             //카드 타입에 따라 설명창 설정
             switch (_selectCardData.cardType)
@@ -193,7 +197,28 @@ using Main.Skin;
                 //장착
                 _userDeckData.AddCardInDeck(_selectCardData, _selectCardData.level);
             }
-		}
+            SetEquipText();
+
+        }
+
+        /// <summary>
+        /// 장착 텍스트 설정
+        /// </summary>
+        public void SetEquipText()
+        {
+            if(_selectCardData == null)
+			{
+                return;
+			}
+            if (_userDeckData.ReturnAlreadyEquipCard(_selectCardData.skinData._cardNamingType))
+            {
+                _equipText.text = "해제";
+            }
+            else
+            {
+                _equipText.text = "장착";
+			}
+        }
 
         /// <summary>
         /// 카드가 가진 스킨리스트 쫙 생성
