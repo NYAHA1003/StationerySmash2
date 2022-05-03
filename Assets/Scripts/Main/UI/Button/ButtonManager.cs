@@ -45,9 +45,9 @@ namespace Main.Buttons
         }
         private void AddDeckCards()
         {
-            for (int i = 0; i < deckSetting.deckCards.Count; i++)
+            for (int i = 0; i < deckSetting._haveDeckCards.Count; i++)
             {
-                cardInfoBtns.Add(deckSetting.deckCards[i].GetComponent<Button>());
+                cardInfoBtns.Add(deckSetting._haveDeckCards[i].GetComponent<Button>());
             }
 
         }
