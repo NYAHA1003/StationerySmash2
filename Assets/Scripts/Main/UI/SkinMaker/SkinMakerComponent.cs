@@ -70,10 +70,13 @@ namespace Main.Skin
 					MaterialData materialData = _selectSkinData._needMaterial[i];
 					_saveDataSO.userSaveData._materialDatas.Find(x => x._materialType == materialData._materialType)._count -= materialData._count;
 				}
+				_saveDataSO.userSaveData._haveSkinList.Add(_selectSkinData.skinType);
 				SetMaterialBoxs(_selectSkinData);
+				PullSkinButtons();
 			}
 			else
 			{
+				Debug.Log("재료가 부족하거나 이미 제작됨");
 				//재료가 부족하거나 이미 제작했습니다
 			}
 		}
@@ -82,7 +85,7 @@ namespace Main.Skin
 		/// 스킨 데이터를 받으면 그거에 맞게 스킨 제작 버튼과 필요한 재료들을 보여줌
 		/// </summary>
 		/// <param name="skinMakeData"></param>
-		public void SetSkinMakeButtonAndBoxs(SkinMakeData skinMakeData)
+		public void SetSkinMakeButtonAndBoxs(SkinMakeData skinMakeData, bool isAlreadyHave)
 		{
 			//현재 스킨 데이터를 바꾸고 스프라이트도 변경해준다
 			_selectSkinData = skinMakeData;
@@ -92,7 +95,7 @@ namespace Main.Skin
 			SetMaterialBoxs(skinMakeData);
 
 			//제작할 수 있는지 여부 체크
-			if (CheckCanCreate(skinMakeData))
+			if (!isAlreadyHave && CheckCanCreate(skinMakeData))
 			{
 				_isCanCrate = true;
 			}
@@ -187,7 +190,7 @@ namespace Main.Skin
 				{
 					skinButton = Instantiate(_skinButtonPrefeb, _skinParent).GetComponent<SkinDataButton>();
 				}
-				skinButton.SetSkinData(_skinMakeDatas[i], this);
+				skinButton.SetSkinData(_skinMakeDatas[i], _saveDataSO.userSaveData._haveSkinList.Contains(_skinMakeDatas[i].skinType), this);
 				skinButton.gameObject.SetActive(true);
 
 			}
