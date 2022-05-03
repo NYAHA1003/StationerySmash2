@@ -11,6 +11,8 @@ namespace Main.Deck
     public class DeckSettingComponent : MonoBehaviour
     {
         [SerializeField]
+        private SaveDataSO _saveDataSO = null;
+        [SerializeField]
         private UserDeckDataComponent _userDeckData; //유저 데이터 컴포넌트
         [SerializeField]
         private GameObject _cardPrefab; //카드 UI 프리펩
@@ -24,12 +26,31 @@ namespace Main.Deck
 
         public List<GameObject> _haveDeckCards = new List<GameObject>();
         public List<GameObject> _equipDeckCards = new List<GameObject>();
+
+        [SerializeField]
+        private CardSaveDataSO _presetDataSO1 = null;
+        [SerializeField]
+        private CardSaveDataSO _presetDataSO2 = null;
+        [SerializeField]
+        private CardSaveDataSO _presetDataSO3 = null;
+
+        [SerializeField]
+        private Button _presetButton1 = null;
+        [SerializeField]
+        private Button _presetButton2 = null;
+        [SerializeField]
+        private Button _presetButton3 = null;
+
         private void Start()
         {
             _haveCardParent = _haveDeckScroll.transform.GetChild(0).GetChild(0);
             _equipCardParent = _equipDeckScroll.transform.GetChild(0).GetChild(0);
 
             UpdateHaveAndEquipDeck();
+
+            _presetButton1.onClick.AddListener(() => ChangePreset(0));
+            _presetButton2.onClick.AddListener(() => ChangePreset(1));
+            _presetButton3.onClick.AddListener(() => ChangePreset(2));
 
             EventManager.StartListening(EventsType.ActiveDeck, UpdateDeck);
             EventManager.StartListening(EventsType.UpdateHaveAndEquipDeck, UpdateHaveAndEquipDeck);
@@ -44,6 +65,27 @@ namespace Main.Deck
             AllFalseHaveCard();
             SetHaveDeck();
             SetEquipDeck();
+        }
+
+        /// <summary>
+        /// 저장된 프리셋으로 변경
+        /// </summary>
+        public void ChangePreset(int index)
+		{
+            switch(index)
+			{
+                case 0:
+                    _saveDataSO.userSaveData._ingameSaveDatas = _presetDataSO1._ingameSaveDatas;
+                    break;
+                case 1:
+                    _saveDataSO.userSaveData._ingameSaveDatas = _presetDataSO2._ingameSaveDatas;
+                    break;
+                case 2:
+                    _saveDataSO.userSaveData._ingameSaveDatas = _presetDataSO3._ingameSaveDatas;
+                    break;
+            }
+
+            UpdateHaveAndEquipDeck();
         }
 
         /// <summary>
@@ -64,7 +106,6 @@ namespace Main.Deck
                     EventManager.TriggerEvent(EventsType.DeckSetting, ButtonType.cardDescription);
                     
                 });
-                _haveDeckCards.Add(cardObj);
             }
         }
 
@@ -86,7 +127,6 @@ namespace Main.Deck
                     EventManager.TriggerEvent(EventsType.DeckSetting, ButtonType.cardDescription);
                     
                 });
-                _equipDeckCards.Add(cardObj);
             }
         }
 
@@ -118,7 +158,7 @@ namespace Main.Deck
 
             for (int i = 0; i < count; i++)
             {
-                if (_haveCardParent.childCount > i && !_haveCardParent.GetChild(i).gameObject.activeSelf)
+                if (!_haveCardParent.GetChild(i).gameObject.activeSelf)
                 {
                     cardObj = _haveCardParent.GetChild(i).gameObject;
                     break;
@@ -128,6 +168,7 @@ namespace Main.Deck
             if(cardObj == null)
             {
                 cardObj = Instantiate(_cardPrefab, _haveCardParent, false);
+                _haveDeckCards.Add(cardObj);
             }
 
             cardObj.SetActive(true);
@@ -147,7 +188,7 @@ namespace Main.Deck
 
             for (int i = 0; i < count; i++)
             {
-                if (_equipCardParent.childCount > i && !_equipCardParent.GetChild(i).gameObject.activeSelf)
+                if (!_equipCardParent.GetChild(i).gameObject.activeSelf)
                 {
                     cardObj = _equipCardParent.GetChild(i).gameObject;
                     break;
@@ -157,6 +198,7 @@ namespace Main.Deck
             if (cardObj == null)
             {
                 cardObj = Instantiate(_cardPrefab, _equipCardParent, false);
+                _equipDeckCards.Add(cardObj);
             }
 
             cardObj.SetActive(true);
