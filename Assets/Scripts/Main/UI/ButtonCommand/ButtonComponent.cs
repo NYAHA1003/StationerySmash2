@@ -70,11 +70,12 @@ namespace Main.Buttons
 				int index = i;
 				clickBtns[i].onClick.AddListener(() => OnActiveBtn((ButtonType)index));
 			}
-
 			for (int i = 0; i < cancelBtns.Length; i++)
 			{
 				cancelBtns[i].onClick.AddListener(() => OnUndoBtn());
 			}
+
+			clickBtns[(int)ButtonType.credit].onClick.AddListener(() => EventManager.TriggerEvent(EventsType.MoveCredit));
 		}
 		/// <summary>
 		/// 패널 활성화시킬 때 발동되는 버튼함수 

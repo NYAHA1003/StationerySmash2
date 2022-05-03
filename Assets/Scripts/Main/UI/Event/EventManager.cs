@@ -10,8 +10,8 @@ namespace Main.Event
     public class EventManager : MonoSingleton<EventManager>
     {
 
-        private Dictionary<EventsType, Action> eventDictionary;
-        private Dictionary<EventsType, Action<object>> eventParamDictionary;
+        private Dictionary<EventsType, Action> eventDictionary = new Dictionary<EventsType, Action>();
+        private Dictionary<EventsType, Action<object>> eventParamDictionary = new Dictionary<EventsType, Action<object>>();
         void Initialize()
         {
             if (eventDictionary == null)

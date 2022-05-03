@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public abstract class ButtonAgent : MonoBehaviour
 {
     public EventsType eventType;
-    public bool isParam;
 
     private void Start()
     {   
