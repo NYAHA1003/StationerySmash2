@@ -6,15 +6,17 @@ using Utill.Data;
 using System.Threading.Tasks;
 using UnityEngine.UI;
 
-namespace store
+namespace Main.Store
 {
-    public class StorePackage : MonoBehaviour
+    public class UnitPackage : MonoBehaviour
     {
+        //임시 보유 데이터 선언 시작
+        private List<string> _UnitNameList = new List<string>();
         private List<bool> _IsHave = new List<bool>();
         private List<int> _NHnum = new List<int>();
         private List<int> _UnitAmountList = new List<int>();
 
-        //임시 보유 데이터 선언 시작
+       
         private bool _Pencil = true;
         private bool _MechaPencil = true;
         private bool _Eraser = true;
@@ -78,13 +80,13 @@ namespace store
             _ShinyButton.onClick.AddListener(ShinyButtonClick);
             _LegendaryButton.onClick.AddListener(LegendaryButtonClick);
 
-            SetBoolList();
+            SetList();
         }
 
         /// <summary>
         /// 가지고 있는것과 가지고 있지 않은 학용품을 불러오는 함수
         /// </summary>
-        private void SetBoolList()
+        private void SetList()
         {
             _IsHave.Add(_Pencil);
             _IsHave.Add(_MechaPencil);
@@ -96,6 +98,17 @@ namespace store
             _IsHave.Add(_Postit);
             _IsHave.Add(_MechaPencilLead);
             _IsHave.Add(_Pen);
+
+            _UnitNameList.Add("연필");                 //Pencil
+            _UnitNameList.Add("샤프");                 //MechPencil
+            _UnitNameList.Add("지우개");               //Eraser
+            _UnitNameList.Add("가위");                 //Scissors
+            _UnitNameList.Add("풀");                   //Glue
+            _UnitNameList.Add("자");                   //Ruler
+            _UnitNameList.Add("커터칼");               //Cutterknife
+            _UnitNameList.Add("포스트잇");             //Postit
+            _UnitNameList.Add("샤프심");               //MechaPencilLead
+            _UnitNameList.Add("볼펜");                 //Pen
         }
 
         /// <summary>
@@ -104,6 +117,10 @@ namespace store
         private void CommonButtonClick()
         {
             SetPakageSelect(PackageType.CommonPack);
+            /*if(현재 가진 돈 < _useMoney)
+            {
+                return;
+            }*/
             RandomUnitSummons();
             RandomNewUnit();
         }
@@ -114,6 +131,11 @@ namespace store
         private void ShinyButtonClick()
         {
             SetPakageSelect(PackageType.ShinyPack);
+            /*if(현재 가진 달고나 <  _useDalgona)
+            {
+                return;
+            }*/
+            //현재 달고나 -= _useDalgona;
             RandomUnitSummons();
             RandomNewUnit();
         }
@@ -124,6 +146,10 @@ namespace store
         private void LegendaryButtonClick()
         {
             SetPakageSelect(PackageType.LegendaryPack);
+            /*if(현재 가진 달고나 <  _useDalgona)
+            {
+                return;
+            }*/
             RandomUnitSummons();
             RandomNewUnit();
         }
@@ -147,12 +173,12 @@ namespace store
                     _min = 4; _max = 5;
                     _newPercent = 4;
                     _useDalgona = 10;
-                    _unitMaxAmount = 70;
+                    _unitMaxAmount = 68;
                     _CurrentUnitAmount = _unitMaxAmount;
                     break;
                 case PackageType.LegendaryPack:
                     _min = 6; _max = 8;
-                    _newPercent = 10;
+                    _newPercent = 15;
                     _useDalgona = 45;
                     _unitMaxAmount = 300;
                     _CurrentUnitAmount = _unitMaxAmount; 
@@ -185,7 +211,7 @@ namespace store
                 if (i == _Quantity - 1)                                                    //마지막 팩에는 남은 카드갯수만큼 넣어준다.
                 {
                     _UnitAmountList.Add(_CurrentUnitAmount);
-                    Debug.Log($"학용품 번호 : {_NHnum[i]}, 학용품 수량 : {_UnitAmountList[i]}");
+                    Debug.Log($"학용품 종류 : {_UnitNameList[_NHnum[i]]}, 수량 : {_UnitAmountList[i]}");
                     return;
                 }
 
@@ -193,7 +219,7 @@ namespace store
                 _CurrentUnitAmount -= quantity;                                            //남아있는 뽑힐 유닛 갯수에서 나온 수량을 뺌                                         
                 _UnitAmountList.Add(quantity);                                             //유닛별 수량 넣어주기
                 temp = devide - quantity;                                                  //다음에 추가될 수량
-                Debug.Log($"학용품 번호 : {_NHnum[i]}, 학용품 수량 : {_UnitAmountList[i]}");
+                Debug.Log($"학용품 종류 : {_UnitNameList[_NHnum[i]]}, 수량 : {_UnitAmountList[i]}");
             }
         }
 
@@ -210,7 +236,7 @@ namespace store
                 {
                     _newCharacter = _NHnum[Random.Range(0, _NHnum.Count)];     //없는 유닛들중 새로운 유닛을 선택
                     _IsHave[_newCharacter] = true;                             //유닛을 생성
-                    Debug.Log($"{_newCharacter}번 캐릭터가 뽑혔습니다.");
+                    Debug.Log($"새로운 유닛 \"{_UnitNameList[_newCharacter]}\"이/가 뽑혔습니다.");
                 }
             }
             
