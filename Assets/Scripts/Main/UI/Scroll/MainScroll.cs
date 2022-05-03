@@ -44,7 +44,6 @@ namespace Main.Scroll
             base.OnEndDrag(eventData);
             if (_curPos == _targetPos)
             {
-                print(eventData.delta.x);
                 DeltaSlide(eventData.delta.y);
             }
             StressImage();
