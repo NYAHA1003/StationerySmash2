@@ -6,6 +6,6 @@ using Utill.Load;
 [CreateAssetMenu(fileName = "PencilCaseDataSO", menuName = "Scriptable Object/PencilCaseDataSO")]
 public class PencilCaseDataSO : ScriptableObject
 {
-    public LoadData[] loadDataBase;
+    public PencilCaseData PencilCasedataBase;
     public BattleStageType battleStageType;
 }

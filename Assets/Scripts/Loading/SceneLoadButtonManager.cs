@@ -7,29 +7,43 @@ public class SceneLoadButtonManager : MonoBehaviour
 {
     [SerializeField]
     private Button[] buttons;
+    [SerializeField]
     private LoadingBattleDataSO loadingBattleDataSO;
+    [SerializeField]
+    private AIDataSO aIDataSO;
+    [SerializeField]
+    private PencilCaseDataSO pencilCaseDataSO;
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-
+        SetBattleLoadButtons();
     }
-
-    // Update is called once per frame
-    void Update()
+   
+    private void SetBattleLoadButtons()
     {
-
+        for (int i = 0; i < System.Enum.GetValues(typeof(BattleStageType)).Length; i++)
+        {
+            //각 버튼에 enum값 대입하기
+            int temp = i;
+            buttons[temp].onClick.AddListener(() => LoadBattleData((BattleStageType)temp));
+        }
     }
-    //private void SetBattleLoadButtons()
-    //{
+    private void LoadBattleData(BattleStageType battleStageType)
+    {
+        //so데이터를 aidataSO와 PencilCaseDataSO에 넣어줌
+        var currentData = loadingBattleDataSO.loadDatas.Find(x => x.battleStageType == battleStageType);
+        pencilCaseDataSO.PencilCasedataBase.maxCard = currentData.PencilCasedataBase.maxCard;
+        pencilCaseDataSO.PencilCasedataBase.costSpeed = currentData.PencilCasedataBase.costSpeed;
+        pencilCaseDataSO.PencilCasedataBase.throwGaugeSpeed = currentData.PencilCasedataBase.throwGaugeSpeed;
+        pencilCaseDataSO.PencilCasedataBase.pencilCaseType = currentData.PencilCasedataBase.pencilCaseType;
+        pencilCaseDataSO.PencilCasedataBase.pencilState = currentData.PencilCasedataBase.pencilState;
+        pencilCaseDataSO.PencilCasedataBase._badgeDatas = currentData.PencilCasedataBase._badgeDatas;
 
-    //    for (int i = 0; i < System.Enum.GetValues(typeof(BattleStageType)).Length; i++)
-    //    {
-    //        int temp = i;
-    //        buttons[temp].onClick.AddListener(() => LoadBattleData(buttons[temp].gameObject.GetComponent<LoadingBattleDataSO>()));
-    //    }
-    //}
-    //private void LoadBattleData(LoadingBattleDataSO loadingBattleDataSO)
-    //{
-    //    //so데이터를 aidataSO와 PencilCaseDataSO에 넣어줌
-    //}
+        aIDataSO.summonGrade = currentData.summonGrade;
+        aIDataSO.throwSpeed = currentData.throwSpeed;
+        aIDataSO.isAIOn = currentData.isAIOn;
+        aIDataSO.cardDataList = currentData.cardDataList;
+        aIDataSO.pos = currentData.pos;
+        aIDataSO.max_Delay = currentData.max_Delay;
+    }
 }
