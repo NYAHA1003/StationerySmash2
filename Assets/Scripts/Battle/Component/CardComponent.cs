@@ -314,6 +314,7 @@ namespace Battle
             {
                 card.RunOriginPRS();
                 _commandCamera.SetCameraIsMove(true);
+                _selectCard = null;
                 return;
             }
             //선택한 카드를 Null로 돌림
