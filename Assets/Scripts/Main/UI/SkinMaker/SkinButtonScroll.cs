@@ -44,8 +44,10 @@ namespace Main.Skin
         private Vector2[] _sizeTable; // 인덱스 위치에 따른 크기 기록
 
 
-        private void OnEnable()
+        private void Start()
         {
+            _isTransiting = false;
+
             //켜질 때 콘텐츠 리스트 초기화
             _buttonList.Clear();
             _targetList.Clear();
@@ -71,6 +73,7 @@ namespace Main.Skin
             //끝에서 끝으로 옮길 객체 설정
             InitRectTransforms();
             GenerateImposters();
+            FixImposterSize();
         }
 
         private void Update()
@@ -372,6 +375,18 @@ namespace Main.Skin
                 RectTransform rt = go.GetComponent<RectTransform>();
                 _imposterList.Add(rt);
                 go.SetActive(false);
+            }
+        }
+
+        /// <summary>
+        /// 크기 버그 해결을 위한 옮겨질 객체 크기 조정
+        /// </summary>
+        [ContextMenu("크기 버그 해결")]
+        private void FixImposterSize()
+        {
+            for (int i = 0; i < _imposterList.Count; i++)
+            {
+                _imposterList[i].localScale = Vector2.one;
             }
         }
 
