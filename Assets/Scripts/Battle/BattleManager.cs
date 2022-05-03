@@ -90,6 +90,7 @@ namespace Battle
 			_commandCost.SetInitialization(ref _updateAction, _commandPencilCase.PencilCaseDataMy.PencilCasedataBase);
 			_commandPause.SetInitialization();
 			_commandWinLose.SetInitialization();
+			_introComponent.SetInitialization(_commandCamera);
 
 			_isEndSetting = true;
 

@@ -19,13 +19,13 @@ namespace Main.Deck
         [SerializeField]
         private GameObject deckScroll;
 
+        private Transform cardParent = null;
+
         public List<GameObject> deckCards = new List<GameObject>();
-        private void Awake()
-        {
-        }
         private void Start()
         {
-            SetDeck();
+            cardParent = deckScroll.transform.GetChild(0).GetChild(0);
+            SetHaveDeck();
             EventManager.StartListening(EventsType.ActiveDeck, UpdateDeck);
         }
 
@@ -33,12 +33,13 @@ namespace Main.Deck
         /// 플레이어 덱에 카드 세팅 
         /// </summary>
         [ContextMenu("SetDeck")]
-        public void SetDeck()
+        public void SetHaveDeck()
         {
             userDeckData.SetCardData();
+            AllFalseHaveCard();
             for (int i = 0; i < userDeckData.deckList.cardDatas.Count; i++)
             {
-                GameObject cardObj = CreateCard();
+                GameObject cardObj = PoolHaveCard();
                 cardObj.GetComponent<DeckCard>().SetCard(userDeckData.deckList.cardDatas[i]);
                 cardObj.GetComponent<Button>().onClick.AddListener(() =>
                 {
@@ -48,6 +49,7 @@ namespace Main.Deck
                 deckCards.Add(cardObj);
             }
         }
+
         /// <summary>
         /// 게임 실행중 덱 업데이트 (카드 추가)
         /// </summary>
@@ -56,18 +58,52 @@ namespace Main.Deck
             userDeckData.SetCardData();
             for (int i = 0; i < deckCards.Count; i++)
             {
-                if (deckCards[i] == null) deckCards[i] = CreateCard();
+                if (deckCards[i] == null) deckCards[i] = PoolHaveCard();
                 deckCards[i].GetComponent<DeckCard>().SetCard(userDeckData.deckList.cardDatas[i]);
             }
         }
         /// <summary>
-        /// 덱에 카드 생성 
+        /// 보유덱에 카드 생성 
         /// </summary>
         /// <returns></returns>
-        public GameObject CreateCard()
+        public GameObject PoolHaveCard()
         {
-            GameObject cardObj = Instantiate(cardPrefab, deckScroll.transform.GetChild(0).GetChild(0), false);
+            GameObject cardObj = null;
+
+            int count = cardParent.childCount;
+
+
+            for (int i = 0; i < count; i++)
+            {
+                if (cardParent.childCount > i && !cardParent.GetChild(i).gameObject.activeSelf)
+                {
+                    cardObj = cardParent.GetChild(i).gameObject;
+                    break;
+                }
+            }
+
+            if(cardObj == null)
+            {
+                cardObj = Instantiate(cardPrefab, cardParent, false);
+            }
+
+            cardObj.SetActive(true);
+
             return cardObj;
+        }
+
+        /// <summary>
+        /// 보유덱에 있는 모든 카드 끄기
+        /// </summary>
+        public void AllFalseHaveCard()
+        {
+            int count = cardParent.childCount;
+
+
+            for (int i = 0; i < count; i++)
+            {
+                cardParent.GetChild(i).gameObject.SetActive(false);
+            }
         }
 
         /// <summary>

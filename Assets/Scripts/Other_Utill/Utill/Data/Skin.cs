@@ -15,7 +15,6 @@ namespace Utill.Data
         SharpNormal = 200,
         EraserNormal = 300,
     }
-
     [System.Serializable]
     public class SkinData
     {
@@ -25,6 +24,14 @@ namespace Utill.Data
         public EffectType _effectType = EffectType.Attack;
         public CardNamingType _cardNamingType = CardNamingType.None;
 
+        /// <summary>
+        /// 스킨 타입을 스킨테마에 추가
+        /// </summary>
+        public static void AddSkinTypeInSkinTheme()
+		{
+
+		}
+        
         /// <summary>
         /// 스킨 데이터를 딕셔너리에 추가
         /// </summary>

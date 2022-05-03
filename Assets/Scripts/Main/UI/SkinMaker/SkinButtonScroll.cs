@@ -1,10 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace Main.Skin
 {
-    public class ButtonScroll : MonoBehaviour
+    /// <summary>
+    /// 스킨 세트 버튼 스크롤에 대한 클래스  
+    /// </summary>
+    public class SkinButtonScroll : MonoBehaviour
     {
         //인스펙터 변수
         [SerializeField]
@@ -17,12 +22,15 @@ namespace Main.Skin
         private float _transitionTime = 0.5f; // 전환에 걸리는 시간
         [SerializeField]
         private int _currentIndex = 0;
+        [SerializeField]
+        private SkinMakerComponent _skinMakerComponent = null;
 
         //상수
         private const int LEFT = 1;
         private const int RIGHT = -1;
 
         //변수
+        private List<Button> _buttonList = new List<Button>();
         private List<RectTransform> _targetList = new List<RectTransform>();
         private List<RectTransform> _imposterList = new List<RectTransform>();
         private RectTransform _currentImposter;
@@ -36,17 +44,23 @@ namespace Main.Skin
         private Vector2[] _sizeTable; // 인덱스 위치에 따른 크기 기록
 
 
-        private void OnEnable()
+        private void Start()
         {
+            _isTransiting = false;
+
             //켜질 때 콘텐츠 리스트 초기화
+            _buttonList.Clear();
             _targetList.Clear();
             int childCount = transform.childCount;
 
             //콘텐츠들을 리스트에 추가
             for (int i = 0; i < childCount; i++)
             {
+                int j = i;
                 Transform child = transform.GetChild(i);
                 _targetList.Add(child.GetComponent<RectTransform>());
+                _buttonList.Add(child.GetComponent<Button>());
+                _buttonList[j].onClick.AddListener(() => OnChangeSkinSet(j));
             }
 
             //콘텐츠 카운트와 회전카운트, 중심 인덱스 설정
@@ -59,19 +73,11 @@ namespace Main.Skin
             //끝에서 끝으로 옮길 객체 설정
             InitRectTransforms();
             GenerateImposters();
+            FixImposterSize();
         }
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                LeftTransition();
-            }
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                RightTransition();
-            }
-
             if (_isTransiting)
             {
                 _progress += Time.deltaTime / _transitionTime;
@@ -91,6 +97,51 @@ namespace Main.Skin
                     OnTransitionEnd();
                 }
             }
+        }
+
+        /// <summary>
+        /// 버튼 순서에 따라 왼쪽 오른쪽 여부가 결정된다
+        /// </summary>
+        /// <param name="index"></param>
+        public void OnChangeSkinSet(int index)
+		{
+            if(index == _currentIndex)
+			{
+                return;
+			}
+
+            if(_currentIndex == 0)
+			{
+                if(index == _buttonList.Count - 1)
+				{
+                    LeftTransition();
+                }
+                else
+				{
+                    RightTransition();
+
+                }
+			}
+            else if(_currentIndex == _buttonList.Count - 1)
+            {
+                if (index == 0)
+                {
+                    RightTransition();
+                }
+                else
+                {
+                    LeftTransition();
+                }
+            }
+            else if(_currentIndex < index)
+            {
+                RightTransition();
+            }
+            else if (_currentIndex > index)
+            {
+                LeftTransition();
+            }
+            _skinMakerComponent.SetSkinMakeDatas(index);
         }
 
         /// <summary>
@@ -324,6 +375,18 @@ namespace Main.Skin
                 RectTransform rt = go.GetComponent<RectTransform>();
                 _imposterList.Add(rt);
                 go.SetActive(false);
+            }
+        }
+
+        /// <summary>
+        /// 크기 버그 해결을 위한 옮겨질 객체 크기 조정
+        /// </summary>
+        [ContextMenu("크기 버그 해결")]
+        private void FixImposterSize()
+        {
+            for (int i = 0; i < _imposterList.Count; i++)
+            {
+                _imposterList[i].localScale = Vector2.one;
             }
         }
 
