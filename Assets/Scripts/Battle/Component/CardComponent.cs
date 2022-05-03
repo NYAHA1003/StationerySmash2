@@ -96,6 +96,7 @@ namespace Battle
             updateAction += UpdateSelectCardPos;
             updateAction += UpdateCardDraw;
             updateAction += UpdateSummonRange;
+            updateAction += UpdateCheckCost;
         }
 
         /// <summary>
@@ -274,6 +275,18 @@ namespace Battle
             }
             _selectCard.transform.position = Input.mousePosition;
         }
+
+        /// <summary>
+        /// 카드들의 코스트를 비교하여 사용할 수 있는지 확인한다
+        /// </summary>
+        public void UpdateCheckCost()
+		{
+            int count = _cardList.Count;
+            for (int i = 0; i < count; i++)
+			{
+                _cardList[i].CheckCost(_commandCost.CurrentCost);
+			}
+		}
 
         /// <summary>
         /// 카드 선택을 취소함
