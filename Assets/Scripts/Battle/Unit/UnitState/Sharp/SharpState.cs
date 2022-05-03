@@ -16,13 +16,13 @@ namespace Battle.Units
 		public override void SetState()
 		{
 			//스테이트들을 설정한다
-			_idleState = new Sharp_Idle_State();
-			_waitState = new Sharp_Wait_State();
-			_moveState = new Sharp_Move_State();
-			_attackState = new Sharp_Attack_State();
-			_damagedState = new Sharp_Damaged_State();
-			_dieState = new Sharp_Die_State();
-			_throwState = new Sharp_Throw_State();
+			_idleState = new SharpIdleState();
+			_waitState = new SharpWaitState();
+			_moveState = new SharpMoveState();
+			_attackState = new SharpAttackState();
+			_damagedState = new SharpDamagedState();
+			_dieState = new SharpDieState();
+			_throwState = new SharpThrowState();
 
 			Reset_CurrentUnitState(_idleState);
 
@@ -35,29 +35,28 @@ namespace Battle.Units
 			_abstractUnitStateList.Add(_throwState);
 
 			SetInStateList();
-
 		}
+
 		public override void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
 		{
 			base.Reset_State(myTrm, mySprTrm, myUnit);
-			_sharpsimPieceData = AddressableTool.ReturnProjectileUnitAsync(UnitType.SharpSim).Result;
 			myUnit.SetIsNeverDontThrow(false);
 		}
 	}
 
-	public class Sharp_Idle_State : AbstractIdleState
+	public class SharpIdleState : AbstractIdleState
 	{
 	}
 
-	public class Sharp_Wait_State : AbstractWaitState
+	public class SharpWaitState : AbstractWaitState
 	{
 	}
 
-	public class Sharp_Move_State : AbstractMoveState
+	public class SharpMoveState : AbstractMoveState
 	{
 	}
 
-	public class Sharp_Attack_State : SummonAttackState
+	public class SharpAttackState : SummonAttackState
 	{
 		protected override void Summon()
 		{
@@ -68,15 +67,15 @@ namespace Battle.Units
 		}
 	}
 
-	public class Sharp_Damaged_State : AbstractDamagedState
+	public class SharpDamagedState : AbstractDamagedState
 	{
 	}
 
-	public class Sharp_Die_State : AbstractDieState
+	public class SharpDieState : AbstractDieState
 	{
 	}
 
-	public class Sharp_Throw_State : AbstractThrowState
+	public class SharpThrowState : AbstractThrowState
 	{
 
 	}

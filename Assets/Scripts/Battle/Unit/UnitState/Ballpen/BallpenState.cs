@@ -13,23 +13,25 @@ namespace Battle.Units
 		public override void SetState()
 		{
 			//스테이트들을 설정한다
-			_idleState = new BallPenIdleState();
-			_waitState = new BallPenWaitState();
-			_moveState = new BallPenMoveState();
-			_attackState = new BallPenAttackState();
-			_damagedState = new BallPenDamagedState();
-			_dieState = new BallPenDieState();
-			_throwState = new BallPenThrowState();
+			_idleState = new PencilIdleState();
+			_waitState = new PencilWaitState();
+			_moveState = new PencilMoveState();
+			_attackState = new PencilAttackState();
+			_damagedState = new PencilDamagedState();
+			_dieState = new PencilDieState();
+			_throwState = new PencilThrowState();
 
 			Reset_CurrentUnitState(_idleState);
 
-			_idleState.SetStateManager(this);
-			_waitState.SetStateManager(this);
-			_moveState.SetStateManager(this);
-			_attackState.SetStateManager(this);
-			_damagedState.SetStateManager(this);
-			_dieState.SetStateManager(this);
-			_throwState.SetStateManager(this);
+			_abstractUnitStateList.Add(_idleState);
+			_abstractUnitStateList.Add(_waitState);
+			_abstractUnitStateList.Add(_moveState);
+			_abstractUnitStateList.Add(_attackState);
+			_abstractUnitStateList.Add(_damagedState);
+			_abstractUnitStateList.Add(_dieState);
+			_abstractUnitStateList.Add(_throwState);
+
+			SetInStateList();
 		}
 
 		public override void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
