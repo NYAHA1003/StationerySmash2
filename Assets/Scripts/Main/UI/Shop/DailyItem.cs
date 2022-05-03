@@ -18,13 +18,13 @@ public class DailyItem : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _countText; // 개수 텍스트
 
-    public void SetCardInfo(DailyCardType dailyCardType, int count)
+    public void SetCardInfo(DailyCardType dailyCardType, int itemCount)
     {
         DailyItemInfo dailyItemInfo = _dailyItemInfo.dailyItemInfos[(int)dailyCardType];
         _itemSprite = dailyItemInfo.itemSprite;
         _priceText.text = dailyItemInfo.card_price.ToString(); 
         _itemNameText.text = dailyItemInfo.card_Name;
-        _countText.text = (dailyItemInfo.card_price * count).ToString();
+        _countText.text = (dailyItemInfo.card_price * itemCount).ToString();
 
   
     }

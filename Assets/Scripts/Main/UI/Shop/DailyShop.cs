@@ -7,6 +7,8 @@ using System;
 
 public class DailyShop : MonoBehaviour
 {
+
+
     [SerializeField]
     private DailyItem dailyItemPrefab;
 
@@ -27,23 +29,161 @@ public class DailyShop : MonoBehaviour
     private bool _Pen = false;
     // 끝
 
-    private int dailyCardCount = 6; 
+    private int dailyCardCount = 6;
     private void Start()
     {
-        Shuffle();
-        CreateDailyItem(); 
+        Initialized();
+        ShowFreeDailyCard();
+        ShowDailyCard();
+        //Shuffle();
+        //CreateDailyItem();
     }
+    /// <summary>
+    /// 일일상점 카드타입 확률에따라 넣어주기
+    /// 60% : 학용품 조각
+    /// 25% : 스티커 조각
+    /// 13% : 뱃지 조각
+    /// 1% : 신규 학용품
+    /// 0.7% : 신규 스티커
+    /// 0.3% : 신규 뱃지
+    /// </summary>
+    private void Initialized()
+    {
+        for (int i = 0; i < 600; i++)
+        {
+            dailyCardTypes.Add(DailyCardType.StationerySheet);
+        }
+        for (int i = 0; i < 250; i++)
+        {
+            dailyCardTypes.Add(DailyCardType.StickerSheet);
+        }
+        for (int i = 0; i < 130; i++)
+        {
+            dailyCardTypes.Add(DailyCardType.BadgeSheet);
+        }
+        for (int i = 0; i < 10; i++)
+        {
+            dailyCardTypes.Add(DailyCardType.NewStationary);
+        }
+        for (int i = 0; i < 7; i++)
+        {
+            dailyCardTypes.Add(DailyCardType.NewSticker);
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            dailyCardTypes.Add(DailyCardType.NewBadge);
+        }
+    }
+
+    /// <summary>
+    /// 일일상점 데일리카드 타입 섞기
+    /// 학용품조각
+    /// 스티커 조각
+    /// 뱃지 조각
+    /// 신규 학용품
+    /// 신규 스티커
+    /// 신규 뱃지 
+    /// </summary>
+    private void Shuffle2(/*int typeLength, int cardCount*/)
+    {
+        int enumLength = Enum.GetValues(typeof(DailyCardType)).Length;
+        int index1, index2;
+        DailyCardType temp;
+        for (int i = 0; i < 5000; i++)
+        {
+            index1 = Random.Range(0, enumLength);
+            index2 = Random.Range(0, enumLength);
+            temp = dailyCardTypes[index1];
+            dailyCardTypes[index1] = dailyCardTypes[index2];
+            dailyCardTypes[index2] = temp;
+        }
+    }
+
+    private void ShowDailyCard()
+    {
+        Shuffle2();
+        // 유료 카드 생성
+        for (int i = 0; i < dailyCardCount - 1; i++)
+        {
+            Debug.Log("상점카드 생성");
+            DailyItem paidDailyCard = Instantiate(dailyItemPrefab, transform);
+            Check(dailyCardTypes[i]);
+            paidDailyCard.SetCardInfo(dailyCardTypes[i], 10);
+        }
+    }
+    enum StationaryType
+    {
+
+    }
+    enum StickerType
+    {
+
+    }
+    enum Badge
+    {
+        
+    }
+
+
+    private void Check(DailyCardType dailyCardType)
+    {
+            switch (dailyCardType)
+            {
+                case DailyCardType.StationerySheet:
+                ItemType.
+                    // 학용품 13개 조각 중 랜덤으로 하나
+                    break;
+                case DailyCardType.StickerSheet:
+                    // 스티커 32개 조각 중 랜덤으로 하나 
+                    break;
+                case DailyCardType.BadgeSheet:
+                    // 뱃지 13개 조각 중 랜덤으로 하나 
+                    break;
+                case DailyCardType.NewStationary:
+
+                    break;
+                case DailyCardType.NewSticker:
+
+                    break;
+                case DailyCardType.NewBadge:
+
+                    break;
+            }
+    }
+
+    private void CheckItemSheet()
+    {
+
+    }
+    private void ShowFreeDailyCard()
+    {
+        // 무료 카드 생성 
+        int freeItemCount; // 무료템 개수
+        int freeItemPercent; // 무료템 확률
+        DailyFreeItemType dailyFreeItemType;
+        freeItemPercent = Random.Range(0, 10);
+        if (freeItemPercent > 3) // 70%확률로 골드 
+        {
+            dailyFreeItemType = DailyFreeItemType.Gold;
+            freeItemCount = Random.Range(10, 21) * 10;
+        }
+        else // 30%확률로 달고나 
+        {
+            dailyFreeItemType = DailyFreeItemType.Dalgona;
+            freeItemCount = Random.Range(3, 7);
+        }
+        DailyItem freeDailyCard = Instantiate(dailyItemPrefab, transform);
+        //freeDailyCard.SetCardInfo(dailyCardTypes[0], freeItemCount);
+    }
+
 
     private void Shuffle()
     {
-        int enumLength = Enum.GetValues(typeof(DailyCardType)).Length; 
-        for (int i = 0; i < 600; i++)
-        {
-            //dailyCardTypes.Add(DailyCardType.);
-        }
-        int index1,index2;
-        DailyCardType temp; 
-        for(int i = 0; i < 50; i++)
+
+
+        int index1, index2;
+        DailyCardType temp;
+        for (int i = 0; i < 50; i++)
         {
             index1 = Random.Range(0, dailyCardCount);
             index2 = Random.Range(0, dailyCardCount);
@@ -60,11 +200,11 @@ public class DailyShop : MonoBehaviour
         // 무료 카드 생성 
         int freeItemCount; // 무료템 개수
         int freeItemPercent; // 무료템 확률
-        DailyFreeItemType dailyFreeItemType; 
+        DailyFreeItemType dailyFreeItemType;
         freeItemPercent = Random.Range(0, 10);
         if (freeItemPercent > 3) // 70%확률로 골드 
         {
-            dailyFreeItemType = DailyFreeItemType.Gold; 
+            dailyFreeItemType = DailyFreeItemType.Gold;
             freeItemCount = Random.Range(10, 21) * 10;
         }
         else // 30%확률로 달고나 
