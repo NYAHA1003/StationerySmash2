@@ -13,8 +13,6 @@ public class WarrningComponent : MonoBehaviour
     private RectTransform _warrningTransform = null;
     [SerializeField]
     private TextMeshProUGUI _textMeshPro = null;
-
-    public string testText;
     //변수
     private Tweener _tweener = null;
 
@@ -29,17 +27,18 @@ public class WarrningComponent : MonoBehaviour
     /// </summary>
     public void Initialized()
     {
-        _tweener = _warrningTransform.DOAnchorPosY(-2000, 1).SetDelay(1).SetAutoKill(false);
+        _tweener = _warrningTransform.DOAnchorPosY(-2000, 1).SetDelay(1).SetAutoKill(false).
+            OnComplete(() => _warrningTransform.gameObject.SetActive(false));
     }
 
     /// <summary>
     /// 경고 메시지 출력
     /// </summary>
     /// <param name="text"></param>
-    [ContextMenu("경고 메시지 출력")]
-    public void SetWarrning()
+    public void SetWarrning(string text)
     {
-        _textMeshPro.text = testText;
+        _warrningTransform.gameObject.SetActive(true);
+        _textMeshPro.text = text;
         _tweener.Pause();
         _warrningTransform.anchoredPosition = new Vector2(0, 0);
         _tweener.Restart();

@@ -18,6 +18,8 @@ namespace Main.Deck
         public PencilCaseDataListSO _havePCDataSO; //보유 필통 데이터들
         public PencilCaseDataSO _inGamePCDataSO; //장착 필통 데이터
 
+        [SerializeField]
+        private WarrningComponent _warrningComponent; //경고 컴포넌트
 
         private UserSaveData _userSaveData; //유저 데이터
 
@@ -82,8 +84,11 @@ namespace Main.Deck
         /// </summary>
         public void AddCardInDeck(CardData cardData, int level)
 		{
-            _inGameDeckList.cardDatas.Add(cardData.DeepCopy(level, cardData.skinData._skinType));
-            _userSaveData._ingameSaveDatas.Add(CardSaveData.CopyDataToCardData(cardData));
+            if(CheckCanAddCard())
+			{
+                _inGameDeckList.cardDatas.Add(cardData.DeepCopy(level, cardData.skinData._skinType));
+                _userSaveData._ingameSaveDatas.Add(CardSaveData.CopyDataToCardData(cardData));
+			}
         }
         /// <summary>
         /// 덱에 카드를 해제한다
@@ -92,6 +97,31 @@ namespace Main.Deck
         {
             _inGameDeckList.cardDatas.RemoveAt(_inGameDeckList.cardDatas.FindIndex(x => x.skinData._cardNamingType == cardNamingType));
             _userSaveData._ingameSaveDatas.RemoveAt(_userSaveData._ingameSaveDatas.FindIndex(x => x._cardNamingType == cardNamingType));
+        }
+
+        /// <summary>
+        /// 카드를 추가할 수 있는지 체크
+        /// </summary>
+        public bool CheckCanAddCard()
+        {
+            if (_inGameDeckList.cardDatas.Count == 10)
+            {
+                _warrningComponent.SetWarrning("장착 카드는 10장을 넘어갈 수 없습니다");
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// 게임을 할 수 있는지 체크
+        /// </summary>
+        public bool CheckCanPlayGame()
+        {
+            if (_inGameDeckList.cardDatas.Count < 2)
+            {
+                _warrningComponent.SetWarrning("장착 카드는 2장 이상이어야 합니다");
+                return false;
+            }
+            return true;
         }
 
 
