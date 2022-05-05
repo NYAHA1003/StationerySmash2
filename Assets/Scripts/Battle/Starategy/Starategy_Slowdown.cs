@@ -15,11 +15,11 @@ namespace Battle.Starategy
         {
             if (eTeam == TeamType.MyTeam)
             {
-                Check_Range(_battleManager.CommandUnit._enemyUnitList, _card.DataBase.strategyData.starategyablityData);
+                Check_Range(_battleManager.CommandUnit._enemyUnitList, _card.CardDataValue.strategyData.starategyablityData);
             }
             else if (eTeam == TeamType.EnemyTeam)
             {
-                Check_Range(_battleManager.CommandUnit._playerUnitList, _card.DataBase.strategyData.starategyablityData);
+                Check_Range(_battleManager.CommandUnit._playerUnitList, _card.CardDataValue.strategyData.starategyablityData);
             }
         }
 

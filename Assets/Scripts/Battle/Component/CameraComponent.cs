@@ -49,6 +49,7 @@ namespace Battle
             _commandCard = cardCommand;
 
             updateAction += UpdateCameraScale;
+            updateAction += UpdateInputMove;
 
             //관찰자를 등록한다
             _commandWinLose.AddObservers(this);
@@ -128,6 +129,22 @@ namespace Battle
         }
 
         /// <summary>
+        /// 방향키로 좌우 이동이 가능함
+        /// </summary>
+        public void UpdateInputMove()
+		{
+            if(Input.GetKey(KeyCode.RightArrow))
+			{
+                OnRightMove();
+			}
+            if(Input.GetKey(KeyCode.LeftArrow))
+			{
+                OnLeftMove();
+			}
+
+        }
+
+        /// <summary>
         /// 카메라를 지정한 곳으로 이동하게 함
         /// </summary>
         /// <param name="pos"></param>
@@ -157,10 +174,11 @@ namespace Battle
             {
                 return;
             }
-                _camera.transform.Translate(Vector3.left * _moveSpeed * Time.deltaTime);
-            //if (!(_stageData.max_Range + 1f < _camera.transform.position.x))
-            //{
-            //}
+            if (-_stageData.max_Range - 1f > _camera.transform.position.x)
+            {
+                return;
+            }
+            _camera.transform.Translate(Vector3.left * _moveSpeed * Time.deltaTime);
         }
 
         /// <summary>
@@ -177,10 +195,11 @@ namespace Battle
                 return;
             }
 
+            if (_stageData.max_Range + 1f < _camera.transform.position.x)
+            {
+                return;
+            }
                 _camera.transform.Translate(Vector3.right * _moveSpeed * Time.deltaTime);
-            //if (!(-_stageData.max_Range - 1f > _camera.transform.position.x))
-            //{
-            //}
         }
 
         /// <summary>
