@@ -39,24 +39,23 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     //인스펙터 참조 변수
     [SerializeField]
-    private Image _background;
+    private Image _cardimage; //카드의 유닛, 혹은 전략카드 이미지
     [SerializeField]
-    private Image _cardimage;
+    private Image _dontUseimage; //카드를 사용할 수 없을 때 명도 표시 이미지
     [SerializeField]
-    private Image _dontUseimage;
+    private TextMeshProUGUI _costText; //카드의 코스트를 나타내는 텍스트
     [SerializeField]
-    private TextMeshProUGUI _costText;
+    private Image _gradeFrame; // 카드의 등급 테두리
     [SerializeField]
-    private Image _gradeImage;
+    private Image _outLineFrame; // 카드 외곽획
     [SerializeField]
-    private TextMeshProUGUI _gradeText;
+    private TextMeshProUGUI _nameText; //카드의 이름
     [SerializeField]
-    private TextMeshProUGUI _nameText;
+    private Image _fusionEffect; // 융합시 카드 색깔이 바뀔 때 사용하는 이미지
     [SerializeField]
-    private Image _fusionEffect;
+    private RectTransform _rectTransform; // 카드의 렉트
     [SerializeField]
-    private RectTransform _rectTransform;
-
+    private List<Sprite> _gradeFrameSprites; // 카드 테두리 스프라이트들
 
     /// <summary>
     /// 카드에 데이터를 전달함
@@ -65,7 +64,6 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <param name="id">카드 고유 아이디</param>
     public void Set_UnitData(CardData dataBase, int id)
     {
-        _rectTransform ??= GetComponent<RectTransform>();
         _battleManager ??= FindObjectOfType<BattleManager>();
 
         //기본적인 초기화
@@ -211,25 +209,29 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         _rectTransform.rotation = rot;
     }
 
-
     /// <summary>
     /// 유닛 단계 이미지 설정
     /// </summary>
     public void SetUnitGrade()
     {
-        _gradeText.text = _grade.ToString();
         switch (_grade)
         {
             default:
             case 0:
             case 1:
-                _gradeImage.color = new Color(0, 0, 0);
+                _gradeFrame.sprite = _gradeFrameSprites[0];
+                _outLineFrame.sprite = _gradeFrameSprites[0];
+                _outLineFrame.color = Color.black;
                 break;
             case 2:
-                _gradeImage.color = new Color(1, 1, 0);
+                _gradeFrame.sprite = _gradeFrameSprites[1];
+                _outLineFrame.sprite = _gradeFrameSprites[1];
+                _outLineFrame.color = Color.black;
                 break;
             case 3:
-                _gradeImage.color = new Color(1, 1, 1);
+                _gradeFrame.sprite = _gradeFrameSprites[2];
+                _outLineFrame.sprite = _gradeFrameSprites[2];
+                _outLineFrame.color = Color.white;
                 break;
         }
     }
@@ -248,7 +250,16 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// </summary>
     public void FusionFadeInEffect(Color color)
     {
-        _fusionEffect.color = color;
+        Color useColor = color;
+        if(_isUnderCost)
+		{
+            useColor.r = useColor.r - 0.3f;
+            useColor.g = useColor.g - 0.3f;
+            useColor.b = useColor.b - 0.3f;
+        }
+        _fusionEffect.color = useColor;
+
+
         _fusionEffect.DOFade(1, 0.2f);
     }
     /// <summary>
