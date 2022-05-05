@@ -5,9 +5,12 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Main.Scroll;
 
-namespace Main.Skin
+namespace Main.Card
 {
-    public class SkinScroll : AgentScroll
+    /// <summary>
+    /// 카드 설명 우측 아이콘 스크롤 관련 클래스
+    /// </summary>
+    public class CardDescriptionScroll : AgentScroll
     {
         //인스펙터 변수
         [SerializeField]
@@ -16,7 +19,7 @@ namespace Main.Skin
         //변수
         private List<Image> _stressIcons = new List<Image>(); //강조 아이콘 리스트
         private Vector3 _orginIconScale = Vector3.one; //원래 아이콘의 크기
-
+    
 
         public override void OnEndDrag(PointerEventData eventData)
         {

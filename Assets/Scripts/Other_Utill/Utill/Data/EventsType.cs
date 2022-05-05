@@ -12,6 +12,7 @@
         MoveMainPn, // 메인패널 상하 이동 (인덱스 변경) 
         CloaseAllPn, // 모든 패널 비활성화 
         SetOriginShopPn, //상점 패널 초기화 
+        UpdateHaveAndEquipDeck, //보유 덱과 장착 덱 초기화
 
 
         // 세팅 부분

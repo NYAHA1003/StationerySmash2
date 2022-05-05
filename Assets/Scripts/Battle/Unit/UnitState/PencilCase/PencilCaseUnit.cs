@@ -27,7 +27,7 @@ public class PencilCaseUnit : Unit
     {
         _battleManager ??= FindObjectOfType<BattleManager>();
         base.SetUnitData(dataBase, eTeam, stageData, id, grade, orderIndex);
-        SetPencilCaseAbility(_pencilCaseData.PencilCasedataBase);
+        SetPencilCaseAbility(_pencilCaseData._pencilCaseData);
     }
 
     /// <summary>
@@ -37,7 +37,7 @@ public class PencilCaseUnit : Unit
     /// <param name="pencilCaseData"></param>
     public void SetPencilCaseAbility(PencilCaseData pencilCaseData)
     {
-        switch (pencilCaseData.pencilCaseType)
+        switch (pencilCaseData._pencilCaseType)
         {
             default:
             case PencilCaseType.Normal:
