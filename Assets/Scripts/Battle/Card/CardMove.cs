@@ -248,7 +248,16 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// </summary>
     public void FusionFadeInEffect(Color color)
     {
-        _fusionEffect.color = color;
+        Color useColor = color;
+        if(_isUnderCost)
+		{
+            useColor.r = useColor.r - 0.3f;
+            useColor.g = useColor.g - 0.3f;
+            useColor.b = useColor.b - 0.3f;
+        }
+        _fusionEffect.color = useColor;
+
+
         _fusionEffect.DOFade(1, 0.2f);
     }
     /// <summary>
