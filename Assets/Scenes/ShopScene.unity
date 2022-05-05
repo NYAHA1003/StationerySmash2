@@ -12732,7 +12732,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc112bdc5ed7f584e8f9642ba0221b6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dailyItemPrefab: {fileID: 1880888177392068865, guid: ff9ef9b8012e50543a6ec04fd131fb8f, type: 3}
+  _dailyItemPrefab: {fileID: 1880888177392068865, guid: ff9ef9b8012e50543a6ec04fd131fb8f, type: 3}
+  _freeItemSO: {fileID: 11400000, guid: 575f52d2f056838408e9706d13f08c0f, type: 2}
+  _stationerySheetSO: {fileID: 11400000, guid: 78a7198194860de46908ab98f12ca82a, type: 2}
+  _stickerSheetSO: {fileID: 11400000, guid: 9302f3d2da62b7845b36ac81a9a03786, type: 2}
+  _badgeSheetSO: {fileID: 11400000, guid: 877df83858f80a147af61efc0f91b280, type: 2}
+  _newStationerySO: {fileID: 11400000, guid: 2755e84677fc34d4b9358bf4c0dcfb69, type: 2}
+  _newStickerSheetSO: {fileID: 11400000, guid: a4cdbef4596e15e458ab0aeb0e37f2e4, type: 2}
+  _newBadgeSheetSO: {fileID: 11400000, guid: b98f62ff1f22a5146a93fd5c7ad58655, type: 2}
+  notHaveStationaryTypes: 
+  notHaveStickersTypes: 
+  notHaveBadgeTypes: 
 --- !u!1 &898304268
 GameObject:
   m_ObjectHideFlags: 0
@@ -18419,7 +18429,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1360767070}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f40f4dcca2907541ab25543b632c8b7, type: 3}
   m_Name: 
