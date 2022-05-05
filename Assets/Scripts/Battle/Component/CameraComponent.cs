@@ -157,10 +157,10 @@ namespace Battle
             {
                 return;
             }
-            if (!(_stageData.max_Range + 1f < _camera.transform.position.x))
-            {
                 _camera.transform.Translate(Vector3.left * _moveSpeed * Time.deltaTime);
-            }
+            //if (!(_stageData.max_Range + 1f < _camera.transform.position.x))
+            //{
+            //}
         }
 
         /// <summary>
@@ -177,10 +177,10 @@ namespace Battle
                 return;
             }
 
-            if (!(-_stageData.max_Range - 1f > _camera.transform.position.x))
-            {
                 _camera.transform.Translate(Vector3.right * _moveSpeed * Time.deltaTime);
-            }
+            //if (!(-_stageData.max_Range - 1f > _camera.transform.position.x))
+            //{
+            //}
         }
 
         /// <summary>
