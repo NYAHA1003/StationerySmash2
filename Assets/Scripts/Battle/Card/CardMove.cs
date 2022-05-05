@@ -27,9 +27,10 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private int _originCardCost = 0; 
     private bool _isFusion = false;
     private bool _isFusionFrom = false;
+    private bool _isDrag; // 드래그 중인 상태인가
+    private bool _isUnderCost; // 코스트가 부족할 때
     private int _grade = 1;
     private int _id = 0;
-    private bool _isDrag; // 드래그 중인 상태인가
     private PRS _originPRS = default;
 
     //참조 변수
@@ -40,7 +41,9 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField]
     private Image _background;
     [SerializeField]
-    private Image _image;
+    private Image _cardimage;
+    [SerializeField]
+    private Image _dontUseimage;
     [SerializeField]
     private TextMeshProUGUI _costText;
     [SerializeField]
@@ -73,7 +76,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         _costText.text = dataBase.card_Cost.ToString();
         _originCardCost = dataBase.card_Cost;
         _cardCost = dataBase.card_Cost;
-        _image.sprite = SkinData.GetSkin(dataBase.skinData._skinType);
+        _cardimage.sprite = SkinData.GetSkin(dataBase.skinData._skinType);
         _grade = 1;
         SetUnitGrade();
         _isFusion = false;
@@ -262,6 +265,10 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <param name="eventData"></param>
     public void OnPointerDown(PointerEventData eventData)
     {
+        if(_isUnderCost)
+		{
+            return;
+		}
         if (_isFusionFrom)
         {
             return;
@@ -312,4 +319,22 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         RunOriginPRS();
 
     }
+
+    /// <summary>
+    /// 현재 코스트와 이 카드의 코스트를 비교해 사용할 수 있는지 체크
+    /// </summary>
+    /// <param name="curCost"></param>
+    public void CheckCost(int curCost)
+	{
+        if(curCost < _cardCost)
+		{
+            _isUnderCost = true;
+            _dontUseimage.gameObject.SetActive(true);
+		}
+        else
+        {
+            _isUnderCost = false;
+            _dontUseimage.gameObject.SetActive(false);
+		}
+	}
 }

@@ -14,6 +14,15 @@ namespace Main.Deck
         private List<IUserData> _userDataObservers = new List<IUserData>();
 
         /// <summary>
+        /// 장착 카드 프리셋을 변경한다
+        /// </summary>
+        /// <param name="ingameSaveDatas"></param>
+        public void ChangeSaveData(List<CardSaveData> ingameSaveDatas)
+		{
+            userSaveData._ingameSaveDatas = ingameSaveDatas;
+		}
+
+        /// <summary>
         /// 관찰자 추가
         /// </summary>
         /// <param name="observer"></param>

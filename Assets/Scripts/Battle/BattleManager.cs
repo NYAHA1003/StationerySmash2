@@ -80,14 +80,14 @@ namespace Battle
 			Application.targetFrameRate = 60;
 
 			_commandPencilCase.SetInitialization(CommandUnit, CurrentStageData);
-			_commandCard.SetInitialization(this, CommandWinLose, CommandCamera, CommandUnit, CommandCost, ref _updateAction, CurrentStageData, _commandPencilCase.PencilCaseDataMy.PencilCasedataBase.maxCard);
+			_commandCard.SetInitialization(this, CommandWinLose, CommandCamera, CommandUnit, CommandCost, ref _updateAction, CurrentStageData, _commandPencilCase.PencilCaseDataMy._pencilCaseData._maxCard);
 			_commandCamera.SetInitialization(CommandCard, CommandWinLose, ref _updateAction, CurrentStageData);
 			_commandUnit.SetInitialization(ref _updateAction, CurrentStageData);
 			_commandEffect.SetInitialization();
 			_commandThrow.SetInitialization(ref _updateAction, _commandUnit, _commandCamera, CurrentStageData);
 			_commandAI.SetInitialization(CommandPencilCase, CommandUnit, ref _updateAction);
 			_commandTime.SetInitialization(ref _updateAction, CurrentStageData);
-			_commandCost.SetInitialization(ref _updateAction, _commandPencilCase.PencilCaseDataMy.PencilCasedataBase);
+			_commandCost.SetInitialization(ref _updateAction, _commandPencilCase.PencilCaseDataMy._pencilCaseData);
 			_commandPause.SetInitialization();
 			_commandWinLose.SetInitialization();
 			_introComponent.SetInitialization(_commandCamera);

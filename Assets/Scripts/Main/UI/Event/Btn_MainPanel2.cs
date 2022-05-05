@@ -24,7 +24,6 @@ namespace Main.Event
 
             //활성화되어 있는 모든 패널 닫기 
             EventManager.StartListening(EventsType.CloaseAllPn, OnDeckDisabled);
-            EventManager.StartListening(EventsType.CloaseAllPn, OnCardDescriptionDisabled);
             EventManager.StartListening(EventsType.CloaseAllPn, OnSettingDisabled);
         }
 
@@ -57,13 +56,6 @@ namespace Main.Event
         public void OnDeckDisabled()
         {
             deck.SetActive(false);
-        }
-        /// <summary>
-        /// 카드 설명창 비활성화 (모든 창 일괄 종료 이벤트에서 사용) 
-        /// </summary>
-        public void OnCardDescriptionDisabled()
-        {
-            cardDescription.SetActive(false);
         }
         /// <summary>
         /// 설정창 비활성화  (모든 창 일괄 종료 이벤트에서 사용) 
