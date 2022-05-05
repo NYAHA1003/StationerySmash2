@@ -345,16 +345,16 @@ namespace Battle
             }
 
 
-            switch (card.DataBase.cardType)
+            switch (card.CardDataValue.cardType)
             {
                 case CardType.SummonUnit:
-                    _commandUnit.SummonUnit(card.DataBase, new Vector3(mouse_Pos.x, 0, 0), card.Grade);
+                    _commandUnit.SummonUnit(card.CardDataValue, new Vector3(mouse_Pos.x, 0, 0), card.Grade);
                     break;
                 default:
                 case CardType.Execute:
                 case CardType.SummonTrap:
                 case CardType.Installation:
-                    card.DataBase.strategyData.starategy_State.Run_Card(_commandUnit.eTeam);
+                    card.CardDataValue.strategyData.starategy_State.Run_Card(_commandUnit.eTeam);
                     break;
             }
 
@@ -386,7 +386,7 @@ namespace Battle
             }
 
             //소환 미리보기가 될 수 있는지 체크
-            if (_selectCard == null || _selectCard.DataBase.unitData.unitType == UnitType.None || pos.y < 0)
+            if (_selectCard == null || _selectCard.CardDataValue.unitData.unitType == UnitType.None || pos.y < 0)
             {
                 SetSummonArrowImage(false, pos);
                 _unitAfterImage.SetActive(false);
@@ -403,7 +403,7 @@ namespace Battle
             }
 
             _unitAfterImage.transform.position = new Vector3(pos.x, 0);
-            _afterImageSpriteRenderer.sprite = SkinData.GetSkin(_selectCard.DataBase.skinData._skinType);
+            _afterImageSpriteRenderer.sprite = SkinData.GetSkin(_selectCard.CardDataValue.skinData._skinType);
 
             //소환 화살표 적용
             SetSummonArrowImage(true, pos);
@@ -444,7 +444,7 @@ namespace Battle
                 return true;
             }
 
-            switch (_selectCard.DataBase.cardType)
+            switch (_selectCard.CardDataValue.cardType)
             {
                 case CardType.Execute:
                     break;
@@ -631,17 +631,17 @@ namespace Battle
         private bool FusionCheck(CardMove targetCard1, CardMove targetCard2)
         {
             //카드 타입이 같은지 체크
-            if (targetCard1.DataBase.cardType != targetCard2.DataBase.cardType)
+            if (targetCard1.CardDataValue.cardType != targetCard2.CardDataValue.cardType)
             {
                 return false;
             }
             //유닛 타입이 같은지 체크
-            if (targetCard1.DataBase.unitData.unitType != targetCard2.DataBase.unitData.unitType)
+            if (targetCard1.CardDataValue.unitData.unitType != targetCard2.CardDataValue.unitData.unitType)
             {
                 return false;
             }
             //전략 타입이 같은지 체크
-            if (targetCard1.DataBase.strategyData.starategyType != targetCard2.DataBase.strategyData.starategyType)
+            if (targetCard1.CardDataValue.strategyData.starategyType != targetCard2.CardDataValue.strategyData.starategyType)
             {
                 return false;
             }

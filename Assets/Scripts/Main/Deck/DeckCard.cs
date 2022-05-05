@@ -18,6 +18,8 @@ namespace Main.Deck
         private TextMeshProUGUI _CostText;
         [SerializeField, Header("À¯´Ö¿ë")]
         private Image _stickerImage;
+        [SerializeField]
+        private RectTransform _stickerRect;
 
         public CardData _cardData { get; private set; }
 
@@ -31,13 +33,17 @@ namespace Main.Deck
             _cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
             _unitNameText.text = cardData.card_Name;
             _CostText.text = $"{cardData.card_Cost}";
+            _stickerRect.gameObject.SetActive(false);
 
-            if (cardData.cardType == CardType.SummonUnit)
+            if(StickerData.CheckCanSticker(cardData))
             {
-                if (cardData.unitData?.stickerData != null)
-                {
-                    _stickerImage.sprite = cardData.unitData.stickerData._sprite;
-                }
+                _stickerImage.sprite = cardData.unitData.stickerData._sprite;
+                _stickerRect.anchoredPosition = StickerData.ReturnStickerPos(cardData.unitData.unitType);
+                _stickerRect.gameObject.SetActive(true);
+            }
+            else
+            {
+                _stickerRect.gameObject.SetActive(false);
             }
         }
     }
