@@ -328,6 +328,7 @@ namespace Battle
                 card.RunOriginPRS();
                 _commandCamera.SetCameraIsMove(true);
                 _selectCard = null;
+                IsSelectCard = false;
                 return;
             }
             //선택한 카드를 Null로 돌림
