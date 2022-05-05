@@ -45,5 +45,7 @@ public class SceneLoadButtonManager : MonoBehaviour
         aIDataSO.cardDataList = currentData.cardDataList;
         aIDataSO.pos = currentData.pos;
         aIDataSO.max_Delay = currentData.max_Delay;
+
+        pencilCaseDataSO.battleStageType = currentData.battleStageType;
     }
 }
