@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Utill.Data;
 namespace Utill.Load
 {
 
@@ -9,7 +9,7 @@ namespace Utill.Load
     public class LoadData
     {
         public BattleStageType battleStageType;
-        public PencilCaseData PencilCasedataBase;
+        public PencilCaseData _pencilCaseData;
         public int summonGrade;
         public float throwSpeed;
         public bool isAIOn;

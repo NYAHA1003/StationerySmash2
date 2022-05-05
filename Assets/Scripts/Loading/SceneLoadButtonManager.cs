@@ -32,12 +32,12 @@ public class SceneLoadButtonManager : MonoBehaviour
     {
         //so데이터를 aidataSO와 PencilCaseDataSO에 넣어줌
         var currentData = loadingBattleDataSO.loadDatas.Find(x => x.battleStageType == battleStageType);
-        pencilCaseDataSO.PencilCasedataBase.maxCard = currentData.PencilCasedataBase.maxCard;
-        pencilCaseDataSO.PencilCasedataBase.costSpeed = currentData.PencilCasedataBase.costSpeed;
-        pencilCaseDataSO.PencilCasedataBase.throwGaugeSpeed = currentData.PencilCasedataBase.throwGaugeSpeed;
-        pencilCaseDataSO.PencilCasedataBase.pencilCaseType = currentData.PencilCasedataBase.pencilCaseType;
-        pencilCaseDataSO.PencilCasedataBase.pencilState = currentData.PencilCasedataBase.pencilState;
-        pencilCaseDataSO.PencilCasedataBase._badgeDatas = currentData.PencilCasedataBase._badgeDatas;
+        pencilCaseDataSO._pencilCaseData._maxCard = currentData._pencilCaseData._maxCard;
+        pencilCaseDataSO._pencilCaseData._costSpeed = currentData._pencilCaseData._costSpeed;
+        pencilCaseDataSO._pencilCaseData._throwGaugeSpeed = currentData._pencilCaseData._throwGaugeSpeed;
+        pencilCaseDataSO._pencilCaseData._pencilCaseType = currentData._pencilCaseData._pencilCaseType;
+        pencilCaseDataSO._pencilCaseData._pencilState = currentData._pencilCaseData._pencilState;
+        pencilCaseDataSO._pencilCaseData._badgeDatas = currentData._pencilCaseData._badgeDatas;
 
         aIDataSO.summonGrade = currentData.summonGrade;
         aIDataSO.throwSpeed = currentData.throwSpeed;
