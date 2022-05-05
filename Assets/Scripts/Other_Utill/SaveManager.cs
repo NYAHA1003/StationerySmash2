@@ -39,6 +39,7 @@ public class SaveManager : MonoSingleton<SaveManager>
 
             //유저데이터에 저장
             _saveData.userSaveData = JsonUtility.FromJson<UserSaveData>(path);
+            DeliverDataToObserver();
         }
         catch
         {
@@ -58,6 +59,14 @@ public class SaveManager : MonoSingleton<SaveManager>
         string fileName = "saveData";
         string path = Application.dataPath + "/" + fileName + ".json";
         File.WriteAllText(path, json);
+        DeliverDataToObserver();
+    }
+
+    /// <summary>
+    /// 모든 관찰자들에게 데이터 전달
+    /// </summary>
+    public void DeliverDataToObserver()
+    {
         _saveData.DeliverDataToObserver();
     }
 }
