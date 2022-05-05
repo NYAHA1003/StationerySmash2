@@ -58,6 +58,35 @@ namespace Main.Deck
             }
         }
 
+
+        /// <summary>
+        /// 보유 필통 설정
+        /// </summary>
+        public void SetPencilCaseList()
+        {
+            _havePCDataSO._pencilCaseDataList.Clear();
+            int count = _userSaveData._havePencilCaseList.Count;
+            for (int i = 0; i < count; i++)
+            {
+                PencilCaseType pcType = _userSaveData._havePencilCaseList[i];
+
+                PencilCaseData pcData = _standardPCDataSO._pencilCaseDataList.Find(x => x._pencilCaseType == pcType);
+
+                if (pcData != null)
+                {
+                    //세이브데이터의 레벨만큼 수치를 변경하고 새로운 카드데이터로 만들어 받아 덱리스트에 추가
+                    //_deckList.cardDatas.Add(cardDataobj.DeepCopy(saveDataobj._level, saveDataobj._skinType));
+                }
+            }
+        }
+        /// <summary>
+        /// 인게임 필통 설정
+        /// </summary>
+        public void SetInGamePencilCase(PencilCaseData pencilCaseData)
+        {
+            _inGamePCDataSO._pencilCaseData = pencilCaseData;
+        }
+
         /// <summary>
         /// 인게임 카드 덱 설정
         /// </summary>
