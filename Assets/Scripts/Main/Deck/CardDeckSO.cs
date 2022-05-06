@@ -11,4 +11,6 @@ namespace Main.Deck
         //카드 데이터 저장
         public List<CardData> cardDatas = new List<CardData>();
     }
+
+    
 }

@@ -6,7 +6,7 @@ using Utill.Data;
 using UnityEngine.UI; 
 public abstract class ButtonAgent : MonoBehaviour
 {
-    public EventsType eventType;
+    public EventsType[] eventTypes;
 
     private void Start()
     {   

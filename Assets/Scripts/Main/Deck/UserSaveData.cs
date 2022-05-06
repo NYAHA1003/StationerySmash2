@@ -20,8 +20,12 @@ namespace Main.Deck
         public int _money = 0;    //가지고 있는 돈
         public int _dalgona = 0;    //가지고 있는 달고나
         public string _name = "";    //이름
-        public int _level = 1;
-        public int _nowExp = 0;
+        public int _level = 1; //레벨
+        public int _nowExp = 0; //현재 경험치
+        public StageType _lastPlayStage = StageType.None; //마지막으로 플레이한 스테이지
+        public int _winCount = 0; //승리한 횟수
+        public int _winningStreakCount = 0; //가장 크게 연승한 횟수
+        public int _loseCount = 0; //패배한 횟수
     }
 
     [System.Serializable]

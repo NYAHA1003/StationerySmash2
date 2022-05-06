@@ -13,23 +13,23 @@ MonoBehaviour:
   m_Name: AIEnemyDataSO
   m_EditorClassIdentifier: 
   summonGrade: 1
-  throwSpeed: 0
+  throwSpeed: 30
   isAIOn: 1
   cardDataList:
   - cardType: 1
-    card_Name: "\uC5F0\uD544"
+    card_Name: "\uC0E4\uD504"
     card_Description: 
     card_Cost: 0
     skinData:
       _skinType: 0
       _effectType: 0
-      _cardNamingType: 100
+      _cardNamingType: 200
     level: 0
     strategyData:
       starategyType: 0
       starategyablityData: []
     unitData:
-      unit_Hp: 400
+      unit_Hp: 500
       unit_Weight: 75
       knockback: 20
       dir: 45
@@ -37,7 +37,7 @@ MonoBehaviour:
       moveSpeed: 0.1
       damage: 100
       attackSpeed: 50
-      range: 0.1
+      range: 1
       colideData:
         originpoints:
         - {x: -0.016, y: 0.016}
@@ -52,9 +52,9 @@ MonoBehaviour:
         _stickerType: 0
         _stickerLevel: 1
       attackType: 0
-      unitType: 2
+      unitType: 3
       unitablityData: []
   pos:
-  - {x: 2.8214226, y: 0.30118275}
+  - {x: 2.821423, y: 0.30118275}
   max_Delay:
   - 3.5

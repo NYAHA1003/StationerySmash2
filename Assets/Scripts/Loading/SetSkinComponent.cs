@@ -16,44 +16,24 @@ public class SetSkinComponent : MonoBehaviour
     //변수
     private bool _isAllSetSkin = false;
 
-    //인스펙터 변수
-    [SerializeField]
-    private CardDeckSO _cardDeckSO = null;
-    [SerializeField]
-    private PencilCaseDataSO _playerPencilCase = null;
-    [SerializeField]
-    private PencilCaseDataSO _enemyPencilCase = null;
 
     public  void Start()
     {
-        SetSkinNowHave();
-        //SetSkinAll();
+        SetSkinAll();
     }
 
-    /// <summary>
-    /// 현재 있는 것만 스프라이트들을 불러온다
-    /// </summary>
-    private async void SetSkinNowHave()
-    {
-        //배틀 테스트 용으로 사용
-        for (int i = 0; i < _cardDeckSO.cardDatas.Count; i++)
-        {
-            CardData cardData = _cardDeckSO.cardDatas[i];
-            await cardData.skinData.SetSkin(cardData.skinData._skinType);
-        }
 
-        _isAllSetSkin = true;
-    }
 
     /// <summary>
     /// 모든 스프라이트를 불러온다
     /// </summary>
     private async void SetSkinAll()
     {
-        for (int i = 0; i < System.Enum.GetValues(typeof(SkinType)).Length; i++)
+        var skinTypes = System.Enum.GetValues(typeof(SkinType));
+        int skinTypeCount = skinTypes.Length;
+        for (int i = 0; i < skinTypeCount; i++)
         {
-            CardData cardData = _cardDeckSO.cardDatas[i];
-            await cardData.skinData.SetSkin((SkinType)i);
+            await SkinData.SetSkinStatic((SkinType)skinTypes.GetValue(i));
         }
 
         _isAllSetSkin = true;

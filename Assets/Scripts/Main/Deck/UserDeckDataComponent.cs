@@ -75,6 +75,7 @@ namespace Main.Deck
                 if (pcData != null)
                 {
                     //세이브데이터의 레벨만큼 수치를 변경하고 새로운 카드데이터로 만들어 받아 덱리스트에 추가
+                    _havePCDataSO._pencilCaseDataList.Add(pcData);
                     //_deckList.cardDatas.Add(cardDataobj.DeepCopy(saveDataobj._level, saveDataobj._skinType));
                 }
             }

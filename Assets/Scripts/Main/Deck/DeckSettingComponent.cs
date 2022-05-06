@@ -35,9 +35,9 @@ namespace Main.Deck
         [SerializeField]
         private GameObject _equipPencilCaseCards = null; //장착된 필통
 
-        private Transform _haveCardParent = null;
-        private Transform _equipCardParent = null;
-        private Transform _havePCCardParent = null;
+        private Transform _haveCardParent = null; // 스크롤 content
+        private Transform _equipCardParent = null; // 스크롤 content
+        private Transform _havePCCardParent = null; // 스크롤 content 
 
         private List<GameObject> _haveDeckCards = new List<GameObject>();
         private List<GameObject> _equipDeckCards = new List<GameObject>();
@@ -57,6 +57,8 @@ namespace Main.Deck
         [SerializeField]
         private Button _presetButton3 = null;
 
+        private bool _isActivePC; //필통 스크롤이 켜져있는지
+
         private void Start()
         {
             _haveCardParent = _haveDeckScroll.transform.GetChild(0).GetChild(0);
@@ -64,13 +66,16 @@ namespace Main.Deck
             _havePCCardParent = _havePCDeckScroll.transform.GetChild(0).GetChild(0);
 
             UpdateHaveAndEquipDeck();
+            UpdateHaveAndEquipPCDeck(); 
 
             _presetButton1.onClick.AddListener(() => ChangePreset(0));
             _presetButton2.onClick.AddListener(() => ChangePreset(1));
             _presetButton3.onClick.AddListener(() => ChangePreset(2));
 
             EventManager.StartListening(EventsType.ActiveDeck, UpdateDeck);
+            EventManager.StartListening(EventsType.ChangePCAndDeck, OnChangePencilAndCards);
             EventManager.StartListening(EventsType.UpdateHaveAndEquipDeck, UpdateHaveAndEquipDeck);
+            EventManager.StartListening(EventsType.UpdateHaveAndEquipPCDeck, UpdateHaveAndEquipPCDeck);
         }
 
         /// <summary>
@@ -85,11 +90,26 @@ namespace Main.Deck
         }
 
         /// <summary>
+        /// 카드 덱과 필통 덱을 전환한다
+        /// </summary>
+        public void OnChangePencilAndCards()
+		{
+            _isActivePC = !_isActivePC;
+
+            _haveDeckScroll.SetActive(!_isActivePC);
+            _equipDeckScroll.SetActive(!_isActivePC);
+
+            _havePCDeckScroll.SetActive(_isActivePC);
+            _equipPCDeckScroll.SetActive(_isActivePC);
+        }
+
+        /// <summary>
         /// 보유 필통 덱과 장착 필통 덱을 새로고침한다
         /// </summary>
         public void UpdateHaveAndEquipPCDeck()
         {
             AllFalseHavePCCard();
+            SetHavePCDeck(); 
         }
 
         /// <summary>
@@ -133,7 +153,7 @@ namespace Main.Deck
                 });
             }
         }
-
+            
         /// <summary>
         /// 장착 카드 세팅
         /// </summary>
@@ -160,17 +180,17 @@ namespace Main.Deck
         /// </summary>
         public void SetHavePCDeck()
         {
-            _userDeckData.SetCardData();
-            for (int i = 0; i < _userDeckData._deckList.cardDatas.Count; i++)
+            _userDeckData.SetPencilCaseList();
+            for (int i = 0; i < _userDeckData._havePCDataSO._pencilCaseDataList.Count; i++)
             {
-                GameObject cardObj = PoolHaveCard();
+                GameObject cardObj = PoolHavePCCard();
                 Button cardButton = cardObj.GetComponent<Button>();
-                cardObj.GetComponent<DeckCard>().SetCard(_userDeckData._deckList.cardDatas[i]);
+                cardObj.GetComponent<PencilCaseCard>().SetPencilCaseData(_userDeckData._havePCDataSO._pencilCaseDataList[i]);
                 cardButton.onClick.RemoveAllListeners();
                 cardButton.onClick.AddListener(() =>
                 {
-                    EventManager.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
-                    EventManager.TriggerEvent(EventsType.DeckSetting, ButtonType.cardDescription);
+                   // EventManager.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
+                   // EventManager.TriggerEvent(EventsType.DeckSetting, ButtonType.cardDescription);
 
                 });
             }
@@ -261,22 +281,22 @@ namespace Main.Deck
         {
             GameObject pcCardObj = null;
 
-            int count = _equipCardParent.childCount;
+            int count = _havePCCardParent.childCount;
 
 
             for (int i = 0; i < count; i++)
             {
-                if (!_equipCardParent.GetChild(i).gameObject.activeSelf)
+                if (!_havePCCardParent.GetChild(i).gameObject.activeSelf)
                 {
-                    pcCardObj = _equipCardParent.GetChild(i).gameObject;
+                    pcCardObj = _havePCCardParent.GetChild(i).gameObject;
                     break;
                 }
             }
 
             if (pcCardObj == null)
             {
-                pcCardObj = Instantiate(_cardPrefab, _equipCardParent, false);
-                _equipDeckCards.Add(pcCardObj);
+                pcCardObj = Instantiate(_pcCardPrefab, _havePCCardParent, false);
+                _havePencilCaseCards.Add(pcCardObj);
             }
 
             pcCardObj.SetActive(true);

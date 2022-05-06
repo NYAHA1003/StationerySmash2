@@ -50,7 +50,7 @@ namespace Utill.Data
         Eraser,
         Scissors,
         Glue,
-        Ruler,
+        Ruller,
         Cutterknife,
         Postit,
         MechaPencilLead,
@@ -63,5 +63,6 @@ namespace Utill.Data
         GreenCar = 1002,
         EraserPiece,
         SharpSim,
+        Apostit,
     }
 }
