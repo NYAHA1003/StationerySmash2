@@ -45,6 +45,10 @@ namespace Main.Scroll
             SetOriginScroll(); 
             ChangeBtnSize();
         }
+        /// <summary>
+        /// 인자값번째 상점 패널 이동
+        /// </summary>
+        /// <param name="n"></param>
         public void OnMoveShopPanel(object n)
         {
             _targetIndex = Size - (int)n - 1;

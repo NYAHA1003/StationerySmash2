@@ -32,11 +32,11 @@ namespace Main.Scroll
 
 
         //변수 - 변수별로 무슨 역할인지 주석을 달아주세요
-        protected float _distance = 0f;
-        protected float _curPos = 0f;
-        protected float _targetPos = 0f;
-        protected bool _isDrag = false;
-        protected int _targetIndex = 0;
+        protected float _distance = 0f; // scrollbar value, 스크롤바의 패널이 3개면 distance는 0.3333이 된다. 
+        protected float _curPos = 0f; // 현재 scrollbar value
+        protected float _targetPos = 0f; // 클릭이 끝났을 때의 scrollbar value 
+        protected bool _isDrag = false; // 드래그중인가 
+        protected int _targetIndex = 0; // 현재 있는 패널의 인덱스 
 
         private void Awake()
         {
@@ -121,19 +121,22 @@ namespace Main.Scroll
         /// 스크롤 속도가 빠르면 변경
         /// </summary>
         /// <param name="deltaValue"></param>
-        protected void DeltaSlide(float deltaValue)
+        protected bool DeltaSlide(float deltaValue)
         {
+            NotifyToObserver();
             if (deltaValue > 18 && _curPos - _distance >= 0)
             {
                 ++_targetIndex;
                 _targetPos = _curPos - _distance;
+                return true; 
             }
             else if (deltaValue < -18 && _curPos + _distance <= 1.01f)
             {
                 --_targetIndex;
                 _targetPos = _curPos + _distance;
+                return true; 
             }
-            NotifyToObserver();
+            return false; 
         }
 
         /// <summary>
