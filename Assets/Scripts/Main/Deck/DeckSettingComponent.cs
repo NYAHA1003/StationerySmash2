@@ -44,11 +44,11 @@ namespace Main.Deck
         private List<GameObject> _havePencilCaseCards = new List<GameObject>();
 
         [SerializeField]
-        private CardSaveDataSO _presetDataSO1 = null;
+        private PresetSaveDataSO _presetDataSO1 = null;
         [SerializeField]
-        private CardSaveDataSO _presetDataSO2 = null;
+        private PresetSaveDataSO _presetDataSO2 = null;
         [SerializeField]
-        private CardSaveDataSO _presetDataSO3 = null;
+        private PresetSaveDataSO _presetDataSO3 = null;
 
         [SerializeField]
         private Button _presetButton1 = null;
@@ -121,6 +121,7 @@ namespace Main.Deck
 			{
                 case 0:
                     _saveDataSO.userSaveData._ingameSaveDatas = _presetDataSO1._ingameSaveDatas;
+                    _saveDataSO.
                     break;
                 case 1:
                     _saveDataSO.userSaveData._ingameSaveDatas = _presetDataSO2._ingameSaveDatas;
