@@ -13,7 +13,7 @@
         CloaseAllPn, // 모든 패널 비활성화 
         SetOriginShopPn, //상점 패널 초기화 
         UpdateHaveAndEquipDeck, //보유 덱과 장착 덱 초기화
-
+        UpdateHaveAndEquipPCDeck, // 보유 필통 덱 초기화
 
         // 세팅 부분
         ActiveProfileImgPn, // 프로필 이미지 패널 활성화 
