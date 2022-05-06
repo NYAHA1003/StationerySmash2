@@ -14,6 +14,9 @@ using Main.Skin;
 {
     public class CardInfoPanel : MonoBehaviour
     {
+        
+
+
         [SerializeField]
         private GameObject _cardInfoPanel = null;
 

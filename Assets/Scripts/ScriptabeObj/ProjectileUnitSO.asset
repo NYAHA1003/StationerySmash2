@@ -45,8 +45,10 @@ MonoBehaviour:
         _sprite: {fileID: 0}
         _name: 
         _decription: 
+        _onlyUnitType: 0
         _stickerType: 0
         _stickerLevel: 1
+      attackType: 0
       unitType: 1000
       unitablityData: []
   - cardType: 1
@@ -81,8 +83,10 @@ MonoBehaviour:
         _sprite: {fileID: 0}
         _name: 
         _decription: 
+        _onlyUnitType: 0
         _stickerType: 0
         _stickerLevel: 1
+      attackType: 0
       unitType: 1001
       unitablityData: []
   - cardType: 1
@@ -117,8 +121,10 @@ MonoBehaviour:
         _sprite: {fileID: 0}
         _name: 
         _decription: 
+        _onlyUnitType: 0
         _stickerType: 0
         _stickerLevel: 1
+      attackType: 0
       unitType: 1002
       unitablityData: []
   - cardType: 1
@@ -134,14 +140,14 @@ MonoBehaviour:
       starategyType: 0
       starategyablityData: []
     unitData:
-      unit_Hp: 50
-      unit_Weight: 50
-      knockback: 10
+      unit_Hp: 80
+      unit_Weight: 30
+      knockback: 15
       dir: 45
       accuracy: 100
-      moveSpeed: 0.5
+      moveSpeed: 0.1
       damage: 10
-      attackSpeed: 60
+      attackSpeed: 50
       range: 0.1
       colideData:
         originpoints:
@@ -153,8 +159,10 @@ MonoBehaviour:
         _sprite: {fileID: 0}
         _name: 
         _decription: 
+        _onlyUnitType: 0
         _stickerType: 0
         _stickerLevel: 1
+      attackType: 0
       unitType: 1003
       unitablityData: []
   - cardType: 1
@@ -170,15 +178,15 @@ MonoBehaviour:
       starategyType: 0
       starategyablityData: []
     unitData:
-      unit_Hp: 50
-      unit_Weight: 50
-      knockback: 10
+      unit_Hp: 160
+      unit_Weight: 40
+      knockback: 20
       dir: 45
       accuracy: 100
-      moveSpeed: 0.5
-      damage: 10
-      attackSpeed: 60
-      range: 0.1
+      moveSpeed: 0.3
+      damage: 20
+      attackSpeed: 100
+      range: 0.2
       colideData:
         originpoints:
         - {x: -0.01, y: 0.01}
@@ -189,8 +197,10 @@ MonoBehaviour:
         _sprite: {fileID: 0}
         _name: 
         _decription: 
+        _onlyUnitType: 0
         _stickerType: 0
         _stickerLevel: 1
+      attackType: 0
       unitType: 2
       unitablityData: []
   - cardType: 1
@@ -198,7 +208,7 @@ MonoBehaviour:
     card_Description: 
     card_Cost: 0
     skinData:
-      _skinType: 0
+      _skinType: 200
       _effectType: 0
       _cardNamingType: 0
     level: 0
@@ -225,7 +235,47 @@ MonoBehaviour:
         _sprite: {fileID: 0}
         _name: 
         _decription: 
+        _onlyUnitType: 0
         _stickerType: 0
         _stickerLevel: 1
+      attackType: 0
       unitType: 1004
+      unitablityData: []
+  - cardType: 1
+    card_Name: "\uD3EC\uC2A4\uD2B8\uC787\uB0B1\uC7A5"
+    card_Description: 
+    card_Cost: 0
+    skinData:
+      _skinType: 0
+      _effectType: 0
+      _cardNamingType: 0
+    level: 0
+    strategyData:
+      starategyType: 0
+      starategyablityData: []
+    unitData:
+      unit_Hp: 50
+      unit_Weight: 10
+      knockback: 5
+      dir: 45
+      accuracy: 100
+      moveSpeed: 0.1
+      damage: 120
+      attackSpeed: 1000
+      range: 0.1
+      colideData:
+        originpoints:
+        - {x: -0.01, y: 0.01}
+        - {x: 0.01, y: 0.01}
+        - {x: -0.01, y: -0.01}
+        - {x: 0.01, y: -0.01}
+      stickerData:
+        _sprite: {fileID: 0}
+        _name: 
+        _decription: 
+        _onlyUnitType: 0
+        _stickerType: 0
+        _stickerLevel: 1
+      attackType: 0
+      unitType: 1005
       unitablityData: []
