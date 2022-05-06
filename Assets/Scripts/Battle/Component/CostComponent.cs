@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using Utill.Data;
 using Utill.Tool;
 using TMPro;
+using Main.Event;
 
 namespace Battle
 {
@@ -22,8 +23,6 @@ namespace Battle
 
         [SerializeField]
         private TextMeshProUGUI _costText = null;
-        [SerializeField]
-        private Button _costUpButton = null;
 
         /// <summary>
         /// ÃÊ±âÈ­
@@ -34,7 +33,7 @@ namespace Battle
         {
             updateAction += UpdateCost;
             SetCostSpeed(pencilCasePlayerData._costSpeed);
-            _costUpButton.onClick.AddListener(() => OnUpgradeCostGrade());
+            EventManager.StartListening(EventsType.CostUp, OnUpgradeCostGrade);
         }
 
 

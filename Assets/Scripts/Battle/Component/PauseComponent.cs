@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.EventSystems;
+using Main.Event;
+using Utill.Data;
 
 namespace Battle
 {
@@ -16,16 +18,6 @@ namespace Battle
         private RectTransform _pauseUI;
         [SerializeField]
         private Canvas _pauseCanvas = null;
-        [SerializeField]
-        private Button _puaseButton = null;
-        [SerializeField]
-        private Button _puaseBackgroundButton = null;
-        [SerializeField]
-        private Button _retryButton = null;
-        [SerializeField]
-        private Button _backhomeButton = null;
-        [SerializeField]
-        private SceneLoadComponenet _sceneLoadComponent;
 
         /// <summary>
         /// √ ±‚»≠
@@ -35,11 +27,7 @@ namespace Battle
         /// <param name="pauseCanvas"></param>
         public void SetInitialization()
         {
-            _puaseButton.onClick.AddListener(() => OnPause());
-            _puaseBackgroundButton.onClick.AddListener(() => OnPause());
-            _retryButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadBattle());
-            _backhomeButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadMain());
-
+            EventManager.StartListening(EventsType.Pause, OnPause);
         }
 
         /// <summary>

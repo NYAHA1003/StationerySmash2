@@ -3,12 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Main.Deck;
+using Main.Event;
+using Utill.Data;
 
 public class SceneLoadComponenet : MonoBehaviour
 {
     [SerializeField, Header("메인이라면 넣어줘야함")]
     private UserDeckDataComponent _userDeckDataComponent;
 
+    private void Awake()
+    {
+        EventManager.StartListening(EventsType.LoadMainScene, SceneLoadMain);
+        EventManager.StartListening(EventsType.LoadBattleScene, SceneLoadBattle);
+    }
     /// <summary>
     /// 배틀씬을 로딩씬을 거쳐 이동한다
     /// </summary>
