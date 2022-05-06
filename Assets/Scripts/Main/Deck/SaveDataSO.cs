@@ -31,6 +31,7 @@ namespace Main.Deck
             _userDataObservers.Add(observer);
         }
 
+        [ContextMenu("관찰자들에게 유저 데이터 전달")]
         /// <summary>
         /// 관찰자들에게 유저 데이터 전달
         /// </summary>

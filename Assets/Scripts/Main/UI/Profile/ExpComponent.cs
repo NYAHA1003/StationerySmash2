@@ -12,6 +12,8 @@ public class ExpComponent : MonoBehaviour, IUserData
 {
     [SerializeField]
     private Image _expImage = null;
+    [SerializeField]
+    private TextMeshProUGUI _expText = null;
 
     public void Awake()
     {
@@ -28,6 +30,7 @@ public class ExpComponent : MonoBehaviour, IUserData
     /// </summary>
     public void SetExpBar(ref UserSaveData userSaveData)
     {
-        _expImage.fillAmount = userSaveData._nowExp / (userSaveData._level * 100); 
+        _expText.text = $"{userSaveData._nowExp}/{(userSaveData._level * 100)}";
+        _expImage.fillAmount = (float)userSaveData._nowExp / (userSaveData._level * 100); 
     }
 }
