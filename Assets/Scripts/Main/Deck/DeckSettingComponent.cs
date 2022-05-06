@@ -136,7 +136,7 @@ namespace Main.Deck
                 });
             }
         }
-
+            
         /// <summary>
         /// 장착 카드 세팅
         /// </summary>
