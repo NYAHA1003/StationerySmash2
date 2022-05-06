@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using Utill;
+using Utill.Data;
+using Utill.Tool;
 using TMPro;
 
 namespace Battle
@@ -32,7 +33,7 @@ namespace Battle
         public void SetInitialization(ref System.Action updateAction, PencilCaseData pencilCasePlayerData)
         {
             updateAction += UpdateCost;
-            SetCostSpeed(pencilCasePlayerData.costSpeed);
+            SetCostSpeed(pencilCasePlayerData._costSpeed);
             _costUpButton.onClick.AddListener(() => OnUpgradeCostGrade());
         }
 

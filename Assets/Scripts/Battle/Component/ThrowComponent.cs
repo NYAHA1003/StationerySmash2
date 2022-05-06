@@ -50,7 +50,7 @@ namespace Battle
             _cameraCommand = cameraCommand;
             this._stageData = stageData;
             _lineZeroPos = new List<Vector2>(_parabola.positionCount);
-            _throwGaugeSpeed = _playerPencilCaseDataSO.PencilCasedataBase.throwGaugeSpeed;
+            _throwGaugeSpeed = _playerPencilCaseDataSO._pencilCaseData._throwGaugeSpeed;
             for (int i = 0; i < _parabola.positionCount; i++)
             {
                 _lineZeroPos.Add(Vector2.zero);

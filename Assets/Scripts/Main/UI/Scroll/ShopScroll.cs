@@ -36,13 +36,13 @@ namespace Main.Scroll
         public override void OnEndDrag(PointerEventData eventData)
         {
             base.OnEndDrag(eventData);
-            SetOriginScroll();
 
             if (_curPos == _targetPos)
             {
                 DeltaSlide(eventData.delta.x);
-                SetOriginScroll();
+                return; 
             }
+            SetOriginScroll(); 
             ChangeBtnSize();
         }
         public void OnMoveShopPanel(object n)

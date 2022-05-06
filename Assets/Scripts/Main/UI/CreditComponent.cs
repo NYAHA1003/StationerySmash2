@@ -19,8 +19,7 @@ public class CreditComponent : MonoBehaviour
     /// </summary>
     public void Initialized()
     {
-        Debug.Log(_creditText.textInfo.lineCount);
-        int moveY = _creditText.textInfo.lineCount * 100;
+        int moveY = _creditText.textInfo.lineCount * 120;
         float duration = _creditText.textInfo.lineCount * 1f;
         _creditTweener = _creditTextTrm.DOAnchorPosY(moveY, duration).SetAutoKill(false);
     }
@@ -30,8 +29,14 @@ public class CreditComponent : MonoBehaviour
     /// </summary>
     public void StartCredit()
     {
-        _creditTweener.Pause();
         _creditTextTrm.anchoredPosition = new Vector2(0, -1200);
+
+        if (_creditTweener == null)
+        {
+            Initialized();
+        }
+
+        _creditTweener.Pause();
         _creditTweener.Restart();
     }
 

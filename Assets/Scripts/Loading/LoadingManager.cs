@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 public class LoadingManager : MonoBehaviour
 {
     private static string nextScene;
@@ -11,18 +12,24 @@ public class LoadingManager : MonoBehaviour
     [SerializeField]
     private Slider progressBar;
     [SerializeField]
-    private string[] tip_StrList;
+    private GameObject decoObject;
+    [SerializeField]
+    LoadingToolTipSO loadingToolTipSO;
     [SerializeField]
     private TextMeshProUGUI tip_Text;
     [Range (0, 5)]
     public float repeatTerm;
+    [SerializeField, Header("스프라이트로딩시스템 BattleSetSkin"), Space(30)]
+    private SetSkinComponent _loadingComponent = null;
     private void Awake()
     {
         StartCoroutine(Random_Tips());
+        LoadingAnim();
     }
     void Start()
     {
         StartCoroutine(LoadSceneProcess());
+        //_loadingComponent.LoadSkin();      이름 없다고 오류남. 추후 처리
     }
     /// <summary>
     /// 씬 로드하는 함수
@@ -33,7 +40,10 @@ public class LoadingManager : MonoBehaviour
         nextScene = sceneName;
         SceneManager.LoadScene("LoadingScene");
     }
-
+    private void LoadingAnim()
+    {
+        decoObject.transform.DORotate(new Vector3(0,0,360), 0.1f).SetLoops(-1, LoopType.Incremental);
+    }
     public IEnumerator LoadSceneProcess()
     {
         yield return new WaitForSeconds(0.5f); 
@@ -68,12 +78,12 @@ public class LoadingManager : MonoBehaviour
 
     private IEnumerator Random_Tips()
     {
-        int random = Random.Range(0, tip_StrList.Length);
+        int random = Random.Range(0, loadingToolTipSO.toolTips.Count);
         if(previousRandomNum == random)
-            random = Random.Range(0, tip_StrList.Length);
-        tip_Text.text = tip_StrList[random];
+            random = Random.Range(0, loadingToolTipSO.toolTips.Count);
+        tip_Text.text = loadingToolTipSO.toolTips[random];
         previousRandomNum = random;
         Debug.Log("radom");
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(repeatTerm);
     }
 }

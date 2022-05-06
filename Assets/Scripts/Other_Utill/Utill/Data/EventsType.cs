@@ -12,13 +12,15 @@
         MoveMainPn, // 메인패널 상하 이동 (인덱스 변경) 
         CloaseAllPn, // 모든 패널 비활성화 
         SetOriginShopPn, //상점 패널 초기화 
+        UpdateHaveAndEquipDeck, //보유 덱과 장착 덱 초기화
 
 
         // 세팅 부분
         ActiveProfileImgPn, // 프로필 이미지 패널 활성화 
         ChangeProfileImage, // 유저 이미지 변경 
         ChabgeUserName, // 유저 닉네임 변경 
-        DeckSetting // 덱 세팅
+        DeckSetting, // 덱 세팅
+        MoveCredit, // 크레딧 밑으로 움직임  
         
 
 
