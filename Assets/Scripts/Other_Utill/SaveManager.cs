@@ -18,6 +18,7 @@ public class SaveManager : MonoSingleton<SaveManager>
             return _saveData;
 		}
 	}
+    [SerializeField]
     private SaveDataSO _saveData;
     private bool isLoadData = false;
     public bool IsLoadData
