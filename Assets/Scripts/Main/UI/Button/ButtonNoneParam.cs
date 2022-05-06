@@ -6,6 +6,9 @@ public class ButtonNoneParam : ButtonAgent
 {
     public override void Execute()
     {
-        EventManager.TriggerEvent(eventType);
+        for(int i = 0; i < eventTypes.Length;i++)
+        {
+            EventManager.TriggerEvent(eventTypes[i]);
+        }
     }
 }

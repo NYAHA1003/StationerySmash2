@@ -38,8 +38,11 @@ namespace Main.Buttons
 		private List<ActiveCommand> buttonCommands = new List<ActiveCommand>();
 		private void Awake()
 		{
+			EventManager.StartListening(EventsType.CloaseAllPn, CloseAllPanels); 
 			EventManager.StartListening(EventsType.DeckSetting, (x) => OnActiveBtn((ButtonType)x));
 			//덱에 있는 카드 클릭시 카드설명이 뜸, DeckSetting에서 카드 만들어주면서 AddListener로 EventTrigger로 등록해줌     
+			
+			
 		}
 		private void Start()
 		{

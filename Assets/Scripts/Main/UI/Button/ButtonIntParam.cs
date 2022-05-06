@@ -6,9 +6,12 @@ using Main.Event;
 public class ButtonIntParam : ButtonAgent
 {
     [SerializeField]
-    private int intParam; 
+    private int[] intParam; 
     public override void Execute()
     {
-        EventManager.TriggerEvent(eventType, intParam);
+        for(int i = 0; i < eventTypes.Length; i++)
+        {
+            EventManager.TriggerEvent(eventTypes[i], intParam[i]);
+        }
     }
 }
