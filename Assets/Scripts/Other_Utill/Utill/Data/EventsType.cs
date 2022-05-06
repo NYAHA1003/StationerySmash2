@@ -22,6 +22,8 @@
         DeckSetting, // 덱 세팅
         MoveCredit, // 크레딧 밑으로 움직임  
         
+        //스테이지 부분
+        ActiveChapterPn, //챕터 패널 활성화
 
 
 
