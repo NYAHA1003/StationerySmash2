@@ -16,7 +16,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public int CardCost => _cardCost; //카드 코스트
     public int OriginCardCost => _originCardCost; //원래 카드 코스트
     public int Id => _id; //아이디
-    public CardData DataBase => _dataBase; //카드 데이터
+    public CardData CardDataValue => _cardData; //카드 데이터
     public int Grade => _grade; // 카드 등급
     public bool IsFusion => _isFusion; //융합 중인지
     public bool IsFusionFrom => _isFusionFrom; //융합할 때 이 카드가 이동하는지
@@ -34,29 +34,32 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private PRS _originPRS = default;
 
     //참조 변수
-    private CardData _dataBase = null;
+    private CardData _cardData = null;
     private BattleManager _battleManager;
 
     //인스펙터 참조 변수
     [SerializeField]
-    private Image _background;
+    private Image _cardimage; //카드의 유닛, 혹은 전략카드 이미지
     [SerializeField]
-    private Image _cardimage;
+    private Image _dontUseimage; //카드를 사용할 수 없을 때 명도 표시 이미지
     [SerializeField]
-    private Image _dontUseimage;
+    private TextMeshProUGUI _costText; //카드의 코스트를 나타내는 텍스트
     [SerializeField]
-    private TextMeshProUGUI _costText;
+    private Image _gradeFrame; // 카드의 등급 테두리
     [SerializeField]
-    private Image _gradeImage;
+    private Image _outLineFrame; // 카드 외곽획
     [SerializeField]
-    private TextMeshProUGUI _gradeText;
+    private TextMeshProUGUI _nameText; //카드의 이름
     [SerializeField]
-    private TextMeshProUGUI _nameText;
+    private Image _fusionEffect; // 융합시 카드 색깔이 바뀔 때 사용하는 이미지
     [SerializeField]
-    private Image _fusionEffect;
+    private RectTransform _rectTransform; // 카드의 렉트
     [SerializeField]
-    private RectTransform _rectTransform;
-
+    private List<Sprite> _gradeFrameSprites; // 카드 테두리 스프라이트들
+    [SerializeField, Header("유닛용")]
+    private Image _stickerImage; //스티커 이미지
+    [SerializeField]
+    private RectTransform _stickerRect; //스티커 렉트트랜스폼
 
     /// <summary>
     /// 카드에 데이터를 전달함
@@ -65,13 +68,12 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <param name="id">카드 고유 아이디</param>
     public void Set_UnitData(CardData dataBase, int id)
     {
-        _rectTransform ??= GetComponent<RectTransform>();
         _battleManager ??= FindObjectOfType<BattleManager>();
 
         //기본적인 초기화
         _isDrag = false;
         this._id = id;
-        this._dataBase = dataBase;
+        this._cardData = dataBase;
         _nameText.text = dataBase.card_Name;
         _costText.text = dataBase.card_Cost.ToString();
         _originCardCost = dataBase.card_Cost;
@@ -82,16 +84,18 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         _isFusion = false;
         _fusionEffect.color = new Color(1, 1, 1, 1);
         _fusionEffect.DOFade(0, 0.8f);
+        //스티커 초기화
+        SetSticker();
 
-        //카드 종류별 초기화
+        //카드 타입별 초기화
         switch (dataBase.cardType)
         {
             default:
             case CardType.Execute:
             case CardType.SummonTrap:
             case CardType.Installation:
-                _dataBase.strategyData.starategy_State.SetBattleManager(_battleManager);
-                _dataBase.strategyData.starategy_State.SetCard(this);
+                _cardData.strategyData.starategy_State.SetBattleManager(_battleManager);
+                _cardData.strategyData.starategy_State.SetCard(this);
                 break;
             case CardType.SummonUnit:
                 break;
@@ -211,25 +215,29 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         _rectTransform.rotation = rot;
     }
 
-
     /// <summary>
     /// 유닛 단계 이미지 설정
     /// </summary>
     public void SetUnitGrade()
     {
-        _gradeText.text = _grade.ToString();
         switch (_grade)
         {
             default:
             case 0:
             case 1:
-                _gradeImage.color = new Color(0, 0, 0);
+                _gradeFrame.sprite = _gradeFrameSprites[0];
+                _outLineFrame.sprite = _gradeFrameSprites[0];
+                _outLineFrame.color = Color.black;
                 break;
             case 2:
-                _gradeImage.color = new Color(1, 1, 0);
+                _gradeFrame.sprite = _gradeFrameSprites[1];
+                _outLineFrame.sprite = _gradeFrameSprites[1];
+                _outLineFrame.color = Color.black;
                 break;
             case 3:
-                _gradeImage.color = new Color(1, 1, 1);
+                _gradeFrame.sprite = _gradeFrameSprites[2];
+                _outLineFrame.sprite = _gradeFrameSprites[2];
+                _outLineFrame.color = Color.white;
                 break;
         }
     }
@@ -248,7 +256,16 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// </summary>
     public void FusionFadeInEffect(Color color)
     {
-        _fusionEffect.color = color;
+        Color useColor = color;
+        if(_isUnderCost)
+		{
+            useColor.r = useColor.r - 0.3f;
+            useColor.g = useColor.g - 0.3f;
+            useColor.b = useColor.b - 0.3f;
+        }
+        _fusionEffect.color = useColor;
+
+
         _fusionEffect.DOFade(1, 0.2f);
     }
     /// <summary>
@@ -337,4 +354,21 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             _dontUseimage.gameObject.SetActive(false);
 		}
 	}
+
+    /// <summary>
+    /// 스티커 설정
+    /// </summary>
+    private void SetSticker()
+    {
+        if(StickerData.CheckCanSticker(_cardData))
+        {
+            _stickerImage.sprite = _cardData.unitData.stickerData._sprite;
+            _stickerRect.anchoredPosition = StickerData.ReturnStickerPos(_cardData.unitData.unitType);
+            _stickerRect.gameObject.SetActive(true);
+        }
+        else
+        {
+            _stickerRect.gameObject.SetActive(false);
+        }
+    }
 }

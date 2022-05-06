@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utill.Load;
+using Utill.Data;
+[CreateAssetMenu(fileName = "PencilCaseDataSO", menuName = "Scriptable Object/PencilCaseDataSO")]
 
-namespace Utill.Data
+public class PencilCaseDataSO : ScriptableObject
 {
-    [CreateAssetMenu(fileName = "PencilCaseDataSO", menuName = "Scriptable Object/PencilCaseDataSO")]
-    public class PencilCaseDataSO : ScriptableObject
-    {
-        public PencilCaseData _pencilCaseData;
-    }
-
+    public PencilCaseData _pencilCaseData;
+    public BattleStageType battleStageType;
 }

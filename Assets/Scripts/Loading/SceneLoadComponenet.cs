@@ -2,14 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Main.Deck;
 
 public class SceneLoadComponenet : MonoBehaviour
-{ 
+{
+    [SerializeField, Header("메인이라면 넣어줘야함")]
+    private UserDeckDataComponent _userDeckDataComponent;
+
     /// <summary>
     /// 배틀씬을 로딩씬을 거쳐 이동한다
     /// </summary>
     public void SceneLoadBattle()
     {
+        if(_userDeckDataComponent != null)
+		{
+            if (!_userDeckDataComponent.CheckCanPlayGame())
+			{
+                return;
+			}
+		}
         SceneLoadBase();
         LoadingManager.LoadScene("BattleScene");
     }

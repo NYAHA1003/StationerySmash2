@@ -8,13 +8,11 @@ using Main.Deck;
 public class DalgonaComponent : MonoBehaviour, IUserData
 {
     [SerializeField]
-    private SaveDataSO _saveDataSO = null;
-    [SerializeField]
     private TextMeshProUGUI _dalgonaText = null;
 
-    public void Start()
+    public void Awake()
     {
-        _saveDataSO.AddObserver(this);
+        SaveManager._instance._saveData.AddObserver(this);
     }
 
     public void Notify(ref UserSaveData userSaveData)
