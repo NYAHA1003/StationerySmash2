@@ -23,8 +23,6 @@ namespace Battle
 
         [SerializeField]
         private TextMeshProUGUI _costText = null;
-        [SerializeField]
-        private Button _costUpButton = null;
 
         /// <summary>
         /// √ ±‚»≠

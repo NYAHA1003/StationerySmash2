@@ -20,16 +20,6 @@ namespace Battle
         private RectTransform _winText;
         [SerializeField]
         private RectTransform _loseText;
-        [SerializeField]
-        private Button _loseRetryButton;
-        [SerializeField]
-        private Button _loseBackHomeButton;
-        [SerializeField]
-        private Button _winRetryButton;
-        [SerializeField]
-        private Button _winBackHomeButton;
-        [SerializeField]
-        private SceneLoadComponenet _sceneLoadComponent;
 
         private List<IWinLose> _observers = new List<IWinLose>(); //ฐüย๛ภฺต้
 
@@ -42,10 +32,6 @@ namespace Battle
         /// <param name="losePanel"></param>
         public void SetInitialization()
         {
-            //_winRetryButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadBattle());
-            //_winBackHomeButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadMain());
-            //_loseRetryButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadBattle());
-            //_loseBackHomeButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadMain());
         }
 
         /// <summary>
