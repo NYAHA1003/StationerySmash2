@@ -7,26 +7,26 @@ using TMPro;
 using DG.Tweening;
 public class LoadingManager : MonoBehaviour
 {
-    private static string nextScene;
-    private int previousRandomNum = 0;
+    protected static string nextScene;
+    protected int previousRandomNum = 0;
     [SerializeField]
-    private Slider progressBar;
+    protected Slider progressBar;
     [SerializeField]
-    private GameObject decoObject;
+    protected GameObject decoObject;
     [SerializeField]
     LoadingToolTipSO loadingToolTipSO;
     [SerializeField]
-    private TextMeshProUGUI tip_Text;
+    protected TextMeshProUGUI tip_Text;
     [Range (0, 5)]
     public float repeatTerm;
     [SerializeField, Header("스프라이트로딩시스템 BattleSetSkin"), Space(30)]
-    private SetSkinComponent _loadingComponent = null;
-    private void Awake()
+    protected SetSkinComponent _loadingComponent = null;
+    protected void Awake()
     {
         StartCoroutine(Random_Tips());
         LoadingAnim();
     }
-    void Start()
+    protected virtual void Start()
     {
         StartCoroutine(LoadSceneProcess());
         //_loadingComponent.LoadSkin();      이름 없다고 오류남. 추후 처리
@@ -40,11 +40,11 @@ public class LoadingManager : MonoBehaviour
         nextScene = sceneName;
         SceneManager.LoadScene("LoadingScene");
     }
-    private void LoadingAnim()
+    protected void LoadingAnim()
     {
         decoObject.transform.DORotate(new Vector3(0,0,360), 0.1f).SetLoops(-1, LoopType.Incremental);
     }
-    public IEnumerator LoadSceneProcess()
+    protected IEnumerator LoadSceneProcess()
     {
         yield return new WaitForSeconds(0.5f); 
         AsyncOperation op = SceneManager.LoadSceneAsync(nextScene);
@@ -76,7 +76,7 @@ public class LoadingManager : MonoBehaviour
 
     }
 
-    private IEnumerator Random_Tips()
+    protected IEnumerator Random_Tips()
     {
         int random = Random.Range(0, loadingToolTipSO.toolTips.Count);
         if(previousRandomNum == random)
