@@ -1265,8 +1265,9 @@ GameObject:
   - component: {fileID: 7546282620025642546}
   - component: {fileID: 7546282620025642544}
   - component: {fileID: 7546282620025642545}
+  - component: {fileID: 5252933195409547816}
   m_Layer: 5
-  m_Name: RecordFrame
+  m_Name: EtcFrame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1333,6 +1334,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5252933195409547816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7546282620025642547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33b893c1608f3e240af72c657a4ab70a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lastPlayStageText: {fileID: 7546282619744619879}
+  _winCountText: {fileID: 7546282619784990720}
+  _winningStreakCountText: {fileID: 7546282620900444410}
+  _loseCountText: {fileID: 7546282620575100863}
 --- !u!1 &7546282620045424461
 GameObject:
   m_ObjectHideFlags: 0
