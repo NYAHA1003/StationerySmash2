@@ -57,6 +57,8 @@ namespace Main.Deck
         [SerializeField]
         private Button _presetButton3 = null;
 
+        private bool _isActivePC; //필통 스크롤이 켜져있는지
+
         private void Start()
         {
             _haveCardParent = _haveDeckScroll.transform.GetChild(0).GetChild(0);
@@ -71,6 +73,7 @@ namespace Main.Deck
             _presetButton3.onClick.AddListener(() => ChangePreset(2));
 
             EventManager.StartListening(EventsType.ActiveDeck, UpdateDeck);
+            EventManager.StartListening(EventsType.ChangePCAndDeck, OnChangePencilAndCards);
             EventManager.StartListening(EventsType.UpdateHaveAndEquipDeck, UpdateHaveAndEquipDeck);
             EventManager.StartListening(EventsType.UpdateHaveAndEquipPCDeck, UpdateHaveAndEquipPCDeck);
         }
@@ -84,6 +87,20 @@ namespace Main.Deck
             AllFalseHaveCard();
             SetHaveDeck();
             SetEquipDeck();
+        }
+
+        /// <summary>
+        /// 카드 덱과 필통 덱을 전환한다
+        /// </summary>
+        public void OnChangePencilAndCards()
+		{
+            _isActivePC = !_isActivePC;
+
+            _haveDeckScroll.SetActive(!_isActivePC);
+            _equipDeckScroll.SetActive(!_isActivePC);
+
+            _havePCDeckScroll.SetActive(_isActivePC);
+            _equipPCDeckScroll.SetActive(_isActivePC);
         }
 
         /// <summary>
