@@ -16,6 +16,9 @@ public class PreviewVideoControll : MonoBehaviour, IScroll
     [SerializeField]
     private VideoPlayer _previewVideo;
 
+    [SerializeField]
+    private int _viewIndex = 1; //몇 번째 패널에서 보이게 할지
+
     private void Start()
     {
         _scrollObj.AddObserver(this);
@@ -52,7 +55,7 @@ public class PreviewVideoControll : MonoBehaviour, IScroll
     /// <param name="scrollIndex"></param>
     public void Notify(int scrollIndex)
     {
-        if(scrollIndex == 1)
+        if(scrollIndex == _viewIndex)
         {
             PlayVideo();
         }

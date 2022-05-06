@@ -43,12 +43,6 @@ namespace Main.Deck
         private List<GameObject> _equipDeckCards = new List<GameObject>();
         private List<GameObject> _havePencilCaseCards = new List<GameObject>();
 
-        [SerializeField]
-        private PresetSaveDataSO _presetDataSO1 = null;
-        [SerializeField]
-        private PresetSaveDataSO _presetDataSO2 = null;
-        [SerializeField]
-        private PresetSaveDataSO _presetDataSO3 = null;
 
         [SerializeField]
         private Button _presetButton1 = null;
@@ -129,25 +123,7 @@ namespace Main.Deck
         /// </summary>
         public void ChangePreset(int index)
 		{
-            switch(index)
-			{
-                case 0:
-                    _saveDataSO.userSaveData._ingameSaveDatas = _presetDataSO1._ingameSaveDatas;
-                    _saveDataSO.userSaveData._currentPencilCaseType = _presetDataSO1._pencilCaseData._pencilCaseType;
-                    _userDeckData.SetInGamePencilCase(_presetDataSO1._pencilCaseData);
-                    break;
-                case 1:
-                    _saveDataSO.userSaveData._ingameSaveDatas = _presetDataSO2._ingameSaveDatas;
-                    _saveDataSO.userSaveData._currentPencilCaseType = _presetDataSO2._pencilCaseData._pencilCaseType;
-                    _userDeckData.SetInGamePencilCase(_presetDataSO2._pencilCaseData);
-                    break;
-                case 2:
-                    _saveDataSO.userSaveData._ingameSaveDatas = _presetDataSO3._ingameSaveDatas;
-                    _saveDataSO.userSaveData._currentPencilCaseType = _presetDataSO3._pencilCaseData._pencilCaseType;
-                    _userDeckData.SetInGamePencilCase(_presetDataSO3._pencilCaseData);
-                    break;
-            }
-
+            _userDeckData.ChangePreset(index);
             UpdateHaveAndEquipDeck();
             UpdateHaveAndEquipPCDeck();
         }
@@ -204,13 +180,12 @@ namespace Main.Deck
             {
                 GameObject cardObj = PoolHavePCCard();
                 Button cardButton = cardObj.GetComponent<Button>();
-                cardObj.GetComponent<PencilCaseCard>().SetPencilCaseData(_userDeckData._havePCDataSO._pencilCaseDataList[i]);
+                PencilCaseData pencilCaseData = _userDeckData._havePCDataSO._pencilCaseDataList[i];
+                cardObj.GetComponent<PencilCaseCard>().SetPencilCaseData(pencilCaseData);
                 cardButton.onClick.RemoveAllListeners();
                 cardButton.onClick.AddListener(() =>
                 {
-                   // EventManager.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
-                   // EventManager.TriggerEvent(EventsType.DeckSetting, ButtonType.cardDescription);
-
+                   EventManager.TriggerEvent(EventsType.ActivePencilCaseDescription, pencilCaseData);
                 });
             }
         }

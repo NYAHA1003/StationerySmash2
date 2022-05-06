@@ -15,6 +15,8 @@
         UpdateHaveAndEquipDeck, //보유 덱과 장착 덱 초기화
         UpdateHaveAndEquipPCDeck, // 보유 필통 덱 초기화
         ChangePCAndDeck, //덱에서 필통과 덱을 전환함
+        ActivePencilCaseDescription = 50, //덱에서 필통 정보창을 연다
+        ChangePencilCase = 51, //필통을 바꾼다
         
         // 세팅 부분
         ActiveProfileImgPn = 100, // 프로필 이미지 패널 활성화 

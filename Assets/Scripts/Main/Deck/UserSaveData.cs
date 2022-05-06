@@ -19,6 +19,7 @@ namespace Main.Deck
         public List<ProfileType> _haveProfileList = new List<ProfileType>();    //가지고 있는 프로필 목록
         public List<MaterialData> _materialDatas = new List<MaterialData>();    //가지고 있는 재료 목록
         public List<CollectionThemeType> _haveCollectionDatas = new List<CollectionThemeType>();    //가지고 있는 재료
+        public int _setPrestIndex = 0; //마지막으로 사용했던 프리셋
         public int _money = 0;    //가지고 있는 돈
         public int _dalgona = 0;    //가지고 있는 달고나
         public string _name = "";    //이름

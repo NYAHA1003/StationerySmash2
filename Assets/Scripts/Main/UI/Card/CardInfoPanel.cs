@@ -71,10 +71,13 @@ using Main.Skin;
 
         private CardData _selectCardData = null;
 
-
-        private void Start()
-        {
+		private void Awake()
+		{
             EventManager.StartListening(EventsType.ActiveCardDescription, (x) => OnSetCardInfoPanel((DeckCard)x));
+		}
+
+		private void Start()
+        {
             SetEquipText();
             _equipButton.onClick.AddListener(() =>
             {
@@ -82,6 +85,8 @@ using Main.Skin;
                 _deckSettingComponent.UpdateHaveAndEquipDeck();
             });
         }
+
+
         /// <summary>
         /// 카드데이터 설정
         /// </summary>

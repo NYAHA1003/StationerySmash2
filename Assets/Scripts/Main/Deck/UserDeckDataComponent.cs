@@ -18,6 +18,14 @@ namespace Main.Deck
         public PencilCaseDataListSO _havePCDataSO; //보유 필통 데이터들
         public PencilCaseDataSO _inGamePCDataSO; //장착 필통 데이터
 
+        //프리셋
+        [SerializeField]
+        private PresetSaveDataSO _presetDataSO1 = null;
+        [SerializeField]
+        private PresetSaveDataSO _presetDataSO2 = null;
+        [SerializeField]
+        private PresetSaveDataSO _presetDataSO3 = null;
+
         [SerializeField]
         private WarrningComponent _warrningComponent; //경고 컴포넌트
 
@@ -26,7 +34,10 @@ namespace Main.Deck
         private void Awake()
 		{
             SaveManager._instance.SaveData.AddObserver(this);
-		}
+            _userSaveData ??= SaveManager._instance.SaveData.userSaveData;
+            ChangePreset(_userSaveData._setPrestIndex);
+
+        }
 
         public void Notify(ref UserSaveData userSaveData)
         {
@@ -39,12 +50,32 @@ namespace Main.Deck
         /// </summary>
         public void SetCardData()
         {
-            //세이브 데이터의 유저 저장 데이터를 가져온다
-            _userSaveData ??= SaveManager._instance.SaveData.userSaveData;
-         
             //카드 데이터 초기화
             SetDeckCardList();
             SetIngameCardList();
+        }
+
+        public void ChangePreset(int index)
+        {
+            switch (index)
+            {
+                case 0:
+                    _userSaveData._ingameSaveDatas = _presetDataSO1._ingameSaveDatas;
+                    _userSaveData._currentPencilCaseType = _presetDataSO1._pencilCaseData._pencilCaseType;
+                    SetInGamePencilCase(_presetDataSO1._pencilCaseData);
+                    break;
+                case 1:
+                    _userSaveData._ingameSaveDatas = _presetDataSO2._ingameSaveDatas;
+                    _userSaveData._currentPencilCaseType = _presetDataSO2._pencilCaseData._pencilCaseType;
+                    SetInGamePencilCase(_presetDataSO2._pencilCaseData);
+                    break;
+                case 2:
+                    _userSaveData._ingameSaveDatas = _presetDataSO3._ingameSaveDatas;
+                    _userSaveData._currentPencilCaseType = _presetDataSO3._pencilCaseData._pencilCaseType;
+                    SetInGamePencilCase(_presetDataSO3._pencilCaseData);
+                    break;
+            }
+            _userSaveData._setPrestIndex = index;
         }
 
         /// <summary>
