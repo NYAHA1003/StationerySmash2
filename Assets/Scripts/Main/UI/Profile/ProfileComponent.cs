@@ -15,7 +15,7 @@ public class ProfileComponent : MonoBehaviour, IUserData
     [SerializeField]
     private Image _profileImage = null;
 
-    public void Start()
+    public void Awake()
     {
         _saveDataSO.AddObserver(this);
     }

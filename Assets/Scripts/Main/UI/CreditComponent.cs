@@ -19,8 +19,13 @@ public class CreditComponent : MonoBehaviour
     /// </summary>
     public void Initialized()
     {
+<<<<<<< Updated upstream
         Debug.Log(_creditText.textInfo.lineCount);
         int moveY = _creditText.textInfo.lineCount * 100;
+=======
+
+        int moveY = _creditText.textInfo.lineCount * 120;
+>>>>>>> Stashed changes
         float duration = _creditText.textInfo.lineCount * 1f;
         _creditTweener = _creditTextTrm.DOAnchorPosY(moveY, duration).SetAutoKill(false);
     }
@@ -30,8 +35,19 @@ public class CreditComponent : MonoBehaviour
     /// </summary>
     public void StartCredit()
     {
-        _creditTweener.Pause();
+<<<<<<< Updated upstream
+=======
         _creditTextTrm.anchoredPosition = new Vector2(0, -1200);
+
+        //조금이라도 대기하게 만들어라
+        if (_creditTweener == null)
+        {
+            Debug.Log("트위너 비어있음");
+            Initialized();
+        }
+
+>>>>>>> Stashed changes
+        _creditTweener.Pause();
         _creditTweener.Restart();
     }
 

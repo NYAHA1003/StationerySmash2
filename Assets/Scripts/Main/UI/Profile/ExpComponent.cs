@@ -7,28 +7,27 @@ using DG.Tweening;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
 using Main.Deck;
-public class NameProfile : MonoBehaviour, IUserData
+
+public class ExpComponent : MonoBehaviour, IUserData
 {
     [SerializeField]
-    private SaveDataSO _saveDataSO = null;
-    [SerializeField]
-    private TextMeshProUGUI _nameText = null;
+    private Image _expImage = null;
 
-    public void Start()
+    public void Awake()
     {
-        _saveDataSO.AddObserver(this);
+        SaveManager._instance._saveData.AddObserver(this);
     }
 
     public void Notify(ref UserSaveData userSaveData)
     {
-        SetMoneyText(ref userSaveData);
+        SetExpBar(ref userSaveData);
     }
 
     /// <summary>
-    /// 돈 텍스트 값 수정
+    /// EXP바 수정
     /// </summary>
-    public void SetMoneyText(ref UserSaveData userSaveData)
+    public void SetExpBar(ref UserSaveData userSaveData)
     {
-        _nameText.text = userSaveData._name;
+        _expImage.fillAmount = userSaveData._nowExp / (userSaveData._level * 100); 
     }
 }

@@ -20,6 +20,8 @@ namespace Main.Deck
         public int _money = 0;    //가지고 있는 돈
         public int _dalgona = 0;    //가지고 있는 달고나
         public string _name = "";    //이름
+        public int _level = 1;
+        public int _nowExp = 0;
     }
 
     [System.Serializable]
