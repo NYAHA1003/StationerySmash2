@@ -14,6 +14,7 @@ namespace Utill.Data
         PencilNormal = 100,
         SharpNormal = 200,
         EraserNormal = 300,
+        PencilCaseNormal = 400,
     }
     [System.Serializable]
     public class SkinData
@@ -80,6 +81,25 @@ namespace Utill.Data
         public async Task SetSkin(SkinType skinType)
         {
             if(_spriteDictionary.TryGetValue(skinType, out var data))
+            {
+                return;
+            }
+            else
+            {
+                string name = System.Enum.GetName(typeof(SkinType), skinType);
+                var handle = Addressables.LoadAssetAsync<Sprite>(name);
+                await handle.Task;
+                _spriteDictionary.Add(skinType, handle.Result);
+            }
+        }
+
+        /// <summary>
+        /// 스킨의 스프라이트를 등록한다.
+        /// </summary>
+        /// <param name="skinType"></param>
+        public static async Task SetSkinStatic(SkinType skinType)
+        {
+            if (_spriteDictionary.TryGetValue(skinType, out var data))
             {
                 return;
             }

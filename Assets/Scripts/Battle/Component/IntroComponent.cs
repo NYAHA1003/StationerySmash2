@@ -73,11 +73,22 @@ namespace Battle
 			if (teamType == TeamType.MyTeam)
 			{
 				_pencilCaseCard.SetPencilCaseData(_playerPencilCaseDataSO._pencilCaseData);
-				
+				int cardDataCount = _playerCardDatas.Count;
+				for (int i = 0; i < cardDataCount; i++)
+				{
+					_deckCards[i].SetCard(_playerCardDatas[i]);
+					_deckCards[i].gameObject.SetActive(true);
+				}
 			}
-			else
+			else if(teamType == TeamType.EnemyTeam)
 			{
 				_pencilCaseCard.SetPencilCaseData(_enemyPencilCaseDataSO._pencilCaseData);
+				int cardDataCount = _enemyCardDatas.Count;
+				for (int i = 0; i < cardDataCount; i++)
+				{
+					_deckCards[i].SetCard(_enemyCardDatas[i]);
+					_deckCards[i].gameObject.SetActive(true);
+				}
 			}
 		}
 
@@ -95,7 +106,8 @@ namespace Battle
 
 			//내 필통을 보여준다
 			_countText.text = "2";
-			_cameraComponent.MovingCamera(_enemyPencilCase.position, 0.5f, 0.2f);
+			_cameraComponent.MovingCamera(_playerPencilCase.position, 0.5f, 0.2f, 0.85f);
+			ShowDeckInfo(TeamType.MyTeam);
 			yield return new WaitForSeconds(0.2f);
 			_introCanvas.SetActive(true);
 			yield return new WaitForSeconds(1f);
@@ -103,7 +115,8 @@ namespace Battle
 
 			//상대 필통을 보여준다
 			_countText.text = "1";
-			_cameraComponent.MovingCamera(_playerPencilCase.position, 0.5f, 0.2f);
+			_cameraComponent.MovingCamera(_enemyPencilCase.position, 0.5f, 0.2f, 0.85f);
+			ShowDeckInfo(TeamType.EnemyTeam);
 			yield return new WaitForSeconds(0.2f);
 			_introCanvas.SetActive(true);
 			yield return new WaitForSeconds(1f);

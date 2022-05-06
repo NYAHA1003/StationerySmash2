@@ -13,7 +13,6 @@ namespace Utill.Data
         public int _maxCard;
         public float _costSpeed;
         public float _throwGaugeSpeed;
-        public SkinType _skinType;
         public PencilCaseType _pencilCaseType;
         public AbstractPencilCaseAbility _pencilState;
         public CardData _pencilCaseData;

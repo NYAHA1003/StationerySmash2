@@ -150,9 +150,9 @@ namespace Battle
         /// <param name="pos"></param>
         /// <param name="size"></param>
         /// <param name="duration"></param>
-        public void MovingCamera(Vector3 pos, float size, float duration)
+        public void MovingCamera(Vector3 pos, float size, float duration, float lerp = 1)
 		{
-            pos.x = Mathf.Lerp(_camera.transform.position.x, pos.x, 0.95f);
+            pos.x = Mathf.Lerp(_camera.transform.position.x, pos.x, lerp);
             pos.y += 0.1f;
             pos.z = -10;
             _camera.transform.DOMove(pos, duration).SetEase(Ease.OutExpo);

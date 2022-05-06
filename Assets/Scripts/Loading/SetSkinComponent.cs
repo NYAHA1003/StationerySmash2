@@ -26,8 +26,7 @@ public class SetSkinComponent : MonoBehaviour
 
     public  void Start()
     {
-        SetSkinNowHave();
-        //SetSkinAll();
+        SetSkinAll();
     }
 
     /// <summary>
@@ -50,10 +49,11 @@ public class SetSkinComponent : MonoBehaviour
     /// </summary>
     private async void SetSkinAll()
     {
-        for (int i = 0; i < System.Enum.GetValues(typeof(SkinType)).Length; i++)
+        var skinTypes = System.Enum.GetValues(typeof(SkinType));
+        int skinTypeCount = skinTypes.Length;
+        for (int i = 0; i < skinTypeCount; i++)
         {
-            CardData cardData = _cardDeckSO.cardDatas[i];
-            await cardData.skinData.SetSkin((SkinType)i);
+            await SkinData.SetSkinStatic((SkinType)skinTypes.GetValue(i));
         }
 
         _isAllSetSkin = true;
