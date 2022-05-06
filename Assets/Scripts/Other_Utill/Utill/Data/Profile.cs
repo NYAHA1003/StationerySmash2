@@ -7,6 +7,9 @@ namespace Utill.Data
     public enum ProfileType
     {
         ProNone = 0,
-        ProPencil
+        ProPencil,
+        ProScissors,
+        ProEraser,
+        ProMechaPencil,
     }
 }

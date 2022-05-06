@@ -79,7 +79,7 @@ namespace Main.Setting
 
         /// <summary>
         /// 모든 데이터를 불러온다
-        /// </summary>
+        /// </summary> 
         /// <returns></returns>
         public async Task AllLoadAssetAsync()
         {
