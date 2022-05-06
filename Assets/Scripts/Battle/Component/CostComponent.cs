@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using Utill.Data;
+using Utill.Tool;
 using TMPro;
 
 namespace Battle
@@ -18,7 +21,9 @@ namespace Battle
         public float _costDelay;
 
         [SerializeField]
-        private TextMeshProUGUI _costText;
+        private TextMeshProUGUI _costText = null;
+        [SerializeField]
+        private Button _costUpButton = null;
 
         /// <summary>
         /// 초기화
@@ -28,7 +33,8 @@ namespace Battle
         public void SetInitialization(ref System.Action updateAction, PencilCaseData pencilCasePlayerData)
         {
             updateAction += UpdateCost;
-            SetCostSpeed(pencilCasePlayerData.costSpeed);
+            SetCostSpeed(pencilCasePlayerData._costSpeed);
+            _costUpButton.onClick.AddListener(() => OnUpgradeCostGrade());
         }
 
 
@@ -135,6 +141,14 @@ namespace Battle
             UpdateCostText();
 
 
+        }
+
+        /// <summary>
+        /// 클릭하면 코스트 단계 증가
+        /// </summary>
+        public void OnUpgradeCostGrade()
+        {
+            UpgradeCostGrade();
         }
 
     }

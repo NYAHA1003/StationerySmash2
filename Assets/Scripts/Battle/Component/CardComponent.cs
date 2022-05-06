@@ -31,7 +31,9 @@ namespace Battle
 
         //인스펙터 참조 변수
         [SerializeField]
-        private LineRenderer _summonRangeLine = null;
+        private GameObject _summonRangeImage = null;
+        [SerializeField]
+        private RectTransform _summonArrow = null;
         [SerializeField]
         private GameObject _cardMovePrefeb = null;
         [SerializeField]
@@ -84,7 +86,7 @@ namespace Battle
             SetMaxCard(maxCard);
 
             //유닛 소환 범위 그리기
-            DrawSummonRangeLinePos();
+            DrawSummonRange();
 
             //덱에 카드정보들 전달
             SetDeckCard();
@@ -94,6 +96,7 @@ namespace Battle
             updateAction += UpdateSelectCardPos;
             updateAction += UpdateCardDraw;
             updateAction += UpdateSummonRange;
+            updateAction += UpdateCheckCost;
         }
 
         /// <summary>
@@ -244,7 +247,7 @@ namespace Battle
             }
 
             SetSummonRangeLine(true);
-            _summonRangeLine.gameObject.SetActive(true);
+            _summonRangeImage.gameObject.SetActive(true);
 
             //해당 카드를 선택된 카드에 넣음
             _selectCard = card;
@@ -272,6 +275,18 @@ namespace Battle
             }
             _selectCard.transform.position = Input.mousePosition;
         }
+
+        /// <summary>
+        /// 카드들의 코스트를 비교하여 사용할 수 있는지 확인한다
+        /// </summary>
+        public void UpdateCheckCost()
+		{
+            int count = _cardList.Count;
+            for (int i = 0; i < count; i++)
+			{
+                _cardList[i].CheckCost(_commandCost.CurrentCost);
+			}
+		}
 
         /// <summary>
         /// 카드 선택을 취소함
@@ -312,6 +327,8 @@ namespace Battle
             {
                 card.RunOriginPRS();
                 _commandCamera.SetCameraIsMove(true);
+                _selectCard = null;
+                IsSelectCard = false;
                 return;
             }
             //선택한 카드를 Null로 돌림
@@ -329,16 +346,16 @@ namespace Battle
             }
 
 
-            switch (card.DataBase.cardType)
+            switch (card.CardDataValue.cardType)
             {
                 case CardType.SummonUnit:
-                    _commandUnit.SummonUnit(card.DataBase, new Vector3(mouse_Pos.x, 0, 0), card.Grade);
+                    _commandUnit.SummonUnit(card.CardDataValue, new Vector3(mouse_Pos.x, 0, 0), card.Grade);
                     break;
                 default:
                 case CardType.Execute:
                 case CardType.SummonTrap:
                 case CardType.Installation:
-                    card.DataBase.strategyData.starategy_State.Run_Card(_commandUnit.eTeam);
+                    card.CardDataValue.strategyData.starategy_State.Run_Card(_commandUnit.eTeam);
                     break;
             }
 
@@ -360,24 +377,52 @@ namespace Battle
         /// <param name="isDelete"></param>
         public void UpdateUnitAfterImage()
         {
+            //마우스 위치를 가져온다
             Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            
+            //소환할 유닛이 자신의 유닛인지 체크해서 범위 제한
             if (_commandUnit.eTeam == TeamType.MyTeam)
             {
                 pos.x = Mathf.Clamp(pos.x, -_stageData.max_Range, _summonRange);
             }
-            if (_selectCard == null || _selectCard.DataBase.unitData.unitType == UnitType.None || pos.y < 0)
+
+            //소환 미리보기가 될 수 있는지 체크
+            if (_selectCard == null || _selectCard.CardDataValue.unitData.unitType == UnitType.None || pos.y < 0)
             {
+                SetSummonArrowImage(false, pos);
                 _unitAfterImage.SetActive(false);
                 return;
             }
+
+            //소환 미리보기 적용
             _unitAfterImage.SetActive(true);
             _afterImageSpriteRenderer.color = Color.white;
+
             if (CheckPossibleSummon())
             {
                 _afterImageSpriteRenderer.color = Color.red;
             }
+
             _unitAfterImage.transform.position = new Vector3(pos.x, 0);
-            _afterImageSpriteRenderer.sprite = SkinData.GetSkin(_selectCard.DataBase.skinData._skinType);
+            _afterImageSpriteRenderer.sprite = SkinData.GetSkin(_selectCard.CardDataValue.skinData._skinType);
+
+            //소환 화살표 적용
+            SetSummonArrowImage(true, pos);
+            return;
+        }
+
+        /// <summary>
+        /// 소환 화살표 설정
+        /// </summary>
+        public void SetSummonArrowImage(bool isActive, Vector2 pos)
+        {
+            //소환 화살표 적용
+            _summonArrow.gameObject.SetActive(isActive);
+            _summonArrow.transform.position = pos;
+            _summonArrow.anchoredPosition = new Vector2(_summonArrow.anchoredPosition.x, Mathf.Clamp(_summonArrow.anchoredPosition.y, 520, 1000));
+            _summonArrow.sizeDelta = new Vector2(_summonArrow.sizeDelta.x, _summonArrow.anchoredPosition.y);
+            //float ySize = Mathf.Clamp(pos.y * 2f, 0.8f, 2f);
+            //_summonArrow.size = new Vector2(0.35f, ySize);
             return;
         }
 
@@ -400,7 +445,7 @@ namespace Battle
                 return true;
             }
 
-            switch (_selectCard.DataBase.cardType)
+            switch (_selectCard.CardDataValue.cardType)
             {
                 case CardType.Execute:
                     break;
@@ -442,8 +487,8 @@ namespace Battle
             }
             Debug.Log("범위 늘어남");
             _summonRangeDelay = 30f;
-            _summonRange = _summonRange + _stageData.max_Range / 4;
-            DrawSummonRangeLinePos();
+            _summonRange += _stageData.max_Range / 4;
+            DrawSummonRange();
         }
 
         /// <summary>
@@ -452,7 +497,7 @@ namespace Battle
         /// <param name="isActive"></param>
         public void SetSummonRangeLine(bool isActive)
         {
-            _summonRangeLine.gameObject.SetActive(isActive);
+            _summonRangeImage.gameObject.SetActive(isActive);
         }
 
         /// <summary>
@@ -587,17 +632,17 @@ namespace Battle
         private bool FusionCheck(CardMove targetCard1, CardMove targetCard2)
         {
             //카드 타입이 같은지 체크
-            if (targetCard1.DataBase.cardType != targetCard2.DataBase.cardType)
+            if (targetCard1.CardDataValue.cardType != targetCard2.CardDataValue.cardType)
             {
                 return false;
             }
             //유닛 타입이 같은지 체크
-            if (targetCard1.DataBase.unitData.unitType != targetCard2.DataBase.unitData.unitType)
+            if (targetCard1.CardDataValue.unitData.unitType != targetCard2.CardDataValue.unitData.unitType)
             {
                 return false;
             }
             //전략 타입이 같은지 체크
-            if (targetCard1.DataBase.strategyData.starategyType != targetCard2.DataBase.strategyData.starategyType)
+            if (targetCard1.CardDataValue.strategyData.starategyType != targetCard2.CardDataValue.strategyData.starategyType)
             {
                 return false;
             }
@@ -692,12 +737,12 @@ namespace Battle
         }
 
         /// <summary>
-        /// 소환 범위 임시 라인 렌더링
+        /// 소환 범위 렌더링
         /// </summary>
-        private void DrawSummonRangeLinePos()
+        private void DrawSummonRange()
         {
-            _summonRangeLine.SetPosition(0, new Vector2(-_stageData.max_Range, 0));
-            _summonRangeLine.SetPosition(1, new Vector2(_summonRange, 0));
+            _summonRangeImage.transform.position = new Vector2(-_stageData.max_Range, 0);
+            _summonRangeImage.transform.localScale = new Vector2(Mathf.Abs(_stageData.max_Range + _summonRange), 0.5f);
         }
 
 		public void Notify(bool isWin)

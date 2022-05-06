@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utill.Data;
+using Utill.Tool;
+using DG.Tweening;
 
 
 namespace Battle.Units
@@ -53,6 +56,10 @@ namespace Battle.Units
 
 	public class CutterAttackState : SeFiceAttackState
 	{
+		protected override void SetAttackData(ref AtkData atkData)
+		{
+			atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, EffAttackType.Scratch , _myUnit.SkinData._effectType, originValue);
+		}
 	}
 
 	public class CutterDamagedState : AbstractDamagedState

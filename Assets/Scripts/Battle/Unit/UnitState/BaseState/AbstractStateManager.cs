@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill.Data;
 using Utill.Tool;
-
+using DG.Tweening;
 
 namespace Battle.Units
 {
@@ -11,6 +11,8 @@ namespace Battle.Units
 	public abstract class AbstractStateManager
 	{
 		public StageData _stageData { get; private set; } = null;
+		public Tweener AnimationTweener => _animationTweener;
+		public Animator Animator => _animator;
 
 		protected AbstractIdleState _idleState = null;
 		protected AbstractAttackState _attackState = null;
@@ -21,6 +23,9 @@ namespace Battle.Units
 		protected AbstractWaitState _waitState = null;
 		protected AbstractUnitState _currrentState = null;
 		protected List<AbstractUnitState> _abstractUnitStateList = new List<AbstractUnitState>();
+		protected Tweener _animationTweener = default;
+		protected Animator _animator = null;
+
 
 		protected float _waitExtraTime = 0;
 
@@ -46,30 +51,65 @@ namespace Battle.Units
 			}
 		}
 
-		/// <summary>
-		/// 리스트에 있는 스테이트들의 애니메이션 정리
-		/// </summary>
-		public void ResetAnimationInStateList()
+		public void SetAnimation(eState eState)
 		{
-			for (int i = 0; i < _abstractUnitStateList.Count; i++)
+			switch (eState)
 			{
-				_abstractUnitStateList[i].ResetThisStateAnimation();
+				case eState.IDLE:
+					AllFasleAnimation();
+					break;
+				case eState.MOVE:
+					_animator.SetBool("isMove", true);
+					_animator.SetBool("isWait", false);
+					break;
+				case eState.ATTACK:
+					_animator.SetTrigger("isAttack");
+					break;
+				case eState.WAIT:
+					_animator.SetBool("isWait", true);
+					_animator.SetBool("isThrow", false);
+					_animator.SetBool("isMove", false);
+					_animator.SetBool("isDamaged", false);
+					break;
+				case eState.DAMAGED:
+					_animator.SetBool("isDamaged", true);
+					_animator.SetBool("isMove", false);
+					_animator.SetBool("isWait", false);
+					_animator.SetBool("isThrow", false);
+					break;
+				case eState.DIE:
+					_animator.SetBool("isDie", true);
+					_animator.SetBool("isWait", false);
+					break;
+				case eState.THROW:
+					_animator.SetBool("isThrow", true);
+					_animator.SetBool("isMove", false);
+					_animator.SetBool("isWait", false);
+					break;
+				case eState.NONE:
+					break;
 			}
 		}
 
 		public virtual void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
 		{
+			_animator = myUnit.Animator;
+			AllFasleAnimation();
+
 			for (int i = 0; i < _abstractUnitStateList.Count; i++)
 			{
 				_abstractUnitStateList[i].ChangeUnit(myTrm, mySprTrm, myUnit);
 				_abstractUnitStateList[i].ResetState();
-				_abstractUnitStateList[i].SetAnimation();
 			}
 
 			Set_WaitExtraTime(0);
 			Reset_CurrentUnitState(_idleState);
 		}
 
+		/// <summary>
+		/// 상태를 공격으로 바꾼다
+		/// </summary>
+		/// <param name="targetUnit"></param>
 		public virtual void Set_Attack(Unit targetUnit)
 		{
 			_currrentState.SetEvent(eEvent.EXIT);
@@ -79,6 +119,10 @@ namespace Battle.Units
 			Reset_CurrentUnitState(_attackState);
 		}
 
+		/// <summary>
+		/// 상태를 공격 받음으로 바꾼다
+		/// </summary>
+		/// <param name="atkData"></param>
 		public virtual void Set_Damaged(AtkData atkData)
 		{
 			_currrentState.SetEvent(eEvent.EXIT);
@@ -88,6 +132,9 @@ namespace Battle.Units
 			Reset_CurrentUnitState(_damagedState);
 		}
 
+		/// <summary>
+		/// 상태를 죽음으로 바꾼다
+		/// </summary>
 		public virtual void Set_Die()
 		{
 			_currrentState.SetEvent(eEvent.EXIT);
@@ -96,6 +143,9 @@ namespace Battle.Units
 			Reset_CurrentUnitState(_dieState);
 		}
 
+		/// <summary>
+		/// 상태를 소환됨으로 바꾼다
+		/// </summary>
 		public virtual void Set_Idle()
 		{
 			_currrentState.SetEvent(eEvent.EXIT);
@@ -104,6 +154,9 @@ namespace Battle.Units
 			Reset_CurrentUnitState(_idleState);
 		}
 
+		/// <summary>
+		/// 상태를 이동으로 바꾼다
+		/// </summary>
 		public virtual void Set_Move()
 		{
 			_currrentState.SetEvent(eEvent.EXIT);
@@ -112,6 +165,9 @@ namespace Battle.Units
 			Reset_CurrentUnitState(_moveState);
 		}
 
+		/// <summary>
+		/// 상태를 던지기로 바꾼다
+		/// </summary>
 		public virtual void Set_Throw()
 		{
 			_currrentState.SetEvent(eEvent.EXIT);
@@ -120,6 +176,10 @@ namespace Battle.Units
 			Reset_CurrentUnitState(_throwState);
 		}
 
+		/// <summary>
+		/// 상태를 대기로 바꾼다
+		/// </summary>
+		/// <param name="time"></param>
 		public virtual void Set_Wait(float time)
 		{
 			_currrentState.SetEvent(eEvent.EXIT);
@@ -129,19 +189,44 @@ namespace Battle.Units
 			_waitState.ResetState();
 			Reset_CurrentUnitState(_waitState);
 		}
+
+		/// <summary>
+		/// 추가 대기 시간 설정
+		/// </summary>
+		/// <param name="extraTime"></param>
 		public virtual void Set_WaitExtraTime(float extraTime)
 		{
 			this._waitExtraTime = extraTime;
 		}
 
+		/// <summary>
+		/// 던져지는 위치 설정
+		/// </summary>
+		/// <param name="pos"></param>
 		public virtual void Set_ThrowPos(Vector2 pos)
 		{
 			this._throwState.SetThrowPos(pos);
 		}
 
+		/// <summary>
+		/// 스테이지 데이터 설정
+		/// </summary>
+		/// <param name="stageData"></param>
 		public void SetStageData(StageData stageData)
 		{
 			_stageData = stageData;
+		}
+
+		/// <summary>
+		/// 모든 애니메이션 파라메터를 False로 처리
+		/// </summary>
+		public void AllFasleAnimation()
+		{
+			_animator.SetBool("isWait", false);
+			_animator.SetBool("isMove", false);
+			_animator.SetBool("isDamaged", false);
+			_animator.SetBool("isThrow", false);
+			_animator.SetBool("isDie", false);
 		}
 
 		public StageData GetStageData()

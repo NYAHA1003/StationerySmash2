@@ -40,7 +40,6 @@ namespace Battle.Units
 		public override void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
 		{
 			base.Reset_State(myTrm, mySprTrm, myUnit);
-			_eraserPieceData = AddressableTool.ReturnProjectileUnitAsync(UnitType.EraserPiece).Result;
 			myUnit.SetIsNeverDontThrow(false);
 		}
 

@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using Utill.Data;
 using Utill.Tool;
+
 namespace Battle.Starategy
 {
 
@@ -13,11 +15,11 @@ namespace Battle.Starategy
         {
             if (eTeam == TeamType.MyTeam)
             {
-                Check_Range(_battleManager.CommandUnit._enemyUnitList, _card.DataBase.strategyData.starategyablityData);
+                Check_Range(_battleManager.CommandUnit._enemyUnitList, _card.CardDataValue.strategyData.starategyablityData);
             }
             else if (eTeam == TeamType.EnemyTeam)
             {
-                Check_Range(_battleManager.CommandUnit._playerUnitList, _card.DataBase.strategyData.starategyablityData);
+                Check_Range(_battleManager.CommandUnit._playerUnitList, _card.CardDataValue.strategyData.starategyablityData);
             }
         }
 
@@ -36,7 +38,7 @@ namespace Battle.Starategy
                 }
                 catch
                 {
-                    int a = 0;
+                    //int a = 0;
                 }
             }
         }

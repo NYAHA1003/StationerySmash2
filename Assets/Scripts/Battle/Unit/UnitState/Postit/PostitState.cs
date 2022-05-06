@@ -7,6 +7,10 @@ namespace Battle.Units
 
 	public class PostitState : AbstractStateManager
 	{
+		public CardData PostitData => _postitData;
+		private CardData _postitData = null;
+
+
 		public override void SetState()
 		{
 			//스테이트들을 설정한다
@@ -40,6 +44,21 @@ namespace Battle.Units
 
 	public class PostitIdleState : AbstractIdleState
 	{
+		float timer = 0;
+		protected override void IdleToWaitTime()
+		{
+			timer += Time.deltaTime;
+			if(timer > 4)
+            {
+				timer = 0;
+				PostitState eraserState = (PostitState)_stateManager;
+				_myUnit.BattleManager.CommandUnit.SummonUnit(eraserState.PostitData, _myTrm.position, _myUnit.UnitStat.Grade, _myUnit.ETeam);
+
+				base.IdleToWaitTime();
+			}
+			//지우개 조각 소환
+
+		}
 	}
 
 	public class PostitWaitState : AbstractWaitState
@@ -67,5 +86,6 @@ namespace Battle.Units
 
 	}
 
+	
 
 }

@@ -16,7 +16,7 @@ namespace Battle.Units
 		protected override void Attack()
 		{
 			//공격 애니메이션
-			Animation();
+			Animation(eState.ATTACK);
 			Summon();
 
 			//공격 딜레이 초기화

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using Utill.Data;
 using Utill.Tool;
 using Battle.Badge;
@@ -33,6 +35,9 @@ namespace Battle
         private PencilCaseUnit _playerPencilCase = null;
         [SerializeField]
         private PencilCaseUnit _enemyPencilCase = null;
+        [SerializeField]
+        private Button _pencilCaseAbilityButton = null;
+
 
         //변수
         private List<AbstractBadge> _playerBadges = new List<AbstractBadge>();
@@ -55,7 +60,7 @@ namespace Battle
             pencilCaseDataEnemy = _enemyPencilCase.PencilCaseData;
 
             //플레이어 필통
-            _playerPencilCase.SetUnitData(pencilCaseDataMy.PencilCasedataBase.pencilCaseData, TeamType.MyTeam, _stageData, -1, 1, 0);
+            _playerPencilCase.SetUnitData(pencilCaseDataMy._pencilCaseData._pencilCaseData, TeamType.MyTeam, _stageData, -1, 1, 0);
             _unitCommand._playerUnitList.Add(_playerPencilCase);
             _playerPencilCase.transform.position = new Vector2(-_stageData.max_Range, 0);
             _playerAbilityState = _playerPencilCase.AbilityState;
@@ -64,13 +69,15 @@ namespace Battle
             RunBadgeAbility(_playerBadges);
 
             //적 필통
-            _enemyPencilCase.SetUnitData(pencilCaseDataEnemy.PencilCasedataBase.pencilCaseData, TeamType.EnemyTeam, _stageData, -2, 1, 0);
+            _enemyPencilCase.SetUnitData(pencilCaseDataEnemy._pencilCaseData._pencilCaseData, TeamType.EnemyTeam, _stageData, -2, 1, 0);
             _unitCommand._enemyUnitList.Add(_enemyPencilCase);
             _enemyPencilCase.transform.position = new Vector2(_stageData.max_Range, 0);
             _enemyAbilityState = _enemyPencilCase.AbilityState;
             _enemyAbilityState.SetTeam(TeamType.EnemyTeam);
             SetEnemyBadgeAbility();
             RunBadgeAbility(_enemyBadges);
+
+            _pencilCaseAbilityButton.onClick.AddListener(() => OnPencilCaseAbility());
         }
 
         /// <summary>
@@ -94,9 +101,9 @@ namespace Battle
         /// </summary>
         public void SetPlayerBadgeAbility()
         {
-            for(int i = 0; i < pencilCaseDataMy.PencilCasedataBase._badgeDatas.Count; i++)
+            for(int i = 0; i < pencilCaseDataMy._pencilCaseData._badgeDatas.Count; i++)
             {
-                BadgeData badgeData = pencilCaseDataMy.PencilCasedataBase._badgeDatas[i];
+                BadgeData badgeData = pencilCaseDataMy._pencilCaseData._badgeDatas[i];
                 AbstractBadge badge = ReturnBadge(badgeData._badgeType);
                 if(badge != null)
                 {
@@ -112,9 +119,9 @@ namespace Battle
         /// </summary>
         public void SetEnemyBadgeAbility()
         {
-            for (int i = 0; i < pencilCaseDataEnemy.PencilCasedataBase._badgeDatas.Count; i++)
+            for (int i = 0; i < pencilCaseDataEnemy._pencilCaseData._badgeDatas.Count; i++)
             {
-                BadgeData badgeData = pencilCaseDataEnemy.PencilCasedataBase._badgeDatas[i];
+                BadgeData badgeData = pencilCaseDataEnemy._pencilCaseData._badgeDatas[i];
                 AbstractBadge badge = ReturnBadge(badgeData._badgeType);
                 if (badge != null)
                 {
@@ -180,6 +187,14 @@ namespace Battle
                     break;
             }
             return abstractBadge;
+        }
+
+        /// <summary>
+        /// 클릭하면 필통 능력 사용
+        /// </summary>
+        public void OnPencilCaseAbility()
+        {
+            RunPlayerPencilCaseAbility();
         }
 
     }

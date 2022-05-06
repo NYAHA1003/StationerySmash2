@@ -16,9 +16,7 @@ namespace Battle
         private AIDataSO _aiPlayerDataSO;
         [SerializeField]
         private StageLog _aiLog;
-        [SerializeField]
         private bool isEnemyAIOn = false;
-        [SerializeField]
         private bool isPlayerAIOn = false;
 
         //참조 변수
@@ -68,6 +66,7 @@ namespace Battle
             this.enemyPos = _aiEnemyDataSO.pos;
             this.enemyMaxDelay = _aiEnemyDataSO.max_Delay;
             this.enemyThrowSpeed = _aiEnemyDataSO.throwSpeed;
+            this.isEnemyAIOn = _aiEnemyDataSO.isAIOn;
 
             //테스트용 Player AI
             this.playerSummonGrade = _aiPlayerDataSO.summonGrade;
@@ -75,6 +74,7 @@ namespace Battle
             this.playerPos = _aiPlayerDataSO.pos;
             this.playerMaxDelay = _aiPlayerDataSO.max_Delay;
             this.playerThrowSpeed = _aiPlayerDataSO.throwSpeed;
+            this.isPlayerAIOn = _aiPlayerDataSO.isAIOn;
 
             //배틀매니저에 업데이트할 함수를 넣는다
             updateAction += UpdateEnemyAICard;

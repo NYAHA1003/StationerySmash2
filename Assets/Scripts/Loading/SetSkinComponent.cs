@@ -36,9 +36,6 @@ public class SetSkinComponent : MonoBehaviour
     private async void SetSkinNowHave()
     {
         //배틀 테스트 용으로 사용
-        await _playerPencilCase.PencilCasedataBase.pencilCaseData.skinData.SetSkin(_playerPencilCase.PencilCasedataBase.pencilCaseData.skinData._skinType);
-        await _enemyPencilCase.PencilCasedataBase.pencilCaseData.skinData.SetSkin(_enemyPencilCase.PencilCasedataBase.pencilCaseData.skinData._skinType);
-
         for (int i = 0; i < _cardDeckSO.cardDatas.Count; i++)
         {
             CardData cardData = _cardDeckSO.cardDatas[i];
@@ -53,9 +50,6 @@ public class SetSkinComponent : MonoBehaviour
     /// </summary>
     private async void SetSkinAll()
     {
-        await _playerPencilCase.PencilCasedataBase.pencilCaseData.skinData.SetSkin(_playerPencilCase.PencilCasedataBase.pencilCaseData.skinData._skinType);
-        await _enemyPencilCase.PencilCasedataBase.pencilCaseData.skinData.SetSkin(_enemyPencilCase.PencilCasedataBase.pencilCaseData.skinData._skinType);
-
         for (int i = 0; i < System.Enum.GetValues(typeof(SkinType)).Length; i++)
         {
             CardData cardData = _cardDeckSO.cardDatas[i];

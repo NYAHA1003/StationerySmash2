@@ -47,29 +47,40 @@ using Main.Skin;
         [SerializeField]
         private Transform _buttonParent = null;
 
-        //스티커 착용창 유닛일 때만 사용
+        
         [SerializeField]
-        private GameObject _stickerPanel = null;
+        private GameObject _stickerPanel = null; //스티커 착용창 유닛일 때만 사용
         [SerializeField]
         private StickerInfoPanel _stickerInfoPanel = null;
 
-        //스크롤 조절창
-        [SerializeField]
-        private SkinScroll _skinScroll = null;
 
-        //장착버튼
+        //인스펙터 참조 변수
         [SerializeField]
-        private Button _equipButton = null;
+        private Button _equipButton = null; //장착버튼
+        [SerializeField]
+        private TextMeshProUGUI _equipText = null;
+        [SerializeField]
+        private CardDescriptionScroll _skinScroll = null; //스크롤 조절창
+
+
+        [SerializeField]
+        private UserDeckDataComponent _userDeckData; // 유저 데이터
+        [SerializeField]
+        private DeckSettingComponent _deckSettingComponent; //덱 설정 컴포넌트
+
 
         private CardData _selectCardData = null;
 
-        // 유저 데이터
-        [SerializeField]
-        private UserDeckDataComponent _userDeckData;
+
         private void Start()
         {
             EventManager.StartListening(EventsType.ActiveCardDescription, (x) => OnSetCardInfoPanel((DeckCard)x));
-            _equipButton.onClick.AddListener(() => OnEquipCardInDeck());
+            SetEquipText();
+            _equipButton.onClick.AddListener(() =>
+            {
+                OnEquipCardInDeck();
+                _deckSettingComponent.UpdateHaveAndEquipDeck();
+            });
         }
         /// <summary>
         /// 카드데이터 설정
@@ -78,6 +89,7 @@ using Main.Skin;
         {
             _cardInfoPanel.SetActive(true);
             _selectCardData = deckCard._cardData;
+            SetEquipText();
 
             //카드 타입에 따라 설명창 설정
             switch (_selectCardData.cardType)
@@ -193,7 +205,28 @@ using Main.Skin;
                 //장착
                 _userDeckData.AddCardInDeck(_selectCardData, _selectCardData.level);
             }
-		}
+            SetEquipText();
+
+        }
+
+        /// <summary>
+        /// 장착 텍스트 설정
+        /// </summary>
+        public void SetEquipText()
+        {
+            if(_selectCardData == null)
+			{
+                return;
+			}
+            if (_userDeckData.ReturnAlreadyEquipCard(_selectCardData.skinData._cardNamingType))
+            {
+                _equipText.text = "해제";
+            }
+            else
+            {
+                _equipText.text = "장착";
+			}
+        }
 
         /// <summary>
         /// 카드가 가진 스킨리스트 쫙 생성
