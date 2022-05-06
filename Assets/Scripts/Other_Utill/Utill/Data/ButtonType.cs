@@ -12,6 +12,8 @@ namespace Utill.Data
 		collection,
 		skin,
 		stage,
+		credit,
 		cardDescription,
+		
 	}
 }

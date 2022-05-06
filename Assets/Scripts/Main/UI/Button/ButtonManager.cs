@@ -43,17 +43,16 @@ namespace Main.Buttons
                });
             }
         }
+
+        /// <summary>
+        /// 덱에 있는 카드의 버튼 컴포넌트를 리스트에 넣어두기 
+        /// </summary>
         private void AddDeckCards()
         {
             for (int i = 0; i < deckSetting.HaveDeckCards.Count; i++)
             {
                 cardInfoBtns.Add(deckSetting.HaveDeckCards[i].GetComponent<Button>());
             }
-
-        }
-        public void OnDeckActive()
-        {
-            EventManager.TriggerEvent(EventsType.ActiveDeck);
         }
 
         public void OnDeckDescriptoinActive(DeckCard deckCard)
@@ -61,28 +60,23 @@ namespace Main.Buttons
             EventManager.TriggerEvent(EventsType.ActiveCardDescription, deckCard);
         }
 
-        public void OnSettingActive()
-        {
-            EventManager.TriggerEvent(EventsType.ActiveSetting);
-        }
+        /// <summary>
+        /// 인자값번째 상점 패널 이동
+        /// </summary>
+        /// <param name="iParam"></param>
         public void OnMoveShopPanel(int iParam)
         {
             EventManager.TriggerEvent(EventsType.MoveShopPn, iParam);
         }
-
+        /// <summary>
+        /// 인자값번째 메인 패널 이동 
+        /// </summary>
+        /// <param name="iParam"></param>
         public void OnMoveMainPanel(int iParam)
         {
             EventManager.TriggerEvent(EventsType.MoveMainPn, iParam);
             EventManager.TriggerEvent(EventsType.CloaseAllPn);
         }
-
-        [ContextMenu("s")]
-        public void Test()
-        {
-            EventManager.TriggerEvent(EventsType.SetOriginShopPn);
-        }
-
-
 
     }
 }

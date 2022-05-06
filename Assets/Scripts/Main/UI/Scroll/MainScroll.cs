@@ -45,7 +45,9 @@ namespace Main.Scroll
             if (_curPos == _targetPos)
             {
                 DeltaSlide(eventData.delta.y);
+                return; 
             }
+            Debug.Log("드래그끝,패널  옮겨짐");
             StressImage();
             EventManager.TriggerEvent(EventsType.SetOriginShopPn);
         }
