@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class StickerPackage : MonoBehaviour
 {
+    private List<string> StickerNameList = new List<string>();
     // Start is called before the first frame update
     void Start()
     {

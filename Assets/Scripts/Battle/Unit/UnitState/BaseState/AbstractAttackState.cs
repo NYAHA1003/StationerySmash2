@@ -62,6 +62,7 @@ namespace Battle.Units
 
 			//공격 애니메이션
 			Animation(eState.ATTACK);
+			_stateManager.Set_Wait(0.5f);
 
 			//공격 딜레이 초기화
 			_currentdelay = 0;

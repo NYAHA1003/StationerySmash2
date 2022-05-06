@@ -11,71 +11,224 @@ namespace Main.Deck
     public class DeckSettingComponent : MonoBehaviour
     {
         [SerializeField]
-        private UserDeckDataComponent userDeckData;
+        private SaveDataSO _saveDataSO = null;
         [SerializeField]
-        private GameObject cardPrefab;
+        private UserDeckDataComponent _userDeckData; //유저 데이터 컴포넌트
         [SerializeField]
-        private GameObject cardDescription;
+        private GameObject _cardPrefab; //카드 UI 프리펩
         [SerializeField]
-        private GameObject deckScroll;
+        private GameObject _haveDeckScroll; //보유 카드 스크롤
+        [SerializeField]
+        private GameObject _equipDeckScroll; //장착 카드 스크롤
 
-        public List<GameObject> deckCards = new List<GameObject>();
-        private void Awake()
-        {
-        }
+        private Transform _haveCardParent = null;
+        private Transform _equipCardParent = null;
+
+        public List<GameObject> _haveDeckCards = new List<GameObject>();
+        public List<GameObject> _equipDeckCards = new List<GameObject>();
+
+        [SerializeField]
+        private CardSaveDataSO _presetDataSO1 = null;
+        [SerializeField]
+        private CardSaveDataSO _presetDataSO2 = null;
+        [SerializeField]
+        private CardSaveDataSO _presetDataSO3 = null;
+
+        [SerializeField]
+        private Button _presetButton1 = null;
+        [SerializeField]
+        private Button _presetButton2 = null;
+        [SerializeField]
+        private Button _presetButton3 = null;
+
         private void Start()
         {
-            SetDeck();
+            _haveCardParent = _haveDeckScroll.transform.GetChild(0).GetChild(0);
+            _equipCardParent = _equipDeckScroll.transform.GetChild(0).GetChild(0);
+
+            UpdateHaveAndEquipDeck();
+
+            _presetButton1.onClick.AddListener(() => ChangePreset(0));
+            _presetButton2.onClick.AddListener(() => ChangePreset(1));
+            _presetButton3.onClick.AddListener(() => ChangePreset(2));
+
             EventManager.StartListening(EventsType.ActiveDeck, UpdateDeck);
+            EventManager.StartListening(EventsType.UpdateHaveAndEquipDeck, UpdateHaveAndEquipDeck);
+        }
+
+        /// <summary>
+        /// 보유 덱과 장착 덱을 새로고침한다
+        /// </summary>
+        public void UpdateHaveAndEquipDeck()
+        {
+            AllFalseEquipCard();
+            AllFalseHaveCard();
+            SetHaveDeck();
+            SetEquipDeck();
+        }
+
+        /// <summary>
+        /// 저장된 프리셋으로 변경
+        /// </summary>
+        public void ChangePreset(int index)
+		{
+            switch(index)
+			{
+                case 0:
+                    _saveDataSO.userSaveData._ingameSaveDatas = _presetDataSO1._ingameSaveDatas;
+                    break;
+                case 1:
+                    _saveDataSO.userSaveData._ingameSaveDatas = _presetDataSO2._ingameSaveDatas;
+                    break;
+                case 2:
+                    _saveDataSO.userSaveData._ingameSaveDatas = _presetDataSO3._ingameSaveDatas;
+                    break;
+            }
+
+            UpdateHaveAndEquipDeck();
         }
 
         /// <summary>
         /// 플레이어 덱에 카드 세팅 
         /// </summary>
-        [ContextMenu("SetDeck")]
-        public void SetDeck()
+        public void SetHaveDeck()
         {
-            userDeckData.SetCardData();
-            for (int i = 0; i < userDeckData.deckList.cardDatas.Count; i++)
+            _userDeckData.SetCardData();
+            for (int i = 0; i < _userDeckData._deckList.cardDatas.Count; i++)
             {
-                GameObject cardObj = CreateCard();
-                cardObj.GetComponent<DeckCard>().SetCard(userDeckData.deckList.cardDatas[i]);
-                cardObj.GetComponent<Button>().onClick.AddListener(() =>
+                GameObject cardObj = PoolHaveCard();
+                Button cardButton = cardObj.GetComponent<Button>();
+                cardObj.GetComponent<DeckCard>().SetCard(_userDeckData._deckList.cardDatas[i]);
+                cardButton.onClick.RemoveAllListeners();
+                cardButton.onClick.AddListener(() =>
                 {
                     EventManager.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
                     EventManager.TriggerEvent(EventsType.DeckSetting, ButtonType.cardDescription);
+                    
                 });
-                deckCards.Add(cardObj);
             }
         }
+
+        /// <summary>
+        /// 장착 카드 세팅
+        /// </summary>
+        public void SetEquipDeck()
+        {
+            _userDeckData.SetCardData();
+            for (int i = 0; i < _userDeckData._inGameDeckList.cardDatas.Count; i++)
+            {
+                GameObject cardObj = PoolEquipCard();
+                Button cardButton = cardObj.GetComponent<Button>();
+                cardObj.GetComponent<DeckCard>().SetCard(_userDeckData._inGameDeckList.cardDatas[i]);
+                cardButton.onClick.RemoveAllListeners();
+                cardButton.GetComponent<Button>().onClick.AddListener(() =>
+                {
+                    EventManager.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
+                    EventManager.TriggerEvent(EventsType.DeckSetting, ButtonType.cardDescription);
+                    
+                });
+            }
+        }
+
         /// <summary>
         /// 게임 실행중 덱 업데이트 (카드 추가)
         /// </summary>
         public void UpdateDeck() //나중에 카드 추가 기능만들 때 이벤트로 같이 넘겨줄거야 
         {
-            userDeckData.SetCardData();
-            for (int i = 0; i < deckCards.Count; i++)
+            _userDeckData.SetCardData();
+            for (int i = 0; i < _haveDeckCards.Count; i++)
             {
-                if (deckCards[i] == null) deckCards[i] = CreateCard();
-                deckCards[i].GetComponent<DeckCard>().SetCard(userDeckData.deckList.cardDatas[i]);
+                if (_haveDeckCards[i] == null)
+				{
+                    _haveDeckCards[i] = PoolHaveCard();
+				}
+                _haveDeckCards[i].GetComponent<DeckCard>().SetCard(_userDeckData._deckList.cardDatas[i]);
             }
         }
         /// <summary>
-        /// 덱에 카드 생성 
+        /// 보유덱에 사용할 카드 오브젝트 가져오기 
         /// </summary>
         /// <returns></returns>
-        public GameObject CreateCard()
+        public GameObject PoolHaveCard()
         {
-            GameObject cardObj = Instantiate(cardPrefab, deckScroll.transform.GetChild(0).GetChild(0), false);
+            GameObject cardObj = null;
+
+            int count = _haveCardParent.childCount;
+
+
+            for (int i = 0; i < count; i++)
+            {
+                if (!_haveCardParent.GetChild(i).gameObject.activeSelf)
+                {
+                    cardObj = _haveCardParent.GetChild(i).gameObject;
+                    break;
+                }
+            }
+
+            if(cardObj == null)
+            {
+                cardObj = Instantiate(_cardPrefab, _haveCardParent, false);
+                _haveDeckCards.Add(cardObj);
+            }
+
+            cardObj.SetActive(true);
+
+            return cardObj;
+        }
+        /// <summary>
+        /// 보유덱에 사용할 카드 오브젝트 가져오기 
+        /// </summary>
+        /// <returns></returns>
+        public GameObject PoolEquipCard()
+        {
+            GameObject cardObj = null;
+
+            int count = _equipCardParent.childCount;
+
+
+            for (int i = 0; i < count; i++)
+            {
+                if (!_equipCardParent.GetChild(i).gameObject.activeSelf)
+                {
+                    cardObj = _equipCardParent.GetChild(i).gameObject;
+                    break;
+                }
+            }
+
+            if (cardObj == null)
+            {
+                cardObj = Instantiate(_cardPrefab, _equipCardParent, false);
+                _equipDeckCards.Add(cardObj);
+            }
+
+            cardObj.SetActive(true);
+
             return cardObj;
         }
 
         /// <summary>
-        /// 카드 정보 패널 활성화
+        /// 보유덱에 있는 모든 카드 끄기
         /// </summary>
-        private void OnActiveCardInfoPn()
+        public void AllFalseHaveCard()
         {
-            cardDescription.SetActive(!cardDescription.activeSelf);
+            int count = _haveCardParent.childCount;
+
+            for (int i = 0; i < count; i++)
+            {
+                _haveCardParent.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+        /// <summary>
+        /// 장착덱에 있는 모든 카드 끄기
+        /// </summary>
+        public void AllFalseEquipCard()
+        {
+            int count = _equipCardParent.childCount;
+
+            for (int i = 0; i < count; i++)
+            {
+                _equipCardParent.GetChild(i).gameObject.SetActive(false);
+            }
         }
     }
 }

@@ -5,14 +5,19 @@ using Utill.Data;
 using Utill.Tool;
 using Battle.PCAbility;
 
-[System.Serializable]
-public class PencilCaseData
+namespace Utill.Data
 {
-    public int maxCard;
-    public float costSpeed;
-    public float throwGaugeSpeed;
-    public PencilCaseType pencilCaseType;
-    public AbstractPencilCaseAbility pencilState;
-    public CardData pencilCaseData;
-    public List<BadgeData> _badgeDatas;
+    [System.Serializable]
+    public class PencilCaseData
+    {
+        public int _maxCard;
+        public float _costSpeed;
+        public float _throwGaugeSpeed;
+        public SkinType _skinType;
+        public PencilCaseType _pencilCaseType;
+        public AbstractPencilCaseAbility _pencilState;
+        public CardData _pencilCaseData;
+        public List<BadgeData> _badgeDatas;
+    }
+
 }

@@ -49,7 +49,6 @@ namespace Battle
             _commandCard = cardCommand;
 
             updateAction += UpdateCameraScale;
-            updateAction += UpdateCameraPos;
 
             //관찰자를 등록한다
             _commandWinLose.AddObservers(this);
@@ -129,33 +128,20 @@ namespace Battle
         }
 
         /// <summary>
-        /// 카메라 위치 조정
+        /// 카메라를 지정한 곳으로 이동하게 함
         /// </summary>
-        public void UpdateCameraPos()
-        {
-            if (_isEffect)
-			{
-                return;
-			}
+        /// <param name="pos"></param>
+        /// <param name="size"></param>
+        /// <param name="duration"></param>
+        public void MovingCamera(Vector3 pos, float size, float duration)
+		{
+            pos.x = Mathf.Lerp(_camera.transform.position.x, pos.x, 0.95f);
+            pos.y += 0.1f;
+            pos.z = -10;
+            _camera.transform.DOMove(pos, duration).SetEase(Ease.OutExpo);
+            _camera.transform.DOScale(size, duration).SetEase(Ease.OutExpo);
+            DOTween.To(() => _camera.orthographicSize, x => _camera.orthographicSize = x, size, duration);
 
-            //카드를 클릭한 상태라면
-            if (_commandCard.IsSelectCard)
-            {
-                _isCameraMove = false;
-                return;
-            }
-
-            if (_isCameraMove)
-            {
-                if (_stageData.max_Range + 1f < _camera.transform.position.x)
-                {
-                    _camera.transform.DOMoveX(_stageData.max_Range, 0.1f);
-                }
-                if (-_stageData.max_Range - 1f > _camera.transform.position.x)
-                {
-                    _camera.transform.DOMoveX(-_stageData.max_Range, 0.1f);
-                }
-            }
         }
 
         /// <summary>
@@ -163,11 +149,18 @@ namespace Battle
         /// </summary>
         public void OnLeftMove()
         {
+            if (_isEffect)
+            {
+                return;
+            }
             if (_commandCard.IsSelectCard)
             {
                 return;
             }
-            _camera.transform.Translate(Vector3.left * _moveSpeed * Time.deltaTime);
+            if (!(_stageData.max_Range + 1f < _camera.transform.position.x))
+            {
+                _camera.transform.Translate(Vector3.left * _moveSpeed * Time.deltaTime);
+            }
         }
 
         /// <summary>
@@ -183,7 +176,11 @@ namespace Battle
             {
                 return;
             }
-            _camera.transform.Translate(Vector3.right * _moveSpeed * Time.deltaTime);
+
+            if (!(-_stageData.max_Range - 1f > _camera.transform.position.x))
+            {
+                _camera.transform.Translate(Vector3.right * _moveSpeed * Time.deltaTime);
+            }
         }
 
         /// <summary>
