@@ -28,9 +28,8 @@ namespace Main.Setting
         public static Dictionary<EffSoundType, AudioClip> _effectSoundDictionary = new Dictionary<EffSoundType, AudioClip>();
         public static Dictionary<BGMSoundType, AudioClip> _bgmSoundDictionary = new Dictionary<BGMSoundType, AudioClip>();
 
-        public async void Start()
+        public void Start()
         {
-            await AllLoadAssetAsync();
             CreateSoundSorces();
             PlayEffInput();
             PlayBgmInput();
@@ -44,7 +43,7 @@ namespace Main.Setting
         /// </summary>
         /// <param name="effSoundType"></param>
         /// <returns></returns>
-        public async Task EFFAssetAsync(EffSoundType effSoundType)
+        public static async Task EFFAssetAsync(EffSoundType effSoundType)
         {
             //데이터가 있는지 확인하고 딕셔너리에 추가
             if (!_effectSoundDictionary.TryGetValue(effSoundType, out var value))
@@ -63,7 +62,7 @@ namespace Main.Setting
         /// </summary>
         /// <param name="bgmSoundType"></param>
         /// <returns></returns>
-        public async Task BGMAssetAsync(BGMSoundType bgmSoundType)
+        public static async Task BGMAssetAsync(BGMSoundType bgmSoundType)
         {
             //데이터가 있는지 확인하고 딕셔너리에 추가
             if (!_bgmSoundDictionary.TryGetValue(bgmSoundType, out var value))
@@ -81,7 +80,7 @@ namespace Main.Setting
         /// 모든 데이터를 불러온다
         /// </summary> 
         /// <returns></returns>
-        public async Task AllLoadAssetAsync()
+        public static async Task AllLoadAssetAsync()
         {
             for (int i = 0; i < System.Enum.GetValues(typeof(EffSoundType)).Length; i++)
             {

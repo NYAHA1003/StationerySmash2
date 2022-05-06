@@ -5,8 +5,9 @@ using UnityEngine.SceneManagement;
 using Main.Setting;
 public class MainLoadingManager : LoadingManager
 {
-    protected override void Start()
+    protected async override void Start()
     {
+        await Sound.AllLoadAssetAsync();
         MainSceneLoad();
         base.Start();
     }
