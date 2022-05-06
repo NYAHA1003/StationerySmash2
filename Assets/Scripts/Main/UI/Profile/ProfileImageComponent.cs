@@ -14,7 +14,7 @@ public class ProfileImageComponent : MonoBehaviour, IUserData
 {
     [SerializeField]
     private Image _profileImage = null;
-
+    private ProfileType _profileType = ProfileType.ProNone;
     public void Awake()
     {
         SaveManager._instance.SaveData.AddObserver(this);
@@ -30,6 +30,12 @@ public class ProfileImageComponent : MonoBehaviour, IUserData
     /// </summary>
     public void SetProfileImage(ref UserSaveData userSaveData)
     {
+        //프로필 타입이 변경되지 않으면 실행하지 않는다
+        if(_profileType == userSaveData._currentProfileType)
+		{
+            return;
+		}
+
         //어드레서블로 이미지를 가져와 비동기적으로 프로필 이미지를 변경한다
         string name = System.Enum.GetName(typeof(ProfileType), userSaveData._currentProfileType);
 
