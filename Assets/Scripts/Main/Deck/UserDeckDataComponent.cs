@@ -29,7 +29,7 @@ namespace Main.Deck
         public void SetCardData()
         {
             //세이브 데이터의 유저 저장 데이터를 가져온다
-            _userSaveData = SaveManager._instance._saveData.userSaveData;
+            _userSaveData = SaveManager._instance.SaveData.userSaveData;
             SaveManager._instance.DeliverDataToObserver();
 
             //카드 데이터 초기화
