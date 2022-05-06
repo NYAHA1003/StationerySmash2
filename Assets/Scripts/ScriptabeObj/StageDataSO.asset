@@ -16,21 +16,30 @@ MonoBehaviour:
   - name: "\uC2A4\uD14C\uC774\uC9C01"
     max_Range: 3
     timeType: 0
-    timeValue: 300
+    timeValue: 10
   enemyPencilCase:
-    maxCard: 3
-    costSpeed: 100
-    pencilCaseType: 0
-    pencilCaseData:
-      cardType: 1
-      card_Name: "\uC801\uD544\uD1B5"
+    _maxCard: 0
+    _maxBadgeCount: 0
+    _costSpeed: 0
+    _throwGaugeSpeed: 0
+    _description: 
+    _pencilCaseType: 0
+    _pencilCaseData:
+      cardType: 0
+      card_Name: 
+      card_Description: 
       card_Cost: 0
-      card_Sprite: {fileID: 21300000, guid: b5418de72b5ba3f448beb725d2a12048, type: 3}
+      skinData:
+        _skinType: 0
+        _effectType: 0
+        _cardNamingType: 0
+      level: 0
       strategyData:
         starategyType: 0
+        starategyablityData: []
       unitData:
-        unit_Hp: 200
-        unit_Weight: 1000
+        unit_Hp: 0
+        unit_Weight: 0
         knockback: 0
         dir: 0
         accuracy: 0
@@ -39,12 +48,15 @@ MonoBehaviour:
         attackSpeed: 0
         range: 0
         colideData:
-          originpoints:
-          - {x: -0.2, y: 0.2}
-          - {x: 0.2, y: 0.2}
-          - {x: -0.2, y: -0.2}
-          - {x: 0.2, y: -0.2}
-          points: []
-        unitType: 1
-        atkType: 0
+          originpoints: []
+        stickerData:
+          _sprite: {fileID: 0}
+          _name: 
+          _decription: 
+          _onlyUnitType: 0
+          _stickerType: 0
+          _stickerLevel: 1
+        attackType: 0
+        unitType: 0
         unitablityData: []
+    _badgeDatas: []

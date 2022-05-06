@@ -86,7 +86,7 @@ namespace Battle
 			_commandEffect.SetInitialization();
 			_commandThrow.SetInitialization(ref _updateAction, _commandUnit, _commandCamera, CurrentStageData);
 			_commandAI.SetInitialization(CommandPencilCase, CommandUnit, ref _updateAction);
-			_commandTime.SetInitialization(ref _updateAction, CurrentStageData);
+			_commandTime.SetInitialization(ref _updateAction, CurrentStageData, _commandUnit, _commandCard, _commandCost);
 			_commandCost.SetInitialization(ref _updateAction, _commandPencilCase.PencilCaseDataMy._pencilCaseData);
 			_commandPause.SetInitialization();
 			_commandWinLose.SetInitialization();

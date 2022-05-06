@@ -137,11 +137,11 @@ namespace Battle
         /// </summary>
         public void ClearUnit()
         {
-            for (int i = 0; _playerUnitList.Count > 0;)
+            for (int i = 1; _playerUnitList.Count > 1;)
             {
                 _playerUnitList[i].Delete_Unit();
             }
-            for (int i = 0; _enemyUnitList.Count > 0;)
+            for (int i = 1; _enemyUnitList.Count > 1;)
             {
                 _enemyUnitList[i].Delete_Unit();
             }
