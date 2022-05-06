@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using Utill.Data;
 using Utill.Tool;
 using TMPro;
+using Main.Event;
 
 namespace Battle
 {
@@ -34,7 +35,7 @@ namespace Battle
         {
             updateAction += UpdateCost;
             SetCostSpeed(pencilCasePlayerData._costSpeed);
-            _costUpButton.onClick.AddListener(() => OnUpgradeCostGrade());
+            EventManager.StartListening(EventsType.CostUp, OnUpgradeCostGrade);
         }
 
 

@@ -42,10 +42,10 @@ namespace Battle
         /// <param name="losePanel"></param>
         public void SetInitialization()
         {
-            _winRetryButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadBattle());
-            _winBackHomeButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadMain());
-            _loseRetryButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadBattle());
-            _loseBackHomeButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadMain());
+            //_winRetryButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadBattle());
+            //_winBackHomeButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadMain());
+            //_loseRetryButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadBattle());
+            //_loseBackHomeButton.onClick.AddListener(() => _sceneLoadComponent.SceneLoadMain());
         }
 
         /// <summary>

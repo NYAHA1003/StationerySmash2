@@ -25,8 +25,12 @@
         //스테이지 부분
         ActiveChapterPn, //챕터 패널 활성화
 
-
-
+        // 배틀 부분 
+        CostUp, // 코스트 증가
+        PencilCaseAbility, // 필통 능력
+        Pause, // 일시 정지 
+        LoadMainScene, // 메인씬 로드 
+        LoadBattleScene, // 배틀씬 로드 
 
     }
 }

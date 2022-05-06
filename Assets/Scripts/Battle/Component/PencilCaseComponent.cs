@@ -7,6 +7,7 @@ using Utill.Data;
 using Utill.Tool;
 using Battle.Badge;
 using Battle.PCAbility;
+using Main.Event;
 
 namespace Battle
 {
@@ -77,7 +78,8 @@ namespace Battle
             SetEnemyBadgeAbility();
             RunBadgeAbility(_enemyBadges);
 
-            _pencilCaseAbilityButton.onClick.AddListener(() => OnPencilCaseAbility());
+            //_pencilCaseAbilityButton.onClick.AddListener(() => OnPencilCaseAbility());
+            EventManager.StartListening(EventsType.PencilCaseAbility, OnPencilCaseAbility);
         }
 
         /// <summary>
