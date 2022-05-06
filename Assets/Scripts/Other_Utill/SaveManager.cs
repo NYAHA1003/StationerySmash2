@@ -7,7 +7,19 @@ using Utill.Data;
 
 public class SaveManager : MonoSingleton<SaveManager>
 { 
-    public SaveDataSO _saveData;
+    public SaveDataSO SaveData
+	{
+        get
+		{
+            if(_saveData == null)
+			{
+                throw new System.Exception("세이브 매니저가 이상함");
+			}
+            return _saveData;
+		}
+	}
+    [SerializeField]
+    private SaveDataSO _saveData;
     private bool isLoadData = false;
     public bool IsLoadData
 	{
@@ -22,14 +34,14 @@ public class SaveManager : MonoSingleton<SaveManager>
         if(!_instance.isLoadData)
 		{
             isLoadData = true;
-            LoadData();
+            LoadJsonData();
 		}
 	}
 
 	/// <summary>
 	/// 저장된 Json 데이터를 불러오기
 	/// </summary>
-	public void LoadData()
+	public void LoadJsonData()
     {
         //json 파일 불러오기
         try
@@ -39,6 +51,7 @@ public class SaveManager : MonoSingleton<SaveManager>
 
             //유저데이터에 저장
             _saveData.userSaveData = JsonUtility.FromJson<UserSaveData>(path);
+            DeliverDataToObserver();
         }
         catch
         {
@@ -49,7 +62,7 @@ public class SaveManager : MonoSingleton<SaveManager>
     /// <summary>
     /// 유저 세이브 데이터를 Json화 시켜 저장한다
     /// </summary>
-    public void SaveData()
+    public void SaveJsonData()
     {
         //데이터를 json으로 변환
         string json = JsonUtility.ToJson(_saveData.userSaveData, true);
@@ -58,6 +71,14 @@ public class SaveManager : MonoSingleton<SaveManager>
         string fileName = "saveData";
         string path = Application.dataPath + "/" + fileName + ".json";
         File.WriteAllText(path, json);
+        DeliverDataToObserver();
+    }
+
+    /// <summary>
+    /// 모든 관찰자들에게 데이터 전달
+    /// </summary>
+    public void DeliverDataToObserver()
+    {
         _saveData.DeliverDataToObserver();
     }
 }

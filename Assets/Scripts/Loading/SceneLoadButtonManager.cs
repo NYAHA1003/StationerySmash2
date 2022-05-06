@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Utill.Load;
+using Main.Deck;
+
 public class SceneLoadButtonManager : MonoBehaviour
 {
     [SerializeField]
@@ -13,6 +15,8 @@ public class SceneLoadButtonManager : MonoBehaviour
     private AIDataSO aIDataSO;
     [SerializeField]
     private PencilCaseDataSO pencilCaseDataSO;
+
+
     // Start is called before the first frame update
     private void Awake()
     {

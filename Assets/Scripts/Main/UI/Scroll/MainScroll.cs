@@ -20,7 +20,7 @@ namespace Main.Scroll
         protected override void SettingAwake()
         {
             base.SettingAwake();
-            EventManager.StartListening(EventsType.MoveMainPn, OnMoveMainPanel);
+            EventManager.StartListening(EventsType.MoveMainPn,(x) => OnMoveMainPanel((int)x));
         }
         protected override void SettingStart()
         {
@@ -44,8 +44,13 @@ namespace Main.Scroll
             base.OnEndDrag(eventData);
             if (_curPos == _targetPos)
             {
-                DeltaSlide(eventData.delta.y);
+                if(DeltaSlide(eventData.delta.y) == true)
+                {
+                    StressImage(); 
+                }
+                return; 
             }
+            Debug.Log("드래그끝,패널  옮겨짐");
             StressImage();
             EventManager.TriggerEvent(EventsType.SetOriginShopPn);
         }
@@ -70,15 +75,15 @@ namespace Main.Scroll
         /// 상점,메인,스테이지창 중 한곳으로 이동하는 것 
         /// </summary>
         /// <param name="n">0=상점 1=메인 2=스테이지</param>
-        public void OnMoveMainPanel(object n)
+        public void OnMoveMainPanel(int n)
         {
-            if ((int)n < 0 || (int)n > Size - 1)
+            if (n < 0 || n > Size - 1)
             {
                 Debug.LogError("메인 패널 움직이는 범위 넘어감 0~SIZE-1 사이 값이 아님");
                 return;
             }
-            _targetIndex = Size - (int)n - 1;
-            _targetPos = _pos[(int)n];
+            _targetIndex = Size - n - 1;
+            _targetPos = _pos[n];
             StressImage();
         }
     }

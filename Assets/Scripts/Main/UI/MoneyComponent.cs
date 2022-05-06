@@ -8,13 +8,11 @@ using Main.Deck;
 public class MoneyComponent : MonoBehaviour, IUserData
 {
     [SerializeField]
-    private SaveDataSO _saveDataSO = null;
-    [SerializeField]
     private TextMeshProUGUI _moneyText = null;
 
-    public void Start()
+    public void Awake()
     {
-        _saveDataSO.AddObserver(this);
+        SaveManager._instance.SaveData.AddObserver(this);
     }
 
     public void Notify(ref UserSaveData userSaveData)

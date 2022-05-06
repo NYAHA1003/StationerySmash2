@@ -62,7 +62,8 @@ namespace Battle.Units
 	{
 		protected override void SetAttackData(ref AtkData atkData)
 		{
-			atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, EffAttackType.PCKill , _myUnit.SkinData._effectType, originValue);
+			base.SetAttackData(ref atkData);
+			atkData.Reset_Type(EffAttackType.PCKill);
 		}
 	}
 

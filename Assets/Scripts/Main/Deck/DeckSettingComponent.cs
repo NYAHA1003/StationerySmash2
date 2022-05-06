@@ -10,6 +10,12 @@ namespace Main.Deck
 {
     public class DeckSettingComponent : MonoBehaviour
     {
+
+        public List<GameObject> HaveDeckCards => _haveDeckCards;
+        public List<GameObject> EquipDeckCards => _equipDeckCards;
+        public List<GameObject> HavePencilCaseCards => _havePencilCaseCards;
+
+
         [SerializeField]
         private SaveDataSO _saveDataSO = null;
         [SerializeField]
@@ -17,15 +23,25 @@ namespace Main.Deck
         [SerializeField]
         private GameObject _cardPrefab; //카드 UI 프리펩
         [SerializeField]
+        private GameObject _pcCardPrefab; //필통 카드 UI 프리펩
+        [SerializeField]
         private GameObject _haveDeckScroll; //보유 카드 스크롤
         [SerializeField]
         private GameObject _equipDeckScroll; //장착 카드 스크롤
+        [SerializeField]
+        private GameObject _havePCDeckScroll; //보유 필통 카드 스크롤
+        [SerializeField]
+        private GameObject _equipPCDeckScroll; //장착 필통 카드 스크롤
+        [SerializeField]
+        private GameObject _equipPencilCaseCards = null; //장착된 필통
 
-        private Transform _haveCardParent = null;
-        private Transform _equipCardParent = null;
+        private Transform _haveCardParent = null; // 스크롤 content
+        private Transform _equipCardParent = null; // 스크롤 content
+        private Transform _havePCCardParent = null; // 스크롤 content 
 
-        public List<GameObject> _haveDeckCards = new List<GameObject>();
-        public List<GameObject> _equipDeckCards = new List<GameObject>();
+        private List<GameObject> _haveDeckCards = new List<GameObject>();
+        private List<GameObject> _equipDeckCards = new List<GameObject>();
+        private List<GameObject> _havePencilCaseCards = new List<GameObject>();
 
         [SerializeField]
         private CardSaveDataSO _presetDataSO1 = null;
@@ -41,19 +57,25 @@ namespace Main.Deck
         [SerializeField]
         private Button _presetButton3 = null;
 
+        private bool _isActivePC; //필통 스크롤이 켜져있는지
+
         private void Start()
         {
             _haveCardParent = _haveDeckScroll.transform.GetChild(0).GetChild(0);
             _equipCardParent = _equipDeckScroll.transform.GetChild(0).GetChild(0);
+            _havePCCardParent = _havePCDeckScroll.transform.GetChild(0).GetChild(0);
 
             UpdateHaveAndEquipDeck();
+            UpdateHaveAndEquipPCDeck(); 
 
             _presetButton1.onClick.AddListener(() => ChangePreset(0));
             _presetButton2.onClick.AddListener(() => ChangePreset(1));
             _presetButton3.onClick.AddListener(() => ChangePreset(2));
 
             EventManager.StartListening(EventsType.ActiveDeck, UpdateDeck);
+            EventManager.StartListening(EventsType.ChangePCAndDeck, OnChangePencilAndCards);
             EventManager.StartListening(EventsType.UpdateHaveAndEquipDeck, UpdateHaveAndEquipDeck);
+            EventManager.StartListening(EventsType.UpdateHaveAndEquipPCDeck, UpdateHaveAndEquipPCDeck);
         }
 
         /// <summary>
@@ -65,6 +87,29 @@ namespace Main.Deck
             AllFalseHaveCard();
             SetHaveDeck();
             SetEquipDeck();
+        }
+
+        /// <summary>
+        /// 카드 덱과 필통 덱을 전환한다
+        /// </summary>
+        public void OnChangePencilAndCards()
+		{
+            _isActivePC = !_isActivePC;
+
+            _haveDeckScroll.SetActive(!_isActivePC);
+            _equipDeckScroll.SetActive(!_isActivePC);
+
+            _havePCDeckScroll.SetActive(_isActivePC);
+            _equipPCDeckScroll.SetActive(_isActivePC);
+        }
+
+        /// <summary>
+        /// 보유 필통 덱과 장착 필통 덱을 새로고침한다
+        /// </summary>
+        public void UpdateHaveAndEquipPCDeck()
+        {
+            AllFalseHavePCCard();
+            SetHavePCDeck(); 
         }
 
         /// <summary>
@@ -89,7 +134,7 @@ namespace Main.Deck
         }
 
         /// <summary>
-        /// 플레이어 덱에 카드 세팅 
+        /// 보유 덱에 카드 세팅 
         /// </summary>
         public void SetHaveDeck()
         {
@@ -108,7 +153,7 @@ namespace Main.Deck
                 });
             }
         }
-
+            
         /// <summary>
         /// 장착 카드 세팅
         /// </summary>
@@ -126,6 +171,27 @@ namespace Main.Deck
                     EventManager.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
                     EventManager.TriggerEvent(EventsType.DeckSetting, ButtonType.cardDescription);
                     
+                });
+            }
+        }
+
+        /// <summary>
+        /// 보유 필통 덱에 카드 세팅 
+        /// </summary>
+        public void SetHavePCDeck()
+        {
+            _userDeckData.SetPencilCaseList();
+            for (int i = 0; i < _userDeckData._havePCDataSO._pencilCaseDataList.Count; i++)
+            {
+                GameObject cardObj = PoolHavePCCard();
+                Button cardButton = cardObj.GetComponent<Button>();
+                cardObj.GetComponent<PencilCaseCard>().SetPencilCaseData(_userDeckData._havePCDataSO._pencilCaseDataList[i]);
+                cardButton.onClick.RemoveAllListeners();
+                cardButton.onClick.AddListener(() =>
+                {
+                   // EventManager.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
+                   // EventManager.TriggerEvent(EventsType.DeckSetting, ButtonType.cardDescription);
+
                 });
             }
         }
@@ -176,7 +242,7 @@ namespace Main.Deck
             return cardObj;
         }
         /// <summary>
-        /// 보유덱에 사용할 카드 오브젝트 가져오기 
+        /// 장착덱에 사용할 카드 오브젝트 가져오기 
         /// </summary>
         /// <returns></returns>
         public GameObject PoolEquipCard()
@@ -206,6 +272,38 @@ namespace Main.Deck
             return cardObj;
         }
 
+
+        /// <summary>
+        /// 보유 필통덱에 사용할 필통카드 오브젝트 가져오기 
+        /// </summary>
+        /// <returns></returns>
+        public GameObject PoolHavePCCard()
+        {
+            GameObject pcCardObj = null;
+
+            int count = _havePCCardParent.childCount;
+
+
+            for (int i = 0; i < count; i++)
+            {
+                if (!_havePCCardParent.GetChild(i).gameObject.activeSelf)
+                {
+                    pcCardObj = _havePCCardParent.GetChild(i).gameObject;
+                    break;
+                }
+            }
+
+            if (pcCardObj == null)
+            {
+                pcCardObj = Instantiate(_pcCardPrefab, _havePCCardParent, false);
+                _havePencilCaseCards.Add(pcCardObj);
+            }
+
+            pcCardObj.SetActive(true);
+
+            return pcCardObj;
+        }
+
         /// <summary>
         /// 보유덱에 있는 모든 카드 끄기
         /// </summary>
@@ -228,6 +326,19 @@ namespace Main.Deck
             for (int i = 0; i < count; i++)
             {
                 _equipCardParent.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+
+        /// <summary>
+        /// 보유덱에 있는 모든 필통 카드 끄기
+        /// </summary>
+        public void AllFalseHavePCCard()
+        {
+            int count = _havePCCardParent.childCount;
+
+            for (int i = 0; i < count; i++)
+            {
+                _havePCCardParent.GetChild(i).gameObject.SetActive(false);
             }
         }
     }
