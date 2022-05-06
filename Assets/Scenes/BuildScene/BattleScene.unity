@@ -327,7 +327,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8702d6a897b0864ead3d243908ed2b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventTypes: 13000000
+  eventTypes: 30010000
 --- !u!1 &99729027
 GameObject:
   m_ObjectHideFlags: 0
@@ -843,7 +843,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8702d6a897b0864ead3d243908ed2b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventTypes: 12000000
+  eventTypes: 2f010000
 --- !u!1 &328308594
 GameObject:
   m_ObjectHideFlags: 0
@@ -1083,7 +1083,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8702d6a897b0864ead3d243908ed2b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventTypes: 0f000000
+  eventTypes: 2c010000
 --- !u!1 &367118908
 GameObject:
   m_ObjectHideFlags: 0
@@ -1441,7 +1441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8702d6a897b0864ead3d243908ed2b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventTypes: 12000000
+  eventTypes: 2f010000
 --- !u!1 &459747733
 GameObject:
   m_ObjectHideFlags: 0
@@ -2794,7 +2794,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8702d6a897b0864ead3d243908ed2b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventTypes: 13000000
+  eventTypes: 30010000
 --- !u!114 &926530871 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 587420503430284083, guid: 296382ab7a2ac1f4c8e6131c0c520578, type: 3}
@@ -3074,7 +3074,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8702d6a897b0864ead3d243908ed2b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventTypes: 12000000
+  eventTypes: 2f010000
 --- !u!1 &1069723927
 GameObject:
   m_ObjectHideFlags: 0
@@ -3594,7 +3594,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8702d6a897b0864ead3d243908ed2b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventTypes: 13000000
+  eventTypes: 2f010000
 --- !u!1 &1157790892
 GameObject:
   m_ObjectHideFlags: 0
@@ -4153,6 +4153,7 @@ GameObject:
   - component: {fileID: 1259118625}
   - component: {fileID: 1259118624}
   - component: {fileID: 1259118623}
+  - component: {fileID: 1259118626}
   m_Layer: 5
   m_Name: PencilCaseButton
   m_TagString: Untagged
@@ -4262,6 +4263,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1259118621}
   m_CullTransparentMesh: 1
+--- !u!114 &1259118626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259118621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8702d6a897b0864ead3d243908ed2b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventTypes: 2d010000
 --- !u!1001 &1346881227
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4713,7 +4727,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8702d6a897b0864ead3d243908ed2b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventTypes: 11000000
+  eventTypes: 2e010000
 --- !u!1 &1408280050
 GameObject:
   m_ObjectHideFlags: 0
@@ -6185,7 +6199,6 @@ MonoBehaviour:
     _costSpeed: 200
     _costDelay: 0
     _costText: {fileID: 208719802}
-    _costUpButton: {fileID: 338393844}
   _commandPencilCase:
     _playerPencilCase: {fileID: 381134270}
     _enemyPencilCase: {fileID: 926530871}
@@ -6193,22 +6206,12 @@ MonoBehaviour:
   _commandPause:
     _pauseUI: {fileID: 1476667448}
     _pauseCanvas: {fileID: 1461045864}
-    _puaseButton: {fileID: 1722391929}
-    _puaseBackgroundButton: {fileID: 1394243837}
-    _retryButton: {fileID: 1152064869}
-    _backhomeButton: {fileID: 944991235}
-    _sceneLoadComponent: {fileID: 1615569218}
   _commandWinLose:
     _winLoseCanvas: {fileID: 1206540032}
     _winPanel: {fileID: 1127670285}
     _losePanel: {fileID: 367118909}
     _winText: {fileID: 405313986}
     _loseText: {fileID: 1437500680}
-    _loseRetryButton: {fileID: 45678500}
-    _loseBackHomeButton: {fileID: 411735907}
-    _winRetryButton: {fileID: 884655214}
-    _winBackHomeButton: {fileID: 322093680}
-    _sceneLoadComponent: {fileID: 1615569218}
   _introComponent:
     _countText: {fileID: 99729029}
     _playerPencilCase: {fileID: 1179323815}
@@ -6729,7 +6732,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8702d6a897b0864ead3d243908ed2b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventTypes: 11000000
+  eventTypes: 2e010000
 --- !u!1 &1788391717
 GameObject:
   m_ObjectHideFlags: 0
