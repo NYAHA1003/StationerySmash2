@@ -7,7 +7,7 @@ using Utill.Data;
 
 namespace Main.Deck
 {
-    public class UserDeckDataComponent : MonoBehaviour
+    public class UserDeckDataComponent : MonoBehaviour, IUserData
     {
         //카드 관련
         public CardDeckSO _standardcardDeck; //기준 카드 데이터 
@@ -23,15 +23,25 @@ namespace Main.Deck
 
         private UserSaveData _userSaveData; //유저 데이터
 
+        private void Awake()
+		{
+            SaveManager._instance.SaveData.AddObserver(this);
+		}
+
+        public void Notify(ref UserSaveData userSaveData)
+        {
+            SetCardData();
+            SetPencilCaseData();
+        }
+
         /// <summary>
         /// 카드덱 데이터를 세팅해줍니다 
         /// </summary>
         public void SetCardData()
         {
             //세이브 데이터의 유저 저장 데이터를 가져온다
-            _userSaveData = SaveManager._instance.SaveData.userSaveData;
-            SaveManager._instance.DeliverDataToObserver();
-
+            _userSaveData ??= SaveManager._instance.SaveData.userSaveData;
+         
             //카드 데이터 초기화
             SetDeckCardList();
             SetIngameCardList();
@@ -58,6 +68,17 @@ namespace Main.Deck
             }
         }
 
+        /// <summary>
+        /// 필통 데이터 설정
+        /// </summary>
+        public void SetPencilCaseData()
+        {
+            //세이브 데이터의 유저 저장 데이터를 가져온다
+            _userSaveData ??= SaveManager._instance.SaveData.userSaveData;
+
+            SetPencilCaseList();
+            SetInGamePencilCase(_havePCDataSO._pencilCaseDataList.Find(x => x._pencilCaseType == _userSaveData._currentPencilCaseType));
+        }
 
         /// <summary>
         /// 보유 필통 설정
@@ -74,9 +95,7 @@ namespace Main.Deck
 
                 if (pcData != null)
                 {
-                    //세이브데이터의 레벨만큼 수치를 변경하고 새로운 카드데이터로 만들어 받아 덱리스트에 추가
                     _havePCDataSO._pencilCaseDataList.Add(pcData);
-                    //_deckList.cardDatas.Add(cardDataobj.DeepCopy(saveDataobj._level, saveDataobj._skinType));
                 }
             }
         }
@@ -167,5 +186,5 @@ namespace Main.Deck
             }
             return false;
         }
-    }
+	}
 }

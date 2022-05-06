@@ -8,7 +8,7 @@ using Main.Event;
 
 namespace Main.Deck
 {
-    public class DeckSettingComponent : MonoBehaviour
+    public class DeckSettingComponent : MonoBehaviour, IUserData
     {
 
         public List<GameObject> HaveDeckCards => _haveDeckCards;
@@ -59,6 +59,11 @@ namespace Main.Deck
 
         private bool _isActivePC; //필통 스크롤이 켜져있는지
 
+        private void Awake()
+        {
+            SaveManager._instance.SaveData.AddObserver(this);
+        }
+
         private void Start()
         {
             _haveCardParent = _haveDeckScroll.transform.GetChild(0).GetChild(0);
@@ -77,6 +82,8 @@ namespace Main.Deck
             EventManager.StartListening(EventsType.UpdateHaveAndEquipDeck, UpdateHaveAndEquipDeck);
             EventManager.StartListening(EventsType.UpdateHaveAndEquipPCDeck, UpdateHaveAndEquipPCDeck);
         }
+
+        
 
         /// <summary>
         /// 보유 덱과 장착 덱을 새로고침한다
@@ -102,6 +109,11 @@ namespace Main.Deck
             _havePCDeckScroll.SetActive(_isActivePC);
             _equipPCDeckScroll.SetActive(_isActivePC);
         }
+        public void Notify(ref UserSaveData userSaveData)
+        {
+            UpdateHaveAndEquipDeck();
+            UpdateHaveAndEquipPCDeck();
+        }
 
         /// <summary>
         /// 보유 필통 덱과 장착 필통 덱을 새로고침한다
@@ -121,17 +133,23 @@ namespace Main.Deck
 			{
                 case 0:
                     _saveDataSO.userSaveData._ingameSaveDatas = _presetDataSO1._ingameSaveDatas;
-                    _saveDataSO.
+                    _saveDataSO.userSaveData._currentPencilCaseType = _presetDataSO1._pencilCaseData._pencilCaseType;
+                    _userDeckData.SetInGamePencilCase(_presetDataSO1._pencilCaseData);
                     break;
                 case 1:
                     _saveDataSO.userSaveData._ingameSaveDatas = _presetDataSO2._ingameSaveDatas;
+                    _saveDataSO.userSaveData._currentPencilCaseType = _presetDataSO2._pencilCaseData._pencilCaseType;
+                    _userDeckData.SetInGamePencilCase(_presetDataSO2._pencilCaseData);
                     break;
                 case 2:
                     _saveDataSO.userSaveData._ingameSaveDatas = _presetDataSO3._ingameSaveDatas;
+                    _saveDataSO.userSaveData._currentPencilCaseType = _presetDataSO3._pencilCaseData._pencilCaseType;
+                    _userDeckData.SetInGamePencilCase(_presetDataSO3._pencilCaseData);
                     break;
             }
 
             UpdateHaveAndEquipDeck();
+            UpdateHaveAndEquipPCDeck();
         }
 
         /// <summary>
@@ -181,7 +199,7 @@ namespace Main.Deck
         /// </summary>
         public void SetHavePCDeck()
         {
-            _userDeckData.SetPencilCaseList();
+            _userDeckData.SetPencilCaseData();
             for (int i = 0; i < _userDeckData._havePCDataSO._pencilCaseDataList.Count; i++)
             {
                 GameObject cardObj = PoolHavePCCard();
@@ -342,5 +360,6 @@ namespace Main.Deck
                 _havePCCardParent.GetChild(i).gameObject.SetActive(false);
             }
         }
-    }
+
+	}
 }

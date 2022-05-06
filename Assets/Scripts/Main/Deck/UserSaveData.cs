@@ -13,6 +13,8 @@ namespace Main.Deck
         public List<CardSaveData> _ingameSaveDatas = new List<CardSaveData>();    //인게임덱 카드 데이터 저장
         public List<SkinType> _haveSkinList = new List<SkinType>();    //가지고 있는 스킨
         public List<PencilCaseType> _havePencilCaseList = new List<PencilCaseType>();    //가지고 있는 필통
+        public PencilCaseType _currentPencilCaseType = PencilCaseType.Normal; // 현재 착용한 필통
+        public List<BadgeSaveData> _badgeSaveDatas = new List<BadgeSaveData>();
         public ProfileType _currentProfileType = ProfileType.ProNone;    //현재 프로필
         public List<ProfileType> _haveProfileList = new List<ProfileType>();    //가지고 있는 프로필 목록
         public List<MaterialData> _materialDatas = new List<MaterialData>();    //가지고 있는 재료 목록
@@ -54,4 +56,11 @@ namespace Main.Deck
             return cardSaveData;
 		}
     }
+
+    [System.Serializable]
+    public class BadgeSaveData
+	{
+        public int _level;
+        public BadgeType _BadgeType;
+	}
 }
