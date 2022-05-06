@@ -14,6 +14,7 @@ namespace Utill.Data
 		stage,
 		credit,
 		chapter,
+		profile,
 		cardDescription,
 		
 	}

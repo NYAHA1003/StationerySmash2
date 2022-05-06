@@ -32,7 +32,8 @@ namespace Main.Buttons
 		private ActiveCommand collectionButtonCommand;
 		private ActiveCommand skinButtonCommand;
 		private ActiveCommand stageButtonCommand;
-		private ActiveCommand chapterButtonCommand; 
+		private ActiveCommand chapterButtonCommand;
+		private ActiveCommand profileButtonCommand;
 		private ActiveCommand cardDescriptionButtonCommand;
 
 		private int unSetCount = 1; //이 스크립트가 아닌 다른 스크립트에서 버튼 생성및 함수등록해준 커맨드수
