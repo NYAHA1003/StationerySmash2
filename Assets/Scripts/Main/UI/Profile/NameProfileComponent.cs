@@ -7,27 +7,25 @@ using DG.Tweening;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
 using Main.Deck;
-public class NameProfile : MonoBehaviour, IUserData
+public class NameProfileComponent : MonoBehaviour, IUserData
 {
-    [SerializeField]
-    private SaveDataSO _saveDataSO = null;
     [SerializeField]
     private TextMeshProUGUI _nameText = null;
 
-    public void Start()
+    public void Awake()
     {
-        _saveDataSO.AddObserver(this);
+        SaveManager._instance.SaveData.AddObserver(this);
     }
 
     public void Notify(ref UserSaveData userSaveData)
     {
-        SetMoneyText(ref userSaveData);
+        SetNameText(ref userSaveData);
     }
 
     /// <summary>
-    /// 돈 텍스트 값 수정
+    /// 이름 텍스트 값 수정
     /// </summary>
-    public void SetMoneyText(ref UserSaveData userSaveData)
+    public void SetNameText(ref UserSaveData userSaveData)
     {
         _nameText.text = userSaveData._name;
     }

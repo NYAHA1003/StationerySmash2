@@ -4,11 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.AddressableAssets;
 using Main.Deck;
-public class MoneyComponent : MonoBehaviour, IUserData
+
+public class ExpComponent : MonoBehaviour, IUserData
 {
     [SerializeField]
-    private TextMeshProUGUI _moneyText = null;
+    private Image _expImage = null;
 
     public void Awake()
     {
@@ -17,15 +20,14 @@ public class MoneyComponent : MonoBehaviour, IUserData
 
     public void Notify(ref UserSaveData userSaveData)
     {
-        SetMoneyText(ref userSaveData);
+        SetExpBar(ref userSaveData);
     }
 
     /// <summary>
-    /// 돈 텍스트 값 수정
+    /// EXP바 수정
     /// </summary>
-    public void SetMoneyText(ref UserSaveData userSaveData)
+    public void SetExpBar(ref UserSaveData userSaveData)
     {
-        _moneyText.text = userSaveData._money.ToString();
+        _expImage.fillAmount = userSaveData._nowExp / (userSaveData._level * 100); 
     }
-
 }

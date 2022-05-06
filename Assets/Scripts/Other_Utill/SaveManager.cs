@@ -7,7 +7,18 @@ using Utill.Data;
 
 public class SaveManager : MonoSingleton<SaveManager>
 { 
-    public SaveDataSO _saveData;
+    public SaveDataSO SaveData
+	{
+        get
+		{
+            if(_saveData == null)
+			{
+                throw new System.Exception("세이브 매니저가 이상함");
+			}
+            return _saveData;
+		}
+	}
+    private SaveDataSO _saveData;
     private bool isLoadData = false;
     public bool IsLoadData
 	{
@@ -22,14 +33,14 @@ public class SaveManager : MonoSingleton<SaveManager>
         if(!_instance.isLoadData)
 		{
             isLoadData = true;
-            LoadData();
+            LoadJsonData();
 		}
 	}
 
 	/// <summary>
 	/// 저장된 Json 데이터를 불러오기
 	/// </summary>
-	public void LoadData()
+	public void LoadJsonData()
     {
         //json 파일 불러오기
         try
@@ -50,7 +61,7 @@ public class SaveManager : MonoSingleton<SaveManager>
     /// <summary>
     /// 유저 세이브 데이터를 Json화 시켜 저장한다
     /// </summary>
-    public void SaveData()
+    public void SaveJsonData()
     {
         //데이터를 json으로 변환
         string json = JsonUtility.ToJson(_saveData.userSaveData, true);
