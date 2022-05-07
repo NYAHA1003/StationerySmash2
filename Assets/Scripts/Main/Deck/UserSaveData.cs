@@ -37,8 +37,8 @@ namespace Main.Deck
         public int _level = 0;
         public int _count = 0;
         public CardType _cardType = CardType.Execute;
-        public SkinType _skinType = SkinType.SpriteNone;
         public CardNamingType _cardNamingType = CardNamingType.None;
+        public SkinType _skinType = SkinType.SpriteNone;
         public StarategyType _strategicType = StarategyType.None;
         public UnitType _unitType = UnitType.None;
         public StickerType stickerType = StickerType.None;
@@ -49,8 +49,8 @@ namespace Main.Deck
             cardSaveData._level = cardData.level;
             cardSaveData._count = 0;
             cardSaveData._cardType = cardData.cardType;
+            cardSaveData._cardNamingType = cardData._cardNamingType;
             cardSaveData._skinType = cardData.skinData._skinType;
-            cardSaveData._cardNamingType = cardData.skinData._cardNamingType;
             cardSaveData._unitType = cardData.unitData.unitType;
             cardSaveData._strategicType = cardData.strategyData.starategyType;
             cardSaveData.stickerType = cardData.unitData.stickerData._stickerType;

@@ -10,6 +10,10 @@ using Main.Deck;
 [System.Serializable]
 public class SetSkinComponent : MonoBehaviour
 {
+    //인스펙터 참조변수
+    [SerializeField]
+    private SkinListSO _skinListSO = null;
+
     //프로퍼티 
     public bool IsAllSetSkin => _isAllSetSkin;
     
@@ -22,18 +26,24 @@ public class SetSkinComponent : MonoBehaviour
         SetSkinAll();
     }
 
-
-
     /// <summary>
     /// 모든 스프라이트를 불러온다
     /// </summary>
     private async void SetSkinAll()
     {
-        var skinTypes = System.Enum.GetValues(typeof(SkinType));
-        int skinTypeCount = skinTypes.Length;
-        for (int i = 0; i < skinTypeCount; i++)
+        int cardTypeCount = _skinListSO._cardNamingSkins.Count;
+        
+        for (int i = 0; i < cardTypeCount; i++)
         {
-            await SkinData.SetSkinStatic((SkinType)skinTypes.GetValue(i));
+            CardNamingSkins cardNamingSkins = _skinListSO._cardNamingSkins[i];
+            int skinCount = cardNamingSkins._skinDatas.Count;
+            
+            for(int j = 0; j < skinCount; j++)
+			{
+                SkinData skinData = cardNamingSkins._skinDatas[j];
+                skinData.AddSkinDataIntCardDictionary(cardNamingSkins._cardNamingType);
+                await SkinData.SetSkinStaticAsync(skinData._skinType);
+			}
         }
 
         _isAllSetSkin = true;

@@ -19,9 +19,9 @@ namespace Main.Card
         /// 스킨 이미지 설정
         /// </summary>
         /// <param name="skinData"></param>
-        public void SetButtonImages(SkinData skinData)
+        public void SetButtonImages(SkinData skinData, CardNamingType cardNamingType)
         {
-            _skinNameText.text = skinData._cardNamingType.ToString();
+            _skinNameText.text = cardNamingType.ToString();
             _skinImage.sprite = SkinData.GetSkin(skinData._skinType);
         }
     }

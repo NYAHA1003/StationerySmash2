@@ -88,8 +88,8 @@ namespace Main.Deck
             for (int i = 0; i < count; i++)
             {
                 CardSaveData saveDataobj = _userSaveData._unitSaveDatas[i];
-                //세가지 타입이 세이브데이터와 모두 같은 기준 데이터 찾기
-                CardData cardDataobj = _standardcardDeck.cardDatas.Find(x => x.skinData._cardNamingType == saveDataobj._cardNamingType);
+                //같은 카드 타입 찾기
+                CardData cardDataobj = _standardcardDeck.cardDatas.Find(x => x._cardNamingType == saveDataobj._cardNamingType);
 
                 if (cardDataobj != null)
                 {
@@ -149,7 +149,7 @@ namespace Main.Deck
             {
                 CardSaveData saveDataobj = _userSaveData._ingameSaveDatas[i];
                 //세가지 타입이 세이브데이터와 모두 같은 기준 데이터 찾기
-                CardData cardDataobj = _deckList.cardDatas.Find(x => x.skinData._cardNamingType == saveDataobj._cardNamingType);
+                CardData cardDataobj = _deckList.cardDatas.Find(x => x._cardNamingType == saveDataobj._cardNamingType);
 
                 if (cardDataobj != null)
                 {
@@ -175,7 +175,7 @@ namespace Main.Deck
         /// </summary>
         public void RemoveCardInDeck(CardNamingType cardNamingType)
         {
-            _inGameDeckList.cardDatas.RemoveAt(_inGameDeckList.cardDatas.FindIndex(x => x.skinData._cardNamingType == cardNamingType));
+            _inGameDeckList.cardDatas.RemoveAt(_inGameDeckList.cardDatas.FindIndex(x => x._cardNamingType == cardNamingType));
             _userSaveData._ingameSaveDatas.RemoveAt(_userSaveData._ingameSaveDatas.FindIndex(x => x._cardNamingType == cardNamingType));
         }
 
@@ -211,7 +211,7 @@ namespace Main.Deck
         /// <returns></returns>
         public bool ReturnAlreadyEquipCard(CardNamingType cardNamingType)
 		{
-            if(_inGameDeckList.cardDatas.Find(x => x.skinData._cardNamingType == cardNamingType) != null)
+            if(_inGameDeckList.cardDatas.Find(x => x._cardNamingType == cardNamingType) != null)
 			{
                 return true;
             }

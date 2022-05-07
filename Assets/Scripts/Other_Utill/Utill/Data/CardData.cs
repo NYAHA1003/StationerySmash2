@@ -10,6 +10,7 @@ using Battle.Starategy;
 [System.Serializable]
 public class CardData
 {
+    public CardNamingType _cardNamingType;
     public CardType cardType;
     public string card_Name;
     public string card_Description;
@@ -46,7 +47,6 @@ public class CardData
             {       
                 _skinType = skinType,
                 _effectType = this.skinData._effectType,
-                _cardNamingType = this.skinData._cardNamingType,
             },
             strategyData = new StarategyData
             {
