@@ -221,10 +221,6 @@ public class UnitSticker
         {
             return false;
         }
-        if(_stickerData._onlyUnitType != _unitData.unitType && _stickerData._onlyUnitType != UnitType.None)
-		{
-            return false;
-		}
         return true;
     }
 }
