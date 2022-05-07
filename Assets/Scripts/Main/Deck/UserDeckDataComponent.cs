@@ -213,6 +213,25 @@ namespace Main.Deck
 				_userSaveData._ingameSaveDatas.Add(CardSaveData.CopyDataToCardData(cardData));
 			}
 		}
+
+		/// <summary>
+		/// 카드 데이터를 새로고침한다
+		/// </summary>
+		/// <param name="cardData"></param>
+		public void ChangeCardInSaveData(CardData cardData)
+		{
+			CardSaveData cardSaveData = _userSaveData._ingameSaveDatas.Find(x => x._cardNamingType == cardData._cardNamingType);
+			CardSaveData changeSaveData = CardSaveData.CopyDataToCardData(cardData);
+			cardSaveData._unitType = changeSaveData._unitType;
+			cardSaveData._strategicType = changeSaveData._strategicType;
+			cardSaveData._skinType = changeSaveData._skinType;
+			cardSaveData._level = changeSaveData._level;
+			cardSaveData._count = changeSaveData._count;
+			cardSaveData._cardType = changeSaveData._cardType;
+			cardSaveData._cardNamingType = changeSaveData._cardNamingType;
+			cardSaveData.stickerType = changeSaveData.stickerType;
+		}
+
 		/// <summary>
 		/// 덱에 카드를 해제한다
 		/// </summary>
