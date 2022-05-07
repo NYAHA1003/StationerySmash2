@@ -57,6 +57,8 @@ namespace Main.Card
 		private GameObject _sktickerButtonPrefeb = null;
 		[SerializeField]
 		private Transform _stickerButtonParent = null;
+		[SerializeField]
+		private StickerDataSO _stickerDataSO = null;
 
 
 		//스킨창 
@@ -205,19 +207,32 @@ namespace Main.Card
 			_selectCardData = cardData;
 
 			//선택한 유닛의 스킨 리스트 가져오기
-			List<SkinData> skinList = SkinData.GetSkinDataList(_selectCardData._cardNamingType);
+			List<StickerData> commonStickerList = _stickerDataSO._stickerDataLists.Find(x => x._onlyUnitType == UnitType.None)._stickerDatas;
+			List<StickerData> onlyUnitStickerList = _stickerDataSO._stickerDataLists.Find(x => x._onlyUnitType == cardData.unitData.unitType)._stickerDatas;
 
-			//모든 스킨 버튼 끄기
-			for (int i = 0; i < _skinButtonParent.childCount; i++)
+			int commonCount = commonStickerList.Count;
+			int onlyCount = onlyUnitStickerList.Count;
+
+			//모든 스티커 버튼 끄기
+			for (int i = 0; i < _stickerButtonParent.childCount; i++)
 			{
-				_skinButtonParent.GetChild(i).gameObject.SetActive(false);
+				_stickerButtonParent.GetChild(i).gameObject.SetActive(false);
 			}
-
-			//스킨 버튼들 생성
-			for (int i = 0; i < skinList.Count; i++)
+			//공용 스티커 버튼들 생성
+			for (int i = 0; i < commonCount + onlyCount; i++)
 			{
 				int j = i;
-				SkinData skinData = skinList[j];
+
+				if(j >= commonCount)
+				{
+					//전용 유닛 스티커 데이터
+					StickerData stickerData = onlyUnitStickerList[j];
+				}
+				else
+				{
+					//공용 스티커 데이터
+					StickerData stickerData = commonStickerList[j];
+				}
 				Button skinButton = null;
 				if (_skinButtonParent.childCount > i)
 				{
@@ -228,11 +243,6 @@ namespace Main.Card
 					skinButton = Instantiate(_skinButtonPrefeb, _skinButtonParent).GetComponent<Button>();
 				}
 				skinButton.gameObject.SetActive(true);
-				skinButton.onClick.RemoveAllListeners();
-				skinButton.GetComponent<CardChangeSkinButton>().SetButtonImages(skinData, cardData._cardNamingType);
-
-				//스킨 함수들을 넣어준다
-				skinButton.onClick.AddListener(() => OnSetSkin(skinData, cardData._cardNamingType));
 			}
 		}
 
