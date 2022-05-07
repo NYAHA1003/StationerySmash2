@@ -39,6 +39,7 @@ public class CardData
     {
         CardData cardData = new CardData
         {
+            _cardNamingType = this._cardNamingType,
             cardType = this.cardType,
             card_Name = this.card_Name,
             card_Cost = this.card_Cost,

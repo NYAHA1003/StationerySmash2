@@ -58,7 +58,7 @@ namespace Main.Card
 		[SerializeField]
 		private GameObject _skinButtonPrefeb = null;
 		[SerializeField]
-		private Transform _buttonParent = null;
+		private Transform _skinButtonParent = null;
 
 		//컴포넌트들
 		[SerializeField]
@@ -66,7 +66,7 @@ namespace Main.Card
 		[SerializeField]
 		private DeckSettingComponent _deckSettingComponent; //덱 설정 컴포넌트
 
-
+		private DeckCard _selectDeckCard = null;
 		private CardData _selectCardData = null;
 
 		private void Awake()
@@ -93,6 +93,7 @@ namespace Main.Card
 		public void OnSetCardInfoPanel(DeckCard deckCard)
 		{
 			_cardInfoPanel.SetActive(true);
+			_selectDeckCard = deckCard;
 			_selectCardData = deckCard._cardData;
 			SetEquipText();
 
@@ -112,6 +113,7 @@ namespace Main.Card
 					SetCardInstallation(_selectCardData);
 					break;
 			}
+			SetSkinList(_selectCardData);
 		}
 
 		/// <summary>
@@ -190,24 +192,32 @@ namespace Main.Card
 			//선택한 유닛의 스킨 리스트 가져오기
 			List<SkinData> skinList = SkinData.GetSkinDataList(_selectCardData._cardNamingType);
 
+			//모든 스킨 버튼 끄기
+			for(int i = 0; i < _skinButtonParent.childCount; i++)
+			{
+				_skinButtonParent.GetChild(i).gameObject.SetActive(false);
+			}
+
 			//스킨 버튼들 생성
 			for (int i = 0; i < skinList.Count; i++)
 			{
+				int j = i;
+				SkinData skinData = skinList[j];
 				Button skinButton = null;
-				if (_buttonParent.GetChild(i) != null)
+				if (_skinButtonParent.childCount > i)
 				{
-					skinButton = _buttonParent.GetChild(i).GetComponent<Button>();
+					skinButton = _skinButtonParent.GetChild(i).GetComponent<Button>();
 				}
 				else
 				{
-					skinButton = Instantiate(_skinButtonPrefeb, _buttonParent).GetComponent<Button>();
+					skinButton = Instantiate(_skinButtonPrefeb, _skinButtonParent).GetComponent<Button>();
 				}
-
+				skinButton.gameObject.SetActive(true);
 				skinButton.onClick.RemoveAllListeners();
-				skinButton.GetComponent<CardChangeSkinButton>().SetButtonImages(skinList[i], cardData._cardNamingType);
+				skinButton.GetComponent<CardChangeSkinButton>().SetButtonImages(skinData, cardData._cardNamingType);
 
 				//스킨 함수들을 넣어준다
-				skinButton.onClick.AddListener(() => OnSetSkin(skinList[i], cardData._cardNamingType));
+				skinButton.onClick.AddListener(() => OnSetSkin(skinData, cardData._cardNamingType));
 			}
 		}
 
@@ -224,8 +234,9 @@ namespace Main.Card
 			if (getSkinData != null)
 			{
 				_selectCardData.skinData = getSkinData;
+				_selectDeckCard.SetCard(_selectCardData);
+				_cardImage.sprite = SkinData.GetSkin(_selectCardData.skinData._skinType);
 			}
-
 		}
 
 		//장착 함수들
