@@ -9,7 +9,7 @@ namespace Main.Deck
     [System.Serializable]
     public class UserSaveData //인벤토리, 돈, 캐시 이런걸 저장할 수도 있다
     {
-        public List<CardSaveData> _unitSaveDatas = new List<CardSaveData>();    //카드 데이터 저장
+        public List<CardSaveData> _haveCardSaveDatas = new List<CardSaveData>();    //카드 데이터 저장
         public List<CardSaveData> _ingameSaveDatas = new List<CardSaveData>();    //인게임덱 카드 데이터 저장
         public List<SkinType> _haveSkinList = new List<SkinType>();    //가지고 있는 스킨
         public List<StickerSaveData> _haveStickerList = new List<StickerSaveData>(); //가지고 있는 스티커

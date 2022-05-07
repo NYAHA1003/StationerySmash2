@@ -256,19 +256,48 @@ namespace Main.Card
 				stickerButton.GetComponent<StickerChangeButton>().SetButtonImages(stickerData);
 
 				//스티커 함수들을 넣어준다
-				stickerButton.onClick.AddListener(() => OnSetSticker(stickerData));
+				stickerButton.onClick.AddListener(() => _stickerInfoPanel.OnSetSkickerPanel(stickerData));
 			}
+		}
+
+		/// <summary>
+		/// 이미 같은 스티커가 장착되었는지 확인
+		/// </summary>
+		/// <returns></returns>
+		public bool CheckAlreadyEquipSticker(StickerData stickerData)
+		{
+			if(_selectCardData.unitData.stickerData._stickerType == stickerData._stickerType)
+			{
+				return true;
+			}
+			return false;
 		}
 
 		/// <summary>
 		/// 스티커 데이터를 카드 데이터에 적용
 		/// </summary>
 		/// <param name="stickerData"></param>
-		public void OnSetSticker(StickerData stickerData)
+		public void SetSticker(StickerData stickerData)
 		{
 			_selectCardData.unitData.stickerData = stickerData;
 			_selectDeckCard.SetCard(_selectCardData);
-			_userDeckData.ChangeCardInSaveData(_selectCardData);
+			_userDeckData.ChangeCardInInGameSaveData(_selectCardData);
+			SetSkinImage();
+		}
+
+		/// <summary>
+		/// 스티커를 제거한다
+		/// </summary>
+		public void ReleaseSticker()
+		{
+			_selectCardData.unitData.stickerData = new StickerData();
+			_selectCardData.unitData.stickerData._stickerType = StickerType.None;
+			_selectCardData.unitData.stickerData._stickerLevel = 0;
+			_selectCardData.unitData.stickerData._skinType = SkinType.SpriteNone;
+			_selectCardData.unitData.stickerData._name = "";
+			_selectCardData.unitData.stickerData._decription = "";
+			_selectDeckCard.SetCard(_selectCardData);
+			_userDeckData.ChangeCardInInGameSaveData(_selectCardData);
 			SetSkinImage();
 		}
 

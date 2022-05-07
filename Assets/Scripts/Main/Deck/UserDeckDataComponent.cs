@@ -93,10 +93,10 @@ namespace Main.Deck
 		public void SetHaveDeckCardList()
 		{
 			_haveDeckListSO.cardDatas.Clear();
-			int count = _userSaveData._unitSaveDatas.Count;
+			int count = _userSaveData._haveCardSaveDatas.Count;
 			for (int i = 0; i < count; i++)
 			{
-				CardSaveData saveDataobj = _userSaveData._unitSaveDatas[i];
+				CardSaveData saveDataobj = _userSaveData._haveCardSaveDatas[i];
 				//같은 카드 타입 찾기
 				CardData cardDataobj = _standardcardDeckSO.cardDatas.Find(x => x._cardNamingType == saveDataobj._cardNamingType);
 
@@ -215,12 +215,16 @@ namespace Main.Deck
 		}
 
 		/// <summary>
-		/// 카드 데이터를 새로고침한다
+		/// 인게임 카드 데이터를 새로고침한다
 		/// </summary>
 		/// <param name="cardData"></param>
-		public void ChangeCardInSaveData(CardData cardData)
+		public void ChangeCardInInGameSaveData(CardData cardData)
 		{
 			CardSaveData cardSaveData = _userSaveData._ingameSaveDatas.Find(x => x._cardNamingType == cardData._cardNamingType);
+			if(cardSaveData == null)
+			{
+				return;
+			}
 			CardSaveData changeSaveData = CardSaveData.CopyDataToCardData(cardData);
 			cardSaveData._unitType = changeSaveData._unitType;
 			cardSaveData._strategicType = changeSaveData._strategicType;
@@ -265,7 +269,6 @@ namespace Main.Deck
 			}
 			return true;
 		}
-
 
 		/// <summary>
 		/// 카드가 이미 장착되어 있는지 확인한다
