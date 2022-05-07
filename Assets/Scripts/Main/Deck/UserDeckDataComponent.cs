@@ -23,6 +23,9 @@ namespace Main.Deck
 		public StickerDataSO _standardStickerDataSO; //기준 스티커 데이터들
 		public StickerDataSO _haveStickerDataSO; //보유 스티커 데이터들
 
+		//뱃지 관련
+		public BadgeListSO _standardBadgeDataSO; //기준 뱃지 데이터들
+		public BadgeListSO _haveBadgeDataSO; //보유 뱃지 데이터들
 
 		//프리셋
 		[SerializeField]
@@ -62,28 +65,43 @@ namespace Main.Deck
 
 			//스티커 데이터 초기화
 			SetStickerDataList();
+
 		}
 
+		/// <summary>
+		/// 프리셋 변경
+		/// </summary>
+		/// <param name="index"></param>
 		public void ChangePreset(int index)
 		{
+			PresetSaveDataSO presetSaveDataSO = null;
 			switch (index)
 			{
 				case 0:
-					_userSaveData._ingameSaveDatas = _presetDataSO1._ingameSaveDatas;
-					_userSaveData._currentPencilCaseType = _presetDataSO1._pencilCaseData._pencilCaseType;
-					SetInGamePencilCase(_presetDataSO1._pencilCaseData);
+					presetSaveDataSO = _presetDataSO1;
 					break;
 				case 1:
-					_userSaveData._ingameSaveDatas = _presetDataSO2._ingameSaveDatas;
-					_userSaveData._currentPencilCaseType = _presetDataSO2._pencilCaseData._pencilCaseType;
-					SetInGamePencilCase(_presetDataSO2._pencilCaseData);
+					presetSaveDataSO = _presetDataSO2;
 					break;
 				case 2:
-					_userSaveData._ingameSaveDatas = _presetDataSO3._ingameSaveDatas;
-					_userSaveData._currentPencilCaseType = _presetDataSO3._pencilCaseData._pencilCaseType;
-					SetInGamePencilCase(_presetDataSO3._pencilCaseData);
+					presetSaveDataSO = _presetDataSO3;
 					break;
 			}
+
+			_userSaveData._ingameSaveDatas = presetSaveDataSO._ingameSaveDatas;
+			_userSaveData._currentPencilCaseType = presetSaveDataSO._pencilCaseData._pencilCaseType;
+
+			PencilCaseData pencilCaseData = _havePCDataSO._pencilCaseDataList.Find(x => x._pencilCaseType == presetSaveDataSO._pencilCaseData._pencilCaseType);
+			PencilCaseData changePCData = null;
+			changePCData = pencilCaseData.DeepCopyNoneBadge();
+
+			for (int i = 0; i < presetSaveDataSO._pencilCaseData._badgeDatas.Count; i++)
+			{
+				changePCData._badgeDatas.Add(_haveBadgeDataSO._badgeLists.Find(x => x._badgeType == presetSaveDataSO._pencilCaseData._badgeDatas[i]._BadgeType));
+			}
+			SetInGamePencilCase(changePCData);
+
+
 			_userSaveData._setPrestIndex = index;
 		}
 
@@ -115,6 +133,9 @@ namespace Main.Deck
 		{
 			SetPencilCaseList();
 			SetInGamePencilCase(_havePCDataSO._pencilCaseDataList.Find(x => x._pencilCaseType == _userSaveData._currentPencilCaseType));
+
+			//뱃지 데이터 초기화
+			SetBadgeDataList();
 		}
 
 		/// <summary>
@@ -199,6 +220,22 @@ namespace Main.Deck
 						_haveStickerDataSO._stickerDataLists[i]._stickerDatas.Add(addStickerData.DeepCopyStickerData(stickerSaveData));
 					}
 				}
+			}
+		}
+
+		/// <summary>
+		/// 보유 뱃지 데이터를 설정한다
+		/// </summary>
+		public void SetBadgeDataList()
+		{
+			_haveBadgeDataSO._badgeLists.Clear();
+
+			int count = _userSaveData._haveBadgeSaveDatas.Count;
+
+			for (int i = 0; i < count; i++)
+			{
+				BadgeSaveData badgeSaveData = _userSaveData._haveBadgeSaveDatas[i];
+				_haveBadgeDataSO._badgeLists.Add(_standardBadgeDataSO._badgeLists.Find(x => x._badgeType == badgeSaveData._BadgeType).DeepCopyBadgeData(badgeSaveData));
 			}
 		}
 
