@@ -17,6 +17,7 @@ namespace Utill.Data
         None = 0,
         Pencil = 100,
         Sharp = 200,
+        PencilCase = 10000,
     }
 
     public enum StarategyType
