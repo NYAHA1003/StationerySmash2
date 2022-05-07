@@ -9,12 +9,15 @@ namespace Utill.Data
         None = 0,
         Normal,
         Skin,
-
     }
 
     public enum CollectionThemeType
     {
         None = 0,
+        HotSummerSet,
+        SewingSet,
+        ChristmasSet,
+        SweetDessertSet
     }
 
     [System.Serializable]

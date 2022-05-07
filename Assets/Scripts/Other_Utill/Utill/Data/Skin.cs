@@ -15,6 +15,26 @@ namespace Utill.Data
         SharpNormal = 200,
         EraserNormal = 300,
         PencilCaseNormal = 400,
+
+        PencilHotSummer = 1100,
+        SharpHotSummer = 1200,
+        EraserHotSummer = 1300,
+        GlueHotSummer = 1400,
+        RulerHotSummer = 1500,
+
+        PencilSewing = 2100,
+        ScissorsSewing = 2200,
+
+        SharpChristmas = 3100,
+        GlueChristmas = 3200,
+        PostItChristmas = 3300,
+        MechaPencilLeadChristmas = 3400,
+
+        EraserSweetDessert = 4100,
+        RulerSweetDessert = 4200,
+        CutterKnifeSweetDessert = 4300,
+        PostItSweetDessert = 4400,
+        MechaPencilLeadSweetDessert = 4500,
     }
     [System.Serializable]
     public class SkinData
