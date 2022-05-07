@@ -53,6 +53,11 @@ namespace Main.Card
 		private GameObject _stickerPanel = null; //스티커 착용창 유닛일 때만 사용
 		[SerializeField]
 		private StickerInfoPanel _stickerInfoPanel = null;
+		[SerializeField]
+		private GameObject _sktickerButtonPrefeb = null;
+		[SerializeField]
+		private Transform _stickerButtonParent = null;
+
 
 		//스킨창 
 		[SerializeField]
@@ -125,6 +130,8 @@ namespace Main.Card
 			_unitStatTexts.SetActive(false);
 			_stickerPanel.SetActive(false);
 
+			_infoScroll.SetIcons(3);
+
 			//이름, 이미지, 설명 설정
 			_nameText.text = cardData.card_Name;
 			_cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
@@ -138,6 +145,9 @@ namespace Main.Card
 		{
 			_unitStatTexts.SetActive(true);
 			_stickerPanel.SetActive(true);
+
+
+			_infoScroll.SetIcons(4);
 
 			//이름, 이미지, 설명 설정
 			_nameText.text = cardData.card_Name;
@@ -160,6 +170,8 @@ namespace Main.Card
 			_unitStatTexts.SetActive(false);
 			_stickerPanel.SetActive(false);
 
+			_infoScroll.SetIcons(3);
+
 			//이름, 이미지, 설명 설정
 			_nameText.text = cardData.card_Name;
 			_cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
@@ -174,11 +186,56 @@ namespace Main.Card
 			_unitStatTexts.SetActive(false);
 			_stickerPanel.SetActive(false);
 
+			_infoScroll.SetIcons(3);
+
 			//이름, 이미지, 설명 설정
 			_nameText.text = cardData.card_Name;
 			_cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
 			_descriptionText.text = cardData.card_Description;
 		}
+
+		//스티커 함수들
+
+		/// <summary>
+		/// 유닛 카드에 장착할 수 있는 스티커 리스트 생성
+		/// </summary>
+		/// <param name="cardData"></param>
+		public void SetStickerList(CardData cardData)
+		{
+			_selectCardData = cardData;
+
+			//선택한 유닛의 스킨 리스트 가져오기
+			List<SkinData> skinList = SkinData.GetSkinDataList(_selectCardData._cardNamingType);
+
+			//모든 스킨 버튼 끄기
+			for (int i = 0; i < _skinButtonParent.childCount; i++)
+			{
+				_skinButtonParent.GetChild(i).gameObject.SetActive(false);
+			}
+
+			//스킨 버튼들 생성
+			for (int i = 0; i < skinList.Count; i++)
+			{
+				int j = i;
+				SkinData skinData = skinList[j];
+				Button skinButton = null;
+				if (_skinButtonParent.childCount > i)
+				{
+					skinButton = _skinButtonParent.GetChild(i).GetComponent<Button>();
+				}
+				else
+				{
+					skinButton = Instantiate(_skinButtonPrefeb, _skinButtonParent).GetComponent<Button>();
+				}
+				skinButton.gameObject.SetActive(true);
+				skinButton.onClick.RemoveAllListeners();
+				skinButton.GetComponent<CardChangeSkinButton>().SetButtonImages(skinData, cardData._cardNamingType);
+
+				//스킨 함수들을 넣어준다
+				skinButton.onClick.AddListener(() => OnSetSkin(skinData, cardData._cardNamingType));
+			}
+		}
+
 
 		//스킨 함수들
 

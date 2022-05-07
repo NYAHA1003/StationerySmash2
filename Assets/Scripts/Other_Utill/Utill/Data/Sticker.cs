@@ -7,7 +7,7 @@ namespace Utill.Data
     [System.Serializable]
     public class StickerData
     {
-        public Sprite _sprite;
+        public SkinType _skinType;
         public string _name;
         public string _decription;
         public UnitType _onlyUnitType;

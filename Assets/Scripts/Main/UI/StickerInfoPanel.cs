@@ -22,7 +22,7 @@ public class StickerInfoPanel : MonoBehaviour
     /// <param name="skinData"></param>
     public void OnSetSkickerPanel(StickerData stickerData)
     {
-        _image.sprite = stickerData._sprite;
+        _image.sprite = SkinData.GetSkin(stickerData._skinType);
         _nameText.text = stickerData._name;
         _decriptionText.text = stickerData._decription;
         gameObject.SetActive(true);

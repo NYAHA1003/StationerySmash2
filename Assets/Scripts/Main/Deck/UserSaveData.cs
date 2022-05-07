@@ -64,4 +64,11 @@ namespace Main.Deck
         public int _level;
         public BadgeType _BadgeType;
 	}
+
+    //[SerializeField]
+    //public class StickerData
+	//{
+    //    public int _level;
+    //    public StickerType _stickerType;
+	//}
 }

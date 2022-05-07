@@ -31,6 +31,22 @@ namespace Main.Card
             SetStressIconScale();
         }
 
+        /// <summary>
+        /// 아이콘 갯수 설정
+        /// </summary>
+        /// <param name="count"></param>
+        public void SetIcons(int count)
+		{
+            for(int i = 0; i < _stressIconParent.transform.childCount; i++)
+			{
+                _stressIconParent.transform.GetChild(i).gameObject.SetActive(false);
+            }
+            for (int i = 0; i < count; i++)
+            {
+                _stressIconParent.transform.GetChild(i).gameObject.SetActive(true);
+            }
+        }
+
         protected override void SettingAwake()
         {
             base.SettingAwake();
