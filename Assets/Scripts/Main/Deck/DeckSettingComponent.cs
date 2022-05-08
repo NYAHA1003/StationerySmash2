@@ -128,6 +128,8 @@ namespace Main.Deck
         public void ChangePreset(int index)
 		{
             _userDeckData.ChangePreset(index);
+            _userDeckData.SetCardData();
+            _userDeckData.SetPencilCaseData();
             UpdateHaveAndEquipDeck();
             UpdateHaveAndEquipPCDeck();
         }
