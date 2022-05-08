@@ -404,7 +404,7 @@ namespace Battle
             }
 
             _unitAfterImage.transform.position = new Vector3(pos.x, 0);
-            _afterImageSpriteRenderer.sprite = SkinData.GetSkin(_selectCard.CardDataValue.skinData._skinType);
+            _afterImageSpriteRenderer.sprite = SkinData.GetSkin(_selectCard.CardDataValue._skinData._skinType);
 
             //소환 화살표 적용
             SetSummonArrowImage(true, pos);

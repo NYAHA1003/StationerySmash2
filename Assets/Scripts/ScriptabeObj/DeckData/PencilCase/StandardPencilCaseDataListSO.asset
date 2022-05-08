@@ -14,21 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pencilCaseDataList:
   - _maxCard: 5
-    _maxBadgeCount: 0
+    _maxBadgeCount: 3
     _costSpeed: 100
     _throwGaugeSpeed: 30
     _description: 
     _pencilCaseType: 0
     _pencilCaseData:
+      _cardNamingType: 0
       cardType: 1
       card_Name: "\uD544\uD1B5"
       card_Description: 
       card_Cost: 0
-      skinData:
+      _skinData:
         _skinType: 400
         _effectType: 0
-        _cardNamingType: 0
-      level: 0
+      level: 1
       strategyData:
         starategyType: 0
         starategyablityData: []
@@ -49,10 +49,9 @@ MonoBehaviour:
           - {x: -0.1, y: -0.1}
           - {x: 0.1, y: -0.1}
         stickerData:
-          _sprite: {fileID: 0}
+          _skinType: 0
           _name: 
           _decription: 
-          _onlyUnitType: 0
           _stickerType: 0
           _stickerLevel: 1
         attackType: 0

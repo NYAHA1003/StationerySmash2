@@ -90,10 +90,18 @@ public class Unit : MonoBehaviour
         _unitData = dataBase.unitData;
 
         //스킨 데이터 받아오기
-        _skinData = dataBase.skinData;
+        _skinData = dataBase._skinData;
 
         //팀, 이름 설정
         _eTeam = eTeam;
+        if(_eTeam == TeamType.MyTeam)
+		{
+            transform.localScale = new Vector3(1, 1, 1);
+		}
+        else if(_eTeam == TeamType.EnemyTeam)
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
         transform.name = dataBase.card_Name + _eTeam;
 
         //물리판정 설정
@@ -119,7 +127,7 @@ public class Unit : MonoBehaviour
         _unitStateEff.SetStateEff(this, _unitSprite.SpriteRenderer);
 
         //스프라이트 초기화
-        _unitSprite.SetUIAndSprite(eTeam, SkinData.GetSkin(dataBase.skinData._skinType));
+        _unitSprite.SetUIAndSprite(eTeam, SkinData.GetSkin(dataBase._skinData._skinType));
         _unitSprite.UpdateDelayBar(_unitStat.AttackDelay);
         _unitSprite.ShowUI(true);
         _unitSprite.SetTeamColor(eTeam);

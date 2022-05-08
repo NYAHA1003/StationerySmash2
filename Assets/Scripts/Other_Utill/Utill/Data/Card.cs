@@ -17,6 +17,16 @@ namespace Utill.Data
         None = 0,
         Pencil = 100,
         Sharp = 200,
+        Eraser = 300,
+        Scissors = 400,
+        Glue = 500,
+        Ruler = 600,
+        CutterKnife = 700,
+        PostIt = 800,
+        MechaPencilLead = 900,
+        Pen = 1000,
+        EraserPiece = 1100,
+        PostItPiece = 1200,
         PencilCase = 10000,
     }
 

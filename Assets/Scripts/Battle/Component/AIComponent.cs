@@ -118,8 +118,12 @@ namespace Battle
             Vector2 pos = _unitCommand._enemyUnitList[selectUnit].transform.position;
             pos.x += Random.Range(2.0f, 4.0f);
             pos.y -= Random.Range(2.0f, 4.0f);
-            _unitCommand._enemyUnitList[selectUnit].Throw_Unit(pos);
-            enemyThrowCurDelay = 0;
+            
+            if(!_unitCommand._enemyUnitList[selectUnit]._isDontThrow || !_unitCommand._enemyUnitList[selectUnit]._isNeverDontThrow)
+			{
+                _unitCommand._enemyUnitList[selectUnit].Throw_Unit(pos);
+                enemyThrowCurDelay = 0;
+			}
         }
 
         /// <summary>

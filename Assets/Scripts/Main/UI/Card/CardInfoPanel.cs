@@ -20,11 +20,7 @@ namespace Main.Card
 
 		//좌측 카드
 		[SerializeField]
-		private TextMeshProUGUI _nameText = null;
-		[SerializeField]
-		private TextMeshProUGUI _descriptionText = null;
-		[SerializeField]
-		private Image _cardImage;
+		private DeckCard _deckCard = null;
 
 		//기타
 		[SerializeField]
@@ -57,7 +53,8 @@ namespace Main.Card
 		private GameObject _sktickerButtonPrefeb = null;
 		[SerializeField]
 		private Transform _stickerButtonParent = null;
-
+		[SerializeField]
+		private StickerDataSO _haveStickerDataSO = null;
 
 		//스킨창 
 		[SerializeField]
@@ -70,6 +67,10 @@ namespace Main.Card
 		private UserDeckDataComponent _userDeckData; // 유저 데이터 컴포넌트
 		[SerializeField]
 		private DeckSettingComponent _deckSettingComponent; //덱 설정 컴포넌트
+
+		//카드 데이터들
+		[SerializeField]
+		private CardDeckSO _haveDeckSO; //보유한 카드 리스트
 
 		private DeckCard _selectDeckCard = null;
 		private CardData _selectCardData = null;
@@ -99,7 +100,7 @@ namespace Main.Card
 		{
 			_cardInfoPanel.SetActive(true);
 			_selectDeckCard = deckCard;
-			_selectCardData = deckCard._cardData;
+			_selectCardData = _haveDeckSO.cardDatas.Find(x => x._cardNamingType == deckCard._cardNamingType);
 			SetEquipText();
 
 			//카드 타입에 따라 설명창 설정
@@ -119,6 +120,8 @@ namespace Main.Card
 					break;
 			}
 			SetSkinList(_selectCardData);
+			SetStickerList(_selectCardData);
+			_deckCard.SetCard(_selectCardData);
 		}
 
 		/// <summary>
@@ -131,11 +134,6 @@ namespace Main.Card
 			_stickerPanel.SetActive(false);
 
 			_infoScroll.SetIcons(3);
-
-			//이름, 이미지, 설명 설정
-			_nameText.text = cardData.card_Name;
-			_cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
-			_descriptionText.text = cardData.card_Description;
 		}
 		/// <summary>
 		/// 유닛 소환형 카드의 UI 설정
@@ -146,13 +144,8 @@ namespace Main.Card
 			_unitStatTexts.SetActive(true);
 			_stickerPanel.SetActive(true);
 
-
+			//스티커 패널 설정
 			_infoScroll.SetIcons(4);
-
-			//이름, 이미지, 설명 설정
-			_nameText.text = cardData.card_Name;
-			_cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
-			_descriptionText.text = cardData.card_Description;
 
 			//스탯 텍스트 설정
 			_hpText.text = cardData.unitData.unit_Hp.ToString();
@@ -171,11 +164,6 @@ namespace Main.Card
 			_stickerPanel.SetActive(false);
 
 			_infoScroll.SetIcons(3);
-
-			//이름, 이미지, 설명 설정
-			_nameText.text = cardData.card_Name;
-			_cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
-			_descriptionText.text = cardData.card_Description;
 		}
 		/// <summary>
 		/// 설치형의 UI 설정
@@ -187,11 +175,6 @@ namespace Main.Card
 			_stickerPanel.SetActive(false);
 
 			_infoScroll.SetIcons(3);
-
-			//이름, 이미지, 설명 설정
-			_nameText.text = cardData.card_Name;
-			_cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
-			_descriptionText.text = cardData.card_Description;
 		}
 
 		//스티커 함수들
@@ -202,40 +185,92 @@ namespace Main.Card
 		/// <param name="cardData"></param>
 		public void SetStickerList(CardData cardData)
 		{
-			_selectCardData = cardData;
-
 			//선택한 유닛의 스킨 리스트 가져오기
-			List<SkinData> skinList = SkinData.GetSkinDataList(_selectCardData._cardNamingType);
+			List<StickerData> commonStickerList = _haveStickerDataSO._stickerDataLists.Find(x => x._onlyUnitType == UnitType.None)?._stickerDatas;
+			List<StickerData> onlyUnitStickerList = _haveStickerDataSO._stickerDataLists.Find(x => x._onlyUnitType == cardData.unitData.unitType)?._stickerDatas;
 
-			//모든 스킨 버튼 끄기
-			for (int i = 0; i < _skinButtonParent.childCount; i++)
+			int commonCount = commonStickerList?.Count ?? 0;
+			int onlyCount = onlyUnitStickerList?.Count ?? 0;
+
+			//모든 스티커 버튼 끄기
+			for (int i = 0; i < _stickerButtonParent.childCount; i++)
 			{
-				_skinButtonParent.GetChild(i).gameObject.SetActive(false);
+				_stickerButtonParent.GetChild(i).gameObject.SetActive(false);
 			}
-
-			//스킨 버튼들 생성
-			for (int i = 0; i < skinList.Count; i++)
+			//공용 스티커 버튼들 생성
+			for (int i = 0; i < commonCount + onlyCount; i++)
 			{
 				int j = i;
-				SkinData skinData = skinList[j];
-				Button skinButton = null;
-				if (_skinButtonParent.childCount > i)
+
+				StickerData stickerData = null;
+				if(j >= commonCount)
 				{
-					skinButton = _skinButtonParent.GetChild(i).GetComponent<Button>();
+					//전용 유닛 스티커 데이터
+					stickerData = onlyUnitStickerList[j - commonCount];
 				}
 				else
 				{
-					skinButton = Instantiate(_skinButtonPrefeb, _skinButtonParent).GetComponent<Button>();
+					//공용 스티커 데이터
+					stickerData = commonStickerList[j];
 				}
-				skinButton.gameObject.SetActive(true);
-				skinButton.onClick.RemoveAllListeners();
-				skinButton.GetComponent<CardChangeSkinButton>().SetButtonImages(skinData, cardData._cardNamingType);
+				Button stickerButton = null;
+				if (_stickerButtonParent.childCount > i)
+				{
+					stickerButton = _stickerButtonParent.GetChild(i).GetComponent<Button>();
+				}
+				else
+				{
+					stickerButton = Instantiate(_sktickerButtonPrefeb, _stickerButtonParent).GetComponent<Button>();
+				}
+				stickerButton.gameObject.SetActive(true);
 
-				//스킨 함수들을 넣어준다
-				skinButton.onClick.AddListener(() => OnSetSkin(skinData, cardData._cardNamingType));
+
+				stickerButton.onClick.RemoveAllListeners();
+				stickerButton.GetComponent<StickerChangeButton>().SetButtonImages(stickerData);
+
+				//스티커 함수들을 넣어준다
+				stickerButton.onClick.AddListener(() => _stickerInfoPanel.OnSetSkickerPanel(stickerData));
 			}
 		}
 
+		/// <summary>
+		/// 이미 같은 스티커가 장착되었는지 확인
+		/// </summary>
+		/// <returns></returns>
+		public bool CheckAlreadyEquipSticker(StickerData stickerData)
+		{
+			if(_selectCardData.unitData.stickerData._stickerType == stickerData._stickerType)
+			{
+				return true;
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// 스티커 데이터를 카드 데이터에 적용
+		/// </summary>
+		/// <param name="stickerData"></param>
+		public void SetSticker(StickerData stickerData)
+		{
+			_selectCardData.unitData.stickerData = stickerData;
+			_selectDeckCard.SetCard(_selectCardData);
+			_userDeckData.ChangeCardInInGameSaveData(_selectCardData);
+		}
+
+		/// <summary>
+		/// 스티커를 제거한다
+		/// </summary>
+		public void ReleaseSticker()
+		{
+			_selectCardData.unitData.stickerData = new StickerData();
+			_selectCardData.unitData.stickerData._stickerType = StickerType.None;
+			_selectCardData.unitData.stickerData._stickerLevel = 0;
+			_selectCardData.unitData.stickerData._skinType = SkinType.SpriteNone;
+			_selectCardData.unitData.stickerData._name = "";
+			_selectCardData.unitData.stickerData._decription = "";
+			_selectDeckCard.SetCard(_selectCardData);
+			_userDeckData.ChangeCardInInGameSaveData(_selectCardData);
+		}
 
 		//스킨 함수들
 
@@ -290,9 +325,9 @@ namespace Main.Card
 			//스킨데이터가 있다면 유닛 데이터의 스킨데이터를 변경
 			if (getSkinData != null)
 			{
-				_selectCardData.skinData = getSkinData;
+				_selectCardData._skinData = getSkinData;
 				_selectDeckCard.SetCard(_selectCardData);
-				_cardImage.sprite = SkinData.GetSkin(_selectCardData.skinData._skinType);
+				_deckCard.SetCard(_selectCardData);
 			}
 		}
 

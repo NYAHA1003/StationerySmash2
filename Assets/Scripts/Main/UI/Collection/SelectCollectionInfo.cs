@@ -109,7 +109,7 @@ namespace Main.Collection
                     count = _collectionData._needCardNamingType.Count;
                     for (int i = 0; i < count; i++)
                     {
-                        CardSaveData cardSaveData = _saveDataSO.userSaveData._unitSaveDatas.Find(x => x._cardNamingType == _collectionData._needCardNamingType[i]);
+                        CardSaveData cardSaveData = _saveDataSO.userSaveData._haveCardSaveDatas.Find(x => x._cardNamingType == _collectionData._needCardNamingType[i]);
                         if (cardSaveData._count < _collectionData._needCardNamingCount[i])
                         {
                             return false;
@@ -144,7 +144,7 @@ namespace Main.Collection
                     int count = _collectionData._needCardNamingType.Count;
                     for (int i = 0; i < count; i++)
                     {
-                        CardSaveData cardSaveData = _saveDataSO.userSaveData._unitSaveDatas.Find(x => x._cardNamingType == _collectionData._needCardNamingType[i]);
+                        CardSaveData cardSaveData = _saveDataSO.userSaveData._haveCardSaveDatas.Find(x => x._cardNamingType == _collectionData._needCardNamingType[i]);
                         cardSaveData._count -= _collectionData._needCardNamingCount[i];
                     }
                     break;

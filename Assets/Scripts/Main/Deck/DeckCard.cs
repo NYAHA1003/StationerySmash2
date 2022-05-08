@@ -21,7 +21,7 @@ namespace Main.Deck
         [SerializeField]
         private RectTransform _stickerRect;
 
-        public CardData _cardData { get; private set; }
+        public CardNamingType _cardNamingType { get; private set; } = CardNamingType.None;
 
         /// <summary>
         /// 카드 설정, 만들자마자 해줘야함
@@ -29,8 +29,8 @@ namespace Main.Deck
         /// <param name="cardData"></param>
         public void SetCard(CardData cardData)
         {
-            _cardData = cardData;
-            _cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
+            _cardNamingType = cardData._cardNamingType;
+            _cardImage.sprite = SkinData.GetSkin(cardData._skinData._skinType);
             _unitNameText.text = cardData.card_Name;
             _CostText.text = $"{cardData.card_Cost}";
             _stickerRect.gameObject.SetActive(false);

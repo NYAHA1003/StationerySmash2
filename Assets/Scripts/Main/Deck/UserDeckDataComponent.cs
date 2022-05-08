@@ -7,215 +7,325 @@ using Utill.Data;
 
 namespace Main.Deck
 {
-    public class UserDeckDataComponent : MonoBehaviour, IUserData
-    {
-        //카드 관련
-        public CardDeckSO _standardcardDeck; //기준 카드 데이터 
-        public CardDeckSO _deckList; //보유 카드 데이터
-        public CardDeckSO _inGameDeckList; //장착 카드 데이터
-        //필통 관련
-        public PencilCaseDataListSO _standardPCDataSO; //기준 필통 데이터들
-        public PencilCaseDataListSO _havePCDataSO; //보유 필통 데이터들
-        public PencilCaseDataSO _inGamePCDataSO; //장착 필통 데이터
+	public class UserDeckDataComponent : MonoBehaviour, IUserData
+	{
+		//카드 관련
+		public CardDeckSO _standardcardDeckSO; //기준 카드 데이터 
+		public CardDeckSO _haveDeckListSO; //보유 카드 데이터
+		public CardDeckSO _inGameDeckListSO; //장착 카드 데이터
 
-        //프리셋
-        [SerializeField]
-        private PresetSaveDataSO _presetDataSO1 = null;
-        [SerializeField]
-        private PresetSaveDataSO _presetDataSO2 = null;
-        [SerializeField]
-        private PresetSaveDataSO _presetDataSO3 = null;
+		//필통 관련
+		public PencilCaseDataListSO _standardPCDataSO; //기준 필통 데이터들
+		public PencilCaseDataListSO _havePCDataSO; //보유 필통 데이터들
+		public PencilCaseDataSO _inGamePCDataSO; //장착 필통 데이터
 
-        [SerializeField]
-        private WarrningComponent _warrningComponent; //경고 컴포넌트
+		//스티커 관련
+		public StickerDataSO _standardStickerDataSO; //기준 스티커 데이터들
+		public StickerDataSO _haveStickerDataSO; //보유 스티커 데이터들
 
-        private UserSaveData _userSaveData; //유저 데이터
+		//뱃지 관련
+		public BadgeListSO _standardBadgeDataSO; //기준 뱃지 데이터들
+		public BadgeListSO _haveBadgeDataSO; //보유 뱃지 데이터들
 
-        private void Awake()
+		//스킨 관련
+		public SkinListSO _skinListSO; //스킨 데이터들
+
+		//프리셋
+		[SerializeField]
+		private PresetSaveDataSO _presetDataSO1 = null;
+		[SerializeField]
+		private PresetSaveDataSO _presetDataSO2 = null;
+		[SerializeField]
+		private PresetSaveDataSO _presetDataSO3 = null;
+
+		[SerializeField]
+		private WarrningComponent _warrningComponent; //경고 컴포넌트
+
+		private UserSaveData _userSaveData; //유저 데이터
+
+		private void Awake()
 		{
-            SaveManager._instance.SaveData.AddObserver(this);
-            _userSaveData ??= SaveManager._instance.SaveData.userSaveData;
-            ChangePreset(_userSaveData._setPrestIndex);
+			SaveManager._instance.SaveData.AddObserver(this);
+			_userSaveData ??= SaveManager._instance.SaveData.userSaveData;
 
-        }
+			SetCardData();
+			SetPencilCaseData();
+			ChangePreset(_userSaveData._setPrestIndex);
+		}
 
-        public void Notify(ref UserSaveData userSaveData)
-        {
-            SetCardData();
-            SetPencilCaseData();
-        }
-
-        /// <summary>
-        /// 카드덱 데이터를 세팅해줍니다 
-        /// </summary>
-        public void SetCardData()
-        {
-            //카드 데이터 초기화
-            SetDeckCardList();
-            SetIngameCardList();
-        }
-
-        public void ChangePreset(int index)
-        {
-            switch (index)
-            {
-                case 0:
-                    _userSaveData._ingameSaveDatas = _presetDataSO1._ingameSaveDatas;
-                    _userSaveData._currentPencilCaseType = _presetDataSO1._pencilCaseData._pencilCaseType;
-                    SetInGamePencilCase(_presetDataSO1._pencilCaseData);
-                    break;
-                case 1:
-                    _userSaveData._ingameSaveDatas = _presetDataSO2._ingameSaveDatas;
-                    _userSaveData._currentPencilCaseType = _presetDataSO2._pencilCaseData._pencilCaseType;
-                    SetInGamePencilCase(_presetDataSO2._pencilCaseData);
-                    break;
-                case 2:
-                    _userSaveData._ingameSaveDatas = _presetDataSO3._ingameSaveDatas;
-                    _userSaveData._currentPencilCaseType = _presetDataSO3._pencilCaseData._pencilCaseType;
-                    SetInGamePencilCase(_presetDataSO3._pencilCaseData);
-                    break;
-            }
-            _userSaveData._setPrestIndex = index;
-        }
-
-        /// <summary>
-        /// 보유 카드 데이터 설정
-        /// </summary>
-        public void SetDeckCardList()
-        {
-            _deckList.cardDatas.Clear();
-            int count = _userSaveData._unitSaveDatas.Count;
-            for (int i = 0; i < count; i++)
-            {
-                CardSaveData saveDataobj = _userSaveData._unitSaveDatas[i];
-                //같은 카드 타입 찾기
-                CardData cardDataobj = _standardcardDeck.cardDatas.Find(x => x._cardNamingType == saveDataobj._cardNamingType);
-
-                if (cardDataobj != null)
-                {
-                    //세이브데이터의 레벨만큼 수치를 변경하고 새로운 카드데이터로 만들어 받아 덱리스트에 추가
-                    _deckList.cardDatas.Add(cardDataobj.DeepCopy(saveDataobj._level, saveDataobj._skinType));
-                }
-            }
-        }
-
-        /// <summary>
-        /// 필통 데이터 설정
-        /// </summary>
-        public void SetPencilCaseData()
-        {
-            //세이브 데이터의 유저 저장 데이터를 가져온다
-            _userSaveData ??= SaveManager._instance.SaveData.userSaveData;
-
-            SetPencilCaseList();
-            SetInGamePencilCase(_havePCDataSO._pencilCaseDataList.Find(x => x._pencilCaseType == _userSaveData._currentPencilCaseType));
-        }
-
-        /// <summary>
-        /// 보유 필통 설정
-        /// </summary>
-        public void SetPencilCaseList()
-        {
-            _havePCDataSO._pencilCaseDataList.Clear();
-            int count = _userSaveData._havePencilCaseList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                PencilCaseType pcType = _userSaveData._havePencilCaseList[i];
-
-                PencilCaseData pcData = _standardPCDataSO._pencilCaseDataList.Find(x => x._pencilCaseType == pcType);
-
-                if (pcData != null)
-                {
-                    _havePCDataSO._pencilCaseDataList.Add(pcData);
-                }
-            }
-        }
-        /// <summary>
-        /// 인게임 필통 설정
-        /// </summary>
-        public void SetInGamePencilCase(PencilCaseData pencilCaseData)
-        {
-            _inGamePCDataSO._pencilCaseData = pencilCaseData;
-        }
-
-        /// <summary>
-        /// 인게임 카드 덱 설정
-        /// </summary>
-        public void SetIngameCardList()
-        {
-            _inGameDeckList.cardDatas.Clear();
-            int count = _userSaveData._ingameSaveDatas.Count;
-            for (int i = 0; i < count; i++)
-            {
-                CardSaveData saveDataobj = _userSaveData._ingameSaveDatas[i];
-                //세가지 타입이 세이브데이터와 모두 같은 기준 데이터 찾기
-                CardData cardDataobj = _deckList.cardDatas.Find(x => x._cardNamingType == saveDataobj._cardNamingType);
-
-                if (cardDataobj != null)
-                {
-                    //세이브데이터의 레벨만큼 수치를 변경하고 새로운 카드데이터로 만들어 받아 덱리스트에 추가
-                    _inGameDeckList.cardDatas.Add(cardDataobj);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 덱에 카드를 추가한다
-        /// </summary>
-        public void AddCardInDeck(CardData cardData, int level)
+		public void Notify(ref UserSaveData userSaveData)
 		{
-            if(CheckCanAddCard())
+			SetCardData();
+			SetPencilCaseData();
+		}
+
+		/// <summary>
+		/// 카드덱 데이터를 세팅해줍니다 
+		/// </summary>
+		public void SetCardData()
+		{
+			//카드 데이터 초기화
+			SetHaveDeckCardList();
+			SetIngameCardList();
+
+			//스티커 데이터 초기화
+			SetStickerDataList();
+
+		}
+
+
+		/// <summary>
+		/// 필통 데이터 설정
+		/// </summary>
+		public void SetPencilCaseData()
+		{
+			SetPencilCaseList();
+			SetInGamePencilCase(_havePCDataSO._pencilCaseDataList.Find(x => x._pencilCaseType == _userSaveData._currentPencilCaseType));
+
+			//뱃지 데이터 초기화
+			SetBadgeDataList();
+		}
+
+
+		/// <summary>
+		/// 프리셋 변경
+		/// </summary>
+		/// <param name="index"></param>
+		public void ChangePreset(int index)
+		{
+			PresetSaveDataSO presetSaveDataSO = null;
+			switch (index)
 			{
-                _inGameDeckList.cardDatas.Add(cardData.DeepCopy(level, cardData.skinData._skinType));
-                _userSaveData._ingameSaveDatas.Add(CardSaveData.CopyDataToCardData(cardData));
+				case 0:
+					presetSaveDataSO = _presetDataSO1;
+					break;
+				case 1:
+					presetSaveDataSO = _presetDataSO2;
+					break;
+				case 2:
+					presetSaveDataSO = _presetDataSO3;
+					break;
 			}
-        }
-        /// <summary>
-        /// 덱에 카드를 해제한다
-        /// </summary>
-        public void RemoveCardInDeck(CardNamingType cardNamingType)
-        {
-            _inGameDeckList.cardDatas.RemoveAt(_inGameDeckList.cardDatas.FindIndex(x => x._cardNamingType == cardNamingType));
-            _userSaveData._ingameSaveDatas.RemoveAt(_userSaveData._ingameSaveDatas.FindIndex(x => x._cardNamingType == cardNamingType));
-        }
 
-        /// <summary>
-        /// 카드를 추가할 수 있는지 체크
-        /// </summary>
-        public bool CheckCanAddCard()
-        {
-            if (_inGameDeckList.cardDatas.Count == 10)
-            {
-                _warrningComponent.SetWarrning("장착 카드는 10장을 넘어갈 수 없습니다");
-                return false;
-            }
-            return true;
-        }
-        /// <summary>
-        /// 게임을 할 수 있는지 체크
-        /// </summary>
-        public bool CheckCanPlayGame()
-        {
-            if (_inGameDeckList.cardDatas.Count < 2)
-            {
-                _warrningComponent.SetWarrning("장착 카드는 2장 이상이어야 합니다");
-                return false;
-            }
-            return true;
-        }
+			_userSaveData._ingameSaveDatas = presetSaveDataSO._ingameSaveDatas;
+			_userSaveData._currentPencilCaseType = presetSaveDataSO._pencilCaseData._pencilCaseType;
 
+			PencilCaseData pencilCaseData = _havePCDataSO._pencilCaseDataList.Find(x => x._pencilCaseType == presetSaveDataSO._pencilCaseData._pencilCaseType);
+			PencilCaseData changePCData = null;
 
-        /// <summary>
-        /// 카드가 이미 장착되어 있는지 확인한다
-        /// </summary>
-        /// <returns></returns>
-        public bool ReturnAlreadyEquipCard(CardNamingType cardNamingType)
-		{
-            if(_inGameDeckList.cardDatas.Find(x => x._cardNamingType == cardNamingType) != null)
+			changePCData = pencilCaseData.DeepCopyNoneBadge();
+			for (int i = 0; i < presetSaveDataSO._pencilCaseData._badgeDatas.Count; i++)
 			{
-                return true;
-            }
-            return false;
-        }
+				changePCData._badgeDatas.Add(_haveBadgeDataSO._badgeLists.Find(x => x._badgeType == presetSaveDataSO._pencilCaseData._badgeDatas[i]._BadgeType));
+			}
+			SetInGamePencilCase(changePCData);
+
+
+			_userSaveData._setPrestIndex = index;
+		}
+
+		/// <summary>
+		/// 보유 카드 데이터 설정
+		/// </summary>
+		public void SetHaveDeckCardList()
+		{
+			_haveDeckListSO.cardDatas.Clear();
+			int count = _userSaveData._haveCardSaveDatas.Count;
+			for (int i = 0; i < count; i++)
+			{
+				CardSaveData saveDataobj = _userSaveData._haveCardSaveDatas[i];
+				//같은 카드 타입 찾기
+				CardData cardDataobj = _standardcardDeckSO.cardDatas.Find(x => x._cardNamingType == saveDataobj._cardNamingType);
+
+				if (cardDataobj != null)
+				{
+					//세이브데이터의 레벨만큼 수치를 변경하고 새로운 카드데이터로 만들어 받아 덱리스트에 추가
+					SkinData skinData = _skinListSO._cardNamingSkins.Find(x => x._cardNamingType == saveDataobj._cardNamingType)._skinDatas.Find(x => x._skinType == saveDataobj._skinType);
+					_haveDeckListSO.cardDatas.Add(cardDataobj.DeepCopy(saveDataobj._level, skinData));
+				}
+			}
+		}
+
+		/// <summary>
+		/// 보유 필통 설정
+		/// </summary>
+		public void SetPencilCaseList()
+		{
+			_havePCDataSO._pencilCaseDataList.Clear();
+			int count = _userSaveData._havePencilCaseList.Count;
+			for (int i = 0; i < count; i++)
+			{
+				PencilCaseType pcType = _userSaveData._havePencilCaseList[i];
+
+				PencilCaseData pcData = _standardPCDataSO._pencilCaseDataList.Find(x => x._pencilCaseType == pcType);
+
+				if (pcData != null)
+				{
+					_havePCDataSO._pencilCaseDataList.Add(pcData);
+				}
+			}
+		}
+		/// <summary>
+		/// 인게임 필통 설정
+		/// </summary>
+		public void SetInGamePencilCase(PencilCaseData pencilCaseData)
+		{
+			_inGamePCDataSO._pencilCaseData = pencilCaseData;
+		}
+
+		/// <summary>
+		/// 인게임 카드 덱 설정
+		/// </summary>
+		public void SetIngameCardList()
+		{
+			_inGameDeckListSO.cardDatas.Clear();
+			int count = _userSaveData._ingameSaveDatas.Count;
+			for (int i = 0; i < count; i++)
+			{
+				CardSaveData saveDataobj = _userSaveData._ingameSaveDatas[i];
+				//세가지 타입이 세이브데이터와 모두 같은 기준 데이터 찾기
+				CardData cardDataobj = _haveDeckListSO.cardDatas.Find(x => x._cardNamingType == saveDataobj._cardNamingType);
+
+				if (cardDataobj != null)
+				{
+					//세이브데이터의 레벨만큼 수치를 변경하고 새로운 카드데이터로 만들어 받아 덱리스트에 추가
+					_inGameDeckListSO.cardDatas.Add(cardDataobj);
+				}
+			}
+		}
+
+		/// <summary>
+		/// 보유 스티커 데이터를 설정한다
+		/// </summary>
+		public void SetStickerDataList()
+		{
+			_haveStickerDataSO._stickerDataLists.Clear();
+
+			int count = _userSaveData._haveStickerList.Count;
+			int categoryCount = _standardStickerDataSO._stickerDataLists.Count;
+
+			//빈 스티커 리스트 생성
+			for (int i = 0; i < categoryCount; i++)
+			{
+				//스티커 리스트
+				var _stickerList = _standardStickerDataSO._stickerDataLists[i];
+				//빈 스티커 리스트 생성
+				_haveStickerDataSO._stickerDataLists.Add(_stickerList.CopyEmptryList());
+			}
+
+			//가지고 있는 스티커 알맞는 스티커 데이터 찾기
+			for (int i = 0; i < categoryCount; i++)
+			{
+				//스티커 리스트
+				var _stickerList = _standardStickerDataSO._stickerDataLists[i];
+
+				for (int j = 0; j < _userSaveData._haveStickerList.Count; j++)
+				{
+					StickerSaveData stickerSaveData = _userSaveData._haveStickerList[j];
+					StickerData addStickerData = _stickerList._stickerDatas.Find(x => x._stickerType == stickerSaveData._stickerType);
+					if(addStickerData != null)
+					{
+						_haveStickerDataSO._stickerDataLists[i]._stickerDatas.Add(addStickerData.DeepCopyStickerData(stickerSaveData));
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// 보유 뱃지 데이터를 설정한다
+		/// </summary>
+		public void SetBadgeDataList()
+		{
+			_haveBadgeDataSO._badgeLists.Clear();
+
+			int count = _userSaveData._haveBadgeSaveDatas.Count;
+
+			for (int i = 0; i < count; i++)
+			{
+				BadgeSaveData badgeSaveData = _userSaveData._haveBadgeSaveDatas[i];
+				_haveBadgeDataSO._badgeLists.Add(_standardBadgeDataSO._badgeLists.Find(x => x._badgeType == badgeSaveData._BadgeType).DeepCopyBadgeData(badgeSaveData));
+			}
+		}
+
+		/// <summary>
+		/// 덱에 카드를 추가한다
+		/// </summary>
+		public void AddCardInDeck(CardData cardData, int level)
+		{
+			if (CheckCanAddCard())
+			{
+				_inGameDeckListSO.cardDatas.Add(cardData);
+				_userSaveData._ingameSaveDatas.Add(CardSaveData.CopyDataToCardData(cardData));
+			}
+		}
+
+		/// <summary>
+		/// 인게임 카드 데이터를 새로고침한다
+		/// </summary>
+		/// <param name="cardData"></param>
+		public void ChangeCardInInGameSaveData(CardData cardData)
+		{
+			CardSaveData cardSaveData = _userSaveData._ingameSaveDatas.Find(x => x._cardNamingType == cardData._cardNamingType);
+			if(cardSaveData == null)
+			{
+				return;
+			}
+			CardSaveData changeSaveData = CardSaveData.CopyDataToCardData(cardData);
+			cardSaveData._unitType = changeSaveData._unitType;
+			cardSaveData._strategicType = changeSaveData._strategicType;
+			cardSaveData._skinType = changeSaveData._skinType;
+			cardSaveData._level = changeSaveData._level;
+			cardSaveData._count = changeSaveData._count;
+			cardSaveData._cardType = changeSaveData._cardType;
+			cardSaveData._cardNamingType = changeSaveData._cardNamingType;
+			cardSaveData.stickerType = changeSaveData.stickerType;
+		}
+
+		/// <summary>
+		/// 덱에 카드를 해제한다
+		/// </summary>
+		public void RemoveCardInDeck(CardNamingType cardNamingType)
+		{
+			_inGameDeckListSO.cardDatas.RemoveAt(_inGameDeckListSO.cardDatas.FindIndex(x => x._cardNamingType == cardNamingType));
+			_userSaveData._ingameSaveDatas.RemoveAt(_userSaveData._ingameSaveDatas.FindIndex(x => x._cardNamingType == cardNamingType));
+		}
+
+		/// <summary>
+		/// 카드를 추가할 수 있는지 체크
+		/// </summary>
+		public bool CheckCanAddCard()
+		{
+			if (_inGameDeckListSO.cardDatas.Count == 10)
+			{
+				_warrningComponent.SetWarrning("장착 카드는 10장을 넘어갈 수 없습니다");
+				return false;
+			}
+			return true;
+		}
+		/// <summary>
+		/// 게임을 할 수 있는지 체크
+		/// </summary>
+		public bool CheckCanPlayGame()
+		{
+			if (_inGameDeckListSO.cardDatas.Count < 2)
+			{
+				_warrningComponent.SetWarrning("장착 카드는 2장 이상이어야 합니다");
+				return false;
+			}
+			return true;
+		}
+
+		/// <summary>
+		/// 카드가 이미 장착되어 있는지 확인한다
+		/// </summary>
+		/// <returns></returns>
+		public bool ReturnAlreadyEquipCard(CardNamingType cardNamingType)
+		{
+			if (_inGameDeckListSO.cardDatas.Find(x => x._cardNamingType == cardNamingType) != null)
+			{
+				return true;
+			}
+			return false;
+		}
 	}
 }

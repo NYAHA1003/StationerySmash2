@@ -13,44 +13,45 @@ MonoBehaviour:
   m_Name: SaveDataSO
   m_EditorClassIdentifier: 
   userSaveData:
-    _unitSaveDatas:
+    _haveCardSaveDatas:
     - _level: 1
-      _count: 0
+      _count: 1
       _cardType: 1
-      _skinType: 100
       _cardNamingType: 100
+      _skinType: 100
       _strategicType: 0
       _unitType: 2
       stickerType: 0
     - _level: 1
-      _count: 0
+      _count: 1
       _cardType: 1
-      _skinType: 200
       _cardNamingType: 200
+      _skinType: 200
       _strategicType: 0
       _unitType: 3
       stickerType: 0
     _ingameSaveDatas:
-    - _level: 1
+    - _level: 0
       _count: 0
-      _cardType: 1
-      _skinType: 100
-      _cardNamingType: 100
+      _cardType: 0
+      _cardNamingType: 0
+      _skinType: 0
       _strategicType: 0
-      _unitType: 2
-      stickerType: 0
-    - _level: 1
-      _count: 0
-      _cardType: 1
-      _skinType: 200
-      _cardNamingType: 200
-      _strategicType: 0
-      _unitType: 3
+      _unitType: 0
       stickerType: 0
     _haveSkinList: 
+    _haveStickerList:
+    - _level: 1
+      _stickerType: 2
+    - _level: 1
+      _stickerType: 1
     _havePencilCaseList: 00000000
     _currentPencilCaseType: 0
-    _badgeSaveDatas: []
+    _haveBadgeSaveDatas:
+    - _level: 1
+      _BadgeType: 1
+    - _level: 1
+      _BadgeType: 2
     _currentProfileType: 3
     _haveProfileList: 01000000020000000300000004000000030000000300000003000000030000000300000003000000
     _materialDatas: []

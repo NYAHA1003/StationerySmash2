@@ -84,9 +84,9 @@ namespace Main.Deck
         /// </summary>
         public void UpdateHaveAndEquipDeck()
         {
-            AllFalseEquipCard();
             AllFalseHaveCard();
             SetHaveDeck();
+            AllFalseEquipCard();
             SetEquipDeck();
         }
 
@@ -94,7 +94,10 @@ namespace Main.Deck
         /// 카드 덱과 필통 덱을 전환한다
         /// </summary>
         public void OnChangePencilAndCards()
-		{
+        {
+            UpdateHaveAndEquipDeck();
+            UpdateHaveAndEquipPCDeck();
+
             _isActivePC = !_isActivePC;
 
             _haveDeckScroll.SetActive(!_isActivePC);
@@ -102,6 +105,7 @@ namespace Main.Deck
 
             _havePCDeckScroll.SetActive(_isActivePC);
             _equipPCDeckScroll.SetActive(_isActivePC);
+
         }
         public void Notify(ref UserSaveData userSaveData)
         {
@@ -124,6 +128,8 @@ namespace Main.Deck
         public void ChangePreset(int index)
 		{
             _userDeckData.ChangePreset(index);
+            _userDeckData.SetCardData();
+            _userDeckData.SetPencilCaseData();
             UpdateHaveAndEquipDeck();
             UpdateHaveAndEquipPCDeck();
         }
@@ -133,12 +139,11 @@ namespace Main.Deck
         /// </summary>
         public void SetHaveDeck()
         {
-            _userDeckData.SetCardData();
-            for (int i = 0; i < _userDeckData._deckList.cardDatas.Count; i++)
+            for (int i = 0; i < _userDeckData._haveDeckListSO.cardDatas.Count; i++)
             {
                 GameObject cardObj = PoolHaveCard();
                 Button cardButton = cardObj.GetComponent<Button>();
-                cardObj.GetComponent<DeckCard>().SetCard(_userDeckData._deckList.cardDatas[i]);
+                cardObj.GetComponent<DeckCard>().SetCard(_userDeckData._haveDeckListSO.cardDatas[i]);
                 cardButton.onClick.RemoveAllListeners();
                 cardButton.onClick.AddListener(() =>
                 {
@@ -154,20 +159,19 @@ namespace Main.Deck
         /// </summary>
         public void SetEquipDeck()
         {
-            _userDeckData.SetCardData();
-            for (int i = 0; i < _userDeckData._inGameDeckList.cardDatas.Count; i++)
-            {
-                GameObject cardObj = PoolEquipCard();
-                Button cardButton = cardObj.GetComponent<Button>();
-                cardObj.GetComponent<DeckCard>().SetCard(_userDeckData._inGameDeckList.cardDatas[i]);
-                cardButton.onClick.RemoveAllListeners();
-                cardButton.GetComponent<Button>().onClick.AddListener(() =>
-                {
-                    EventManager.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
-                    EventManager.TriggerEvent(EventsType.DeckSetting, ButtonType.cardDescription);
-                    
-                });
-            }
+            for (int i = 0; i < _userDeckData._inGameDeckListSO.cardDatas.Count; i++)
+			{
+				GameObject cardObj = PoolEquipCard();
+				Button cardButton = cardObj.GetComponent<Button>();
+				cardObj.GetComponent<DeckCard>().SetCard(_userDeckData._inGameDeckListSO.cardDatas[i]);
+				cardButton.onClick.RemoveAllListeners();
+				cardButton.GetComponent<Button>().onClick.AddListener(() =>
+				{
+					EventManager.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
+					EventManager.TriggerEvent(EventsType.DeckSetting, ButtonType.cardDescription);
+
+				});
+			}
         }
 
         /// <summary>
@@ -202,7 +206,7 @@ namespace Main.Deck
 				{
                     _haveDeckCards[i] = PoolHaveCard();
 				}
-                _haveDeckCards[i].GetComponent<DeckCard>().SetCard(_userDeckData._deckList.cardDatas[i]);
+                _haveDeckCards[i].GetComponent<DeckCard>().SetCard(_userDeckData._haveDeckListSO.cardDatas[i]);
             }
         }
         /// <summary>
