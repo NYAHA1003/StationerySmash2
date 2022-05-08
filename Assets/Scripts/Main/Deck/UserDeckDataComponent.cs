@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using Main.Deck;
 using Utill.Data;
@@ -144,6 +145,24 @@ namespace Main.Deck
 					_haveDeckListSO.cardDatas.Add(cardDataobj.DeepCopy(saveDataobj._level, skinData));
 				}
 			}
+		}
+
+		/// <summary>
+		/// 가나다 순으로 정렬한다
+		/// </summary>
+		public void HaveDeckSortABC()
+		{
+			var list = _haveDeckListSO.cardDatas.OrderBy(x => x.card_Name);
+			_haveDeckListSO.cardDatas = list.ToList<CardData>();
+		}
+
+		/// <summary>
+		/// 코스트 순으로 정렬한다
+		/// </summary>
+		public void HaveDeckSortCost()
+		{
+			var list = _haveDeckListSO.cardDatas.OrderBy(x => x.card_Cost);
+			_haveDeckListSO.cardDatas = list.ToList<CardData>();
 		}
 
 		/// <summary>
