@@ -6,6 +6,7 @@ using UnityEngine;
 [System.Serializable]
 public class One_ZeroStageTutorial : AbstractStageTutorial
 {
+
     public override void SetQueue()
     {
         ResetQueue(); 

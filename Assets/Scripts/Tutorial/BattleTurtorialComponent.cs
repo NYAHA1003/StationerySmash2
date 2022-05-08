@@ -5,8 +5,8 @@ using UnityEngine.UI;
 using TMPro; 
 using System;
 using Main.Event;
-using Utill.Data; 
-
+using Utill.Data;
+using Battle.Tutorial; 
 /// <summary>
 /// 설명으로 나올 텍스트타입
 /// </summary>
@@ -25,14 +25,14 @@ public class BattleTurtorialComponent : MonoBehaviour
     public static Queue<Action> tutorialEventQueue = new Queue<Action>();
 
     [SerializeField]  
-    private Image blackBackground; // 검은 배경이미지 
+    private Image blackBackground; // 검은 배경이미지,강조 
     [SerializeField]
     private Image explainer; // 설명하는 돼지 
 
     [SerializeField]
     private Button checkButton; // OK 버튼, 다음 설명으로 넘어감
-    [SerializeField]
 
+    [SerializeField]
     private TextMeshProUGUI expaineText; // 상단에 뜰 설명 텍스트    
     [SerializeField]
     private TextMeshProUGUI speechBubbleText; // 말풍선에 뜰 설명 텍스트  
@@ -42,13 +42,13 @@ public class BattleTurtorialComponent : MonoBehaviour
     private Canvas tutorialCanvas; // 튜토리얼 캔버스 
 
     [SerializeField]
-    private One_ZeroStageTutorial one_ZeroStageTutorial;
+    private TutorialTextSO tutorialSO; // 설명 텍스트정보
 
-
+    [SerializeField]
+    private One_ZeroStageTutorial one_ZeroStageTutorial; // 1-0스테이지 튜토리얼 
 
     private AbstractStageTutorial currentStageTutorial; // 현재 튜토리얼 
     //private bool isPause = false;
-    private bool isCheckInput = false;
     private void Start()
     {
         EventManager.StartListening(EventsType.NextExplain, NextExplain);
@@ -103,10 +103,10 @@ public class BattleTurtorialComponent : MonoBehaviour
     /// </summary>
     public void ExplainSummon()
     {
-        
         Debug.Log("유닛 소한 설명");
     }
 
+    
     ///// <summary>
     ///// 타임스케일 조정 ( timeScale이 0 이면 1 / 1 이면 0 으로 ) 
     ///// </summary>
