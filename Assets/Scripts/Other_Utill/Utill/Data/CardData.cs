@@ -15,7 +15,7 @@ public class CardData
     public string card_Name;
     public string card_Description;
     public int card_Cost;
-    public SkinData skinData;
+    public SkinData _skinData;
     public int level;
 
     //½ÇÇàÇü
@@ -35,7 +35,7 @@ public class CardData
     /// </summary>
     /// <param name="level"></param>
     /// <returns></returns>
-    public CardData DeepCopy(int level, SkinType skinType)
+    public CardData DeepCopy(int level, SkinData skinData)
     {
         CardData cardData = new CardData
         {
@@ -44,11 +44,7 @@ public class CardData
             card_Name = this.card_Name,
             card_Cost = this.card_Cost,
             level = level,
-            skinData = new SkinData
-            {       
-                _skinType = skinType,
-                _effectType = this.skinData._effectType,
-            },
+            _skinData = skinData,
             strategyData = new StarategyData
             {
                 starategyType = this.strategyData.starategyType,

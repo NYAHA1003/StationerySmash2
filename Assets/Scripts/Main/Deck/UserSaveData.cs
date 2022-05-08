@@ -51,7 +51,7 @@ namespace Main.Deck
             cardSaveData._count = 0;
             cardSaveData._cardType = cardData.cardType;
             cardSaveData._cardNamingType = cardData._cardNamingType;
-            cardSaveData._skinType = cardData.skinData._skinType;
+            cardSaveData._skinType = cardData._skinData._skinType;
             cardSaveData._unitType = cardData.unitData.unitType;
             cardSaveData._strategicType = cardData.strategyData.starategyType;
             cardSaveData.stickerType = cardData.unitData.stickerData._stickerType;

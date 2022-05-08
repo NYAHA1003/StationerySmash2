@@ -30,7 +30,7 @@ namespace Main.Deck
         public void SetCard(CardData cardData)
         {
             _cardNamingType = cardData._cardNamingType;
-            _cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
+            _cardImage.sprite = SkinData.GetSkin(cardData._skinData._skinType);
             _unitNameText.text = cardData.card_Name;
             _CostText.text = $"{cardData.card_Cost}";
             _stickerRect.gameObject.SetActive(false);

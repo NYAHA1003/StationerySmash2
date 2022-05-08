@@ -90,7 +90,7 @@ public class Unit : MonoBehaviour
         _unitData = dataBase.unitData;
 
         //스킨 데이터 받아오기
-        _skinData = dataBase.skinData;
+        _skinData = dataBase._skinData;
 
         //팀, 이름 설정
         _eTeam = eTeam;
@@ -119,7 +119,7 @@ public class Unit : MonoBehaviour
         _unitStateEff.SetStateEff(this, _unitSprite.SpriteRenderer);
 
         //스프라이트 초기화
-        _unitSprite.SetUIAndSprite(eTeam, SkinData.GetSkin(dataBase.skinData._skinType));
+        _unitSprite.SetUIAndSprite(eTeam, SkinData.GetSkin(dataBase._skinData._skinType));
         _unitSprite.UpdateDelayBar(_unitStat.AttackDelay);
         _unitSprite.ShowUI(true);
         _unitSprite.SetTeamColor(eTeam);

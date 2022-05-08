@@ -325,7 +325,7 @@ namespace Main.Card
 			//스킨데이터가 있다면 유닛 데이터의 스킨데이터를 변경
 			if (getSkinData != null)
 			{
-				_selectCardData.skinData = getSkinData;
+				_selectCardData._skinData = getSkinData;
 				_selectDeckCard.SetCard(_selectCardData);
 				_deckCard.SetCard(_selectCardData);
 			}

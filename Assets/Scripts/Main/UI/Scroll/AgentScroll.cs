@@ -123,17 +123,18 @@ namespace Main.Scroll
         /// <param name="deltaValue"></param>
         protected bool DeltaSlide(float deltaValue)
         {
-            NotifyToObserver();
             if (deltaValue > 18 && _curPos - _distance >= 0)
             {
                 ++_targetIndex;
                 _targetPos = _curPos - _distance;
+                NotifyToObserver();
                 return true; 
             }
             else if (deltaValue < -18 && _curPos + _distance <= 1.01f)
             {
                 --_targetIndex;
                 _targetPos = _curPos + _distance;
+                NotifyToObserver();
                 return true; 
             }
             return false; 

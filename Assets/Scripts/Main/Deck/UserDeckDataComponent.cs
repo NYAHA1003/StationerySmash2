@@ -27,6 +27,9 @@ namespace Main.Deck
 		public BadgeListSO _standardBadgeDataSO; //기준 뱃지 데이터들
 		public BadgeListSO _haveBadgeDataSO; //보유 뱃지 데이터들
 
+		//스킨 관련
+		public SkinListSO _skinListSO; //스킨 데이터들
+
 		//프리셋
 		[SerializeField]
 		private PresetSaveDataSO _presetDataSO1 = null;
@@ -45,6 +48,7 @@ namespace Main.Deck
 			SaveManager._instance.SaveData.AddObserver(this);
 			_userSaveData ??= SaveManager._instance.SaveData.userSaveData;
 
+			SetCardData();
 			SetPencilCaseData();
 			ChangePreset(_userSaveData._setPrestIndex);
 		}
@@ -136,7 +140,8 @@ namespace Main.Deck
 				if (cardDataobj != null)
 				{
 					//세이브데이터의 레벨만큼 수치를 변경하고 새로운 카드데이터로 만들어 받아 덱리스트에 추가
-					_haveDeckListSO.cardDatas.Add(cardDataobj.DeepCopy(saveDataobj._level, saveDataobj._skinType));
+					SkinData skinData = _skinListSO._cardNamingSkins.Find(x => x._cardNamingType == saveDataobj._cardNamingType)._skinDatas.Find(x => x._skinType == saveDataobj._skinType);
+					_haveDeckListSO.cardDatas.Add(cardDataobj.DeepCopy(saveDataobj._level, skinData));
 				}
 			}
 		}
@@ -249,7 +254,7 @@ namespace Main.Deck
 		{
 			if (CheckCanAddCard())
 			{
-				_inGameDeckListSO.cardDatas.Add(cardData.DeepCopy(level, cardData.skinData._skinType));
+				_inGameDeckListSO.cardDatas.Add(cardData);
 				_userSaveData._ingameSaveDatas.Add(CardSaveData.CopyDataToCardData(cardData));
 			}
 		}

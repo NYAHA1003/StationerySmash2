@@ -84,9 +84,9 @@ namespace Main.Deck
         /// </summary>
         public void UpdateHaveAndEquipDeck()
         {
-            AllFalseEquipCard();
             AllFalseHaveCard();
             SetHaveDeck();
+            AllFalseEquipCard();
             SetEquipDeck();
         }
 
@@ -133,7 +133,6 @@ namespace Main.Deck
         /// </summary>
         public void SetHaveDeck()
         {
-            _userDeckData.SetCardData();
             for (int i = 0; i < _userDeckData._haveDeckListSO.cardDatas.Count; i++)
             {
                 GameObject cardObj = PoolHaveCard();
@@ -154,20 +153,19 @@ namespace Main.Deck
         /// </summary>
         public void SetEquipDeck()
         {
-            _userDeckData.SetCardData();
             for (int i = 0; i < _userDeckData._inGameDeckListSO.cardDatas.Count; i++)
-            {
-                GameObject cardObj = PoolEquipCard();
-                Button cardButton = cardObj.GetComponent<Button>();
-                cardObj.GetComponent<DeckCard>().SetCard(_userDeckData._inGameDeckListSO.cardDatas[i]);
-                cardButton.onClick.RemoveAllListeners();
-                cardButton.GetComponent<Button>().onClick.AddListener(() =>
-                {
-                    EventManager.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
-                    EventManager.TriggerEvent(EventsType.DeckSetting, ButtonType.cardDescription);
-                    
-                });
-            }
+			{
+				GameObject cardObj = PoolEquipCard();
+				Button cardButton = cardObj.GetComponent<Button>();
+				cardObj.GetComponent<DeckCard>().SetCard(_userDeckData._inGameDeckListSO.cardDatas[i]);
+				cardButton.onClick.RemoveAllListeners();
+				cardButton.GetComponent<Button>().onClick.AddListener(() =>
+				{
+					EventManager.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
+					EventManager.TriggerEvent(EventsType.DeckSetting, ButtonType.cardDescription);
+
+				});
+			}
         }
 
         /// <summary>
@@ -175,7 +173,6 @@ namespace Main.Deck
         /// </summary>
         public void SetHavePCDeck()
         {
-            _userDeckData.SetPencilCaseData();
             for (int i = 0; i < _userDeckData._havePCDataSO._pencilCaseDataList.Count; i++)
             {
                 GameObject cardObj = PoolHavePCCard();
