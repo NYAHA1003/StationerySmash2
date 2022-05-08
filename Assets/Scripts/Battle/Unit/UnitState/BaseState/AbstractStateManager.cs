@@ -79,7 +79,6 @@ namespace Battle.Units
 					break;
 				case eState.DIE:
 					_animator.SetBool("isDie", true);
-					_animator.SetBool("isWait", false);
 					break;
 				case eState.THROW:
 					_animator.SetBool("isThrow", true);

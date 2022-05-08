@@ -94,6 +94,14 @@ public class Unit : MonoBehaviour
 
         //팀, 이름 설정
         _eTeam = eTeam;
+        if(_eTeam == TeamType.MyTeam)
+		{
+            transform.localScale = new Vector3(1, 1, 1);
+		}
+        else if(_eTeam == TeamType.EnemyTeam)
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
         transform.name = dataBase.card_Name + _eTeam;
 
         //물리판정 설정

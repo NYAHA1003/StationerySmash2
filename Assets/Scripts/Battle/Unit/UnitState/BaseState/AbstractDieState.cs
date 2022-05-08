@@ -11,9 +11,6 @@ namespace Battle.Units
 
 	public abstract class AbstractDieState : AbstractUnitState
 	{
-		Tweener _animationSKTweenerRotate = default;
-		Tweener _animationSKTweenerJump = default;
-		Tweener _animationSKTweenerScale = default;
 		public override void Enter()
 		{
 			_curState = eState.DIE;
@@ -36,9 +33,11 @@ namespace Battle.Units
 			//랜덤으로 죽는 애니메이션 재생
 			_stateManager.SetAnimation(eState.DIE);
 			RandomDieAnimation();
+			_myUnit.StartCoroutine(DeleteUnit());
 
 			base.Enter();
 		}
+
 
 		/// <summary>
 		/// 랜덤으로 3가지 죽음 애니메이션중 하나를 사용
@@ -65,33 +64,7 @@ namespace Battle.Units
 		/// </summary>
 		protected void AnimationScreenKO()
 		{
-			//날라가는 위치 설정
-			Vector3 diePos = new Vector3(_myTrm.position.x, _myTrm.position.y + 0.4f, 0);
-			if (_myUnit.ETeam == TeamType.MyTeam)
-			{
-				diePos.x -= Random.Range(0.1f, 0.2f);
-			}
-			if (_myUnit.ETeam == TeamType.EnemyTeam)
-			{
-				diePos.x += Random.Range(0.1f, 0.2f);
-			}
-
-			_mySprTrm.DOLocalRotate(new Vector3(0, 0, -360), 0.3f, RotateMode.FastBeyond360).SetLoops(3, LoopType.Incremental);
-			_myTrm.DOJump(diePos, 2f, 1, 1f);
-			_mySprTrm.DOScale(10, 0.6f).SetDelay(0.3f).SetEase(Parabola.Return_ScreenKoCurve()).OnComplete(() =>
-			{
-				_mySprTrm.eulerAngles = new Vector3(0, 0, Random.Range(_mySprTrm.eulerAngles.z - 10, _mySprTrm.eulerAngles.z + 10));
-				_mySprTrm.DOShakePosition(0.6f, 0.1f, 30).OnComplete(() =>
-				{
-					_mySprTrm.DOMoveY(-3, 1).OnComplete(() =>
-					{
-						ResetSprTrm();
-						_curEvent = eEvent.EXIT;
-						_myUnit.Delete_Unit();
-					});
-				});
-
-			});
+			_myUnit.Animator.SetTrigger("isScreenKO");
 		}
 
 		/// <summary>
@@ -99,25 +72,7 @@ namespace Battle.Units
 		/// </summary>
 		protected void AnimationStarKO()
 		{
-			//날라가는 위치 설정
-			Vector3 diePos = new Vector3(_myTrm.position.x, 1, 0);
-			if (_myUnit.ETeam == TeamType.MyTeam)
-			{
-				diePos.x += Random.Range(-2f, -1f);
-			}
-			if (_myUnit.ETeam == TeamType.EnemyTeam)
-			{
-				diePos.x += Random.Range(1f, 2f);
-			}
-
-			_mySprTrm.DOLocalRotate(new Vector3(0, 0, -360), 0.5f, RotateMode.FastBeyond360).SetLoops(-1, LoopType.Incremental);
-			_mySprTrm.DOScale(0.1f, 1f).SetDelay(1);
-			_myTrm.DOJump(diePos, 3, 1, 2f).OnComplete(() =>
-			{
-				ResetSprTrm();
-				_curEvent = eEvent.EXIT;
-				_myUnit.Delete_Unit();
-			});
+			_myUnit.Animator.SetTrigger("isStarKO");
 		}
 
 		/// <summary>
@@ -125,28 +80,20 @@ namespace Battle.Units
 		/// </summary>
 		protected void AnimationOutKO()
 		{
-			//날라가는 위치 설정
-			Vector3 diePos = new Vector3(_myTrm.position.x, _myTrm.position.y - 2, 0);
-			if (_myUnit.ETeam == TeamType.MyTeam)
-			{
-				diePos.x -= _stateManager.GetStageData().max_Range + 1;
-			}
-			if (_myUnit.ETeam == TeamType.EnemyTeam)
-			{
-				diePos.x += _stateManager.GetStageData().max_Range + 1;
-			}
-
-			float time = Mathf.Abs(_myTrm.position.x - diePos.x) / 2;
-			_mySprTrm.DOScale(3f, time);
-			_mySprTrm.DOLocalRotate(new Vector3(0, 0, -360), time, RotateMode.FastBeyond360);
-			_myTrm.DOJump(diePos, Random.Range(3, 5), 1, time).OnComplete(() =>
-			{
-				ResetSprTrm();
-				_curEvent = eEvent.EXIT;
-				_myUnit.Delete_Unit();
-			});
+			_myUnit.Animator.SetTrigger("isOutKO");
 		}
 
+		/// <summary>
+		/// 애니메이션 끝난 후 유닛 삭제
+		/// </summary>
+		/// <returns></returns>
+		private IEnumerator DeleteUnit()
+		{
+			yield return new WaitForSeconds(2f);
+			_myUnit.Delete_Unit();
+			ResetSprTrm();
+			_curEvent = eEvent.EXIT;
+		}
 	}
 
 }
