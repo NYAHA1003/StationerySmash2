@@ -44,8 +44,9 @@ namespace Main.Deck
 		{
 			SaveManager._instance.SaveData.AddObserver(this);
 			_userSaveData ??= SaveManager._instance.SaveData.userSaveData;
-			ChangePreset(_userSaveData._setPrestIndex);
 
+			SetPencilCaseData();
+			ChangePreset(_userSaveData._setPrestIndex);
 		}
 
 		public void Notify(ref UserSaveData userSaveData)
@@ -67,6 +68,20 @@ namespace Main.Deck
 			SetStickerDataList();
 
 		}
+
+
+		/// <summary>
+		/// 필통 데이터 설정
+		/// </summary>
+		public void SetPencilCaseData()
+		{
+			SetPencilCaseList();
+			SetInGamePencilCase(_havePCDataSO._pencilCaseDataList.Find(x => x._pencilCaseType == _userSaveData._currentPencilCaseType));
+
+			//뱃지 데이터 초기화
+			SetBadgeDataList();
+		}
+
 
 		/// <summary>
 		/// 프리셋 변경
@@ -93,8 +108,8 @@ namespace Main.Deck
 
 			PencilCaseData pencilCaseData = _havePCDataSO._pencilCaseDataList.Find(x => x._pencilCaseType == presetSaveDataSO._pencilCaseData._pencilCaseType);
 			PencilCaseData changePCData = null;
-			changePCData = pencilCaseData.DeepCopyNoneBadge();
 
+			changePCData = pencilCaseData.DeepCopyNoneBadge();
 			for (int i = 0; i < presetSaveDataSO._pencilCaseData._badgeDatas.Count; i++)
 			{
 				changePCData._badgeDatas.Add(_haveBadgeDataSO._badgeLists.Find(x => x._badgeType == presetSaveDataSO._pencilCaseData._badgeDatas[i]._BadgeType));
@@ -124,18 +139,6 @@ namespace Main.Deck
 					_haveDeckListSO.cardDatas.Add(cardDataobj.DeepCopy(saveDataobj._level, saveDataobj._skinType));
 				}
 			}
-		}
-
-		/// <summary>
-		/// 필통 데이터 설정
-		/// </summary>
-		public void SetPencilCaseData()
-		{
-			SetPencilCaseList();
-			SetInGamePencilCase(_havePCDataSO._pencilCaseDataList.Find(x => x._pencilCaseType == _userSaveData._currentPencilCaseType));
-
-			//뱃지 데이터 초기화
-			SetBadgeDataList();
 		}
 
 		/// <summary>
