@@ -2,21 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Utill.Load;
 
-public abstract class AbstractStageTutorial 
+public abstract class AbstractStageTutorial
 {
     private bool isPause = false;
 
     /// <summary>
     /// 큐 설정 
     /// </summary>
-    public abstract void SetQueue(); 
+    public abstract void SetQueue();
     /// <summary>
     /// 큐 초기화 
     /// </summary>
     public void ResetQueue()
     {
-        BattleTurtorialComponent.tutorialEventQueue.Clear(); 
+        BattleTurtorialComponent.tutorialEventQueue.Clear();
     }
 
     /// <summary>
@@ -37,9 +38,20 @@ public abstract class AbstractStageTutorial
     /// <summary>
     /// 다음 설명 
     /// </summary>
-    public void NextExplain()
-    {
-        Debug.Log("다음 설명");
-        // 말풍선 텍스트 다른 걸로 바뀜 
-    }
+    public abstract TextType NextExplain();
+    // Debug.Log("다음 설명");
+    // 말풍선 텍스트 다른 걸로 바뀜 
 }
+
+public class TextType
+{
+    public TextType(BattleStageType battleStageType, int orderIndex)
+    {
+        _battleStageType = battleStageType;
+        _orderIndex = orderIndex
+    }
+
+    public BattleStageType _battleStageType;
+    public int _orderIndex;
+}
+

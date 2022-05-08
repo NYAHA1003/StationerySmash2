@@ -6,7 +6,6 @@ using UnityEngine;
 [System.Serializable]
 public class One_ZeroStageTutorial : AbstractStageTutorial
 {
-
     public override void SetQueue()
     {
         ResetQueue(); 
@@ -40,5 +39,10 @@ public class One_ZeroStageTutorial : AbstractStageTutorial
     {
         SetTimeScale(); 
         Debug.Log("업그레이드 설명"); 
+    }
+
+    public override TextType NextExplain()
+    {
+        return 
     }
 }

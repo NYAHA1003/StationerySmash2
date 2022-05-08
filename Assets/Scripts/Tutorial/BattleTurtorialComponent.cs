@@ -6,7 +6,8 @@ using TMPro;
 using System;
 using Main.Event;
 using Utill.Data;
-using Battle.Tutorial; 
+using Battle.Tutorial;
+using Utill.Load;
 /// <summary>
 /// 설명으로 나올 텍스트타입
 /// </summary>
@@ -42,43 +43,41 @@ public class BattleTurtorialComponent : MonoBehaviour
     private Canvas tutorialCanvas; // 튜토리얼 캔버스 
 
     [SerializeField]
-    private TutorialTextSO tutorialSO; // 설명 텍스트정보
+    private TutorialTextSO tutorialTextSO; // 설명 텍스트정보
 
     [SerializeField]
     private One_ZeroStageTutorial one_ZeroStageTutorial; // 1-0스테이지 튜토리얼 
 
     private AbstractStageTutorial currentStageTutorial; // 현재 튜토리얼 
+    private BattleStageType currentBattleStageType; 
     //private bool isPause = false;
     private void Start()
     {
+        speechBubbleText.text = tutorialTextSO._textDatas[(int)currentBattleStageType]._tutorialText[0];
         EventManager.StartListening(EventsType.NextExplain, NextExplain);
-
     }
 
     /// <summary>
     /// 현재 스테이지에 따른 튜토리얼 설정 
     /// </summary>
     /// <param name="tutorialType"></param>
-    public void SetTutorial(TutorialType tutorialType)
+    /// SceneLoadButtonManager의 SetBattleLoadButton에서 이벤트로 설정해줄거임
+    public void SetTutorial(BattleStageType battleStageType)
     {
-        switch (tutorialType)
+        currentBattleStageType = battleStageType; 
+        switch (battleStageType)
         {
-            case TutorialType.One_Zero:
-                currentStageTutorial = one_ZeroStageTutorial;
+            case BattleStageType.S1_1:
                 break;
-            case TutorialType.One_One:
+            case BattleStageType.S1_2:
                 break;
-            case TutorialType.One_Two:
+            case BattleStageType.S1_3:
                 break;
-            case TutorialType.One_Three:
-                break;
-            case TutorialType.One_Four:
-                break;
-            case TutorialType.One_Boss:
+            case BattleStageType.S1_4:
                 break;
         }
         ShowTutorialCanvas(); 
-        currentStageTutorial.SetQueue(); 
+        currentStageTutorial.SetQueue();
     }
 
     /// <summary>
@@ -106,7 +105,7 @@ public class BattleTurtorialComponent : MonoBehaviour
         Debug.Log("유닛 소한 설명");
     }
 
-    
+
     ///// <summary>
     ///// 타임스케일 조정 ( timeScale이 0 이면 1 / 1 이면 0 으로 ) 
     ///// </summary>
