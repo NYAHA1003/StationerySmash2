@@ -94,7 +94,10 @@ namespace Main.Deck
         /// 카드 덱과 필통 덱을 전환한다
         /// </summary>
         public void OnChangePencilAndCards()
-		{
+        {
+            UpdateHaveAndEquipDeck();
+            UpdateHaveAndEquipPCDeck();
+
             _isActivePC = !_isActivePC;
 
             _haveDeckScroll.SetActive(!_isActivePC);
@@ -102,6 +105,7 @@ namespace Main.Deck
 
             _havePCDeckScroll.SetActive(_isActivePC);
             _equipPCDeckScroll.SetActive(_isActivePC);
+
         }
         public void Notify(ref UserSaveData userSaveData)
         {
@@ -173,6 +177,7 @@ namespace Main.Deck
         /// </summary>
         public void SetHavePCDeck()
         {
+            _userDeckData.SetPencilCaseData();
             for (int i = 0; i < _userDeckData._havePCDataSO._pencilCaseDataList.Count; i++)
             {
                 GameObject cardObj = PoolHavePCCard();
