@@ -20,13 +20,7 @@ namespace Main.Card
 
 		//좌측 카드
 		[SerializeField]
-		private TextMeshProUGUI _nameText = null;
-		[SerializeField]
-		private TextMeshProUGUI _descriptionText = null;
-		[SerializeField]
-		private Image _cardImage = null;
-		[SerializeField]
-		private Image _stickerImage = null;
+		private DeckCard _deckCard = null;
 
 		//기타
 		[SerializeField]
@@ -61,7 +55,6 @@ namespace Main.Card
 		private Transform _stickerButtonParent = null;
 		[SerializeField]
 		private StickerDataSO _haveStickerDataSO = null;
-
 
 		//스킨창 
 		[SerializeField]
@@ -128,7 +121,7 @@ namespace Main.Card
 			}
 			SetSkinList(_selectCardData);
 			SetStickerList(_selectCardData);
-			SetSkinImage();
+			_deckCard.SetCard(_selectCardData);
 		}
 
 		/// <summary>
@@ -141,11 +134,6 @@ namespace Main.Card
 			_stickerPanel.SetActive(false);
 
 			_infoScroll.SetIcons(3);
-
-			//이름, 이미지, 설명 설정
-			_nameText.text = cardData.card_Name;
-			_cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
-			_descriptionText.text = cardData.card_Description;
 		}
 		/// <summary>
 		/// 유닛 소환형 카드의 UI 설정
@@ -158,11 +146,6 @@ namespace Main.Card
 
 			//스티커 패널 설정
 			_infoScroll.SetIcons(4);
-
-			//이름, 이미지, 설명 설정
-			_nameText.text = cardData.card_Name;
-			_cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
-			_descriptionText.text = cardData.card_Description;
 
 			//스탯 텍스트 설정
 			_hpText.text = cardData.unitData.unit_Hp.ToString();
@@ -181,11 +164,6 @@ namespace Main.Card
 			_stickerPanel.SetActive(false);
 
 			_infoScroll.SetIcons(3);
-
-			//이름, 이미지, 설명 설정
-			_nameText.text = cardData.card_Name;
-			_cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
-			_descriptionText.text = cardData.card_Description;
 		}
 		/// <summary>
 		/// 설치형의 UI 설정
@@ -197,11 +175,6 @@ namespace Main.Card
 			_stickerPanel.SetActive(false);
 
 			_infoScroll.SetIcons(3);
-
-			//이름, 이미지, 설명 설정
-			_nameText.text = cardData.card_Name;
-			_cardImage.sprite = SkinData.GetSkin(cardData.skinData._skinType);
-			_descriptionText.text = cardData.card_Description;
 		}
 
 		//스티커 함수들
@@ -282,7 +255,6 @@ namespace Main.Card
 			_selectCardData.unitData.stickerData = stickerData;
 			_selectDeckCard.SetCard(_selectCardData);
 			_userDeckData.ChangeCardInInGameSaveData(_selectCardData);
-			SetSkinImage();
 		}
 
 		/// <summary>
@@ -298,32 +270,7 @@ namespace Main.Card
 			_selectCardData.unitData.stickerData._decription = "";
 			_selectDeckCard.SetCard(_selectCardData);
 			_userDeckData.ChangeCardInInGameSaveData(_selectCardData);
-			SetSkinImage();
 		}
-
-		/// <summary>
-		/// 스티커 이미지 설정
-		/// </summary>
-		public void SetSkinImage()
-		{
-			if(_selectCardData.cardType == CardType.SummonUnit)
-			{
-				if(_selectCardData.unitData.stickerData._stickerType != StickerType.None)
-				{
-					_stickerImage.sprite = SkinData.GetSkin(_selectCardData.unitData.stickerData._skinType);
-					_stickerImage.gameObject.SetActive(true);
-				}
-				else
-				{
-					_stickerImage.gameObject.SetActive(false);
-				}
-			}
-			else
-			{
-				_stickerImage.gameObject.SetActive(false);
-			}
-		}
-
 
 		//스킨 함수들
 
@@ -380,7 +327,7 @@ namespace Main.Card
 			{
 				_selectCardData.skinData = getSkinData;
 				_selectDeckCard.SetCard(_selectCardData);
-				_cardImage.sprite = SkinData.GetSkin(_selectCardData.skinData._skinType);
+				_deckCard.SetCard(_selectCardData);
 			}
 		}
 
