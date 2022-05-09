@@ -68,23 +68,22 @@ public class BattleTurtorialComponent : MonoBehaviour
     /// <param name="tutorialType"></param>
     /// SceneLoadButtonManager의 SetBattleLoadButton에서 이벤트로 설정해줄거임
      [ContextMenu("이름")]
-    public void SetTutorial(/*BattleStageType battleStageType*/)
+    public void SetTutorial(BattleStageType battleStageType)
     {
-        //currentBattleStageType = battleStageType; 
-        //switch (battleStageType)
-        //{
-        //    case BattleStageType.S1_1:
-        //        currentStageTutorial = one_ZeroStageTutorial; 
-        //        break;
-        //    case BattleStageType.S1_2:
-        //        break;
-        //    case BattleStageType.S1_3:
-        //        break;
-        //    case BattleStageType.S1_4:
-        //        break;
-        //}
+        currentBattleStageType = battleStageType;
+        switch (battleStageType)
+        {
+            case BattleStageType.S1_1:
+                currentStageTutorial = one_ZeroStageTutorial;
+                break;
+            case BattleStageType.S1_2:
+                break;
+            case BattleStageType.S1_3:
+                break;
+            case BattleStageType.S1_4:
+                break;
+        }
         SetTimeScale(); 
-        currentStageTutorial = one_ZeroStageTutorial;
         ActiveTutorialCanvas(); 
         currentStageTutorial.SetQueue();
     }

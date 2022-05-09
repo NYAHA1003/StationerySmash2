@@ -23,9 +23,11 @@ public class One_ZeroStageTutorial : AbstractStageTutorial
     /// </summary>
     public void ExplainSummon()
     {
-        //SetTimeScale();
+        //SetTimeScalse();
         battleTurtorialComponent.SpeechBubbleText.text = battleTurtorialComponent.TutorialTextSO._textDatas[(int)BattleStageType.S1_1]._tutorialText[0];
-        battleTurtorialComponent.BlackBackground.GetComponent<RectTransform>().DOMove(impactTrans[0].position,0.3f);
+        //battleTurtorialComponent.BlackBackground.GetComponent<RectTransform>().DOAnchorPos(impactTrans[0].anchoredPosition, 0.3f);
+        battleTurtorialComponent.BlackBackground.GetComponent<RectTransform>().anchoredPosition = impactTrans[0].anchoredPosition;
+
         // 설명 텍스트에 텍스트 넣어야해 
         // 강조하는 부분 변경 
 
@@ -38,7 +40,8 @@ public class One_ZeroStageTutorial : AbstractStageTutorial
     {
         //SetTimeScale(); 
         battleTurtorialComponent.SpeechBubbleText.text = battleTurtorialComponent.TutorialTextSO._textDatas[(int)BattleStageType.S1_1]._tutorialText[1];
-        //impactTrans[0].DOAnc
+        //battleTurtorialComponent.BlackBackground.GetComponent<RectTransform>().DOAnchorPos(impactTrans[1].anchoredPosition,0.3f);
+        battleTurtorialComponent.BlackBackground.GetComponent<RectTransform>().anchoredPosition = impactTrans[1].anchoredPosition;
         Debug.Log("돈 설명"); 
     }
     /// <summary>
@@ -48,7 +51,9 @@ public class One_ZeroStageTutorial : AbstractStageTutorial
     {
         //SetTimeScale(); 
         battleTurtorialComponent.SpeechBubbleText.text = battleTurtorialComponent.TutorialTextSO._textDatas[(int)BattleStageType.S1_1]._tutorialText[2];
-        battleTurtorialComponent.BlackBackground.GetComponent<RectTransform>().DOMove(impactTrans[2].position,0.3f);
+        //battleTurtorialComponent.BlackBackground.GetComponent<RectTransform>().DOAnchorPos(impactTrans[2].anchoredPosition, 0.3f);
+        battleTurtorialComponent.BlackBackground.GetComponent<RectTransform>().anchoredPosition = impactTrans[2].anchoredPosition;
+
         Debug.Log("업그레이드 설명"); 
     }
 }
