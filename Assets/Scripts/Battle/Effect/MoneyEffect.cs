@@ -4,7 +4,7 @@ using DG.Tweening;
 
 public class MoneyEffect : MonoBehaviour
 {
-	//ÀÎ½ºÆåÅÍ ÂüÁ¶ º¯¼ö
+	//ï¿½Î½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	[SerializeField]
 	private ParticleSystem _pSystem;
 	[SerializeField]
@@ -12,7 +12,7 @@ public class MoneyEffect : MonoBehaviour
 	[SerializeField]
 	private float _speed = 5f;
 
-	//º¯¼ö
+	//ï¿½ï¿½ï¿½ï¿½
 	private ParticleSystem.Particle[] _particles = new ParticleSystem.Particle[1000];
 	private int _numParticlesAlive;
 	private float _step = 0;
@@ -48,7 +48,7 @@ public class MoneyEffect : MonoBehaviour
 				_particles[i].position = Vector3.MoveTowards(_particles[i].position, _target.anchoredPosition3D, _step);
 				if(_particles[i].position == _target.anchoredPosition3D)
 				{
-					_particles[i].lifetime = 0f;
+					_particles[i].remainingLifetime = 0f;
 				}
 			}
 			_pSystem.SetParticles(_particles, _numParticlesAlive);
