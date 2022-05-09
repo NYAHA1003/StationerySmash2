@@ -30,6 +30,23 @@ namespace Main.Deck
         public int _winCount = 0; //승리한 횟수
         public int _winningStreakCount = 0; //가장 크게 연승한 횟수
         public int _loseCount = 0; //패배한 횟수
+    
+        /// <summary>
+        /// 경험치 증가
+        /// </summary>
+        public void AddExp(int exp)
+		{
+            _nowExp += exp;
+            for(;_nowExp > 0; )
+            {
+                if (_nowExp > (_level * 100))
+                {
+                    _level++;
+                    _nowExp -= _level * 100;
+                }
+            }
+            _nowExp = 0;
+		}
     }
 
     [System.Serializable]
