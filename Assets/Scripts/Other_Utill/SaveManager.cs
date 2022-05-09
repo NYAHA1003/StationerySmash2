@@ -38,6 +38,11 @@ public class SaveManager : MonoSingleton<SaveManager>
 		}
 	}
 
+	private void Start()
+	{
+        DeliverDataToObserver();
+    }
+
 	/// <summary>
 	/// 저장된 Json 데이터를 불러오기
 	/// </summary>
@@ -80,5 +85,15 @@ public class SaveManager : MonoSingleton<SaveManager>
     public void DeliverDataToObserver()
     {
         _saveData.DeliverDataToObserver();
+    }
+
+
+    /// <summary>
+    /// 경험치 증가
+    /// </summary>
+    public void AddExp(int exp)
+	{
+        _instance.SaveData.userSaveData.AddExp(exp);
+        DeliverDataToObserver();
     }
 }

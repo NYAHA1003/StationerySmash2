@@ -77,6 +77,25 @@ namespace Main.Deck
             EventManager.StartListening(EventsType.UpdateHaveAndEquipPCDeck, UpdateHaveAndEquipPCDeck);
         }
 
+        /// <summary>
+        /// 정렬 방식을 바꾼다
+        /// </summary>
+        public void ChangeSortSystem(int type)
+		{
+            switch(type)
+			{
+                //가나다
+                case 0:
+                    _userDeckData.HaveDeckSortABC();
+                    break;
+
+                //코스트
+                case 1:
+                    _userDeckData.HaveDeckSortCost();
+                    break;
+            }
+            UpdateHaveAndEquipDeck();
+        }
         
 
         /// <summary>
@@ -148,7 +167,7 @@ namespace Main.Deck
                 cardButton.onClick.AddListener(() =>
                 {
                     EventManager.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
-                    EventManager.TriggerEvent(EventsType.DeckSetting, ButtonType.cardDescription);
+                    EventManager.TriggerEvent(EventsType.ActiveButtonComponent, ButtonType.cardDescription);
                     
                 });
             }
@@ -168,7 +187,7 @@ namespace Main.Deck
 				cardButton.GetComponent<Button>().onClick.AddListener(() =>
 				{
 					EventManager.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
-					EventManager.TriggerEvent(EventsType.DeckSetting, ButtonType.cardDescription);
+					EventManager.TriggerEvent(EventsType.ActiveButtonComponent, ButtonType.cardDescription);
 
 				});
 			}

@@ -17,6 +17,8 @@ namespace Main.Collection
         [SerializeField]
         private TextMeshProUGUI _nameText = null;
         [SerializeField]
+        private TextMeshProUGUI _descriptionText = null;
+        [SerializeField]
         private Image _collectionImage = null;
         [SerializeField]
         private Button _createButton = null;
@@ -45,6 +47,7 @@ namespace Main.Collection
             {
                 _collectionData = null;
                 _nameText.text = "없음";
+                _descriptionText.text = "없음";
                 _collectionImage.sprite = null;
             }
             else
@@ -58,6 +61,26 @@ namespace Main.Collection
                 {
                     _nameText.text = collectionData._name;
                 }
+                _descriptionText.text = collectionData._description;
+
+                if(collectionData._collectionType == CollectionType.Normal)
+				{
+                    for(int i = 0; i < collectionData._needCardNamingType.Count; i++)
+					{
+                        _descriptionText.text += '\n';
+                        _descriptionText.text += collectionData._needCardNamingType[i].ToString() + ": ";
+                        _descriptionText.text += collectionData._needCardNamingCount[i].ToString() + "개";
+					}
+				}
+                else if(collectionData._collectionType == CollectionType.Skin)
+                {
+                    for (int i = 0; i < collectionData._needSkinTypes.Count; i++)
+                    {
+                        _descriptionText.text += '\n';
+                        _descriptionText.text += collectionData._needSkinTypes[i].ToString();
+                    }
+                }
+
                 _collectionImage.sprite = collectionData._collectionSprite;
             }
         }

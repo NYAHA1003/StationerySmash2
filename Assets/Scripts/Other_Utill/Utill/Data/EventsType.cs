@@ -15,14 +15,15 @@
         UpdateHaveAndEquipDeck, //보유 덱과 장착 덱 초기화
         UpdateHaveAndEquipPCDeck, // 보유 필통 덱 초기화
         ChangePCAndDeck, //덱에서 필통과 덱을 전환함
-        ActivePencilCaseDescription = 50, //덱에서 필통 정보창을 연다
+        SetPCInfoPanel = 50, //덱에서 필통 정보창에 정보를 넣는다
         ChangePencilCase = 51, //필통을 바꾼다
-        
+        ActivePencilCaseDescription, // 덱에서 필통 정보창 활성화
+
         // 세팅 부분
         ActiveProfileImgPn = 100, // 프로필 이미지 패널 활성화 
         ChangeProfileImage, // 유저 이미지 변경 
         ChabgeUserName, // 유저 닉네임 변경 
-        DeckSetting, // 덱 세팅
+        ActiveButtonComponent, // 버튼 컴포넌트의 버튼 타입의 버튼 활성화
         MoveCredit, // 크레딧 밑으로 움직임  
         
         //스테이지 부분
@@ -34,7 +35,7 @@
         Pause, // 일시 정지 
         LoadMainScene, // 메인씬 로드 
         LoadBattleScene, // 배틀씬 로드 
-
+        NextExplain, // 다음 튜토리얼 설명 
     }
 }
 
