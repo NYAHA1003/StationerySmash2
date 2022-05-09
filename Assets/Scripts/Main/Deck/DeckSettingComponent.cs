@@ -167,7 +167,7 @@ namespace Main.Deck
                 cardButton.onClick.AddListener(() =>
                 {
                     EventManager.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
-                    EventManager.TriggerEvent(EventsType.DeckSetting, ButtonType.cardDescription);
+                    EventManager.TriggerEvent(EventsType.ActiveButtonComponent, ButtonType.cardDescription);
                     
                 });
             }
@@ -187,7 +187,7 @@ namespace Main.Deck
 				cardButton.GetComponent<Button>().onClick.AddListener(() =>
 				{
 					EventManager.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
-					EventManager.TriggerEvent(EventsType.DeckSetting, ButtonType.cardDescription);
+					EventManager.TriggerEvent(EventsType.ActiveButtonComponent, ButtonType.cardDescription);
 
 				});
 			}
