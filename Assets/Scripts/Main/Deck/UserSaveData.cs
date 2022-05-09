@@ -37,7 +37,7 @@ namespace Main.Deck
         public void AddExp(int exp)
 		{
             _nowExp += exp;
-            for(;_nowExp > 0; )
+            for(;_nowExp > _level * 100; )
             {
                 if (_nowExp > (_level * 100))
                 {
@@ -45,7 +45,23 @@ namespace Main.Deck
                     _nowExp -= _level * 100;
                 }
             }
-            _nowExp = 0;
+            if(_nowExp < 0)
+			{
+                _nowExp = 0;
+			}
+		}
+
+        /// <summary>
+        /// µ· Αυ°΅
+        /// </summary>
+        public void AddMoney(int money)
+		{
+            if(money >= 100000000)
+            {
+                money = 100000000;
+                return;
+			}
+            _money = money;
 		}
     }
 

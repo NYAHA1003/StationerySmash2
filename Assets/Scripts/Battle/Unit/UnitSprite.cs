@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 using Utill.Data;
 using Utill.Tool;
@@ -17,6 +18,8 @@ public class UnitSprite
     public SpriteRenderer SpriteRenderer => _spriteRenderer; // 스프라이트렌더러 프로퍼티
 
     //인스펙터 참조 변수
+    [SerializeField]
+    private SortingGroup _sortingGroup;
     [SerializeField]
     private GameObject _delayBar;
     [SerializeField]
@@ -49,7 +52,6 @@ public class UnitSprite
         SetDelayBar();
         
         _spriteRenderer.sprite = sprite;
-        //_throwSpriteRenderer.sprite = sprite;
         _spriteMask.sprite = sprite;
     }
 
@@ -59,11 +61,7 @@ public class UnitSprite
     public void OrderDraw(int orderIndex)
     {
         _spriteRenderer.sortingOrder = -orderIndex;
-        _throwSpriteRenderer.sortingOrder = -(orderIndex + 10);
-        _delayPart.sortingOrder = -orderIndex;
-        _delayRotate.sortingOrder = -orderIndex;
-        _delayMask.frontSortingOrder = Mathf.Abs(orderIndex) + 1;
-        _delayMask.backSortingOrder = -_delayMask.frontSortingOrder;
+        _sortingGroup.sortingOrder = -orderIndex;
     }
 
     /// <summary>
@@ -102,20 +100,9 @@ public class UnitSprite
     public void SetDelayBar()
     {
         _delayPart.gameObject.SetActive(false);
-        if(_eTeam == TeamType.MyTeam)
-        {
-            _delayPart.transform.rotation = Quaternion.Euler(0, 0, 180);
-            _delayMask.transform.rotation = Quaternion.identity;
-            _delayRotate.transform.rotation = Quaternion.identity;
-            _delayBar.transform.localPosition = new Vector2(-0.1f, 0);
-        }
-        else if(_eTeam == TeamType.EnemyTeam)
-        {
-            _delayPart.transform.rotation = Quaternion.identity;
-            _delayMask.transform.rotation = Quaternion.Euler(0, 0, 180);
-            _delayRotate.transform.rotation = Quaternion.Euler(0, 0, 180);
-            _delayBar.transform.localPosition = new Vector2(0.1f, 0);
-        }
+        _delayPart.transform.rotation = Quaternion.Euler(0, 0, 180);
+        _delayMask.transform.rotation = Quaternion.identity;
+        _delayRotate.transform.rotation = Quaternion.identity;
     }
 
     /// <summary>
@@ -124,16 +111,9 @@ public class UnitSprite
     /// <param name="delay"></param>
     public void UpdateDelayBar(float delay)
     {
-        if(_eTeam == TeamType.MyTeam)
-        {
-           _delayRotate.transform.rotation = Quaternion.Euler(0, 0, delay * 360);
-        }
-        else if(_eTeam == TeamType.EnemyTeam)
-        {
-            _delayRotate.transform.rotation = Quaternion.Euler(0, 0, (-delay * 360) + 180);
-        }
+        _delayRotate.transform.rotation = Quaternion.Euler(0, 0, delay * 360);
 
-        if(delay >= 0.5f)
+        if (delay >= 0.5f)
         {
             _delayPart.gameObject.SetActive(true);
             _delayMask.gameObject.SetActive(false);

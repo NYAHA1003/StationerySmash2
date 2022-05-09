@@ -201,6 +201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unitSprite:
+    _sortingGroup: {fileID: 3031511039825272849}
     _delayBar: {fileID: 3784209476385696819}
     _delayRotate: {fileID: 1660362735284325275}
     _delayPart: {fileID: 1953486097613959128}
@@ -307,6 +308,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2047920247483085438}
+  - component: {fileID: 3031511039825272849}
   m_Layer: 0
   m_Name: DelayBar
   m_TagString: Untagged
@@ -331,6 +333,17 @@ Transform:
   m_Father: {fileID: 587420503430284081}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!210 &3031511039825272849
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3784209476385696819}
+  m_Enabled: 1
+  m_SortingLayerID: 648379623
+  m_SortingLayer: 1
+  m_SortingOrder: 0
 --- !u!1 &4345967521759011386
 GameObject:
   m_ObjectHideFlags: 0

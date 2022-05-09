@@ -35,7 +35,8 @@ public class SceneLoadButtonManager : MonoBehaviour
     private void LoadBattleData(BattleStageType battleStageType)
     {
         //so데이터를 aidataSO와 PencilCaseDataSO에 넣어줌
-        var currentData = loadingBattleDataSO.loadDatas.Find(x => x.battleStageType == battleStageType);
+        loadingBattleDataSO.SetCurrentIndex(loadingBattleDataSO.loadDatas.FindIndex(x => x.battleStageType == battleStageType));
+        var currentData = loadingBattleDataSO.CurrentStageData;
         pencilCaseDataSO._pencilCaseData._maxCard = currentData._pencilCaseData._maxCard;
         pencilCaseDataSO._pencilCaseData._costSpeed = currentData._pencilCaseData._costSpeed;
         pencilCaseDataSO._pencilCaseData._throwGaugeSpeed = currentData._pencilCaseData._throwGaugeSpeed;
