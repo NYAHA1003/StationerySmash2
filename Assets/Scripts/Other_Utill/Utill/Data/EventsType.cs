@@ -36,6 +36,7 @@
         LoadMainScene, // 메인씬 로드 
         LoadBattleScene, // 배틀씬 로드 
         NextExplain, // 다음 튜토리얼 설명 
+        SetTutorial, // 버튼 클릭시 어떤튜토리얼 나올지 
     }
 }
 

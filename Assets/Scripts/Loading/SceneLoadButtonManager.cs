@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utill.Load;
 using Main.Deck;
+using Main.Event;
+using Utill.Data;
 
 public class SceneLoadButtonManager : MonoBehaviour
 {
@@ -21,6 +23,7 @@ public class SceneLoadButtonManager : MonoBehaviour
     private void Awake()
     {
         SetBattleLoadButtons();
+    //   SetTutorial(); 
     }
    
     private void SetBattleLoadButtons()
@@ -30,6 +33,14 @@ public class SceneLoadButtonManager : MonoBehaviour
             //각 버튼에 enum값 대입하기
             int temp = i;
             buttons[temp].onClick.AddListener(() => LoadBattleData((BattleStageType)temp));
+        }
+    }
+    private void SetTutorial()
+    {
+        for(int i = 0; i < 6; i++)
+        {
+            int temp = i;
+            buttons[temp].onClick.AddListener(() => EventManager.TriggerEvent(EventsType.SetTutorial,(BattleStageType)i));
         }
     }
     private void LoadBattleData(BattleStageType battleStageType)
