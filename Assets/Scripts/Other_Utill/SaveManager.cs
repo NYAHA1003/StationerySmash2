@@ -96,4 +96,13 @@ public class SaveManager : MonoSingleton<SaveManager>
         _instance.SaveData.userSaveData.AddExp(exp);
         DeliverDataToObserver();
     }
+
+    /// <summary>
+    /// µ· Αυ°΅
+    /// </summary>
+    public void AddMoney(int money)
+    {
+        _instance.SaveData.userSaveData.AddMoney(money);
+        DeliverDataToObserver();
+    }
 }
