@@ -11,6 +11,10 @@ namespace Battle
     public class WinLoseComponent : BattleComponent
     {
         [SerializeField]
+        private LoadingBattleDataSO _loadingBattleDataSO;
+        [SerializeField]
+        private Canvas _cardCanvas;
+        [SerializeField]
         private Canvas _winLoseCanvas;
         [SerializeField]
         private RectTransform _winPanel;
@@ -62,6 +66,7 @@ namespace Battle
         public void SetWinLosePanel(bool isWin)
         {
             _winLoseCanvas.gameObject.SetActive(true);
+            _cardCanvas.gameObject.SetActive(false);
 
             _winPanel.gameObject.SetActive(isWin);
             _losePanel.gameObject.SetActive(!isWin);
@@ -71,6 +76,8 @@ namespace Battle
                 _winPanel.DOScale(1, 0.3f).SetEase(Ease.OutExpo).
                     OnComplete(() =>
                     {
+                        SaveManager._instance.AddExp(_loadingBattleDataSO.CurrentStageData._awardExp);
+                        SaveManager._instance.AddMoney(_loadingBattleDataSO.CurrentStageData._awardMoney);
                         _winText.DOScale(1.5f, 0.3f).SetLoops(-1, LoopType.Yoyo);
                     });
                 return;

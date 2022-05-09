@@ -2621,7 +2621,7 @@ PrefabInstance:
     - target: {fileID: 1167964393967734777, guid: a37229be6e348b845a19af05d08d7b67, type: 3}
       propertyPath: _target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 833610067}
     - target: {fileID: 4177328044960200588, guid: a37229be6e348b845a19af05d08d7b67, type: 3}
       propertyPath: InitialModule.rotation3D
       value: 0
@@ -2715,8 +2715,16 @@ PrefabInstance:
       value: 1238846615
       objectReference: {fileID: 0}
     - target: {fileID: 4784630109378178478, guid: a37229be6e348b845a19af05d08d7b67, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 821
+      objectReference: {fileID: 0}
+    - target: {fileID: 4784630109378178478, guid: a37229be6e348b845a19af05d08d7b67, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 1566
+      objectReference: {fileID: 0}
+    - target: {fileID: 4784630109378178478, guid: a37229be6e348b845a19af05d08d7b67, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -155.64
+      value: -156
       objectReference: {fileID: 0}
     - target: {fileID: 5021954127113976433, guid: a37229be6e348b845a19af05d08d7b67, type: 3}
       propertyPath: m_RootOrder
@@ -2752,6 +2760,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a37229be6e348b845a19af05d08d7b67, type: 3}
+--- !u!224 &833610067 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4784630109378178478, guid: a37229be6e348b845a19af05d08d7b67, type: 3}
+  m_PrefabInstance: {fileID: 833610066}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &848034160
 GameObject:
   m_ObjectHideFlags: 0
@@ -3434,7 +3447,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1127670285
 RectTransform:
   m_ObjectHideFlags: 0
