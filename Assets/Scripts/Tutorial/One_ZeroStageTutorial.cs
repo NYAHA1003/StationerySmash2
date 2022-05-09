@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utill.Load;
 
 // 1-0 스테이지 튜토리얼 
 [System.Serializable]
@@ -43,6 +44,6 @@ public class One_ZeroStageTutorial : AbstractStageTutorial
 
     public override TextType NextExplain()
     {
-        return 
+        return new TextType(BattleStageType.S1_1, 0);
     }
 }

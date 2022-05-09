@@ -36,15 +36,13 @@ namespace Main.Buttons
 		private ActiveCommand profileButtonCommand;
 		private ActiveCommand cardDescriptionButtonCommand;
 
-		private int unSetCount = 1; //이 스크립트가 아닌 다른 스크립트에서 버튼 생성및 함수등록해준 커맨드수
+		private int unSetCount = 2; //이 스크립트가 아닌 다른 스크립트에서 버튼 생성및 함수등록해준 커맨드수
 		private List<ActiveCommand> buttonCommands = new List<ActiveCommand>();
 		private void Awake()
 		{
 			EventManager.StartListening(EventsType.CloaseAllPn, CloseAllPanels); 
-			EventManager.StartListening(EventsType.DeckSetting, (x) => OnActiveBtn((ButtonType)x));
+			EventManager.StartListening(EventsType.ActiveButtonComponent, (x) => OnActiveBtn((ButtonType)x));
 			//덱에 있는 카드 클릭시 카드설명이 뜸, DeckSetting에서 카드 만들어주면서 AddListener로 EventTrigger로 등록해줌     
-			
-			
 		}
 		private void Start()
 		{

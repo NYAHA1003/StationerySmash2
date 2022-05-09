@@ -48,7 +48,7 @@ public class TextType
     public TextType(BattleStageType battleStageType, int orderIndex)
     {
         _battleStageType = battleStageType;
-        _orderIndex = orderIndex
+        _orderIndex = orderIndex;
     }
 
     public BattleStageType _battleStageType;
