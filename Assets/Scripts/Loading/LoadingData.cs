@@ -16,5 +16,7 @@ namespace Utill.Load
         public List<CardData> cardDataList;
         public List<Vector2> pos;
         public List<float> max_Delay;
+        public int _awardMoney;
+        public int _awardExp;
     }
 }

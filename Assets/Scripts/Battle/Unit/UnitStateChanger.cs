@@ -25,7 +25,10 @@ public class UnitStateChanger
     /// </summary>
     public void ProcessState()
     {
-        _unitState = _unitState.Process();
+        if(_unitState != null)
+		{
+            _unitState = _unitState.Process();
+		}
     }
 
     /// <summary>

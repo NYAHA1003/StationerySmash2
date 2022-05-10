@@ -30,6 +30,39 @@ namespace Main.Deck
         public int _winCount = 0; //½Â¸®ÇÑ È½¼ö
         public int _winningStreakCount = 0; //°¡Àå Å©°Ô ¿¬½ÂÇÑ È½¼ö
         public int _loseCount = 0; //ÆÐ¹èÇÑ È½¼ö
+    
+        /// <summary>
+        /// °æÇèÄ¡ Áõ°¡
+        /// </summary>
+        public void AddExp(int exp)
+		{
+            _nowExp += exp;
+            for(;_nowExp > _level * 100; )
+            {
+                if (_nowExp > (_level * 100))
+                {
+                    _level++;
+                    _nowExp -= _level * 100;
+                }
+            }
+            if(_nowExp < 0)
+			{
+                _nowExp = 0;
+			}
+		}
+
+        /// <summary>
+        /// µ· Áõ°¡
+        /// </summary>
+        public void AddMoney(int money)
+		{
+            if(money >= 100000000)
+            {
+                money = 100000000;
+                return;
+			}
+            _money = money;
+		}
     }
 
     [System.Serializable]

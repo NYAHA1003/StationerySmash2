@@ -24,6 +24,7 @@ namespace Utill.Data
     public class CollectionData
     {
         public string _name = "";
+        public string _description = "";
         public Sprite _collectionSprite = null;
         public CollectionType _collectionType = CollectionType.None;
         public CollectionThemeType _collectionThemeType = CollectionThemeType.None;

@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utill.Load;
 using Main.Deck;
-using Main.Event;
-using Utill.Data;
 
 public class SceneLoadButtonManager : MonoBehaviour
 {
@@ -23,7 +21,6 @@ public class SceneLoadButtonManager : MonoBehaviour
     private void Awake()
     {
         SetBattleLoadButtons();
-    //   SetTutorial(); 
     }
    
     private void SetBattleLoadButtons()
@@ -35,18 +32,11 @@ public class SceneLoadButtonManager : MonoBehaviour
             buttons[temp].onClick.AddListener(() => LoadBattleData((BattleStageType)temp));
         }
     }
-    private void SetTutorial()
-    {
-        for(int i = 0; i < 6; i++)
-        {
-            int temp = i;
-            buttons[temp].onClick.AddListener(() => EventManager.TriggerEvent(EventsType.SetTutorial,(BattleStageType)i));
-        }
-    }
     private void LoadBattleData(BattleStageType battleStageType)
     {
-        //so데이터를 aidataSO와 PencilCaseDataSO에 넣어줌    
-        var currentData = loadingBattleDataSO.loadDatas.Find(x => x.battleStageType == battleStageType);
+        //so데이터를 aidataSO와 PencilCaseDataSO에 넣어줌
+        loadingBattleDataSO.SetCurrentIndex(loadingBattleDataSO.loadDatas.FindIndex(x => x.battleStageType == battleStageType));
+        var currentData = loadingBattleDataSO.CurrentStageData;
         pencilCaseDataSO._pencilCaseData._maxCard = currentData._pencilCaseData._maxCard;
         pencilCaseDataSO._pencilCaseData._costSpeed = currentData._pencilCaseData._costSpeed;
         pencilCaseDataSO._pencilCaseData._throwGaugeSpeed = currentData._pencilCaseData._throwGaugeSpeed;
