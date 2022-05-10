@@ -52,14 +52,15 @@ public class BattleTurtorialComponent : MonoBehaviour
     private One_ZeroStageTutorial one_ZeroStageTutorial; // 1-0스테이지 튜토리얼 
 
     private AbstractStageTutorial currentStageTutorial; // 현재 튜토리얼 
-    private BattleStageType currentBattleStageType; 
-    //private bool isPause = false;
+    private BattleStageType currentBattleStageType;
+
+    private bool isPause = false;
     private void Start()
     {
         speechBubbleText.text = tutorialTextSO._textDatas[(int)currentBattleStageType]._tutorialText[0];
         checkButton.onClick.AddListener(() => NextExplain()); 
         // EventManager.StartListening(EventsType.NextExplain, NextExplain);
-        // EventManager.StartListening(EventsType.SetTutorial, (x) => SetTutorial((BattleStageType)x));    
+        EventManager.StartListening(EventsType.SetTutorial, (x) => SetTutorial((BattleStageType)x));    
     }
 
     /// <summary>
@@ -67,7 +68,6 @@ public class BattleTurtorialComponent : MonoBehaviour
     /// </summary>
     /// <param name="tutorialType"></param>
     /// SceneLoadButtonManager의 SetBattleLoadButton에서 이벤트로 설정해줄거임
-     [ContextMenu("이름")]
     public void SetTutorial(BattleStageType battleStageType)
     {
         currentBattleStageType = battleStageType;
@@ -83,9 +83,19 @@ public class BattleTurtorialComponent : MonoBehaviour
             case BattleStageType.S1_4:
                 break;
         }
-        SetTimeScale(); 
-        ActiveTutorialCanvas(); 
+    }
+
+    /// <summary>
+    /// 튜토리얼 시작
+    /// </summary>
+    [ContextMenu("튜토리얼 테스트")]
+    public void StartTutorial()
+    {
+        currentStageTutorial = one_ZeroStageTutorial;
+        SetTimeScale();
+        ActiveTutorialCanvas();
         currentStageTutorial.SetQueue();
+        NextExplain(); 
     }
 
     /// <summary>
@@ -114,7 +124,6 @@ public class BattleTurtorialComponent : MonoBehaviour
     }
 
 
-    private bool isPause = false; 
     ///// <summary>
     ///// 타임스케일 조정 ( timeScale이 0 이면 1 / 1 이면 0 으로 ) 
     ///// </summary>
