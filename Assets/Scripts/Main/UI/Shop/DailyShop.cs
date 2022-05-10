@@ -356,7 +356,7 @@ public class DailyShop : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogError("스티커 뽑기 에러");
+                    //Debug.LogError("스티커 뽑기 에러");
                 }
                 // 일반 레어 에픽 64 : 28 : 8 
                 BadgeSheet badgeSheet = new BadgeSheet(_badgeSheetSO, badgeSheetGrade);

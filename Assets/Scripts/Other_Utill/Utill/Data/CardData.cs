@@ -19,11 +19,11 @@ public class CardData
     public int level;
 
     //실행형
-    [ShowWhen("cardType", new object[] { CardType.Execute, CardType.SummonTrap, CardType.Installation })]
+    //[ShowWhen("cardType", new object[] { CardType.Execute, CardType.SummonTrap, CardType.Installation })]
     public StarategyData strategyData;
 
     //유닛소환형
-    [ShowWhen("cardType", new object[] { CardType.SummonUnit, CardType.SummonTrap, CardType.Installation })]
+    //[ShowWhen("cardType", new object[] { CardType.SummonUnit, CardType.SummonTrap, CardType.Installation })]
     public UnitData unitData;
 
     //함정 소환형
