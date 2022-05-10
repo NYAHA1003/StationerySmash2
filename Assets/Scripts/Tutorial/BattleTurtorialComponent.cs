@@ -44,12 +44,16 @@ public class BattleTurtorialComponent : MonoBehaviour
 
     [SerializeField]
     private TutorialTextSO tutorialTextSO; // 설명 텍스트정보
+    [SerializeField]
+    private LoadingBattleDataSO _loadingBattleDataSO;
 
     public TutorialTextSO TutorialTextSO => tutorialTextSO;
     public TextMeshProUGUI SpeechBubbleText => speechBubbleText;
     public Image BlackBackground => blackBackground; 
+    
     [SerializeField]
     private One_ZeroStageTutorial one_ZeroStageTutorial; // 1-0스테이지 튜토리얼 
+
 
     private AbstractStageTutorial currentStageTutorial; // 현재 튜토리얼 
     private BattleStageType currentBattleStageType;
@@ -58,9 +62,9 @@ public class BattleTurtorialComponent : MonoBehaviour
     private void Start()
     {
         speechBubbleText.text = tutorialTextSO._textDatas[(int)currentBattleStageType]._tutorialText[0];
-        checkButton.onClick.AddListener(() => NextExplain()); 
+        checkButton.onClick.AddListener(() => NextExplain());
+        SetTutorial(); 
         // EventManager.StartListening(EventsType.NextExplain, NextExplain);
-        EventManager.StartListening(EventsType.SetTutorial, (x) => SetTutorial((BattleStageType)x));    
     }
 
     /// <summary>
@@ -68,10 +72,10 @@ public class BattleTurtorialComponent : MonoBehaviour
     /// </summary>
     /// <param name="tutorialType"></param>
     /// SceneLoadButtonManager의 SetBattleLoadButton에서 이벤트로 설정해줄거임
-    public void SetTutorial(BattleStageType battleStageType)
+    public void SetTutorial()
     {
-        currentBattleStageType = battleStageType;
-        switch (battleStageType)
+        currentBattleStageType = _loadingBattleDataSO.CurrentStageData.battleStageType;
+        switch (currentBattleStageType)
         {
             case BattleStageType.S1_1:
                 currentStageTutorial = one_ZeroStageTutorial;
@@ -83,6 +87,7 @@ public class BattleTurtorialComponent : MonoBehaviour
             case BattleStageType.S1_4:
                 break;
         }
+        currentStageTutorial.SetQueue();
     }
 
     /// <summary>
@@ -91,11 +96,9 @@ public class BattleTurtorialComponent : MonoBehaviour
     [ContextMenu("튜토리얼 테스트")]
     public void StartTutorial()
     {
-        currentStageTutorial = one_ZeroStageTutorial;
         SetTimeScale();
         ActiveTutorialCanvas();
-        currentStageTutorial.SetQueue();
-        NextExplain(); 
+        NextExplain();
     }
 
     /// <summary>
