@@ -58,7 +58,8 @@ public class BattleTurtorialComponent : MonoBehaviour
     private AbstractStageTutorial currentStageTutorial; // 현재 튜토리얼 
     private BattleStageType currentBattleStageType;
 
-    private bool isPause = false;
+    private bool _isPause = false;
+    public static bool _isTutorial = false; // 튜토리얼 했는지 
     private void Start()
     {
         speechBubbleText.text = tutorialTextSO._textDatas[(int)currentBattleStageType]._tutorialText[0];
@@ -87,6 +88,7 @@ public class BattleTurtorialComponent : MonoBehaviour
             case BattleStageType.S1_4:
                 break;
         }
+        tutorialEventQueue.Enqueue(StartTutorial);
         currentStageTutorial.SetQueue();
     }
 
@@ -96,6 +98,7 @@ public class BattleTurtorialComponent : MonoBehaviour
     [ContextMenu("튜토리얼 테스트")]
     public void StartTutorial()
     {
+        _isTutorial = true; 
         SetTimeScale();
         ActiveTutorialCanvas();
         NextExplain();
@@ -132,13 +135,13 @@ public class BattleTurtorialComponent : MonoBehaviour
     ///// </summary>
     public void SetTimeScale()
     {
-        if (isPause == true)
+        if (_isPause == true)
         {
             Time.timeScale = 1;
-            isPause = false;
+            _isPause = false;
             return;
         }
         Time.timeScale = 0;
-        isPause = true;
+        _isPause = true;
     }
 }

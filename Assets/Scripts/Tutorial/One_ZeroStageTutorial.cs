@@ -10,9 +10,12 @@ public class One_ZeroStageTutorial : AbstractStageTutorial
 {
     [SerializeField]
     private List<RectTransform> impactTrans = new List<RectTransform>(); 
+    /// <summary>
+    /// 이벤트큐에 
+    /// </summary>
     public override void SetQueue()
     {
-        ResetQueue(); 
+        //ResetQueue(); 
         BattleTurtorialComponent.tutorialEventQueue.Enqueue(ExplainSummon);
         BattleTurtorialComponent.tutorialEventQueue.Enqueue(ExplainMoney);
         BattleTurtorialComponent.tutorialEventQueue.Enqueue(ExplainUpgrade);

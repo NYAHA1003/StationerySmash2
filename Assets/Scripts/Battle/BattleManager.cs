@@ -100,18 +100,19 @@ namespace Battle
 			{
 				yield return null;
 			}
-
 		}
 
 		private void Update()
 		{
 			//  Debug.Log("유닛 갯수 : " + _commandUnit.UnitParent.childCount + " FPS : " + 1.0f / Time.deltaTime);
-
 			if (!_isEndSetting ||  !_introComponent.isEndIntro)
 			{
 				return;
 			}
-
+			if(BattleTurtorialComponent._isTutorial == false)
+            {
+				_commandCard.CheckCard(); 
+			}
 			//던지기 시스템
 			if (Input.GetMouseButtonDown(0))
 			{

@@ -99,6 +99,14 @@ namespace Battle
             updateAction += UpdateCheckCost;
         }
 
+        public void CheckCard()
+        {
+
+            if(_cardList.Count == _maxCardCount)
+            {
+                BattleTurtorialComponent.tutorialEventQueue.Dequeue().Invoke(); 
+            }
+        }
         /// <summary>
         /// 덱에 카드 정보들을 넣는다
         /// </summary>
