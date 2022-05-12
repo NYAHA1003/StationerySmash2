@@ -2,14 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill.Load;
+using DG.Tweening;
 
 // 1-0 스테이지 튜토리얼 
 [System.Serializable]
 public class One_ZeroStageTutorial : AbstractStageTutorial
 {
+    [SerializeField]
+    private List<RectTransform> impactTrans = new List<RectTransform>(); 
+    /// <summary>
+    /// 이벤트큐에 
+    /// </summary>
     public override void SetQueue()
     {
-        ResetQueue(); 
+        //ResetQueue(); 
         BattleTurtorialComponent.tutorialEventQueue.Enqueue(ExplainSummon);
         BattleTurtorialComponent.tutorialEventQueue.Enqueue(ExplainMoney);
         BattleTurtorialComponent.tutorialEventQueue.Enqueue(ExplainUpgrade);
@@ -20,9 +26,14 @@ public class One_ZeroStageTutorial : AbstractStageTutorial
     /// </summary>
     public void ExplainSummon()
     {
-        SetTimeScale(); 
+        //SetTimeScalse();
+        battleTurtorialComponent.SpeechBubbleText.text = battleTurtorialComponent.TutorialTextSO._textDatas[(int)BattleStageType.S1_1]._tutorialText[0];
+        //battleTurtorialComponent.BlackBackground.GetComponent<RectTransform>().DOAnchorPos(impactTrans[0].anchoredPosition, 0.3f);
+        battleTurtorialComponent.BlackBackground.GetComponent<RectTransform>().anchoredPosition = impactTrans[0].anchoredPosition;
+
         // 설명 텍스트에 텍스트 넣어야해 
         // 강조하는 부분 변경 
+
         Debug.Log("소환설명");
     }
     /// <summary>
@@ -30,7 +41,10 @@ public class One_ZeroStageTutorial : AbstractStageTutorial
     /// </summary>
     public void ExplainMoney()
     {
-        SetTimeScale(); 
+        //SetTimeScale(); 
+        battleTurtorialComponent.SpeechBubbleText.text = battleTurtorialComponent.TutorialTextSO._textDatas[(int)BattleStageType.S1_1]._tutorialText[1];
+        //battleTurtorialComponent.BlackBackground.GetComponent<RectTransform>().DOAnchorPos(impactTrans[1].anchoredPosition,0.3f);
+        battleTurtorialComponent.BlackBackground.GetComponent<RectTransform>().anchoredPosition = impactTrans[1].anchoredPosition;
         Debug.Log("돈 설명"); 
     }
     /// <summary>
@@ -38,12 +52,11 @@ public class One_ZeroStageTutorial : AbstractStageTutorial
     /// </summary>
     public void ExplainUpgrade()
     {
-        SetTimeScale(); 
-        Debug.Log("업그레이드 설명"); 
-    }
+        //SetTimeScale(); 
+        battleTurtorialComponent.SpeechBubbleText.text = battleTurtorialComponent.TutorialTextSO._textDatas[(int)BattleStageType.S1_1]._tutorialText[2];
+        //battleTurtorialComponent.BlackBackground.GetComponent<RectTransform>().DOAnchorPos(impactTrans[2].anchoredPosition, 0.3f);
+        battleTurtorialComponent.BlackBackground.GetComponent<RectTransform>().anchoredPosition = impactTrans[2].anchoredPosition;
 
-    public override TextType NextExplain()
-    {
-        return new TextType(BattleStageType.S1_1, 0);
+        Debug.Log("업그레이드 설명"); 
     }
 }

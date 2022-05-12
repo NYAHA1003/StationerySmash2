@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
+using Utill.Data;
 
 namespace Main.Buttons
 {
     class ActiveCommand : AbstractBtn
     {
         private GameObject panel;
+        private ButtonType buttonType;
         public override void Execute(GameObject panel)
         {
             this.panel = panel;

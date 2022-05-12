@@ -6,9 +6,11 @@ using Utill.Load;
 
 public abstract class AbstractStageTutorial
 {
-    private bool isPause = false;
+    [SerializeField]
+    protected BattleTurtorialComponent battleTurtorialComponent;
 
-    /// <summary>
+    private bool isPause = false;
+      /// <summary>
     /// 큐 설정 
     /// </summary>
     public abstract void SetQueue();
@@ -38,7 +40,7 @@ public abstract class AbstractStageTutorial
     /// <summary>
     /// 다음 설명 
     /// </summary>
-    public abstract TextType NextExplain();
+    //public abstract TextType NextExplain();
     // Debug.Log("다음 설명");
     // 말풍선 텍스트 다른 걸로 바뀜 
 }
