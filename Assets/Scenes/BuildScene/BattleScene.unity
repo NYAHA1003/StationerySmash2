@@ -7725,7 +7725,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1514155264}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -8393,6 +8393,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 9011835457039872943, guid: 6b4c3a4b4a538fe41aee03f2caf913eb, type: 3}
   m_PrefabInstance: {fileID: 373137101}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &373137103 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9011835457039872942, guid: 6b4c3a4b4a538fe41aee03f2caf913eb, type: 3}
+  m_PrefabInstance: {fileID: 373137101}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &381134270 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 587420503430284083, guid: 296382ab7a2ac1f4c8e6131c0c520578, type: 3}
@@ -8821,6 +8832,16 @@ PrefabInstance:
 --- !u!224 &467818926 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4320686945203002517, guid: 3f24367b29906c34cbcaf8a9ce9c2f3c, type: 3}
+  m_PrefabInstance: {fileID: 467818925}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &467818927 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4011803388625178054, guid: 3f24367b29906c34cbcaf8a9ce9c2f3c, type: 3}
+  m_PrefabInstance: {fileID: 467818925}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &467818928 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4320686944799531571, guid: 3f24367b29906c34cbcaf8a9ce9c2f3c, type: 3}
   m_PrefabInstance: {fileID: 467818925}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &493809977
@@ -12886,8 +12907,8 @@ RectTransform:
   - {fileID: 208719801}
   - {fileID: 669288410}
   - {fileID: 373137102}
-  - {fileID: 1722391928}
   - {fileID: 99729028}
+  - {fileID: 1722391928}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -13940,7 +13961,8 @@ MonoBehaviour:
   _commandThrow:
     _parabola: {fileID: 603366384}
     _arrow: {fileID: 1669006650}
-    _throwDelayBar: {fileID: 0}
+    _throwBarFrame: {fileID: 467818928}
+    _throwDelayBar: {fileID: 467818927}
     _parabolaBackground: {fileID: 755467732}
     _throwTrail: {fileID: 1912819987}
     _playerPencilCaseDataSO: {fileID: 11400000, guid: 8e5ad0063128df3438f9e7c2b3d6aec4, type: 2}
@@ -13957,7 +13979,7 @@ MonoBehaviour:
   _commandPencilCase:
     _playerPencilCase: {fileID: 381134270}
     _enemyPencilCase: {fileID: 926530871}
-    _pencilCaseAbilityButton: {fileID: 0}
+    _pencilCaseAbilityButton: {fileID: 373137103}
   _commandPause:
     _pauseUI: {fileID: 1476667448}
     _pauseCanvas: {fileID: 1461045864}
