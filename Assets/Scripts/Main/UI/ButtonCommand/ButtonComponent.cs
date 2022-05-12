@@ -42,7 +42,9 @@ namespace Main.Buttons
 		{
 			EventManager.StartListening(EventsType.CloaseAllPn, CloseAllPanels); 
 			EventManager.StartListening(EventsType.ActiveButtonComponent, (x) => OnActiveBtn((ButtonType)x));
+			EventManager.StartListening(EventsType.UndoStack, OnUndoBtn);
 			//덱에 있는 카드 클릭시 카드설명이 뜸, DeckSetting에서 카드 만들어주면서 AddListener로 EventTrigger로 등록해줌     
+			
 		}
 		private void Start()
 		{
@@ -62,10 +64,6 @@ namespace Main.Buttons
 		/// </summary>
 		private void AddListner()
 		{
-			for (int i = 0; i < cancelBtns.Length; i++)
-			{
-				cancelBtns[i].onClick.AddListener(() => OnUndoBtn());
-			}
 			clickBtns[(int)ButtonType.credit].onClick.AddListener(() => EventManager.TriggerEvent(EventsType.MoveCredit));
 		}
 		/// <summary>

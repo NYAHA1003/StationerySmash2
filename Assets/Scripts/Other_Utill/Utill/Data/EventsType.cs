@@ -18,7 +18,7 @@
         SetPCInfoPanel = 50, //덱에서 필통 정보창에 정보를 넣는다
         ChangePencilCase = 51, //필통을 바꾼다
         ActivePencilCaseDescription, // 덱에서 필통 정보창 활성화
-        ActiveStack = 65, // 스택에 넣어둘 패널 활성화 해줄 버튼  
+        UndoStack = 65, // 스택에 넣어둘 패널 활성화 해줄 버튼  
 
         // 세팅 부분
         ActiveProfileImgPn = 100, // 프로필 이미지 패널 활성화 
