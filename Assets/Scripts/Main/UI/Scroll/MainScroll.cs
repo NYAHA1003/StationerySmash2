@@ -64,7 +64,7 @@ namespace Main.Scroll
             {
                 if (_targetIndex == i)
                 {
-                    panelIcons[i].anchoredPosition3D = new Vector3(-80, 0);
+                    panelIcons[i].anchoredPosition3D = new Vector3(0, 0);
                     Debug.Log("ÇöÀç Å¸°Ù ÀÎµ¦½º : " + _targetIndex);
                 }
                 else panelIcons[i].anchoredPosition3D = new Vector3(0, 0);

@@ -34,7 +34,7 @@ namespace Main.Buttons
 		private ActiveCommand stageButtonCommand;
 		private ActiveCommand chapterButtonCommand;
 		private ActiveCommand profileButtonCommand;
-		private ActiveCommand cardDescriptionButtonCommand;
+		private ActiveCommand cardDescriptionButtonCommand;	
 
 		private int unSetCount = 2; //이 스크립트가 아닌 다른 스크립트에서 버튼 생성및 함수등록해준 커맨드수
 		private List<ActiveCommand> buttonCommands = new List<ActiveCommand>();
@@ -54,13 +54,7 @@ namespace Main.Buttons
 		/// </summary>
 		private void Initialized()
 		{
-			for (int i = 0; i < clickBtns.Length + unSetCount; i++)
-			{
-				buttonCommands.Add(new ActiveCommand());
-				allBtns.Add(buttonCommands[i]);
-			}
 			AddListner();
-				
 		}
 
 		/// <summary>
@@ -68,16 +62,10 @@ namespace Main.Buttons
 		/// </summary>
 		private void AddListner()
 		{
-			for (int i = 0; i < clickBtns.Length; i++)
-			{
-				int index = i;
-				clickBtns[i].onClick.AddListener(() => OnActiveBtn((ButtonType)index));
-			}
 			for (int i = 0; i < cancelBtns.Length; i++)
 			{
 				cancelBtns[i].onClick.AddListener(() => OnUndoBtn());
 			}
-
 			clickBtns[(int)ButtonType.credit].onClick.AddListener(() => EventManager.TriggerEvent(EventsType.MoveCredit));
 		}
 		/// <summary>
@@ -86,7 +74,7 @@ namespace Main.Buttons
 		/// <param name="buttonType"></param>
 		public void OnActiveBtn(ButtonType buttonType)
 		{
-			activeButtons.Push(allBtns[(int)buttonType]);
+			activeButtons.Push(new ActiveCommand());
 			activeButtons.Peek().Execute(activePanels[(int)buttonType]);
 		}
 
@@ -108,5 +96,6 @@ namespace Main.Buttons
 				activeButtons.Pop().Undo();
 			}
 		}
+
 	}
 }

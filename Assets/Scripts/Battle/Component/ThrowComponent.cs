@@ -16,7 +16,9 @@ namespace Battle
         [SerializeField]
         private Transform _arrow;
         [SerializeField]
-        private Image _throwDelayBar;
+        private RectTransform _throwBarFrame;
+        [SerializeField]
+        private RectTransform _throwDelayBar;
         [SerializeField]
         private GameObject _parabolaBackground = null;
         [SerializeField]
@@ -67,7 +69,9 @@ namespace Battle
             if(_throwGauge <= 200f)
             {
                 IncreaseThrowGauge(Time.deltaTime * _throwGaugeSpeed);
-                _throwDelayBar.fillAmount = _throwGauge / 200f;
+                Vector2 rectSize = _throwDelayBar.sizeDelta;
+                rectSize.x = _throwBarFrame.rect.width * (_throwGauge / 200f);
+                _throwDelayBar.sizeDelta = rectSize;
                 CheckCanThrow();
             }
         }

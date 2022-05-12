@@ -121,6 +121,7 @@ public class Unit : MonoBehaviour
         _unitStat.SetUnitData(_unitData);
         _unitStat.SetGradeStat(grade);
         _unitStat.SetWeight();
+        _unitStat.SetAttackDelay(0);
         MyUnitId = id;
 
         //상태이상

@@ -25,7 +25,7 @@ public class BattleTurtorialComponent : MonoBehaviour
 {
     public static Queue<Action> tutorialEventQueue = new Queue<Action>();
 
-    [SerializeField]  
+    [SerializeField]
     private Image blackBackground; // 검은 배경이미지,강조 
     [SerializeField]
     private Image explainer; // 설명하는 돼지 
@@ -44,17 +44,28 @@ public class BattleTurtorialComponent : MonoBehaviour
 
     [SerializeField]
     private TutorialTextSO tutorialTextSO; // 설명 텍스트정보
+    [SerializeField]
+    private LoadingBattleDataSO _loadingBattleDataSO;
 
+    public TutorialTextSO TutorialTextSO => tutorialTextSO;
+    public TextMeshProUGUI SpeechBubbleText => speechBubbleText;
+    public Image BlackBackground => blackBackground; 
+    
     [SerializeField]
     private One_ZeroStageTutorial one_ZeroStageTutorial; // 1-0스테이지 튜토리얼 
 
+
     private AbstractStageTutorial currentStageTutorial; // 현재 튜토리얼 
-    private BattleStageType currentBattleStageType; 
-    //private bool isPause = false;
+    private BattleStageType currentBattleStageType;
+
+    private bool _isPause = false;
+    public static bool _isTutorial = false; // 튜토리얼 했는지 
     private void Start()
     {
         speechBubbleText.text = tutorialTextSO._textDatas[(int)currentBattleStageType]._tutorialText[0];
-        EventManager.StartListening(EventsType.NextExplain, NextExplain);
+        checkButton.onClick.AddListener(() => NextExplain());
+        SetTutorial(); 
+        // EventManager.StartListening(EventsType.NextExplain, NextExplain);
     }
 
     /// <summary>
@@ -62,12 +73,13 @@ public class BattleTurtorialComponent : MonoBehaviour
     /// </summary>
     /// <param name="tutorialType"></param>
     /// SceneLoadButtonManager의 SetBattleLoadButton에서 이벤트로 설정해줄거임
-    public void SetTutorial(BattleStageType battleStageType)
+    public void SetTutorial()
     {
-        currentBattleStageType = battleStageType; 
-        switch (battleStageType)
+        currentBattleStageType = _loadingBattleDataSO.CurrentStageData.battleStageType;
+        switch (currentBattleStageType)
         {
             case BattleStageType.S1_1:
+                currentStageTutorial = one_ZeroStageTutorial;
                 break;
             case BattleStageType.S1_2:
                 break;
@@ -76,14 +88,26 @@ public class BattleTurtorialComponent : MonoBehaviour
             case BattleStageType.S1_4:
                 break;
         }
-        ShowTutorialCanvas(); 
+        tutorialEventQueue.Enqueue(StartTutorial);
         currentStageTutorial.SetQueue();
+    }
+
+    /// <summary>
+    /// 튜토리얼 시작
+    /// </summary>
+    [ContextMenu("튜토리얼 테스트")]
+    public void StartTutorial()
+    {
+        _isTutorial = true; 
+        SetTimeScale();
+        ActiveTutorialCanvas();
+        NextExplain();
     }
 
     /// <summary>
     /// 튜토리얼 캔버스 활성화,비활성화 
     /// </summary>
-    public void ShowTutorialCanvas()
+    public void ActiveTutorialCanvas()
     {
         tutorialCanvas.gameObject.SetActive(!tutorialCanvas.gameObject.activeSelf); 
     }
@@ -93,31 +117,31 @@ public class BattleTurtorialComponent : MonoBehaviour
     public void NextExplain()
     {
         Debug.Log("다음 설명");
-        currentStageTutorial.NextExplain(); 
+        if (tutorialEventQueue.Count == 0)
+        {
+            ActiveTutorialCanvas();
+            SetTimeScale(); 
+            return; 
+        }
+        tutorialEventQueue.Dequeue().Invoke();
+
         // 현재 스테이지의 텍스트 업데이트해주는 함수 
         // 말풍선 텍스트 다른 걸로 바뀜 
-    }
-    /// <summary>
-    /// 유닛 소환에 대해 설명 
-    /// </summary>
-    public void ExplainSummon()
-    {
-        Debug.Log("유닛 소한 설명");
     }
 
 
     ///// <summary>
     ///// 타임스케일 조정 ( timeScale이 0 이면 1 / 1 이면 0 으로 ) 
     ///// </summary>
-    //public void SetTimeScale()
-    //{
-    //    if(isPause == true)
-    //    {
-    //        Time.timeScale = 1;
-    //        isPause = false; 
-    //        return; 
-    //    }
-    //    Time.timeScale = 0;
-    //    isPause = true; 
-    //}
+    public void SetTimeScale()
+    {
+        if (_isPause == true)
+        {
+            Time.timeScale = 1;
+            _isPause = false;
+            return;
+        }
+        Time.timeScale = 0;
+        _isPause = true;
+    }
 }

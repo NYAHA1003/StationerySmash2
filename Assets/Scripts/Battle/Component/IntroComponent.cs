@@ -128,6 +128,7 @@ namespace Battle
 			yield return new WaitForSeconds(1f);
 			_countText.gameObject.SetActive(false);
 			_isEndIntro = true;
+
 		}
 	}
 }
