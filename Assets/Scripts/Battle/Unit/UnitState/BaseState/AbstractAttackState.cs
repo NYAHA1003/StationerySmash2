@@ -154,6 +154,11 @@ namespace Battle.Units
 				_stateManager.Set_Move();
 				return;
 			}
+			if (_targetUnit._isInvincibility)
+			{
+				_stateManager.Set_Move();
+				return;
+			}
 			if (Vector2.Distance(_myTrm.position, _targetUnit.transform.position) > _myUnit.UnitStat.Return_Range())
 			{
 				_stateManager.Set_Move();
@@ -191,7 +196,7 @@ namespace Battle.Units
 		/// <returns>True면 공격, 아니면 딜레이</returns>
 		private bool AttackDelay()
 		{
-			if (_maxdelay >= _currentdelay || _targetUnit._isInvincibility)
+			if (_maxdelay >= _currentdelay)
 			{
 				_currentdelay += _myUnit.UnitStat.Return_AttackSpeed() * Time.deltaTime;
 				SetUnitDelayAndUI();

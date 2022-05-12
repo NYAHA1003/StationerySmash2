@@ -41,6 +41,7 @@ namespace Battle.Units
 		{
 			base.Reset_State(myTrm, mySprTrm, myUnit);
 			_sharpsimPieceData = AddressableTool.ReturnProjectileUnitAsync(UnitType.SharpSim).Result;
+			myUnit.SetIsInvincibility(false);
 			myUnit.SetIsNeverDontThrow(false);
 		}
 	}
