@@ -8,6 +8,7 @@ using Utill.Tool;
 using Battle.Badge;
 using Battle.PCAbility;
 using Main.Event;
+using DG.Tweening;
 
 namespace Battle
 {
@@ -38,11 +39,14 @@ namespace Battle
         private PencilCaseUnit _enemyPencilCase = null;
         [SerializeField]
         private Button _pencilCaseAbilityButton = null;
+        [SerializeField]
+        private RectTransform _bloodEffectImage = null;
 
 
         //변수
         private List<AbstractBadge> _playerBadges = new List<AbstractBadge>();
         private List<AbstractBadge> _enemyBadges = new List<AbstractBadge>();
+        private Sequence _bloodEffect = null;
 
         /// <summary>
         /// 초기화
@@ -78,7 +82,16 @@ namespace Battle
             SetEnemyBadgeAbility();
             RunBadgeAbility(_enemyBadges);
 
-            //_pencilCaseAbilityButton.onClick.AddListener(() => OnPencilCaseAbility());
+            //피격 이펙트 시퀀스
+            _bloodEffect ??= DOTween.Sequence()
+                .SetAutoKill(false)
+                .OnStart(() =>
+                {
+                    _bloodEffectImage.sizeDelta = new Vector2(2700, 0);
+                })
+                .Append(_bloodEffectImage.DOSizeDelta(new Vector2(2700, 1000), 0.2f).SetAutoKill(false))
+                .Append(_bloodEffectImage.DOSizeDelta(new Vector2(2700, 0), 0.1f).SetAutoKill(false));
+
             EventManager.StartListening(EventsType.PencilCaseAbility, OnPencilCaseAbility);
         }
 
@@ -198,6 +211,18 @@ namespace Battle
         {
             RunPlayerPencilCaseAbility();
         }
+
+        /// <summary>
+        /// 필통 피격 이펙트 재생
+        /// </summary>
+        public void PlayBloodEffect(TeamType teamType)
+        {
+
+            if (teamType == TeamType.MyTeam)
+			{
+                _bloodEffect.Restart();
+			}
+		}
 
     }
 
