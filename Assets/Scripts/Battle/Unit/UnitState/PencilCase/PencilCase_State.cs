@@ -72,6 +72,8 @@ namespace Battle.Units
 				_myUnit.AddInherence(_atkData);
 			}
 
+			//필통 유닛 자료형의 필통 컴포넌트의 피격 이펙트 출력 
+			(_myUnit as PencilCaseUnit)?.PencilCaseComponent.PlayBloodEffect(_myUnit.ETeam);
 			_myUnit.SubtractHP(_atkData.damage);
 			if (_myUnit.UnitStat.Hp <= 0)
 			{

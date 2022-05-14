@@ -22,6 +22,8 @@ namespace Battle
 		[SerializeField]
 		private TextMeshProUGUI _countText;
 		[SerializeField]
+		private RectTransform _countTextRect;
+		[SerializeField]
 		private Transform _playerPencilCase;
 		[SerializeField]
 		private Transform _enemyPencilCase;
@@ -101,11 +103,15 @@ namespace Battle
 
 			//맵 중앙을 보여준다
 			_countText.text = "3";
+			_countTextRect.localScale = new Vector2(0.1f, 0.1f);
+			_countTextRect.DOScale(2, 0.3f);
 			_cameraComponent.MovingCamera(Vector2.zero, 1f, 0.3f);
 			yield return new WaitForSeconds(1f);
 
 			//내 필통을 보여준다
 			_countText.text = "2";
+			_countTextRect.localScale = new Vector2(0.1f, 0.1f);
+			_countTextRect.DOScale(2, 0.3f);
 			_cameraComponent.MovingCamera(_playerPencilCase.position, 0.5f, 0.2f, 0.85f);
 			ShowDeckInfo(TeamType.MyTeam);
 			yield return new WaitForSeconds(0.2f);
@@ -115,6 +121,8 @@ namespace Battle
 
 			//상대 필통을 보여준다
 			_countText.text = "1";
+			_countTextRect.localScale = new Vector2(0.1f, 0.1f);
+			_countTextRect.DOScale(2, 0.3f);
 			_cameraComponent.MovingCamera(_enemyPencilCase.position, 0.5f, 0.2f, 0.85f);
 			ShowDeckInfo(TeamType.EnemyTeam);
 			yield return new WaitForSeconds(0.2f);
@@ -124,6 +132,8 @@ namespace Battle
 
 			//다시 내 필통쪽으로 클로즈업한다
 			_countText.text = "GO!";
+			_countTextRect.localScale = new Vector2(0.1f, 0.1f);
+			_countTextRect.DOScale(2.5f, 0.3f);
 			_cameraComponent.MovingCamera(_playerPencilCase.position, 1f, 0.2f);
 			yield return new WaitForSeconds(1f);
 			_countText.gameObject.SetActive(false);
