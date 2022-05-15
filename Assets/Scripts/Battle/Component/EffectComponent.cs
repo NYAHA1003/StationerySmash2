@@ -18,13 +18,6 @@ namespace Battle
         [SerializeField]
         private List<GameObject> _effectObjectList;
 
-
-        public async Task AwitLoadAssetAsync(string s)
-        {
-            AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(s);
-            await handle.Task;
-            _effectObjectList.Add(handle.Result);
-        }
         /// <summary>
         /// 초기화
         /// </summary>
@@ -34,25 +27,6 @@ namespace Battle
         {
             LoadParent();
             AllLoadAssetAsync();
-        }
-        public void LoadParent()
-        {
-            for (int i = 0; i < System.Enum.GetValues(typeof(EffectType)).Length; i++)
-            {
-                GameObject childObj = new GameObject();
-                string s = i + "_" + System.Enum.GetName(typeof(EffectType), i);
-                childObj.name = s;
-                childObj.transform.parent = _effectPoolManager.transform;
-            }
-
-        }
-        public async void AllLoadAssetAsync()
-        {
-            for (int i = 0; i < System.Enum.GetValues(typeof(EffectType)).Length; i++)
-            {
-                string s = System.Enum.GetName(typeof(EffectType), i);
-                await AwitLoadAssetAsync(s);
-            }
         }
        
         /// <summary>
@@ -103,11 +77,50 @@ namespace Battle
             effect_Object.SetEffect(effData);
             return effect_Object._effectState;
         }
+
         private bool IsLimitEffectType(EffectType effectType)
         {
             if (effectType == EffectType.Stun)
                 return false;
             return true;
+        }
+
+        /// <summary>
+        /// 에셋 가져오기
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        private async Task AwitLoadAssetAsync(string s)
+        {
+            AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(s);
+            await handle.Task;
+            _effectObjectList.Add(handle.Result);
+        }
+
+        /// <summary>
+        /// 부모 생성
+        /// </summary>
+        private void LoadParent()
+        {
+            for (int i = 0; i < System.Enum.GetValues(typeof(EffectType)).Length; i++)
+            {
+                GameObject childObj = new GameObject();
+                string s = i + "_" + System.Enum.GetName(typeof(EffectType), i);
+                childObj.name = s;
+                childObj.transform.parent = _effectPoolManager.transform;
+            }
+        }
+
+        /// <summary>
+        /// 모든 에셋 가져오기
+        /// </summary>
+        private async void AllLoadAssetAsync()
+        {
+            for (int i = 0; i < System.Enum.GetValues(typeof(EffectType)).Length; i++)
+            {
+                string s = System.Enum.GetName(typeof(EffectType), i);
+                await AwitLoadAssetAsync(s);
+            }
         }
     }
 

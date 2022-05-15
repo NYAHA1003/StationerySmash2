@@ -62,29 +62,32 @@ namespace Battle
         }
 
         /// <summary>
-        /// 업데이트 딜레이
+        /// 유닛 던지기
         /// </summary>
-        public void UpdateThrowDelay()
+        public void ThrowUnit()
         {
-            if(_throwGauge <= 200f)
+            if (_throwUnit != null)
             {
-                IncreaseThrowGauge(Time.deltaTime * _throwGaugeSpeed);
-                Vector2 rectSize = _throwDelayBar.sizeDelta;
-                rectSize.x = _throwBarFrame.rect.width * (_throwGauge / 200f);
-                _throwDelayBar.sizeDelta = rectSize;
-                CheckCanThrow();
+                _throwUnit.Throw_Unit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                IncreaseThrowGauge(-_throwUnit.UnitStat.Return_Weight());
+                _throwTrail.transform.SetParent(_throwUnit.transform);
+                _throwTrail.transform.localPosition = Vector2.zero;
+                _throwTrail.Clear();
+                _parabolaBackground.SetActive(false);
+                UnDrawParabola();
             }
         }
 
         /// <summary>
-        /// 던지기 가능한 유닛들의 시각적 효과를 설정한다.
+        /// 던지기가 끝났을 때 선택된 유닛을 Null로 바꾼다
         /// </summary>
-        public void CheckCanThrow()
+        /// <param name="unit"></param>
+        public void EndThrowTarget(Unit unit)
         {
-            int count = _unitCommand._playerUnitList.Count;
-            for (int i = 1; i < count; i++)
+            if (unit == _throwUnit)
             {
-                _unitCommand._playerUnitList[i].SetThrowRenderer(_throwGauge);
+                _throwUnit = null;
+                _throwTrail.transform.SetParent(null);
             }
         }
 
@@ -191,50 +194,6 @@ namespace Battle
         }
 
         /// <summary>
-        /// 인포인트가 아웃 포인트 안에 있는지 체크
-        /// </summary>
-        /// <param name="outPoint"></param>
-        /// <param name="inPoint"></param>
-        /// <returns></returns>
-        public bool CheckPoints(Vector2[] box, Vector2 inPoint)
-        {
-            if(box[0].x - 0.2f > inPoint.x)
-            {
-                return false;
-            }
-            if (box[1].x + 0.2f < inPoint.x)
-            {
-                return false;
-            }
-            if (box[2].x - 0.2f > inPoint.x)
-            {
-                return false;
-            }
-            if (box[3].x + 0.2f < inPoint.x)
-            {
-                return false;
-            }
-            if (box[0].y + 0.15f < inPoint.y)
-            {
-                return false;
-            }
-            if (box[1].y + 0.15f < inPoint.y)
-            {
-                return false;
-            }
-            if (box[2].y - 0.1f > inPoint.y)
-            {
-                return false;
-            }
-            if (box[3].y - 0.1f > inPoint.y)
-            {
-                return false;
-            }
-            return true;
-
-        }
-
-        /// <summary>
         /// 포물선 그리기 & 던지기 취소 조건
         /// </summary>
         /// <param name="pos"></param>
@@ -305,7 +264,7 @@ namespace Battle
         /// <summary>
         /// 포물선 그리기 해제
         /// </summary>
-        public void UnDrawParabola()
+        private void UnDrawParabola()
         {
             SetParabolaPos(_lineZeroPos);
         }
@@ -364,27 +323,10 @@ namespace Battle
         }
 
         /// <summary>
-        /// 유닛 던지기
-        /// </summary>
-        public void ThrowUnit()
-        {
-            if (_throwUnit != null)
-            {
-                _throwUnit.Throw_Unit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-                IncreaseThrowGauge(-_throwUnit.UnitStat.Return_Weight());
-                _throwTrail.transform.SetParent(_throwUnit.transform);
-                _throwTrail.transform.localPosition = Vector2.zero;
-                _throwTrail.Clear();
-                _parabolaBackground.SetActive(false);
-                UnDrawParabola();
-            }
-        }
-
-        /// <summary>
         /// 던지기 게이지 증감
         /// </summary>
         /// <param name="add"></param>
-        public void IncreaseThrowGauge(float add)
+        private void IncreaseThrowGauge(float add)
         {
             _throwGauge += add;
             if(_throwGauge < 0)
@@ -398,17 +340,75 @@ namespace Battle
         }
 
         /// <summary>
-        /// 던지기가 끝났을 때 선택된 유닛을 Null로 바꾼다
+        /// 인포인트가 아웃 포인트 안에 있는지 체크
         /// </summary>
-        /// <param name="unit"></param>
-        public void EndThrowTarget(Unit unit)
-		{
-            if(unit == _throwUnit)
-			{
-                _throwUnit = null;
-                _throwTrail.transform.SetParent(null);
+        /// <param name="outPoint"></param>
+        /// <param name="inPoint"></param>
+        /// <returns></returns>
+        private bool CheckPoints(Vector2[] box, Vector2 inPoint)
+        {
+            if (box[0].x - 0.2f > inPoint.x)
+            {
+                return false;
             }
-		}
+            if (box[1].x + 0.2f < inPoint.x)
+            {
+                return false;
+            }
+            if (box[2].x - 0.2f > inPoint.x)
+            {
+                return false;
+            }
+            if (box[3].x + 0.2f < inPoint.x)
+            {
+                return false;
+            }
+            if (box[0].y + 0.15f < inPoint.y)
+            {
+                return false;
+            }
+            if (box[1].y + 0.15f < inPoint.y)
+            {
+                return false;
+            }
+            if (box[2].y - 0.1f > inPoint.y)
+            {
+                return false;
+            }
+            if (box[3].y - 0.1f > inPoint.y)
+            {
+                return false;
+            }
+            return true;
+
+        }
+
+        /// <summary>
+        /// 던지기 가능한 유닛들의 시각적 효과를 설정한다.
+        /// </summary>
+        private void CheckCanThrow()
+        {
+            int count = _unitCommand._playerUnitList.Count;
+            for (int i = 1; i < count; i++)
+            {
+                _unitCommand._playerUnitList[i].SetThrowRenderer(_throwGauge);
+            }
+        }
+
+        /// <summary>
+        /// 업데이트 딜레이
+        /// </summary>
+        private void UpdateThrowDelay()
+        {
+            if (_throwGauge <= 200f)
+            {
+                IncreaseThrowGauge(Time.deltaTime * _throwGaugeSpeed);
+                Vector2 rectSize = _throwDelayBar.sizeDelta;
+                rectSize.x = _throwBarFrame.rect.width * (_throwGauge / 200f);
+                _throwDelayBar.sizeDelta = rectSize;
+                CheckCanThrow();
+            }
+        }
     }
 
 }
