@@ -13,14 +13,17 @@ namespace Battle
     [System.Serializable]
     public class CostComponent : BattleComponent
     {
+        //프로퍼티
         public int CurrentCost { get; private set; } = 0;
         public int MaxCost { get; private set; } = 2;
         public int MaxGrade { get; private set; } = 5;
         public int CurrentGrade { get; private set; } = 1;
 
+        //변수
         public float _costSpeed = 200;
         public float _costDelay;
 
+        //인스펙터 참조 변수
         [SerializeField]
         private TextMeshProUGUI _costText = null;
 
@@ -86,7 +89,7 @@ namespace Battle
         }
 
         /// <summary>
-        /// 코스트 장가 속도를 곱해줌
+        /// 코스트 증가 속도를 곱해줌
         /// </summary>
         /// <param name="multiplespeed"></param>
         public void MultipleCostSpeed(float multiplespeed)
@@ -97,7 +100,7 @@ namespace Battle
         /// <summary>
         /// 코스트 업데이트
         /// </summary>
-        public void UpdateCost()
+        private void UpdateCost()
         {
             if (CurrentCost >= MaxCost)
                 return;
@@ -114,7 +117,7 @@ namespace Battle
         /// <summary>
         /// 코스트 텍스트 업데이트
         /// </summary>
-        public void UpdateCostText()
+        private void UpdateCostText()
         {
             _costText.text = string.Format("{0} / {1}", CurrentCost.ToString(), MaxCost.ToString());
         }
@@ -122,7 +125,7 @@ namespace Battle
         /// <summary>
         /// 코스트 단계를 업그레이드
         /// </summary>
-        public void UpgradeCostGrade()
+        private void UpgradeCostGrade()
         {
             if (CurrentGrade >= MaxGrade)
             {
@@ -138,14 +141,12 @@ namespace Battle
             AddCostSpeed(0.25f);
             MaxCost += 2;
             UpdateCostText();
-
-
         }
 
         /// <summary>
         /// 클릭하면 코스트 단계 증가
         /// </summary>
-        public void OnUpgradeCostGrade()
+        private void OnUpgradeCostGrade()
         {
             UpgradeCostGrade();
         }
