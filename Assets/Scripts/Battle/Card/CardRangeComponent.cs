@@ -1,18 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using DG.Tweening;
+using Utill.Data;
+using Utill.Tool;
+using Main.Deck;
 
-public class CardRangeComponent : MonoBehaviour
+namespace Battle
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	public class CardRangeComponent : BattleComponent
+	{
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+		/// <summary>
+		/// √ ±‚»≠
+		/// </summary>
+		public void SetInitialization()
+		{
+
+		}
+
+
+	}
 }

@@ -10,7 +10,7 @@ namespace Battle.Badge
 	{
 		public override void RunBadgeAbility()
 		{
-			_battleManager.CardComponent.AddMaxCard(1);
+			_battleManager.CardComponent.IncreaseMaxCard(1);
 		}
 	}
 }

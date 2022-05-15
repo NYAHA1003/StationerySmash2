@@ -25,6 +25,25 @@ namespace Battle
         private Transform _cardPoolManager = null;
         private Transform _cardCanvas = null;
         private RectTransform _cardSpawnPosition = null;
+        
+        /// <summary>
+        /// 초기화
+        /// </summary>
+        /// <param name="deckData"></param>
+        /// <param name="cardList"></param>
+        /// <param name="cardPrefeb"></param>
+        /// <param name="cardPool"></param>
+        /// <param name="cardCanvas"></param>
+        /// <param name="cardSpawnTrm"></param>
+        public void SetInitialization(DeckData deckData, List<CardMove> cardList, GameObject cardPrefeb, Transform cardPool, Transform cardCanvas, RectTransform cardSpawnTrm)
+		{
+            _deckData = deckData;
+            _cardList = cardList;
+            _cardMovePrefeb = cardPrefeb;
+            _cardPoolManager = cardPool;
+            _cardCanvas = cardCanvas;
+            _cardSpawnPosition = cardSpawnTrm;
+		}
 
         /// <summary>
         /// 카드 한장을 뽑는다
@@ -89,6 +108,58 @@ namespace Battle
             }
             _cardDelay = 0.3f;
             return true;
+        }
+
+        /// <summary>
+        /// 현재 카드 갯수가 최대 갯수인지
+        /// </summary>
+        /// <returns></returns>
+        public bool CheckMaxCard()
+        {
+            if (_currentCardCount >= _maxCardCount)
+            {
+                return true;
+            }
+            else
+			{
+                return false;
+			}
+        }
+
+        /// <summary>
+        /// 현재 카드 갯수를 반환
+        /// </summary>
+        /// <returns></returns>
+        public int ReturnCurrentCard()
+		{
+            return _currentCardCount;
+		}
+
+        /// <summary>
+        /// 현재 카드 갯수를 증감한다
+        /// </summary>
+        /// <param name="num"></param>
+        /// <returns></returns>
+        public void IncreaseCurrentCard(int num)
+		{
+            _currentCardCount += num;
+		}
+
+        /// <summary>
+        /// 최대 카드 설정
+        /// </summary>
+        /// <param name="max">최대 수</param>
+        public void SetMaxCard(int max)
+        {
+            _maxCardCount = max;
+        }
+
+        /// <summary>
+        /// 최대 카드 증감
+        /// </summary>
+        public void IncreaseMaxCard(int num)
+        {
+            _maxCardCount += num;
         }
     }
 }

@@ -19,8 +19,6 @@ namespace Battle
         public bool IsSelectCard { get; private set; } = false; //카드를 클릭한 상태인지
 
         //기본 변수
-        private int _maxCardCount = 3;
-        private int _currentCardCount = 0;
         private float _summonRange = 0.0f;
         private float _summonRangeDelay = 30f;
         private bool _isFusion = false;
@@ -92,6 +90,8 @@ namespace Battle
             //덱에 카드정보들 전달
             SetDeckCard();
 
+            _cardDrawComponent.SetInitialization(_deckData, _cardList, _cardMovePrefeb, _cardPoolManager, _cardCanvas, _cardSpawnPosition);
+
             //업데이트할 함수들 전달
             updateAction += UpdateUnitAfterImage;
             updateAction += UpdateSelectCardPos;
@@ -118,7 +118,7 @@ namespace Battle
 
         public void CheckCard()
         {
-            if(_cardList.Count == _maxCardCount)
+            if(_cardDrawComponent.CheckMaxCard())
             {
                 BattleTurtorialComponent.tutorialEventQueue.Dequeue().Invoke(); 
             }
@@ -145,7 +145,7 @@ namespace Battle
         /// </summary>
         public void SubtractLastCard()
         {
-            SubtractCardAt(_currentCardCount - 1);
+            SubtractCardAt(_cardDrawComponent.ReturnCurrentCard() - 1);
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace Battle
                 _managerBase.StopCoroutine(_delayCoroutine);
             }
             //카드들 모두 삭제
-            for (; _currentCardCount > 0;)
+            for (; _cardDrawComponent.ReturnCurrentCard() > 0;)
             {
                 SubtractLastCard();
             }
@@ -276,15 +276,15 @@ namespace Battle
         /// <param name="max">최대 수</param>
         public void SetMaxCard(int max)
         {
-            _maxCardCount = max;
+            _cardDrawComponent.SetMaxCard(max);
         }
 
         /// <summary>
-        /// 최대 카드 추가
+        /// 최대 카드 증감
         /// </summary>
-        public void AddMaxCard(int add)
+        public void IncreaseMaxCard(int num)
         {
-            _maxCardCount += add;
+            _cardDrawComponent.IncreaseMaxCard(num);
         }
 
         /// <summary>
@@ -540,13 +540,13 @@ namespace Battle
         /// </summary>
         private void SubtractCardAt(int index)
         {
-            if (_currentCardCount == 0)
+            if (_cardDrawComponent.ReturnCurrentCard() == 0)
             {
                 return;
             }
 
             //카드 삭제
-            _currentCardCount--;
+            _cardDrawComponent.IncreaseCurrentCard(-1);
             _cardList[index].transform.SetParent(_cardPoolManager);
             _cardList[index].gameObject.SetActive(false);
             _cardList.RemoveAt(index);
