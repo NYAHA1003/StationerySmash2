@@ -19,11 +19,11 @@ namespace Battle.Units
 					break;
 				case TeamType.MyTeam:
 					MoveMyTeam();
-					CheckRange(_myUnit.BattleManager.CommandUnit._enemyUnitList);
+					CheckRange(_myUnit.BattleManager.UnitComponent._enemyUnitList);
 					return;
 				case TeamType.EnemyTeam:
 					MoveEnemyTeam();
-					CheckRange(_myUnit.BattleManager.CommandUnit._playerUnitList);
+					CheckRange(_myUnit.BattleManager.UnitComponent._playerUnitList);
 					return;
 			}
 		}

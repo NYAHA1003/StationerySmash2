@@ -21,7 +21,7 @@ namespace Battle.Badge
 			base.SetBadge(pencilCaseCommand, pencilCaseUnit, teamType, badgeData);
 			if (teamType == TeamType.MyTeam)
 			{
-				list = _battleManager.CommandPencilCase.PlayerBadges;
+				list = _battleManager.PencilCaseComponent.PlayerBadges;
 			}
 		}
 

@@ -9,7 +9,7 @@ namespace Battle.Starategy
 	{
 		public override void Run_Card(TeamType eTeam)
 		{
-			_battleManager.CommandCost.AddCost(1 * _card.Grade);
+			_battleManager.CostComponent.AddCost(1 * _card.Grade);
 		}
 	}
 }

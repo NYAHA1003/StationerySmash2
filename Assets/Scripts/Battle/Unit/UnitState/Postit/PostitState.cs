@@ -52,7 +52,7 @@ namespace Battle.Units
             {
 				timer = 0;
 				PostitState eraserState = (PostitState)_stateManager;
-				_myUnit.BattleManager.CommandUnit.SummonUnit(eraserState.PostitData, _myTrm.position, _myUnit.UnitStat.Grade, _myUnit.ETeam);
+				_myUnit.BattleManager.UnitComponent.SummonUnit(eraserState.PostitData, _myTrm.position, _myUnit.UnitStat.Grade, _myUnit.ETeam);
 
 				base.IdleToWaitTime();
 			}

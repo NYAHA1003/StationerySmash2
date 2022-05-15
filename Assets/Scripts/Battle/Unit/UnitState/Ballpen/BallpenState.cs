@@ -76,10 +76,10 @@ namespace Battle.Units
 				case TeamType.Null:
 					break;
 				case TeamType.MyTeam:
-					InkFlooding(_myUnit.BattleManager.CommandUnit._enemyUnitList);
+					InkFlooding(_myUnit.BattleManager.UnitComponent._enemyUnitList);
 					break;
 				case TeamType.EnemyTeam:
-					InkFlooding(_myUnit.BattleManager.CommandUnit._playerUnitList);
+					InkFlooding(_myUnit.BattleManager.UnitComponent._playerUnitList);
 					break;
 			}
 		}

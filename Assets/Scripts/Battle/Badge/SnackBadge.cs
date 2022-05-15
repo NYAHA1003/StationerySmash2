@@ -10,7 +10,7 @@ namespace Battle.Badge
 		public override void RunBadgeAbility()
 		{
 			_pencilCaseUnit.UnitStat.SetBonusMaxHPPercent(15);
-			_battleManager.CommandCost.AddCostSpeed(10);
+			_battleManager.CostComponent.AddCostSpeed(10);
 		}
 	}
 }

@@ -27,18 +27,18 @@ namespace Battle
 			}
 		}
 
-		public CardComponent CommandCard => _commandCard;
-		public UnitComponent CommandUnit => _commandUnit;
-		public CameraComponent CommandCamera => _commandCamera;
-		public EffectComponent CommandEffect => _commandEffect;
-		public ThrowComponent CommandThrow => _commandThrow;
-		public UnitSignComponent CommandUnitSign => _commandUnitSign;
-		public TimeComponent CommandTime => _commandTime;
-		public AIComponent CommandAI => _commandAI;
-		public CostComponent CommandCost => _commandCost;
-		public PencilCaseComponent CommandPencilCase => _commandPencilCase;
-		public PauseComponent CommandPause => _commandPause;
-		public WinLoseComponent CommandWinLose => _commandWinLose;
+		public CardComponent CardComponent => _cardComponent;
+		public UnitComponent UnitComponent => _unitComponent;
+		public CameraComponent CameraComponent => _cameraComponent;
+		public EffectComponent EffectComponent => _effectComponent;
+		public ThrowComponent ThrowComponent => _throwComponent;
+		public UnitSignComponent UnitSignComponent => _unitSignComponent;
+		public TimeComponent TimeComponent => _timeComponent;
+		public AIComponent AIComponent => _aiComponent;
+		public CostComponent CostComponent => _costComponent;
+		public PencilCaseComponent PencilCaseComponent => _pencilCaseComponent;
+		public PauseComponent PauseComponent => _pauseComponent;
+		public WinLoseComponent WinLoseComponent => _winLoseComponent;
 
 		public TextMeshProUGUI _unitTeamText = null;
 
@@ -51,29 +51,29 @@ namespace Battle
 		private StageDataSO _stageDataSO = null;
 		//컴포넌트들
 		[SerializeField, Header("카드시스템 BattleCard"), Space(30)]
-		private CardComponent _commandCard = null;
+		private CardComponent _cardComponent = null;
 		[SerializeField, Header("유닛시스템 BattleUnit"), Space(30)]
-		private UnitComponent _commandUnit = null;
+		private UnitComponent _unitComponent = null;
 		[SerializeField, Header("카메라시스템 BattleCamera"), Space(30)]
-		private CameraComponent _commandCamera = null;
+		private CameraComponent _cameraComponent = null;
 		[SerializeField, Header("이펙트 시스템 BattleEffect"), Space(30)]
-		private EffectComponent _commandEffect = null;
+		private EffectComponent _effectComponent = null;
 		[SerializeField, Header("던지기 시스템 BattleThrow"), Space(30)]
-		private ThrowComponent _commandThrow = null;
+		private ThrowComponent _throwComponent = null;
 		[SerializeField, Header("던지기바 유닛 표시시스템 BattleUnitSign"), Space(30)]
-		private UnitSignComponent _commandUnitSign = null;
+		private UnitSignComponent _unitSignComponent = null;
 		[SerializeField, Header("시간시스템 BattleTime"), Space(30)]
-		private TimeComponent _commandTime = null;
+		private TimeComponent _timeComponent = null;
 		[SerializeField, Header("AI 시스템 BattleAi"), Space(30)]
-		private AIComponent _commandAI = null;
+		private AIComponent _aiComponent = null;
 		[SerializeField, Header("코스트 시스템 BattleCost"), Space(30)]
-		private CostComponent _commandCost = null;
+		private CostComponent _costComponent = null;
 		[SerializeField, Header("필통시스템 BattlePencilCase"), Space(30)]
-		private PencilCaseComponent _commandPencilCase = null;
+		private PencilCaseComponent _pencilCaseComponent = null;
 		[SerializeField, Header("일시정지시스템 Battle_Pause"), Space(30)]
-		private PauseComponent _commandPause = null;
+		private PauseComponent _pauseComponent = null;
 		[SerializeField, Header("승리패배시스템 BattleWinLose"), Space(30)]
-		private WinLoseComponent _commandWinLose = null;
+		private WinLoseComponent _winLoseComponent = null;
 		[SerializeField, Header("인트로시스템 BattleIntro"), Space(30)]
 		private IntroComponent _introComponent = null;
 
@@ -82,19 +82,19 @@ namespace Battle
 			//프레임 60 고정
 			Application.targetFrameRate = 60;
 
-			_commandPencilCase.SetInitialization(CommandUnit, CurrentStageData);
-			_commandCard.SetInitialization(this, CommandWinLose, CommandCamera, CommandUnit, CommandCost, ref _updateAction, CurrentStageData, _commandPencilCase.PencilCaseDataMy._pencilCaseData._maxCard);
-			_commandCamera.SetInitialization(CommandCard, CommandWinLose, ref _updateAction, CurrentStageData);
-			_commandUnit.SetInitialization(ref _updateAction, CurrentStageData);
-			_commandEffect.SetInitialization();
-			_commandThrow.SetInitialization(ref _updateAction, _commandUnit, _commandCamera, CurrentStageData);
-			_commandUnitSign.SetInitialization();
-			_commandAI.SetInitialization(CommandPencilCase, CommandUnit, ref _updateAction);
-			_commandTime.SetInitialization(ref _updateAction, CurrentStageData, _commandUnit, _commandCard, _commandCost);
-			_commandCost.SetInitialization(ref _updateAction, _commandPencilCase.PencilCaseDataMy._pencilCaseData);
-			_commandPause.SetInitialization();
-			_commandWinLose.SetInitialization();
-			_introComponent.SetInitialization(_commandCamera);
+			_pencilCaseComponent.SetInitialization(UnitComponent, CurrentStageData);
+			_cardComponent.SetInitialization(this, WinLoseComponent, CameraComponent, UnitComponent, CostComponent, ref _updateAction, CurrentStageData, _pencilCaseComponent.PencilCaseDataMy._pencilCaseData._maxCard);
+			_cameraComponent.SetInitialization(CardComponent, WinLoseComponent, ref _updateAction, CurrentStageData);
+			_unitComponent.SetInitialization(ref _updateAction, CurrentStageData);
+			_effectComponent.SetInitialization();
+			_throwComponent.SetInitialization(ref _updateAction, _unitComponent, _cameraComponent, CurrentStageData);
+			_unitSignComponent.SetInitialization();
+			_aiComponent.SetInitialization(PencilCaseComponent, UnitComponent, ref _updateAction);
+			_timeComponent.SetInitialization(ref _updateAction, CurrentStageData, _unitComponent, _cardComponent, _costComponent);
+			_costComponent.SetInitialization(ref _updateAction, _pencilCaseComponent.PencilCaseDataMy._pencilCaseData);
+			_pauseComponent.SetInitialization();
+			_winLoseComponent.SetInitialization();
+			_introComponent.SetInitialization(_cameraComponent);
 
 			_isEndSetting = true;
 
@@ -115,45 +115,45 @@ namespace Battle
 			}
 			if(BattleTurtorialComponent._isTutorial == false)
             {
-				_commandCard.CheckCard(); 
+				_cardComponent.CheckCard(); 
 			}
 			//던지기 시스템
 			if (Input.GetMouseButtonDown(0))
 			{
-				_commandThrow.PullUnit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+				_throwComponent.PullUnit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 			}
 			else if (Input.GetMouseButton(0))
 			{
-				_commandThrow.DrawParabola(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+				_throwComponent.DrawParabola(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 			}
 			else if (Input.GetMouseButtonUp(0))
 			{
-				_commandThrow.ThrowUnit();
+				_throwComponent.ThrowUnit();
 			}
 
 
 			//테스트용
 			if (Input.GetKeyDown(KeyCode.X))
 			{
-				_commandCard.AddOneCard();
+				_cardComponent.AddOneCard();
 			}
 			if (Input.GetKeyDown(KeyCode.Z))
 			{
-				_commandCard.AddAllCard();
+				_cardComponent.AddAllCard();
 			}
 			if (Input.GetKeyDown(KeyCode.C))
 			{
-				_commandCard.ClearCards();
+				_cardComponent.ClearCards();
 			}
 			if (Input.GetKeyDown(KeyCode.Backspace))
 			{
-				_commandCard.SubtractLastCard();
+				_cardComponent.SubtractLastCard();
 			}
 
 			//유닛 시스템
 			if (Input.GetKeyDown(KeyCode.Q))
 			{
-				_commandUnit.ClearUnit();
+				_unitComponent.ClearUnit();
 			}
 
 
@@ -177,26 +177,18 @@ namespace Battle
 		public void OnChangeTeam()
 		{
 			//내 팀인지 적팀인지 체크
-			if (CommandUnit.eTeam.Equals(TeamType.MyTeam))
+			if (UnitComponent.eTeam.Equals(TeamType.MyTeam))
 			{
-				CommandUnit.eTeam = TeamType.EnemyTeam;
+				UnitComponent.eTeam = TeamType.EnemyTeam;
 				_unitTeamText.text = "적의 팀";
 				return;
 			}
-			if (CommandUnit.eTeam.Equals(TeamType.EnemyTeam))
+			if (UnitComponent.eTeam.Equals(TeamType.EnemyTeam))
 			{
-				CommandUnit.eTeam = TeamType.MyTeam;
+				UnitComponent.eTeam = TeamType.MyTeam;
 				_unitTeamText.text = "나의 팀";
 				return;
 			}
-		}
-
-
-
-		[ContextMenu("데미지 테스트")]
-		public void DamagedTest()
-		{
-			_commandPencilCase.PlayBloodEffect(TeamType.MyTeam);
 		}
 	}
 

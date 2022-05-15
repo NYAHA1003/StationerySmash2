@@ -87,11 +87,11 @@ namespace Battle.Units
 					case AttackType.Range:
 						if (_myUnit.ETeam == TeamType.MyTeam)
 						{
-							RangeAttack(atkData, _myUnit.BattleManager.CommandUnit._enemyUnitList);
+							RangeAttack(atkData, _myUnit.BattleManager.UnitComponent._enemyUnitList);
 						}
 						else if (_myUnit.ETeam == TeamType.EnemyTeam)
 						{
-							RangeAttack(atkData, _myUnit.BattleManager.CommandUnit._playerUnitList);
+							RangeAttack(atkData, _myUnit.BattleManager.UnitComponent._playerUnitList);
 						}
 						break;
 				}

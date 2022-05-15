@@ -19,7 +19,7 @@ namespace Battle.StateEff
             _stateManager.Set_WaitExtraTime(stunTime);
 
             //이펙트 오브젝트 가져오기
-            _effectObj = _battleManager.CommandEffect.SetEffect(EffectType.Stun, new EffData(new Vector2(Trm.position.x, Trm.position.y + 0.1f), stunTime, Trm));
+            _effectObj = _battleManager.EffectComponent.SetEffect(EffectType.Stun, new EffData(new Vector2(Trm.position.x, Trm.position.y + 0.1f), stunTime, Trm));
 
             base.Enter();
         }

@@ -11,9 +11,9 @@ namespace Battle.PCAbility
         float duration = 4;
         public override void RunPencilCaseAbility()
         {
-            _battleManager.CommandCost.AddCostSpeed(speed);
+            _battleManager.CostComponent.AddCostSpeed(speed);
             Wait();
-            _battleManager.CommandCost.AddCostSpeed(-speed);
+            _battleManager.CostComponent.AddCostSpeed(-speed);
         }
         public IEnumerator Wait()
         {

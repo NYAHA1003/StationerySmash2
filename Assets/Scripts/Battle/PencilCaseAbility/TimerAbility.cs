@@ -11,9 +11,9 @@ namespace Battle.PCAbility
     {
         public override void RunPencilCaseAbility()
         {
-            for (int i = 0; i < _battleManager.CommandUnit._playerUnitList.Count; i++)
+            for (int i = 0; i < _battleManager.UnitComponent._playerUnitList.Count; i++)
             {
-                Unit unit = _battleManager.CommandUnit._playerUnitList[i];
+                Unit unit = _battleManager.UnitComponent._playerUnitList[i];
 
                 unit.AddStatusEffect(EffAttackType.Exch, 2, 1000, 1000);
             }

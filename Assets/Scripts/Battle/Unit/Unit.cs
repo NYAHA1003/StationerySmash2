@@ -166,21 +166,21 @@ public class Unit : MonoBehaviour
     {
         if(ETeam == TeamType.MyTeam)
         {
-            if (OrderIndex + 1 < _battleManager.CommandUnit._playerUnitList.Count)
+            if (OrderIndex + 1 < _battleManager.UnitComponent._playerUnitList.Count)
             {
-                if(transform.position.x > _battleManager.CommandUnit._playerUnitList[OrderIndex + 1].transform.position.x)
+                if(transform.position.x > _battleManager.UnitComponent._playerUnitList[OrderIndex + 1].transform.position.x)
                 {
-                    _battleManager.CommandUnit.SortPlayerUnitList();
+                    _battleManager.UnitComponent.SortPlayerUnitList();
                 }
             }
         }
         else if (ETeam == TeamType.EnemyTeam)
         {
-            if (OrderIndex + 1 < _battleManager.CommandUnit._enemyUnitList.Count)
+            if (OrderIndex + 1 < _battleManager.UnitComponent._enemyUnitList.Count)
             {
-                if (-transform.position.x > -_battleManager.CommandUnit._enemyUnitList[OrderIndex + 1].transform.position.x)
+                if (-transform.position.x > -_battleManager.UnitComponent._enemyUnitList[OrderIndex + 1].transform.position.x)
                 {
-                    _battleManager.CommandUnit.SortEnemyUnitList();
+                    _battleManager.UnitComponent.SortEnemyUnitList();
                 }
             }
         }
@@ -192,7 +192,7 @@ public class Unit : MonoBehaviour
     public virtual void Delete_Unit()
     {
         RemoveUnitList();
-        _battleManager.CommandUnit.DeletePoolUnit(this);
+        _battleManager.UnitComponent.DeletePoolUnit(this);
         _unitStateChanger.DeleteState(_unitData.unitType);
         _unitStateChanger.StateNull();
         _unitStateEff.DeleteEffStetes();
@@ -319,14 +319,14 @@ public class Unit : MonoBehaviour
         OrderIndex = index;
         if(ETeam == TeamType.MyTeam)
         {
-            if (OrderIndex == _battleManager.CommandUnit._playerUnitList.Count - 1)
+            if (OrderIndex == _battleManager.UnitComponent._playerUnitList.Count - 1)
             {
                 _viewIndex = 0;
             }
         }
         else if(ETeam == TeamType.EnemyTeam)
         {
-            if (OrderIndex == _battleManager.CommandUnit._enemyUnitList.Count - 1)
+            if (OrderIndex == _battleManager.UnitComponent._enemyUnitList.Count - 1)
             {
                 _viewIndex = 0;
             }
@@ -348,10 +348,10 @@ public class Unit : MonoBehaviour
             case TeamType.Null:
                 break;
             case TeamType.MyTeam:
-                _battleManager.CommandUnit._playerUnitList.Remove(this);
+                _battleManager.UnitComponent._playerUnitList.Remove(this);
                 break;
             case TeamType.EnemyTeam:
-                _battleManager.CommandUnit._enemyUnitList.Remove(this);
+                _battleManager.UnitComponent._enemyUnitList.Remove(this);
                 break;
         }
     }

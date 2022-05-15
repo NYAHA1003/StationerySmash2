@@ -45,12 +45,12 @@ namespace Battle.Units
 			//»ó´ë À¯´ÖÀÌ¶û ºÎµúÄ¡´ÂÁö Ã¼Å©
 			if (_myUnit.ETeam == TeamType.MyTeam)
 			{
-				CheckCollide(_myUnit.BattleManager.CommandUnit._enemyUnitList);
+				CheckCollide(_myUnit.BattleManager.UnitComponent._enemyUnitList);
 				return;
 			}
 			if (_myUnit.ETeam == TeamType.EnemyTeam)
 			{
-				CheckCollide(_myUnit.BattleManager.CommandUnit._playerUnitList);
+				CheckCollide(_myUnit.BattleManager.UnitComponent._playerUnitList);
 				return;
 			}
 		}
@@ -252,7 +252,7 @@ namespace Battle.Units
 		/// </summary>
 		private void EndThrow()
 		{
-			_myUnit.BattleManager.CommandThrow.EndThrowTarget(_myUnit);
+			_myUnit.BattleManager.ThrowComponent.EndThrowTarget(_myUnit);
 		}
 	}
 

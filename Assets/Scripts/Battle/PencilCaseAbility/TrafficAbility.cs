@@ -39,20 +39,20 @@ namespace Battle.PCAbility
         /// </summary>
         public override void RunPencilCaseAbility()
         {
-            Vector2 pos = _teamType == TeamType.MyTeam ? _battleManager.CommandPencilCase.PlayerPencilCase.transform.position : _battleManager.CommandPencilCase.EnemyPencilCase.transform.position;
+            Vector2 pos = _teamType == TeamType.MyTeam ? _battleManager.PencilCaseComponent.PlayerPencilCase.transform.position : _battleManager.PencilCaseComponent.EnemyPencilCase.transform.position;
 
             switch (_trafficType)
             {
                 case TrafficType.Red:
                     //빨간차 소환
-                    _battleManager.CommandUnit.SummonUnit(_redCarData, pos, 1, _teamType);
+                    _battleManager.UnitComponent.SummonUnit(_redCarData, pos, 1, _teamType);
                     break;
                 case TrafficType.Yellow:
                     //노란차 소한
-                    _battleManager.CommandUnit.SummonUnit(_yellowCarData, pos, 1, _teamType);
+                    _battleManager.UnitComponent.SummonUnit(_yellowCarData, pos, 1, _teamType);
                     break;
                 case TrafficType.Green:
-                    _battleManager.CommandUnit.SummonUnit(_greenCarData, pos, 1, _teamType);
+                    _battleManager.UnitComponent.SummonUnit(_greenCarData, pos, 1, _teamType);
                     //초록차 소환
                     break;
             }

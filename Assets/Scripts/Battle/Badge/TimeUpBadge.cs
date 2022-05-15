@@ -9,7 +9,7 @@ namespace Battle.Badge
 	{
 		public override void RunBadgeAbility()
 		{
-			_battleManager.CommandTime.IncreaseTime(30);
+			_battleManager.TimeComponent.IncreaseTime(30);
 		}
 	}
 

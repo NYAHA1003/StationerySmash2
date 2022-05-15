@@ -71,7 +71,7 @@ namespace Battle.Units
 		{
 			//지우개 조각 소환
 			EraserState eraserState = (EraserState)_stateManager;
-			_myUnit.BattleManager.CommandUnit.SummonUnit(eraserState.EraserPieceData, _myTrm.position, _myUnit.UnitStat.Grade, _myUnit.ETeam);
+			_myUnit.BattleManager.UnitComponent.SummonUnit(eraserState.EraserPieceData, _myTrm.position, _myUnit.UnitStat.Grade, _myUnit.ETeam);
 
 			base.Will();
 		}

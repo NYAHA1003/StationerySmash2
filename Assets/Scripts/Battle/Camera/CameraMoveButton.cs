@@ -26,7 +26,7 @@ namespace Battle.Cameras
 
 		void Start()
 		{
-			_cameraComponent = _battleManager.CommandCamera;
+			_cameraComponent = _battleManager.CameraComponent;
 		}
 
 		public void OnPointerDown(PointerEventData eventData)

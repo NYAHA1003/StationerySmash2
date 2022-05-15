@@ -64,7 +64,7 @@ namespace Battle.Units
 		{
 			//샤프심 소환
 			SharpState eraserState = (SharpState)_stateManager;
-			_myUnit.BattleManager.CommandUnit.SummonUnit(eraserState.SharpsimPieceData, _myTrm.position, _myUnit.UnitStat.Grade, _myUnit.ETeam);
+			_myUnit.BattleManager.UnitComponent.SummonUnit(eraserState.SharpsimPieceData, _myTrm.position, _myUnit.UnitStat.Grade, _myUnit.ETeam);
 
 		}
 	}

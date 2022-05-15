@@ -12,11 +12,11 @@ namespace Battle.PCAbility
         int count = 0;
         public override void RunPencilCaseAbility()
         {
-            AtkData atkData = new AtkData(_battleManager.CommandPencilCase.PlayerPencilCase, 0, 10, 0, 45, true, 13200 + count, EffAttackType.Normal, EffectType.Attack);
+            AtkData atkData = new AtkData(_battleManager.PencilCaseComponent.PlayerPencilCase, 0, 10, 0, 45, true, 13200 + count, EffAttackType.Normal, EffectType.Attack);
 
-            for (int i = 0; i < _battleManager.CommandUnit._enemyUnitList.Count; i++)
+            for (int i = 0; i < _battleManager.UnitComponent._enemyUnitList.Count; i++)
             {
-                Unit unit = _battleManager.CommandUnit._enemyUnitList[i];
+                Unit unit = _battleManager.UnitComponent._enemyUnitList[i];
                 unit.Run_Damaged(atkData);
             }
             count++;

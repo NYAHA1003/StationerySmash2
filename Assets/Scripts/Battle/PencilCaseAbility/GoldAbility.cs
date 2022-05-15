@@ -9,7 +9,7 @@ public class GoldAbility : AbstractPencilCaseAbility
 {
     public override void RunPencilCaseAbility()
     {
-        _battleManager.CommandCost.AddCost(1);
+        _battleManager.CostComponent.AddCost(1);
     }
     public override bool AIAbilityCondition()
     {

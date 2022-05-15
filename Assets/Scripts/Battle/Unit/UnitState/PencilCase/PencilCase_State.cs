@@ -73,7 +73,7 @@ namespace Battle.Units
 			}
 
 			//필통 유닛 자료형의 필통 컴포넌트의 피격 이펙트 출력 
-			_myUnit.BattleManager.CommandPencilCase.PlayBloodEffect(_myUnit.ETeam);
+			_myUnit.BattleManager.PencilCaseComponent.PlayBloodEffect(_myUnit.ETeam);
 			_myUnit.SubtractHP(_atkData.damage);
 			if (_myUnit.UnitStat.Hp <= 0)
 			{
@@ -108,11 +108,11 @@ namespace Battle.Units
 			//우리 팀일 경우
 			if (_myUnit.ETeam == TeamType.MyTeam)
 			{
-				_myUnit.BattleManager.CommandWinLose.SendEndGame(false);
+				_myUnit.BattleManager.WinLoseComponent.SendEndGame(false);
 			}
 			else if (_myUnit.ETeam == TeamType.EnemyTeam)
 			{
-				_myUnit.BattleManager.CommandWinLose.SendEndGame(true);
+				_myUnit.BattleManager.WinLoseComponent.SendEndGame(true);
 			}
 		}
 		public override Unit PullUnit()

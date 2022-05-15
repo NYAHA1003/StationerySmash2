@@ -11,7 +11,7 @@ namespace Battle.PCAbility
         /// </summary>
         public override void RunPencilCaseAbility()
         {
-            _battleManager.CommandCard.ClearCards();
+            _battleManager.CardComponent.ClearCards();
         }
         public override bool AIAbilityCondition()
         {

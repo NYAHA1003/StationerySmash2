@@ -295,7 +295,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             return;
         }
         _isDrag = true;
-        _battleManager.CommandCard.SelectCard(this);
+        _battleManager.CardComponent.SelectCard(this);
     }
 
     /// <summary>
@@ -310,12 +310,12 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             
             if (_rectTransform.anchoredPosition.y > 0)
             {
-                _battleManager.CommandCard.SetUseCard(this);
+                _battleManager.CardComponent.SetUseCard(this);
                 return;
             }
 
             SetCardPRS(_originPRS, 0.3f);
-            _battleManager.CommandCard.SetUnSelectCard(this);
+            _battleManager.CardComponent.SetUnSelectCard(this);
         }
     }
 

@@ -21,7 +21,7 @@ namespace Battle.PCAbility
         }
         public override void RunPencilCaseAbility()
         {
-            _battleManager.CommandUnit.SummonUnit(pencil, _battleManager.CommandPencilCase.PlayerPencilCase.gameObject.transform.position, grade, TeamType.MyTeam);
+            _battleManager.UnitComponent.SummonUnit(pencil, _battleManager.PencilCaseComponent.PlayerPencilCase.gameObject.transform.position, grade, TeamType.MyTeam);
             grade = 0;
         }
         private IEnumerator gradeUp()

@@ -25,7 +25,7 @@ namespace Battle.Sticker
 
         public override void RunDieStickerAblity()
         {
-            _myUnit.BattleManager.CommandUnit.SummonUnit(_eraserPieceData, _myUnit.transform.position, _myUnit.UnitStat.Grade, _myUnit.ETeam);
+            _myUnit.BattleManager.UnitComponent.SummonUnit(_eraserPieceData, _myUnit.transform.position, _myUnit.UnitStat.Grade, _myUnit.ETeam);
             _myUnit.UnitStat.SetBonusMaxHP(100);
         }
 

@@ -11,7 +11,7 @@ namespace Battle.Starategy
     {
         public override void Run_Card(TeamType eTeam)
         {
-            _battleManager.CommandCost.AddCost(3);
+            _battleManager.CostComponent.AddCost(3);
         }
     }
 }
