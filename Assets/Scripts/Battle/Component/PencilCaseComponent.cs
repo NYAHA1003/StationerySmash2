@@ -15,6 +15,7 @@ namespace Battle
     [System.Serializable]
     public class PencilCaseComponent : BattleComponent
     {
+        //프로퍼티
         public PencilCaseDataSO PencilCaseDataMy => pencilCaseDataMy;
         public PencilCaseDataSO PencilCaseDataEnemy => pencilCaseDataEnemy;
         public PencilCaseUnit PlayerPencilCase => _playerPencilCase;
@@ -196,7 +197,6 @@ namespace Battle
                 badges[i].RunBadgeAbility();
             }
         }
-
 
         /// <summary>
         /// 적 뱃지 설정

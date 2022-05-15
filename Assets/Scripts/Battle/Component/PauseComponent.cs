@@ -33,7 +33,7 @@ namespace Battle
         /// <summary>
         /// 일시정지 창을 껐다 키는 함수
         /// </summary>
-        public void SetPause()
+        private void SetPause()
         {
             _isActive = !_isActive;
             _pauseCanvas.gameObject.SetActive(_isActive);
@@ -61,7 +61,7 @@ namespace Battle
         /// <summary>
         /// 클릭하면 일시정지함
         /// </summary>
-        public void OnPause()
+        private void OnPause()
         {
             SetPause();
         }
