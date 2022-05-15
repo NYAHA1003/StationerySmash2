@@ -13,7 +13,6 @@ public class PencilCaseUnit : Unit
     public PencilCaseDataSO PencilCaseData => _pencilCaseData;
     public AbstractPencilCaseAbility AbilityState { get; private set; }
     public Dictionary<System.Action<AtkData>, System.Action<AtkData>> _actionsAtkData = new Dictionary<System.Action<AtkData>, System.Action<AtkData>>();
-    public PencilCaseComponent PencilCaseComponent;
 
     /// <summary>
     /// 필통 데이터 초기화
@@ -26,7 +25,6 @@ public class PencilCaseUnit : Unit
     public override void SetUnitData(CardData dataBase, TeamType eTeam, StageData stageData, int id, int grade, int orderIndex)
     {
         _battleManager ??= FindObjectOfType<BattleManager>();
-        PencilCaseComponent ??= _battleManager.CommandPencilCase;
         base.SetUnitData(dataBase, eTeam, stageData, id, grade, orderIndex);
         SetPencilCaseAbility(_pencilCaseData._pencilCaseData);
     }

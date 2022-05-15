@@ -190,6 +190,14 @@ namespace Battle
 				return;
 			}
 		}
+
+
+
+		[ContextMenu("데미지 테스트")]
+		public void DamagedTest()
+		{
+			_commandPencilCase.PlayBloodEffect(TeamType.MyTeam);
+		}
 	}
 
 }
