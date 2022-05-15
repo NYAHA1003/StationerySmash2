@@ -17,6 +17,8 @@ namespace Battle
 
         //속성
         public bool IsSelectCard { get; private set; } = false; //카드를 클릭한 상태인지
+        public CardMove SelectedCard => _selectedCard; //선택한 카드
+        public bool IsAlwaysSpawn => _isAlwaysSpawn;
 
         //기본 변수
         private float _summonRange = 0.0f;
@@ -52,7 +54,7 @@ namespace Battle
 
         //참조 변수
         private StageData _stageData = null;
-        private CardMove _selectCard = null;
+        private CardMove _selectedCard = null;
         private DeckData _deckData = new DeckData();
         private List<CardMove> _cardList = new List<CardMove>();
         private UnitComponent _commandUnit = null;
@@ -91,7 +93,7 @@ namespace Battle
             SetDeckCard();
 
             _cardDrawComponent.SetInitialization(_deckData, _cardList, _cardMovePrefeb, _cardPoolManager, _cardCanvas, _cardSpawnPosition);
-            _cardRangeComponent.SetInitialization(_summonRangeImage, _stageData);
+            _cardRangeComponent.SetInitialization(this, _commandCost, _summonRangeImage, _summonArrow, _stageData, _unitAfterImage, _afterImageSpriteRenderer);
             _cardSelectComponent.SetInitialization();
 
             //업데이트할 함수들 전달
@@ -111,10 +113,10 @@ namespace Battle
             //카드를 더 이상 사용할 수 없게 한다
             _isDontUse = true;
 
-            if (_selectCard != null)
+            if (_selectedCard != null)
             {
-                _selectCard.DontUseCard();
-                _selectCard = null;
+                _selectedCard.DontUseCard();
+                _selectedCard = null;
             }
         }
 
@@ -185,12 +187,12 @@ namespace Battle
             _summonRangeImage.gameObject.SetActive(true);
 
             //해당 카드를 선택된 카드에 넣음
-            _selectCard = card;
+            _selectedCard = card;
 
             //카드 크기를 크게 만들고 각도를 0으로 돌림
-            _selectCard.transform.DOKill();
-            _selectCard.SetCardScale(Vector3.one * 1.3f, 0.3f);
-            _selectCard.SetCardRot(Quaternion.identity, 0.3f);
+            _selectedCard.transform.DOKill();
+            _selectedCard.SetCardScale(Vector3.one * 1.3f, 0.3f);
+            _selectedCard.SetCardRot(Quaternion.identity, 0.3f);
             
             //카드 선택 활성화
             IsSelectCard = true;
@@ -208,7 +210,7 @@ namespace Battle
             _cardRangeComponent.SetSummonRangeLine(false);
 
             //융합중이라면 카드 선택 취소를 취소한다
-            if (card.IsFusion && card != _selectCard)
+            if (card.IsFusion && card != _selectedCard)
             {
                 return;
             }
@@ -217,7 +219,7 @@ namespace Battle
             card.SetCardScale(Vector3.one * 1, 0.3f);
 
             //선택한 카드를 Null로 돌려놓고 카드 선택을 False로 처리함
-            _selectCard = null;
+            _selectedCard = null;
             IsSelectCard = false;
 
             //카드를 융합시킴
@@ -238,12 +240,12 @@ namespace Battle
             {
                 card.RunOriginPRS();
                 _commandCamera.SetCameraIsMove(true);
-                _selectCard = null;
+                _selectedCard = null;
                 IsSelectCard = false;
                 return;
             }
             //선택한 카드를 Null로 돌림
-            _selectCard = null;
+            _selectedCard = null;
 
             _commandCost.SubtractCost(card.CardCost);
             SubtractCardAt(_cardList.FindIndex(x => x.Id == card.Id));
@@ -446,7 +448,7 @@ namespace Battle
             CardMove fromCombineCard = targetCard2;
 
             //두 번째 카드를 선택중일 때
-            if (targetCard2 == _selectCard)
+            if (targetCard2 == _selectedCard)
             {
                 toCombineCard = targetCard2;
                 fromCombineCard = targetCard1;
@@ -489,7 +491,7 @@ namespace Battle
             {
                 CardMove targetCard = _cardList[i];
                 targetCard.SetOriginPRS(originCardPRS[i]);
-                if (_cardList[i].Equals(_selectCard))
+                if (_cardList[i].Equals(_selectedCard))
                 {
                     continue;
                 }
@@ -555,11 +557,11 @@ namespace Battle
         /// </summary>
         private void UpdateSelectCardPos()
         {
-            if (_selectCard == null)
+            if (_selectedCard == null)
             {
                 return;
             }
-            _selectCard.transform.position = Input.mousePosition;
+            _selectedCard.transform.position = Input.mousePosition;
         }
 
         /// <summary>
@@ -570,38 +572,7 @@ namespace Battle
         /// <param name="isDelete"></param>
         private void UpdateUnitAfterImage()
         {
-            //마우스 위치를 가져온다
-            Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            //소환할 유닛이 자신의 유닛인지 체크해서 범위 제한
-            if (_commandUnit.eTeam == TeamType.MyTeam)
-            {
-                pos.x = Mathf.Clamp(pos.x, -_stageData.max_Range, _summonRange);
-            }
-
-            //소환 미리보기가 될 수 있는지 체크
-            if (_selectCard == null || _selectCard.CardDataValue.unitData.unitType == UnitType.None || pos.y < 0)
-            {
-                SetSummonArrowImage(false, pos);
-                _unitAfterImage.SetActive(false);
-                return;
-            }
-
-            //소환 미리보기 적용
-            _unitAfterImage.SetActive(true);
-            _afterImageSpriteRenderer.color = Color.white;
-
-            if (CheckPossibleSummon())
-            {
-                _afterImageSpriteRenderer.color = Color.red;
-            }
-
-            _unitAfterImage.transform.position = new Vector3(pos.x, 0);
-            _afterImageSpriteRenderer.sprite = SkinData.GetSkin(_selectCard.CardDataValue._skinData._skinType);
-
-            //소환 화살표 적용
-            SetSummonArrowImage(true, pos);
-            return;
+            _cardRangeComponent.UpdateUnitAfterImage();
         }
 
         /// <summary>
@@ -613,25 +584,11 @@ namespace Battle
 		}
 
         /// <summary>
-        /// 소환 화살표 설정
-        /// </summary>
-        private void SetSummonArrowImage(bool isActive, Vector2 pos)
-        {
-            //소환 화살표 적용
-            _summonArrow.gameObject.SetActive(isActive);
-            _summonArrow.transform.position = pos;
-            _summonArrow.anchoredPosition = new Vector2(_summonArrow.anchoredPosition.x, Mathf.Clamp(_summonArrow.anchoredPosition.y, 520, 1000));
-            _summonArrow.sizeDelta = new Vector2(_summonArrow.sizeDelta.x, _summonArrow.anchoredPosition.y);
-
-            return;
-        }
-
-        /// <summary>
         /// 카드를 여러 조건에 따라 사용할 수 있는지 체크
         /// </summary>
         private bool CheckPossibleSummon()
         {
-            if (_selectCard == null)
+            if (_selectedCard == null)
             {
                 return false;
             }
@@ -645,7 +602,7 @@ namespace Battle
                 return true;
             }
 
-            switch (_selectCard.CardDataValue.cardType)
+            switch (_selectedCard.CardDataValue.cardType)
             {
                 case CardType.Execute:
                     break;
@@ -662,7 +619,7 @@ namespace Battle
                     break;
             }
 
-            if (_commandCost.CurrentCost < _selectCard.CardCost)
+            if (_commandCost.CurrentCost < _selectedCard.CardCost)
             {
                 return false;
             }
