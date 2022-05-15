@@ -66,9 +66,84 @@ namespace Battle
         }
 
         /// <summary>
+        /// 카메라를 지정한 곳으로 이동하게 함
+        /// </summary>
+        /// <param name="pos"></param>
+        /// <param name="size"></param>
+        /// <param name="duration"></param>
+        public void MovingCamera(Vector3 pos, float size, float duration, float lerp = 1)
+		{
+            pos.x = Mathf.Lerp(_camera.transform.position.x, pos.x, lerp);
+            pos.y += 0.1f;
+            pos.z = -10;
+            _camera.transform.DOMove(pos, duration).SetEase(Ease.OutExpo);
+            _camera.transform.DOScale(size, duration).SetEase(Ease.OutExpo);
+            DOTween.To(() => _camera.orthographicSize, x => _camera.orthographicSize = x, size, duration);
+
+        }
+
+        /// <summary>
+        /// 왼쪽으로 카메라 이동
+        /// </summary>
+        public void OnLeftMove()
+        {
+            if (_isEffect)
+            {
+                return;
+            }
+            if (_commandCard.IsSelectCard)
+            {
+                return;
+            }
+            if (-_stageData.max_Range - 1f > _camera.transform.position.x)
+            {
+                return;
+            }
+            _camera.transform.Translate(Vector3.left * _moveSpeed * Time.deltaTime);
+        }
+
+        /// <summary>
+        /// 오른쪽으로 카메라 이동
+        /// </summary>
+        public void OnRightMove()
+        {
+            if (_isEffect)
+            {
+                return;
+            }
+            if (_commandCard.IsSelectCard)
+            {
+                return;
+            }
+
+            if (_stageData.max_Range + 1f < _camera.transform.position.x)
+            {
+                return;
+            }
+                _camera.transform.Translate(Vector3.right * _moveSpeed * Time.deltaTime);
+        }
+
+        /// <summary>
+        /// 승리에 따라 필통이 파괴되는 연출을 사용한다.
+        /// </summary>
+        /// <param name="isWin"></param>
+		public void Notify(bool isWin)
+		{
+            if(isWin)
+			{
+                WinCamEffect(_enemyPencilCase.position, isWin);
+			}
+            else
+			{
+                WinCamEffect(_myPencilCase.position, isWin);
+			}
+        }
+
+
+        /// <summary>
         /// 카메라 크기 조정
         /// </summary>
-        public void UpdateCameraScale()
+        private void UpdateCameraScale()
         {
             if (_isEffect)
                 return;
@@ -128,93 +203,20 @@ namespace Battle
             }
         }
 
-        /// <summary>
-        /// 방향키로 좌우 이동이 가능함
-        /// </summary>
-        public void UpdateInputMove()
-		{
-            if(Input.GetKey(KeyCode.RightArrow))
-			{
-                OnRightMove();
-			}
-            if(Input.GetKey(KeyCode.LeftArrow))
-			{
-                OnLeftMove();
-			}
-
-        }
-
-        /// <summary>
-        /// 카메라를 지정한 곳으로 이동하게 함
-        /// </summary>
-        /// <param name="pos"></param>
-        /// <param name="size"></param>
-        /// <param name="duration"></param>
-        public void MovingCamera(Vector3 pos, float size, float duration, float lerp = 1)
-		{
-            pos.x = Mathf.Lerp(_camera.transform.position.x, pos.x, lerp);
-            pos.y += 0.1f;
-            pos.z = -10;
-            _camera.transform.DOMove(pos, duration).SetEase(Ease.OutExpo);
-            _camera.transform.DOScale(size, duration).SetEase(Ease.OutExpo);
-            DOTween.To(() => _camera.orthographicSize, x => _camera.orthographicSize = x, size, duration);
-
-        }
-
-        /// <summary>
-        /// 왼쪽으로 카메라 이동
-        /// </summary>
-        public void OnLeftMove()
-        {
-            if (_isEffect)
-            {
-                return;
-            }
-            if (_commandCard.IsSelectCard)
-            {
-                return;
-            }
-            if (-_stageData.max_Range - 1f > _camera.transform.position.x)
-            {
-                return;
-            }
-            _camera.transform.Translate(Vector3.left * _moveSpeed * Time.deltaTime);
-        }
-
-        /// <summary>
-        /// 오른쪽으로 카메라 이동
-        /// </summary>
-        public void OnRightMove()
-        {
-            if (_isEffect)
-            {
-                return;
-            }
-            if (_commandCard.IsSelectCard)
-            {
-                return;
-            }
-
-            if (_stageData.max_Range + 1f < _camera.transform.position.x)
-            {
-                return;
-            }
-                _camera.transform.Translate(Vector3.right * _moveSpeed * Time.deltaTime);
-        }
 
         /// <summary>
         /// 승리 카메라 이펙트
         /// </summary>
-        public void WinCamEffect(Vector2 pos, bool isWin)
+        private void WinCamEffect(Vector2 pos, bool isWin)
         {
             if (_isEffect)
             {
                 return;
             }
             if (_isEffect)
-			{
+            {
                 return;
-			}
+            }
             _isEffect = true;
             float time = Vector2.Distance(_camera.transform.position, pos) / 5;
             _camera.transform.DOMove(new Vector3(pos.x, pos.y, -10), time);
@@ -234,21 +236,23 @@ namespace Battle
             });
         }
 
+
         /// <summary>
-        /// 승리에 따라 필통이 파괴되는 연출을 사용한다.
+        /// 방향키로 좌우 이동이 가능함
         /// </summary>
-        /// <param name="isWin"></param>
-		public void Notify(bool isWin)
-		{
-            if(isWin)
-			{
-                WinCamEffect(_enemyPencilCase.position, isWin);
-			}
-            else
-			{
-                WinCamEffect(_myPencilCase.position, isWin);
-			}
+        private void UpdateInputMove()
+        {
+            if (Input.GetKey(KeyCode.RightArrow))
+            {
+                OnRightMove();
+            }
+            if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                OnLeftMove();
+            }
+
         }
-	}
+
+    }
 
 }
