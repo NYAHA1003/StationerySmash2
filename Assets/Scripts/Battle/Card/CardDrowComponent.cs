@@ -9,7 +9,7 @@ using Main.Deck;
 
 namespace Battle
 {
-	public class CardDrawComponent : BattleComponent
+	public class CardDrowComponent : BattleComponent
 	{
         //기본 변수
         private int _maxCardCount = 3;

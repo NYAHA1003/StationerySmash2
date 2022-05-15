@@ -20,7 +20,6 @@ namespace Battle
 
         //기본 변수
         private float _summonRange = 0.0f;
-        private float _summonRangeDelay = 30f;
         private bool _isFusion = false;
         private Coroutine _delayCoroutine = null;
         private bool _isDontUse = false;
@@ -61,14 +60,18 @@ namespace Battle
         private WinLoseComponent _commandWinLose = null;
         private CameraComponent _commandCamera = null;
         private MonoBehaviour _managerBase = null;
-        private CardDrawComponent _cardDrawComponent = null;
+        private CardDrowComponent _cardDrawComponent = null;
+        private CardRangeComponent _cardRangeComponent = null;
+        private CardSelectComponent _cardSelectComponent = null;
 
         /// <summary>
         /// 초기화
         /// </summary>
         public void SetInitialization(MonoBehaviour managerBase, WinLoseComponent commandWinLose, CameraComponent commandCamera, UnitComponent commandUnit, CostComponent commandCost, ref System.Action updateAction, StageData stageData, int maxCard)
         {
-            _cardDrawComponent = new CardDrawComponent();
+            _cardDrawComponent = new CardDrowComponent();
+            _cardRangeComponent = new CardRangeComponent();
+            _cardSelectComponent = new CardSelectComponent();
 
             //변수들 설정
             this._managerBase = managerBase;
@@ -84,13 +87,12 @@ namespace Battle
 
             SetMaxCard(maxCard);
 
-            //유닛 소환 범위 그리기
-            DrawSummonRange();
-
             //덱에 카드정보들 전달
             SetDeckCard();
 
             _cardDrawComponent.SetInitialization(_deckData, _cardList, _cardMovePrefeb, _cardPoolManager, _cardCanvas, _cardSpawnPosition);
+            _cardRangeComponent.SetInitialization(_summonRangeImage, _stageData);
+            _cardSelectComponent.SetInitialization();
 
             //업데이트할 함수들 전달
             updateAction += UpdateUnitAfterImage;
@@ -124,10 +126,11 @@ namespace Battle
             }
         }
 
+        //카드 뽑기 관련
         /// <summary>
         /// 카드 한 장을 뽑는다
         /// </summary>
-        public void DrawOneCard()
+        public void DrowOneCard()
 		{
             //카드 뽑기
             _cardDrawComponent.AddOneCard();
@@ -137,7 +140,7 @@ namespace Battle
             SetDelayFusion();
 
             //카드 뽑을 때 연계 효과들 실행
-            RunAction(DrawOneCard);
+            RunAction(DrowOneCard);
         }
 
         /// <summary>
@@ -165,6 +168,7 @@ namespace Battle
             }
         }
 
+        //카드 선택 관련
         /// <summary>
         /// 카드를 선택함
         /// </summary>
@@ -177,7 +181,7 @@ namespace Battle
                 return;
             }
 
-            SetSummonRangeLine(true);
+            _cardRangeComponent.SetSummonRangeLine(true);
             _summonRangeImage.gameObject.SetActive(true);
 
             //해당 카드를 선택된 카드에 넣음
@@ -201,7 +205,7 @@ namespace Battle
         /// <param name="card"></param>
         public void SetUnSelectCard(CardMove card)
         {
-            SetSummonRangeLine(false);
+            _cardRangeComponent.SetSummonRangeLine(false);
 
             //융합중이라면 카드 선택 취소를 취소한다
             if (card.IsFusion && card != _selectCard)
@@ -227,7 +231,7 @@ namespace Battle
         public void SetUseCard(CardMove card)
         {
             //소환할 수 있는지 체크 및 소환 범위 그리기 없앰
-            SetSummonRangeLine(false);
+            _cardRangeComponent.SetSummonRangeLine(false);
 
             //카드를 사용할 수 있는지 체크함
             if (!CheckPossibleSummon() || _isDontUse)
@@ -472,15 +476,6 @@ namespace Battle
         }
 
         /// <summary>
-        /// 소환 범위 렌더링
-        /// </summary>
-        private void DrawSummonRange()
-        {
-            _summonRangeImage.transform.position = new Vector2(-_stageData.max_Range, 0);
-            _summonRangeImage.transform.localScale = new Vector2(Mathf.Abs(_stageData.max_Range + _summonRange), 0.5f);
-        }
-
-        /// <summary>
         /// 카드 위치를 정렬함
         /// </summary>
         private void SortCard()
@@ -509,7 +504,7 @@ namespace Battle
         {
             if(_cardDrawComponent.CheckCardDraw())
             {
-                DrawOneCard();
+                DrowOneCard();
             }
         }
 
@@ -610,6 +605,14 @@ namespace Battle
         }
 
         /// <summary>
+        /// 소환 범위 업데이트 및 증가
+        /// </summary>
+        private void UpdateSummonRange()
+		{
+            _cardRangeComponent.UpdateSummonRange();
+		}
+
+        /// <summary>
         /// 소환 화살표 설정
         /// </summary>
         private void SetSummonArrowImage(bool isActive, Vector2 pos)
@@ -619,8 +622,7 @@ namespace Battle
             _summonArrow.transform.position = pos;
             _summonArrow.anchoredPosition = new Vector2(_summonArrow.anchoredPosition.x, Mathf.Clamp(_summonArrow.anchoredPosition.y, 520, 1000));
             _summonArrow.sizeDelta = new Vector2(_summonArrow.sizeDelta.x, _summonArrow.anchoredPosition.y);
-            //float ySize = Mathf.Clamp(pos.y * 2f, 0.8f, 2f);
-            //_summonArrow.size = new Vector2(0.35f, ySize);
+
             return;
         }
 
@@ -666,36 +668,6 @@ namespace Battle
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// 소환 범위 그리기를 키거나 끄기
-        /// </summary>
-        /// <param name="isActive"></param>
-        private void SetSummonRangeLine(bool isActive)
-        {
-            _summonRangeImage.gameObject.SetActive(isActive);
-        }
-
-        /// <summary>
-        /// 소환 범위 업데이트 및 증가
-        /// </summary>
-        private void UpdateSummonRange()
-        {
-            if (_summonRange >= 0)
-            {
-                return;
-            }
-
-            if (_summonRangeDelay > 0)
-            {
-                _summonRangeDelay -= Time.deltaTime;
-                return;
-            }
-
-            _summonRangeDelay = 30f;
-            _summonRange += _stageData.max_Range / 4;
-            DrawSummonRange();
         }
 
         /// <summary>
