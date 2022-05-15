@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using Main.Setting;
 public class MainLoadingManager : LoadingManager
 {
+    
     protected async override void Start()
     {
         await Sound.AllLoadAssetAsync();
