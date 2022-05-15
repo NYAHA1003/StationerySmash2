@@ -20,8 +20,9 @@ namespace Battle
         private CostComponent _costCommand = null;
         private Unit _playerPencilCase = null;
         private Unit _enemyPencilCase = null;
-
         private StageData _stageData;
+
+        //변수
         private float _timer = 0;
         private float _bonustime = 0;
         private bool _isSuddenDeath;
@@ -65,7 +66,7 @@ namespace Battle
         /// <summary>
         /// 시간 업데이트
         /// </summary>
-        public void UpdateTime()
+        private void UpdateTime()
         {
             if (_isFinallyEnd)
             {
@@ -90,7 +91,7 @@ namespace Battle
         /// <summary>
         /// 서든데스 시작
         /// </summary>
-        public void SetSuddenDeath()
+        private void SetSuddenDeath()
         {
             _cardCommand.ClearCards();
             _unitCommand.ClearUnit();
