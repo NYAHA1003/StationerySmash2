@@ -91,15 +91,6 @@ namespace Battle
         }
 
         /// <summary>
-        /// 모든 유닛 리스트 정렬
-        /// </summary>
-        public void SortAllUnitList()
-        {
-            SortPlayerUnitList();
-            SortEnemyUnitList();
-        }
-
-        /// <summary>
         /// 플레이어 유닛 정렬
         /// </summary>
         public void SortPlayerUnitList()
