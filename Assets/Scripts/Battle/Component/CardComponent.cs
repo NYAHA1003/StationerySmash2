@@ -99,24 +99,28 @@ namespace Battle
             updateAction += UpdateCheckCost;
         }
 
+        /// <summary>
+        /// 승리관련 관찰
+        /// </summary>
+        /// <param name="isWin"></param>
+        public void Notify(bool isWin)
+        {
+            //카드를 더 이상 사용할 수 없게 한다
+            _isDontUse = true;
+
+            if (_selectCard != null)
+            {
+                _selectCard.DontUseCard();
+                _selectCard = null;
+            }
+        }
+
         public void CheckCard()
         {
 
             if(_cardList.Count == _maxCardCount)
             {
                 BattleTurtorialComponent.tutorialEventQueue.Dequeue().Invoke(); 
-            }
-        }
-        /// <summary>
-        /// 덱에 카드 정보들을 넣는다
-        /// </summary>
-        public void SetDeckCard()
-        {
-            int count = _cardDeckSO.cardDatas.Count;
-            for(int i = 0; i < count; i++)
-            {
-                CardData cardData = _cardDeckSO.cardDatas[i];
-                _deckData.Add_CardData(cardData);
             }
         }
 
@@ -168,61 +172,11 @@ namespace Battle
         }
 
         /// <summary>
-        /// 카드 위치를 정렬함
-        /// </summary>
-        public void SortCard()
-        {
-            //카드 위치를 반환받는다
-            List<PRS> originCardPRS = new List<PRS>();
-            originCardPRS = ReturnRoundPRS(_cardList.Count, 800, 600);
-
-            //카드들에게 반환받은 위치를 넣는다
-            for (int i = 0; i < _cardList.Count; i++)
-            {
-                CardMove targetCard = _cardList[i];
-                targetCard.SetOriginPRS(originCardPRS[i]);
-                if (_cardList[i].Equals(_selectCard))
-                {
-                    continue;
-                }
-                targetCard.SetCardPRS(targetCard.OriginPRS, 0.4f);
-            }
-        }
-
-        /// <summary>
         /// 마지막 카드를 지운다
         /// </summary>
         public void SubtractLastCard()
         {
             SubtractCardAt(_currentCardCount - 1);
-        }
-        /// <summary>
-        /// 카드를 찾아서 리스트에서 제거한다
-        /// </summary>
-        /// <param name="cardMove"></param>
-        public void SubtractCardFind(CardMove cardMove)
-        {
-            SubtractCardAt(_cardList.FindIndex(x => x.Id == cardMove.Id));
-        }
-
-        /// <summary>
-        /// 지정한 인덱스의 카드를 지운다
-        /// </summary>
-        public void SubtractCardAt(int index)
-        {
-            if (_currentCardCount == 0)
-            {
-                return;
-            }
-
-            //카드 삭제
-            _currentCardCount--;
-            _cardList[index].transform.SetParent(_cardPoolManager);
-            _cardList[index].gameObject.SetActive(false);
-            _cardList.RemoveAt(index);
-
-            //삭제하고 카드를 정렬
-            SortCard();
         }
 
         /// <summary>
@@ -271,30 +225,6 @@ namespace Battle
             //카드를 융합시킴
             SetDelayFusion();
         }
-
-        /// <summary>
-        /// 선택한 카드 위치를 업데이트 한다
-        /// </summary>
-        public void UpdateSelectCardPos()
-        {
-            if (_selectCard == null)
-            {
-                return;
-            }
-            _selectCard.transform.position = Input.mousePosition;
-        }
-
-        /// <summary>
-        /// 카드들의 코스트를 비교하여 사용할 수 있는지 확인한다
-        /// </summary>
-        public void UpdateCheckCost()
-		{
-            int count = _cardList.Count;
-            for (int i = 0; i < count; i++)
-			{
-                _cardList[i].CheckCost(_commandCost.CurrentCost);
-			}
-		}
 
         /// <summary>
         /// 카드 선택을 취소함
@@ -367,164 +297,10 @@ namespace Battle
                     break;
             }
 
-            //적 유닛을 소환하면 로그에 추가함
-            //if (_battleManager.CommandUnit.eTeam == TeamType.EnemyTeam)
-            //{
-            //    _battleManager._aiLog.Add_Log(card._dataBase);
-            //}
-
             //카드 융합
             SetDelayFusion();
         }
 
-        /// <summary>
-        /// 카드 소환 미리보기
-        /// </summary>
-        /// <param name="unitData"></param>
-        /// <param name="pos"></param>
-        /// <param name="isDelete"></param>
-        public void UpdateUnitAfterImage()
-        {
-            //마우스 위치를 가져온다
-            Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            
-            //소환할 유닛이 자신의 유닛인지 체크해서 범위 제한
-            if (_commandUnit.eTeam == TeamType.MyTeam)
-            {
-                pos.x = Mathf.Clamp(pos.x, -_stageData.max_Range, _summonRange);
-            }
-
-            //소환 미리보기가 될 수 있는지 체크
-            if (_selectCard == null || _selectCard.CardDataValue.unitData.unitType == UnitType.None || pos.y < 0)
-            {
-                SetSummonArrowImage(false, pos);
-                _unitAfterImage.SetActive(false);
-                return;
-            }
-
-            //소환 미리보기 적용
-            _unitAfterImage.SetActive(true);
-            _afterImageSpriteRenderer.color = Color.white;
-
-            if (CheckPossibleSummon())
-            {
-                _afterImageSpriteRenderer.color = Color.red;
-            }
-
-            _unitAfterImage.transform.position = new Vector3(pos.x, 0);
-            _afterImageSpriteRenderer.sprite = SkinData.GetSkin(_selectCard.CardDataValue._skinData._skinType);
-
-            //소환 화살표 적용
-            SetSummonArrowImage(true, pos);
-            return;
-        }
-
-        /// <summary>
-        /// 소환 화살표 설정
-        /// </summary>
-        public void SetSummonArrowImage(bool isActive, Vector2 pos)
-        {
-            //소환 화살표 적용
-            _summonArrow.gameObject.SetActive(isActive);
-            _summonArrow.transform.position = pos;
-            _summonArrow.anchoredPosition = new Vector2(_summonArrow.anchoredPosition.x, Mathf.Clamp(_summonArrow.anchoredPosition.y, 520, 1000));
-            _summonArrow.sizeDelta = new Vector2(_summonArrow.sizeDelta.x, _summonArrow.anchoredPosition.y);
-            //float ySize = Mathf.Clamp(pos.y * 2f, 0.8f, 2f);
-            //_summonArrow.size = new Vector2(0.35f, ySize);
-            return;
-        }
-
-        /// <summary>
-        /// 카드를 여러 조건에 따라 사용할 수 있는지 체크
-        /// </summary>
-        public bool CheckPossibleSummon()
-        {
-            if (_selectCard == null)
-            {
-                return false;
-            }
-            //테스트용 소환 조건 해제
-            if (_isAlwaysSpawn)
-            {
-                return true;
-            }
-            if (_commandUnit.eTeam.Equals(TeamType.EnemyTeam))
-            {
-                return true;
-            }
-
-            switch (_selectCard.CardDataValue.cardType)
-            {
-                case CardType.Execute:
-                    break;
-                case CardType.SummonUnit:
-                case CardType.SummonTrap:
-                    Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, -_stageData.max_Range, _summonRange);
-                    if (mouse_Pos.x < -_stageData.max_Range || mouse_Pos.x > _summonRange)
-                    {
-                        return false;
-                    }
-                    break;
-                case CardType.Installation:
-                    break;
-            }
-
-            if (_commandCost.CurrentCost < _selectCard.CardCost)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// 소환 범위 업데이트 및 증가
-        /// </summary>
-        public void UpdateSummonRange()
-        {
-            if (_summonRange >= 0)
-            {
-                return;
-            }
-
-            if (_summonRangeDelay > 0)
-            {
-                _summonRangeDelay -= Time.deltaTime;
-                return;
-            }
-            Debug.Log("범위 늘어남");
-            _summonRangeDelay = 30f;
-            _summonRange += _stageData.max_Range / 4;
-            DrawSummonRange();
-        }
-
-        /// <summary>
-        /// 소환 범위 그리기를 키거나 끄기
-        /// </summary>
-        /// <param name="isActive"></param>
-        public void SetSummonRangeLine(bool isActive)
-        {
-            _summonRangeImage.gameObject.SetActive(isActive);
-        }
-
-        /// <summary>
-        /// 자동 카드 드로우 업데이트
-        /// </summary>
-        public void UpdateCardDraw()
-        {
-            if (_currentCardCount >= _maxCardCount)
-            {
-                return;
-            }
-            if (_cardDelay > 0)
-            {
-                _cardDelay -= Time.deltaTime;
-                return;
-            }
-            _cardDelay = 0.3f;
-            AddOneCard();
-        }
 
         /// <summary>
         /// 최대 카드 설정
@@ -542,6 +318,7 @@ namespace Battle
         {
             _maxCardCount += add;
         }
+
         /// <summary>
         /// 융합에 딜레이를 설정, 리셋하는 함수
         /// </summary>
@@ -753,16 +530,242 @@ namespace Battle
             _summonRangeImage.transform.localScale = new Vector2(Mathf.Abs(_stageData.max_Range + _summonRange), 0.5f);
         }
 
-		public void Notify(bool isWin)
-		{
-            _isDontUse = true;
+        /// <summary>
+        /// 카드 위치를 정렬함
+        /// </summary>
+        private void SortCard()
+        {
+            //카드 위치를 반환받는다
+            List<PRS> originCardPRS = new List<PRS>();
+            originCardPRS = ReturnRoundPRS(_cardList.Count, 800, 600);
 
-            if(_selectCard != null)
-			{
-                _selectCard.DontUseCard();
-                _selectCard = null;
-			}
+            //카드들에게 반환받은 위치를 넣는다
+            for (int i = 0; i < _cardList.Count; i++)
+            {
+                CardMove targetCard = _cardList[i];
+                targetCard.SetOriginPRS(originCardPRS[i]);
+                if (_cardList[i].Equals(_selectCard))
+                {
+                    continue;
+                }
+                targetCard.SetCardPRS(targetCard.OriginPRS, 0.4f);
+            }
         }
-	}
+
+        /// <summary>
+        /// 자동 카드 드로우 업데이트
+        /// </summary>
+        private void UpdateCardDraw()
+        {
+            if (_currentCardCount >= _maxCardCount)
+            {
+                return;
+            }
+            if (_cardDelay > 0)
+            {
+                _cardDelay -= Time.deltaTime;
+                return;
+            }
+            _cardDelay = 0.3f;
+            AddOneCard();
+        }
+
+        /// <summary>
+        /// 덱에 카드 정보들을 넣는다
+        /// </summary>
+        private void SetDeckCard()
+        {
+            int count = _cardDeckSO.cardDatas.Count;
+            for (int i = 0; i < count; i++)
+            {
+                CardData cardData = _cardDeckSO.cardDatas[i];
+                _deckData.Add_CardData(cardData);
+            }
+        }
+
+        /// <summary>
+        /// 카드를 찾아서 리스트에서 제거한다
+        /// </summary>
+        /// <param name="cardMove"></param>
+        private void SubtractCardFind(CardMove cardMove)
+        {
+            SubtractCardAt(_cardList.FindIndex(x => x.Id == cardMove.Id));
+        }
+
+        /// <summary>
+        /// 지정한 인덱스의 카드를 지운다
+        /// </summary>
+        private void SubtractCardAt(int index)
+        {
+            if (_currentCardCount == 0)
+            {
+                return;
+            }
+
+            //카드 삭제
+            _currentCardCount--;
+            _cardList[index].transform.SetParent(_cardPoolManager);
+            _cardList[index].gameObject.SetActive(false);
+            _cardList.RemoveAt(index);
+
+            //삭제하고 카드를 정렬
+            SortCard();
+        }
+
+        /// <summary>
+        /// 선택한 카드 위치를 업데이트 한다
+        /// </summary>
+        private void UpdateSelectCardPos()
+        {
+            if (_selectCard == null)
+            {
+                return;
+            }
+            _selectCard.transform.position = Input.mousePosition;
+        }
+
+        /// <summary>
+        /// 카드 소환 미리보기
+        /// </summary>
+        /// <param name="unitData"></param>
+        /// <param name="pos"></param>
+        /// <param name="isDelete"></param>
+        private void UpdateUnitAfterImage()
+        {
+            //마우스 위치를 가져온다
+            Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            //소환할 유닛이 자신의 유닛인지 체크해서 범위 제한
+            if (_commandUnit.eTeam == TeamType.MyTeam)
+            {
+                pos.x = Mathf.Clamp(pos.x, -_stageData.max_Range, _summonRange);
+            }
+
+            //소환 미리보기가 될 수 있는지 체크
+            if (_selectCard == null || _selectCard.CardDataValue.unitData.unitType == UnitType.None || pos.y < 0)
+            {
+                SetSummonArrowImage(false, pos);
+                _unitAfterImage.SetActive(false);
+                return;
+            }
+
+            //소환 미리보기 적용
+            _unitAfterImage.SetActive(true);
+            _afterImageSpriteRenderer.color = Color.white;
+
+            if (CheckPossibleSummon())
+            {
+                _afterImageSpriteRenderer.color = Color.red;
+            }
+
+            _unitAfterImage.transform.position = new Vector3(pos.x, 0);
+            _afterImageSpriteRenderer.sprite = SkinData.GetSkin(_selectCard.CardDataValue._skinData._skinType);
+
+            //소환 화살표 적용
+            SetSummonArrowImage(true, pos);
+            return;
+        }
+
+        /// <summary>
+        /// 소환 화살표 설정
+        /// </summary>
+        private void SetSummonArrowImage(bool isActive, Vector2 pos)
+        {
+            //소환 화살표 적용
+            _summonArrow.gameObject.SetActive(isActive);
+            _summonArrow.transform.position = pos;
+            _summonArrow.anchoredPosition = new Vector2(_summonArrow.anchoredPosition.x, Mathf.Clamp(_summonArrow.anchoredPosition.y, 520, 1000));
+            _summonArrow.sizeDelta = new Vector2(_summonArrow.sizeDelta.x, _summonArrow.anchoredPosition.y);
+            //float ySize = Mathf.Clamp(pos.y * 2f, 0.8f, 2f);
+            //_summonArrow.size = new Vector2(0.35f, ySize);
+            return;
+        }
+
+        /// <summary>
+        /// 카드를 여러 조건에 따라 사용할 수 있는지 체크
+        /// </summary>
+        private bool CheckPossibleSummon()
+        {
+            if (_selectCard == null)
+            {
+                return false;
+            }
+            //테스트용 소환 조건 해제
+            if (_isAlwaysSpawn)
+            {
+                return true;
+            }
+            if (_commandUnit.eTeam.Equals(TeamType.EnemyTeam))
+            {
+                return true;
+            }
+
+            switch (_selectCard.CardDataValue.cardType)
+            {
+                case CardType.Execute:
+                    break;
+                case CardType.SummonUnit:
+                case CardType.SummonTrap:
+                    Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, -_stageData.max_Range, _summonRange);
+                    if (mouse_Pos.x < -_stageData.max_Range || mouse_Pos.x > _summonRange)
+                    {
+                        return false;
+                    }
+                    break;
+                case CardType.Installation:
+                    break;
+            }
+
+            if (_commandCost.CurrentCost < _selectCard.CardCost)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 소환 범위 그리기를 키거나 끄기
+        /// </summary>
+        /// <param name="isActive"></param>
+        private void SetSummonRangeLine(bool isActive)
+        {
+            _summonRangeImage.gameObject.SetActive(isActive);
+        }
+
+        /// <summary>
+        /// 소환 범위 업데이트 및 증가
+        /// </summary>
+        private void UpdateSummonRange()
+        {
+            if (_summonRange >= 0)
+            {
+                return;
+            }
+
+            if (_summonRangeDelay > 0)
+            {
+                _summonRangeDelay -= Time.deltaTime;
+                return;
+            }
+
+            _summonRangeDelay = 30f;
+            _summonRange += _stageData.max_Range / 4;
+            DrawSummonRange();
+        }
+
+        /// <summary>
+        /// 카드들의 코스트를 비교하여 사용할 수 있는지 확인한다
+        /// </summary>
+        private void UpdateCheckCost()
+        {
+            int count = _cardList.Count;
+            for (int i = 0; i < count; i++)
+            {
+                _cardList[i].CheckCost(_commandCost.CurrentCost);
+            }
+        }
+    }
 
 }
