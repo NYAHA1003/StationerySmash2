@@ -21,12 +21,10 @@ namespace Battle
         //기본 변수
         private int _maxCardCount = 3;
         private int _currentCardCount = 0;
-        private float _cardDelay = 0.0f;
         private float _summonRange = 0.0f;
         private float _summonRangeDelay = 30f;
         private bool _isFusion = false;
         private Coroutine _delayCoroutine = null;
-        private int _cardIdCount = 0;
         private bool _isDontUse = false;
 
         //인스펙터 참조 변수
@@ -65,12 +63,15 @@ namespace Battle
         private WinLoseComponent _commandWinLose = null;
         private CameraComponent _commandCamera = null;
         private MonoBehaviour _managerBase = null;
+        private CardDrawComponent _cardDrawComponent = null;
 
         /// <summary>
         /// 초기화
         /// </summary>
         public void SetInitialization(MonoBehaviour managerBase, WinLoseComponent commandWinLose, CameraComponent commandCamera, UnitComponent commandUnit, CostComponent commandCost, ref System.Action updateAction, StageData stageData, int maxCard)
         {
+            _cardDrawComponent = new CardDrawComponent();
+
             //변수들 설정
             this._managerBase = managerBase;
             this._stageData = stageData;
@@ -117,7 +118,6 @@ namespace Battle
 
         public void CheckCard()
         {
-
             if(_cardList.Count == _maxCardCount)
             {
                 BattleTurtorialComponent.tutorialEventQueue.Dequeue().Invoke(); 
@@ -125,50 +125,19 @@ namespace Battle
         }
 
         /// <summary>
-        /// 최대 장수까지 카드를 뽑는다
+        /// 카드 한 장을 뽑는다
         /// </summary>
-        public void AddAllCard()
-        {
-            for (; _currentCardCount < _maxCardCount;)
-            {
-                AddOneCard();
-            }
-        }
-
-        /// <summary>
-        /// 카드 한장을 뽑는다
-        /// </summary>
-        public void AddOneCard()
-        {
-            //카드를 사용할 수 없다
-            if(_isDontUse)
-			{
-                return;
-			}
-
-            //카드가 없으면 뽑지 않는다
-            if(_deckData.cardDatas.Count == 0)
-            {
-                return;
-            }
-
-            //카드 데이터를 랜덤으로 선택함
-            int random = Random.Range(0, _deckData.cardDatas.Count);
-            _currentCardCount++;
-
-            //카드를 풀링해서 가져옴
-            CardMove cardmove = PoolCard();
-            cardmove.Set_UnitData(_deckData.cardDatas[random], _cardIdCount++);
-
-            //카드 리스트에 카드를 전달함
-            _cardList.Add(cardmove);
-
+        public void DrawOneCard()
+		{
+            //카드 뽑기
+            _cardDrawComponent.AddOneCard();
 
             //카드를 정렬하고 융합 딜레이 설정
             SortCard();
             SetDelayFusion();
 
-            RunAction(AddOneCard);
+            //카드 뽑을 때 연계 효과들 실행
+            RunAction(DrawOneCard);
         }
 
         /// <summary>
@@ -301,7 +270,6 @@ namespace Battle
             SetDelayFusion();
         }
 
-
         /// <summary>
         /// 최대 카드 설정
         /// </summary>
@@ -340,24 +308,6 @@ namespace Battle
         {
             yield return new WaitForSeconds(0.4f);
             FusionCard();
-        }
-
-        /// <summary>
-        /// 카드를 풀링함
-        /// </summary>
-        private CardMove PoolCard()
-        {
-            CardMove cardmove_obj = null;
-            if (_cardPoolManager.childCount > 0)
-            {
-                cardmove_obj = _cardPoolManager.GetChild(0).gameObject.GetComponent<CardMove>();
-                cardmove_obj.transform.position = _cardSpawnPosition.position;
-                cardmove_obj.gameObject.SetActive(true);
-            }
-            cardmove_obj ??= PoolManager.CreateObject(_cardMovePrefeb, _cardSpawnPosition.position, Quaternion.identity).GetComponent<CardMove>();
-            cardmove_obj.transform.SetParent(_cardCanvas);
-            cardmove_obj.SetIsFusion(false);
-            return cardmove_obj;
         }
 
         /// <summary>
@@ -557,17 +507,10 @@ namespace Battle
         /// </summary>
         private void UpdateCardDraw()
         {
-            if (_currentCardCount >= _maxCardCount)
+            if(_cardDrawComponent.CheckCardDraw())
             {
-                return;
+                DrawOneCard();
             }
-            if (_cardDelay > 0)
-            {
-                _cardDelay -= Time.deltaTime;
-                return;
-            }
-            _cardDelay = 0.3f;
-            AddOneCard();
         }
 
         /// <summary>

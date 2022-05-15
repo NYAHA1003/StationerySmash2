@@ -49,6 +49,7 @@ namespace Battle
 		//인스펙터 변수
 		[SerializeField]
 		private StageDataSO _stageDataSO = null;
+
 		//컴포넌트들
 		[SerializeField, Header("카드시스템 BattleCard"), Space(30)]
 		private CardComponent _cardComponent = null;
@@ -108,7 +109,6 @@ namespace Battle
 
 		private void Update()
 		{
-			//  Debug.Log("유닛 갯수 : " + _commandUnit.UnitParent.childCount + " FPS : " + 1.0f / Time.deltaTime);
 			if (!_isEndSetting ||  !_introComponent.isEndIntro)
 			{
 				return;
@@ -133,14 +133,6 @@ namespace Battle
 
 
 			//테스트용
-			if (Input.GetKeyDown(KeyCode.X))
-			{
-				_cardComponent.AddOneCard();
-			}
-			if (Input.GetKeyDown(KeyCode.Z))
-			{
-				_cardComponent.AddAllCard();
-			}
 			if (Input.GetKeyDown(KeyCode.C))
 			{
 				_cardComponent.ClearCards();
