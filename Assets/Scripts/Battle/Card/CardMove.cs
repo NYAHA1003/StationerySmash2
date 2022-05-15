@@ -21,6 +21,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public bool IsFusion => _isFusion; //융합 중인지
     public bool IsFusionFrom => _isFusionFrom; //융합할 때 이 카드가 이동하는지
     public PRS OriginPRS => _originPRS; //카드 위치
+    public bool IsSelected => _isSelected;
 
     //변수
     private int _cardCost = 0;   
@@ -32,6 +33,7 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private int _grade = 1;
     private int _id = 0;
     private PRS _originPRS = default;
+    private bool _isSelected = false;
 
     //참조 변수
     private CardData _cardData = null;
@@ -370,5 +372,13 @@ public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             _stickerRect.gameObject.SetActive(false);
         }
+    }
+
+    /// <summary>
+    /// 선택되었는지를 설정한다
+    /// </summary>
+    public void SetIsSelected(bool boolean)
+	{
+        _isSelected = boolean;
     }
 }

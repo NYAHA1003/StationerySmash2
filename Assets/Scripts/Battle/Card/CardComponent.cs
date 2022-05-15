@@ -65,6 +65,7 @@ namespace Battle
         private CardDrowComponent _cardDrawComponent = null;
         private CardRangeComponent _cardRangeComponent = null;
         private CardSelectComponent _cardSelectComponent = null;
+        private CardFusionComponent _cardFusionComponent = null;
 
         /// <summary>
         /// 초기화
@@ -74,6 +75,7 @@ namespace Battle
             _cardDrawComponent = new CardDrowComponent();
             _cardRangeComponent = new CardRangeComponent();
             _cardSelectComponent = new CardSelectComponent();
+            _cardFusionComponent = new CardFusionComponent();
 
             //변수들 설정
             this._managerBase = managerBase;
@@ -95,6 +97,7 @@ namespace Battle
             _cardDrawComponent.SetInitialization(_deckData, _cardList, _cardMovePrefeb, _cardPoolManager, _cardCanvas, _cardSpawnPosition);
             _cardRangeComponent.SetInitialization(this, _commandCost, _summonRangeImage, _summonArrow, _stageData, _unitAfterImage, _afterImageSpriteRenderer);
             _cardSelectComponent.SetInitialization();
+            _cardFusionComponent.SetInitialization(this, _managerBase);
 
             //업데이트할 함수들 전달
             updateAction += UpdateUnitAfterImage;
@@ -188,6 +191,7 @@ namespace Battle
 
             //해당 카드를 선택된 카드에 넣음
             _selectedCard = card;
+            _selectedCard.SetIsSelected(true);
 
             //카드 크기를 크게 만들고 각도를 0으로 돌림
             _selectedCard.transform.DOKill();
@@ -219,6 +223,7 @@ namespace Battle
             card.SetCardScale(Vector3.one * 1, 0.3f);
 
             //선택한 카드를 Null로 돌려놓고 카드 선택을 False로 처리함
+            _selectedCard.SetIsSelected(false);
             _selectedCard = null;
             IsSelectCard = false;
 
@@ -240,11 +245,13 @@ namespace Battle
             {
                 card.RunOriginPRS();
                 _commandCamera.SetCameraIsMove(true);
+                _selectedCard?.SetIsSelected(false);
                 _selectedCard = null;
                 IsSelectCard = false;
                 return;
             }
             //선택한 카드를 Null로 돌림
+            _selectedCard?.SetIsSelected(false);
             _selectedCard = null;
 
             _commandCost.SubtractCost(card.CardCost);
@@ -291,29 +298,6 @@ namespace Battle
         public void IncreaseMaxCard(int num)
         {
             _cardDrawComponent.IncreaseMaxCard(num);
-        }
-
-        /// <summary>
-        /// 융합에 딜레이를 설정, 리셋하는 함수
-        /// </summary>
-        private void SetDelayFusion()
-        {
-            //카드 융합 딜레이 초기화
-            if (_delayCoroutine != null)
-            {
-                _managerBase.StopCoroutine(_delayCoroutine);
-            }
-            _delayCoroutine = _managerBase.StartCoroutine(DelayFusion());
-        }
-
-        /// <summary>
-        /// 카드 융합 딜레이를 주는 코루틴 함수
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerator DelayFusion()
-        {
-            yield return new WaitForSeconds(0.4f);
-            FusionCard();
         }
 
         /// <summary>
@@ -365,122 +349,20 @@ namespace Battle
             return results;
         }
 
+        //카드 융합 관련
         /// <summary>
-        /// 카드의 융합이 가능한지 체크함
+        /// 융합에 딜레이를 설정, 리셋하는 함수
         /// </summary>
-        /// <param name="targetCard1"></param>
-        /// <param name="targetCard2"></param>
-        private bool FusionCheck(CardMove targetCard1, CardMove targetCard2)
+        private void SetDelayFusion()
         {
-            //카드 타입이 같은지 체크
-            if (targetCard1.CardDataValue.cardType != targetCard2.CardDataValue.cardType)
-            {
-                return false;
-            }
-            //유닛 타입이 같은지 체크
-            if (targetCard1.CardDataValue.unitData.unitType != targetCard2.CardDataValue.unitData.unitType)
-            {
-                return false;
-            }
-            //전략 타입이 같은지 체크
-            if (targetCard1.CardDataValue.strategyData.starategyType != targetCard2.CardDataValue.strategyData.starategyType)
-            {
-                return false;
-            }
-            //등급이 같은지 체크
-            if (targetCard1.Grade != targetCard2.Grade)
-            {
-                return false;
-            }
-            if (targetCard1.Grade == 3 || targetCard2.Grade == 3)
-            {
-                return false;
-            }
-            //융합중인지 체크
-            if (targetCard1.IsFusion != targetCard2.IsFusion)
-            {
-                return false;
-            }
-
-            //융합 중인걸로 체크
-            targetCard1.SetIsFusion(true);
-            targetCard2.SetIsFusion(true);
-
-            return true;
+            _cardFusionComponent.SetDelayFusion();
         }
 
-        /// <summary>
-        /// 카드를 융합함
-        /// </summary>
-        private void FusionCard()
-        {
-            CardMove targetCard1 = null;
-            CardMove targetCard2 = null;
-            for (int i = 0; i < _cardList.Count - 1; i++)
-            {
-                targetCard1 = _cardList[i];
-                targetCard2 = _cardList[i + 1];
-
-                if (FusionCheck(targetCard1, targetCard2))
-                {
-                    if (_isFusion)
-                    {
-                        return;
-                    }
-                    _managerBase.StartCoroutine(FusionMove(targetCard1, targetCard2));
-                    return;
-                }
-            }
-        }
-
-        /// <summary>
-        /// 카드 융합 애니메이션
-        /// </summary>
-        /// <param name="index">몇 번째 카드가 융합하는지</param>
-        /// <returns></returns>
-        private IEnumerator FusionMove(CardMove targetCard1, CardMove targetCard2)
-        {
-            _isFusion = true;
-            targetCard1.SetIsFusion(true);
-            targetCard2.SetIsFusion(true);
-
-            CardMove toCombineCard = targetCard1;
-            CardMove fromCombineCard = targetCard2;
-
-            //두 번째 카드를 선택중일 때
-            if (targetCard2 == _selectedCard)
-            {
-                toCombineCard = targetCard2;
-                fromCombineCard = targetCard1;
-            }
-            fromCombineCard.SetIsFusionFrom(true);
-
-            fromCombineCard.DOKill();
-            fromCombineCard.SetCardPRS(new PRS(toCombineCard.transform.localPosition, toCombineCard.transform.rotation, Vector3.one * 0.3f), 0.25f);
-
-            Color color = targetCard1.Grade > 1 ? Color.yellow : Color.white;
-            toCombineCard.FusionFadeInEffect(color);
-            fromCombineCard.FusionFadeInEffect(color);
-
-            yield return new WaitForSeconds(0.23f);
-            fromCombineCard.ShowCard(false);
-
-            toCombineCard.FusionFadeOutEffect();
-            toCombineCard.UpgradeUnitGrade();
-
-            toCombineCard.SetIsFusion(false);
-            fromCombineCard.SetIsFusion(false);
-            fromCombineCard.SetIsFusionFrom(false);
-
-            SubtractCardFind(fromCombineCard);
-            SortCard();
-            _isFusion = false;
-        }
 
         /// <summary>
         /// 카드 위치를 정렬함
         /// </summary>
-        private void SortCard()
+        public void SortCard()
         {
             //카드 위치를 반환받는다
             List<PRS> originCardPRS = new List<PRS>();
@@ -527,7 +409,7 @@ namespace Battle
         /// 카드를 찾아서 리스트에서 제거한다
         /// </summary>
         /// <param name="cardMove"></param>
-        private void SubtractCardFind(CardMove cardMove)
+        public void SubtractCardFind(CardMove cardMove)
         {
             SubtractCardAt(_cardList.FindIndex(x => x.Id == cardMove.Id));
         }
@@ -564,6 +446,7 @@ namespace Battle
             _selectedCard.transform.position = Input.mousePosition;
         }
 
+        //범위, 미리보기 관련
         /// <summary>
         /// 카드 소환 미리보기
         /// </summary>
