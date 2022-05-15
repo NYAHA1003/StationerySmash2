@@ -87,7 +87,7 @@ namespace Battle
         /// <summary>
         /// 적 필통 능력 사용
         /// </summary>
-        public void UpdateRunEnemyPencilcaseAbility()
+        private void UpdateRunEnemyPencilcaseAbility()
         {
             if(_pencilCaseCommand.EnemyAbilityState.AIAbilityCondition())
             {
@@ -99,7 +99,7 @@ namespace Battle
         /// <summary>
         /// 적 AI의 던지기
         /// </summary>
-        public void UpdateEnemyAIThrow()
+        private void UpdateEnemyAIThrow()
         {
             if (!isEnemyAIOn)
             {
@@ -129,7 +129,7 @@ namespace Battle
         /// <summary>
         /// 적 AI의 유닛 소환
         /// </summary>
-        public void UpdateEnemyAICard()
+        private void UpdateEnemyAICard()
         {
             if (!isEnemyAIOn)
                 return;
@@ -150,7 +150,7 @@ namespace Battle
         /// <summary>
         /// 플레이어 AI의 유닛 던지기
         /// </summary>
-        public void UpdatePlayerAIThrow()
+        private void UpdatePlayerAIThrow()
         {
             if (!isPlayerAIOn)
                 return;
@@ -172,7 +172,7 @@ namespace Battle
         /// <summary>
         /// 플레이어 AI의 유닛 소환
         /// </summary>
-        public void UpdatePlayerAICard()
+        private void UpdatePlayerAICard()
         {
             if (!isPlayerAIOn)
                 return;
