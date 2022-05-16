@@ -11,11 +11,6 @@ namespace Battle
     [System.Serializable]
     public class CameraComponent : BattleComponent, IWinLose
     {
-
-        private Vector3 _clickPos = Vector3.zero;
-        private Vector3 _curPos = Vector3.zero;
-        private Vector3 _mousePos;
-
         private bool _isEffect = false;
         private bool _isDontMove = false;
         public float _perspectiveZoomSpeed = 0.5f;       // perspective mode.
@@ -137,25 +132,34 @@ namespace Battle
 			}
         }
 
-
         /// <summary>
         /// 카메라 크기 조정
         /// </summary>
         private void UpdateCameraScale()
         {
             if (_isEffect)
+			{
                 return;
+			}
+            if(_isDontMove)
+			{
+                return;
+			}
 
             if (Input.GetKey(KeyCode.UpArrow))
             {
                 if (_stageData.max_Range - 1 < _camera.orthographicSize)
+				{
                     return;
+				}
                 _camera.orthographicSize += Time.deltaTime * 10;
             }
             else if (Input.GetKey(KeyCode.DownArrow))
             {
                 if (1 > _camera.orthographicSize)
+				{
                     return;
+				}
                 _camera.orthographicSize -= Time.deltaTime * 10;
             }
 
@@ -201,16 +205,11 @@ namespace Battle
             }
         }
 
-
         /// <summary>
         /// 승리 카메라 이펙트
         /// </summary>
         private void WinCamEffect(Vector2 pos, bool isWin)
         {
-            if (_isEffect)
-            {
-                return;
-            }
             if (_isEffect)
             {
                 return;
@@ -233,7 +232,6 @@ namespace Battle
                 });
             });
         }
-
 
         /// <summary>
         /// 방향키로 좌우 이동이 가능함
