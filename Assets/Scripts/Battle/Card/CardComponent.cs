@@ -56,7 +56,6 @@ namespace Battle
         private UnitComponent _commandUnit = null;
         private CostComponent _commandCost = null;
         private WinLoseComponent _commandWinLose = null;
-        private CameraComponent _commandCamera = null;
         private MonoBehaviour _managerBase = null;
         private CardDrowComponent _cardDrawComponent = null;
         private CardRangeComponent _cardRangeComponent = null;
@@ -80,7 +79,6 @@ namespace Battle
             this._stageData = stageData;
             this._commandUnit = commandUnit;
             this._commandCost = commandCost;
-            this._commandCamera = commandCamera;
             this._commandWinLose = commandWinLose;
 
             //관찰자 등록한다
