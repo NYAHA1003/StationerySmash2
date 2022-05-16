@@ -23,20 +23,15 @@ namespace Battle
         private CardComponent _cardComponent;
         private UnitComponent _unitComponent = null;
         private CostComponent _costComponent = null;
-        private WinLoseComponent _winloseComponent = null;
-        private CameraComponent _cameraComponent = null;
-
 
         /// <summary>
         /// √ ±‚»≠
         /// </summary>
-        public void SetInitialization(CardComponent cardComponent, UnitComponent unitComponent, CostComponent costComponent, WinLoseComponent winLoseComponent, CameraComponent cameraComponent)
+        public void SetInitialization(CardComponent cardComponent, UnitComponent unitComponent, CostComponent costComponent)
         {
             this._cardComponent = cardComponent;
             this._unitComponent = unitComponent;
             this._costComponent = costComponent;
-            this._winloseComponent = winLoseComponent;
-            this._cameraComponent = cameraComponent;
         }
 
         /// <summary>

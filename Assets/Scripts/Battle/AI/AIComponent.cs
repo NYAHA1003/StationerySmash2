@@ -95,7 +95,6 @@ namespace Battle
             }
         }
 
-
         /// <summary>
         /// 적 AI의 던지기
         /// </summary>

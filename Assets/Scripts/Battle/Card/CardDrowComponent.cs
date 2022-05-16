@@ -83,24 +83,6 @@ namespace Battle
         }
 
         /// <summary>
-        /// 카드를 풀링함
-        /// </summary>
-        private CardObj PoolCard()
-        {
-            CardObj cardmove_obj = null;
-            if (_cardPoolManager.childCount > 0)
-            {
-                cardmove_obj = _cardPoolManager.GetChild(0).gameObject.GetComponent<CardObj>();
-                cardmove_obj.transform.position = _cardSpawnPosition.position;
-                cardmove_obj.gameObject.SetActive(true);
-            }
-            cardmove_obj ??= PoolManager.CreateObject(_cardMovePrefeb, _cardSpawnPosition.position, Quaternion.identity).GetComponent<CardObj>();
-            cardmove_obj.transform.SetParent(_cardCanvas);
-            cardmove_obj.SetIsFusion(false);
-            return cardmove_obj;
-        }
-
-        /// <summary>
         /// 카드를 뽑을 수 있는지 체크한다
         /// </summary>
         public bool CheckCardDraw()
@@ -168,6 +150,24 @@ namespace Battle
         public void IncreaseMaxCard(int num)
         {
             _maxCardCount += num;
+        }
+
+        /// <summary>
+        /// 카드를 풀링함
+        /// </summary>
+        private CardObj PoolCard()
+        {
+            CardObj cardmove_obj = null;
+            if (_cardPoolManager.childCount > 0)
+            {
+                cardmove_obj = _cardPoolManager.GetChild(0).gameObject.GetComponent<CardObj>();
+                cardmove_obj.transform.position = _cardSpawnPosition.position;
+                cardmove_obj.gameObject.SetActive(true);
+            }
+            cardmove_obj ??= PoolManager.CreateObject(_cardMovePrefeb, _cardSpawnPosition.position, Quaternion.identity).GetComponent<CardObj>();
+            cardmove_obj.transform.SetParent(_cardCanvas);
+            cardmove_obj.SetIsFusion(false);
+            return cardmove_obj;
         }
     }
 }

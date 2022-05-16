@@ -93,7 +93,7 @@ namespace Battle
 
             _cardDrawComponent.SetInitialization(this, _deckData, _cardList, _cardMovePrefeb, _cardPoolManager, _cardCanvas, _cardSpawnPosition);
             _cardRangeComponent.SetInitialization(this, _cardSelectComponent, _commandCost, _summonRangeImage, _summonArrow, _stageData, _unitAfterImage, _afterImageSpriteRenderer);
-            _cardSelectComponent.SetInitialization(this, _commandUnit, _commandCost, _commandWinLose, _commandCamera);
+            _cardSelectComponent.SetInitialization(this, _commandUnit, _commandCost);
             _cardFusionComponent.SetInitialization(this, _managerBase);
             _cardSortComponent.SetInitialization(this, _cardSelectComponent, _cardLeftPosition, _cardRightPosition);
 
@@ -128,7 +128,6 @@ namespace Battle
             }
         }
 
-        //카드 뽑기 관련
         /// <summary>
         /// 카드 한 장을 뽑는다
         /// </summary>
@@ -139,14 +138,6 @@ namespace Battle
 
             //카드 뽑을 때 연계 효과들 실행
             RunAction(AddOneCard);
-        }
-
-        /// <summary>
-        /// 마지막 카드를 지운다
-        /// </summary>
-        private void SubtractLastCard()
-        {
-            SubtractCardAt(_cardDrawComponent.ReturnCurrentCard() - 1);
         }
 
         /// <summary>
@@ -227,45 +218,11 @@ namespace Battle
         }
 
         /// <summary>
-        /// 선택한 카드 위치를 업데이트 한다
-        /// </summary>
-        private void UpdateSelectCardPos()
-        {
-            _cardSelectComponent.UpdateSelectCardPos();
-        }
-
-
-        //카드 융합 관련
-        /// <summary>
         /// 융합에 딜레이를 설정, 리셋하는 함수
         /// </summary>
         public void SetDelayFusion()
         {
             _cardFusionComponent.SetFusionAndDelay();
-        }
-
-        /// <summary>
-        /// 자동 카드 드로우 업데이트
-        /// </summary>
-        private void UpdateCardDraw()
-        {
-            if(_cardDrawComponent.CheckCardDraw())
-            {
-                AddOneCard();
-            }
-        }
-
-        /// <summary>
-        /// 덱에 카드 정보들을 넣는다
-        /// </summary>
-        private void SetDeckCard()
-        {
-            int count = _cardDeckSO.cardDatas.Count;
-            for (int i = 0; i < count; i++)
-            {
-                CardData cardData = _cardDeckSO.cardDatas[i];
-                _deckData.Add_CardData(cardData);
-            }
         }
 
         /// <summary>
@@ -297,7 +254,6 @@ namespace Battle
             _cardSortComponent.SortCard();
         }
 
-        //범위, 미리보기 관련
         /// <summary>
         /// 소환 범위 그리기를 키거나 끄기
         /// </summary>
@@ -324,6 +280,63 @@ namespace Battle
         }
 
         /// <summary>
+        /// 카드를 정렬한다
+        /// </summary>
+        public void SortCard()
+        {
+            _cardSortComponent.SortCard();
+        }
+
+        /// <summary>
+        /// 카드가 선택되었는지 반환한다
+        /// </summary>
+        /// <returns></returns>
+        public bool ReturnIsSelected()
+		{
+            return _cardSelectComponent.IsSelectCard;
+		}
+
+        /// <summary>
+        /// 마지막 카드를 지운다
+        /// </summary>
+        private void SubtractLastCard()
+        {
+            SubtractCardAt(_cardDrawComponent.ReturnCurrentCard() - 1);
+        }
+        
+        /// <summary>
+        /// 선택한 카드 위치를 업데이트 한다
+        /// </summary>
+        private void UpdateSelectCardPos()
+        {
+            _cardSelectComponent.UpdateSelectCardPos();
+        }
+
+        /// <summary>
+        /// 자동 카드 드로우 업데이트
+        /// </summary>
+        private void UpdateCardDraw()
+        {
+            if (_cardDrawComponent.CheckCardDraw())
+            {
+                AddOneCard();
+            }
+        }
+
+        /// <summary>
+        /// 덱에 카드 정보들을 넣는다
+        /// </summary>
+        private void SetDeckCard()
+        {
+            int count = _cardDeckSO.cardDatas.Count;
+            for (int i = 0; i < count; i++)
+            {
+                CardData cardData = _cardDeckSO.cardDatas[i];
+                _deckData.Add_CardData(cardData);
+            }
+        }
+
+        /// <summary>
         /// 카드 소환 미리보기
         /// </summary>
         /// <param name="unitData"></param>
@@ -338,17 +351,8 @@ namespace Battle
         /// 소환 범위 업데이트 및 증가
         /// </summary>
         private void UpdateSummonRange()
-		{
-            _cardRangeComponent.UpdateSummonRange();
-		}
-
-        //카드 정렬
-        /// <summary>
-        /// 카드를 정렬한다
-        /// </summary>
-        public void SortCard()
         {
-            _cardSortComponent.SortCard();
+            _cardRangeComponent.UpdateSummonRange();
         }
 
         /// <summary>
@@ -362,15 +366,6 @@ namespace Battle
                 _cardList[i].CheckCost(_commandCost.CurrentCost);
             }
         }
-    
-        /// <summary>
-        /// 카드가 선택되었는지 반환한다
-        /// </summary>
-        /// <returns></returns>
-        public bool ReturnIsSelected()
-		{
-            return _cardSelectComponent.IsSelectCard;
-		}
     }
 
 }

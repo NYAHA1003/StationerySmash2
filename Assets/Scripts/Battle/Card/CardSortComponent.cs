@@ -98,7 +98,5 @@ namespace Battle
             return results;
         }
         
-        
-        
     }
 }
