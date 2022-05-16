@@ -32,7 +32,7 @@ namespace Battle
         /// <summary>
         /// 융합에 딜레이를 설정, 리셋하는 함수
         /// </summary>
-        public void SetDelayFusion()
+        public void SetFusionAndDelay()
         {
             //카드 융합 딜레이 초기화
             if (_delayCoroutine != null)
@@ -47,7 +47,7 @@ namespace Battle
         /// </summary>
         /// <param name="targetCard1"></param>
         /// <param name="targetCard2"></param>
-        public bool FusionCheck(CardMove targetCard1, CardMove targetCard2)
+        private bool FusionCheck(CardMove targetCard1, CardMove targetCard2)
         {
             //카드 타입이 같은지 체크
             if (targetCard1.CardDataValue.cardType != targetCard2.CardDataValue.cardType)
@@ -89,7 +89,7 @@ namespace Battle
         /// <summary>
         /// 카드를 융합함
         /// </summary>
-        public void FusionCard()
+        private void FusionCard()
         {
             CardMove targetCard1 = null;
             CardMove targetCard2 = null;

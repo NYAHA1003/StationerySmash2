@@ -25,20 +25,18 @@ namespace Battle
         private CostComponent _costComponent = null;
         private WinLoseComponent _winloseComponent = null;
         private CameraComponent _cameraComponent = null;
-        private CardRangeComponent _cardRangeComponent = null;
 
 
         /// <summary>
         /// 초기화
         /// </summary>
-        public void SetInitialization(CardComponent cardComponent, UnitComponent unitComponent, CostComponent costComponent, WinLoseComponent winLoseComponent, CameraComponent cameraComponent, CardRangeComponent cardRangeComponent)
+        public void SetInitialization(CardComponent cardComponent, UnitComponent unitComponent, CostComponent costComponent, WinLoseComponent winLoseComponent, CameraComponent cameraComponent)
         {
             this._cardComponent = cardComponent;
             this._unitComponent = unitComponent;
             this._costComponent = costComponent;
             this._winloseComponent = winLoseComponent;
             this._cameraComponent = cameraComponent;
-            this._cardRangeComponent = cardRangeComponent;
         }
 
         /// <summary>
@@ -47,6 +45,9 @@ namespace Battle
         /// <param name="card"></param>
         public void SelectCard(CardMove card)
         {
+            //소환 범위 그리기
+            _cardComponent.SetSummonRangeLine(true);
+
             //해당 카드를 선택된 카드에 넣음
             _selectedCard = card;
             _selectedCard.SetIsSelected(true);
@@ -58,9 +59,10 @@ namespace Battle
 
             //카드 선택 활성화
             IsSelectCard = true;
-            _cameraComponent.SetCameraIsMove(true);
-        }
 
+            //카드 융합 설정
+            _cardComponent.SetDelayFusion();
+        }
 
         /// <summary>
         /// 카드 선택을 취소함
@@ -68,6 +70,9 @@ namespace Battle
         /// <param name="card"></param>
         public void SetUnSelectCard(CardMove card)
         {
+            //소환 범위 끄기
+            _cardComponent.SetSummonRangeLine(false);
+
             //융합중이라면 카드 선택 취소를 취소한다
             if (card.IsFusion && !card.IsSelected)
             {
@@ -81,7 +86,8 @@ namespace Battle
             _selectedCard.SetIsSelected(false);
             _selectedCard = null;
             IsSelectCard = false;
-            _cameraComponent.SetCameraIsMove(false);
+
+            _cardComponent.SetDelayFusion();
         }
 
         /// <summary>
@@ -94,7 +100,6 @@ namespace Battle
             if (!CheckPossibleSummon())
             {
                 card.RunOriginPRS();
-                _cameraComponent.SetCameraIsMove(false);
                 _selectedCard?.SetIsSelected(false);
                 _selectedCard = null;
                 IsSelectCard = false;
@@ -111,7 +116,7 @@ namespace Battle
 
             //카드 사용
             Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, _cardRangeComponent.MinSummonRange, _cardRangeComponent.MaxSummonRange);
+            mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, _cardComponent.ReturnMinRange(), _cardComponent.ReturnMaxRange());
 
             switch (card.CardDataValue.cardType)
             {
@@ -126,57 +131,6 @@ namespace Battle
                     return true;
             }
         }
-
-
-        /// <summary>
-        /// 카드를 여러 조건에 따라 사용할 수 있는지 체크
-        /// </summary>
-        private bool CheckPossibleSummon()
-        {
-            if(_cardComponent.IsDontUse)
-			{
-                return false;
-			}
-
-            if (_selectedCard == null)
-            {
-                return false;
-            }
-            //테스트용 소환 조건 해제
-            if (_cardComponent.IsAlwaysSpawn)
-            {
-                return true;
-            }
-            if (_unitComponent.eTeam.Equals(TeamType.EnemyTeam))
-            {
-                return true;
-            }
-
-            switch (_selectedCard.CardDataValue.cardType)
-            {
-                case CardType.Execute:
-                    break;
-                case CardType.SummonUnit:
-                case CardType.SummonTrap:
-                    Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, _cardRangeComponent.MinSummonRange, _cardRangeComponent.MaxSummonRange);
-                    if (mouse_Pos.x < _cardRangeComponent.MinSummonRange || mouse_Pos.x > _cardRangeComponent.MaxSummonRange)
-                    {
-                        return false;
-                    }
-                    break;
-                case CardType.Installation:
-                    break;
-            }
-
-            if (_costComponent.CurrentCost < _selectedCard.CardCost)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
 
         /// <summary>
         /// 선택한 카드 위치를 업데이트 한다
@@ -200,6 +154,55 @@ namespace Battle
                 _selectedCard.DontUseCard();
                 _selectedCard = null;
             }
+        }
+
+        /// <summary>
+        /// 카드를 여러 조건에 따라 사용할 수 있는지 체크
+        /// </summary>
+        private bool CheckPossibleSummon()
+        {
+            if (_cardComponent.IsDontUse)
+            {
+                return false;
+            }
+
+            if (_selectedCard == null)
+            {
+                return false;
+            }
+            //테스트용 소환 조건 해제
+            if (_cardComponent.IsAlwaysSpawn)
+            {
+                return true;
+            }
+            if (_unitComponent.eTeam.Equals(TeamType.EnemyTeam))
+            {
+                return true;
+            }
+
+            switch (_selectedCard.CardDataValue.cardType)
+            {
+                case CardType.Execute:
+                    break;
+                case CardType.SummonUnit:
+                case CardType.SummonTrap:
+                    Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, _cardComponent.ReturnMinRange(), _cardComponent.ReturnMaxRange());
+                    if (mouse_Pos.x < _cardComponent.ReturnMinRange() || mouse_Pos.x > _cardComponent.ReturnMaxRange())
+                    {
+                        return false;
+                    }
+                    break;
+                case CardType.Installation:
+                    break;
+            }
+
+            if (_costComponent.CurrentCost < _selectedCard.CardCost)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 

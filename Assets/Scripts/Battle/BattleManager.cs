@@ -115,7 +115,7 @@ namespace Battle
 			}
 			if(BattleTurtorialComponent._isTutorial == false)
             {
-				_cardComponent.CheckCard(); 
+				_cardComponent.CheckTutorialCard(); 
 			}
 			//던지기 시스템
 			if (Input.GetMouseButtonDown(0))
@@ -129,17 +129,6 @@ namespace Battle
 			else if (Input.GetMouseButtonUp(0))
 			{
 				_throwComponent.ThrowUnit();
-			}
-
-
-			//테스트용
-			if (Input.GetKeyDown(KeyCode.C))
-			{
-				_cardComponent.ClearCards();
-			}
-			if (Input.GetKeyDown(KeyCode.Backspace))
-			{
-				_cardComponent.SubtractLastCard();
 			}
 
 			//유닛 시스템

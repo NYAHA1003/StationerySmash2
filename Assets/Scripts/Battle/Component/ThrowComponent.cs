@@ -74,6 +74,7 @@ namespace Battle
                 _throwTrail.transform.localPosition = Vector2.zero;
                 _throwTrail.Clear();
                 _parabolaBackground.SetActive(false);
+                _cameraCommand.SetIsDontMove(false);
                 UnDrawParabola();
             }
         }
@@ -177,7 +178,7 @@ namespace Battle
 
                     if (_throwUnit == null)
                     {
-                        _cameraCommand.SetCameraIsMove(false);
+                        _cameraCommand.SetIsDontMove(true);
                     }
                     else
                     {
@@ -210,11 +211,12 @@ namespace Battle
                     _throwUnit.UnitSticker.OrderDraw(_throwUnit.OrderIndex);
                     _throwUnit = null;
                     _parabolaBackground.SetActive(false);
+                    _cameraCommand.SetIsDontMove(false);
                     UnDrawParabola();
                     return;
                 }
 
-                _cameraCommand.SetCameraIsMove(false);
+                _cameraCommand.SetIsDontMove(true);
 
                 //유닛이 다른 행동을 취하게 되면 취소
                 if (_throwUnit.Pulling_Unit() == null)
@@ -224,6 +226,7 @@ namespace Battle
                     _parabolaBackground.SetActive(false);
                     UnDrawParabola();
                     _throwUnit = _throwUnit.Pulling_Unit();
+                    _cameraCommand.SetIsDontMove(false);
                     return;
                 }
 

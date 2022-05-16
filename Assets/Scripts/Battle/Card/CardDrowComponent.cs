@@ -25,6 +25,7 @@ namespace Battle
         private Transform _cardPoolManager = null;
         private Transform _cardCanvas = null;
         private RectTransform _cardSpawnPosition = null;
+        private CardComponent _cardComponent = null;
         
         /// <summary>
         /// 초기화
@@ -35,8 +36,9 @@ namespace Battle
         /// <param name="cardPool"></param>
         /// <param name="cardCanvas"></param>
         /// <param name="cardSpawnTrm"></param>
-        public void SetInitialization(DeckData deckData, List<CardMove> cardList, GameObject cardPrefeb, Transform cardPool, Transform cardCanvas, RectTransform cardSpawnTrm)
+        public void SetInitialization(CardComponent cardComponent, DeckData deckData, List<CardMove> cardList, GameObject cardPrefeb, Transform cardPool, Transform cardCanvas, RectTransform cardSpawnTrm)
 		{
+            _cardComponent = cardComponent;
             _deckData = deckData;
             _cardList = cardList;
             _cardMovePrefeb = cardPrefeb;
@@ -72,6 +74,12 @@ namespace Battle
 
             //카드 리스트에 카드를 전달함
             _cardList.Add(cardmove);
+
+            //카드 정렬
+            _cardComponent.SortCard();
+
+            //융합 설정
+            _cardComponent.SetDelayFusion();
         }
 
         /// <summary>

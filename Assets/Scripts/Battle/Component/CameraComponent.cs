@@ -16,8 +16,8 @@ namespace Battle
         private Vector3 _curPos = Vector3.zero;
         private Vector3 _mousePos;
 
-        private bool _isCameraMove = false;
         private bool _isEffect = false;
+        private bool _isDontMove = false;
         public float _perspectiveZoomSpeed = 0.5f;       // perspective mode.
         public float _orthoZoomSpeed = 0.5f;        //  orthographic mode.
         public float _moveSpeed = 1f;
@@ -56,16 +56,6 @@ namespace Battle
         }
 
         /// <summary>
-        /// 카메라가 움직일 수 있는 상태인지
-        /// </summary>
-        /// <param name="isCameraMove">True면 움직일 수 있음</param>
-        public void SetCameraIsMove(bool isCameraMove)
-        {
-            this._isCameraMove = isCameraMove;
-
-        }
-
-        /// <summary>
         /// 카메라를 지정한 곳으로 이동하게 함
         /// </summary>
         /// <param name="pos"></param>
@@ -91,10 +81,14 @@ namespace Battle
             {
                 return;
             }
-            if (_commandCard.IsSelectCard)
+            if (_commandCard.ReturnIsSelected())
             {
                 return;
             }
+            if (_isDontMove)
+			{
+                return;
+			}
             if (-_stageData.max_Range - 1f > _camera.transform.position.x)
             {
                 return;
@@ -111,7 +105,11 @@ namespace Battle
             {
                 return;
             }
-            if (_commandCard.IsSelectCard)
+            if (_commandCard.ReturnIsSelected())
+            {
+                return;
+            }
+            if (_isDontMove)
             {
                 return;
             }
@@ -252,6 +250,15 @@ namespace Battle
             }
 
         }
+
+        /// <summary>
+        /// 카메라가 움직일 수 없는 설정한
+        /// </summary>
+        /// <param name="boolean"></param>
+        public void SetIsDontMove(bool boolean)
+		{
+            _isDontMove = boolean;
+		}
 
     }
 
