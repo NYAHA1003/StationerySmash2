@@ -10,7 +10,7 @@ using Utill.Tool;
 using Battle;
 
 
-public class CardMove : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class CardObj : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     //프로퍼티
     public int CardCost => _cardCost; //카드 코스트

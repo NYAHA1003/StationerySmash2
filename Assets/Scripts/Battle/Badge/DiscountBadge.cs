@@ -28,7 +28,7 @@ namespace Battle.Badge
 
 		public void FirstCardCostDown()
 		{
-			CardMove card = _battleManager.CardComponent.CardList[0];
+			CardObj card = _battleManager.CardComponent.CardList[0];
 			card.SetCost(card.OriginCardCost - 1);
 		}
 	}

@@ -20,7 +20,7 @@ namespace Battle
 
         //참조 변수
         private DeckData _deckData = new DeckData();
-        private List<CardMove> _cardList = new List<CardMove>();
+        private List<CardObj> _cardList = new List<CardObj>();
         private GameObject _cardMovePrefeb = null;
         private Transform _cardPoolManager = null;
         private Transform _cardCanvas = null;
@@ -36,7 +36,7 @@ namespace Battle
         /// <param name="cardPool"></param>
         /// <param name="cardCanvas"></param>
         /// <param name="cardSpawnTrm"></param>
-        public void SetInitialization(CardComponent cardComponent, DeckData deckData, List<CardMove> cardList, GameObject cardPrefeb, Transform cardPool, Transform cardCanvas, RectTransform cardSpawnTrm)
+        public void SetInitialization(CardComponent cardComponent, DeckData deckData, List<CardObj> cardList, GameObject cardPrefeb, Transform cardPool, Transform cardCanvas, RectTransform cardSpawnTrm)
 		{
             _cardComponent = cardComponent;
             _deckData = deckData;
@@ -69,7 +69,7 @@ namespace Battle
             _currentCardCount++;
 
             //카드를 풀링해서 가져옴
-            CardMove cardmove = PoolCard();
+            CardObj cardmove = PoolCard();
             cardmove.Set_UnitData(_deckData.cardDatas[random], _cardIdCount++);
 
             //카드 리스트에 카드를 전달함
@@ -85,16 +85,16 @@ namespace Battle
         /// <summary>
         /// 카드를 풀링함
         /// </summary>
-        private CardMove PoolCard()
+        private CardObj PoolCard()
         {
-            CardMove cardmove_obj = null;
+            CardObj cardmove_obj = null;
             if (_cardPoolManager.childCount > 0)
             {
-                cardmove_obj = _cardPoolManager.GetChild(0).gameObject.GetComponent<CardMove>();
+                cardmove_obj = _cardPoolManager.GetChild(0).gameObject.GetComponent<CardObj>();
                 cardmove_obj.transform.position = _cardSpawnPosition.position;
                 cardmove_obj.gameObject.SetActive(true);
             }
-            cardmove_obj ??= PoolManager.CreateObject(_cardMovePrefeb, _cardSpawnPosition.position, Quaternion.identity).GetComponent<CardMove>();
+            cardmove_obj ??= PoolManager.CreateObject(_cardMovePrefeb, _cardSpawnPosition.position, Quaternion.identity).GetComponent<CardObj>();
             cardmove_obj.transform.SetParent(_cardCanvas);
             cardmove_obj.SetIsFusion(false);
             return cardmove_obj;

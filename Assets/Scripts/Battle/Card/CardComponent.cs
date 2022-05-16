@@ -13,7 +13,7 @@ namespace Battle
     public class CardComponent : BattleComponent, IWinLose
     {
         //프로퍼티
-        public List<CardMove> CardList => _cardList;
+        public List<CardObj> CardList => _cardList;
 
         //속성
         public bool IsAlwaysSpawn => _isAlwaysSpawn;
@@ -52,7 +52,7 @@ namespace Battle
         //참조 변수
         private StageData _stageData = null;
         private DeckData _deckData = new DeckData();
-        private List<CardMove> _cardList = new List<CardMove>();
+        private List<CardObj> _cardList = new List<CardObj>();
         private UnitComponent _commandUnit = null;
         private CostComponent _commandCost = null;
         private WinLoseComponent _commandWinLose = null;
@@ -187,7 +187,7 @@ namespace Battle
         /// 카드를 선택함
         /// </summary>
         /// <param name="card"></param>
-        public void SelectCard(CardMove card)
+        public void SelectCard(CardObj card)
         {
             //카드를 사용할 수 없다
             if (_isDontUse)
@@ -203,7 +203,7 @@ namespace Battle
         /// 카드 선택을 취소함
         /// </summary>
         /// <param name="card"></param>
-        public void SetUnSelectCard(CardMove card)
+        public void SetUnSelectCard(CardObj card)
         {
             _cardSelectComponent.SetUnSelectCard(card);
         }
@@ -212,7 +212,7 @@ namespace Battle
         /// 카드를 사용한다
         /// </summary>
         /// <param name="card"></param>
-        public void SetUseCard(CardMove card)
+        public void SetUseCard(CardObj card)
         {
             //소환할 수 있는지 체크 및 소환 범위 그리기 없앰
             SetSummonRangeLine(false);
@@ -272,7 +272,7 @@ namespace Battle
         /// 카드를 찾아서 리스트에서 제거한다
         /// </summary>
         /// <param name="cardMove"></param>
-        public void SubtractCardFind(CardMove cardMove)
+        public void SubtractCardFind(CardObj cardMove)
         {
             SubtractCardAt(_cardList.FindIndex(x => x.Id == cardMove.Id));
         }

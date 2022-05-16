@@ -47,7 +47,7 @@ namespace Battle
         /// </summary>
         /// <param name="targetCard1"></param>
         /// <param name="targetCard2"></param>
-        private bool FusionCheck(CardMove targetCard1, CardMove targetCard2)
+        private bool FusionCheck(CardObj targetCard1, CardObj targetCard2)
         {
             //카드 타입이 같은지 체크
             if (targetCard1.CardDataValue.cardType != targetCard2.CardDataValue.cardType)
@@ -91,8 +91,8 @@ namespace Battle
         /// </summary>
         private void FusionCard()
         {
-            CardMove targetCard1 = null;
-            CardMove targetCard2 = null;
+            CardObj targetCard1 = null;
+            CardObj targetCard2 = null;
             for (int i = 0; i < _cardComponent.CardList.Count - 1; i++)
             {
                 try
@@ -123,14 +123,14 @@ namespace Battle
         /// </summary>
         /// <param name="index">몇 번째 카드가 융합하는지</param>
         /// <returns></returns>
-        private IEnumerator FusionMove(CardMove targetCard1, CardMove targetCard2)
+        private IEnumerator FusionMove(CardObj targetCard1, CardObj targetCard2)
         {
             _isFusion = true;
             targetCard1.SetIsFusion(true);
             targetCard2.SetIsFusion(true);
 
-            CardMove toCombineCard = targetCard1;
-            CardMove fromCombineCard = targetCard2;
+            CardObj toCombineCard = targetCard1;
+            CardObj fromCombineCard = targetCard2;
 
             //두 번째 카드를 선택중일 때
             if (targetCard2.IsSelected)

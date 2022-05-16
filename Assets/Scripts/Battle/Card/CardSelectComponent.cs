@@ -13,13 +13,13 @@ namespace Battle
 	public class CardSelectComponent : BattleComponent
     {
         //변수
-        public CardMove SelectedCard => _selectedCard; //선택한 카드
+        public CardObj SelectedCard => _selectedCard; //선택한 카드
 
         //변수
         public bool IsSelectCard { get; private set; } = false; //카드를 클릭한 상태인지
         
         //참조 변수
-        private CardMove _selectedCard = null;
+        private CardObj _selectedCard = null;
         private CardComponent _cardComponent;
         private UnitComponent _unitComponent = null;
         private CostComponent _costComponent = null;
@@ -43,7 +43,7 @@ namespace Battle
         /// 카드를 선택함
         /// </summary>
         /// <param name="card"></param>
-        public void SelectCard(CardMove card)
+        public void SelectCard(CardObj card)
         {
             //소환 범위 그리기
             _cardComponent.SetSummonRangeLine(true);
@@ -68,7 +68,7 @@ namespace Battle
         /// 카드 선택을 취소함
         /// </summary>
         /// <param name="card"></param>
-        public void SetUnSelectCard(CardMove card)
+        public void SetUnSelectCard(CardObj card)
         {
             //소환 범위 끄기
             _cardComponent.SetSummonRangeLine(false);
@@ -94,7 +94,7 @@ namespace Battle
         /// 카드를 사용한다
         /// </summary>
         /// <param name="card"></param>
-        public bool SetUseCard(CardMove card)
+        public bool SetUseCard(CardObj card)
         {
             //카드를 사용할 수 있는지 체크함
             if (!CheckPossibleSummon())

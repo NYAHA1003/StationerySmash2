@@ -39,7 +39,7 @@ namespace Battle
             //카드들에게 반환받은 위치를 넣는다
             for (int i = 0; i < _cardComponent.CardList.Count; i++)
             {
-                CardMove targetCard = _cardComponent.CardList[i];
+                CardObj targetCard = _cardComponent.CardList[i];
                 targetCard.SetOriginPRS(originCardPRS[i]);
                 if (_cardComponent.CardList[i].Equals(_cardSelectComponent.SelectedCard))
                 {
