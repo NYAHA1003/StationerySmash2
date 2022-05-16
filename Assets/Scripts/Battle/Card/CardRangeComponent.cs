@@ -18,26 +18,34 @@ namespace Battle
 		private GameObject _unitAfterImage = null;
 		private SpriteRenderer _afterImageSpriteRenderer = null;
 		private CardComponent _cardComponent = null;
+		private CardSelectComponent _cardSelectComponent = null;
 		private CostComponent _costComponent = null;
 
 		//변수
-		private float _summonRange = 0.0f;
+		private float _maxsummonRange = 0.0f;
+		private float _minsummonRange = 0.0f;
 		private float _summonRangeDelay = 30f;
+
+		//속성
+		public float MaxSummonRange => _maxsummonRange;
+		public float MinSummonRange => _minsummonRange;
 
 		/// <summary>
 		/// 초기화
 		/// </summary>
-		public void SetInitialization(CardComponent cardComponent, CostComponent costComponent, GameObject summonRangeImage, RectTransform summonArrow,  StageData stageData, GameObject unitAfterImage, SpriteRenderer afterImageSprRenderer)
+		public void SetInitialization(CardComponent cardComponent, CardSelectComponent cardSelectComponent, CostComponent costComponent, GameObject summonRangeImage, RectTransform summonArrow,  StageData stageData, GameObject unitAfterImage, SpriteRenderer afterImageSprRenderer)
 		{
 			//컴포넌트
 			_cardComponent = cardComponent;
 			_costComponent = costComponent;
+			_cardSelectComponent = cardSelectComponent;
 
 			//소한 범위
 			_summonRangeImage = summonRangeImage;
 			_summonArrow = summonArrow;
 			_stageData = stageData;
-			this._summonRange = -_stageData.max_Range + _stageData.max_Range / 4;
+			this._maxsummonRange = -_stageData.max_Range + _stageData.max_Range / 4;
+			this._minsummonRange = -_stageData.max_Range;
 
 			//미리보기
 			_unitAfterImage = unitAfterImage;
@@ -60,7 +68,7 @@ namespace Battle
 		/// </summary>
 		public void UpdateSummonRange()
 		{
-			if (_summonRange >= 0)
+			if (_maxsummonRange >= 0)
 			{
 				return;
 			}
@@ -72,7 +80,7 @@ namespace Battle
 			}
 
 			_summonRangeDelay = 30f;
-			_summonRange += _stageData.max_Range / 4;
+			_maxsummonRange += _stageData.max_Range / 4;
 			DrawSummonRange();
 		}
 
@@ -82,7 +90,7 @@ namespace Battle
 		public void DrawSummonRange()
 		{
 			_summonRangeImage.transform.position = new Vector2(-_stageData.max_Range, -0.1f);
-			_summonRangeImage.transform.localScale = new Vector2(Mathf.Abs(_stageData.max_Range + _summonRange), 0.5f);
+			_summonRangeImage.transform.localScale = new Vector2(Mathf.Abs(_stageData.max_Range + _maxsummonRange), 0.5f);
 		}
 
 		/// <summary>
@@ -96,10 +104,10 @@ namespace Battle
 			//마우스 위치를 가져온다
 			Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			
-			pos.x = Mathf.Clamp(pos.x, -_stageData.max_Range, _summonRange);
+			pos.x = Mathf.Clamp(pos.x, -_stageData.max_Range, _maxsummonRange);
 
 			//소환 미리보기가 될 수 있는지 체크
-			if (_cardComponent.SelectedCard == null || _cardComponent.SelectedCard.CardDataValue.unitData.unitType == UnitType.None || pos.y < 0)
+			if (_cardSelectComponent.SelectedCard == null || pos.y < 0 || _cardSelectComponent.SelectedCard.CardDataValue.unitData.unitType == UnitType.None)
 			{
 				SetSummonArrowImage(false, pos);
 				_unitAfterImage.SetActive(false);
@@ -116,7 +124,7 @@ namespace Battle
 			}
 
 			_unitAfterImage.transform.position = new Vector3(pos.x, 0);
-			_afterImageSpriteRenderer.sprite = SkinData.GetSkin(_cardComponent.SelectedCard.CardDataValue._skinData._skinType);
+			_afterImageSpriteRenderer.sprite = SkinData.GetSkin(_cardSelectComponent.SelectedCard.CardDataValue._skinData._skinType);
 
 			//소환 화살표 적용
 			SetSummonArrowImage(true, pos);
@@ -141,7 +149,7 @@ namespace Battle
 		/// </summary>
 		private bool CheckPossibleSummon()
 		{
-			if (_cardComponent.SelectedCard == null)
+			if (_cardSelectComponent.SelectedCard == null)
 			{
 				return false;
 			}
@@ -151,15 +159,15 @@ namespace Battle
 				return true;
 			}
 
-			switch (_cardComponent.SelectedCard.CardDataValue.cardType)
+			switch (_cardSelectComponent.SelectedCard.CardDataValue.cardType)
 			{
 				case CardType.Execute:
 					break;
 				case CardType.SummonUnit:
 				case CardType.SummonTrap:
 					Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-					mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, -_stageData.max_Range, _summonRange);
-					if (mouse_Pos.x < -_stageData.max_Range || mouse_Pos.x > _summonRange)
+					mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, -_stageData.max_Range, _maxsummonRange);
+					if (mouse_Pos.x < -_stageData.max_Range || mouse_Pos.x > _maxsummonRange)
 					{
 						return false;
 					}
@@ -168,7 +176,7 @@ namespace Battle
 					break;
 			}
 
-			if (_costComponent.CurrentCost < _cardComponent.SelectedCard.CardCost)
+			if (_costComponent.CurrentCost < _cardSelectComponent.SelectedCard.CardCost)
 			{
 				return false;
 			}

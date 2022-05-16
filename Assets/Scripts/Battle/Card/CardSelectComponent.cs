@@ -11,15 +11,196 @@ using Main.Deck;
 namespace Battle
 {
 	public class CardSelectComponent : BattleComponent
-	{
-		/// <summary>
-		/// 초기화
-		/// </summary>
-		public void SetInitialization()
-		{
+    {
+        //변수
+        public CardMove SelectedCard => _selectedCard; //선택한 카드
 
-		}
+        //변수
+        public bool IsSelectCard { get; private set; } = false; //카드를 클릭한 상태인지
+        
+        //참조 변수
+        private CardMove _selectedCard = null;
+        private CardComponent _cardComponent;
+        private UnitComponent _unitComponent = null;
+        private CostComponent _costComponent = null;
+        private WinLoseComponent _winloseComponent = null;
+        private CameraComponent _cameraComponent = null;
+        private CardRangeComponent _cardRangeComponent = null;
 
-	}
+
+        /// <summary>
+        /// 초기화
+        /// </summary>
+        public void SetInitialization(CardComponent cardComponent, UnitComponent unitComponent, CostComponent costComponent, WinLoseComponent winLoseComponent, CameraComponent cameraComponent, CardRangeComponent cardRangeComponent)
+        {
+            this._cardComponent = cardComponent;
+            this._unitComponent = unitComponent;
+            this._costComponent = costComponent;
+            this._winloseComponent = winLoseComponent;
+            this._cameraComponent = cameraComponent;
+            this._cardRangeComponent = cardRangeComponent;
+        }
+
+        /// <summary>
+        /// 카드를 선택함
+        /// </summary>
+        /// <param name="card"></param>
+        public void SelectCard(CardMove card)
+        {
+            //해당 카드를 선택된 카드에 넣음
+            _selectedCard = card;
+            _selectedCard.SetIsSelected(true);
+
+            //카드 크기를 크게 만들고 각도를 0으로 돌림
+            card.transform.DOKill();
+            card.SetCardScale(Vector3.one * 1.3f, 0.3f);
+            card.SetCardRot(Quaternion.identity, 0.3f);
+
+            //카드 선택 활성화
+            IsSelectCard = true;
+            _cameraComponent.SetCameraIsMove(true);
+        }
+
+
+        /// <summary>
+        /// 카드 선택을 취소함
+        /// </summary>
+        /// <param name="card"></param>
+        public void SetUnSelectCard(CardMove card)
+        {
+            //융합중이라면 카드 선택 취소를 취소한다
+            if (card.IsFusion && !card.IsSelected)
+            {
+                return;
+            }
+
+            //카드 크기를 돌려놓음
+            card.SetCardScale(Vector3.one * 1, 0.3f);
+
+            //선택한 카드를 Null로 돌려놓고 카드 선택을 False로 처리함
+            _selectedCard.SetIsSelected(false);
+            _selectedCard = null;
+            IsSelectCard = false;
+            _cameraComponent.SetCameraIsMove(false);
+        }
+
+        /// <summary>
+        /// 카드를 사용한다
+        /// </summary>
+        /// <param name="card"></param>
+        public bool SetUseCard(CardMove card)
+        {
+            //카드를 사용할 수 있는지 체크함
+            if (!CheckPossibleSummon())
+            {
+                card.RunOriginPRS();
+                _cameraComponent.SetCameraIsMove(false);
+                _selectedCard?.SetIsSelected(false);
+                _selectedCard = null;
+                IsSelectCard = false;
+                return false;
+            }
+
+            //선택한 카드를 Null로 돌림
+            _selectedCard?.SetIsSelected(false);
+            _selectedCard = null;
+
+            _costComponent.SubtractCost(card.CardCost);
+            _cardComponent.SubtractCardAt(_cardComponent.CardList.FindIndex(x => x.Id == card.Id));
+            IsSelectCard = false;
+
+            //카드 사용
+            Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, _cardRangeComponent.MinSummonRange, _cardRangeComponent.MaxSummonRange);
+
+            switch (card.CardDataValue.cardType)
+            {
+                case CardType.SummonUnit:
+                    _unitComponent.SummonUnit(card.CardDataValue, new Vector3(mouse_Pos.x, 0, 0), card.Grade);
+                    return true;
+                default:
+                case CardType.Execute:
+                case CardType.SummonTrap:
+                case CardType.Installation:
+                    card.CardDataValue.strategyData.starategy_State.Run_Card(TeamType.MyTeam);
+                    return true;
+            }
+        }
+
+
+        /// <summary>
+        /// 카드를 여러 조건에 따라 사용할 수 있는지 체크
+        /// </summary>
+        private bool CheckPossibleSummon()
+        {
+            if(_cardComponent.IsDontUse)
+			{
+                return false;
+			}
+
+            if (_selectedCard == null)
+            {
+                return false;
+            }
+            //테스트용 소환 조건 해제
+            if (_cardComponent.IsAlwaysSpawn)
+            {
+                return true;
+            }
+            if (_unitComponent.eTeam.Equals(TeamType.EnemyTeam))
+            {
+                return true;
+            }
+
+            switch (_selectedCard.CardDataValue.cardType)
+            {
+                case CardType.Execute:
+                    break;
+                case CardType.SummonUnit:
+                case CardType.SummonTrap:
+                    Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, _cardRangeComponent.MinSummonRange, _cardRangeComponent.MaxSummonRange);
+                    if (mouse_Pos.x < _cardRangeComponent.MinSummonRange || mouse_Pos.x > _cardRangeComponent.MaxSummonRange)
+                    {
+                        return false;
+                    }
+                    break;
+                case CardType.Installation:
+                    break;
+            }
+
+            if (_costComponent.CurrentCost < _selectedCard.CardCost)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+
+        /// <summary>
+        /// 선택한 카드 위치를 업데이트 한다
+        /// </summary>
+        public void UpdateSelectCardPos()
+        {
+            if (_selectedCard == null)
+            {
+                return;
+            }
+            _selectedCard.transform.position = Input.mousePosition;
+        }
+
+        /// <summary>
+        /// 선택된 카드를 사용하지 못 하게 한다
+        /// </summary>
+        public void DontUseSelectedCard()
+        {
+            if (_selectedCard != null)
+            {
+                _selectedCard.DontUseCard();
+                _selectedCard = null;
+            }
+        }
+    }
 
 }

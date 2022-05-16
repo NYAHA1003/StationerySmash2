@@ -17,12 +17,10 @@ namespace Battle
 
         //속성
         public bool IsSelectCard { get; private set; } = false; //카드를 클릭한 상태인지
-        public CardMove SelectedCard => _selectedCard; //선택한 카드
         public bool IsAlwaysSpawn => _isAlwaysSpawn;
+        public bool IsDontUse => _isDontUse;
 
         //기본 변수
-        private float _summonRange = 0.0f;
-        private bool _isFusion = false;
         private Coroutine _delayCoroutine = null;
         private bool _isDontUse = false;
 
@@ -54,7 +52,6 @@ namespace Battle
 
         //참조 변수
         private StageData _stageData = null;
-        private CardMove _selectedCard = null;
         private DeckData _deckData = new DeckData();
         private List<CardMove> _cardList = new List<CardMove>();
         private UnitComponent _commandUnit = null;
@@ -66,6 +63,7 @@ namespace Battle
         private CardRangeComponent _cardRangeComponent = null;
         private CardSelectComponent _cardSelectComponent = null;
         private CardFusionComponent _cardFusionComponent = null;
+        private CardSortComponent _cardSortComponent = null;
 
         /// <summary>
         /// 초기화
@@ -76,11 +74,11 @@ namespace Battle
             _cardRangeComponent = new CardRangeComponent();
             _cardSelectComponent = new CardSelectComponent();
             _cardFusionComponent = new CardFusionComponent();
+            _cardSortComponent = new CardSortComponent();
 
             //변수들 설정
             this._managerBase = managerBase;
             this._stageData = stageData;
-            this._summonRange = -_stageData.max_Range + _stageData.max_Range / 4;
             this._commandUnit = commandUnit;
             this._commandCost = commandCost;
             this._commandCamera = commandCamera;
@@ -95,9 +93,10 @@ namespace Battle
             SetDeckCard();
 
             _cardDrawComponent.SetInitialization(_deckData, _cardList, _cardMovePrefeb, _cardPoolManager, _cardCanvas, _cardSpawnPosition);
-            _cardRangeComponent.SetInitialization(this, _commandCost, _summonRangeImage, _summonArrow, _stageData, _unitAfterImage, _afterImageSpriteRenderer);
-            _cardSelectComponent.SetInitialization();
+            _cardRangeComponent.SetInitialization(this, _cardSelectComponent, _commandCost, _summonRangeImage, _summonArrow, _stageData, _unitAfterImage, _afterImageSpriteRenderer);
+            _cardSelectComponent.SetInitialization(this, _commandUnit, _commandCost, _commandWinLose, _commandCamera, _cardRangeComponent);
             _cardFusionComponent.SetInitialization(this, _managerBase);
+            _cardSortComponent.SetInitialization(this, _cardSelectComponent, _cardLeftPosition, _cardRightPosition);
 
             //업데이트할 함수들 전달
             updateAction += UpdateUnitAfterImage;
@@ -116,11 +115,7 @@ namespace Battle
             //카드를 더 이상 사용할 수 없게 한다
             _isDontUse = true;
 
-            if (_selectedCard != null)
-            {
-                _selectedCard.DontUseCard();
-                _selectedCard = null;
-            }
+            _cardSelectComponent.DontUseSelectedCard();
         }
 
         public void CheckCard()
@@ -141,7 +136,7 @@ namespace Battle
             _cardDrawComponent.AddOneCard();
 
             //카드를 정렬하고 융합 딜레이 설정
-            SortCard();
+            _cardSortComponent.SortCard();
             SetDelayFusion();
 
             //카드 뽑을 때 연계 효과들 실행
@@ -190,13 +185,7 @@ namespace Battle
             _summonRangeImage.gameObject.SetActive(true);
 
             //해당 카드를 선택된 카드에 넣음
-            _selectedCard = card;
-            _selectedCard.SetIsSelected(true);
-
-            //카드 크기를 크게 만들고 각도를 0으로 돌림
-            _selectedCard.transform.DOKill();
-            _selectedCard.SetCardScale(Vector3.one * 1.3f, 0.3f);
-            _selectedCard.SetCardRot(Quaternion.identity, 0.3f);
+            _cardSelectComponent.SelectCard(card);
             
             //카드 선택 활성화
             IsSelectCard = true;
@@ -213,19 +202,8 @@ namespace Battle
         {
             _cardRangeComponent.SetSummonRangeLine(false);
 
-            //융합중이라면 카드 선택 취소를 취소한다
-            if (card.IsFusion && card != _selectedCard)
-            {
-                return;
-            }
-            
-            //카드 크기를 돌려놓음
-            card.SetCardScale(Vector3.one * 1, 0.3f);
-
-            //선택한 카드를 Null로 돌려놓고 카드 선택을 False로 처리함
-            _selectedCard.SetIsSelected(false);
-            _selectedCard = null;
-            IsSelectCard = false;
+            //카드 선택을 취소한다
+            _cardSelectComponent.SetUnSelectCard(card);
 
             //카드를 융합시킴
             SetDelayFusion();
@@ -240,47 +218,21 @@ namespace Battle
             //소환할 수 있는지 체크 및 소환 범위 그리기 없앰
             _cardRangeComponent.SetSummonRangeLine(false);
 
-            //카드를 사용할 수 있는지 체크함
-            if (!CheckPossibleSummon() || _isDontUse)
-            {
-                card.RunOriginPRS();
-                _commandCamera.SetCameraIsMove(true);
-                _selectedCard?.SetIsSelected(false);
-                _selectedCard = null;
-                IsSelectCard = false;
-                return;
-            }
-            //선택한 카드를 Null로 돌림
-            _selectedCard?.SetIsSelected(false);
-            _selectedCard = null;
+            //카드를 사용한다
+            if(_cardSelectComponent.SetUseCard(card))
+			{
+                //카드 융합
+                SetDelayFusion();
+			}
 
-            _commandCost.SubtractCost(card.CardCost);
-            SubtractCardAt(_cardList.FindIndex(x => x.Id == card.Id));
-            IsSelectCard = false;
+        }
 
-            //카드 사용
-            Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            if (_commandUnit.eTeam == TeamType.MyTeam)
-            {
-                mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, -_stageData.max_Range, _summonRange);
-            }
-
-
-            switch (card.CardDataValue.cardType)
-            {
-                case CardType.SummonUnit:
-                    _commandUnit.SummonUnit(card.CardDataValue, new Vector3(mouse_Pos.x, 0, 0), card.Grade);
-                    break;
-                default:
-                case CardType.Execute:
-                case CardType.SummonTrap:
-                case CardType.Installation:
-                    card.CardDataValue.strategyData.starategy_State.Run_Card(_commandUnit.eTeam);
-                    break;
-            }
-
-            //카드 융합
-            SetDelayFusion();
+        /// <summary>
+        /// 선택한 카드 위치를 업데이트 한다
+        /// </summary>
+        private void UpdateSelectCardPos()
+        {
+            _cardSelectComponent.UpdateSelectCardPos();
         }
 
         /// <summary>
@@ -300,55 +252,6 @@ namespace Battle
             _cardDrawComponent.IncreaseMaxCard(num);
         }
 
-        /// <summary>
-        /// 카드 위치를 원형으로 반환함
-        /// </summary>
-        /// <param name="objCount">카드의 갯수</param>
-        /// <param name="y_Space">카드별 y 간격</param>
-        /// <param name="std_y_Pos">카드들 위치에서 해당 변수만큼 y위치를 뺌</param>
-        /// <returns></returns>
-        private List<PRS> ReturnRoundPRS(int objCount, float y_Space, float std_y_Pos)
-        {
-            float[] objLerps = new float[objCount];
-            List<PRS> results = new List<PRS>(objCount);
-
-            //카드 갯수에 따른 예외처리
-            switch (objCount)
-            {
-                case 1:
-                    objLerps = new float[] { 0.5f };
-                    break;
-                case 2:
-                    objLerps = new float[] { 0.27f, 0.77f };
-                    break;
-                default:
-                    float interbal = 1f / (objCount - 1 > 0 ? objCount - 1 : 1);
-                    for (int i = 0; i < objCount; i++)
-                    {
-                        objLerps[i] = interbal * i;
-                    }
-                    break;
-            }
-
-            //카드 갯수만큼 갯수 계산해서 위치리스트에 저장
-            for (int i = 0; i < objCount; i++)
-            {
-                Vector3 pos = Vector3.Lerp(_cardLeftPosition.anchoredPosition, _cardRightPosition.anchoredPosition, objLerps[i]);
-
-                float curve = Mathf.Sqrt(Mathf.Pow(1, 2) - Mathf.Pow(objLerps[i] - 0.5f, 2));
-                pos.y += curve * y_Space - std_y_Pos;
-                Quaternion rot = Quaternion.Slerp(_cardLeftPosition.rotation, _cardRightPosition.rotation, objLerps[i]);
-                if (objCount <= 2)
-                {
-                    rot = Quaternion.identity;
-                }
-
-                results.Add(new PRS(pos, rot, Vector3.one));
-            }
-
-            return results;
-        }
-
         //카드 융합 관련
         /// <summary>
         /// 융합에 딜레이를 설정, 리셋하는 함수
@@ -356,29 +259,6 @@ namespace Battle
         private void SetDelayFusion()
         {
             _cardFusionComponent.SetDelayFusion();
-        }
-
-
-        /// <summary>
-        /// 카드 위치를 정렬함
-        /// </summary>
-        public void SortCard()
-        {
-            //카드 위치를 반환받는다
-            List<PRS> originCardPRS = new List<PRS>();
-            originCardPRS = ReturnRoundPRS(_cardList.Count, 800, 600);
-
-            //카드들에게 반환받은 위치를 넣는다
-            for (int i = 0; i < _cardList.Count; i++)
-            {
-                CardMove targetCard = _cardList[i];
-                targetCard.SetOriginPRS(originCardPRS[i]);
-                if (_cardList[i].Equals(_selectedCard))
-                {
-                    continue;
-                }
-                targetCard.SetCardPRS(targetCard.OriginPRS, 0.4f);
-            }
         }
 
         /// <summary>
@@ -417,7 +297,7 @@ namespace Battle
         /// <summary>
         /// 지정한 인덱스의 카드를 지운다
         /// </summary>
-        private void SubtractCardAt(int index)
+        public void SubtractCardAt(int index)
         {
             if (_cardDrawComponent.ReturnCurrentCard() == 0)
             {
@@ -431,19 +311,7 @@ namespace Battle
             _cardList.RemoveAt(index);
 
             //삭제하고 카드를 정렬
-            SortCard();
-        }
-
-        /// <summary>
-        /// 선택한 카드 위치를 업데이트 한다
-        /// </summary>
-        private void UpdateSelectCardPos()
-        {
-            if (_selectedCard == null)
-            {
-                return;
-            }
-            _selectedCard.transform.position = Input.mousePosition;
+            _cardSortComponent.SortCard();
         }
 
         //범위, 미리보기 관련
@@ -465,50 +333,6 @@ namespace Battle
 		{
             _cardRangeComponent.UpdateSummonRange();
 		}
-
-        /// <summary>
-        /// 카드를 여러 조건에 따라 사용할 수 있는지 체크
-        /// </summary>
-        private bool CheckPossibleSummon()
-        {
-            if (_selectedCard == null)
-            {
-                return false;
-            }
-            //테스트용 소환 조건 해제
-            if (_isAlwaysSpawn)
-            {
-                return true;
-            }
-            if (_commandUnit.eTeam.Equals(TeamType.EnemyTeam))
-            {
-                return true;
-            }
-
-            switch (_selectedCard.CardDataValue.cardType)
-            {
-                case CardType.Execute:
-                    break;
-                case CardType.SummonUnit:
-                case CardType.SummonTrap:
-                    Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, -_stageData.max_Range, _summonRange);
-                    if (mouse_Pos.x < -_stageData.max_Range || mouse_Pos.x > _summonRange)
-                    {
-                        return false;
-                    }
-                    break;
-                case CardType.Installation:
-                    break;
-            }
-
-            if (_commandCost.CurrentCost < _selectedCard.CardCost)
-            {
-                return false;
-            }
-
-            return true;
-        }
 
         /// <summary>
         /// 카드들의 코스트를 비교하여 사용할 수 있는지 확인한다
