@@ -95,11 +95,11 @@ namespace Battle
 			_costComponent.SetInitialization(ref _updateAction, _pencilCaseComponent.PencilCaseDataMy._pencilCaseData);
 			_pauseComponent.SetInitialization();
 			_winLoseComponent.SetInitialization();
-			_introComponent.SetInitialization(_cameraComponent);
+			_introComponent.SetInitialization(_cameraComponent, this);
 
 			_isEndSetting = true;
 
-			StartCoroutine(_introComponent.SetIntro());
+			_introComponent.StartIntro();
 
 			while (!_introComponent.isEndIntro)
 			{

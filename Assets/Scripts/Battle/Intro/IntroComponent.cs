@@ -49,22 +49,33 @@ namespace Battle
 
 		//참조변수 
 		private CameraComponent _cameraComponent = null;
+		private MonoBehaviour _managerBase = null;
 
 		/// <summary>
 		/// 초기화
 		/// </summary>
 		/// <param name="cameraCommand"></param>
-		public void SetInitialization(CameraComponent cameraCommand)
+		public void SetInitialization(CameraComponent cameraCommand, MonoBehaviour managerBase)
 		{
 			_cameraComponent = cameraCommand;
 			_playerCardDatas = _inGameCardDataSO.cardDatas;
 			_enemyCardDatas = _enemyAIDataSO.cardDataList;
+			_managerBase = managerBase;
+		}
+
+
+		/// <summary>
+		/// 인트로 시작
+		/// </summary>
+		public void StartIntro()
+		{
+			_managerBase.StartCoroutine(SetIntro());
 		}
 
 		/// <summary>
 		/// 덱에 대한 정보를 변경한다
 		/// </summary>
-		public void ShowDeckInfo(TeamType teamType)
+		private void ShowDeckInfo(TeamType teamType)
 		{
 			int deckCardCount = _deckCards.Count;
 			for (int i = 0; i < deckCardCount; i++)
@@ -82,7 +93,7 @@ namespace Battle
 					_deckCards[i].gameObject.SetActive(true);
 				}
 			}
-			else if(teamType == TeamType.EnemyTeam)
+			else if (teamType == TeamType.EnemyTeam)
 			{
 				_pencilCaseCard.SetPencilCaseData(_enemyPencilCaseDataSO._pencilCaseData);
 				int cardDataCount = _enemyCardDatas.Count;
@@ -97,7 +108,7 @@ namespace Battle
 		/// <summary>
 		/// 인트로 시작
 		/// </summary>
-		public IEnumerator SetIntro()
+		private IEnumerator SetIntro()
 		{
 			_countText.gameObject.SetActive(true);
 

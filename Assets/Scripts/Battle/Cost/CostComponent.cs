@@ -39,7 +39,6 @@ namespace Battle
             EventManager.StartListening(EventsType.CostUp, OnUpgradeCostGrade);
         }
 
-
         /// <summary>
         /// 현재 코스트 증가
         /// </summary>
@@ -103,7 +102,9 @@ namespace Battle
         private void UpdateCost()
         {
             if (CurrentCost >= MaxCost)
+			{
                 return;
+			}
             if (_costDelay > 0)
             {
                 _costDelay -= _costSpeed * Time.deltaTime;
