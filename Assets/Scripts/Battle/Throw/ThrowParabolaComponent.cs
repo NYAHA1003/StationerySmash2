@@ -60,7 +60,6 @@ namespace Battle
 
 			Vector3 vec = (linePos[count - 1] - linePos[count - 2]).normalized;
 			float angle = Mathf.Atan2(vec.y, vec.x) * Mathf.Rad2Deg;
-			Debug.Log(angle);
 			Vector3 rotateionVector = _parabolaArrow.transform.eulerAngles;
 			rotateionVector.z = angle;
 			_parabolaArrow.transform.eulerAngles = rotateionVector;
