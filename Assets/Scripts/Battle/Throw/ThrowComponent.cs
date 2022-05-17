@@ -20,7 +20,7 @@ namespace Battle
         [SerializeField]
         private RectTransform _throwBarFrame;
         [SerializeField]
-        private RectTransform _throwDelayBar;
+        private RectTransform _throwGaugeBar;
         [SerializeField]
         private GameObject _parabolaBackground = null;
         [SerializeField]
@@ -35,12 +35,11 @@ namespace Battle
         private CameraComponent _cameraCommand = null;
         private ThrowParabolaComponent _throwParabolaComponent = null;
         private ThrowSelectComponent _throwSelectComponent = null;
+        private ThrowGaugeComponent _throwGaugeComponent = null;
 
         private Vector2 _direction;
         private float _force;
         private float _pullTime;
-        private float _throwGauge = 0f;
-        private float _throwGaugeSpeed = 0f;
 
         /// <summary>
         /// 초기화
@@ -53,16 +52,17 @@ namespace Battle
         {
             this._throwParabolaComponent = new ThrowParabolaComponent();
             this._throwSelectComponent = new ThrowSelectComponent();
+            this._throwGaugeComponent = new ThrowGaugeComponent();
 
             this._unitCommand = unitCommand;
             this._cameraCommand = cameraCommand;
             this._stageData = stageData;
-            this._throwGaugeSpeed = _playerPencilCaseDataSO._pencilCaseData._throwGaugeSpeed;
 
             this._throwParabolaComponent.SetInitialization(_parabola, this, _stageData, _parabolaBackground, _cameraCommand, _arrow);
             this._throwSelectComponent.SetInitialization(this, _unitCommand);
+            this._throwGaugeComponent.SetInitialization(this, _unitCommand, _throwBarFrame, _throwGaugeBar, _playerPencilCaseDataSO);
 
-            updateAction += UpdateThrowDelay;
+            updateAction += UpdateThrowGauge;
         }
 
         /// <summary>
@@ -73,12 +73,17 @@ namespace Battle
             if (_throwedUnit != null)
             {
                 _throwedUnit.Throw_Unit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                
                 IncreaseThrowGauge(-_throwedUnit.UnitStat.Return_Weight());
+                
                 _throwTrail.transform.SetParent(_throwedUnit.transform);
                 _throwTrail.transform.localPosition = Vector2.zero;
                 _throwTrail.Clear();
+                
                 _parabolaBackground.SetActive(false);
+                
                 _cameraCommand.SetIsDontMove(false);
+                
                 UnDrawParabola();
             }
         }
@@ -95,7 +100,7 @@ namespace Battle
 			{
                 return;
 			}
-            if (_throwGauge < _throwedUnit.UnitStat.Return_Weight())
+            if (_throwGaugeComponent.GetThrowGauge() < _throwedUnit.UnitStat.Return_Weight())
             {
                 _throwedUnit = null;
                 return;
@@ -203,8 +208,9 @@ namespace Battle
 		{
             _throwedUnit = unit;
         }
+
         /// <summary>
-        /// 던질 유닛 설정
+        /// 던질 유닛 가져오기
         /// </summary>
         /// <param name="unit"></param>
         public void GetThrowedUnit(Unit unit)
@@ -221,7 +227,7 @@ namespace Battle
         }
 
         /// <summary>
-        /// 라인렌더러의 포물선 위치 줘서 설정
+        /// 라인렌더러의 포물선 위치 설정
         /// </summary>
         /// <param name="linePos"></param>
         private void SetParabolaPos(int count, float width, float force, float radDir, float time)
@@ -235,42 +241,15 @@ namespace Battle
         /// <param name="add"></param>
         private void IncreaseThrowGauge(float add)
         {
-            _throwGauge += add;
-            if(_throwGauge < 0)
-            {
-                _throwGauge = 0;
-            }
-            else if(_throwGauge > 200)
-            {
-                _throwGauge = 200;
-            }
+            _throwGaugeComponent.IncreaseThrowGauge(add);
         }
 
         /// <summary>
-        /// 던지기 가능한 유닛들의 시각적 효과를 설정한다.
+        /// 업데이트 게이지
         /// </summary>
-        private void CheckCanThrow()
+        private void UpdateThrowGauge()
         {
-            int count = _unitCommand._playerUnitList.Count;
-            for (int i = 1; i < count; i++)
-            {
-                _unitCommand._playerUnitList[i].SetThrowRenderer(_throwGauge);
-            }
-        }
-
-        /// <summary>
-        /// 업데이트 딜레이
-        /// </summary>
-        private void UpdateThrowDelay()
-        {
-            if (_throwGauge <= 200f)
-            {
-                IncreaseThrowGauge(Time.deltaTime * _throwGaugeSpeed);
-                Vector2 rectSize = _throwDelayBar.sizeDelta;
-                rectSize.x = _throwBarFrame.rect.width * (_throwGauge / 200f);
-                _throwDelayBar.sizeDelta = rectSize;
-                CheckCanThrow();
-            }
+            _throwGaugeComponent.UpdateThrowGauge();
         }
     }
 
