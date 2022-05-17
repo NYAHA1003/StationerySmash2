@@ -13,19 +13,21 @@ namespace Battle
         //인스펙터 참조 변수
         [SerializeField]
         private TextMeshProUGUI _timeText;
+        [SerializeField]
+        private Unit _playerPencilCase = null;
+        [SerializeField]
+        private Unit _enemyPencilCase = null;
 
         //참조 변수
         private UnitComponent _unitCommand = null;
         private CardComponent _cardCommand = null;
         private CostComponent _costCommand = null;
-        private Unit _playerPencilCase = null;
-        private Unit _enemyPencilCase = null;
+        private SudenDeathComponent _sudenDeathComponent = null;
         private StageData _stageData;
 
         //변수
         private float _timer = 0;
         private float _bonustime = 0;
-        private bool _isSuddenDeath;
         private bool _isFinallyEnd;
 
         /// <summary>
@@ -35,12 +37,16 @@ namespace Battle
         /// <param name="timeText"></param>
         public void SetInitialization(ref System.Action updateAction, StageData stageData, UnitComponent unitComponent, CardComponent cardComponent, CostComponent costComponent)
         {
+            _sudenDeathComponent = new SudenDeathComponent();
+
             _stageData = stageData;
             _timer = _stageData.timeValue + _bonustime;
 
             this._unitCommand = unitComponent;
             this._cardCommand = cardComponent;
             this._costCommand = costComponent;
+
+            _sudenDeathComponent.SetInitialization(this, _unitCommand, _cardCommand, _costCommand);
 
             updateAction += UpdateTime;
         }
@@ -52,6 +58,15 @@ namespace Battle
         public void SetTime(float time)
         {
             _timer = time;
+        }
+
+        /// <summary>
+        /// 게임이 완전히 끝났음을 설정
+        /// </summary>
+        /// <param name="boolean"></param>
+        public void SetFinallyEnd(bool boolean)
+		{
+            _isFinallyEnd = boolean;
         }
 
         /// <summary>
@@ -93,34 +108,7 @@ namespace Battle
         /// </summary>
         private void SetSuddenDeath()
         {
-            _cardCommand.ClearCards();
-            _unitCommand.ClearUnit();
-
-            if (!_isSuddenDeath)
-            {
-                _cardCommand.SetMaxCard(8);
-                _costCommand.SetCostSpeed(500);
-                _isSuddenDeath = true;
-                _timer = 60;
-                return;
-            }
-
-            //체력 비교
-            if (_playerPencilCase.UnitStat.Hp > _enemyPencilCase.UnitStat.Hp)
-            {
-                Debug.Log("서든데스 승리");
-                _isFinallyEnd = true;
-                return;
-            }
-            if (_playerPencilCase.UnitStat.Hp < _enemyPencilCase.UnitStat.Hp)
-            {
-                Debug.Log("서든데스 패배");
-                _isFinallyEnd = true;
-                return;
-            }
-
-            Debug.Log("서든데스 무승부");
-            _isFinallyEnd = true;
+            _sudenDeathComponent.SetSuddenDeath();
         }
     }
 
