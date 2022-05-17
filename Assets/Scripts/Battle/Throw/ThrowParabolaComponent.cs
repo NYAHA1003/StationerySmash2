@@ -15,7 +15,7 @@ namespace Battle
 		private StageData _stageData;
 		private GameObject _parabolaBackground = null;
 		private CameraComponent _cameraCommand = null;
-		private Transform _arrow;
+		private Transform _parabolaArrow;
 
 		private List<Vector2> _lineZeroPos;
 
@@ -35,7 +35,7 @@ namespace Battle
 			_stageData = stageData;
 			_parabolaBackground = parabolaBackground;
 			_cameraCommand = cameraCommand;
-			_arrow = arrow;
+			_parabolaArrow = arrow;
 
 			_lineZeroPos = new List<Vector2>(_parabola.positionCount);
 			for (int i = 0; i < _parabola.positionCount; i++)
@@ -56,6 +56,15 @@ namespace Battle
 			{
 				_parabola.SetPosition(i, linePos[i]);
 			}
+			_parabolaArrow.transform.position = _parabola.GetPosition(_parabola.positionCount - 1);
+
+			Vector3 vec = (linePos[count - 1] - linePos[count - 2]).normalized;
+			float angle = Mathf.Atan2(vec.y, vec.x) * Mathf.Rad2Deg;
+			Debug.Log(angle);
+			Vector3 rotateionVector = _parabolaArrow.transform.eulerAngles;
+			rotateionVector.z = angle;
+			_parabolaArrow.transform.eulerAngles = rotateionVector;
+			_parabolaArrow.gameObject.SetActive(true);
 		}
 
 		/// <summary>
@@ -67,6 +76,7 @@ namespace Battle
 			{
 				_parabola.SetPosition(i, _lineZeroPos[i]);
 			}
+			_parabolaArrow.gameObject.SetActive(false);
 		}
 
 		/// <summary>

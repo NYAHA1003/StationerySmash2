@@ -16,7 +16,7 @@ namespace Battle
         [SerializeField]
         private LineRenderer _parabola;
         [SerializeField]
-        private Transform _arrow;
+        private Transform _parabolaArrow;
         [SerializeField]
         private RectTransform _throwBarFrame;
         [SerializeField]
@@ -58,7 +58,7 @@ namespace Battle
             this._cameraCommand = cameraCommand;
             this._stageData = stageData;
 
-            this._throwParabolaComponent.SetInitialization(_parabola, this, _stageData, _parabolaBackground, _cameraCommand, _arrow);
+            this._throwParabolaComponent.SetInitialization(_parabola, this, _stageData, _parabolaBackground, _cameraCommand, _parabolaArrow);
             this._throwSelectComponent.SetInitialization(this, _unitCommand);
             this._throwGaugeComponent.SetInitialization(this, _unitCommand, _throwBarFrame, _throwGaugeBar, _playerPencilCaseDataSO);
 
@@ -170,8 +170,8 @@ namespace Battle
                 }
 
                 //화살표
-                _arrow.transform.position = _throwedUnit.transform.position;
-                _arrow.transform.eulerAngles = new Vector3(0, 0, dir * Mathf.Rad2Deg);
+                //_parabolaArrow.transform.position = _throwedUnit.transform.position;
+                //_parabolaArrow.transform.eulerAngles = new Vector3(0, 0, dir * Mathf.Rad2Deg);
 
                 //초기 벡터
                 _force = Mathf.Clamp(Vector2.Distance(_throwedUnit.transform.position, pos), 0, 1) * 4 * (100.0f / _throwedUnit.UnitStat.Return_Weight());
