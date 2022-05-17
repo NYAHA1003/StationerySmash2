@@ -40,7 +40,7 @@ namespace Battle.Units
 				{
 					continue;
 				}
-				if (list[i]._isInvincibility)
+				if (list[i].IsInvincibility)
 				{
 					continue;
 				}

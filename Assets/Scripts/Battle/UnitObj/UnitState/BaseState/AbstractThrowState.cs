@@ -66,7 +66,7 @@ namespace Battle.Units
 			for (int i = 0; i < list.Count; i++)
 			{
 				targetUnit = list[i];
-				if (targetUnit._isInvincibility)
+				if (targetUnit.IsInvincibility)
 				{
 					continue;
 				}

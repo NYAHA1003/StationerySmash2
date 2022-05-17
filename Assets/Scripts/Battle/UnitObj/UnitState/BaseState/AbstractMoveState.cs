@@ -205,7 +205,7 @@ namespace Battle.Units
 		/// <param name="currentIndex"></param>
 		private void NextTargetUnit(List<Unit> list, float posY, ref Unit targetUnit, ref int currentIndex)
 		{
-			while (targetUnit._isInvincibility || targetUnit.transform.position.y > posY)
+			while (targetUnit.IsInvincibility || targetUnit.transform.position.y > posY)
 			{
 				if (list.Count == 0)
 				{

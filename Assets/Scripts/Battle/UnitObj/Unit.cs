@@ -22,9 +22,9 @@ public class Unit : MonoBehaviour
     public int MyDamagedId { get; protected set; } = 0; // 유닛의 현재 공격 ID
     public int DamageCount { get; set; } = 0; // 공격카운트
     public int MyUnitId { get; protected set; } = 0; //유닛의 ID
-    public bool _isInvincibility { get; protected set; } = false; // 무적 & 무시 여부
-    public bool _isNeverDontThrow { get; protected set; } = false; // 절대 던지기 가능 여부
-    public bool _isDontThrow { get; protected set; } = false; // 던지기 가능 여부
+    public bool IsInvincibility { get; protected set; } = false; // 무적 & 무시 여부
+    public bool IsNeverDontThrow { get; protected set; } = false; // 절대 던지기 가능 여부
+    public bool IsDontThrow { get; protected set; } = false; // 던지기 가능 여부
     public Sequence KnockbackTweener => _knockbackTweener; //넉백에 사용하는 시퀀스
     public int OrderIndex { get; set; } = 0;
     public int ViewIndex => _viewIndex; //뷰 인덱스
@@ -46,7 +46,6 @@ public class Unit : MonoBehaviour
     private UnitData _unitData= null;
     private SkinData _skinData= null;
     private StageData _stageData = null;
-    private Camera _mainCam = null;
 
     //인스펙터 참조 변수
     [SerializeField]
@@ -55,11 +54,6 @@ public class Unit : MonoBehaviour
     private UnitSticker _unitSticker = null;
     [SerializeField]
     private Animator _animator = null;
-
-    protected virtual void Start()
-    {
-        _mainCam = Camera.main;
-    }
 
     /// <summary>
     /// 배틀매니저 설정
@@ -116,35 +110,23 @@ public class Unit : MonoBehaviour
         _stageData = stageData;
 
         //스탯 설정
-        _unitStat.ResetBonusStat();
-        _unitStat.ResetAttackDelay();
-        _unitStat.SetUnitData(_unitData);
-        _unitStat.SetGradeStat(grade);
-        _unitStat.SetWeight();
-        _unitStat.SetAttackDelay(0);
+        _unitStat.ResetStat(_unitData, grade);
         MyUnitId = id;
 
         //상태이상
         _unitStateEff.SetStateEff(this, _unitSprite.SpriteRenderer);
 
         //스프라이트 초기화
-        _unitSprite.SetUIAndSprite(eTeam, SkinData.GetSkin(dataBase._skinData._skinType));
-        _unitSprite.UpdateDelayBar(_unitStat.AttackDelay);
-        _unitSprite.ShowUI(true);
-        _unitSprite.SetTeamColor(eTeam);
-        _unitSprite.Set_HPSprite(_unitStat.Hp, _unitStat.MaxHp);
-        _unitSprite.OrderDraw(orderIndex);
+        _unitSprite.ResetSprite(eTeam, dataBase, _unitStat, orderIndex);
 
         //스테이트 설정
-        _unitStateChanger.SetStateManager(dataBase.unitData.unitType, transform, _unitSprite.SpriteRenderer.transform, this); ;
-        _unitStateChanger.SetStageData(_stageData);
-        _unitStateChanger.SetUnitState();
+        _unitStateChanger.ResetUnitStateChanger(dataBase, transform, stageData, _unitSprite, this);
 
         //스티커 설정
         _unitSticker.SetSticker(this);
 
         //설정 끝, 무적판정 제거
-        _isInvincibility = false;
+        IsInvincibility = false;
         _isSettingEnd = true;
     }
 
@@ -162,6 +144,9 @@ public class Unit : MonoBehaviour
         _unitStateEff.ProcessEff();
     }
 
+    /// <summary>
+    /// 오더 확인
+    /// </summary>
     public void CheckOrder()
     {
         if(ETeam == TeamType.MyTeam)
@@ -211,6 +196,10 @@ public class Unit : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 넉백 설정
+    /// </summary>
+    /// <param name="sequence"></param>
     public void SetKnockBack(Sequence sequence)
     {
         _knockbackTweener = sequence;
@@ -279,7 +268,7 @@ public class Unit : MonoBehaviour
     /// <param name="isboolean">True면 무적, False면 비무적</param>
     public void SetIsInvincibility(bool isboolean)
     {
-        _isInvincibility = isboolean;
+        IsInvincibility = isboolean;
     }
 
     /// <summary>
@@ -288,7 +277,7 @@ public class Unit : MonoBehaviour
     /// <param name="isboolean">True면 던지기 불가능, False면 던지기 가능</param>
     public void SetIsDontThrow(bool isboolean)
     {
-        _isDontThrow = isboolean;
+        IsDontThrow = isboolean;
     }
     /// <summary>
     /// 절대 던지기 가능 설정
@@ -296,7 +285,7 @@ public class Unit : MonoBehaviour
     /// <param name="isboolean">True면 던지기 불가능, False면 던지기 가능</param>
     public void SetIsNeverDontThrow(bool isboolean)
     {
-        _isNeverDontThrow = isboolean;
+        IsNeverDontThrow = isboolean;
     }
 
     /// <summary>
@@ -308,7 +297,6 @@ public class Unit : MonoBehaviour
         _unitStat.SubtractHP(damage);
         _unitSprite.Set_HPSprite(_unitStat.Hp, _unitStat.MaxHp);
     }
-
 
     /// <summary>
     /// 보이기 순서 설정
@@ -362,7 +350,7 @@ public class Unit : MonoBehaviour
     /// <param name="gauge"></param>
     public void SetThrowRenderer(float gauge)
     {
-        if(_unitStat.Return_Weight() <= gauge && !isThrowring && !_isDontThrow && !_isNeverDontThrow)
+        if(_unitStat.Return_Weight() <= gauge && !isThrowring && !IsDontThrow && !IsNeverDontThrow)
         {
             _unitSprite.SetThrowRenderer(true);
         }

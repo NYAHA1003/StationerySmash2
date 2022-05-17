@@ -20,6 +20,13 @@ public class UnitStateChanger
     private StageData _stageData = null;
     private AbstractStateManager _stateManager = null;
 
+    public void ResetUnitStateChanger(CardData cardData, Transform transform, StageData stageData, UnitSprite unitSprite, Unit unit)
+    {
+        SetStateManager(cardData.unitData.unitType, transform, unitSprite.SpriteRenderer.transform, unit); ;
+        SetStageData(stageData);
+        SetUnitState();
+    }
+
     /// <summary>
     /// 유닛 스테이트 로직 수행
     /// </summary>

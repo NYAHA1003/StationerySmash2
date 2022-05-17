@@ -119,7 +119,7 @@ namespace Battle.Units
 		{
 			for (int targetIndex = _targetUnit.OrderIndex; targetIndex >= 0; targetIndex--)
 			{
-				if (list[targetIndex]._isInvincibility || list[targetIndex].transform.position.y > _myTrm.transform.position.y)
+				if (list[targetIndex].IsInvincibility || list[targetIndex].transform.position.y > _myTrm.transform.position.y)
 				{
 					continue;
 				}
@@ -154,7 +154,7 @@ namespace Battle.Units
 				_stateManager.Set_Move();
 				return;
 			}
-			if (_targetUnit._isInvincibility)
+			if (_targetUnit.IsInvincibility)
 			{
 				_stateManager.Set_Move();
 				return;

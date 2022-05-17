@@ -118,7 +118,7 @@ namespace Battle
             pos.x += Random.Range(2.0f, 4.0f);
             pos.y -= Random.Range(2.0f, 4.0f);
             
-            if(!_unitCommand._enemyUnitList[selectUnit]._isDontThrow || !_unitCommand._enemyUnitList[selectUnit]._isNeverDontThrow)
+            if(!_unitCommand._enemyUnitList[selectUnit].IsDontThrow || !_unitCommand._enemyUnitList[selectUnit].IsNeverDontThrow)
 			{
                 _unitCommand._enemyUnitList[selectUnit].Throw_Unit(pos);
                 enemyThrowCurDelay = 0;

@@ -41,6 +41,16 @@ public class UnitSprite
 
     private TeamType _eTeam = TeamType.Null;
 
+    public void ResetSprite(TeamType teamType, CardData cardData, UnitStat unitStat, int orderIndex)
+    {
+        SetUIAndSprite(teamType, SkinData.GetSkin(cardData._skinData._skinType));
+        UpdateDelayBar(unitStat.AttackDelay);
+        ShowUI(true);
+        SetTeamColor(teamType);
+        Set_HPSprite(unitStat.Hp, unitStat.MaxHp);
+        OrderDraw(orderIndex);
+    }
+
     /// <summary>
     /// 초기 스프라이트 및 유닛 UI 설정
     /// </summary>

@@ -51,6 +51,21 @@ public class UnitStat
     private UnitData _unitData = null;
 
     /// <summary>
+    /// 초기화
+    /// </summary>
+    /// <param name="unitData"></param>
+    /// <param name="grade"></param>
+    public void ResetStat(UnitData unitData, int grade)
+    {
+        ResetBonusStat();
+        ResetAttackDelay();
+        SetUnitData(unitData);
+        SetGradeStat(grade);
+        SetWeight();
+        SetAttackDelay(0);
+    }
+
+    /// <summary>
     /// 유닛 데이터 설정
     /// </summary>
     /// <param name="unitData"></param>
@@ -104,6 +119,7 @@ public class UnitStat
     {
         _hp += _maxHp * (1 + recovery / 100);
     }
+
 
     /// <summary>
     /// 보너스 스탯 초기화

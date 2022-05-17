@@ -139,11 +139,11 @@ namespace Battle.Units
 		/// <returns></returns>
 		public virtual Unit PullUnit()
 		{
-			if (_myUnit._isNeverDontThrow)
+			if (_myUnit.IsNeverDontThrow)
 			{
 				return null;
 			}
-			if (_myUnit._isDontThrow)
+			if (_myUnit.IsDontThrow)
 			{
 				return null;
 			}
@@ -161,11 +161,11 @@ namespace Battle.Units
 		/// <returns></returns>
 		public virtual Unit PullingUnit()
 		{
-			if (_myUnit._isNeverDontThrow)
+			if (_myUnit.IsNeverDontThrow)
 			{
 				return null;
 			}
-			if (_myUnit._isDontThrow)
+			if (_myUnit.IsDontThrow)
 			{
 				return null;
 			}
@@ -182,7 +182,7 @@ namespace Battle.Units
 		/// <param name="pos"></param>
 		public virtual void ThrowUnit(Vector2 pos)
 		{
-			if (_myUnit._isNeverDontThrow)
+			if (_myUnit.IsNeverDontThrow)
 			{
 				return;
 			}
