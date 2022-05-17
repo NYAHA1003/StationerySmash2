@@ -13,15 +13,12 @@ namespace Battle
         //인스펙터 참조 변수
         [SerializeField]
         private TextMeshProUGUI _timeText;
-        [SerializeField]
-        private Unit _playerPencilCase = null;
-        [SerializeField]
-        private Unit _enemyPencilCase = null;
 
         //참조 변수
         private UnitComponent _unitCommand = null;
         private CardComponent _cardCommand = null;
         private CostComponent _costCommand = null;
+        private PencilCaseComponent _pencilCaseComponent = null;
         private SudenDeathComponent _sudenDeathComponent = null;
         private StageData _stageData;
 
@@ -35,7 +32,7 @@ namespace Battle
         /// </summary>
         /// <param name="battleManager"></param>
         /// <param name="timeText"></param>
-        public void SetInitialization(ref System.Action updateAction, StageData stageData, UnitComponent unitComponent, CardComponent cardComponent, CostComponent costComponent)
+        public void SetInitialization(ref System.Action updateAction, StageData stageData, UnitComponent unitComponent, CardComponent cardComponent, CostComponent costComponent, PencilCaseComponent pencilCaseComponent)
         {
             _sudenDeathComponent = new SudenDeathComponent();
 
@@ -45,8 +42,9 @@ namespace Battle
             this._unitCommand = unitComponent;
             this._cardCommand = cardComponent;
             this._costCommand = costComponent;
+            this._pencilCaseComponent = pencilCaseComponent;
 
-            _sudenDeathComponent.SetInitialization(this, _unitCommand, _cardCommand, _costCommand);
+            _sudenDeathComponent.SetInitialization(this, _unitCommand, _cardCommand, _costCommand, _pencilCaseComponent);
 
             updateAction += UpdateTime;
         }
