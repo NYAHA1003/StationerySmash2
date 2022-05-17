@@ -34,8 +34,8 @@ namespace Battle
         private UnitComponent _unitCommand = null;
         private CameraComponent _cameraCommand = null;
         private ThrowParabolaComponent _throwParabolaComponent = null;
+        private ThrowSelectComponent _throwSelectComponent = null;
 
-        private List<Vector2> _lineZeroPos;
         private Vector2 _direction;
         private float _force;
         private float _pullTime;
@@ -51,15 +51,16 @@ namespace Battle
         /// <param name="stageData"></param>
         public void SetInitialization(ref System.Action updateAction, UnitComponent unitCommand, CameraComponent cameraCommand, StageData stageData)
         {
-            _unitCommand = unitCommand;
-            _cameraCommand = cameraCommand;
+            this._throwParabolaComponent = new ThrowParabolaComponent();
+            this._throwSelectComponent = new ThrowSelectComponent();
+
+            this._unitCommand = unitCommand;
+            this._cameraCommand = cameraCommand;
             this._stageData = stageData;
-            _lineZeroPos = new List<Vector2>(_parabola.positionCount);
-            _throwGaugeSpeed = _playerPencilCaseDataSO._pencilCaseData._throwGaugeSpeed;
-            for (int i = 0; i < _parabola.positionCount; i++)
-            {
-                _lineZeroPos.Add(Vector2.zero);
-            }
+            this._throwGaugeSpeed = _playerPencilCaseDataSO._pencilCaseData._throwGaugeSpeed;
+
+            this._throwParabolaComponent.SetInitialization(_parabola, this, _stageData, _parabolaBackground, _cameraCommand, _arrow);
+            this._throwSelectComponent.SetInitialization(this, _unitCommand);
 
             updateAction += UpdateThrowDelay;
         }
@@ -83,125 +84,43 @@ namespace Battle
         }
 
         /// <summary>
-        /// 던지기가 끝났을 때 선택된 유닛을 Null로 바꾼다
-        /// </summary>
-        /// <param name="unit"></param>
-        public void EndThrowTarget(Unit unit)
-        {
-            if (unit == _throwedUnit)
-            {
-                _throwedUnit = null;
-                _throwTrail.transform.SetParent(null);
-            }
-        }
-
-        /// <summary>
-        /// 던질 유닛 선택
+        /// 던질 유닛 터치 & 선택
         /// </summary>
         /// <param name="pos"></param>
-        public void PullUnit(Vector2 pos)
+        public void ClickThrowUnit(Vector2 pos)
         {
-            int firstNum = 0;
-            int lastNum = _unitCommand._playerUnitList.Count - 1;
-            int loopnum = 0;
-            int count = _unitCommand._playerUnitList.Count;
-            List<Unit> list = _unitCommand._playerUnitList;
-            float targetPosX = 0;
-            _throwedUnit = null;
-            if(list.Count == 0)
+            _throwSelectComponent.SelectThrowUnit(pos);
+            
+            if(_throwedUnit == null)
 			{
                 return;
 			}
-
-            if(pos.x >= list[lastNum].transform.position.x - 0.3f)
+            if (_throwGauge < _throwedUnit.UnitStat.Return_Weight())
             {
-                _throwedUnit = list[lastNum];
-            }
-            else if (pos.x <= list[firstNum].transform.position.x )
-            {
-                _throwedUnit = list[firstNum];
-            }
-
-            while (_throwedUnit == null)
-            {
-                if (count == 0)
-                {
-                    _throwedUnit = null;
-                    return;
-                }
-
-                int find = (lastNum + firstNum) / 2;
-                targetPosX = list[find].transform.position.x;
-
-                if (pos.x == targetPosX)
-                {
-                    _throwedUnit = list[find];
-                    break;
-                }
-
-                if (pos.x > targetPosX)
-                {
-                    firstNum = find;
-                }
-                else if (pos.x < targetPosX)
-                {
-                    lastNum = find;
-                }
-
-                if (lastNum - firstNum <= 1)
-                {
-                    _throwedUnit = list[lastNum];
-                    break;
-                }
-
-                loopnum++;
-                if (loopnum > 10000)
-                {
-                    throw new System.Exception("Infinite Loop");
-                }
-            }
-
-            if (_throwedUnit != null)
-            {
-                if (_throwedUnit.UnitData.unitType == UnitType.PencilCase)
-                {
-                    _throwedUnit = null;
-                    return;
-                }
-                if(_throwGauge < _throwedUnit.UnitStat.Return_Weight())
-                {
-                    _throwedUnit = null;
-                    return;
-                }
-                Vector2[] points = _throwedUnit.CollideData.GetPoint(_throwedUnit.transform.position);
-                
-                if (CheckPoints(points, pos))
-                {
-                    _throwedUnit = _throwedUnit.Pull_Unit();
-
-                    if (_throwedUnit == null)
-                    {
-                        _cameraCommand.SetIsDontMove(true);
-                    }
-                    else
-                    {
-                        _throwedUnit.UnitSprite.OrderDraw(-10);
-                        _throwedUnit.UnitSticker.OrderDraw(-10);
-                        _parabolaBackground.SetActive(true);
-                    }
-
-                    _pullTime = 2f;
-                    return;
-                }
                 _throwedUnit = null;
+                return;
             }
+            if (_throwedUnit == null)
+            {
+                _cameraCommand.SetIsDontMove(true);
+                return;
+            }
+            else
+            {
+                _throwedUnit.UnitSprite.OrderDraw(-10);
+                _throwedUnit.UnitSticker.OrderDraw(-10);
+                _parabolaBackground.SetActive(true);
+                _cameraCommand.SetIsDontMove(false);
+            }
+
+            _pullTime = 2f;
         }
 
         /// <summary>
-        /// 포물선 그리기 & 던지기 취소 조건
+        /// 던질 유닛을 당기는 중일 때
         /// </summary>
         /// <param name="pos"></param>
-        public void DrawParabola(Vector2 pos)
+        public void PullingThrowUnit(Vector2 pos)
         {
             UnDrawParabola();
             if (_throwedUnit != null)
@@ -264,11 +183,41 @@ namespace Battle
         }
 
         /// <summary>
+        /// 던져진 유닛의 던지기가 끝났을 때 던지기 관련 기능들을 끝낸다
+        /// </summary>
+        /// <param name="unit"></param>
+        public void EndThrowUnit(Unit unit)
+        {
+            if (unit == _throwedUnit)
+            {
+                _throwedUnit = null;
+                _throwTrail.transform.SetParent(null);
+            }
+        }
+
+        /// <summary>
+        /// 던질 유닛 설정
+        /// </summary>
+        /// <param name="unit"></param>
+        public void SetThrowedUnit(Unit unit)
+		{
+            _throwedUnit = unit;
+        }
+        /// <summary>
+        /// 던질 유닛 설정
+        /// </summary>
+        /// <param name="unit"></param>
+        public void GetThrowedUnit(Unit unit)
+        {
+            _throwedUnit = unit;
+        }
+
+        /// <summary>
         /// 포물선 그리기 해제
         /// </summary>
         private void UnDrawParabola()
         {
-            _throwParabolaComponent.UnSetParabolaPos();
+            _throwParabolaComponent.UnDrawParabola();
         }
 
         /// <summary>
@@ -295,50 +244,6 @@ namespace Battle
             {
                 _throwGauge = 200;
             }
-        }
-
-        /// <summary>
-        /// 인포인트가 아웃 포인트 안에 있는지 체크
-        /// </summary>
-        /// <param name="outPoint"></param>
-        /// <param name="inPoint"></param>
-        /// <returns></returns>
-        private bool CheckPoints(Vector2[] box, Vector2 inPoint)
-        {
-            if (box[0].x - 0.2f > inPoint.x)
-            {
-                return false;
-            }
-            if (box[1].x + 0.2f < inPoint.x)
-            {
-                return false;
-            }
-            if (box[2].x - 0.2f > inPoint.x)
-            {
-                return false;
-            }
-            if (box[3].x + 0.2f < inPoint.x)
-            {
-                return false;
-            }
-            if (box[0].y + 0.15f < inPoint.y)
-            {
-                return false;
-            }
-            if (box[1].y + 0.15f < inPoint.y)
-            {
-                return false;
-            }
-            if (box[2].y - 0.1f > inPoint.y)
-            {
-                return false;
-            }
-            if (box[3].y - 0.1f > inPoint.y)
-            {
-                return false;
-            }
-            return true;
-
         }
 
         /// <summary>

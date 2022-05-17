@@ -252,7 +252,7 @@ namespace Battle.Units
 		/// </summary>
 		private void EndThrow()
 		{
-			_myUnit.BattleManager.ThrowComponent.EndThrowTarget(_myUnit);
+			_myUnit.BattleManager.ThrowComponent.EndThrowUnit(_myUnit);
 		}
 	}
 

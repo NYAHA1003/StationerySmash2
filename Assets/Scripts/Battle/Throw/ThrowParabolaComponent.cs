@@ -13,18 +13,30 @@ namespace Battle
 		private LineRenderer _parabola;
 		private ThrowComponent _throwComponent = null;
 		private StageData _stageData;
-		private List<Vector2> _lineZeroPos;
 		private GameObject _parabolaBackground = null;
 		private CameraComponent _cameraCommand = null;
+		private Transform _arrow;
 
+		private List<Vector2> _lineZeroPos;
 
-		private float _force;
-		private float _pullTime;
-		private float _throwGauge = 0f;
-		private float _throwGaugeSpeed = 0f;
-
-		public void SetInitialization()
+		/// <summary>
+		/// 초기화
+		/// </summary>
+		/// <param name="parabola"></param>
+		/// <param name="throwComponent"></param>
+		/// <param name="stageData"></param>
+		/// <param name="parabolaBackground"></param>
+		/// <param name="cameraCommand"></param>
+		/// <param name="arrow"></param>
+		public void SetInitialization(LineRenderer parabola, ThrowComponent throwComponent, StageData stageData, GameObject parabolaBackground, CameraComponent cameraCommand, Transform arrow)
 		{
+			_parabola = parabola;
+			_throwComponent = throwComponent;
+			_stageData = stageData;
+			_parabolaBackground = parabolaBackground;
+			_cameraCommand = cameraCommand;
+			_arrow = arrow;
+
 			_lineZeroPos = new List<Vector2>(_parabola.positionCount);
 			for (int i = 0; i < _parabola.positionCount; i++)
 			{
@@ -49,79 +61,12 @@ namespace Battle
 		/// <summary>
 		/// 포물선 그리기 해제
 		/// </summary>
-		public void UnSetParabolaPos()
+		public void UnDrawParabola()
 		{
 			for (int i = 0; i < _parabola.positionCount; i++)
 			{
 				_parabola.SetPosition(i, _lineZeroPos[i]);
 			}
-		}
-
-		/// <summary>
-		/// 포물선 그리기 & 던지기 취소 조건
-		/// </summary>
-		/// <param name="pos"></param>
-		public bool DrawParabola(Vector2 pos)
-		{
-			Unit throwedUnit = _throwComponent.ThrowedUnit;
-			
-			if (throwedUnit != null)
-			{
-				//시간이 지나면 취소
-				_pullTime -= Time.deltaTime;
-				if (_pullTime < 0)
-				{
-					throwedUnit.UnitSprite.OrderDraw(throwedUnit.OrderIndex);
-					throwedUnit.UnitSticker.OrderDraw(throwedUnit.OrderIndex);
-					throwedUnit = null;
-					_parabolaBackground.SetActive(false);
-					_cameraCommand.SetIsDontMove(false);
-					UnDrawParabola();
-					return false;
-				}
-
-				_cameraCommand.SetIsDontMove(true);
-
-				//유닛이 다른 행동을 취하게 되면 취소
-				if (throwedUnit.Pulling_Unit() == null)
-				{
-					throwedUnit.UnitSprite.OrderDraw(throwedUnit.OrderIndex);
-					throwedUnit.UnitSticker.OrderDraw(throwedUnit.OrderIndex);
-					_parabolaBackground.SetActive(false);
-					UnDrawParabola();
-					throwedUnit = throwedUnit.Pulling_Unit();
-					_cameraCommand.SetIsDontMove(false);
-					return false;
-				}
-
-				//방향
-				_direction = (Vector2)throwedUnit.transform.position - pos;
-				float dir = Mathf.Atan2(_direction.y, _direction.x);
-				float dirx = Mathf.Atan2(_direction.y, -_direction.x);
-
-				//던지는 방향에 따라 포물선만 안 보이게 함
-				if (dir < 0)
-				{
-					return false;
-				}
-
-				//화살표
-				_arrow.transform.position = throwedUnit.transform.position;
-				_arrow.transform.eulerAngles = new Vector3(0, 0, dir * Mathf.Rad2Deg);
-
-				//초기 벡터
-				_force = Mathf.Clamp(Vector2.Distance(throwedUnit.transform.position, pos), 0, 1) * 4 * (100.0f / _throwedUnit.UnitStat.Return_Weight());
-
-				//수평 도달 거리
-				float width = Parabola.Caculated_Width(_force, dirx);
-				//수평 도달 시간
-				float time = Parabola.Caculated_Time(_force, dir, 2);
-
-				SetParabolaPos(_parabola.positionCount, width, _force, dir, time);
-
-				return true;
-			}
-			return false;
 		}
 
 		/// <summary>

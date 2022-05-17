@@ -120,11 +120,11 @@ namespace Battle
 			//던지기 시스템
 			if (Input.GetMouseButtonDown(0))
 			{
-				_throwComponent.PullUnit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+				_throwComponent.ClickThrowUnit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 			}
 			else if (Input.GetMouseButton(0))
 			{
-				_throwComponent.DrawParabola(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+				_throwComponent.PullingThrowUnit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 			}
 			else if (Input.GetMouseButtonUp(0))
 			{
