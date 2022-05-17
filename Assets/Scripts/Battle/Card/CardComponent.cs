@@ -274,7 +274,7 @@ namespace Battle
         /// </summary>
         public float ReturnMinRange()
         {
-            return _cardRangeComponent.MaxSummonRange;
+            return -_stageData.max_Range;
         }
 
         /// <summary>
