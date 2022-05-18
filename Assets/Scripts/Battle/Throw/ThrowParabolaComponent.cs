@@ -75,13 +75,29 @@ namespace Battle
 			_parabolaArrow.gameObject.SetActive(true);
 
 
+		}
+
+		/// <summary>
+		/// 방향 화살표 설정
+		/// </summary>
+		/// <param name="force"></param>
+		public void SetDirectionArrow(float force)
+		{
 			Vector2 direction = _throwComponent.GetDirection();
 			float arrowDir = Mathf.Atan2(-direction.y, -direction.x);
-			Vector2 size = new Vector2(force / 10, force / 10);
+			Vector2 size = new Vector2(force / 10 + 0.1f, force / 10 + 0.1f);
 			_dirArrow.gameObject.SetActive(true);
 			_dirArrow.transform.position = _throwComponent.ThrowedUnit.transform.position;
 			_dirArrow.transform.eulerAngles = new Vector3(0, 0, (arrowDir * Mathf.Rad2Deg) + 90);
 			_dirArrow.transform.localScale = size;
+		}
+		/// <summary>
+		/// 방향 화살표 설정
+		/// </summary>
+		/// <param name="force"></param>
+		public void UnSetDirectionArrow()
+		{
+			_dirArrow.gameObject.SetActive(false);
 		}
 
 		/// <summary>
@@ -94,7 +110,6 @@ namespace Battle
 				_parabola.SetPosition(i, _lineZeroPos[i]);
 			}
 			_parabolaArrow.gameObject.SetActive(false);
-			_dirArrow.gameObject.SetActive(false);
 		}
 
 		/// <summary>

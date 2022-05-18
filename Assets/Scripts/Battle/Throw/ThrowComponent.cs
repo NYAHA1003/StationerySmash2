@@ -87,6 +87,8 @@ namespace Battle
                 _cameraCommand.SetIsDontMove(false);
                 
                 UnDrawParabola();
+
+                _throwParabolaComponent.UnSetDirectionArrow();
             }
             _dirArrow.gameObject.SetActive(false);
         }
@@ -141,6 +143,9 @@ namespace Battle
                 //초기 벡터
                 _force = Mathf.Clamp(Vector2.Distance(_throwedUnit.transform.position, pos), 0, 1) * 4 * (100.0f / _throwedUnit.UnitStat.Return_Weight());
 
+                //화살표 설정
+                _throwParabolaComponent.SetDirectionArrow(_force);
+
                 //시간이 지나면 취소
                 _pullTime -= Time.deltaTime;
                 if (_pullTime < 0)
@@ -151,6 +156,7 @@ namespace Battle
                     _parabolaBackground.SetActive(false);
                     _cameraCommand.SetIsDontMove(false);
                     UnDrawParabola();
+                    _throwParabolaComponent.UnSetDirectionArrow();
                     return;
                 }
 
@@ -165,6 +171,7 @@ namespace Battle
                     UnDrawParabola();
                     _throwedUnit = _throwedUnit.Pulling_Unit();
                     _cameraCommand.SetIsDontMove(false);
+                    _throwParabolaComponent.UnSetDirectionArrow();
                     return;
                 }
 
