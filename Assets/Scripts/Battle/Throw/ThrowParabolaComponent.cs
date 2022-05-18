@@ -16,6 +16,8 @@ namespace Battle
 		private GameObject _parabolaBackground = null;
 		private CameraComponent _cameraCommand = null;
 		private Transform _parabolaArrow;
+		private Transform _dirArrow;
+
 
 		private List<Vector2> _lineZeroPos;
 
@@ -27,15 +29,16 @@ namespace Battle
 		/// <param name="stageData"></param>
 		/// <param name="parabolaBackground"></param>
 		/// <param name="cameraCommand"></param>
-		/// <param name="arrow"></param>
-		public void SetInitialization(LineRenderer parabola, ThrowComponent throwComponent, StageData stageData, GameObject parabolaBackground, CameraComponent cameraCommand, Transform arrow)
+		/// <param name="parabolaArrow"></param>
+		public void SetInitialization(LineRenderer parabola, ThrowComponent throwComponent, StageData stageData, GameObject parabolaBackground, CameraComponent cameraCommand, Transform parabolaArrow, Transform dirArrow)
 		{
 			_parabola = parabola;
 			_throwComponent = throwComponent;
 			_stageData = stageData;
 			_parabolaBackground = parabolaBackground;
 			_cameraCommand = cameraCommand;
-			_parabolaArrow = arrow;
+			_parabolaArrow = parabolaArrow;
+			_dirArrow = dirArrow;
 
 			_lineZeroPos = new List<Vector2>(_parabola.positionCount);
 			for (int i = 0; i < _parabola.positionCount; i++)
@@ -52,18 +55,33 @@ namespace Battle
 		public void SetParabolaPos(int count, float width, float force, float radDir, float time)
 		{
 			List<Vector2> linePos = ReturnParabolaPos(count, width, force, radDir, time);
-			for (int i = 0; i < _parabola.positionCount; i++)
+			Debug.Log(width);
+			for (int i = 0; i < 3; i++)
+			{
+				_parabola.SetPosition(i, linePos[9]);
+			}
+			for (int i = 3; i < _parabola.positionCount; i++)
 			{
 				_parabola.SetPosition(i, linePos[i]);
 			}
+			
+			//포물선 화살표
 			_parabolaArrow.transform.position = _parabola.GetPosition(_parabola.positionCount - 1);
-
 			Vector3 vec = (linePos[count - 1] - linePos[count - 2]).normalized;
 			float angle = Mathf.Atan2(vec.y, vec.x) * Mathf.Rad2Deg;
 			Vector3 rotateionVector = _parabolaArrow.transform.eulerAngles;
 			rotateionVector.z = angle;
 			_parabolaArrow.transform.eulerAngles = rotateionVector;
 			_parabolaArrow.gameObject.SetActive(true);
+
+
+			Vector2 direction = _throwComponent.GetDirection();
+			float arrowDir = Mathf.Atan2(-direction.y, -direction.x);
+			Vector2 size = new Vector2(force / 10, force / 10);
+			_dirArrow.gameObject.SetActive(true);
+			_dirArrow.transform.position = _throwComponent.ThrowedUnit.transform.position;
+			_dirArrow.transform.eulerAngles = new Vector3(0, 0, (arrowDir * Mathf.Rad2Deg) + 90);
+			_dirArrow.transform.localScale = size;
 		}
 
 		/// <summary>
@@ -76,6 +94,7 @@ namespace Battle
 				_parabola.SetPosition(i, _lineZeroPos[i]);
 			}
 			_parabolaArrow.gameObject.SetActive(false);
+			_dirArrow.gameObject.SetActive(false);
 		}
 
 		/// <summary>

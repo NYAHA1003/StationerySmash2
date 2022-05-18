@@ -18,6 +18,8 @@ namespace Battle
         [SerializeField]
         private Transform _parabolaArrow;
         [SerializeField]
+        private Transform _dirArrow;
+        [SerializeField]
         private RectTransform _throwBarFrame;
         [SerializeField]
         private RectTransform _throwGaugeBar;
@@ -58,7 +60,7 @@ namespace Battle
             this._cameraCommand = cameraCommand;
             this._stageData = stageData;
 
-            this._throwParabolaComponent.SetInitialization(_parabola, this, _stageData, _parabolaBackground, _cameraCommand, _parabolaArrow);
+            this._throwParabolaComponent.SetInitialization(_parabola, this, _stageData, _parabolaBackground, _cameraCommand, _parabolaArrow, _dirArrow);
             this._throwSelectComponent.SetInitialization(this, _unitCommand);
             this._throwGaugeComponent.SetInitialization(this, _unitCommand, _throwBarFrame, _throwGaugeBar, _playerPencilCaseDataSO);
 
@@ -86,6 +88,7 @@ namespace Battle
                 
                 UnDrawParabola();
             }
+            _dirArrow.gameObject.SetActive(false);
         }
 
         /// <summary>
@@ -130,6 +133,14 @@ namespace Battle
             UnDrawParabola();
             if (_throwedUnit != null)
             {
+                //방향
+                _direction = (Vector2)_throwedUnit.transform.position - pos;
+                float dir = Mathf.Atan2(_direction.y, _direction.x);
+                float dirx = Mathf.Atan2(_direction.y, -_direction.x);
+
+                //초기 벡터
+                _force = Mathf.Clamp(Vector2.Distance(_throwedUnit.transform.position, pos), 0, 1) * 4 * (100.0f / _throwedUnit.UnitStat.Return_Weight());
+
                 //시간이 지나면 취소
                 _pullTime -= Time.deltaTime;
                 if (_pullTime < 0)
@@ -157,10 +168,6 @@ namespace Battle
                     return;
                 }
 
-                //방향
-                _direction = (Vector2)_throwedUnit.transform.position - pos;
-                float dir = Mathf.Atan2(_direction.y, _direction.x);
-                float dirx = Mathf.Atan2(_direction.y, -_direction.x);
 
                 //던지는 방향에 따라 포물선만 안 보이게 함
                 if (dir < 0)
@@ -168,13 +175,6 @@ namespace Battle
                     UnDrawParabola();
                     return;
                 }
-
-                //화살표
-                //_parabolaArrow.transform.position = _throwedUnit.transform.position;
-                //_parabolaArrow.transform.eulerAngles = new Vector3(0, 0, dir * Mathf.Rad2Deg);
-
-                //초기 벡터
-                _force = Mathf.Clamp(Vector2.Distance(_throwedUnit.transform.position, pos), 0, 1) * 4 * (100.0f / _throwedUnit.UnitStat.Return_Weight());
 
                 //수평 도달 거리
                 float width = Parabola.Caculated_Width(_force, dirx);
@@ -217,6 +217,15 @@ namespace Battle
         {
             _throwedUnit = unit;
         }
+        
+        /// <summary>
+        /// 방향 반환
+        /// </summary>
+        /// <returns></returns>
+        public Vector2 GetDirection()
+		{
+            return _direction;
+		}
 
         /// <summary>
         /// 포물선 그리기 해제
