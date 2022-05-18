@@ -76,7 +76,7 @@ public class LoadingManager : MonoBehaviour
 
     }
 
-    protected IEnumerator Random_Tips()
+    protected virtual IEnumerator Random_Tips()
     {
         int random = Random.Range(0, loadingToolTipSO.toolTips.Count);
         if(previousRandomNum == random)
