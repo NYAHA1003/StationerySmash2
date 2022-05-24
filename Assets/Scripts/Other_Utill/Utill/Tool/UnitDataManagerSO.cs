@@ -11,20 +11,18 @@ using Battle.Starategy;
 namespace Utill.Tool
 {
 	[CreateAssetMenu(fileName = "UnitDataManagerSO", menuName = "Scriptable Object/UnitDataManagerSO")]
-	public class UnitDataManagerSO : ScriptableObject
+	public class UnitDataManagerSO : ScriptableObject, Iinitialize
 	{
 		private static List<UnitData> _stdUnitDataList = new List<UnitData>(); //Unit데이터 리스트
 		public List<UnitData> _inputUnitDataList = new List<UnitData>(); //Unit데이터 리스트
 
-
 		/// <summary>
 		/// 기준 데이터에 입력 데이터를 넣는다
 		/// </summary>
-		public void Reset()
+		public void Initialize()
 		{
 			_stdUnitDataList = _inputUnitDataList;
 		}
-
 
 		/// <summary>
 		/// StrategyType에 맞는 Strategy데이터를 반환함

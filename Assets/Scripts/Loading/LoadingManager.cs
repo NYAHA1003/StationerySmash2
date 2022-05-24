@@ -28,16 +28,9 @@ public class LoadingManager : MonoBehaviour
     public float repeatTerm;
     [SerializeField, Header("스프라이트로딩시스템 BattleSetSkin"), Space(30)]
     protected SetSkinComponent _loadingComponent = null;
-    [SerializeField]
-    private UnitDataManagerSO _unitDataManagerSO;
-    [SerializeField]
-    private StrategyDataManagerSO _strategyDataManagerSO;
 
     protected void Awake()
     {
-        _unitDataManagerSO.Reset();
-        _strategyDataManagerSO.Reset();
-
         StartCoroutine(Random_Tips());
         LoadingAnim();
     }
