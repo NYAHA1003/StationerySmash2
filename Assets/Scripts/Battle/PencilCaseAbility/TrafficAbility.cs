@@ -86,7 +86,7 @@ namespace Battle.PCAbility
         /// </summary>
         private void SetRedCar()
         {
-            _redCarData = _unitDataSO.unitDatas.Find(x => x.unitData.unitType == UnitType.RedCar);
+            _redCarData = _unitDataSO.unitDatas.Find(x => x.unitType == UnitType.RedCar);
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace Battle.PCAbility
         /// </summary>
         private void SetYellowCar()
         {
-            _yellowCarData = _unitDataSO.unitDatas.Find(x => x.unitData.unitType == UnitType.YellowCar);
+            _yellowCarData = _unitDataSO.unitDatas.Find(x => x.unitType == UnitType.YellowCar);
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace Battle.PCAbility
         /// </summary>
         private void SetGreenCar()
         {
-            _greenCarData = _unitDataSO.unitDatas.Find(x => x.unitData.unitType == UnitType.GreenCar);
+            _greenCarData = _unitDataSO.unitDatas.Find(x => x.unitType == UnitType.GreenCar);
         }
 
         public override bool AIAbilityCondition()

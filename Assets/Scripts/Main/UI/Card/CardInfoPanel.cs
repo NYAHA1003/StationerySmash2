@@ -148,11 +148,12 @@ namespace Main.Card
 			_infoScroll.SetIcons(4);
 
 			//스탯 텍스트 설정
-			_hpText.text = cardData.unitData.unit_Hp.ToString();
-			_attackText.text = cardData.unitData.damage.ToString();
-			_attackSpeedText.text = cardData.unitData.attackSpeed.ToString();
-			_moveSpeedText.text = cardData.unitData.moveSpeed.ToString();
-			_weightText.text = cardData.unitData.unit_Weight.ToString();
+			UnitData unitData = UnitDataManagerSO.FindUnitData(cardData.unitType);
+			_hpText.text = unitData.unit_Hp.ToString();
+			_attackText.text = unitData.damage.ToString();
+			_attackSpeedText.text = unitData.attackSpeed.ToString();
+			_moveSpeedText.text = unitData.moveSpeed.ToString();
+			_weightText.text = unitData.unit_Weight.ToString();
 		}
 		/// <summary>
 		/// 함정 소환형의 UI 설정
@@ -187,7 +188,7 @@ namespace Main.Card
 		{
 			//선택한 유닛의 스킨 리스트 가져오기
 			List<StickerData> commonStickerList = _haveStickerDataSO.GetStickerDataList().Find(x => x._onlyUnitType == UnitType.None)?._stickerDatas;
-			List<StickerData> onlyUnitStickerList = _haveStickerDataSO.GetStickerDataList().Find(x => x._onlyUnitType == cardData.unitData.unitType)?._stickerDatas;
+			List<StickerData> onlyUnitStickerList = _haveStickerDataSO.GetStickerDataList().Find(x => x._onlyUnitType == cardData.unitType)?._stickerDatas;
 
 			int commonCount = commonStickerList?.Count ?? 0;
 			int onlyCount = onlyUnitStickerList?.Count ?? 0;
@@ -239,7 +240,8 @@ namespace Main.Card
 		/// <returns></returns>
 		public bool CheckAlreadyEquipSticker(StickerData stickerData)
 		{
-			if(_selectCardData.unitData.stickerData.StickerType == stickerData.StickerType)
+			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData.unitType);
+			if(unitData.stickerData.StickerType == stickerData.StickerType)
 			{
 				return true;
 			}
@@ -252,7 +254,8 @@ namespace Main.Card
 		/// <param name="stickerData"></param>
 		public void SetSticker(StickerData stickerData)
 		{
-			_selectCardData.unitData.stickerData = stickerData;
+			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData.unitType);
+			unitData.stickerData = stickerData;
 			_selectDeckCard.SetCard(_selectCardData);
 			_userDeckData.ChangeCardInInGameSaveData(_selectCardData);
 		}
@@ -262,8 +265,9 @@ namespace Main.Card
 		/// </summary>
 		public void ReleaseSticker()
 		{
-			_selectCardData.unitData.stickerData = new StickerData();
-			_selectCardData.unitData.stickerData.ReleaseData();
+			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData.unitType);
+			unitData.stickerData = new StickerData();
+			unitData.stickerData.ReleaseData();
 			_selectDeckCard.SetCard(_selectCardData);
 			_userDeckData.ChangeCardInInGameSaveData(_selectCardData);
 		}

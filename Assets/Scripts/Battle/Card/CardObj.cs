@@ -96,7 +96,7 @@ public class CardObj : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             case CardType.Execute:
             case CardType.SummonTrap:
             case CardType.Installation:
-                StrategyData strategyData = StrategyDataManager.FindStrategyData(_cardData.starategyType);
+                StrategyData strategyData = StrategyDataManagerSO.FindStrategyData(_cardData.starategyType);
                 strategyData.starategy_State.SetBattleManager(_battleManager);
                 strategyData.starategy_State.SetCard(this);
                 break;
@@ -365,8 +365,9 @@ public class CardObj : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if(StickerData.CheckCanSticker(_cardData))
         {
-            _stickerImage.sprite = SkinData.GetSkin(_cardData.unitData.stickerData.SkinType);
-            _stickerRect.anchoredPosition = StickerData.ReturnStickerPos(_cardData.unitData.unitType);
+            UnitData unitData = UnitDataManagerSO.FindUnitData(_cardData.unitType);
+            _stickerImage.sprite = SkinData.GetSkin(unitData.stickerData.SkinType);
+            _stickerRect.anchoredPosition = StickerData.ReturnStickerPos(_cardData.unitType);
             _stickerRect.gameObject.SetActive(true);
         }
         else

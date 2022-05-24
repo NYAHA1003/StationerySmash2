@@ -18,7 +18,7 @@ namespace Utill.Tool
 		{
 			AsyncOperationHandle<UnitDataSO> handle = Addressables.LoadAssetAsync<UnitDataSO>("ProjectileUnitSO");
 			handle.WaitForCompletion();
-			return handle.Result.unitDatas.Find(x => x.unitData.unitType == unitType);
+			return handle.Result.unitDatas.Find(x => x.unitType == unitType);
 			//반환값 주의사항 함수 뒤에 .Result를 붙여야함
 		}
 	}

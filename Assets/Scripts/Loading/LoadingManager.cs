@@ -5,10 +5,17 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using Utill.Tool;
+
 public class LoadingManager : MonoBehaviour
 {
+    //정적 변수
     protected static string nextScene;
+    
+    //변수
     protected int previousRandomNum = 0;
+    
+    //인스펙터 변수
     [SerializeField]
     protected Slider progressBar;
     [SerializeField]
@@ -21,8 +28,16 @@ public class LoadingManager : MonoBehaviour
     public float repeatTerm;
     [SerializeField, Header("스프라이트로딩시스템 BattleSetSkin"), Space(30)]
     protected SetSkinComponent _loadingComponent = null;
+    [SerializeField]
+    private UnitDataManagerSO _unitDataManagerSO;
+    [SerializeField]
+    private StrategyDataManagerSO _strategyDataManagerSO;
+
     protected void Awake()
     {
+        _unitDataManagerSO.Reset();
+        _strategyDataManagerSO.Reset();
+
         StartCoroutine(Random_Tips());
         LoadingAnim();
     }

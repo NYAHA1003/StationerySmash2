@@ -107,7 +107,8 @@ namespace Battle
 			pos.x = Mathf.Clamp(pos.x, -_stageData.max_Range, _maxsummonRange);
 
 			//소환 미리보기가 될 수 있는지 체크
-			if (_cardSelectComponent.SelectedCard == null || pos.y < 0 || _cardSelectComponent.SelectedCard.CardDataValue.unitData.unitType == UnitType.None)
+
+			if (_cardSelectComponent.SelectedCard == null || pos.y < 0 || _cardSelectComponent.SelectedCard.CardDataValue.unitType == UnitType.None)
 			{
 				SetSummonArrowImage(false, pos);
 				_unitAfterImage.SetActive(false);

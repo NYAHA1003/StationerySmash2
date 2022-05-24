@@ -11,7 +11,7 @@ public class DeckData
     
     public void Add_CardData(CardData data)
     {
-        StrategyData strategyData = StrategyDataManager.FindStrategyData(data.starategyType);
+        StrategyData strategyData = StrategyDataManagerSO.FindStrategyData(data.starategyType);
         strategyData.Set_State();
         cardDatas.Add(data);
     }

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Main.Setting;
 using DG.Tweening;
+using Utill.Tool;
 
 public class MainLoadingManager : LoadingManager
 {
@@ -11,6 +12,7 @@ public class MainLoadingManager : LoadingManager
     {
         await Sound.AllLoadAssetAsync();
         MainSceneLoad();
+
         base.Start();
     }
     public static void MainSceneLoad()

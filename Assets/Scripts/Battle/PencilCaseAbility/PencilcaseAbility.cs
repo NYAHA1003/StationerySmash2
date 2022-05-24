@@ -17,7 +17,7 @@ namespace Battle.PCAbility
             base.SetState(battleManager);
             AsyncOperationHandle<UnitDataSO> unitList = Addressables.LoadAssetAsync<UnitDataSO>("ProjectileUnitSO");
             await unitList.Task;
-            pencil = unitList.Result.unitDatas.Find(x => x.unitData.unitType == UnitType.Pencil);
+            pencil = unitList.Result.unitDatas.Find(x => x.unitType == UnitType.Pencil);
         }
         public override void RunPencilCaseAbility()
         {

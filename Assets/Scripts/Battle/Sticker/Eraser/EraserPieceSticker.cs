@@ -37,7 +37,7 @@ namespace Battle.Sticker
             AsyncOperationHandle<UnitDataSO> handle = Addressables.LoadAssetAsync<UnitDataSO>("ProjectileUnitSO");
             await handle.Task;
             _unitDataSO = handle.Result;
-            _eraserPieceData = _unitDataSO.unitDatas.Find(x => x.unitData.unitType == UnitType.EraserPiece);
+            _eraserPieceData = _unitDataSO.unitDatas.Find(x => x.unitType == UnitType.EraserPiece);
         }
 
     }

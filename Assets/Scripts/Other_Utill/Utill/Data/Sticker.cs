@@ -69,7 +69,12 @@ namespace Utill.Data
 		{
 			if (cardData.cardType == CardType.SummonUnit)
 			{
-				if (cardData.unitData?.stickerData._stickerType != StickerType.None)
+				UnitData unitData = UnitDataManagerSO.FindUnitData(cardData.unitType);
+				if(unitData == null)
+				{
+					return false;
+				}
+				if (unitData.stickerData._stickerType != StickerType.None)
 				{
 					return true;
 				}

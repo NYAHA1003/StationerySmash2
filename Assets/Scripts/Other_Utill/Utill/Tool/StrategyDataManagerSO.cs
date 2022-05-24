@@ -10,10 +10,19 @@ using Battle.Starategy;
 
 namespace Utill.Tool
 {
-	public class StrategyDataManager
+	[CreateAssetMenu(fileName = "StrategyDataManagerSO", menuName = "Scriptable Object/StrategyDataManagerSO")]
+	public class StrategyDataManagerSO : ScriptableObject
 	{
 		private static List<StrategyData> _stdStarategyList = new List<StrategyData>(); //Strategy데이터 리스트
-		
+		public List<StrategyData> _inputStarategyList = new List<StrategyData>(); //Strategy데이터 리스트
+
+		/// <summary>
+		/// 기준 데이터에 입력 데이터를 넣는다
+		/// </summary>
+		public void Reset()
+		{
+			_stdStarategyList = _inputStarategyList;
+		}
 
 		/// <summary>
 		/// StrategyType에 맞는 Strategy데이터를 반환함

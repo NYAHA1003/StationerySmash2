@@ -22,7 +22,7 @@ public class UnitStateChanger
 
     public void ResetUnitStateChanger(CardData cardData, Transform transform, StageData stageData, UnitSprite unitSprite, Unit unit)
     {
-        SetStateManager(cardData.unitData.unitType, transform, unitSprite.SpriteRenderer.transform, unit); ;
+        SetStateManager(cardData.unitType, transform, unitSprite.SpriteRenderer.transform, unit); ;
         SetStageData(stageData);
         SetUnitState();
     }

@@ -55,7 +55,7 @@ namespace Battle
                 return false;
             }
             //유닛 타입이 같은지 체크
-            if (targetCard1.CardDataValue.unitData.unitType != targetCard2.CardDataValue.unitData.unitType)
+            if (targetCard1.CardDataValue.unitType != targetCard2.CardDataValue.unitType)
             {
                 return false;
             }

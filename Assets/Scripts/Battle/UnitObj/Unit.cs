@@ -81,7 +81,8 @@ public class Unit : MonoBehaviour
         OrderIndex = orderIndex;
 
         //유닛 데이터 받아오기
-        _unitData = dataBase.unitData;
+        UnitData unitData = UnitDataManagerSO.FindUnitData(dataBase.unitType);
+        _unitData = unitData;
 
         //스킨 데이터 받아오기
         _skinData = dataBase._skinData;
@@ -100,7 +101,7 @@ public class Unit : MonoBehaviour
 
         //물리판정 설정
         _collideData = new CollideData();
-        _collideData.originpoints = dataBase.unitData.colideData.originpoints;
+        _collideData.originpoints = unitData.colideData.originpoints;
 
         //딜레이시스템
         SetIsInvincibility(false);
