@@ -186,8 +186,8 @@ namespace Main.Card
 		public void SetStickerList(CardData cardData)
 		{
 			//선택한 유닛의 스킨 리스트 가져오기
-			List<StickerData> commonStickerList = _haveStickerDataSO._stickerDataLists.Find(x => x._onlyUnitType == UnitType.None)?._stickerDatas;
-			List<StickerData> onlyUnitStickerList = _haveStickerDataSO._stickerDataLists.Find(x => x._onlyUnitType == cardData.unitData.unitType)?._stickerDatas;
+			List<StickerData> commonStickerList = _haveStickerDataSO.GetStickerDataList().Find(x => x._onlyUnitType == UnitType.None)?._stickerDatas;
+			List<StickerData> onlyUnitStickerList = _haveStickerDataSO.GetStickerDataList().Find(x => x._onlyUnitType == cardData.unitData.unitType)?._stickerDatas;
 
 			int commonCount = commonStickerList?.Count ?? 0;
 			int onlyCount = onlyUnitStickerList?.Count ?? 0;
@@ -239,7 +239,7 @@ namespace Main.Card
 		/// <returns></returns>
 		public bool CheckAlreadyEquipSticker(StickerData stickerData)
 		{
-			if(_selectCardData.unitData.stickerData._stickerType == stickerData._stickerType)
+			if(_selectCardData.unitData.stickerData.StickerType == stickerData.StickerType)
 			{
 				return true;
 			}
@@ -263,11 +263,7 @@ namespace Main.Card
 		public void ReleaseSticker()
 		{
 			_selectCardData.unitData.stickerData = new StickerData();
-			_selectCardData.unitData.stickerData._stickerType = StickerType.None;
-			_selectCardData.unitData.stickerData._stickerLevel = 0;
-			_selectCardData.unitData.stickerData._skinType = SkinType.SpriteNone;
-			_selectCardData.unitData.stickerData._name = "";
-			_selectCardData.unitData.stickerData._decription = "";
+			_selectCardData.unitData.stickerData.ReleaseData();
 			_selectDeckCard.SetCard(_selectCardData);
 			_userDeckData.ChangeCardInInGameSaveData(_selectCardData);
 		}

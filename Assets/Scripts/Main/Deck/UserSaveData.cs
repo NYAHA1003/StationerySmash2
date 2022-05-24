@@ -87,7 +87,7 @@ namespace Main.Deck
             cardSaveData._skinType = cardData._skinData._skinType;
             cardSaveData._unitType = cardData.unitData.unitType;
             cardSaveData._strategicType = cardData.strategyData.starategyType;
-            cardSaveData.stickerType = cardData.unitData.stickerData._stickerType;
+            cardSaveData.stickerType = cardData.unitData.stickerData.StickerType;
             return cardSaveData;
 		}
     }

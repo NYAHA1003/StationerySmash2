@@ -8,7 +8,16 @@ namespace Utill.Data
 	[CreateAssetMenu(fileName = "StickerDataSO", menuName = "Scriptable Object/StickerDataSO")]
 	public class StickerDataSO : ScriptableObject
 	{
-		public List<StickerDataList> _stickerDataLists = new List<StickerDataList>();
+		private List<StickerDataList> _stickerDataLists = new List<StickerDataList>();
+		
+		/// <summary>
+		/// 스티커 리스트 반환
+		/// </summary>
+		/// <returns></returns>
+		public List<StickerDataList> GetStickerDataList()
+		{
+			return _stickerDataLists;
+		}
 	}
 
 	[System.Serializable]

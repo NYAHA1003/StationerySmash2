@@ -30,9 +30,9 @@ namespace Main.Card
         public void OnSetSkickerPanel(StickerData stickerData)
         {
             _stickerData = stickerData;
-            _image.sprite = SkinData.GetSkin(stickerData._skinType);
-            _nameText.text = stickerData._name;
-            _decriptionText.text = stickerData._decription;
+            _image.sprite = SkinData.GetSkin(stickerData.SkinType);
+            _nameText.text = stickerData.Name;
+            _decriptionText.text = stickerData.Description;
             gameObject.SetActive(true);
             SetEquipText();
         }

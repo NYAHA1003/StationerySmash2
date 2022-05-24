@@ -218,33 +218,35 @@ namespace Main.Deck
 		/// </summary>
 		public void SetStickerDataList()
 		{
-			_haveStickerDataSO._stickerDataLists.Clear();
+			_haveStickerDataSO.GetStickerDataList().Clear();
 
 			int count = _userSaveData._haveStickerList.Count;
-			int categoryCount = _standardStickerDataSO._stickerDataLists.Count;
+			int categoryCount = _standardStickerDataSO.GetStickerDataList().Count;
 
 			//빈 스티커 리스트 생성
 			for (int i = 0; i < categoryCount; i++)
 			{
 				//스티커 리스트
-				var _stickerList = _standardStickerDataSO._stickerDataLists[i];
+				var _stickerList = _standardStickerDataSO.GetStickerDataList()[i];
 				//빈 스티커 리스트 생성
-				_haveStickerDataSO._stickerDataLists.Add(_stickerList.CopyEmptryList());
+				_haveStickerDataSO.GetStickerDataList().Add(_stickerList.CopyEmptryList());
 			}
 
 			//가지고 있는 스티커 알맞는 스티커 데이터 찾기
 			for (int i = 0; i < categoryCount; i++)
 			{
 				//스티커 리스트
-				var _stickerList = _standardStickerDataSO._stickerDataLists[i];
+				var _stickerList = _standardStickerDataSO.GetStickerDataList()[i];
 
 				for (int j = 0; j < _userSaveData._haveStickerList.Count; j++)
 				{
 					StickerSaveData stickerSaveData = _userSaveData._haveStickerList[j];
-					StickerData addStickerData = _stickerList._stickerDatas.Find(x => x._stickerType == stickerSaveData._stickerType);
+					StickerData addStickerData = _stickerList._stickerDatas.Find(x => x.StickerType == stickerSaveData._stickerType);
 					if(addStickerData != null)
 					{
-						_haveStickerDataSO._stickerDataLists[i]._stickerDatas.Add(addStickerData.DeepCopyStickerData(stickerSaveData));
+						StickerData stickerData = addStickerData.DeepCopy();
+						stickerData.Level = stickerSaveData._level;
+						_haveStickerDataSO.GetStickerDataList()[i]._stickerDatas.Add(stickerData);
 					}
 				}
 			}

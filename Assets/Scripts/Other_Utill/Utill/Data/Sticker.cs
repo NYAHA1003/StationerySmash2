@@ -7,14 +7,46 @@ using Utill.Tool;
 namespace Utill.Data
 {
 	[System.Serializable]
-	public class StickerData
+	public class StickerData : IDeepCopy<StickerData>
 	{
-		public SkinType _skinType;
-		public string _name;
-		public string _decription;
-		public StickerType _stickerType;
-		public int _stickerLevel = 1;
+		//프로퍼티
+		public int Level
+		{
+			get
+			{
+				return _level;
+			}
+			set
+			{
+				_level = value;
+			}
+		}
+		public string Name => _name; //이름
+		public string Description => _decription; //설명
+		public SkinType SkinType => _skinType; //스킨타입
+		public StickerType StickerType => _stickerType; //스티커타입
+		public UnitType OnlyUnitType => _onlyUnitType; //제한되는 유닛 타입
 
+		//속성
+		private UnitType _onlyUnitType = UnitType.None;
+		private StickerType _stickerType = StickerType.None;
+		private SkinType _skinType = SkinType.SpriteNone;
+		private string _name = "";
+		private string _decription = "";
+		private int _level = 1;
+
+
+		/// <summary>
+		/// 데이터를 없앤다
+		/// </summary>
+		public void ReleaseData()
+		{
+			_stickerType = StickerType.None;
+			_level = 0;
+			_skinType = SkinType.SpriteNone;
+			_name = "";
+			_decription = "";
+		}
 
 		/// <summary>
 		/// 유닛 타입에 따른 스티커 위치 반환
@@ -28,7 +60,6 @@ namespace Utill.Data
 			}
 			return Vector2.zero;
 		}
-
 
 		/// <summary>
 		/// 스티커를 사용할 수 있는지 체크
@@ -46,7 +77,11 @@ namespace Utill.Data
 			return false;
 		}
 
-		public StickerData DeepCopyStickerData(StickerSaveData stickerSaveData)
+		/// <summary>
+		/// 스티커 데이터를 복제해서 반환한다
+		/// </summary>
+		/// <returns></returns>
+		public StickerData DeepCopy()
 		{
 			StickerData stickerData = new StickerData
 			{
@@ -54,12 +89,11 @@ namespace Utill.Data
 				_name = this._name,
 				_decription = this._decription,
 				_stickerType = this._stickerType,
-				_stickerLevel = stickerSaveData._level,
+				_level = this._level,
 			};
 
 			return stickerData;
 		}
-
 	}
 
 	[System.Serializable]
