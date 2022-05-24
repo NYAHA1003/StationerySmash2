@@ -7,6 +7,7 @@ using DG.Tweening;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
 using Main.Deck;
+using Utill.Tool;
 public class NameProfileComponent : MonoBehaviour, IUserData
 {
     [SerializeField]
@@ -17,16 +18,16 @@ public class NameProfileComponent : MonoBehaviour, IUserData
         SaveManager._instance.SaveData.AddObserver(this);
     }
 
-    public void Notify(ref UserSaveData userSaveData)
+    public void Notify()
     {
-        SetNameText(ref userSaveData);
+        SetNameText();
     }
 
     /// <summary>
     /// 이름 텍스트 값 수정
     /// </summary>
-    public void SetNameText(ref UserSaveData userSaveData)
+    public void SetNameText()
     {
-        _nameText.text = userSaveData._name;
+        _nameText.text = UserSaveManagerSO.UserSaveData._name;
     }
 }

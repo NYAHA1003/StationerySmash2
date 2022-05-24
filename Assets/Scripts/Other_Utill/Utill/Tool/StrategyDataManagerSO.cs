@@ -14,14 +14,13 @@ namespace Utill.Tool
 	public class StrategyDataManagerSO : ScriptableObject, IServerInitialize 
 	{
 		private static List<StrategyData> _stdStarategyList = new List<StrategyData>(); //Strategy데이터 리스트
-		public List<StrategyData> _inputStarategyList = new List<StrategyData>(); //Strategy데이터 리스트
 
 		/// <summary>
 		/// 기준 데이터에 입력 데이터를 넣는다
 		/// </summary>
 		public void ServerInitialize(ServerDataConnect serverDataConnect)
-		{ 
-			_stdStarategyList = _inputStarategyList;
+		{
+			serverDataConnect.GetStandardStrategyData(SetStrategyList);
 		}
 
 		/// <summary>
@@ -39,6 +38,15 @@ namespace Utill.Tool
 				return null;
 			}
 			return findData;
+		}
+
+		/// <summary>
+		/// 전략 기준데이터 설정
+		/// </summary>
+		/// <param name="strategyDatas"></param>
+		public static void SetStrategyList(List<StrategyData> strategyDatas)
+		{
+			_stdStarategyList = strategyDatas;
 		}
 
 	}

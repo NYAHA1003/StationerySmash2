@@ -20,7 +20,6 @@ namespace Utill.Tool
 		//속성
 		private static List<BadgeData> _stdBadgeDataList = new List<BadgeData>(); //Badge 기준 데이터 리스트
 		private static List<BadgeData> _haveBadgeDataList = new List<BadgeData>(); //Badge 가진 데이터 리스트
-		private static UserSaveData _userSaveData; //유저 데이터
 
 		/// <summary>
 		/// 서버 데이터를 받아 초기화
@@ -41,11 +40,11 @@ namespace Utill.Tool
 
 			_haveBadgeDataList.Clear();
 
-			int count = _userSaveData._haveBadgeSaveDatas.Count;
+			int count = UserSaveManagerSO.UserSaveData._haveBadgeSaveDatas.Count;
 
 			for (int i = 0; i < count; i++)
 			{
-				BadgeSaveData badgeSaveData = _userSaveData._haveBadgeSaveDatas[i];
+				BadgeSaveData badgeSaveData = UserSaveManagerSO.UserSaveData._haveBadgeSaveDatas[i];
 				_haveBadgeDataList.Add(_stdBadgeDataList.Find(x => x._badgeType == badgeSaveData._BadgeType).DeepCopyBadgeData(badgeSaveData));
 			}
 		}

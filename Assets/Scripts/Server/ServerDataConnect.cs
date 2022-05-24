@@ -8,14 +8,17 @@ using UnityEngine.UI;
 using Utill.Data;
 using Utill.Tool;
 using UnityEngine.Networking;
+using Main.Deck;
 
 public class ServerDataConnect : MonoBehaviour
 {
 	const string endPoint = "http://testsmash.kro.kr";
 	const string GetSticker = "/smash/GetSticker";
 	const string GetUnitData = "/smash/UnitData";
+	const string GetStrategyData = "/smash/StrategyData";
 	const string GetBadgeData = "/smash/BadgeData";
 	const string GetPencilCaseData = "/smash/PencilCaseData";
+	const string GetUserSaveData = "/smash/UserSaveData";
 
 	/// <summary>
 	/// 스티커 기준 데이터 가져오기
@@ -97,7 +100,7 @@ public class ServerDataConnect : MonoBehaviour
 	}
 
 	/// <summary>
-	/// 유닛 데이터 리스트 서버에서 가져오기
+	/// 뱃지 데이터 리스트 서버에서 가져오기
 	/// </summary>
 	/// <param name="action"></param>
 	/// <returns></returns>
@@ -121,6 +124,43 @@ public class ServerDataConnect : MonoBehaviour
 			}
 		}
 	}
+
+
+	/// <summary>
+	/// 전략 기준 데이터 가져오기
+	/// </summary>
+	/// <param name="action"></param>
+	public void GetStandardStrategyData(Action<List<StrategyData>> action)
+	{
+		StartCoroutine(IEGETStrategyData(action));
+	}
+
+	/// <summary>
+	/// 전략 데이터 리스트 서버에서 가져오기
+	/// </summary>
+	/// <param name="action"></param>
+	/// <returns></returns>
+	private IEnumerator IEGETStrategyData(Action<List<StrategyData>> action)
+	{
+		using (UnityWebRequest www = UnityWebRequest.Get(endPoint + GetBadgeData))
+		{
+			www.method = "GET";
+
+			yield return www.SendWebRequest();
+
+			if (www.isNetworkError || www.isHttpError)
+			{
+				Debug.Log(www.error);
+			}
+			else
+			{
+				Debug.Log(www.downloadHandler.text);
+				yield return www.downloadHandler.text;
+				action.Invoke(JsonUtility.FromJson<List<StrategyData>>(www.downloadHandler.text));
+			}
+		}
+	}
+
 
 	/// <summary>
 	/// 필통 기준 데이터 가져오기
@@ -153,6 +193,42 @@ public class ServerDataConnect : MonoBehaviour
 				Debug.Log(www.downloadHandler.text);
 				yield return www.downloadHandler.text;
 				action.Invoke(JsonUtility.FromJson<List<PencilCaseData>>(www.downloadHandler.text));
+			}
+		}
+	}
+
+
+	/// <summary>
+	/// 유저 세이브 데이터 가져오기
+	/// </summary>
+	/// <param name="action"></param>
+	public void GetStandardUserSaveData(Action<UserSaveData> action)
+	{
+		StartCoroutine(IEGETUserSaveData(action));
+	}
+
+	/// <summary>
+	/// 유저 세이브 데이터  서버에서 가져오기
+	/// </summary>
+	/// <param name="action"></param>
+	/// <returns></returns>
+	private IEnumerator IEGETUserSaveData(Action<UserSaveData> action)
+	{
+		using (UnityWebRequest www = UnityWebRequest.Get(endPoint + GetPencilCaseData))
+		{
+			www.method = "GET";
+
+			yield return www.SendWebRequest();
+
+			if (www.isNetworkError || www.isHttpError)
+			{
+				Debug.Log(www.error);
+			}
+			else
+			{
+				Debug.Log(www.downloadHandler.text);
+				yield return www.downloadHandler.text;
+				action.Invoke(JsonUtility.FromJson<UserSaveData>(www.downloadHandler.text));
 			}
 		}
 	}

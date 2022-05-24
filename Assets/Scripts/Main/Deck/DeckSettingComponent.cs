@@ -126,7 +126,7 @@ namespace Main.Deck
             _equipPCDeckScroll.SetActive(_isActivePC);
 
         }
-        public void Notify(ref UserSaveData userSaveData)
+        public void Notify()
         {
             UpdateHaveAndEquipDeck();
             UpdateHaveAndEquipPCDeck();

@@ -18,7 +18,6 @@ namespace Utill.Tool
 		private static List<PencilCaseData> _stdPencilCaseDataList = new List<PencilCaseData>();
 		private static List<PencilCaseData> _havePencilCaseDataList = new List<PencilCaseData>();
 		private static PencilCaseData _inGamePencilCaseData = null;
-		private static UserSaveData _userSaveData; //유저 데이터
 
 		public static List<PencilCaseData> HavePencilCaseDataList => _havePencilCaseDataList;
 
@@ -40,11 +39,11 @@ namespace Utill.Tool
 			_stdPencilCaseDataList = pencilCaseDatas;
 			_havePencilCaseDataList.Clear();
 
-			int count = _userSaveData._havePencilCaseList.Count;
+			int count = UserSaveManagerSO.UserSaveData._havePencilCaseList.Count;
 			
 			for (int i = 0; i < count; i++)
 			{
-				PencilCaseType pcType = _userSaveData._havePencilCaseList[i];
+				PencilCaseType pcType = UserSaveManagerSO.UserSaveData._havePencilCaseList[i];
 
 				PencilCaseData pcData = _stdPencilCaseDataList.Find(x => x._pencilCaseType == pcType);
 
@@ -62,11 +61,11 @@ namespace Utill.Tool
 		{
 			_havePencilCaseDataList.Clear();
 
-			int count = _userSaveData._havePencilCaseList.Count;
+			int count = UserSaveManagerSO.UserSaveData._havePencilCaseList.Count;
 
 			for (int i = 0; i < count; i++)
 			{
-				PencilCaseType pcType = _userSaveData._havePencilCaseList[i];
+				PencilCaseType pcType = UserSaveManagerSO.UserSaveData._havePencilCaseList[i];
 
 				PencilCaseData pcData = _stdPencilCaseDataList.Find(x => x._pencilCaseType == pcType);
 

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using Main.Deck;
+using Utill.Tool;
 public class MoneyComponent : MonoBehaviour, IUserData
 {
     [SerializeField]
@@ -21,9 +22,9 @@ public class MoneyComponent : MonoBehaviour, IUserData
         SetMoneyText();
     }
 
-    public void Notify(ref UserSaveData userSaveData)
+    public void Notify()
     {
-        _currentMoney = userSaveData._money;
+        _currentMoney = UserSaveManagerSO.UserSaveData._money;
 
         SetMoneyText();
         StartCoroutine(UpCountingMoney());

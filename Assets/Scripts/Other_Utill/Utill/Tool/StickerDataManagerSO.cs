@@ -17,7 +17,6 @@ namespace Utill.Tool
 	{
 		private static List<StickerData> _stdStickerDataList = new List<StickerData>(); //Unit데이터 리스트
 		private static List<StickerData> _haveStickerDataList = new List<StickerData>(); //Unit데이터 리스트
-		private static UserSaveData _userSaveData; //유저 데이터
 
 		/// <summary>
 		/// 기준 데이터에 입력 데이터를 넣는다
@@ -83,12 +82,12 @@ namespace Utill.Tool
 			_stdStickerDataList = stickerDatas;
 			_haveStickerDataList.Clear();
 
-			int count = _userSaveData._haveStickerList.Count;
+			int count = UserSaveManagerSO.UserSaveData._haveStickerList.Count;
 
 			//가지고 있는 스티커 알맞는 스티커 데이터 찾기
 			for (int i = 0; i < count; i++)
 			{
-				StickerSaveData stickerSaveData = _userSaveData._haveStickerList[i];
+				StickerSaveData stickerSaveData = UserSaveManagerSO.UserSaveData._haveStickerList[i];
 				StickerData addStickerData = _stdStickerDataList.Find(x => x.StickerType == stickerSaveData._stickerType);
 				if (addStickerData != null)
 				{

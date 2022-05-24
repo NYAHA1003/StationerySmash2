@@ -39,7 +39,7 @@ namespace Main.Deck
         {
             for (int i = 0; i < _userDataObservers.Count; i++)
             {
-                _userDataObservers[i].Notify(ref userSaveData);
+                _userDataObservers[i].Notify();
             }
         }
 

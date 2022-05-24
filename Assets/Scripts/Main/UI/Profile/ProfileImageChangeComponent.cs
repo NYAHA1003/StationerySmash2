@@ -8,6 +8,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
 using Main.Deck;
 using Utill.Data;
+using Utill.Tool;
 
 public class ProfileImageChangeComponent : MonoBehaviour, IUserData
 {
@@ -38,10 +39,10 @@ public class ProfileImageChangeComponent : MonoBehaviour, IUserData
 		SaveManager._instance.SaveJsonData();
 	}
 
-	public void Notify(ref UserSaveData userSaveData)
+	public void Notify()
 	{
 		//현재 가진 프로필 이미지 갯수
-		int count = userSaveData._haveProfileList.Count;
+		int count = UserSaveManagerSO.UserSaveData._haveProfileList.Count;
 
 		//가진 갯수가 제작했던 프로필 이미지 버튼보다 더 많거나 다르다면 스킨 버튼을 제작한다 
 		if (count != _currentlyCount || count > _currentlyCount)

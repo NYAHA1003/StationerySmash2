@@ -30,19 +30,16 @@ namespace Main.Deck
 		[SerializeField]
 		private WarrningComponent _warrningComponent; //경고 컴포넌트
 
-		private UserSaveData _userSaveData; //유저 데이터
-
 		private void Awake()
 		{
 			SaveManager._instance.SaveData.AddObserver(this);
-			_userSaveData ??= SaveManager._instance.SaveData.userSaveData;
 
 			SetCardData();
 			SetPencilCaseData();
-			ChangePreset(_userSaveData._setPrestIndex);
+			ChangePreset(UserSaveManagerSO.UserSaveData._setPrestIndex);
 		}
 
-		public void Notify(ref UserSaveData userSaveData)
+		public void Notify()
 		{
 			SetCardData();
 			SetPencilCaseData();
@@ -66,7 +63,7 @@ namespace Main.Deck
 		public void SetPencilCaseData()
 		{
 			PencilCaseDataManagerSO.ResetPencilCaseList();
-			PencilCaseDataManagerSO.SetInGamePencilCase(PencilCaseDataManagerSO.HavePencilCaseDataList.Find(x => x._pencilCaseType == _userSaveData._currentPencilCaseType));
+			PencilCaseDataManagerSO.SetInGamePencilCase(PencilCaseDataManagerSO.HavePencilCaseDataList.Find(x => x._pencilCaseType == UserSaveManagerSO.UserSaveData._currentPencilCaseType));
 		}
 
 
@@ -90,8 +87,8 @@ namespace Main.Deck
 					break;
 			}
 
-			_userSaveData._ingameSaveDatas = presetSaveDataSO._ingameSaveDatas;
-			_userSaveData._currentPencilCaseType = presetSaveDataSO._pencilCaseData._pencilCaseType;
+			UserSaveManagerSO.UserSaveData._ingameSaveDatas = presetSaveDataSO._ingameSaveDatas;
+			UserSaveManagerSO.UserSaveData._currentPencilCaseType = presetSaveDataSO._pencilCaseData._pencilCaseType;
 
 			PencilCaseData pencilCaseData = PencilCaseDataManagerSO.HavePencilCaseDataList.Find(x => x._pencilCaseType == presetSaveDataSO._pencilCaseData._pencilCaseType);
 			PencilCaseData changePCData = null;
@@ -104,7 +101,7 @@ namespace Main.Deck
 			PencilCaseDataManagerSO.SetInGamePencilCase(changePCData);
 
 
-			_userSaveData._setPrestIndex = index;
+			UserSaveManagerSO.UserSaveData._setPrestIndex = index;
 		}
 
 		/// <summary>
@@ -113,10 +110,10 @@ namespace Main.Deck
 		public void SetHaveDeckCardList()
 		{
 			_haveDeckListSO.cardDatas.Clear();
-			int count = _userSaveData._haveCardSaveDatas.Count;
+			int count = UserSaveManagerSO.UserSaveData._haveCardSaveDatas.Count;
 			for (int i = 0; i < count; i++)
 			{
-				CardSaveData saveDataobj = _userSaveData._haveCardSaveDatas[i];
+				CardSaveData saveDataobj = UserSaveManagerSO.UserSaveData._haveCardSaveDatas[i];
 				//같은 카드 타입 찾기
 				CardData cardDataobj = _standardcardDeckSO.cardDatas.Find(x => x._cardNamingType == saveDataobj._cardNamingType);
 
@@ -156,10 +153,10 @@ namespace Main.Deck
 		public void SetIngameCardList()
 		{
 			_inGameDeckListSO.cardDatas.Clear();
-			int count = _userSaveData._ingameSaveDatas.Count;
+			int count = UserSaveManagerSO.UserSaveData._ingameSaveDatas.Count;
 			for (int i = 0; i < count; i++)
 			{
-				CardSaveData saveDataobj = _userSaveData._ingameSaveDatas[i];
+				CardSaveData saveDataobj = UserSaveManagerSO.UserSaveData._ingameSaveDatas[i];
 				//세가지 타입이 세이브데이터와 모두 같은 기준 데이터 찾기
 				CardData cardDataobj = _haveDeckListSO.cardDatas.Find(x => x._cardNamingType == saveDataobj._cardNamingType);
 
@@ -179,7 +176,7 @@ namespace Main.Deck
 			if (CheckCanAddCard())
 			{
 				_inGameDeckListSO.cardDatas.Add(cardData);
-				_userSaveData._ingameSaveDatas.Add(CardSaveData.CopyDataToCardData(cardData));
+				UserSaveManagerSO.UserSaveData._ingameSaveDatas.Add(CardSaveData.CopyDataToCardData(cardData));
 			}
 		}
 
@@ -189,7 +186,7 @@ namespace Main.Deck
 		/// <param name="cardData"></param>
 		public void ChangeCardInInGameSaveData(CardData cardData)
 		{
-			CardSaveData cardSaveData = _userSaveData._ingameSaveDatas.Find(x => x._cardNamingType == cardData._cardNamingType);
+			CardSaveData cardSaveData = UserSaveManagerSO.UserSaveData._ingameSaveDatas.Find(x => x._cardNamingType == cardData._cardNamingType);
 			if(cardSaveData == null)
 			{
 				return;
@@ -211,7 +208,7 @@ namespace Main.Deck
 		public void RemoveCardInDeck(CardNamingType cardNamingType)
 		{
 			_inGameDeckListSO.cardDatas.RemoveAt(_inGameDeckListSO.cardDatas.FindIndex(x => x._cardNamingType == cardNamingType));
-			_userSaveData._ingameSaveDatas.RemoveAt(_userSaveData._ingameSaveDatas.FindIndex(x => x._cardNamingType == cardNamingType));
+			UserSaveManagerSO.UserSaveData._ingameSaveDatas.RemoveAt(UserSaveManagerSO.UserSaveData._ingameSaveDatas.FindIndex(x => x._cardNamingType == cardNamingType));
 		}
 
 		/// <summary>

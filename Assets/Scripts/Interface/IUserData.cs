@@ -5,5 +5,5 @@ using Utill;
 using Main.Deck;
 public interface IUserData 
 {
-    public void Notify(ref UserSaveData userSaveData);
+    public void Notify();
 }

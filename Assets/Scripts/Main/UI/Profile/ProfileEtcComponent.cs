@@ -8,6 +8,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
 using Main.Deck;
 using Utill.Data;
+using Utill.Tool;
 
 public class ProfileEtcComponent : MonoBehaviour, IUserData
 {
@@ -25,20 +26,20 @@ public class ProfileEtcComponent : MonoBehaviour, IUserData
 		SaveManager._instance.SaveData.AddObserver(this);
 	}
 
-	public void Notify(ref UserSaveData userSaveData)
+	public void Notify()
 	{
-		SetEtcData(ref userSaveData);
+		SetEtcData();
 	}
 
 	/// <summary>
 	/// 기타 정보들 수정
 	/// </summary>
-	private void SetEtcData(ref UserSaveData userSaveData)
+	private void SetEtcData()
 	{
-		_lastPlayStageText.text = $"스토리 {System.Enum.GetName(typeof(StageType), userSaveData._lastPlayStage)}";
-		_winCountText.text = $"승리 {userSaveData._winCount}";
-		_winningStreakCountText.text = $"연승{userSaveData._winningStreakCount}";
-		_loseCountText.text = $"패배 {userSaveData._loseCount}";
+		_lastPlayStageText.text = $"스토리 {System.Enum.GetName(typeof(StageType), UserSaveManagerSO.UserSaveData._lastPlayStage)}";
+		_winCountText.text = $"승리 {UserSaveManagerSO.UserSaveData._winCount}";
+		_winningStreakCountText.text = $"연승{UserSaveManagerSO.UserSaveData._winningStreakCount}";
+		_loseCountText.text = $"패배 {UserSaveManagerSO.UserSaveData._loseCount}";
 	}
 
 }
