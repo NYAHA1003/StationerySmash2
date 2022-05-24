@@ -12,7 +12,7 @@ namespace Battle.Starategy
     {
         protected BattleManager _battleManager;
         protected CardObj _card;
-        protected StarategyData _starategyData;
+        protected StrategyData _starategyData;
         public void SetBattleManager(BattleManager battleManager)
         {
             this._battleManager = battleManager;

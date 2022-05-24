@@ -60,7 +60,7 @@ namespace Battle
                 return false;
             }
             //전략 타입이 같은지 체크
-            if (targetCard1.CardDataValue.strategyData.starategyType != targetCard2.CardDataValue.strategyData.starategyType)
+            if (targetCard1.CardDataValue.starategyType != targetCard2.CardDataValue.starategyType)
             {
                 return false;
             }

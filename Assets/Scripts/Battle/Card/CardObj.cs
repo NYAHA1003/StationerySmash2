@@ -96,8 +96,9 @@ public class CardObj : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             case CardType.Execute:
             case CardType.SummonTrap:
             case CardType.Installation:
-                _cardData.strategyData.starategy_State.SetBattleManager(_battleManager);
-                _cardData.strategyData.starategy_State.SetCard(this);
+                StrategyData strategyData = StrategyDataManager.FindStrategyData(_cardData.starategyType);
+                strategyData.starategy_State.SetBattleManager(_battleManager);
+                strategyData.starategy_State.SetCard(this);
                 break;
             case CardType.SummonUnit:
                 break;

@@ -73,7 +73,7 @@ namespace Main.Deck
         public CardType _cardType = CardType.Execute;
         public CardNamingType _cardNamingType = CardNamingType.None;
         public SkinType _skinType = SkinType.SpriteNone;
-        public StarategyType _strategicType = StarategyType.None;
+        public StrategyType _strategicType = StrategyType.None;
         public UnitType _unitType = UnitType.None;
         public StickerType stickerType = StickerType.None;
 
@@ -86,7 +86,7 @@ namespace Main.Deck
             cardSaveData._cardNamingType = cardData._cardNamingType;
             cardSaveData._skinType = cardData._skinData._skinType;
             cardSaveData._unitType = cardData.unitData.unitType;
-            cardSaveData._strategicType = cardData.strategyData.starategyType;
+            cardSaveData._strategicType = cardData.starategyType;
             cardSaveData.stickerType = cardData.unitData.stickerData.StickerType;
             return cardSaveData;
 		}
