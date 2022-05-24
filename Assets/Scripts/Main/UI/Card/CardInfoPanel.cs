@@ -53,8 +53,6 @@ namespace Main.Card
 		private GameObject _sktickerButtonPrefeb = null;
 		[SerializeField]
 		private Transform _stickerButtonParent = null;
-		[SerializeField]
-		private StickerDataSO _haveStickerDataSO = null;
 
 		//스킨창 
 		[SerializeField]
@@ -186,9 +184,9 @@ namespace Main.Card
 		/// <param name="cardData"></param>
 		public void SetStickerList(CardData cardData)
 		{
-			//선택한 유닛의 스킨 리스트 가져오기
-			List<StickerData> commonStickerList = _haveStickerDataSO.GetStickerDataList().Find(x => x._onlyUnitType == UnitType.None)?._stickerDatas;
-			List<StickerData> onlyUnitStickerList = _haveStickerDataSO.GetStickerDataList().Find(x => x._onlyUnitType == cardData.unitType)?._stickerDatas;
+			//선택한 유닛의 스티커 리스트 가져오기
+			var commonStickerList = StickerDataManagerSO.FindStickerDataNoneTypeList();
+			var onlyUnitStickerList = StickerDataManagerSO.FindStickerDataOnlyUnitTypeList(cardData.unitType);
 
 			int commonCount = commonStickerList?.Count ?? 0;
 			int onlyCount = onlyUnitStickerList?.Count ?? 0;
@@ -241,7 +239,7 @@ namespace Main.Card
 		public bool CheckAlreadyEquipSticker(StickerData stickerData)
 		{
 			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData.unitType);
-			if(unitData.stickerData.StickerType == stickerData.StickerType)
+			if(unitData.stickerType == stickerData.StickerType)
 			{
 				return true;
 			}
@@ -255,7 +253,7 @@ namespace Main.Card
 		public void SetSticker(StickerData stickerData)
 		{
 			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData.unitType);
-			unitData.stickerData = stickerData;
+			unitData.stickerType = stickerData.StickerType;
 			_selectDeckCard.SetCard(_selectCardData);
 			_userDeckData.ChangeCardInInGameSaveData(_selectCardData);
 		}
@@ -266,8 +264,7 @@ namespace Main.Card
 		public void ReleaseSticker()
 		{
 			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData.unitType);
-			unitData.stickerData = new StickerData();
-			unitData.stickerData.ReleaseData();
+			unitData.stickerType = StickerType.None;
 			_selectDeckCard.SetCard(_selectCardData);
 			_userDeckData.ChangeCardInInGameSaveData(_selectCardData);
 		}

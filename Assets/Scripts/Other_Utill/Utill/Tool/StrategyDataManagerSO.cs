@@ -11,7 +11,7 @@ using Battle.Starategy;
 namespace Utill.Tool
 {
 	[CreateAssetMenu(fileName = "StrategyDataManagerSO", menuName = "Scriptable Object/StrategyDataManagerSO")]
-	public class StrategyDataManagerSO : ScriptableObject, Iinitialize 
+	public class StrategyDataManagerSO : ScriptableObject, IServerInitialize 
 	{
 		private static List<StrategyData> _stdStarategyList = new List<StrategyData>(); //Strategy데이터 리스트
 		public List<StrategyData> _inputStarategyList = new List<StrategyData>(); //Strategy데이터 리스트
@@ -19,7 +19,7 @@ namespace Utill.Tool
 		/// <summary>
 		/// 기준 데이터에 입력 데이터를 넣는다
 		/// </summary>
-		public void Initialize()
+		public void ServerInitialize(ServerDataConnect serverDataConnect)
 		{ 
 			_stdStarategyList = _inputStarategyList;
 		}

@@ -366,7 +366,8 @@ public class CardObj : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if(StickerData.CheckCanSticker(_cardData))
         {
             UnitData unitData = UnitDataManagerSO.FindUnitData(_cardData.unitType);
-            _stickerImage.sprite = SkinData.GetSkin(unitData.stickerData.SkinType);
+            StickerData stickerData = StickerDataManagerSO.FindStickerData(unitData.stickerType);
+            _stickerImage.sprite = SkinData.GetSkin(stickerData.SkinType);
             _stickerRect.anchoredPosition = StickerData.ReturnStickerPos(_cardData.unitType);
             _stickerRect.gameObject.SetActive(true);
         }

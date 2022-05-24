@@ -8,13 +8,15 @@ namespace Utill.Tool
     {
 		[SerializeField]
 		private List<Object> _iinitializes;
+		[SerializeField]
+		private ServerDataConnect _serverDataConnect;
 
 		private void Awake()
 		{
 			int count = _iinitializes.Count;
 			for(int i = 0; i < count; i++)
 			{
-				(_iinitializes[i] as Iinitialize).Initialize();
+				(_iinitializes[i] as IServerInitialize).ServerInitialize(_serverDataConnect);
 			}
 		}
 	}

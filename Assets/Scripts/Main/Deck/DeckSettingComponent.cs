@@ -199,11 +199,11 @@ namespace Main.Deck
         public void SetHavePCDeck()
         {
             _userDeckData.SetPencilCaseData();
-            for (int i = 0; i < _userDeckData._havePCDataSO._pencilCaseDataList.Count; i++)
+            for (int i = 0; i < PencilCaseDataManagerSO.HavePencilCaseDataList.Count; i++)
             {
                 GameObject cardObj = PoolHavePCCard();
                 Button cardButton = cardObj.GetComponent<Button>();
-                PencilCaseData pencilCaseData = _userDeckData._havePCDataSO._pencilCaseDataList[i];
+                PencilCaseData pencilCaseData = PencilCaseDataManagerSO.HavePencilCaseDataList[i];
                 cardObj.GetComponent<PencilCaseCard>().SetPencilCaseData(pencilCaseData);
                 cardButton.onClick.RemoveAllListeners();
                 cardButton.onClick.AddListener(() =>

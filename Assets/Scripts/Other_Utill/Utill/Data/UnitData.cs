@@ -20,7 +20,7 @@ public class UnitData
     public float attackSpeed;
     public float range;
     public CollideData colideData;
-    public StickerData stickerData;
+    public StickerType stickerType;
     public AttackType attackType;
     public UnitType unitType;
     public float[] unitablityData;

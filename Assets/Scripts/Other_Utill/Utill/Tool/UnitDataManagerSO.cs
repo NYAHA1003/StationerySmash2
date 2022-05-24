@@ -11,17 +11,16 @@ using Battle.Starategy;
 namespace Utill.Tool
 {
 	[CreateAssetMenu(fileName = "UnitDataManagerSO", menuName = "Scriptable Object/UnitDataManagerSO")]
-	public class UnitDataManagerSO : ScriptableObject, Iinitialize
+	public class UnitDataManagerSO : ScriptableObject, IServerInitialize
 	{
 		private static List<UnitData> _stdUnitDataList = new List<UnitData>(); //Unit데이터 리스트
-		public List<UnitData> _inputUnitDataList = new List<UnitData>(); //Unit데이터 리스트
 
 		/// <summary>
 		/// 기준 데이터에 입력 데이터를 넣는다
 		/// </summary>
-		public void Initialize()
+		public void ServerInitialize(ServerDataConnect serverDataConnect)
 		{
-			_stdUnitDataList = _inputUnitDataList;
+			serverDataConnect.GetStandardUnitData(SetUnitDataList);
 		}
 
 		/// <summary>
@@ -39,6 +38,15 @@ namespace Utill.Tool
 				return null;
 			}
 			return findData;
+		}
+
+		/// <summary>
+		/// 유닛 데이터 리스트 설정
+		/// </summary>
+		/// <param name="unitDatas"></param>
+		public void SetUnitDataList(List<UnitData> unitDatas)
+		{
+			_stdUnitDataList = unitDatas;
 		}
 	}
 }
