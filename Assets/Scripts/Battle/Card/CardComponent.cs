@@ -13,15 +13,13 @@ namespace Battle
     public class CardComponent : BattleComponent, IWinLose
     {
         //프로퍼티
-        public List<CardMove> CardList => _cardList;
+        public List<CardObj> CardList => _cardList;
 
         //속성
-        public bool IsSelectCard { get; private set; } = false; //카드를 클릭한 상태인지
+        public bool IsAlwaysSpawn => _isAlwaysSpawn;
+        public bool IsDontUse => _isDontUse;
 
         //기본 변수
-        private float _summonRange = 0.0f;
-        private float _summonRangeDelay = 30f;
-        private bool _isFusion = false;
         private Coroutine _delayCoroutine = null;
         private bool _isDontUse = false;
 
@@ -53,30 +51,34 @@ namespace Battle
 
         //참조 변수
         private StageData _stageData = null;
-        private CardMove _selectCard = null;
         private DeckData _deckData = new DeckData();
-        private List<CardMove> _cardList = new List<CardMove>();
+        private List<CardObj> _cardList = new List<CardObj>();
         private UnitComponent _commandUnit = null;
         private CostComponent _commandCost = null;
         private WinLoseComponent _commandWinLose = null;
-        private CameraComponent _commandCamera = null;
         private MonoBehaviour _managerBase = null;
-        private CardDrawComponent _cardDrawComponent = null;
+        private CardDrowComponent _cardDrawComponent = null;
+        private CardRangeComponent _cardRangeComponent = null;
+        private CardSelectComponent _cardSelectComponent = null;
+        private CardFusionComponent _cardFusionComponent = null;
+        private CardSortComponent _cardSortComponent = null;
 
         /// <summary>
         /// 초기화
         /// </summary>
         public void SetInitialization(MonoBehaviour managerBase, WinLoseComponent commandWinLose, CameraComponent commandCamera, UnitComponent commandUnit, CostComponent commandCost, ref System.Action updateAction, StageData stageData, int maxCard)
         {
-            _cardDrawComponent = new CardDrawComponent();
+            _cardDrawComponent = new CardDrowComponent();
+            _cardRangeComponent = new CardRangeComponent();
+            _cardSelectComponent = new CardSelectComponent();
+            _cardFusionComponent = new CardFusionComponent();
+            _cardSortComponent = new CardSortComponent();
 
             //변수들 설정
             this._managerBase = managerBase;
             this._stageData = stageData;
-            this._summonRange = -_stageData.max_Range + _stageData.max_Range / 4;
             this._commandUnit = commandUnit;
             this._commandCost = commandCost;
-            this._commandCamera = commandCamera;
             this._commandWinLose = commandWinLose;
 
             //관찰자 등록한다
@@ -84,13 +86,14 @@ namespace Battle
 
             SetMaxCard(maxCard);
 
-            //유닛 소환 범위 그리기
-            DrawSummonRange();
-
             //덱에 카드정보들 전달
             SetDeckCard();
 
-            _cardDrawComponent.SetInitialization(_deckData, _cardList, _cardMovePrefeb, _cardPoolManager, _cardCanvas, _cardSpawnPosition);
+            _cardDrawComponent.SetInitialization(this, _deckData, _cardList, _cardMovePrefeb, _cardPoolManager, _cardCanvas, _cardSpawnPosition);
+            _cardRangeComponent.SetInitialization(this, _cardSelectComponent, _commandCost, _summonRangeImage, _summonArrow, _stageData, _unitAfterImage, _afterImageSpriteRenderer);
+            _cardSelectComponent.SetInitialization(this, _commandUnit, _commandCost);
+            _cardFusionComponent.SetInitialization(this, _managerBase);
+            _cardSortComponent.SetInitialization(this, _cardSelectComponent, _cardLeftPosition, _cardRightPosition);
 
             //업데이트할 함수들 전달
             updateAction += UpdateUnitAfterImage;
@@ -109,14 +112,13 @@ namespace Battle
             //카드를 더 이상 사용할 수 없게 한다
             _isDontUse = true;
 
-            if (_selectCard != null)
-            {
-                _selectCard.DontUseCard();
-                _selectCard = null;
-            }
+            _cardSelectComponent.DontUseSelectedCard();
         }
 
-        public void CheckCard()
+        /// <summary>
+        /// 튜토리얼 체크
+        /// </summary>
+        public void CheckTutorialCard()
         {
             if(_cardDrawComponent.CheckMaxCard())
             {
@@ -127,25 +129,13 @@ namespace Battle
         /// <summary>
         /// 카드 한 장을 뽑는다
         /// </summary>
-        public void DrawOneCard()
+        public void AddOneCard()
 		{
             //카드 뽑기
             _cardDrawComponent.AddOneCard();
 
-            //카드를 정렬하고 융합 딜레이 설정
-            SortCard();
-            SetDelayFusion();
-
             //카드 뽑을 때 연계 효과들 실행
-            RunAction(DrawOneCard);
-        }
-
-        /// <summary>
-        /// 마지막 카드를 지운다
-        /// </summary>
-        public void SubtractLastCard()
-        {
-            SubtractCardAt(_cardDrawComponent.ReturnCurrentCard() - 1);
+            RunAction(AddOneCard);
         }
 
         /// <summary>
@@ -166,111 +156,6 @@ namespace Battle
         }
 
         /// <summary>
-        /// 카드를 선택함
-        /// </summary>
-        /// <param name="card"></param>
-        public void SelectCard(CardMove card)
-        {
-            //카드를 사용할 수 없다
-            if (_isDontUse)
-            {
-                return;
-            }
-
-            SetSummonRangeLine(true);
-            _summonRangeImage.gameObject.SetActive(true);
-
-            //해당 카드를 선택된 카드에 넣음
-            _selectCard = card;
-
-            //카드 크기를 크게 만들고 각도를 0으로 돌림
-            _selectCard.transform.DOKill();
-            _selectCard.SetCardScale(Vector3.one * 1.3f, 0.3f);
-            _selectCard.SetCardRot(Quaternion.identity, 0.3f);
-            
-            //카드 선택 활성화
-            IsSelectCard = true;
-
-            //카드를 융합시킴
-            SetDelayFusion();
-        }
-
-        /// <summary>
-        /// 카드 선택을 취소함
-        /// </summary>
-        /// <param name="card"></param>
-        public void SetUnSelectCard(CardMove card)
-        {
-            SetSummonRangeLine(false);
-
-            //융합중이라면 카드 선택 취소를 취소한다
-            if (card.IsFusion && card != _selectCard)
-            {
-                return;
-            }
-            
-            //카드 크기를 돌려놓음
-            card.SetCardScale(Vector3.one * 1, 0.3f);
-
-            //선택한 카드를 Null로 돌려놓고 카드 선택을 False로 처리함
-            _selectCard = null;
-            IsSelectCard = false;
-
-            //카드를 융합시킴
-            SetDelayFusion();
-        }
-
-        /// <summary>
-        /// 카드를 사용한다
-        /// </summary>
-        /// <param name="card"></param>
-        public void SetUseCard(CardMove card)
-        {
-            //소환할 수 있는지 체크 및 소환 범위 그리기 없앰
-            SetSummonRangeLine(false);
-
-            //카드를 사용할 수 있는지 체크함
-            if (!CheckPossibleSummon() || _isDontUse)
-            {
-                card.RunOriginPRS();
-                _commandCamera.SetCameraIsMove(true);
-                _selectCard = null;
-                IsSelectCard = false;
-                return;
-            }
-            //선택한 카드를 Null로 돌림
-            _selectCard = null;
-
-            _commandCost.SubtractCost(card.CardCost);
-            SubtractCardAt(_cardList.FindIndex(x => x.Id == card.Id));
-            IsSelectCard = false;
-
-            //카드 사용
-            Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            if (_commandUnit.eTeam == TeamType.MyTeam)
-            {
-                mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, -_stageData.max_Range, _summonRange);
-            }
-
-
-            switch (card.CardDataValue.cardType)
-            {
-                case CardType.SummonUnit:
-                    _commandUnit.SummonUnit(card.CardDataValue, new Vector3(mouse_Pos.x, 0, 0), card.Grade);
-                    break;
-                default:
-                case CardType.Execute:
-                case CardType.SummonTrap:
-                case CardType.Installation:
-                    card.CardDataValue.strategyData.starategy_State.Run_Card(_commandUnit.eTeam);
-                    break;
-            }
-
-            //카드 융합
-            SetDelayFusion();
-        }
-
-        /// <summary>
         /// 최대 카드 설정
         /// </summary>
         /// <param name="max">최대 수</param>
@@ -286,220 +171,143 @@ namespace Battle
         {
             _cardDrawComponent.IncreaseMaxCard(num);
         }
+        //카드 선택 관련
+        /// <summary>
+        /// 카드를 선택함
+        /// </summary>
+        /// <param name="card"></param>
+        public void SelectCard(CardObj card)
+        {
+            //카드를 사용할 수 없다
+            if (_isDontUse)
+            {
+                return;
+            }
+
+            //해당 카드를 선택함
+            _cardSelectComponent.SelectCard(card);
+        }
+
+        /// <summary>
+        /// 카드 선택을 취소함
+        /// </summary>
+        /// <param name="card"></param>
+        public void SetUnSelectCard(CardObj card)
+        {
+            _cardSelectComponent.SetUnSelectCard(card);
+        }
+
+        /// <summary>
+        /// 카드를 사용한다
+        /// </summary>
+        /// <param name="card"></param>
+        public void SetUseCard(CardObj card)
+        {
+            //소환할 수 있는지 체크 및 소환 범위 그리기 없앰
+            SetSummonRangeLine(false);
+
+            //카드를 사용한다
+            if(_cardSelectComponent.SetUseCard(card))
+			{
+                //카드 융합
+                SetDelayFusion();
+			}
+
+        }
 
         /// <summary>
         /// 융합에 딜레이를 설정, 리셋하는 함수
         /// </summary>
-        private void SetDelayFusion()
+        public void SetDelayFusion()
         {
-            //카드 융합 딜레이 초기화
-            if (_delayCoroutine != null)
-            {
-                _managerBase.StopCoroutine(_delayCoroutine);
-            }
-            _delayCoroutine = _managerBase.StartCoroutine(DelayFusion());
+            _cardFusionComponent.SetFusionAndDelay();
         }
 
         /// <summary>
-        /// 카드 융합 딜레이를 주는 코루틴 함수
+        /// 카드를 찾아서 리스트에서 제거한다
+        /// </summary>
+        /// <param name="cardMove"></param>
+        public void SubtractCardFind(CardObj cardMove)
+        {
+            SubtractCardAt(_cardList.FindIndex(x => x.Id == cardMove.Id));
+        }
+
+        /// <summary>
+        /// 지정한 인덱스의 카드를 지운다
+        /// </summary>
+        public void SubtractCardAt(int index)
+        {
+            if (_cardDrawComponent.ReturnCurrentCard() == 0)
+            {
+                return;
+            }
+
+            //카드 삭제
+            _cardDrawComponent.IncreaseCurrentCard(-1);
+            _cardList[index].transform.SetParent(_cardPoolManager);
+            _cardList[index].gameObject.SetActive(false);
+            _cardList.RemoveAt(index);
+
+            //삭제하고 카드를 정렬
+            _cardSortComponent.SortCard();
+        }
+
+        /// <summary>
+        /// 소환 범위 그리기를 키거나 끄기
+        /// </summary>
+        /// <param name="isActive"></param>
+        public void SetSummonRangeLine(bool isActive)
+        {
+            _cardRangeComponent.SetSummonRangeLine(isActive);
+        }
+
+        /// <summary>
+        /// 카드 소환 최대 범위 반환
+        /// </summary>
+        public float ReturnMaxRange()
+		{
+            return _cardRangeComponent.MaxSummonRange;
+        }
+
+        /// <summary>
+        /// 카드 소환 최소 범위 반환
+        /// </summary>
+        public float ReturnMinRange()
+        {
+            return -_stageData.max_Range;
+        }
+
+        /// <summary>
+        /// 카드를 정렬한다
+        /// </summary>
+        public void SortCard()
+        {
+            _cardSortComponent.SortCard();
+        }
+
+        /// <summary>
+        /// 카드가 선택되었는지 반환한다
         /// </summary>
         /// <returns></returns>
-        private IEnumerator DelayFusion()
-        {
-            yield return new WaitForSeconds(0.4f);
-            FusionCard();
-        }
+        public bool ReturnIsSelected()
+		{
+            return _cardSelectComponent.IsSelectCard;
+		}
 
         /// <summary>
-        /// 카드 위치를 원형으로 반환함
+        /// 마지막 카드를 지운다
         /// </summary>
-        /// <param name="objCount">카드의 갯수</param>
-        /// <param name="y_Space">카드별 y 간격</param>
-        /// <param name="std_y_Pos">카드들 위치에서 해당 변수만큼 y위치를 뺌</param>
-        /// <returns></returns>
-        private List<PRS> ReturnRoundPRS(int objCount, float y_Space, float std_y_Pos)
+        private void SubtractLastCard()
         {
-            float[] objLerps = new float[objCount];
-            List<PRS> results = new List<PRS>(objCount);
-
-            //카드 갯수에 따른 예외처리
-            switch (objCount)
-            {
-                case 1:
-                    objLerps = new float[] { 0.5f };
-                    break;
-                case 2:
-                    objLerps = new float[] { 0.27f, 0.77f };
-                    break;
-                default:
-                    float interbal = 1f / (objCount - 1 > 0 ? objCount - 1 : 1);
-                    for (int i = 0; i < objCount; i++)
-                    {
-                        objLerps[i] = interbal * i;
-                    }
-                    break;
-            }
-
-            //카드 갯수만큼 갯수 계산해서 위치리스트에 저장
-            for (int i = 0; i < objCount; i++)
-            {
-                Vector3 pos = Vector3.Lerp(_cardLeftPosition.anchoredPosition, _cardRightPosition.anchoredPosition, objLerps[i]);
-
-                float curve = Mathf.Sqrt(Mathf.Pow(1, 2) - Mathf.Pow(objLerps[i] - 0.5f, 2));
-                pos.y += curve * y_Space - std_y_Pos;
-                Quaternion rot = Quaternion.Slerp(_cardLeftPosition.rotation, _cardRightPosition.rotation, objLerps[i]);
-                if (objCount <= 2)
-                {
-                    rot = Quaternion.identity;
-                }
-
-                results.Add(new PRS(pos, rot, Vector3.one));
-            }
-
-            return results;
+            SubtractCardAt(_cardDrawComponent.ReturnCurrentCard() - 1);
         }
-
+        
         /// <summary>
-        /// 카드의 융합이 가능한지 체크함
+        /// 선택한 카드 위치를 업데이트 한다
         /// </summary>
-        /// <param name="targetCard1"></param>
-        /// <param name="targetCard2"></param>
-        private bool FusionCheck(CardMove targetCard1, CardMove targetCard2)
+        private void UpdateSelectCardPos()
         {
-            //카드 타입이 같은지 체크
-            if (targetCard1.CardDataValue.cardType != targetCard2.CardDataValue.cardType)
-            {
-                return false;
-            }
-            //유닛 타입이 같은지 체크
-            if (targetCard1.CardDataValue.unitData.unitType != targetCard2.CardDataValue.unitData.unitType)
-            {
-                return false;
-            }
-            //전략 타입이 같은지 체크
-            if (targetCard1.CardDataValue.strategyData.starategyType != targetCard2.CardDataValue.strategyData.starategyType)
-            {
-                return false;
-            }
-            //등급이 같은지 체크
-            if (targetCard1.Grade != targetCard2.Grade)
-            {
-                return false;
-            }
-            if (targetCard1.Grade == 3 || targetCard2.Grade == 3)
-            {
-                return false;
-            }
-            //융합중인지 체크
-            if (targetCard1.IsFusion != targetCard2.IsFusion)
-            {
-                return false;
-            }
-
-            //융합 중인걸로 체크
-            targetCard1.SetIsFusion(true);
-            targetCard2.SetIsFusion(true);
-
-            return true;
-        }
-
-        /// <summary>
-        /// 카드를 융합함
-        /// </summary>
-        private void FusionCard()
-        {
-            CardMove targetCard1 = null;
-            CardMove targetCard2 = null;
-            for (int i = 0; i < _cardList.Count - 1; i++)
-            {
-                targetCard1 = _cardList[i];
-                targetCard2 = _cardList[i + 1];
-
-                if (FusionCheck(targetCard1, targetCard2))
-                {
-                    if (_isFusion)
-                    {
-                        return;
-                    }
-                    _managerBase.StartCoroutine(FusionMove(targetCard1, targetCard2));
-                    return;
-                }
-            }
-        }
-
-        /// <summary>
-        /// 카드 융합 애니메이션
-        /// </summary>
-        /// <param name="index">몇 번째 카드가 융합하는지</param>
-        /// <returns></returns>
-        private IEnumerator FusionMove(CardMove targetCard1, CardMove targetCard2)
-        {
-            _isFusion = true;
-            targetCard1.SetIsFusion(true);
-            targetCard2.SetIsFusion(true);
-
-            CardMove toCombineCard = targetCard1;
-            CardMove fromCombineCard = targetCard2;
-
-            //두 번째 카드를 선택중일 때
-            if (targetCard2 == _selectCard)
-            {
-                toCombineCard = targetCard2;
-                fromCombineCard = targetCard1;
-            }
-            fromCombineCard.SetIsFusionFrom(true);
-
-            fromCombineCard.DOKill();
-            fromCombineCard.SetCardPRS(new PRS(toCombineCard.transform.localPosition, toCombineCard.transform.rotation, Vector3.one * 0.3f), 0.25f);
-
-            Color color = targetCard1.Grade > 1 ? Color.yellow : Color.white;
-            toCombineCard.FusionFadeInEffect(color);
-            fromCombineCard.FusionFadeInEffect(color);
-
-            yield return new WaitForSeconds(0.23f);
-            fromCombineCard.ShowCard(false);
-
-            toCombineCard.FusionFadeOutEffect();
-            toCombineCard.UpgradeUnitGrade();
-
-            toCombineCard.SetIsFusion(false);
-            fromCombineCard.SetIsFusion(false);
-            fromCombineCard.SetIsFusionFrom(false);
-
-            SubtractCardFind(fromCombineCard);
-            SortCard();
-            _isFusion = false;
-        }
-
-        /// <summary>
-        /// 소환 범위 렌더링
-        /// </summary>
-        private void DrawSummonRange()
-        {
-            _summonRangeImage.transform.position = new Vector2(-_stageData.max_Range, 0);
-            _summonRangeImage.transform.localScale = new Vector2(Mathf.Abs(_stageData.max_Range + _summonRange), 0.5f);
-        }
-
-        /// <summary>
-        /// 카드 위치를 정렬함
-        /// </summary>
-        private void SortCard()
-        {
-            //카드 위치를 반환받는다
-            List<PRS> originCardPRS = new List<PRS>();
-            originCardPRS = ReturnRoundPRS(_cardList.Count, 800, 600);
-
-            //카드들에게 반환받은 위치를 넣는다
-            for (int i = 0; i < _cardList.Count; i++)
-            {
-                CardMove targetCard = _cardList[i];
-                targetCard.SetOriginPRS(originCardPRS[i]);
-                if (_cardList[i].Equals(_selectCard))
-                {
-                    continue;
-                }
-                targetCard.SetCardPRS(targetCard.OriginPRS, 0.4f);
-            }
+            _cardSelectComponent.UpdateSelectCardPos();
         }
 
         /// <summary>
@@ -507,9 +315,9 @@ namespace Battle
         /// </summary>
         private void UpdateCardDraw()
         {
-            if(_cardDrawComponent.CheckCardDraw())
+            if (_cardDrawComponent.CheckCardDraw())
             {
-                DrawOneCard();
+                AddOneCard();
             }
         }
 
@@ -527,47 +335,6 @@ namespace Battle
         }
 
         /// <summary>
-        /// 카드를 찾아서 리스트에서 제거한다
-        /// </summary>
-        /// <param name="cardMove"></param>
-        private void SubtractCardFind(CardMove cardMove)
-        {
-            SubtractCardAt(_cardList.FindIndex(x => x.Id == cardMove.Id));
-        }
-
-        /// <summary>
-        /// 지정한 인덱스의 카드를 지운다
-        /// </summary>
-        private void SubtractCardAt(int index)
-        {
-            if (_cardDrawComponent.ReturnCurrentCard() == 0)
-            {
-                return;
-            }
-
-            //카드 삭제
-            _cardDrawComponent.IncreaseCurrentCard(-1);
-            _cardList[index].transform.SetParent(_cardPoolManager);
-            _cardList[index].gameObject.SetActive(false);
-            _cardList.RemoveAt(index);
-
-            //삭제하고 카드를 정렬
-            SortCard();
-        }
-
-        /// <summary>
-        /// 선택한 카드 위치를 업데이트 한다
-        /// </summary>
-        private void UpdateSelectCardPos()
-        {
-            if (_selectCard == null)
-            {
-                return;
-            }
-            _selectCard.transform.position = Input.mousePosition;
-        }
-
-        /// <summary>
         /// 카드 소환 미리보기
         /// </summary>
         /// <param name="unitData"></param>
@@ -575,106 +342,7 @@ namespace Battle
         /// <param name="isDelete"></param>
         private void UpdateUnitAfterImage()
         {
-            //마우스 위치를 가져온다
-            Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            //소환할 유닛이 자신의 유닛인지 체크해서 범위 제한
-            if (_commandUnit.eTeam == TeamType.MyTeam)
-            {
-                pos.x = Mathf.Clamp(pos.x, -_stageData.max_Range, _summonRange);
-            }
-
-            //소환 미리보기가 될 수 있는지 체크
-            if (_selectCard == null || _selectCard.CardDataValue.unitData.unitType == UnitType.None || pos.y < 0)
-            {
-                SetSummonArrowImage(false, pos);
-                _unitAfterImage.SetActive(false);
-                return;
-            }
-
-            //소환 미리보기 적용
-            _unitAfterImage.SetActive(true);
-            _afterImageSpriteRenderer.color = Color.white;
-
-            if (CheckPossibleSummon())
-            {
-                _afterImageSpriteRenderer.color = Color.red;
-            }
-
-            _unitAfterImage.transform.position = new Vector3(pos.x, 0);
-            _afterImageSpriteRenderer.sprite = SkinData.GetSkin(_selectCard.CardDataValue._skinData._skinType);
-
-            //소환 화살표 적용
-            SetSummonArrowImage(true, pos);
-            return;
-        }
-
-        /// <summary>
-        /// 소환 화살표 설정
-        /// </summary>
-        private void SetSummonArrowImage(bool isActive, Vector2 pos)
-        {
-            //소환 화살표 적용
-            _summonArrow.gameObject.SetActive(isActive);
-            _summonArrow.transform.position = pos;
-            _summonArrow.anchoredPosition = new Vector2(_summonArrow.anchoredPosition.x, Mathf.Clamp(_summonArrow.anchoredPosition.y, 520, 1000));
-            _summonArrow.sizeDelta = new Vector2(_summonArrow.sizeDelta.x, _summonArrow.anchoredPosition.y);
-            //float ySize = Mathf.Clamp(pos.y * 2f, 0.8f, 2f);
-            //_summonArrow.size = new Vector2(0.35f, ySize);
-            return;
-        }
-
-        /// <summary>
-        /// 카드를 여러 조건에 따라 사용할 수 있는지 체크
-        /// </summary>
-        private bool CheckPossibleSummon()
-        {
-            if (_selectCard == null)
-            {
-                return false;
-            }
-            //테스트용 소환 조건 해제
-            if (_isAlwaysSpawn)
-            {
-                return true;
-            }
-            if (_commandUnit.eTeam.Equals(TeamType.EnemyTeam))
-            {
-                return true;
-            }
-
-            switch (_selectCard.CardDataValue.cardType)
-            {
-                case CardType.Execute:
-                    break;
-                case CardType.SummonUnit:
-                case CardType.SummonTrap:
-                    Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, -_stageData.max_Range, _summonRange);
-                    if (mouse_Pos.x < -_stageData.max_Range || mouse_Pos.x > _summonRange)
-                    {
-                        return false;
-                    }
-                    break;
-                case CardType.Installation:
-                    break;
-            }
-
-            if (_commandCost.CurrentCost < _selectCard.CardCost)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// 소환 범위 그리기를 키거나 끄기
-        /// </summary>
-        /// <param name="isActive"></param>
-        private void SetSummonRangeLine(bool isActive)
-        {
-            _summonRangeImage.gameObject.SetActive(isActive);
+            _cardRangeComponent.UpdateUnitAfterImage();
         }
 
         /// <summary>
@@ -682,20 +350,7 @@ namespace Battle
         /// </summary>
         private void UpdateSummonRange()
         {
-            if (_summonRange >= 0)
-            {
-                return;
-            }
-
-            if (_summonRangeDelay > 0)
-            {
-                _summonRangeDelay -= Time.deltaTime;
-                return;
-            }
-
-            _summonRangeDelay = 30f;
-            _summonRange += _stageData.max_Range / 4;
-            DrawSummonRange();
+            _cardRangeComponent.UpdateSummonRange();
         }
 
         /// <summary>

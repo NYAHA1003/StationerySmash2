@@ -91,15 +91,15 @@ namespace Battle
 			_throwComponent.SetInitialization(ref _updateAction, _unitComponent, _cameraComponent, CurrentStageData);
 			_unitSignComponent.SetInitialization();
 			_aiComponent.SetInitialization(PencilCaseComponent, UnitComponent, ref _updateAction);
-			_timeComponent.SetInitialization(ref _updateAction, CurrentStageData, _unitComponent, _cardComponent, _costComponent);
+			_timeComponent.SetInitialization(ref _updateAction, CurrentStageData, _unitComponent, _cardComponent, _costComponent, _pencilCaseComponent);
 			_costComponent.SetInitialization(ref _updateAction, _pencilCaseComponent.PencilCaseDataMy._pencilCaseData);
 			_pauseComponent.SetInitialization();
 			_winLoseComponent.SetInitialization();
-			_introComponent.SetInitialization(_cameraComponent);
+			_introComponent.SetInitialization(_cameraComponent, this);
 
 			_isEndSetting = true;
 
-			StartCoroutine(_introComponent.SetIntro());
+			_introComponent.StartIntro();
 
 			while (!_introComponent.isEndIntro)
 			{
@@ -115,31 +115,20 @@ namespace Battle
 			}
 			if(BattleTurtorialComponent._isTutorial == false)
             {
-				_cardComponent.CheckCard(); 
+				_cardComponent.CheckTutorialCard(); 
 			}
 			//던지기 시스템
 			if (Input.GetMouseButtonDown(0))
 			{
-				_throwComponent.PullUnit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+				_throwComponent.ClickThrowUnit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 			}
 			else if (Input.GetMouseButton(0))
 			{
-				_throwComponent.DrawParabola(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+				_throwComponent.PullingThrowUnit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 			}
 			else if (Input.GetMouseButtonUp(0))
 			{
 				_throwComponent.ThrowUnit();
-			}
-
-
-			//테스트용
-			if (Input.GetKeyDown(KeyCode.C))
-			{
-				_cardComponent.ClearCards();
-			}
-			if (Input.GetKeyDown(KeyCode.Backspace))
-			{
-				_cardComponent.SubtractLastCard();
 			}
 
 			//유닛 시스템

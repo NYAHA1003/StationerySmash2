@@ -9,7 +9,6 @@ namespace Battle.Badge
 
 	public class Magnet_NBadge : AbstractBadge
 	{
-		List<AbstractBadge> list;
 		int num = -1;
 		public override void SetBattleManager(BattleManager battleManager)
 		{
@@ -19,10 +18,6 @@ namespace Battle.Badge
 		public override void SetBadge(PencilCaseComponent pencilCaseCommand, PencilCaseUnit pencilCaseUnit, TeamType teamType, BadgeData badgeData)
 		{
 			base.SetBadge(pencilCaseCommand, pencilCaseUnit, teamType, badgeData);
-			if (teamType == TeamType.MyTeam)
-			{
-				list = _battleManager.PencilCaseComponent.PlayerBadges;
-			}
 		}
 
 		public override void RunBadgeAbility()
@@ -32,7 +27,7 @@ namespace Battle.Badge
 
 		public void Magnet_N(BadgeData badgeData)
 		{
-			if (list.Find(x => x._bageType == BadgeType.Magnet_S) != null)
+			if (_pencilCaseCommand.FindBadge(_teamType, BadgeType.Magnet_S))
 			{
 				num = 1;
 			}

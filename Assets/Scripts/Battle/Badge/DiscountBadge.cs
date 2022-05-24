@@ -22,13 +22,13 @@ namespace Battle.Badge
 			if (_teamType == TeamType.MyTeam && !isSet)
 			{
 				isSet = true;
-				_battleManager.CardComponent.AddDictionary(_battleManager.CardComponent.DrawOneCard, FirstCardCostDown);
+				_battleManager.CardComponent.AddDictionary(_battleManager.CardComponent.AddOneCard, FirstCardCostDown);
 			}
 		}
 
 		public void FirstCardCostDown()
 		{
-			CardMove card = _battleManager.CardComponent.CardList[0];
+			CardObj card = _battleManager.CardComponent.CardList[0];
 			card.SetCost(card.OriginCardCost - 1);
 		}
 	}

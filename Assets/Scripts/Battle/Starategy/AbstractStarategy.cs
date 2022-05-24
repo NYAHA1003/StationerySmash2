@@ -11,14 +11,14 @@ namespace Battle.Starategy
     public abstract class AbstractStarategy
     {
         protected BattleManager _battleManager;
-        protected CardMove _card;
+        protected CardObj _card;
         protected StarategyData _starategyData;
         public void SetBattleManager(BattleManager battleManager)
         {
             this._battleManager = battleManager;
         }
 
-        public void SetCard(CardMove card)
+        public void SetCard(CardObj card)
         {
             this._card = card;
         }
