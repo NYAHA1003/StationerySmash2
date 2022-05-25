@@ -22,6 +22,13 @@ namespace Main.Deck
             userSaveData._ingameSaveDatas = ingameSaveDatas;
 		}
 
+        [ContextMenu("Json 디버그로그")]
+        public void Json()
+		{
+            Debug.Log(JsonUtility.ToJson(userSaveData, true));
+
+        }
+
         /// <summary>
         /// 관찰자 추가
         /// </summary>

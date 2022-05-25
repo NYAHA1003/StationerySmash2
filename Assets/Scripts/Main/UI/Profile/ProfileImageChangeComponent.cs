@@ -36,7 +36,6 @@ public class ProfileImageChangeComponent : MonoBehaviour, IUserData
 	public void OnChangeProfileImage(ProfileType profileType)
 	{
 		SaveManager._instance.SaveData.userSaveData._currentProfileType = profileType;
-		SaveManager._instance.SaveJsonData();
 	}
 
 	public void Notify()

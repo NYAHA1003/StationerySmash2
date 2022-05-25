@@ -13,12 +13,13 @@ using Main.Deck;
 public class ServerDataConnect : MonoBehaviour
 {
 	const string endPoint = "http://testsmash.kro.kr";
-	const string GetSticker = "/smash/GetSticker";
-	const string GetUnitData = "/smash/UnitData";
-	const string GetStrategyData = "/smash/StrategyData";
-	const string GetBadgeData = "/smash/BadgeData";
-	const string GetPencilCaseData = "/smash/PencilCaseData";
-	const string GetUserSaveData = "/smash/UserSaveData";
+	const string GetSticker = "/smash/Get/Sticker";
+	const string GetUnitData = "/smash/Get/UnitData";
+	const string GetStrategyData = "/smash/Get/StrategyData";
+	const string GetBadgeData = "/smash/Get/BadgeData";
+	const string GetPencilCaseData = "/smash/Get/PencilCaseData";
+	const string GetUserSaveData = "/smash/Get/UserSaveData";
+	const string PostUserSaveData = "/smash/Post/UserSaveData";
 
 	/// <summary>
 	/// 스티커 기준 데이터 가져오기

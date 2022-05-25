@@ -59,7 +59,6 @@ public class NameChangeComponent : MonoBehaviour, IUserData
         }
 
         SaveManager._instance.SaveData.userSaveData._name = name;
-        SaveManager._instance.SaveJsonData();
 
     }
 
