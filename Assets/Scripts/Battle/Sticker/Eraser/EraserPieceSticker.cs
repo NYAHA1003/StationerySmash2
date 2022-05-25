@@ -15,7 +15,6 @@ namespace Battle.Sticker
     {
         private BattleManager _battleManager;
         private CardData _eraserPieceData = null;
-        private UnitDataSO _unitDataSO = null;
         public override void SetSticker(Unit unit)
         {
             base.SetSticker(unit);
@@ -34,10 +33,10 @@ namespace Battle.Sticker
         /// </summary>
         private async void SetEarserPieceData()
         {
-            AsyncOperationHandle<UnitDataSO> handle = Addressables.LoadAssetAsync<UnitDataSO>("ProjectileUnitSO");
-            await handle.Task;
-            _unitDataSO = handle.Result;
-            _eraserPieceData = _unitDataSO.unitDatas.Find(x => x.unitType == UnitType.EraserPiece);
+            //AsyncOperationHandle<UnitDataSO> handle = Addressables.LoadAssetAsync<UnitDataSO>("ProjectileUnitSO");
+            //await handle.Task;
+            //_unitDataSO = handle.Result;
+            //_eraserPieceData = UnitDataManagerSO.FindUnitData(UnitType.EraserPiece);
         }
 
     }
