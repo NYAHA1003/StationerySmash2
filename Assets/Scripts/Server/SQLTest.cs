@@ -11,8 +11,7 @@ using Utill.Tool;
 public class SQLTest : MonoBehaviour
 {
 	const string endPoint = "http://testsmash.kro.kr";
-	const string PostUserSaveData = "/post/json";
-	const string GetUserSaveData = "/get/json";
+	const string linkUserSaveData = "/UserSaveData";
 
 	public Post post;
 
@@ -25,13 +24,8 @@ public class SQLTest : MonoBehaviour
 	[System.Serializable]
 	public class Post
 	{
+		public string message;
 		public UserSaveData post;
-	}
-
-
-	public class find
-	{
-		public string _userID;
 	}
 
 	[ContextMenu("테스트 포스트")]
@@ -127,46 +121,11 @@ public class SQLTest : MonoBehaviour
 		StartCoroutine(IEPost(data));
 	}
 
-
-	/// <summary>
-	/// 스티커 데이터 리스트 서버에서 가져오기
-	/// </summary>
-	/// <param name="action"></param>
-	/// <returns></returns>
-	private IEnumerator IEPost(string jsonData)
-	{
-		using (UnityWebRequest www = UnityWebRequest.Post(endPoint + PostUserSaveData, jsonData))
-		{
-			www.method = "POST";
-			www.SetRequestHeader("Content-Type", "application/json");
-			var jsonBytes = Encoding.UTF8.GetBytes(jsonData);
-			www.uploadHandler = new UploadHandlerRaw(jsonBytes);
-			www.downloadHandler = new DownloadHandlerBuffer();
-
-			yield return www.SendWebRequest();
-
-			if (www.isNetworkError || www.isHttpError)
-			{
-				Debug.Log(www.error);
-			}
-			else
-			{
-				Debug.Log(www.downloadHandler.text);
-				yield return www.downloadHandler.text;
-			}
-		}
-	}
-
 	[ContextMenu("테스트 겟")]
 	public void TestGet()
 	{
-		find data = new find
-		{
-			_userID = "Test10000"
-		};
-
-		string jsondata = JsonUtility.ToJson(data);
-		StartCoroutine(IEGet(jsondata));
+		string jsondata = JsonUtility.ToJson(post);
+		StartCoroutine(IEPost(jsondata));
 	}
 
 	/// <summary>
@@ -174,13 +133,14 @@ public class SQLTest : MonoBehaviour
 	/// </summary>
 	/// <param name="action"></param>
 	/// <returns></returns>
-	private IEnumerator IEGet(string userID)
+	private IEnumerator IEPost(string postData)
 	{
-		using (UnityWebRequest www = UnityWebRequest.Post(endPoint + GetUserSaveData, userID))
+		using (UnityWebRequest www = UnityWebRequest.Post(endPoint + linkUserSaveData, postData))
 		{
+			Debug.Log(endPoint + linkUserSaveData);
 			www.method = "POST";
 			www.SetRequestHeader("Content-Type", "application/json");
-			var jsonBytes = Encoding.UTF8.GetBytes(userID);
+			var jsonBytes = Encoding.UTF8.GetBytes(postData);
 			www.uploadHandler = new UploadHandlerRaw(jsonBytes);
 			www.downloadHandler = new DownloadHandlerBuffer();
 
@@ -194,8 +154,34 @@ public class SQLTest : MonoBehaviour
 			{
 				Debug.Log(www.downloadHandler.text);
 				post = JsonUtility.FromJson<Post>(www.downloadHandler.text);
+				CollbackMessageProcess(post);
 				yield return www.downloadHandler.text;
 			}
+		}
+	}
+
+	/// <summary>
+	/// 메시지를 처리한다
+	/// </summary>
+	private void CollbackMessageProcess(Post post)
+	{
+		switch(post.message)
+		{
+			case "UPDATE":
+				Debug.Log("업데이트");
+				break;
+			case "REGISTER":
+				Debug.Log("등록");
+				break;
+			case "FIND":
+				Debug.Log("검색");
+				break;
+			case "NONE":
+				Debug.Log("논");
+				break;
+			default:
+				Debug.LogError("확인할 수 없는 메시지");
+				break;
 		}
 	}
 }
