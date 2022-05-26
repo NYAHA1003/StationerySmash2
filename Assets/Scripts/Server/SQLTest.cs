@@ -111,19 +111,17 @@ public class SQLTest : MonoBehaviour
 			_loseCount = 20,
 		};
 
-		tempData tempData = new tempData
-		{
-			name = "name123",
-		};
+		post.message = "POST";
+		post.post = userSaveData;
 
-		string data = JsonUtility.ToJson(userSaveData);
-		Debug.Log(data);
+		string data = JsonUtility.ToJson(post);
 		StartCoroutine(IEPost(data));
 	}
 
 	[ContextMenu("테스트 겟")]
 	public void TestGet()
 	{
+		post.message = "GET";
 		string jsondata = JsonUtility.ToJson(post);
 		StartCoroutine(IEPost(jsondata));
 	}
@@ -153,8 +151,9 @@ public class SQLTest : MonoBehaviour
 			else
 			{
 				Debug.Log(www.downloadHandler.text);
-				post = JsonUtility.FromJson<Post>(www.downloadHandler.text);
-				CollbackMessageProcess(post);
+				Post newPost = new Post();
+				newPost = JsonUtility.FromJson<Post>(www.downloadHandler.text);
+				CollbackMessageProcess(newPost);
 				yield return www.downloadHandler.text;
 			}
 		}
@@ -170,11 +169,9 @@ public class SQLTest : MonoBehaviour
 			case "UPDATE":
 				Debug.Log("업데이트");
 				break;
-			case "REGISTER":
-				Debug.Log("등록");
-				break;
 			case "FIND":
 				Debug.Log("검색");
+				this.post = post;
 				break;
 			case "NONE":
 				Debug.Log("논");
