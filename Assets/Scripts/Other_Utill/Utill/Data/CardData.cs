@@ -31,8 +31,17 @@ public class CardData : IDeepCopy<CardData>
             _cardNamingType = this._cardNamingType,
             _cardType = this._cardType,
             _name = this._name,
+            _description = this._description,
             _cost = this._cost,
             _level = this._level,
+            _unitType = this._unitType,
+            _starategyType = this._starategyType,
+            _skinData = new SkinData()
+            {
+                _effectType = this._skinData._effectType,
+                _skinType = this._skinData._skinType
+            }
+
         };
 
         return cardData;

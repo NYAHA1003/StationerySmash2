@@ -107,25 +107,19 @@ namespace Utill.Tool
                 _userSaveData._havePencilCaseList.Add(PencilCaseType.Normal);
                 _userSaveData._haveCardSaveDatas.Add(new CardSaveData()
                 {
-                    _cardType = CardType.SummonUnit,
                     _cardNamingType = CardNamingType.Pencil,
                     _count = 1,
                     _stickerType = StickerType.None,
                     _level = 1,
                     _skinType = SkinType.PencilNormal,
-                    _strategicType = StrategyType.None,
-                    _unitType = UnitType.Pencil
                 });
                 _userSaveData._haveCardSaveDatas.Add(new CardSaveData()
                 {
-                    _cardType = CardType.SummonUnit,
                     _cardNamingType = CardNamingType.Sharp,
                     _count = 1,
                     _stickerType = StickerType.None,
                     _level = 1,
                     _skinType = SkinType.SharpNormal,
-                    _strategicType = StrategyType.None,
-                    _unitType = UnitType.MechaPencil
                 });
 
 

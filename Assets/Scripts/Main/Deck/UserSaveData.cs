@@ -71,11 +71,8 @@ namespace Main.Deck
     {
         public int _level = 0;
         public int _count = 0;
-        public CardType _cardType = CardType.Execute;
         public CardNamingType _cardNamingType = CardNamingType.None;
         public SkinType _skinType = SkinType.SpriteNone;
-        public StrategyType _strategicType = StrategyType.None;
-        public UnitType _unitType = UnitType.None;
         public StickerType _stickerType = StickerType.None;
 
         public static CardSaveData CopyDataToCardData(CardData cardData)
@@ -83,11 +80,8 @@ namespace Main.Deck
             CardSaveData cardSaveData = new CardSaveData();
             cardSaveData._level = cardData._level;
             cardSaveData._count = 0;
-            cardSaveData._cardType = cardData._cardType;
             cardSaveData._cardNamingType = cardData._cardNamingType;
             cardSaveData._skinType = cardData._skinData._skinType;
-            cardSaveData._unitType = cardData._unitType;
-            cardSaveData._strategicType = cardData._starategyType;
 
             UnitData unitData = UnitDataManagerSO.FindUnitData(cardData._unitType);
             cardSaveData._stickerType = unitData._stickerType;

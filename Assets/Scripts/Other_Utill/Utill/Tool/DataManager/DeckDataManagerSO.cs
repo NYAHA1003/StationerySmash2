@@ -1,6 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
+using Main.Deck;
+using Utill.Data;
+using Utill.Tool;
 
 namespace Utill.Tool
 {
@@ -12,11 +17,12 @@ namespace Utill.Tool
 		{
 			public List<CardData> post;
 		}
-		
+
 		//프로퍼티
 		public static List<CardData> StdDeckDataList => _stdDeckDataList;
 
-		private static List<CardData> _stdDeckDataList = new List<CardData>(); //Unit데이터 리스트
+		private static List<CardData> _stdDeckDataList = new List<CardData>(); //기준 카드 데이터 리스트
+		private static List<CardData> _haveDeckList = new List<CardData>(); //보유 카드 데이터 리스트
 
 		public DeckServerData testList;
 

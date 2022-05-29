@@ -191,12 +191,9 @@ namespace Main.Deck
 				return;
 			}
 			CardSaveData changeSaveData = CardSaveData.CopyDataToCardData(cardData);
-			cardSaveData._unitType = changeSaveData._unitType;
-			cardSaveData._strategicType = changeSaveData._strategicType;
 			cardSaveData._skinType = changeSaveData._skinType;
 			cardSaveData._level = changeSaveData._level;
 			cardSaveData._count = changeSaveData._count;
-			cardSaveData._cardType = changeSaveData._cardType;
 			cardSaveData._cardNamingType = changeSaveData._cardNamingType;
 			cardSaveData._stickerType = changeSaveData._stickerType;
 		}
