@@ -35,6 +35,14 @@ namespace Utill.Tool
 		}
 
 		/// <summary>
+		/// 카드 데이터 찾기
+		/// </summary>
+		public static CardData FindCardData(CardNamingType cardNamingType)
+		{
+			return _stdDeckDataList.Find(x => x._cardNamingType == cardNamingType);
+		}
+
+		/// <summary>
 		/// 덱 데이터 리스트 설정
 		/// </summary>
 		/// <param name="unitDatas"></param>

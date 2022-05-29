@@ -41,7 +41,13 @@ public class SceneLoadButtonManager : MonoBehaviour
         aIDataSO.summonGrade = currentData.summonGrade;
         aIDataSO.throwSpeed = currentData.throwSpeed;
         aIDataSO.isAIOn = currentData.isAIOn;
-        aIDataSO.cardDataList = currentData.cardDataList;
+        aIDataSO.cardDataList.Clear();
+        for (int i = 0; i < currentData.cardStageData.Count; i++)
+		{
+            CardData cardData = DeckDataManagerSO.FindCardData(currentData.cardStageData[i]._cardNamingType).DeepCopy();
+            cardData._level = currentData.cardStageData[i]._level;
+            aIDataSO.cardDataList.Add(cardData);
+		}
         aIDataSO.pos = currentData.pos;
         aIDataSO.max_Delay = currentData.max_Delay;
 
