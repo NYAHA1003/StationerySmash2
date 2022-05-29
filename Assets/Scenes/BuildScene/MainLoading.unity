@@ -6483,7 +6483,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2103436624}
   - component: {fileID: 2103436625}
-  - component: {fileID: 2103436626}
   m_Layer: 0
   m_Name: Iinitializes
   m_TagString: Untagged
@@ -6517,22 +6516,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc4c62300e22c0d4e987fbdd940363bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _iinitializes:
-  - {fileID: 11400000, guid: f65ce8610e7da7f489b7e10c392346a0, type: 2}
+  _Iinitializes:
+  - {fileID: 11400000, guid: 9121cdedeb1b97e4b9a0145e63773d64, type: 2}
   - {fileID: 11400000, guid: 550043607b3b86347a03811874fdf06b, type: 2}
+  - {fileID: 11400000, guid: f65ce8610e7da7f489b7e10c392346a0, type: 2}
   - {fileID: 11400000, guid: c0df692d95797e24b8433c49a34e64f9, type: 2}
-  - {fileID: 11400000, guid: eef936da04fab49458a721bb872ce311, type: 2}
   - {fileID: 11400000, guid: 93d9be08513e4aa45ba2871e4bb2e784, type: 2}
-  _serverDataConnect: {fileID: 2103436626}
---- !u!114 &2103436626
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2103436623}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 449484f41e92ee84daa6ed2eb683e45e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  - {fileID: 11400000, guid: eef936da04fab49458a721bb872ce311, type: 2}
+  - {fileID: 11400000, guid: eee0a12d1452d9c47b5018a46755a689, type: 2}

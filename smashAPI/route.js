@@ -7,6 +7,7 @@ const stickerData = require('./Schema/StickerData');
 const pencilCaseData = require('./Schema/PencilCaseData');
 const badgeData = require('./Schema/BadgeData');
 const strategyData = require('./Schema/StrategyData');
+const deckData = require('./Schema/DeckData');
 
 //유저 세이브 데이터 업데이트
 function UpdateUserSaveData(req, res, next) {
@@ -232,6 +233,45 @@ router.post('/StrategyData/Post', (req, res, next) => {
 router.get('/StrategyData/Get', (req, res, next) => {
 
   strategyData.StrategyDataSchema.find()
+    .then(post => {
+      if (!post) {
+        //하나도 데이터가 없으면 에러 반환
+        return res.status(500).json({
+          message: "None"
+        });
+      }
+      else {
+        //데이터가 있으면 반환
+        res.status(200).json({
+          post
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: err
+      });
+    });
+});
+
+
+//카드데이터 데이터 넣기
+router.post('/DeckData/Post', (req, res, next) => {
+  
+  deckData.DeckDataSchema.findOneAndUpdate({ _cardNamingType : req.body._cardNamingType }, req.body, { upsert: true },)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      console.error(err);
+      next(err);
+    })
+});
+
+//카드데이터 데이터 가져오기
+router.get('/DeckData/Get', (req, res, next) => {
+
+  deckData.DeckDataSchema.find()
     .then(post => {
       if (!post) {
         //하나도 데이터가 없으면 에러 반환

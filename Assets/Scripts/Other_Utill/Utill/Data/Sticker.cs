@@ -49,9 +49,9 @@ namespace Utill.Data
 		/// <returns></returns>
 		public static bool CheckCanSticker(CardData cardData)
 		{
-			if (cardData.cardType == CardType.SummonUnit)
+			if (cardData._cardType == CardType.SummonUnit)
 			{
-				UnitData unitData = UnitDataManagerSO.FindUnitData(cardData.unitType);
+				UnitData unitData = UnitDataManagerSO.FindUnitData(cardData._unitType);
 				if(unitData == null)
 				{
 					return false;

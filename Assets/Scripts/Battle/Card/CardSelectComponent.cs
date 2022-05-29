@@ -113,7 +113,7 @@ namespace Battle
             Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, _cardComponent.ReturnMinRange(), _cardComponent.ReturnMaxRange());
 
-            switch (card.CardDataValue.cardType)
+            switch (card.CardDataValue._cardType)
             {
                 case CardType.SummonUnit:
                     _unitComponent.SummonUnit(card.CardDataValue, new Vector3(mouse_Pos.x, 0, 0), card.Grade);
@@ -122,7 +122,7 @@ namespace Battle
                 case CardType.Execute:
                 case CardType.SummonTrap:
                 case CardType.Installation:
-                    StrategyData strategyData = StrategyDataManagerSO.FindStrategyData(card.CardDataValue.starategyType);
+                    StrategyData strategyData = StrategyDataManagerSO.FindStrategyData(card.CardDataValue._starategyType);
                     strategyData.ReturnState().Run_Card(TeamType.MyTeam);
                     return true;
             }
@@ -176,7 +176,7 @@ namespace Battle
                 return true;
             }
 
-            switch (_selectedCard.CardDataValue.cardType)
+            switch (_selectedCard.CardDataValue._cardType)
             {
                 case CardType.Execute:
                     break;

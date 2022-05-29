@@ -26,6 +26,7 @@ namespace Utill.Tool
         //프로퍼티
         public static UserSaveData UserSaveData => _userSaveData; //유저 데이터
 
+
         /// <summary>
         /// 서버 데이터를 받아 초기화
         /// </summary>
@@ -33,13 +34,12 @@ namespace Utill.Tool
 		public void Initialize()
         {
             SetUserID();
-            GetUserSaveData();
         }
 
         /// <summary>
         /// 유저 저장 정보를 가져온다
         /// </summary>
-        public void GetUserSaveData()
+        public static void GetUserSaveData()
         {
             ServerDataConnect.Instance.GetUserSaveData();
         }
@@ -47,7 +47,7 @@ namespace Utill.Tool
         /// <summary>
         /// 유저 저장 정보를 업로드한다
         /// </summary>
-        public void PostUserSaveData()
+        public static void PostUserSaveData()
         {
             ServerDataConnect.Instance.PostUserSaveData();
         }
@@ -57,9 +57,10 @@ namespace Utill.Tool
         /// 유저 세이브 데이터 설정
         /// </summary>
         /// <param name="userSaveData"></param>
-        private static void SetUserSaveData(UserSaveData userSaveData)
-		{
+        public static void SetUserSaveData(UserSaveData userSaveData)
+        {
             _userSaveData = userSaveData;
+            Debug.Log(_userSaveData._name);
 		}
 
         /// <summary>
@@ -68,7 +69,7 @@ namespace Utill.Tool
         private static void SetUserID()
         {
             //유저ID 저장 경로
-            string path = Application.dataPath + "/" + "UserID";
+            string path = Application.dataPath + "/" + "UserID.txt";
             
             //저장 경로에 ID가 있을시
             if(File.Exists(path))
@@ -77,6 +78,7 @@ namespace Utill.Tool
                 string jsonData = File.ReadAllText(path);
                 UserIDObj userIDobj = JsonUtility.FromJson<UserIDObj>(jsonData);
                 _userSaveData._userID = userIDobj.userID;
+                GetUserSaveData();
             }
             else
             {
@@ -94,6 +96,38 @@ namespace Utill.Tool
                 File.WriteAllText(path, jsonData);
 
                 _userSaveData._userID = userIDobj.userID;
+
+                //기본적인 데이터 추가
+                _userSaveData._haveSkinList.Add(SkinType.PencilNormal);
+                _userSaveData._haveSkinList.Add(SkinType.SharpNormal);
+                _userSaveData._haveSkinList.Add(SkinType.PencilCaseNormal);
+                _userSaveData._haveProfileList.Add(ProfileType.ProPencil);
+                _userSaveData._havePencilCaseList.Add(PencilCaseType.Normal);
+                _userSaveData._haveCardSaveDatas.Add(new CardSaveData()
+                {
+                    _cardType = CardType.SummonUnit,
+                    _cardNamingType = CardNamingType.Pencil,
+                    _count = 1,
+                    _stickerType = StickerType.None,
+                    _level = 1,
+                    _skinType = SkinType.PencilNormal,
+                    _strategicType = StrategyType.None,
+                    _unitType = UnitType.Pencil
+                });
+                _userSaveData._haveCardSaveDatas.Add(new CardSaveData()
+                {
+                    _cardType = CardType.SummonUnit,
+                    _cardNamingType = CardNamingType.Sharp,
+                    _count = 1,
+                    _stickerType = StickerType.None,
+                    _level = 1,
+                    _skinType = SkinType.SharpNormal,
+                    _strategicType = StrategyType.None,
+                    _unitType = UnitType.MechaPencil
+                });
+
+
+                PostUserSaveData();
             }
 
         }

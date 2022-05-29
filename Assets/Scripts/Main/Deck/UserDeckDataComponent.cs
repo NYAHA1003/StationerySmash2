@@ -12,7 +12,6 @@ namespace Main.Deck
 	public class UserDeckDataComponent : MonoBehaviour, IUserData
 	{
 		//카드 관련
-		public CardDeckSO _standardcardDeckSO; //기준 카드 데이터 
 		public CardDeckSO _haveDeckListSO; //보유 카드 데이터
 		public CardDeckSO _inGameDeckListSO; //장착 카드 데이터
 
@@ -115,14 +114,14 @@ namespace Main.Deck
 			{
 				CardSaveData saveDataobj = UserSaveManagerSO.UserSaveData._haveCardSaveDatas[i];
 				//같은 카드 타입 찾기
-				CardData cardDataobj = _standardcardDeckSO.cardDatas.Find(x => x._cardNamingType == saveDataobj._cardNamingType);
+				CardData cardDataobj = DeckDataManagerSO.StdDeckDataList.Find(x => x._cardNamingType == saveDataobj._cardNamingType);
 
 				if (cardDataobj != null)
 				{
 					//세이브데이터의 레벨만큼 수치를 변경하고 새로운 카드데이터로 만들어 받아 덱리스트에 추가
 					SkinData skinData = _skinListSO._cardNamingSkins.Find(x => x._cardNamingType == saveDataobj._cardNamingType)._skinDatas.Find(x => x._skinType == saveDataobj._skinType);
 					CardData cardData = cardDataobj.DeepCopy();
-					cardData.level = saveDataobj._level;
+					cardData._level = saveDataobj._level;
 					cardData._skinData = skinData;
 					_haveDeckListSO.cardDatas.Add(cardData);
 				}
@@ -134,7 +133,7 @@ namespace Main.Deck
 		/// </summary>
 		public void HaveDeckSortABC()
 		{
-			var list = _haveDeckListSO.cardDatas.OrderBy(x => x.card_Name);
+			var list = _haveDeckListSO.cardDatas.OrderBy(x => x._name);
 			_haveDeckListSO.cardDatas = list.ToList<CardData>();
 		}
 
@@ -143,7 +142,7 @@ namespace Main.Deck
 		/// </summary>
 		public void HaveDeckSortCost()
 		{
-			var list = _haveDeckListSO.cardDatas.OrderBy(x => x.card_Cost);
+			var list = _haveDeckListSO.cardDatas.OrderBy(x => x._cost);
 			_haveDeckListSO.cardDatas = list.ToList<CardData>();
 		}
 
@@ -199,7 +198,7 @@ namespace Main.Deck
 			cardSaveData._count = changeSaveData._count;
 			cardSaveData._cardType = changeSaveData._cardType;
 			cardSaveData._cardNamingType = changeSaveData._cardNamingType;
-			cardSaveData.stickerType = changeSaveData.stickerType;
+			cardSaveData._stickerType = changeSaveData._stickerType;
 		}
 
 		/// <summary>

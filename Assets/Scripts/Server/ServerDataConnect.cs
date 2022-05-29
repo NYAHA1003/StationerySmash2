@@ -20,7 +20,7 @@ public class ServerDataConnect : MonoSingleton<ServerDataConnect>
 		StickerData,
 		UnitData,
 		StrategyData,
-
+		DeckData,
 	}
 
 	[System.Serializable]
@@ -70,6 +70,7 @@ public class ServerDataConnect : MonoSingleton<ServerDataConnect>
 	public void GetUserSaveData()
 	{
 		postData.message = "GET";
+		postData.post = UserSaveManagerSO.UserSaveData;
 		string jsonData = JsonUtility.ToJson(postData);
 		StartCoroutine(IEUserSaveDataPost(jsonData));
 	}
@@ -102,6 +103,9 @@ public class ServerDataConnect : MonoSingleton<ServerDataConnect>
 				case DataType.StrategyData:
 					link += ServerLinks.getStrategyData;
 					break;
+				case DataType.DeckData:
+					link += ServerLinks.getDeckData;
+					break;
 			}
 		}
 		else
@@ -122,6 +126,9 @@ public class ServerDataConnect : MonoSingleton<ServerDataConnect>
 					break;
 				case DataType.StrategyData:
 					link += ServerLinks.postStrategyData;
+					break;
+				case DataType.DeckData:
+					link += ServerLinks.postDeckData;
 					break;
 			}
 		}
@@ -206,7 +213,7 @@ public class ServerDataConnect : MonoSingleton<ServerDataConnect>
 			else
 			{
 				Debug.Log(www.downloadHandler.text);
-				UserSaveDataServer newPost = new UserSaveDataServer();
+				var newPost = new UserSaveDataServer();
 				newPost = JsonUtility.FromJson<UserSaveDataServer>(www.downloadHandler.text);
 				CollbackUserSaveDataProcess(newPost);
 				yield return www.downloadHandler.text;
@@ -226,7 +233,7 @@ public class ServerDataConnect : MonoSingleton<ServerDataConnect>
 				break;
 			case "FIND":
 				Debug.Log("°Ë»ö");
-				this.postData = newPost;
+				UserSaveManagerSO.SetUserSaveData(newPost.post);
 				break;
 			case "NONE":
 				Debug.Log("³í");

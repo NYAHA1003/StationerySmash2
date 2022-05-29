@@ -76,21 +76,21 @@ namespace Main.Deck
         public SkinType _skinType = SkinType.SpriteNone;
         public StrategyType _strategicType = StrategyType.None;
         public UnitType _unitType = UnitType.None;
-        public StickerType stickerType = StickerType.None;
+        public StickerType _stickerType = StickerType.None;
 
         public static CardSaveData CopyDataToCardData(CardData cardData)
 		{
             CardSaveData cardSaveData = new CardSaveData();
-            cardSaveData._level = cardData.level;
+            cardSaveData._level = cardData._level;
             cardSaveData._count = 0;
-            cardSaveData._cardType = cardData.cardType;
+            cardSaveData._cardType = cardData._cardType;
             cardSaveData._cardNamingType = cardData._cardNamingType;
             cardSaveData._skinType = cardData._skinData._skinType;
-            cardSaveData._unitType = cardData.unitType;
-            cardSaveData._strategicType = cardData.starategyType;
+            cardSaveData._unitType = cardData._unitType;
+            cardSaveData._strategicType = cardData._starategyType;
 
-            UnitData unitData = UnitDataManagerSO.FindUnitData(cardData.unitType);
-            cardSaveData.stickerType = unitData._stickerType;
+            UnitData unitData = UnitDataManagerSO.FindUnitData(cardData._unitType);
+            cardSaveData._stickerType = unitData._stickerType;
             return cardSaveData;
 		}
     }

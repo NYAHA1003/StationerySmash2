@@ -18,6 +18,7 @@ namespace Utill.Tool
 		public readonly static string getStrategyData = "/StrategyData/Get";
 		public readonly static string getBadgeData = "/BadgeData/Get";
 		public readonly static string getPencilCaseData = "/PencilCaseData/Get";
+		public readonly static string getDeckData = "/DeckData/Get";
 
 		//Post
 		public readonly static string postUnitData = "/UnitData/Post";
@@ -25,5 +26,6 @@ namespace Utill.Tool
 		public readonly static string postStickerData = "/StickerData/Post";
 		public readonly static string postBadgeData = "/BadgeData/Post";
 		public readonly static string postPencilCaseData = "/PencilCaseData/Post";
+		public readonly static string postDeckData = "/DeckData/Post";
 	}
 }

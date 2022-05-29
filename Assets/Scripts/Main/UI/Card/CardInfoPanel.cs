@@ -102,7 +102,7 @@ namespace Main.Card
 			SetEquipText();
 
 			//카드 타입에 따라 설명창 설정
-			switch (_selectCardData.cardType)
+			switch (_selectCardData._cardType)
 			{
 				case CardType.Execute:
 					SetCardExecute(_selectCardData);
@@ -146,7 +146,7 @@ namespace Main.Card
 			_infoScroll.SetIcons(4);
 
 			//스탯 텍스트 설정
-			UnitData unitData = UnitDataManagerSO.FindUnitData(cardData.unitType);
+			UnitData unitData = UnitDataManagerSO.FindUnitData(cardData._unitType);
 			_hpText.text = unitData._hp.ToString();
 			_attackText.text = unitData._damage.ToString();
 			_attackSpeedText.text = unitData._attackSpeed.ToString();
@@ -186,7 +186,7 @@ namespace Main.Card
 		{
 			//선택한 유닛의 스티커 리스트 가져오기
 			var commonStickerList = StickerDataManagerSO.FindStickerDataNoneTypeList();
-			var onlyUnitStickerList = StickerDataManagerSO.FindStickerDataOnlyUnitTypeList(cardData.unitType);
+			var onlyUnitStickerList = StickerDataManagerSO.FindStickerDataOnlyUnitTypeList(cardData._unitType);
 
 			int commonCount = commonStickerList?.Count ?? 0;
 			int onlyCount = onlyUnitStickerList?.Count ?? 0;
@@ -238,7 +238,7 @@ namespace Main.Card
 		/// <returns></returns>
 		public bool CheckAlreadyEquipSticker(StickerData stickerData)
 		{
-			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData.unitType);
+			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData._unitType);
 			if(unitData._stickerType == stickerData._stickerType)
 			{
 				return true;
@@ -252,7 +252,7 @@ namespace Main.Card
 		/// <param name="stickerData"></param>
 		public void SetSticker(StickerData stickerData)
 		{
-			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData.unitType);
+			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData._unitType);
 			unitData._stickerType = stickerData._stickerType;
 			_selectDeckCard.SetCard(_selectCardData);
 			_userDeckData.ChangeCardInInGameSaveData(_selectCardData);
@@ -263,7 +263,7 @@ namespace Main.Card
 		/// </summary>
 		public void ReleaseSticker()
 		{
-			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData.unitType);
+			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData._unitType);
 			unitData._stickerType = StickerType.None;
 			_selectDeckCard.SetCard(_selectCardData);
 			_userDeckData.ChangeCardInInGameSaveData(_selectCardData);
@@ -343,7 +343,7 @@ namespace Main.Card
 			else
 			{
 				//장착
-				_userDeckData.AddCardInDeck(_selectCardData, _selectCardData.level);
+				_userDeckData.AddCardInDeck(_selectCardData, _selectCardData._level);
 			}
 			SetEquipText();
 

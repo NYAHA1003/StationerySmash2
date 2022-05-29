@@ -108,7 +108,7 @@ namespace Battle
 
 			//소환 미리보기가 될 수 있는지 체크
 
-			if (_cardSelectComponent.SelectedCard == null || pos.y < 0 || _cardSelectComponent.SelectedCard.CardDataValue.unitType == UnitType.None)
+			if (_cardSelectComponent.SelectedCard == null || pos.y < 0 || _cardSelectComponent.SelectedCard.CardDataValue._unitType == UnitType.None)
 			{
 				SetSummonArrowImage(false, pos);
 				_unitAfterImage.SetActive(false);
@@ -160,7 +160,7 @@ namespace Battle
 				return true;
 			}
 
-			switch (_cardSelectComponent.SelectedCard.CardDataValue.cardType)
+			switch (_cardSelectComponent.SelectedCard.CardDataValue._cardType)
 			{
 				case CardType.Execute:
 					break;

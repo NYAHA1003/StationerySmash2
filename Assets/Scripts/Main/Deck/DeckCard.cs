@@ -31,16 +31,16 @@ namespace Main.Deck
         {
             _cardNamingType = cardData._cardNamingType;
             _cardImage.sprite = SkinData.GetSkin(cardData._skinData._skinType);
-            _unitNameText.text = cardData.card_Name;
-            _CostText.text = $"{cardData.card_Cost}";
+            _unitNameText.text = cardData._name;
+            _CostText.text = $"{cardData._cost}";
             _stickerRect.gameObject.SetActive(false);
 
             if(StickerData.CheckCanSticker(cardData))
             {
-                UnitData unitData = UnitDataManagerSO.FindUnitData(cardData.unitType);
+                UnitData unitData = UnitDataManagerSO.FindUnitData(cardData._unitType);
                 StickerData stickerData = StickerDataManagerSO.FindStickerData(unitData._stickerType);
                 _stickerImage.sprite = SkinData.GetSkin(stickerData._skinType);
-                _stickerRect.anchoredPosition = StickerData.ReturnStickerPos(cardData.unitType);
+                _stickerRect.anchoredPosition = StickerData.ReturnStickerPos(cardData._unitType);
                 _stickerRect.gameObject.SetActive(true);
             }
             else

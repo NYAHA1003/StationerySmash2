@@ -11,14 +11,14 @@ using Battle.Starategy;
 public class CardData : IDeepCopy<CardData>
 {
     public CardNamingType _cardNamingType;
-    public CardType cardType;
-    public StrategyType starategyType;
-    public UnitType unitType;
-    public string card_Name;
-    public string card_Description;
-    public int card_Cost;
+    public CardType _cardType;
+    public StrategyType _starategyType;
+    public UnitType _unitType;
+    public string _name;
+    public string _description;
+    public int _cost;
     public SkinData _skinData;
-    public int level;
+    public int _level;
 
     /// <summary>
     /// CardData를 깊은 복사해서 반환함
@@ -29,10 +29,10 @@ public class CardData : IDeepCopy<CardData>
         CardData cardData = new CardData
         {
             _cardNamingType = this._cardNamingType,
-            cardType = this.cardType,
-            card_Name = this.card_Name,
-            card_Cost = this.card_Cost,
-            level = this.level,
+            _cardType = this._cardType,
+            _name = this._name,
+            _cost = this._cost,
+            _level = this._level,
         };
 
         return cardData;

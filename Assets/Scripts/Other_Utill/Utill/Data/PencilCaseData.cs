@@ -50,19 +50,19 @@ namespace Utill.Data
 		{
 			var cardData = new CardData
 			{
-				card_Cost = 0,
-				cardType = CardType.SummonUnit,
-				card_Description = "",
-				card_Name = "",
+				_cost = 0,
+				_cardType = CardType.SummonUnit,
+				_description = "",
+				_name = "",
 				_cardNamingType = CardNamingType.PencilCase,
 				_skinData = new SkinData
 				{
 					_skinType = this._skinType,
 					_effectType = EffectType.Attack
 				},
-				level = 1,
-				starategyType = StrategyType.None,
-				unitType = UnitType.PencilCase,
+				_level = 1,
+				_starategyType = StrategyType.None,
+				_unitType = UnitType.PencilCase,
 			};
 
 			return cardData;

@@ -81,7 +81,7 @@ public class Unit : MonoBehaviour
         OrderIndex = orderIndex;
 
         //유닛 데이터 받아오기
-        UnitData unitData = UnitDataManagerSO.FindUnitData(dataBase.unitType);
+        UnitData unitData = UnitDataManagerSO.FindUnitData(dataBase._unitType);
         _unitData = unitData;
 
         //스킨 데이터 받아오기
@@ -97,7 +97,7 @@ public class Unit : MonoBehaviour
         {
             transform.localScale = new Vector3(-1, 1, 1);
         }
-        transform.name = dataBase.card_Name + _eTeam;
+        transform.name = dataBase._name + _eTeam;
 
         //물리판정 설정
         _collideData = new CollideData();
