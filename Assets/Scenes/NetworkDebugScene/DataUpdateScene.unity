@@ -264,15 +264,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitData:
-    _hp: 500
-    _weight: 200
-    _knockback: 0
-    _dir: 0
-    _accuracy: 0
-    _moveSpeed: 0
-    _damage: 0
-    _attackSpeed: 0
-    _range: 0
+    _hp: 100
+    _weight: 75
+    _knockback: 30
+    _dir: 45
+    _accuracy: 100
+    _moveSpeed: 0.1
+    _damage: 10
+    _attackSpeed: 0.5
+    _range: 0.1
     _colideData:
       originpoints:
       - {x: 0.01, y: 0.01}
@@ -281,7 +281,7 @@ MonoBehaviour:
       - {x: -0.01, y: -0.01}
     _stickerType: 0
     _attackType: 0
-    _unitType: 1
+    _unitType: 2
     _unitablityData: []
 --- !u!1 &364998675
 GameObject:
