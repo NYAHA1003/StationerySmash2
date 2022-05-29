@@ -93,7 +93,7 @@ namespace Main.Card
 		/// </summary>
 		public void OnChangePencilCase()
 		{
-			PencilCaseDataManagerSO.SetInGamePencilCase(_selectPCData);
+			PencilCaseDataManagerSO.SetInGamePencilCase(_selectPCData._pencilCaseType);
 		}
 
 		//¹îÁöÆĞ³Î

@@ -8,9 +8,6 @@ using Battle.PCAbility;
 
 public class PencilCaseUnit : Unit
 {
-    [SerializeField]
-    private PencilCaseDataSO _pencilCaseData;
-    public PencilCaseDataSO PencilCaseData => _pencilCaseData;
     public AbstractPencilCaseAbility AbilityState { get; private set; }
     public Dictionary<System.Action<AtkData>, System.Action<AtkData>> _actionsAtkData = new Dictionary<System.Action<AtkData>, System.Action<AtkData>>();
 
@@ -26,7 +23,7 @@ public class PencilCaseUnit : Unit
     {
         _battleManager ??= FindObjectOfType<BattleManager>();
         base.SetUnitData(dataBase, eTeam, stageData, id, grade, orderIndex);
-        SetPencilCaseAbility(_pencilCaseData._pencilCaseData);
+        SetPencilCaseAbility(PencilCaseDataManagerSO.InGamePencilCaseData);
     }
 
     /// <summary>

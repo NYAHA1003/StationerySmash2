@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Utill.Load;
+using Utill.Tool;
 using Main.Deck;
 
 public class SceneLoadButtonManager : MonoBehaviour
@@ -13,8 +14,6 @@ public class SceneLoadButtonManager : MonoBehaviour
     private LoadingBattleDataSO loadingBattleDataSO;
     [SerializeField]
     private AIDataSO aIDataSO;
-    [SerializeField]
-    private PencilCaseDataSO pencilCaseDataSO;
 
 
     // Start is called before the first frame update
@@ -37,12 +36,7 @@ public class SceneLoadButtonManager : MonoBehaviour
         //so데이터를 aidataSO와 PencilCaseDataSO에 넣어줌
         loadingBattleDataSO.SetCurrentIndex(loadingBattleDataSO.loadDatas.FindIndex(x => x.battleStageType == battleStageType));
         var currentData = loadingBattleDataSO.CurrentStageData;
-        pencilCaseDataSO._pencilCaseData._maxCard = currentData._pencilCaseData._maxCard;
-        pencilCaseDataSO._pencilCaseData._costSpeed = currentData._pencilCaseData._costSpeed;
-        pencilCaseDataSO._pencilCaseData._throwGaugeSpeed = currentData._pencilCaseData._throwGaugeSpeed;
-        pencilCaseDataSO._pencilCaseData._pencilCaseType = currentData._pencilCaseData._pencilCaseType;
-        pencilCaseDataSO._pencilCaseData._pencilState = currentData._pencilCaseData._pencilState;
-        pencilCaseDataSO._pencilCaseData._badgeDatas = currentData._pencilCaseData._badgeDatas;
+        PencilCaseDataManagerSO.SetEnemyPencilCaseData(currentData);
 
         aIDataSO.summonGrade = currentData.summonGrade;
         aIDataSO.throwSpeed = currentData.throwSpeed;
@@ -51,6 +45,6 @@ public class SceneLoadButtonManager : MonoBehaviour
         aIDataSO.pos = currentData.pos;
         aIDataSO.max_Delay = currentData.max_Delay;
 
-        pencilCaseDataSO.battleStageType = currentData.battleStageType;
+        //pencilCaseDataSO.battleStageType = currentData.battleStageType;
     }
 }

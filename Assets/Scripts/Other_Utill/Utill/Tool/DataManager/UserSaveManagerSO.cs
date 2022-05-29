@@ -98,6 +98,8 @@ namespace Utill.Tool
                 _userSaveData._userID = userIDobj.userID;
 
                 //기본적인 데이터 추가
+                _userSaveData._currentProfileType = ProfileType.ProPencil;
+                _userSaveData._currentPencilCaseType = PencilCaseType.Normal;
                 _userSaveData._haveSkinList.Add(SkinType.PencilNormal);
                 _userSaveData._haveSkinList.Add(SkinType.SharpNormal);
                 _userSaveData._haveSkinList.Add(SkinType.PencilCaseNormal);

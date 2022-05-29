@@ -62,7 +62,7 @@ namespace Main.Deck
 		public void SetPencilCaseData()
 		{
 			PencilCaseDataManagerSO.ResetPencilCaseList();
-			PencilCaseDataManagerSO.SetInGamePencilCase(PencilCaseDataManagerSO.HavePencilCaseDataList.Find(x => x._pencilCaseType == UserSaveManagerSO.UserSaveData._currentPencilCaseType));
+			PencilCaseDataManagerSO.SetInGamePencilCase(UserSaveManagerSO.UserSaveData._currentPencilCaseType);
 		}
 
 
@@ -97,7 +97,7 @@ namespace Main.Deck
 			{
 				changePCData._badgeDatas.Add(BadgeDataManagerSO.HaveBadgeDataList.Find(x => x._badgeType == presetSaveDataSO._pencilCaseData._badgeDatas[i]._BadgeType));
 			}
-			PencilCaseDataManagerSO.SetInGamePencilCase(changePCData);
+			PencilCaseDataManagerSO.SetInGamePencilCase(changePCData._pencilCaseType);
 
 
 			UserSaveManagerSO.UserSaveData._setPrestIndex = index;

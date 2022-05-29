@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Utill.Data;
+using Utill.Load;
 using Utill.Tool;
 using Main.Deck;
 using Battle.Starategy;
@@ -21,10 +22,15 @@ namespace Utill.Tool
 			public List<PencilCaseData> post;
 		}
 
+		//프로퍼티
+		public static PencilCaseData InGamePencilCaseData => _inGamePencilCaseData;
+		public static PencilCaseData EnemyGamePencilCaseData => _enemyGamePencilCaseData;
 
+		//속성
 		private static List<PencilCaseData> _stdPencilCaseDataList = new List<PencilCaseData>();
 		private static List<PencilCaseData> _havePencilCaseDataList = new List<PencilCaseData>();
 		private static PencilCaseData _inGamePencilCaseData = null;
+		private static PencilCaseData _enemyGamePencilCaseData = new PencilCaseData();
 
 		public static List<PencilCaseData> HavePencilCaseDataList => _havePencilCaseDataList;
 
@@ -37,6 +43,15 @@ namespace Utill.Tool
 		public void Initialize()
 		{
 			ServerDataConnect.Instance.GetData<PencilCaseServerData>(SetPencilCaseList, ServerDataConnect.DataType.PencilCaseData);
+		}
+
+		/// <summary>
+		/// 적 필통 데이터 설정
+		/// </summary>
+		/// <param name="pencilCaseData"></param>
+		public static void SetEnemyPencilCaseData(LoadData loadData)
+		{
+			_enemyGamePencilCaseData = loadData._pencilCaseData;
 		}
 
 		/// <summary>
@@ -86,11 +101,22 @@ namespace Utill.Tool
 		}
 
 		/// <summary>
+		/// 같은 필통 타입의 필통 데이터를 반환한다
+		/// </summary>
+		/// <param name="pencilCaseType"></param>
+		/// <returns></returns>
+		public static PencilCaseData FindPencilCaseData(PencilCaseType pencilCaseType)
+		{
+			return _havePencilCaseDataList.Find(x => x._pencilCaseType == pencilCaseType);
+		}
+
+		/// <summary>
 		/// 인게임 필통 설정
 		/// </summary>
-		public static void SetInGamePencilCase(PencilCaseData pencilCaseData)
+		public static void SetInGamePencilCase(PencilCaseType pencilCaseType)
 		{
-			_inGamePencilCaseData = pencilCaseData;
+			_inGamePencilCaseData = FindPencilCaseData(pencilCaseType);
 		}
+
 	}
 }

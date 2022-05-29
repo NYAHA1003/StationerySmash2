@@ -153,14 +153,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pencilCaseData:
-    _maxCard: 0
+    _maxCard: 5
     _maxBadgeCount: 0
-    _costSpeed: 0
-    _throwGaugeSpeed: 0
-    _name: 
-    _description: 
+    _costSpeed: 20
+    _throwGaugeSpeed: 20
+    _name: "\uAE30\uBCF8\uD544\uD1B5"
+    _description: "\uAE30\uBCF8\uD544\uD1B5\uC774\uB2E4"
     _pencilCaseType: 0
-    _skinType: 0
+    _skinType: 400
     _unitType: 1
     _badgeDatas: []
 --- !u!4 &98555509
@@ -264,8 +264,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitData:
-    _hp: 0
-    _weight: 0
+    _hp: 500
+    _weight: 200
     _knockback: 0
     _dir: 0
     _accuracy: 0
@@ -274,10 +274,14 @@ MonoBehaviour:
     _attackSpeed: 0
     _range: 0
     _colideData:
-      originpoints: []
+      originpoints:
+      - {x: 0.01, y: 0.01}
+      - {x: -0.01, y: 0.01}
+      - {x: 0.01, y: -0.01}
+      - {x: -0.01, y: -0.01}
     _stickerType: 0
     _attackType: 0
-    _unitType: 0
+    _unitType: 1
     _unitablityData: []
 --- !u!1 &364998675
 GameObject:
@@ -393,16 +397,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardData:
     _cardNamingType: 0
-    cardType: 0
-    starategyType: 0
-    unitType: 0
-    card_Name: 
-    card_Description: 
-    card_Cost: 0
+    _cardType: 0
+    _starategyType: 0
+    _unitType: 0
+    _name: 
+    _description: 
+    _cost: 0
     _skinData:
       _skinType: 0
       _effectType: 0
-    level: 0
+    _level: 0
 --- !u!4 &1178999093
 Transform:
   m_ObjectHideFlags: 0

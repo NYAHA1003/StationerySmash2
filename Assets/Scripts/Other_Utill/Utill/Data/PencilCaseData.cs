@@ -30,15 +30,18 @@ namespace Utill.Data
 		{
 			PencilCaseData pencilCaseData = new PencilCaseData
 			{
-			_maxCard = this._maxCard,
-			_maxBadgeCount = _maxBadgeCount,
-			_costSpeed = _costSpeed,
-			_throwGaugeSpeed = _throwGaugeSpeed,
-			_description = _description,
-			_pencilCaseType = _pencilCaseType,
-			_pencilState = _pencilState,
-			_badgeDatas = new List<BadgeData>(),
-		};
+				_maxCard = _maxCard,
+				_maxBadgeCount = _maxBadgeCount,
+				_costSpeed = _costSpeed,
+				_throwGaugeSpeed = _throwGaugeSpeed,
+				_name = _name,
+				_description = _description,
+				_pencilCaseType = _pencilCaseType,
+				_pencilState = _pencilState,
+				_skinType = _skinType,
+				_unitType = _unitType,
+				_badgeDatas = new List<BadgeData>(),
+			};
 			return pencilCaseData;
 		}
 
@@ -82,7 +85,7 @@ namespace Utill.Data
 				_pencilCaseType = pcData._pencilCaseType,
 			};
 
-			for(int i = 0; i < pcData._badgeDatas.Count; i++)
+			for (int i = 0; i < pcData._badgeDatas.Count; i++)
 			{
 				BadgeSaveData badgeSaveData = new BadgeSaveData
 				{
