@@ -39,7 +39,7 @@ namespace Main.Deck
             {
                 UnitData unitData = UnitDataManagerSO.FindUnitData(cardData.unitType);
                 StickerData stickerData = StickerDataManagerSO.FindStickerData(unitData._stickerType);
-                _stickerImage.sprite = SkinData.GetSkin(stickerData.SkinType);
+                _stickerImage.sprite = SkinData.GetSkin(stickerData._skinType);
                 _stickerRect.anchoredPosition = StickerData.ReturnStickerPos(cardData.unitType);
                 _stickerRect.gameObject.SetActive(true);
             }

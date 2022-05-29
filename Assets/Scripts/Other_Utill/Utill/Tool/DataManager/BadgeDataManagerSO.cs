@@ -14,6 +14,12 @@ namespace Utill.Tool
 	[CreateAssetMenu(fileName = "BadgeDataManagerSO", menuName = "Scriptable Object/BadgeDataManagerSO")]
 	public class BadgeDataManagerSO : ScriptableObject, Iinitialize
 	{
+		[System.Serializable]
+		public class BadgeServerData
+		{
+			public List<BadgeData> post;
+		}
+
 		//프로퍼티
 		public static List<BadgeData> HaveBadgeDataList => _haveBadgeDataList;
 
@@ -27,16 +33,16 @@ namespace Utill.Tool
 		/// <param name="serverDataConnect"></param>
 		public void Initialize()
 		{
-			ServerDataConnect.Instance.GetData<List<BadgeData>>(SetUnitDataList, ServerDataConnect.DataType.UnitData);
+			ServerDataConnect.Instance.GetData<BadgeServerData>(SetUnitDataList, ServerDataConnect.DataType.UnitData);
 		}
 
 		/// <summary>
 		/// 뱃지 데이터 리스트 설정
 		/// </summary>
 		/// <param name="unitDatas"></param>
-		public void SetUnitDataList(List<BadgeData> badgeDatas)
+		public void SetUnitDataList(BadgeServerData badgeDatas)
 		{
-			_stdBadgeDataList = badgeDatas;
+			_stdBadgeDataList = badgeDatas.post;
 
 			_haveBadgeDataList.Clear();
 

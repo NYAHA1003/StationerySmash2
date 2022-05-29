@@ -109,19 +109,19 @@ public class ServerDataConnect : MonoSingleton<ServerDataConnect>
 			switch (dataType)
 			{
 				case DataType.PencilCaseData:
-					link += ServerLinks.getPencilCaseData;
+					link += ServerLinks.postPencilCaseData;
 					break;
 				case DataType.BadgeData:
-					link += ServerLinks.getBadgeData;
+					link += ServerLinks.postBadgeData;
 					break;
 				case DataType.StickerData:
-					link += ServerLinks.getSticker;
+					link += ServerLinks.postStickerData;
 					break;
 				case DataType.UnitData:
 					link += ServerLinks.postUnitData;
 					break;
 				case DataType.StrategyData:
-					link += ServerLinks.getStrategyData;
+					link += ServerLinks.postStrategyData;
 					break;
 			}
 		}

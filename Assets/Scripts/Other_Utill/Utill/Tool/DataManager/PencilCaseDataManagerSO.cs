@@ -15,6 +15,13 @@ namespace Utill.Tool
 	[CreateAssetMenu(fileName = "PencilCaseDataManagerSO", menuName = "Scriptable Object/PencilCaseDataManagerSO")]
 	public class PencilCaseDataManagerSO : ScriptableObject, Iinitialize
 	{
+		[System.Serializable]
+		public class PencilCaseServerData
+		{
+			public List<PencilCaseData> post;
+		}
+
+
 		private static List<PencilCaseData> _stdPencilCaseDataList = new List<PencilCaseData>();
 		private static List<PencilCaseData> _havePencilCaseDataList = new List<PencilCaseData>();
 		private static PencilCaseData _inGamePencilCaseData = null;
@@ -28,15 +35,15 @@ namespace Utill.Tool
 		/// <param name="serverDataConnect"></param>
 		public void Initialize()
 		{
-			ServerDataConnect.Instance.GetData<List<PencilCaseData>>(SetPencilCaseList, ServerDataConnect.DataType.PencilCaseData);
+			ServerDataConnect.Instance.GetData<PencilCaseServerData>(SetPencilCaseList, ServerDataConnect.DataType.PencilCaseData);
 		}
 
 		/// <summary>
 		/// 보유 필통 설정
 		/// </summary>
-		public static void SetPencilCaseList(List<PencilCaseData> pencilCaseDatas)
+		public static void SetPencilCaseList(PencilCaseServerData pencilCaseDatas)
 		{
-			_stdPencilCaseDataList = pencilCaseDatas;
+			_stdPencilCaseDataList = pencilCaseDatas.post;
 			_havePencilCaseDataList.Clear();
 
 			int count = UserSaveManagerSO.UserSaveData._havePencilCaseList.Count;
@@ -75,7 +82,6 @@ namespace Utill.Tool
 				}
 			}
 		}
-
 
 		/// <summary>
 		/// 인게임 필통 설정

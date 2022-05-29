@@ -239,7 +239,7 @@ namespace Main.Card
 		public bool CheckAlreadyEquipSticker(StickerData stickerData)
 		{
 			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData.unitType);
-			if(unitData._stickerType == stickerData.StickerType)
+			if(unitData._stickerType == stickerData._stickerType)
 			{
 				return true;
 			}
@@ -253,7 +253,7 @@ namespace Main.Card
 		public void SetSticker(StickerData stickerData)
 		{
 			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData.unitType);
-			unitData._stickerType = stickerData.StickerType;
+			unitData._stickerType = stickerData._stickerType;
 			_selectDeckCard.SetCard(_selectCardData);
 			_userDeckData.ChangeCardInInGameSaveData(_selectCardData);
 		}

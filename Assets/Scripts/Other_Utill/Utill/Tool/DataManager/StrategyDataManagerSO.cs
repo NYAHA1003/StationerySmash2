@@ -11,8 +11,14 @@ using Battle.Starategy;
 namespace Utill.Tool
 {
 	[CreateAssetMenu(fileName = "StrategyDataManagerSO", menuName = "Scriptable Object/StrategyDataManagerSO")]
-	public class StrategyDataManagerSO : ScriptableObject, Iinitialize 
+	public class StrategyDataManagerSO : ScriptableObject, Iinitialize
 	{
+		[System.Serializable]
+		public class StrategyServerData
+		{
+			public List<StrategyData> post;
+		}
+
 		private static List<StrategyData> _stdStarategyList = new List<StrategyData>(); //Strategy데이터 리스트
 
 		/// <summary>
@@ -20,7 +26,7 @@ namespace Utill.Tool
 		/// </summary>
 		public void Initialize()
 		{
-			ServerDataConnect.Instance.GetData<List<StrategyData>>(SetStrategyList, ServerDataConnect.DataType.StrategyData);
+			ServerDataConnect.Instance.GetData<StrategyServerData>(SetStrategyList, ServerDataConnect.DataType.StrategyData);
 		}
 
 		/// <summary>
@@ -44,9 +50,9 @@ namespace Utill.Tool
 		/// 전략 기준데이터 설정
 		/// </summary>
 		/// <param name="strategyDatas"></param>
-		public static void SetStrategyList(List<StrategyData> strategyDatas)
+		public static void SetStrategyList(StrategyServerData strategyDatas)
 		{
-			_stdStarategyList = strategyDatas;
+			_stdStarategyList = strategyDatas.post;
 		}
 
 	}

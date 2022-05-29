@@ -3,6 +3,9 @@ const express = require('express');
 const router = express.Router();
 const userSave = require('./Schema/UserSave');
 const unitData = require('./Schema/UnitData');
+const stickerData = require('./Schema/StickerData');
+const pencilCaseData = require('./Schema/PencilCaseData');
+const badgeData = require('./Schema/BadgeData');
 
 //유저 세이브 데이터 업데이트
 function UpdateUserSaveData(req, res, next) {
@@ -75,6 +78,121 @@ router.post('/UnitData/Post', (req, res, next) => {
 router.get('/UnitData/Get', (req, res, next) => {
 
   unitData.UnitDataSchema.find()
+    .then(post => {
+      if (!post) {
+        //하나도 데이터가 없으면 에러 반환
+        return res.status(500).json({
+          message: "None"
+        });
+      }
+      else {
+        //데이터가 있으면 반환
+        res.status(200).json({
+          post
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: err
+      });
+    });
+});
+
+//스티커데이터 데이터 넣기
+router.post('/StickerData/Post', (req, res, next) => {
+  
+  stickerData.StickerDataSchema.findOneAndUpdate({ _stickerType : req.body._stickerType }, req.body, { upsert: true },)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      console.error(err);
+      next(err);
+    })
+});
+
+//스티커데이터 데이터 가져오기
+router.get('/StickerData/Get', (req, res, next) => {
+
+  stickerData.StickerDataSchema.find()
+    .then(post => {
+      if (!post) {
+        //하나도 데이터가 없으면 에러 반환
+        return res.status(500).json({
+          message: "None"
+        });
+      }
+      else {
+        //데이터가 있으면 반환
+        res.status(200).json({
+          post
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: err
+      });
+    });
+});
+
+
+//필통데이터 데이터 넣기
+router.post('/PencilCaseData/Post', (req, res, next) => {
+  
+  pencilCaseData.PencilCaseDataSchema.findOneAndUpdate({ _pencilCaseType : req.body._pencilCaseType }, req.body, { upsert: true },)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      console.error(err);
+      next(err);
+    })
+});
+
+//필통데이터 데이터 가져오기
+router.get('/PencilCaseData/Get', (req, res, next) => {
+
+  pencilCaseData.PencilCaseDataSchema.find()
+    .then(post => {
+      if (!post) {
+        //하나도 데이터가 없으면 에러 반환
+        return res.status(500).json({
+          message: "None"
+        });
+      }
+      else {
+        //데이터가 있으면 반환
+        res.status(200).json({
+          post
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: err
+      });
+    });
+});
+
+//뱃지데이터 데이터 넣기
+router.post('/BadgeData/Post', (req, res, next) => {
+  
+  badgeData.BadgeDataSchema.findOneAndUpdate({ _badgeType : req.body._badgeType }, req.body, { upsert: true },)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      console.error(err);
+      next(err);
+    })
+});
+
+//뱃지데이터 데이터 가져오기
+router.get('/BadgeData/Get', (req, res, next) => {
+
+  badgeData.BadgeDataSchema.find()
     .then(post => {
       if (!post) {
         //하나도 데이터가 없으면 에러 반환

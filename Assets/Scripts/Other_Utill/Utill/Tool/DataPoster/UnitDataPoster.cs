@@ -12,7 +12,7 @@ namespace Utill.Tool
         /// <summary>
         /// 유닛타입에 따라 현재 유닛데이터를 업데이트한다
         /// </summary>
-        public void UpdateUnitData()
+        public void UpdateData()
 		{
             ServerDataConnect.Instance.PostData(unitData, ServerDataConnect.DataType.UnitData);
 		}

@@ -367,7 +367,7 @@ public class CardObj : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             UnitData unitData = UnitDataManagerSO.FindUnitData(_cardData.unitType);
             StickerData stickerData = StickerDataManagerSO.FindStickerData(unitData._stickerType);
-            _stickerImage.sprite = SkinData.GetSkin(stickerData.SkinType);
+            _stickerImage.sprite = SkinData.GetSkin(stickerData._skinType);
             _stickerRect.anchoredPosition = StickerData.ReturnStickerPos(_cardData.unitType);
             _stickerRect.gameObject.SetActive(true);
         }

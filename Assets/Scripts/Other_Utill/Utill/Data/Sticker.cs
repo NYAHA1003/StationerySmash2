@@ -9,31 +9,13 @@ namespace Utill.Data
 	[System.Serializable]
 	public class StickerData : IDeepCopy<StickerData>
 	{
-		//프로퍼티
-		public int Level
-		{
-			get
-			{
-				return _level;
-			}
-			set
-			{
-				_level = value;
-			}
-		}
-		public string Name => _name; //이름
-		public string Description => _decription; //설명
-		public SkinType SkinType => _skinType; //스킨타입
-		public StickerType StickerType => _stickerType; //스티커타입
-		public UnitType OnlyUnitType => _onlyUnitType; //제한되는 유닛 타입
-
 		//속성
-		private UnitType _onlyUnitType = UnitType.None;
-		private StickerType _stickerType = StickerType.None;
-		private SkinType _skinType = SkinType.SpriteNone;
-		private string _name = "";
-		private string _decription = "";
-		private int _level = 1;
+		public UnitType _onlyUnitType = UnitType.None;
+		public StickerType _stickerType = StickerType.None;
+		public SkinType _skinType = SkinType.SpriteNone;
+		public string _name = "";
+		public string _decription = "";
+		public int _level = 1;
 
 
 		/// <summary>
