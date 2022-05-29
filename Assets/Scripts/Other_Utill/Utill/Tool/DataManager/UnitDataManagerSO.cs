@@ -21,6 +21,8 @@ namespace Utill.Tool
 
 		private static List<UnitData> _stdUnitDataList = new List<UnitData>(); //Unit데이터 리스트
 
+		public UnitServerData testList;
+
 
 		/// <summary>
 		/// 기준 데이터에 입력 데이터를 넣는다
@@ -53,6 +55,7 @@ namespace Utill.Tool
 		/// <param name="unitDatas"></param>
 		private void SetUnitDataList(UnitServerData unitDatas)
 		{
+			testList = unitDatas;
 			_stdUnitDataList = unitDatas.post;
 		}
 	}

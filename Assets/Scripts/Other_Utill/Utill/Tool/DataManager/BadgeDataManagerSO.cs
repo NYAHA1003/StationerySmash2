@@ -27,6 +27,8 @@ namespace Utill.Tool
 		private static List<BadgeData> _stdBadgeDataList = new List<BadgeData>(); //Badge 기준 데이터 리스트
 		private static List<BadgeData> _haveBadgeDataList = new List<BadgeData>(); //Badge 가진 데이터 리스트
 
+		public BadgeServerData testList;
+
 		/// <summary>
 		/// 서버 데이터를 받아 초기화
 		/// </summary>
@@ -42,7 +44,8 @@ namespace Utill.Tool
 		/// <param name="unitDatas"></param>
 		public void SetUnitDataList(BadgeServerData badgeDatas)
 		{
-			_stdBadgeDataList = badgeDatas.post;
+			testList = badgeDatas;
+			   _stdBadgeDataList = badgeDatas.post;
 
 			_haveBadgeDataList.Clear();
 

@@ -22,7 +22,7 @@ namespace Utill.Tool
 		}
 
         //속성
-        private static UserSaveData _userSaveData; //유저 데이터
+        private static UserSaveData _userSaveData = new UserSaveData(); //유저 데이터
         //프로퍼티
         public static UserSaveData UserSaveData => _userSaveData; //유저 데이터
 
@@ -68,7 +68,7 @@ namespace Utill.Tool
         private static void SetUserID()
         {
             //유저ID 저장 경로
-            string path = Application.persistentDataPath + "/" + "UserID";
+            string path = Application.dataPath + "/" + "UserID";
             
             //저장 경로에 ID가 있을시
             if(File.Exists(path))

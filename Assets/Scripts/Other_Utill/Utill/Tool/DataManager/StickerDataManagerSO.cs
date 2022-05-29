@@ -24,6 +24,8 @@ namespace Utill.Tool
 		private static List<StickerData> _stdStickerDataList = new List<StickerData>(); //Unit데이터 리스트
 		private static List<StickerData> _haveStickerDataList = new List<StickerData>(); //Unit데이터 리스트
 
+		public StickerServerData testList;
+
 		/// <summary>
 		/// 기준 데이터에 입력 데이터를 넣는다
 		/// </summary>
@@ -84,6 +86,8 @@ namespace Utill.Tool
 		/// </summary>
 		public void SetStickerDataList(StickerServerData stickerDatas)
 		{
+			testList = stickerDatas;
+
 			_stdStickerDataList = stickerDatas.post;
 			_haveStickerDataList.Clear();
 

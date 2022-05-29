@@ -28,6 +28,7 @@ namespace Utill.Tool
 
 		public static List<PencilCaseData> HavePencilCaseDataList => _havePencilCaseDataList;
 
+		public PencilCaseServerData testList;
 
 		/// <summary>
 		/// 서버 데이터를 받아 초기화
@@ -41,8 +42,9 @@ namespace Utill.Tool
 		/// <summary>
 		/// 보유 필통 설정
 		/// </summary>
-		public static void SetPencilCaseList(PencilCaseServerData pencilCaseDatas)
+		public void SetPencilCaseList(PencilCaseServerData pencilCaseDatas)
 		{
+			testList = pencilCaseDatas;
 			_stdPencilCaseDataList = pencilCaseDatas.post;
 			_havePencilCaseDataList.Clear();
 

@@ -21,6 +21,8 @@ namespace Utill.Tool
 
 		private static List<StrategyData> _stdStarategyList = new List<StrategyData>(); //Strategy데이터 리스트
 
+		public StrategyServerData testList;
+
 		/// <summary>
 		/// 기준 데이터에 입력 데이터를 넣는다
 		/// </summary>
@@ -37,7 +39,7 @@ namespace Utill.Tool
 		public static StrategyData FindStrategyData(StrategyType strategyType)
 		{
 			StrategyData findData = null;
-			findData = _stdStarategyList.Find(x => x.starategyType == strategyType);
+			findData = _stdStarategyList.Find(x => x._starategyType == strategyType);
 			if(findData == null)
 			{
 				Debug.LogError($"{strategyType} : 전략 데이터가 존재하지 않음");
@@ -50,9 +52,10 @@ namespace Utill.Tool
 		/// 전략 기준데이터 설정
 		/// </summary>
 		/// <param name="strategyDatas"></param>
-		public static void SetStrategyList(StrategyServerData strategyDatas)
+		public void SetStrategyList(StrategyServerData strategyDatas)
 		{
-			_stdStarategyList = strategyDatas.post;
+			testList = strategyDatas;
+			   _stdStarategyList = strategyDatas.post;
 		}
 
 	}

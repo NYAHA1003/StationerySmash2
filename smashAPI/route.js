@@ -6,6 +6,7 @@ const unitData = require('./Schema/UnitData');
 const stickerData = require('./Schema/StickerData');
 const pencilCaseData = require('./Schema/PencilCaseData');
 const badgeData = require('./Schema/BadgeData');
+const strategyData = require('./Schema/StrategyData');
 
 //유저 세이브 데이터 업데이트
 function UpdateUserSaveData(req, res, next) {
@@ -193,6 +194,44 @@ router.post('/BadgeData/Post', (req, res, next) => {
 router.get('/BadgeData/Get', (req, res, next) => {
 
   badgeData.BadgeDataSchema.find()
+    .then(post => {
+      if (!post) {
+        //하나도 데이터가 없으면 에러 반환
+        return res.status(500).json({
+          message: "None"
+        });
+      }
+      else {
+        //데이터가 있으면 반환
+        res.status(200).json({
+          post
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: err
+      });
+    });
+});
+
+//전략데이터 데이터 넣기
+router.post('/StrategyData/Post', (req, res, next) => {
+  
+  strategyData.StrategyDataSchema.findOneAndUpdate({ _starategyType : req.body._starategyType }, req.body, { upsert: true },)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      console.error(err);
+      next(err);
+    })
+});
+
+//전략데이터 데이터 가져오기
+router.get('/StrategyData/Get', (req, res, next) => {
+
+  strategyData.StrategyDataSchema.find()
     .then(post => {
       if (!post) {
         //하나도 데이터가 없으면 에러 반환

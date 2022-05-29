@@ -123,7 +123,7 @@ namespace Battle
                 case CardType.SummonTrap:
                 case CardType.Installation:
                     StrategyData strategyData = StrategyDataManagerSO.FindStrategyData(card.CardDataValue.starategyType);
-                    strategyData.starategy_State.Run_Card(TeamType.MyTeam);
+                    strategyData.ReturnState().Run_Card(TeamType.MyTeam);
                     return true;
             }
         }

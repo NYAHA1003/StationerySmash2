@@ -25,7 +25,7 @@ namespace Battle.Starategy
 
         public void SetValuse(params float[] valuse)
         {
-            _starategyData.starategyablityData = valuse;
+            _starategyData._starategyablityData = valuse;
         }
         public abstract void Run_Card(TeamType eTeam);
     }

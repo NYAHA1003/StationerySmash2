@@ -29,7 +29,7 @@ public class ServerDataConnect : MonoSingleton<ServerDataConnect>
 		public string message; //서버에서 반환하는 메시지 혹은 내가 서버에 보내는 메시지
 		public UserSaveData post; //유저 데이터값
 	}
-	private UserSaveDataServer postData;
+	private UserSaveDataServer postData = new UserSaveDataServer();
 
 	/// <summary>
 	/// 데이터 타입에 따라 서버 데이터에 접속해서 메시지 반환

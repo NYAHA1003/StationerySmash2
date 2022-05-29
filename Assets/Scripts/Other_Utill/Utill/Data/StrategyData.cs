@@ -11,34 +11,45 @@ using Battle.Starategy;
 [System.Serializable]
 public class StrategyData
 {
-    public StrategyType starategyType;
-    public AbstractStarategy starategy_State;
-    public float[] starategyablityData = new float[0];
+    public StrategyType _starategyType;
+    public float[] _starategyablityData = new float[0];
+
+    private AbstractStarategy _starategyState;
+
+    /// <summary>
+    /// 전략 클래스를 반환
+    /// </summary>
+    /// <returns></returns>
+    public AbstractStarategy ReturnState()
+	{
+        return _starategyState;
+
+    }
 
     public void Set_State(params float[] values)
     {
 
-        switch (starategyType)
+        switch (_starategyType)
         {
             case StrategyType.None:
                 break;
             case StrategyType.CostUp:
-                starategy_State = new Starategy_CostUp();
+                _starategyState = new Starategy_CostUp();
                 break;
             case StrategyType.InstallCandy:
-                starategy_State = new Starategy_Candy();
+                _starategyState = new Starategy_Candy();
                 break;
             case StrategyType.InstallSlowdown:
-                starategy_State = new Starategy_Slowdown();
+                _starategyState = new Starategy_Slowdown();
                 break;
             case StrategyType.InstallRage:
-                starategy_State = new Starategy_Rage();
+                _starategyState = new Starategy_Rage();
                 break;
         }
         //논이 아닌 경우 셋 밸류를 해준다.
-        if (starategyType != StrategyType.None)
+        if (_starategyType != StrategyType.None)
         {
-            starategy_State.SetValuse(starategyablityData);
+            _starategyState.SetValuse(_starategyablityData);
         }
     }
 }
