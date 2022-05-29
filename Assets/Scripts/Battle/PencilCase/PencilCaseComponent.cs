@@ -171,7 +171,7 @@ namespace Battle
         private void SetPencilCaseUnit(PencilCaseUnit pencilCaseUnit, PencilCaseDataSO pencilCaseDataSO, TeamType teamType, int index)
         {
             //필통 유닛 설정
-            pencilCaseUnit.SetUnitData(pencilCaseDataSO._pencilCaseData._pencilCaseData, teamType, _stageData, index, 1, 0);
+            pencilCaseUnit.SetUnitData(pencilCaseDataSO._pencilCaseData.ReturnCardData(), teamType, _stageData, index, 1, 0);
 
             //유닛 리스트에 필통 유닛을 넣는다
             if (teamType == TeamType.MyTeam)
