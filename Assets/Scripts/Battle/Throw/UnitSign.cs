@@ -21,7 +21,7 @@ public class UnitSign : MonoBehaviour
 	public void SetSigh(CardData cardData)
 	{
 		_unitImage.sprite = SkinData.GetSkin(cardData._skinData._skinType);
-		_weight = UnitDataManagerSO.FindUnitData(cardData.unitType).unit_Weight;
+		_weight = UnitDataManagerSO.FindUnitData(cardData.unitType)._weight;
 		Vector2 rect = _rectTransform.anchoredPosition;
 		rect.x = Mathf.Lerp(-800f, 800f, (float)_weight / 200);
 

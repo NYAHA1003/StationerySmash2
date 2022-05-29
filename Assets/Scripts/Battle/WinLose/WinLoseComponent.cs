@@ -76,8 +76,8 @@ namespace Battle
                 _winPanel.DOScale(1, 0.3f).SetEase(Ease.OutExpo).
                     OnComplete(() =>
                     {
-                        SaveManager._instance.AddExp(_loadingBattleDataSO.CurrentStageData._awardExp);
-                        SaveManager._instance.AddMoney(_loadingBattleDataSO.CurrentStageData._awardMoney);
+                        SaveManager.Instance.AddExp(_loadingBattleDataSO.CurrentStageData._awardExp);
+                        SaveManager.Instance.AddMoney(_loadingBattleDataSO.CurrentStageData._awardMoney);
                         _winText.DOScale(1.5f, 0.3f).SetLoops(-1, LoopType.Yoyo);
                     });
                 return;

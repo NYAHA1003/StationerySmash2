@@ -101,7 +101,7 @@ public class Unit : MonoBehaviour
 
         //물리판정 설정
         _collideData = new CollideData();
-        _collideData.originpoints = unitData.colideData.originpoints;
+        _collideData.originpoints = unitData._colideData.originpoints;
 
         //딜레이시스템
         SetIsInvincibility(false);
@@ -179,7 +179,7 @@ public class Unit : MonoBehaviour
     {
         RemoveUnitList();
         _battleManager.UnitComponent.DeletePoolUnit(this);
-        _unitStateChanger.DeleteState(_unitData.unitType);
+        _unitStateChanger.DeleteState(_unitData._unitType);
         _unitStateChanger.StateNull();
         _unitStateEff.DeleteEffStetes();
         _unitSticker.DeleteSticekr();

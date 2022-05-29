@@ -31,7 +31,7 @@ public class SaveManager : MonoSingleton<SaveManager>
 
 	private void Awake()
 	{
-        if(!_instance.isLoadData)
+        if(!Instance.isLoadData)
 		{
             isLoadData = true;
 		}
@@ -55,7 +55,7 @@ public class SaveManager : MonoSingleton<SaveManager>
     /// </summary>
     public void AddExp(int exp)
 	{
-        _instance.SaveData.userSaveData.AddExp(exp);
+        Instance.SaveData.userSaveData.AddExp(exp);
         DeliverDataToObserver();
     }
 
@@ -64,7 +64,7 @@ public class SaveManager : MonoSingleton<SaveManager>
     /// </summary>
     public void AddMoney(int money)
     {
-        _instance.SaveData.userSaveData.AddMoney(money);
+        Instance.SaveData.userSaveData.AddMoney(money);
         DeliverDataToObserver();
     }
 }

@@ -13,7 +13,7 @@ using Battle.Starategy;
 namespace Utill.Tool
 {
 	[CreateAssetMenu(fileName = "StickerDataManagerSO", menuName = "Scriptable Object/StickerDataManagerSO")]
-	public class StickerDataManagerSO : ScriptableObject, IServerInitialize
+	public class StickerDataManagerSO : ScriptableObject, Iinitialize
 	{
 		private static List<StickerData> _stdStickerDataList = new List<StickerData>(); //Unit데이터 리스트
 		private static List<StickerData> _haveStickerDataList = new List<StickerData>(); //Unit데이터 리스트
@@ -21,9 +21,9 @@ namespace Utill.Tool
 		/// <summary>
 		/// 기준 데이터에 입력 데이터를 넣는다
 		/// </summary>
-		public void ServerInitialize(ServerDataConnect serverDataConnect)
+		public void Initialize()
 		{
-			serverDataConnect.GetStandardStickerData(SetStickerDataList);
+			ServerDataConnect.Instance.GetData<List<StickerData>>(SetStickerDataList, ServerDataConnect.DataType.StickerData);
 		}
 
 		/// <summary>

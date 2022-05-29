@@ -11,16 +11,23 @@ using Battle.Starategy;
 namespace Utill.Tool
 {
 	[CreateAssetMenu(fileName = "UnitDataManagerSO", menuName = "Scriptable Object/UnitDataManagerSO")]
-	public class UnitDataManagerSO : ScriptableObject, IServerInitialize
+	public class UnitDataManagerSO : ScriptableObject, Iinitialize
 	{
+		[System.Serializable]
+		public class UnitServerData
+		{
+			public List<UnitData> post;
+		}
+
 		private static List<UnitData> _stdUnitDataList = new List<UnitData>(); //Unit데이터 리스트
+
 
 		/// <summary>
 		/// 기준 데이터에 입력 데이터를 넣는다
 		/// </summary>
-		public void ServerInitialize(ServerDataConnect serverDataConnect)
+		public void Initialize()
 		{
-			serverDataConnect.GetStandardUnitData(SetUnitDataList);
+			ServerDataConnect.Instance.GetData<UnitServerData>(SetUnitDataList, ServerDataConnect.DataType.UnitData);
 		}
 
 		/// <summary>
@@ -31,7 +38,7 @@ namespace Utill.Tool
 		public static UnitData FindUnitData(UnitType unitType)
 		{
 			UnitData findData = null;
-			findData = _stdUnitDataList.Find(x => x.unitType == unitType);
+			findData = _stdUnitDataList.Find(x => x._unitType == unitType);
 			if (findData == null)
 			{
 				Debug.LogError($"{unitType} : 유닛 데이터가 존재하지 않음");
@@ -44,9 +51,11 @@ namespace Utill.Tool
 		/// 유닛 데이터 리스트 설정
 		/// </summary>
 		/// <param name="unitDatas"></param>
-		public void SetUnitDataList(List<UnitData> unitDatas)
+		private void SetUnitDataList(UnitServerData unitDatas)
 		{
-			_stdUnitDataList = unitDatas;
+			_stdUnitDataList = unitDatas.post;
 		}
 	}
+
+
 }

@@ -17,8 +17,8 @@ public class MoneyComponent : MonoBehaviour, IUserData
 
     public void Awake()
     {
-        SaveManager._instance.SaveData.AddObserver(this);
-        _previousMoney = SaveManager._instance.SaveData.userSaveData._money;
+        SaveManager.Instance.SaveData.AddObserver(this);
+        _previousMoney = SaveManager.Instance.SaveData.userSaveData._money;
         SetMoneyText();
     }
 

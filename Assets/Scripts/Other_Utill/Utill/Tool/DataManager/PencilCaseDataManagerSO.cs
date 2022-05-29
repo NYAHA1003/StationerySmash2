@@ -13,7 +13,7 @@ using Battle.Starategy;
 namespace Utill.Tool
 {
 	[CreateAssetMenu(fileName = "PencilCaseDataManagerSO", menuName = "Scriptable Object/PencilCaseDataManagerSO")]
-	public class PencilCaseDataManagerSO : ScriptableObject, IServerInitialize
+	public class PencilCaseDataManagerSO : ScriptableObject, Iinitialize
 	{
 		private static List<PencilCaseData> _stdPencilCaseDataList = new List<PencilCaseData>();
 		private static List<PencilCaseData> _havePencilCaseDataList = new List<PencilCaseData>();
@@ -26,9 +26,9 @@ namespace Utill.Tool
 		/// 서버 데이터를 받아 초기화
 		/// </summary>
 		/// <param name="serverDataConnect"></param>
-		public void ServerInitialize(ServerDataConnect serverDataConnect)
+		public void Initialize()
 		{
-			serverDataConnect.GetStandardPencilCaseData(SetPencilCaseList);
+			ServerDataConnect.Instance.GetData<List<PencilCaseData>>(SetPencilCaseList, ServerDataConnect.DataType.PencilCaseData);
 		}
 
 		/// <summary>

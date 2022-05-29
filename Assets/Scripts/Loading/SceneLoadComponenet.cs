@@ -50,6 +50,6 @@ public class SceneLoadComponenet : MonoBehaviour
         //시간을 1로 되돌림
         Time.timeScale = 1f;
         //세이브 데이터에 접근하는 오브젝트들 제거
-        SaveManager._instance.SaveData.ClearObserver();
+        SaveManager.Instance.SaveData.ClearObserver();
     }
 }

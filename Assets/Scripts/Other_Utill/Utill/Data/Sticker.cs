@@ -74,7 +74,7 @@ namespace Utill.Data
 				{
 					return false;
 				}
-				if (unitData.stickerType != StickerType.None)
+				if (unitData._stickerType != StickerType.None)
 				{
 					return true;
 				}

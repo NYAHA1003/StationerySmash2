@@ -147,11 +147,11 @@ namespace Main.Card
 
 			//스탯 텍스트 설정
 			UnitData unitData = UnitDataManagerSO.FindUnitData(cardData.unitType);
-			_hpText.text = unitData.unit_Hp.ToString();
-			_attackText.text = unitData.damage.ToString();
-			_attackSpeedText.text = unitData.attackSpeed.ToString();
-			_moveSpeedText.text = unitData.moveSpeed.ToString();
-			_weightText.text = unitData.unit_Weight.ToString();
+			_hpText.text = unitData._hp.ToString();
+			_attackText.text = unitData._damage.ToString();
+			_attackSpeedText.text = unitData._attackSpeed.ToString();
+			_moveSpeedText.text = unitData._moveSpeed.ToString();
+			_weightText.text = unitData._weight.ToString();
 		}
 		/// <summary>
 		/// 함정 소환형의 UI 설정
@@ -239,7 +239,7 @@ namespace Main.Card
 		public bool CheckAlreadyEquipSticker(StickerData stickerData)
 		{
 			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData.unitType);
-			if(unitData.stickerType == stickerData.StickerType)
+			if(unitData._stickerType == stickerData.StickerType)
 			{
 				return true;
 			}
@@ -253,7 +253,7 @@ namespace Main.Card
 		public void SetSticker(StickerData stickerData)
 		{
 			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData.unitType);
-			unitData.stickerType = stickerData.StickerType;
+			unitData._stickerType = stickerData.StickerType;
 			_selectDeckCard.SetCard(_selectCardData);
 			_userDeckData.ChangeCardInInGameSaveData(_selectCardData);
 		}
@@ -264,7 +264,7 @@ namespace Main.Card
 		public void ReleaseSticker()
 		{
 			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData.unitType);
-			unitData.stickerType = StickerType.None;
+			unitData._stickerType = StickerType.None;
 			_selectDeckCard.SetCard(_selectCardData);
 			_userDeckData.ChangeCardInInGameSaveData(_selectCardData);
 		}

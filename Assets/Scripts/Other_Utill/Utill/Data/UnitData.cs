@@ -10,20 +10,20 @@ using Battle.Starategy;
 [System.Serializable]
 public class UnitData
 {
-    public int unit_Hp;
-    public int unit_Weight;
-    public int knockback;
-    public float dir;
-    public float accuracy;
-    public float moveSpeed;
-    public int damage;
-    public float attackSpeed;
-    public float range;
-    public CollideData colideData;
-    public StickerType stickerType;
-    public AttackType attackType;
-    public UnitType unitType;
-    public float[] unitablityData;
+    public int _hp;
+    public int _weight;
+    public int _knockback;
+    public float _dir;
+    public float _accuracy;
+    public float _moveSpeed;
+    public int _damage;
+    public float _attackSpeed;
+    public float _range;
+    public CollideData _colideData;
+    public StickerType _stickerType;
+    public AttackType _attackType;
+    public UnitType _unitType;
+    public float[] _unitablityData;
 
     /// <summary>
     /// 레벨에 따른 유닛 스탯 증가
@@ -31,10 +31,10 @@ public class UnitData
     /// <param name="level"></param>
     public void CalculationLevel(int level)
     {
-        unit_Hp *= level;
-        knockback *= level;
-        moveSpeed *= level;
-        damage *= level;
-        attackSpeed *= level;
+        _hp *= level;
+        _knockback *= level;
+        _moveSpeed *= level;
+        _damage *= level;
+        _attackSpeed *= level;
     }
 }

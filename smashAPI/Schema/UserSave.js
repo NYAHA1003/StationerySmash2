@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const UserSchema = mongoose.model('users', new mongoose.Schema({
+const UserSaveSchema = mongoose.model('users', new mongoose.Schema({
     _userID: String,
     _haveCardSaveDatas: {
         type: [mongoose.Schema.Types.Mixed]
@@ -46,4 +46,4 @@ const UserSchema = mongoose.model('users', new mongoose.Schema({
         versionKey : false
     },
 ));
-exports.UserSchema = UserSchema;
+exports.UserSaveSchema = UserSaveSchema;

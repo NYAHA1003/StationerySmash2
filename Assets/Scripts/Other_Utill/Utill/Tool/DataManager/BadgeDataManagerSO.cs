@@ -12,7 +12,7 @@ using Battle.Starategy;
 namespace Utill.Tool
 {
 	[CreateAssetMenu(fileName = "BadgeDataManagerSO", menuName = "Scriptable Object/BadgeDataManagerSO")]
-	public class BadgeDataManagerSO : ScriptableObject, IServerInitialize
+	public class BadgeDataManagerSO : ScriptableObject, Iinitialize
 	{
 		//프로퍼티
 		public static List<BadgeData> HaveBadgeDataList => _haveBadgeDataList;
@@ -25,9 +25,9 @@ namespace Utill.Tool
 		/// 서버 데이터를 받아 초기화
 		/// </summary>
 		/// <param name="serverDataConnect"></param>
-		public void ServerInitialize(ServerDataConnect serverDataConnect)
+		public void Initialize()
 		{
-			serverDataConnect.GetStandardBadgeData(SetUnitDataList);
+			ServerDataConnect.Instance.GetData<List<BadgeData>>(SetUnitDataList, ServerDataConnect.DataType.UnitData);
 		}
 
 		/// <summary>

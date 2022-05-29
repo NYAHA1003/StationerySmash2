@@ -32,7 +32,7 @@ namespace Main.Deck
 
 		private void Awake()
 		{
-			SaveManager._instance.SaveData.AddObserver(this);
+			SaveManager.Instance.SaveData.AddObserver(this);
 
 			SetCardData();
 			SetPencilCaseData();

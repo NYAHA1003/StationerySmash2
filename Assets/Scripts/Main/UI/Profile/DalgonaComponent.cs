@@ -18,8 +18,8 @@ public class DalgonaComponent : MonoBehaviour, IUserData
 
     public void Awake()
     {
-        SaveManager._instance.SaveData.AddObserver(this);
-        _previousDalgona = SaveManager._instance.SaveData.userSaveData._dalgona;
+        SaveManager.Instance.SaveData.AddObserver(this);
+        _previousDalgona = SaveManager.Instance.SaveData.userSaveData._dalgona;
         SetDalgonaText();
     }
 

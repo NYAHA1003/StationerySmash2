@@ -7,16 +7,14 @@ namespace Utill.Tool
     public class InitializeContainer : MonoBehaviour
     {
 		[SerializeField]
-		private List<Object> _iinitializes;
-		[SerializeField]
-		private ServerDataConnect _serverDataConnect;
+		private List<Object> _Iinitializes;
 
 		private void Awake()
 		{
-			int count = _iinitializes.Count;
+			int count = _Iinitializes.Count;
 			for(int i = 0; i < count; i++)
 			{
-				(_iinitializes[i] as IServerInitialize).ServerInitialize(_serverDataConnect);
+				(_Iinitializes[i] as Iinitialize).Initialize();
 			}
 		}
 	}

@@ -91,7 +91,7 @@ namespace Battle
 
             if (throwedUnit != null)
             {
-                if (throwedUnit.UnitData.unitType == UnitType.PencilCase)
+                if (throwedUnit.UnitData._unitType == UnitType.PencilCase)
                 {
                     throwedUnit = null;
                     _throwComponent.SetThrowedUnit(throwedUnit);

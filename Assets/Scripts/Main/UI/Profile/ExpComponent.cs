@@ -27,9 +27,9 @@ public class ExpComponent : MonoBehaviour, IUserData
 
 	public void Awake()
 	{
-		SaveManager._instance.SaveData.AddObserver(this);
-		_previousLevel = SaveManager._instance.SaveData.userSaveData._level;
-		_previousExp = SaveManager._instance.SaveData.userSaveData._nowExp;
+		SaveManager.Instance.SaveData.AddObserver(this);
+		_previousLevel = SaveManager.Instance.SaveData.userSaveData._level;
+		_previousExp = SaveManager.Instance.SaveData.userSaveData._nowExp;
 
 		if (CheckExpOverLevelExp())
 		{

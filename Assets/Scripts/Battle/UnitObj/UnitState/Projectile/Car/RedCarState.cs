@@ -118,7 +118,7 @@ namespace Battle.Units
 		protected override void CheckTargetUnit(Unit targetUnit)
 		{
 
-			AtkData atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, _myUnit.MyUnitId * 1000 + _myUnit.MyDamagedId, EffAttackType.Stun, EffectType.Attack, 0.1f);
+			AtkData atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData._dir, _myUnit.ETeam == TeamType.MyTeam, _myUnit.MyUnitId * 1000 + _myUnit.MyDamagedId, EffAttackType.Stun, EffectType.Attack, 0.1f);
 			targetUnit.Run_Damaged(atkData);
 		}
 	}

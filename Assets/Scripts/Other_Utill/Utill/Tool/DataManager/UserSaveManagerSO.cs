@@ -13,7 +13,7 @@ using Battle.Starategy;
 namespace Utill.Tool
 {
     [CreateAssetMenu(fileName = "UserSaveManagerSO", menuName = "Scriptable Object/UserSaveManagerSO")]
-    public class UserSaveManagerSO : ScriptableObject, IServerInitialize
+    public class UserSaveManagerSO : ScriptableObject, Iinitialize
     {
         //유저ID 저장용
         private class UserIDObj
@@ -30,11 +30,28 @@ namespace Utill.Tool
         /// 서버 데이터를 받아 초기화
         /// </summary>
         /// <param name="serverDataConnect"></param>
-		public void ServerInitialize(ServerDataConnect serverDataConnect)
+		public void Initialize()
         {
             SetUserID();
-            //serverDataConnect.GetStandardUserSaveData(SetUserSaveData);
-		}
+            GetUserSaveData();
+        }
+
+        /// <summary>
+        /// 유저 저장 정보를 가져온다
+        /// </summary>
+        public void GetUserSaveData()
+        {
+            ServerDataConnect.Instance.GetUserSaveData();
+        }
+
+        /// <summary>
+        /// 유저 저장 정보를 업로드한다
+        /// </summary>
+        public void PostUserSaveData()
+        {
+            ServerDataConnect.Instance.PostUserSaveData();
+        }
+
 
         /// <summary>
         /// 유저 세이브 데이터 설정
