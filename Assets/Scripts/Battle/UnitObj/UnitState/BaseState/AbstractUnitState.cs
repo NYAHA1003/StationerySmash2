@@ -229,19 +229,19 @@ namespace Battle.Units
 			if (_stateManager.GetStageData().max_Range <= _myTrm.position.x)
 			{
 				//¿ŞÂÊÀ¸·Î Æ¨°ÜÁ® ³ª¿È
-				SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x - 0.2f, 0, _myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
+				SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x - 0.4f, 0, _myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
 				{
 					_stateManager.Set_Wait(0.5f);
-				}).SetEase(Parabola.Return_ParabolaCurve()));
+				}).SetEase(Ease.OutSine));
 				return true;
 			}
 			if (-_stateManager.GetStageData().max_Range >= _myTrm.position.x)
 			{
 				//¿À¸¥ÂÊÀ¸·Î Æ¨°ÜÁ® ³ª¿È
-				SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x + 0.2f, 0, _myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
+				SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x + 0.4f, 0, _myTrm.position.z), 0.3f, 1, 1).OnComplete(() =>
 				{
 					_stateManager.Set_Wait(0.5f);
-				}).SetEase(Parabola.Return_ParabolaCurve()));
+				}).SetEase(Ease.OutSine));
 				return true;
 			}
 			return false;
