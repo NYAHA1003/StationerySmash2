@@ -10,8 +10,6 @@ namespace Battle.Units
 
 	public class SharpState : AbstractStateManager
 	{
-		public CardData SharpsimPieceData => _sharpsimPieceData;
-		private CardData _sharpsimPieceData = null;
 		public override void SetState()
 		{
 			//스테이트들을 설정한다
@@ -35,14 +33,6 @@ namespace Battle.Units
 
 			SetInStateList();
 		}
-
-		public override void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
-		{
-			base.Reset_State(myTrm, mySprTrm, myUnit);
-			//_sharpsimPieceData = AddressableTool.ReturnProjectileUnitAsync(UnitType.SharpSim).Result;
-			myUnit.SetIsInvincibility(false);
-			myUnit.SetIsNeverDontThrow(false);
-		}
 	}
 
 	public class SharpIdleState : AbstractIdleState
@@ -62,8 +52,8 @@ namespace Battle.Units
 		protected override void Summon()
 		{
 			//샤프심 소환
-			SharpState eraserState = (SharpState)_stateManager;
-			_myUnit.BattleManager.UnitComponent.SummonUnit(eraserState.SharpsimPieceData, _myTrm.position, _myUnit.UnitStat.Grade, _myUnit.ETeam);
+			var sharpsimData = DeckDataManagerSO.FindCardData(CardNamingType.SharpSim);
+			_myUnit.BattleManager.UnitComponent.SummonUnit(sharpsimData, _myTrm.position, _myUnit.UnitStat.Grade, _myUnit.ETeam);
 
 		}
 	}
