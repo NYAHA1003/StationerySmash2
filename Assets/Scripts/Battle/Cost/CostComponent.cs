@@ -28,6 +28,8 @@ namespace Battle
         private TextMeshProUGUI _costText = null;
         [SerializeField]
         private Image _costImage = null;
+        [SerializeField]
+        private TextAnimationComponent _textAnimationComponent;
 
         /// <summary>
         /// √ ±‚»≠
@@ -48,6 +50,9 @@ namespace Battle
         public void AddCost(int addCost)
         {
             CurrentCost += addCost;
+            Vector2 animationPos = _costText.rectTransform.localPosition;
+            animationPos.x += 250;
+            _textAnimationComponent.SetText($"+{addCost}", animationPos, 0.3f, TextAnimationComponent.AnimationDirType.Right);
             UpdateCostText();
         }
 
@@ -58,6 +63,9 @@ namespace Battle
         public void SubtractCost(int subtractCost)
         {
             CurrentCost -= subtractCost;
+            Vector2 animationPos = _costText.rectTransform.localPosition;
+            animationPos.x += 250;
+            _textAnimationComponent.SetText($"-{subtractCost}", animationPos, 0.3f, TextAnimationComponent.AnimationDirType.Right);
             UpdateCostText();
         }
 
