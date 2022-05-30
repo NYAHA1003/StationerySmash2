@@ -296,7 +296,7 @@ public class Unit : MonoBehaviour
     public void SubtractHP(int damage)
     {
         _unitStat.SubtractHP(damage);
-        _unitSprite.Set_HPSprite(_unitStat.Hp, _unitStat.MaxHp);
+        _unitSprite.SetHPSprite(_unitStat.Hp, _unitStat.MaxHp);
     }
 
     /// <summary>
