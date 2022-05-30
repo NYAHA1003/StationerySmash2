@@ -40,7 +40,8 @@ const UserSaveSchema = mongoose.model('users', new mongoose.Schema({
       _lastPlayStage: Number,
       _winCount: Number,
       _winningStreakCount: Number,
-      _loseCount: Number
+      _loseCount: Number,
+      _themeSkinType : Number
     },
     { 
         versionKey : false
