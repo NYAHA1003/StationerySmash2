@@ -106,6 +106,7 @@ namespace Utill.Tool
                 _userSaveData._haveSkinList.Add(SkinType.PencilCaseNormal);
                 _userSaveData._haveProfileList.Add(ProfileType.ProPencil);
                 _userSaveData._havePencilCaseList.Add(PencilCaseType.Normal);
+                _userSaveData._haveThemeSkinTypeList.Add(ThemeSkinType.Normal);
                 _userSaveData._haveCardSaveDatas.Add(new CardSaveData()
                 {
                     _cardNamingType = CardNamingType.Pencil,
