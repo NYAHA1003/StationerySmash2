@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using System;
 using Random = UnityEngine.Random;
 using TMPro;
-using DG.Tweening; 
+using DG.Tweening;
 using Utill.Data;
 
 public class BadgeInfo
@@ -28,8 +28,8 @@ public class AllBadgeInfos
 
         for (int i = 0; i < itemCount; i++)
         {
-            DailyItemInfo badgeInfo = badgeItemSO.dailyItemInfos[i]; 
-            if(badgeInfo._grade == Grade.Common)
+            DailyItemInfo badgeInfo = badgeItemSO.dailyItemInfos[i];
+            if (badgeInfo._grade == Grade.Common)
             {
                 badgeCommonInfos.Add(badgeInfo);
             }
@@ -44,7 +44,7 @@ public class AllBadgeInfos
         }
     }
 
- 
+
 }
 
 namespace Main.Store
@@ -54,12 +54,15 @@ namespace Main.Store
         [SerializeField]
         private AllBadgeInfos _allBadgeInfos;
         [SerializeField]
-        private SaveManager SaveManager;
-        [SerializeField]
         private Canvas gachaCanvas;
         [SerializeField]
-        private GameObject badgePrefab; 
+        private GameObject itemsParent;
+        [SerializeField]
+        private GachaCard badgePrefab;
+        [SerializeField]
+        private Image blackBackImage;
 
+        private int _count = 11; // 최대 아이템 뜰 개수
         //private List<string> BadgeCommonList = new List<string>();
         //private List<string> BadgeRareList = new List<string>();
         //private List<string> BadgeEpicList = new List<string>();
@@ -74,23 +77,24 @@ namespace Main.Store
         [SerializeField]
         private Sprite _backBadgeImage; // 뱃지 뒷면 
 
+        private List<GachaCard> gachaCards = new List<GachaCard>();
         // 
         [SerializeField]
-        private int _RarePercent = 15; 
-        [SerializeField] 
-        private int _EpicPercent = 5; 
+        private int _RarePercent = 15;
         [SerializeField]
-        private int _CommonPackAmount; 
+        private int _EpicPercent = 5;
         [SerializeField]
-        private int _RarePackAmount; 
+        private int _CommonPackAmount;
         [SerializeField]
-        private int _EpicPackAmount; 
+        private int _RarePackAmount;
         [SerializeField]
-        private int _CommonPrice; 
+        private int _EpicPackAmount;
         [SerializeField]
-        private int _RarePrice; 
-        [SerializeField] 
-        private int _EpicPrice; 
+        private int _CommonPrice;
+        [SerializeField]
+        private int _RarePrice;
+        [SerializeField]
+        private int _EpicPrice;
 
         private int RandomNum;
 
@@ -98,7 +102,8 @@ namespace Main.Store
         {
             ResetFunctionPakage_UI();
             SetFunctionPakage_UI();
-            _allBadgeInfos.SetInfosGrade(); 
+            _allBadgeInfos.SetInfosGrade();
+            InstantiateItem();
         }
 
         /// <summary>
@@ -116,7 +121,7 @@ namespace Main.Store
         /// </summary>
         private void SetFunctionPakage_UI()
         {
-            _BadgeButton.onClick.AddListener(() => Summons(1,10));
+            _BadgeButton.onClick.AddListener(() => Summons(1, 10));
             _BadgeSackButton.onClick.AddListener(() => Summons(5, 20));
             _BadgeBoxButton.onClick.AddListener(() => Summons(11, 40));
 
@@ -178,39 +183,41 @@ namespace Main.Store
              *      return; 
              * }
              */
-            for (int i = 0; i < Amount; i++)
-            {
-                BadgeSummons();
-            }
+            BadgeSummons(Amount);
         }
 
         // 일반 80% 희귀 15% 영웅 5%
         [ContextMenu("테스트")]
-        private void BadgeSummons()
+        private void BadgeSummons(int amount)
         {
-            int Percent = Random.Range(0, 100 + 1);
-            Debug.Log("Percent : " + Percent);
-            GameObject badge = Instantiate(badgePrefab, gachaCanvas.transform);
-            if (_EpicPercent >= Percent)
+            blackBackImage.gameObject.SetActive(true);
+            for (int i = 0; i< amount; i++)
             {
-                //에픽 스티커 소환
-                RandomNum = Random.Range(0, _allBadgeInfos.badgeEpicInfos.Count);
-                Debug.Log($"\"영웅\"등급 {_allBadgeInfos.badgeEpicInfos[RandomNum]} 뱃지가 나왔습니다.");
+                int Percent = Random.Range(0, 100 + 1);
+                Debug.Log("Percent : " + Percent);
+                if (_EpicPercent >= Percent)
+                {
+                    //에픽 스티커 소환
+                    RandomNum = Random.Range(0, _allBadgeInfos.badgeEpicInfos.Count);
+                    Debug.Log($"\"영웅\"등급 {_allBadgeInfos.badgeEpicInfos[RandomNum]} 뱃지가 나왔습니다.");
+                }
+                else if (_RarePercent + _EpicPercent >= Percent)
+                {
+                    //레어 스티커 소환
+                    RandomNum = Random.Range(0, _allBadgeInfos.badgeRareInfos.Count);
+                    Debug.Log($"\"레어\"등급 {_allBadgeInfos.badgeRareInfos[RandomNum]} 뱃지가 나왔습니다.");
+                }
+                else
+                {
+                    //일반 스티커 소환
+                    RandomNum = Random.Range(0, _allBadgeInfos.badgeCommonInfos.Count);
+                    Debug.Log($"\"일반\"등급 {_allBadgeInfos.badgeCommonInfos[RandomNum]} 뱃지가 나왔습니다.");
+                }
+                DailyItemInfo getItemInfo = _allBadgeInfos.badgeCommonInfos[RandomNum];
+                gachaCards[i].gameObject.SetActive(true); 
+                gachaCards[i].SetSprite(getItemInfo._itemSprite, _backBadgeImage);
             }
-            else if (_RarePercent + _EpicPercent >= Percent)
-            {
-                //레어 스티커 소환
-                RandomNum = Random.Range(0, _allBadgeInfos.badgeRareInfos.Count);
-                Debug.Log($"\"레어\"등급 {_allBadgeInfos.badgeRareInfos[RandomNum]} 뱃지가 나왔습니다.");
-            }
-            else
-            {
-                //일반 스티커 소환
-                RandomNum = Random.Range(0, _allBadgeInfos.badgeCommonInfos.Count);
-                Debug.Log($"\"일반\"등급 {_allBadgeInfos.badgeCommonInfos[RandomNum]} 뱃지가 나왔습니다.");
-            }
-            DailyItemInfo getItemInfo = _allBadgeInfos.badgeCommonInfos[RandomNum];
-            ShowBadge(badge,getItemInfo); 
+            
             //if(_EpicPercent >= Percent)
             //{
             //    //에픽 스티커 소환
@@ -230,30 +237,29 @@ namespace Main.Store
             //Debug.Log($"\"일반\"등급 {BadgeCommonList[RandomNum]} 뱃지가 나왔습니다.");
         }
 
-        private void ShowBadge(GameObject badge, DailyItemInfo getItemInfo)
+        /// <summary>
+        ///  뽑기 닫기 
+        /// </summary>
+        private void Close()
         {
-            //badgePrefab.GetComponent<Image>().sprite = getItemInfo._itemSprite;
-            //badgePrefab.GetComponent<TextMeshProUGUI>().text = getItemInfo._cardName;
-
-            GameObject badgeObj = badgePrefab.transform.Find("BadgeImage").gameObject;
-            Image badgeImage = badgeObj.GetComponent<Image>();
-
-            Sequence sequence = DOTween.Sequence();
-            //sequence.AppendCallback(() =>
-            //{
-            //    if (badgeImage.transform.rotation.y >= 90 && badgeImage.transform.rotation.y < 270)
-            //    { 
-            //        badgeImage.sprite = _backBadgeImage;
-            //    }
-            //    else
-            //    {
-            //        badgeImage.sprite = getItemInfo._itemSprite;
-            //    }
-            //}).SetLoops(-1);
-            //sequence.Append(badgeImage.transform.DORotate(Vector3.up * 360, 0.5f, RotateMode.FastBeyond360).SetLoops(10, LoopType.Yoyo));
-
-            badgeObj.transform.DORotate(new Vector3(0,360,0), 1).SetLoops(10, LoopType.Yoyo);
+            for(int i =0; i < _count; i++)
+            {
+                gachaCards[i].gameObject.SetActive(true);
+            }
+            // 검은 이미지 닫기 
+        }
+        /// <summary>
+        /// 최대로 뜰 아이템 개수만큼 미리 생성해두기 
+        /// </summary>
+        private void InstantiateItem()
+        {
+            for (int i = 0; i < _count; ++i)
+            {
+                GachaCard gachaCard = Instantiate(badgePrefab, itemsParent.transform);
+                gachaCards.Add(gachaCard);
+            }
         }
 
     }
+
 }
