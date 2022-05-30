@@ -50,11 +50,6 @@ namespace Main.Deck
 
         private bool _isActivePC; //필통 스크롤이 켜져있는지
 
-        private void Awake()
-        {
-            UserSaveManagerSO.AddObserver(this);
-        }
-
         private void Start()
         {
             _haveCardParent = _haveDeckScroll.transform.GetChild(0).GetChild(0);
@@ -72,6 +67,8 @@ namespace Main.Deck
             EventManager.StartListening(EventsType.ChangePCAndDeck, OnChangePencilAndCards);
             EventManager.StartListening(EventsType.UpdateHaveAndEquipDeck, UpdateHaveAndEquipDeck);
             EventManager.StartListening(EventsType.UpdateHaveAndEquipPCDeck, UpdateHaveAndEquipPCDeck);
+
+            UserSaveManagerSO.AddObserver(this);
         }
 
         /// <summary>
