@@ -8,6 +8,7 @@ using Utill.Tool;
 
 public class MainLoadingManager : LoadingManager
 {
+    
     protected async override void Start()
     {
         await Sound.AllLoadAssetAsync();
