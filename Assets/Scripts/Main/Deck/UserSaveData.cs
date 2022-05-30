@@ -31,7 +31,8 @@ namespace Main.Deck
         public int _winCount = 0; //승리한 횟수
         public int _winningStreakCount = 0; //가장 크게 연승한 횟수
         public int _loseCount = 0; //패배한 횟수
-    
+        public ThemeSkinType _themeSkinType = ThemeSkinType.Normal; // 마지막으로 선택한 테마 타입
+
         /// <summary>
         /// 경험치 증가
         /// </summary>

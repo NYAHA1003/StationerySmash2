@@ -20,6 +20,8 @@ public class SetSkinComponent : MonoBehaviour
     private void Start()
     {
         SetSkinAll();
+        SetThemeSkinAll();
+        _isAllSetSkin = true;
     }
 
     /// <summary>
@@ -41,7 +43,22 @@ public class SetSkinComponent : MonoBehaviour
                 await SkinData.SetSkinStaticAsync(skinData._skinType);
 			}
         }
+    }
 
-        _isAllSetSkin = true;
+    /// <summary>
+    /// 모든 테마 스킨 데이터를 불러온다
+    /// </summary>
+    private async void SetThemeSkinAll()
+    {
+        int themeTypeCount = System.Enum.GetValues(typeof(ThemeSkinType)).Length;
+        int uiTypeCount = System.Enum.GetValues(typeof(ThemeUIType)).Length;
+
+        for(int i = 0; i < themeTypeCount; ++i)
+		{
+            for(int j = 0; j < uiTypeCount; ++j)
+			{
+                await ThemeSkin.SetSkinStaticAsync((ThemeSkinType)System.Enum.ToObject(typeof(ThemeSkinType), i), (ThemeUIType)System.Enum.ToObject(typeof(ThemeUIType), j));
+			}
+		}
     }
 }
