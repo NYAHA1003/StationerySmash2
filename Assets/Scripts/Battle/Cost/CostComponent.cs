@@ -26,6 +26,8 @@ namespace Battle
         //인스펙터 참조 변수
         [SerializeField]
         private TextMeshProUGUI _costText = null;
+        [SerializeField]
+        private Image _costImage = null;
 
         /// <summary>
         /// 초기화
@@ -108,11 +110,13 @@ namespace Battle
             if (_costDelay > 0)
             {
                 _costDelay -= _costSpeed * Time.deltaTime;
+                _costImage.fillAmount = (100 - _costDelay) / 100;
                 return;
             }
             AddCost(1);
             UpdateCostText();
             _costDelay = 100;
+            _costImage.fillAmount = (100 - _costDelay) / 100;
         }
 
         /// <summary>
