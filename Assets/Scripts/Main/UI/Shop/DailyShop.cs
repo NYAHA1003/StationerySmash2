@@ -98,7 +98,7 @@ public class DailyShop : MonoBehaviour
     [SerializeField]
     private DailyItemSO _newBadgeSheetSO;
 
-    private List<DailyCardType> _dailyCardTypes = new List<DailyCardType>(); // 일일상점 카드 타입
+    private List<DailyCardType> _dailyCardTypes = new List<DailyCardType>(); // 일일상점 카드 타입 
     private List<DailyItem> _dailyItems = new List<DailyItem>(); // 6개의 일일상점 아이템 
 
     [SerializeField]
@@ -114,7 +114,7 @@ public class DailyShop : MonoBehaviour
         CreateItems();
         InitializeDailyCards();
         UpdateNotHaveItems();
-        ShowFreeDailyCard();
+        ShowFreeDailyCard();    
         ShowDailyCard();
         //Shuffle();
         //CreateDailyItem();
@@ -123,7 +123,7 @@ public class DailyShop : MonoBehaviour
     [ContextMenu("새로운 카드 데이터 넣어주기")]
     public void OnTest()
     {
-        UpdateNotHaveItems(); 
+        UpdateNotHaveItems();
         ShowDailyCard();
         ShowFreeDailyCard();
     }
@@ -236,9 +236,9 @@ public class DailyShop : MonoBehaviour
     /// </summary>
     private void CreateItems()
     {
-        for (int i = 0; i < _dailyCardCount ; i++)
+        for (int i = 0; i < _dailyCardCount; i++)
         {
-            DailyItem dailyItem = Instantiate(_dailyItemPrefab, transform); 
+            DailyItem dailyItem = Instantiate(_dailyItemPrefab, transform);
             _dailyItems.Add(dailyItem);
         }
     }
@@ -246,36 +246,40 @@ public class DailyShop : MonoBehaviour
     {
         Shuffle();
         // 유료 카드 생성 0 : 무료 카드, 1~ 5 : 유료카드 
-        for (int i = 0; i < _dailyCardCount -1; i++)
+        for (int i = 0; i < _dailyCardCount - 1; i++)
         {
             Debug.Log("상점카드 생성");
             DailyItem paidDailyCard = _dailyItems[i + 1];
 
+
             // Check에서 switch문 돌리지 말고 여기에서 switch문 돌린 후 
             // 각각 자기를 반환 하게 한후 ( 반환형을 바꾼다 StationerySheet, StickerSheet 같이 ) 
-            // ReturnItemInfo와 ReturnRandomCount 로 아이템 정보와 개수 얻어오는 형태로 
-            //switch (dailyCardTypes[i])
+            // ReturnItemInfo와 ReturnRandomCount 로 아이템 정보와 개수 얻어오는 형태로 ]
+
+
+            //switch (_dailyCardTypes[i])
             //{
             //    case DailyCardType.StationerySheet:
-            //        StationerySheet stationeryDailyCard = Check(dailyCardTypes[i]);
+            //        StationerySheet stationeryDailyCard = Check(_dailyCardTypes[i]);
             //        paidDailyCard.SetCardInfo(stationeryDailyCard.ReturnItemInfo());
             //        break;
             //    case DailyCardType.StickerSheet:
-            //        StickerSheet stickerSheetDailyCard = Check(dailyCardTypes[i]);
+            //        StickerSheet stickerSheetDailyCard = Check(_dailyCardTypes[i]);
             //        break;
             //    case DailyCardType.BadgeSheet:
-            //        BadgeSheet badgeSheetDailyCard = Check(dailyCardTypes[i]);
+            //        BadgeSheet badgeSheetDailyCard = Check(_dailyCardTypes[i]);
             //        break;
             //    case DailyCardType.NewStationary:
-            //        NewStationery newStationeryDailyCard = Check(dailyCardTypes[i]);
+            //        NewStationery newStationeryDailyCard = Check(_dailyCardTypes[i]);
             //        break;
             //    case DailyCardType.NewSticker:
-            //        NewSticker newStickerDailyCard = Check(dailyCardTypes[i]);
+            //        NewSticker newStickerDailyCard = Check(_dailyCardTypes[i]);
             //        break;
             //    case DailyCardType.NewBadge:
-            //        NewBadge newBadgeDailyCard = Check(dailyCardTypes[i]);
+            //        NewBadge newBadgeDailyCard = Check(_dailyCardTypes[i]);
             //        break;
             //}
+
             DailyItemInfo dailyItemInfo = Check(_dailyCardTypes[i]);
             paidDailyCard.SetCardInfo(dailyItemInfo);
         }
@@ -387,7 +391,7 @@ public class DailyShop : MonoBehaviour
                     newStickerGrade = Grade.Rare;
                 }
                 else if (randomGrade <= commonPercent + rarePercent + epicPercent)
-                {
+                {   
                     newStickerGrade = Grade.Epic;
                 }
                 else
@@ -455,7 +459,7 @@ public class DailyShop : MonoBehaviour
             dailyFreeItemType = DailyFreeItemType.Dalgona;
         }
         FreeItem freeItem = new FreeItem(_freeItemSO, dailyFreeItemType);
-      //  freeItemCount = freeItem.ReturnRandomCount();
+        //  freeItemCount = freeItem.ReturnRandomCount();
         DailyItem freeDailyCard = _dailyItems[0];
         freeDailyCard.SetCardInfo(freeItem.ReturnItemInfo(dailyFreeItemType));
     }
