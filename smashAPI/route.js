@@ -50,14 +50,19 @@ function FindUserSaveData(req, res) {
 
 //유저 세이브 데이터 넣거나 가져오기
 router.post('/UserSaveData', (req, res, next) => {
+  const today = new Date();  
+  const month = today.getMonth() + 1;
+  const date = today.getDate();
+  const hours = today.getHours(); // 시
+  const minutes = today.getMinutes();  // 분
   switch (req.body.message) {
     case 'GET':
-      console.log('get');
+      console.log(`GET ${req.body.post._userID} = DATE ${month} : ${date} : ${hours} : ${minutes}`);
       FindUserSaveData(req, res);
       break;
 
     case 'POST':
-      console.log('post');
+      console.log(`POST ${req.body.post._userID} = DATE ${month} : ${date} : ${hours} : ${minutes}`);
       UpdateUserSaveData(req, res, next);
       break;
   }
