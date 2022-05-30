@@ -26,6 +26,7 @@ namespace Utill.Tool
         //프로퍼티
         public static UserSaveData UserSaveData => _userSaveData; //유저 데이터
 
+        private static List<IUserData> _userDataObservers = new List<IUserData>();
 
         /// <summary>
         /// 서버 데이터를 받아 초기화
@@ -127,6 +128,60 @@ namespace Utill.Tool
             }
 
         }
-	}
+
+
+
+        /// <summary>
+        /// 관찰자 추가
+        /// </summary>
+        /// <param name="observer"></param>
+        public static void AddObserver(IUserData observer)
+        {
+            _userDataObservers.Add(observer);
+            observer.Notify();
+        }
+
+        [ContextMenu("관찰자들에게 유저 데이터 전달")]
+        /// <summary>
+        /// 관찰자들에게 유저 데이터 전달
+        /// </summary>
+        public static void DeliverDataToObserver()
+        {
+            for (int i = 0; i < _userDataObservers.Count; i++)
+            {
+                _userDataObservers[i].Notify();
+            }
+        }
+
+        /// <summary>
+        /// 모든 관찰자를 제거
+        /// </summary>
+        public static void ClearObserver()
+        {
+            _userDataObservers.Clear();
+        }
+
+        /// <summary>
+        /// 경험치 추가
+        /// </summary>
+        /// <param name="exp"></param>
+        public static void AddExp(int exp)
+		{
+            _userSaveData.AddExp(exp);
+            DeliverDataToObserver();
+
+        }
+
+        /// <summary>
+        /// 돈 추가
+        /// </summary>
+        /// <param name="exp"></param>
+        public static void AddMoney(int money)
+        {
+            _userSaveData.AddMoney(money);
+            DeliverDataToObserver();
+
+        }
+    }
 
 }

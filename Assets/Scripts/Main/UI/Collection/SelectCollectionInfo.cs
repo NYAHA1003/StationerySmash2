@@ -24,8 +24,6 @@ namespace Main.Collection
         private Button _createButton = null;
         [SerializeField]
         private Button _closeButton = null;
-        [SerializeField]
-        private SaveDataSO _saveDataSO = null;
 
         private CollectionData _collectionData = null;
         private bool _isHave = false;
@@ -93,7 +91,7 @@ namespace Main.Collection
             {
                 MaterialSpend();
                 _isHave = true;
-                _saveDataSO.userSaveData._haveCollectionDatas.Add(_collectionData._collectionThemeType);
+                UserSaveManagerSO.UserSaveData._haveCollectionDatas.Add(_collectionData._collectionThemeType);
                 _collectionComponent.ResetData();
             }
         }
@@ -132,7 +130,7 @@ namespace Main.Collection
                     count = _collectionData._needCardNamingType.Count;
                     for (int i = 0; i < count; i++)
                     {
-                        CardSaveData cardSaveData = _saveDataSO.userSaveData._haveCardSaveDatas.Find(x => x._cardNamingType == _collectionData._needCardNamingType[i]);
+                        CardSaveData cardSaveData = UserSaveManagerSO.UserSaveData._haveCardSaveDatas.Find(x => x._cardNamingType == _collectionData._needCardNamingType[i]);
                         if (cardSaveData._count < _collectionData._needCardNamingCount[i])
                         {
                             return false;
@@ -143,7 +141,7 @@ namespace Main.Collection
                     count = _collectionData._needSkinTypes.Count;
                     for (int i = 0; i < count; i++)
                     {
-                        if (!_saveDataSO.userSaveData._haveSkinList.Contains(_collectionData._needSkinTypes[i]))
+                        if (!UserSaveManagerSO.UserSaveData._haveSkinList.Contains(_collectionData._needSkinTypes[i]))
                         {
                             return false;
                         }
@@ -167,7 +165,7 @@ namespace Main.Collection
                     int count = _collectionData._needCardNamingType.Count;
                     for (int i = 0; i < count; i++)
                     {
-                        CardSaveData cardSaveData = _saveDataSO.userSaveData._haveCardSaveDatas.Find(x => x._cardNamingType == _collectionData._needCardNamingType[i]);
+                        CardSaveData cardSaveData = UserSaveManagerSO.UserSaveData._haveCardSaveDatas.Find(x => x._cardNamingType == _collectionData._needCardNamingType[i]);
                         cardSaveData._count -= _collectionData._needCardNamingCount[i];
                     }
                     break;

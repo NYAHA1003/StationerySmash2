@@ -15,7 +15,7 @@ public class NameProfileComponent : MonoBehaviour, IUserData
 
     public void Awake()
     {
-        SaveManager.Instance.SaveData.AddObserver(this);
+        UserSaveManagerSO.AddObserver(this);
     }
 
     public void Notify()

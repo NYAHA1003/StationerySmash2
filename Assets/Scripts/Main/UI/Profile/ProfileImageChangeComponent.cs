@@ -21,7 +21,7 @@ public class ProfileImageChangeComponent : MonoBehaviour, IUserData
 
 	private void Awake()
 	{
-		SaveManager.Instance.SaveData.AddObserver(this);
+		UserSaveManagerSO.AddObserver(this);
 	}
 
 	private void Start()
@@ -35,7 +35,7 @@ public class ProfileImageChangeComponent : MonoBehaviour, IUserData
 	/// <param name="profileType"></param>
 	public void OnChangeProfileImage(ProfileType profileType)
 	{
-		SaveManager.Instance.SaveData.userSaveData._currentProfileType = profileType;
+		UserSaveManagerSO.UserSaveData._currentProfileType = profileType;
 	}
 
 	public void Notify()
@@ -55,7 +55,7 @@ public class ProfileImageChangeComponent : MonoBehaviour, IUserData
 	/// </summary>
 	private void SetProfileImageChangeButtons()
 	{
-		int count = SaveManager.Instance.SaveData.userSaveData._haveProfileList.Count;
+		int count = UserSaveManagerSO.UserSaveData._haveProfileList.Count;
 		
 		for(int i = 0; i < _profileImageChangeButtonParent.childCount; i++)
 		{
@@ -76,7 +76,7 @@ public class ProfileImageChangeComponent : MonoBehaviour, IUserData
 
 			changeButton.gameObject.SetActive(true);
 
-			ProfileType changeProfileType = SaveManager.Instance.SaveData.userSaveData._haveProfileList[i];
+			ProfileType changeProfileType = UserSaveManagerSO.UserSaveData._haveProfileList[i];
 
 			changeButton.onClick.RemoveAllListeners();
 			changeButton.GetComponent<ProfileImageChangeButton>().SetChangeButton(changeProfileType);

@@ -17,7 +17,7 @@ public class ProfileImageComponent : MonoBehaviour, IUserData
     private ProfileType _profileType = ProfileType.ProNone;
     public void Awake()
     {
-        SaveManager.Instance.SaveData.AddObserver(this);
+        UserSaveManagerSO.AddObserver(this);
     }
 
     public void Notify()

@@ -23,7 +23,7 @@ public class ProfileEtcComponent : MonoBehaviour, IUserData
 
 	private void Awake()
 	{
-		SaveManager.Instance.SaveData.AddObserver(this);
+		UserSaveManagerSO.AddObserver(this);
 	}
 
 	public void Notify()

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using Utill.Tool;
 
 namespace Battle
 {
@@ -76,8 +77,9 @@ namespace Battle
                 _winPanel.DOScale(1, 0.3f).SetEase(Ease.OutExpo).
                     OnComplete(() =>
                     {
-                        SaveManager.Instance.AddExp(_loadingBattleDataSO.CurrentStageData._awardExp);
-                        SaveManager.Instance.AddMoney(_loadingBattleDataSO.CurrentStageData._awardMoney);
+
+                        UserSaveManagerSO.AddExp(_loadingBattleDataSO.CurrentStageData._awardExp);
+                        UserSaveManagerSO.AddMoney(_loadingBattleDataSO.CurrentStageData._awardMoney);
                         _winText.DOScale(1.5f, 0.3f).SetLoops(-1, LoopType.Yoyo);
                     });
                 return;

@@ -15,9 +15,6 @@ namespace Main.Deck
         public List<GameObject> EquipDeckCards => _equipDeckCards;
         public List<GameObject> HavePencilCaseCards => _havePencilCaseCards;
 
-
-        [SerializeField]
-        private SaveDataSO _saveDataSO = null;
         [SerializeField]
         private UserDeckDataComponent _userDeckData; //유저 데이터 컴포넌트
         [SerializeField]
@@ -55,7 +52,7 @@ namespace Main.Deck
 
         private void Awake()
         {
-            SaveManager.Instance.SaveData.AddObserver(this);
+            UserSaveManagerSO.AddObserver(this);
         }
 
         private void Start()

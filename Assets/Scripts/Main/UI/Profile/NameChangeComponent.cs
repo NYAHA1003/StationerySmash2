@@ -21,7 +21,7 @@ public class NameChangeComponent : MonoBehaviour, IUserData
 
     private void Awake()
     {
-        SaveManager.Instance.SaveData.AddObserver(this);
+        UserSaveManagerSO.AddObserver(this);
     }
 
     private void Start()
@@ -58,7 +58,7 @@ public class NameChangeComponent : MonoBehaviour, IUserData
             return;
         }
 
-        SaveManager.Instance.SaveData.userSaveData._name = name;
+        UserSaveManagerSO.UserSaveData._name = name;
 
     }
 
