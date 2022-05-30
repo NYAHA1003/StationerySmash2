@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Utill.Data;
+using Utill.Tool;
 using Utill.Load;
 using DG.Tweening;
 using TMPro;
@@ -29,10 +30,6 @@ namespace Battle
 		private Transform _enemyPencilCase;
 		[SerializeField]
 		private GameObject _introCanvas = null;
-		[SerializeField]
-		private PencilCaseDataSO _playerPencilCaseDataSO = null;
-		[SerializeField]
-		private PencilCaseDataSO _enemyPencilCaseDataSO = null;
 		[SerializeField]
 		private AIDataSO _enemyAIDataSO = null;
 		[SerializeField]
@@ -63,7 +60,6 @@ namespace Battle
 			_managerBase = managerBase;
 		}
 
-
 		/// <summary>
 		/// 인트로 시작
 		/// </summary>
@@ -85,7 +81,7 @@ namespace Battle
 
 			if (teamType == TeamType.MyTeam)
 			{
-				_pencilCaseCard.SetPencilCaseData(_playerPencilCaseDataSO._pencilCaseData);
+				_pencilCaseCard.SetPencilCaseData(PencilCaseDataManagerSO.InGamePencilCaseData);
 				int cardDataCount = _playerCardDatas.Count;
 				for (int i = 0; i < cardDataCount; i++)
 				{
@@ -95,7 +91,7 @@ namespace Battle
 			}
 			else if (teamType == TeamType.EnemyTeam)
 			{
-				_pencilCaseCard.SetPencilCaseData(_enemyPencilCaseDataSO._pencilCaseData);
+				_pencilCaseCard.SetPencilCaseData(PencilCaseDataManagerSO.EnemyGamePencilCaseData);
 				int cardDataCount = _enemyCardDatas.Count;
 				for (int i = 0; i < cardDataCount; i++)
 				{

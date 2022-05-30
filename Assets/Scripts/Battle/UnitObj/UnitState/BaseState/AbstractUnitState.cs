@@ -47,7 +47,7 @@ namespace Battle.Units
 			_mySprTrm = mySprTrm;
 			_myUnit = myUnit;
 			_myUnitData = _myUnit.UnitData;
-			originValue = _myUnitData.unitablityData;
+			originValue = _myUnitData._unitablityData;
 		}
 		/// <summary>
 		/// 스테이트 초기

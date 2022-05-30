@@ -75,8 +75,9 @@ namespace Main.Card
 		{
 			_selectPCData = pencilCaseData;
 
+			UnitData unitData = UnitDataManagerSO.FindUnitData(pencilCaseData._unitType);
 			_nameText.text = $"{System.Enum.GetName(typeof(PencilCaseType), pencilCaseData._pencilCaseType)}";
-			_hpText.text = $"{pencilCaseData._pencilCaseData.unitData.unit_Hp}";
+			_hpText.text = $"{unitData._hp}";
 			_maxBadgeText.text = $"{pencilCaseData._maxBadgeCount}";
 			_maxCardText.text = $"{pencilCaseData._maxCard}";
 			_throwGaugeText.text = $"{pencilCaseData._throwGaugeSpeed}";
@@ -92,7 +93,7 @@ namespace Main.Card
 		/// </summary>
 		public void OnChangePencilCase()
 		{
-			_userDeckDataComponent.SetInGamePencilCase(_selectPCData);
+			PencilCaseDataManagerSO.SetInGamePencilCase(_selectPCData._pencilCaseType);
 		}
 
 		//πÓ¡ˆ∆–≥Œ

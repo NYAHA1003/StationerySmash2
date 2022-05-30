@@ -13,10 +13,18 @@ namespace Utill.Load
         public int summonGrade;
         public float throwSpeed;
         public bool isAIOn;
-        public List<CardData> cardDataList;
+        public List<CardStageData> cardStageData;
         public List<Vector2> pos;
         public List<float> max_Delay;
         public int _awardMoney;
         public int _awardExp;
     }
+
+
+    [System.Serializable]
+    public class CardStageData
+	{
+        public int _level;
+        public CardNamingType _cardNamingType;
+	}
 }

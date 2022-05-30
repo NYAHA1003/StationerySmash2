@@ -84,7 +84,7 @@ namespace Battle
 			Application.targetFrameRate = 60;
 
 			_pencilCaseComponent.SetInitialization(UnitComponent, CurrentStageData);
-			_cardComponent.SetInitialization(this, WinLoseComponent, CameraComponent, UnitComponent, CostComponent, ref _updateAction, CurrentStageData, _pencilCaseComponent.PencilCaseDataMy._pencilCaseData._maxCard);
+			_cardComponent.SetInitialization(this, WinLoseComponent, CameraComponent, UnitComponent, CostComponent, ref _updateAction, CurrentStageData, PencilCaseDataManagerSO.InGamePencilCaseData._maxCard);
 			_cameraComponent.SetInitialization(CardComponent, WinLoseComponent, ref _updateAction, CurrentStageData);
 			_unitComponent.SetInitialization(ref _updateAction, CurrentStageData);
 			_effectComponent.SetInitialization();
@@ -92,7 +92,7 @@ namespace Battle
 			_unitSignComponent.SetInitialization();
 			_aiComponent.SetInitialization(PencilCaseComponent, UnitComponent, ref _updateAction);
 			_timeComponent.SetInitialization(ref _updateAction, CurrentStageData, _unitComponent, _cardComponent, _costComponent, _pencilCaseComponent);
-			_costComponent.SetInitialization(ref _updateAction, _pencilCaseComponent.PencilCaseDataMy._pencilCaseData);
+			_costComponent.SetInitialization(ref _updateAction, PencilCaseDataManagerSO.InGamePencilCaseData);
 			_pauseComponent.SetInitialization();
 			_winLoseComponent.SetInitialization();
 			_introComponent.SetInitialization(_cameraComponent, this);

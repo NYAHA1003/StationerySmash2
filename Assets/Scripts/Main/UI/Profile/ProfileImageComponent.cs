@@ -17,27 +17,27 @@ public class ProfileImageComponent : MonoBehaviour, IUserData
     private ProfileType _profileType = ProfileType.ProNone;
     public void Awake()
     {
-        SaveManager._instance.SaveData.AddObserver(this);
+        UserSaveManagerSO.AddObserver(this);
     }
 
-    public void Notify(ref UserSaveData userSaveData)
+    public void Notify()
     {
-        SetProfileImage(ref userSaveData);
+        SetProfileImage();
     }
 
     /// <summary>
     /// 프로필 이미지 수정
     /// </summary>
-    public void SetProfileImage(ref UserSaveData userSaveData)
+    public void SetProfileImage()
     {
         //프로필 타입이 변경되지 않으면 실행하지 않는다
-        if(_profileType == userSaveData._currentProfileType)
+        if(_profileType == UserSaveManagerSO.UserSaveData._currentProfileType)
 		{
             return;
 		}
 
         //어드레서블로 이미지를 가져와 비동기적으로 프로필 이미지를 변경한다
-        string name = System.Enum.GetName(typeof(ProfileType), userSaveData._currentProfileType);
+        string name = System.Enum.GetName(typeof(ProfileType), UserSaveManagerSO.UserSaveData._currentProfileType);
 
         Addressables.LoadAssetAsync<Sprite>(name).Completed +=
             (AsyncOperationHandle<Sprite> obj) =>

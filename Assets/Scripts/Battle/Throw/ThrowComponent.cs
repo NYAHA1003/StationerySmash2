@@ -27,8 +27,6 @@ namespace Battle
         private GameObject _parabolaBackground = null;
         [SerializeField]
         private TrailRenderer _throwTrail = null;
-        [SerializeField]
-        private PencilCaseDataSO _playerPencilCaseDataSO = null;
 
         //참조 변수
         private Unit _throwedUnit = null;
@@ -62,7 +60,7 @@ namespace Battle
 
             this._throwParabolaComponent.SetInitialization(_parabola, this, _stageData, _parabolaBackground, _cameraCommand, _parabolaArrow, _dirArrow);
             this._throwSelectComponent.SetInitialization(this, _unitCommand);
-            this._throwGaugeComponent.SetInitialization(this, _unitCommand, _throwBarFrame, _throwGaugeBar, _playerPencilCaseDataSO);
+            this._throwGaugeComponent.SetInitialization(this, _unitCommand, _throwBarFrame, _throwGaugeBar, PencilCaseDataManagerSO.InGamePencilCaseData);
 
             updateAction += UpdateThrowGauge;
         }

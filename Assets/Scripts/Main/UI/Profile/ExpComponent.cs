@@ -7,7 +7,7 @@ using DG.Tweening;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
 using Main.Deck;
-
+using Utill.Tool;
 public class ExpComponent : MonoBehaviour, IUserData
 {
 	[SerializeField]
@@ -27,9 +27,9 @@ public class ExpComponent : MonoBehaviour, IUserData
 
 	public void Awake()
 	{
-		SaveManager._instance.SaveData.AddObserver(this);
-		_previousLevel = SaveManager._instance.SaveData.userSaveData._level;
-		_previousExp = SaveManager._instance.SaveData.userSaveData._nowExp;
+		UserSaveManagerSO.AddObserver(this);
+		_previousLevel = UserSaveManagerSO.UserSaveData._level;
+		_previousExp = UserSaveManagerSO.UserSaveData._nowExp;
 
 		if (CheckExpOverLevelExp())
 		{
@@ -56,18 +56,18 @@ public class ExpComponent : MonoBehaviour, IUserData
 		UpdateText();
 	}
 
-	public void Notify(ref UserSaveData userSaveData)
+	public void Notify()
 	{
-		SetExpBar(userSaveData);
+		SetExpBar();
 	}
 
 	/// <summary>
 	/// EXP¹Ù ¼öÁ¤
 	/// </summary>
-	public void SetExpBar(UserSaveData userSaveData)
+	public void SetExpBar()
 	{
-		_currentExp = userSaveData._nowExp;
-		_currentLevel = userSaveData._level;
+		_currentExp = UserSaveManagerSO.UserSaveData._nowExp;
+		_currentLevel = UserSaveManagerSO.UserSaveData._level;
 
 		StartCoroutine(UpExpBar());
 	}

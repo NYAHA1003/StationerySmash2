@@ -9,6 +9,7 @@ namespace Main.Deck
     [System.Serializable]
     public class UserSaveData //인벤토리, 돈, 캐시 이런걸 저장할 수도 있다
     {
+        public string _userID = "";
         public List<CardSaveData> _haveCardSaveDatas = new List<CardSaveData>();    //카드 데이터 저장
         public List<CardSaveData> _ingameSaveDatas = new List<CardSaveData>();    //인게임덱 카드 데이터 저장
         public List<SkinType> _haveSkinList = new List<SkinType>();    //가지고 있는 스킨
@@ -70,24 +71,20 @@ namespace Main.Deck
     {
         public int _level = 0;
         public int _count = 0;
-        public CardType _cardType = CardType.Execute;
         public CardNamingType _cardNamingType = CardNamingType.None;
         public SkinType _skinType = SkinType.SpriteNone;
-        public StarategyType _strategicType = StarategyType.None;
-        public UnitType _unitType = UnitType.None;
-        public StickerType stickerType = StickerType.None;
+        public StickerType _stickerType = StickerType.None;
 
         public static CardSaveData CopyDataToCardData(CardData cardData)
 		{
             CardSaveData cardSaveData = new CardSaveData();
-            cardSaveData._level = cardData.level;
+            cardSaveData._level = cardData._level;
             cardSaveData._count = 0;
-            cardSaveData._cardType = cardData.cardType;
             cardSaveData._cardNamingType = cardData._cardNamingType;
             cardSaveData._skinType = cardData._skinData._skinType;
-            cardSaveData._unitType = cardData.unitData.unitType;
-            cardSaveData._strategicType = cardData.strategyData.starategyType;
-            cardSaveData.stickerType = cardData.unitData.stickerData._stickerType;
+
+            UnitData unitData = UnitDataManagerSO.FindUnitData(cardData._unitType);
+            cardSaveData._stickerType = unitData._stickerType;
             return cardSaveData;
 		}
     }

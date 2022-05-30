@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utill.Data;
+using Utill.Tool;
 
 [System.Serializable]
 public class DeckData
@@ -9,7 +11,8 @@ public class DeckData
     
     public void Add_CardData(CardData data)
     {
-        data.strategyData.Set_State();
+        StrategyData strategyData = StrategyDataManagerSO.FindStrategyData(data._starategyType);
+        strategyData.Set_State();
         cardDatas.Add(data);
     }
 }

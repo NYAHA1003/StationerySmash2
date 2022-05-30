@@ -25,13 +25,13 @@ namespace Battle
         /// <param name="throwBarFrame"></param>
         /// <param name="throwGaugeBar"></param>
         /// <param name="pencilCaseDataSO"></param>
-        public void SetInitialization(ThrowComponent throwComponent, UnitComponent unitComponent, RectTransform throwBarFrame, RectTransform throwGaugeBar , PencilCaseDataSO pencilCaseDataSO)
+        public void SetInitialization(ThrowComponent throwComponent, UnitComponent unitComponent, RectTransform throwBarFrame, RectTransform throwGaugeBar , PencilCaseData pencilCaseData)
         {
             this._throwComponent = throwComponent;
             this._unitCommand = unitComponent;
             this._throwBarFrame = throwBarFrame;
             this._throwGaugeBar = throwGaugeBar;
-            this._throwGaugeSpeed = pencilCaseDataSO._pencilCaseData._throwGaugeSpeed;
+            this._throwGaugeSpeed = pencilCaseData._throwGaugeSpeed;
         }
 
         /// <summary>

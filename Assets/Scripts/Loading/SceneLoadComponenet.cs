@@ -5,6 +5,7 @@ using DG.Tweening;
 using Main.Deck;
 using Main.Event;
 using Utill.Data;
+using Utill.Tool;
 
 public class SceneLoadComponenet : MonoBehaviour
 {
@@ -50,6 +51,6 @@ public class SceneLoadComponenet : MonoBehaviour
         //시간을 1로 되돌림
         Time.timeScale = 1f;
         //세이브 데이터에 접근하는 오브젝트들 제거
-        SaveManager._instance.SaveData.ClearObserver();
+        UserSaveManagerSO.ClearObserver();
     }
 }

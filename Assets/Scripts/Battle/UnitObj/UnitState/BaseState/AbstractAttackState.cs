@@ -79,7 +79,7 @@ namespace Battle.Units
 				_myUnit.UnitSticker.RunAttackStickerAbility(_curState, ref atkData);
 
 				//공격 유형에 따라 공격
-				switch (_myUnitData.attackType)
+				switch (_myUnitData._attackType)
 				{
 					case AttackType.Normal:
 						NormalAttack(atkData);
@@ -187,7 +187,7 @@ namespace Battle.Units
 		/// <param name="atkData"></param>
 		protected virtual void SetAttackData(ref AtkData atkData)
 		{
-			atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData.dir, _myUnit.ETeam == TeamType.MyTeam, 0, EffAttackType.Normal, _myUnit.SkinData._effectType, originValue);
+			atkData = new AtkData(_myUnit, _myUnit.UnitStat.Return_Attack(), _myUnit.UnitStat.Return_Knockback(), 0, _myUnitData._dir, _myUnit.ETeam == TeamType.MyTeam, 0, EffAttackType.Normal, _myUnit.SkinData._effectType, originValue);
 		}
 
 		/// <summary>

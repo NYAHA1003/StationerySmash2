@@ -53,8 +53,6 @@ namespace Main.Card
 		private GameObject _sktickerButtonPrefeb = null;
 		[SerializeField]
 		private Transform _stickerButtonParent = null;
-		[SerializeField]
-		private StickerDataSO _haveStickerDataSO = null;
 
 		//스킨창 
 		[SerializeField]
@@ -104,7 +102,7 @@ namespace Main.Card
 			SetEquipText();
 
 			//카드 타입에 따라 설명창 설정
-			switch (_selectCardData.cardType)
+			switch (_selectCardData._cardType)
 			{
 				case CardType.Execute:
 					SetCardExecute(_selectCardData);
@@ -148,11 +146,12 @@ namespace Main.Card
 			_infoScroll.SetIcons(4);
 
 			//스탯 텍스트 설정
-			_hpText.text = cardData.unitData.unit_Hp.ToString();
-			_attackText.text = cardData.unitData.damage.ToString();
-			_attackSpeedText.text = cardData.unitData.attackSpeed.ToString();
-			_moveSpeedText.text = cardData.unitData.moveSpeed.ToString();
-			_weightText.text = cardData.unitData.unit_Weight.ToString();
+			UnitData unitData = UnitDataManagerSO.FindUnitData(cardData._unitType);
+			_hpText.text = unitData._hp.ToString();
+			_attackText.text = unitData._damage.ToString();
+			_attackSpeedText.text = unitData._attackSpeed.ToString();
+			_moveSpeedText.text = unitData._moveSpeed.ToString();
+			_weightText.text = unitData._weight.ToString();
 		}
 		/// <summary>
 		/// 함정 소환형의 UI 설정
@@ -185,9 +184,9 @@ namespace Main.Card
 		/// <param name="cardData"></param>
 		public void SetStickerList(CardData cardData)
 		{
-			//선택한 유닛의 스킨 리스트 가져오기
-			List<StickerData> commonStickerList = _haveStickerDataSO._stickerDataLists.Find(x => x._onlyUnitType == UnitType.None)?._stickerDatas;
-			List<StickerData> onlyUnitStickerList = _haveStickerDataSO._stickerDataLists.Find(x => x._onlyUnitType == cardData.unitData.unitType)?._stickerDatas;
+			//선택한 유닛의 스티커 리스트 가져오기
+			var commonStickerList = StickerDataManagerSO.FindStickerDataNoneTypeList();
+			var onlyUnitStickerList = StickerDataManagerSO.FindStickerDataOnlyUnitTypeList(cardData._unitType);
 
 			int commonCount = commonStickerList?.Count ?? 0;
 			int onlyCount = onlyUnitStickerList?.Count ?? 0;
@@ -239,7 +238,8 @@ namespace Main.Card
 		/// <returns></returns>
 		public bool CheckAlreadyEquipSticker(StickerData stickerData)
 		{
-			if(_selectCardData.unitData.stickerData._stickerType == stickerData._stickerType)
+			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData._unitType);
+			if(unitData._stickerType == stickerData._stickerType)
 			{
 				return true;
 			}
@@ -252,7 +252,8 @@ namespace Main.Card
 		/// <param name="stickerData"></param>
 		public void SetSticker(StickerData stickerData)
 		{
-			_selectCardData.unitData.stickerData = stickerData;
+			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData._unitType);
+			unitData._stickerType = stickerData._stickerType;
 			_selectDeckCard.SetCard(_selectCardData);
 			_userDeckData.ChangeCardInInGameSaveData(_selectCardData);
 		}
@@ -262,12 +263,8 @@ namespace Main.Card
 		/// </summary>
 		public void ReleaseSticker()
 		{
-			_selectCardData.unitData.stickerData = new StickerData();
-			_selectCardData.unitData.stickerData._stickerType = StickerType.None;
-			_selectCardData.unitData.stickerData._stickerLevel = 0;
-			_selectCardData.unitData.stickerData._skinType = SkinType.SpriteNone;
-			_selectCardData.unitData.stickerData._name = "";
-			_selectCardData.unitData.stickerData._decription = "";
+			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData._unitType);
+			unitData._stickerType = StickerType.None;
 			_selectDeckCard.SetCard(_selectCardData);
 			_userDeckData.ChangeCardInInGameSaveData(_selectCardData);
 		}
@@ -346,7 +343,7 @@ namespace Main.Card
 			else
 			{
 				//장착
-				_userDeckData.AddCardInDeck(_selectCardData, _selectCardData.level);
+				_userDeckData.AddCardInDeck(_selectCardData, _selectCardData._level);
 			}
 			SetEquipText();
 

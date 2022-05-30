@@ -29,8 +29,6 @@ namespace Main.Collection
         private Button _changeNormalButton = null;
         [SerializeField]
         private Button _changeSkinButton = null;
-        [SerializeField]
-        private SaveDataSO _saveDataSO = null;
 
         //참조 변수
         private CollectionDataSO _currentCollectionData = null;
@@ -127,7 +125,7 @@ namespace Main.Collection
         /// <returns></returns>
         private bool ContainHaveCollectionType(CollectionThemeType collectionThemeType)
         {
-            return _saveDataSO.userSaveData._haveCollectionDatas.Contains(collectionThemeType);
+            return UserSaveManagerSO.UserSaveData._haveCollectionDatas.Contains(collectionThemeType);
         }
     }
 }
