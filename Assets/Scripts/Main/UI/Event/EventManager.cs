@@ -33,34 +33,34 @@ namespace Main.Event
         public static void StartListening(EventsType eventName, Action listener)
         {
             Action thisEvent;
-            if (_instance.eventDictionary.TryGetValue(eventName, out thisEvent))
+            if (Instance.eventDictionary.TryGetValue(eventName, out thisEvent))
             {
                 //기존 이벤트에 더 많은 이벤트 추가 
                 thisEvent += listener;
 
                 //딕셔너리 업데이트
-                _instance.eventDictionary[eventName] = thisEvent;
+                Instance.eventDictionary[eventName] = thisEvent;
             }
             else
             {
                 //처음으로 딕셔너리에 이벤트 추가 
                 thisEvent += listener;
-                _instance.eventDictionary.Add(eventName, thisEvent);
+                Instance.eventDictionary.Add(eventName, thisEvent);
             }
         }
         public static void StartListening(EventsType eventName, Action<object> listener)
         {
             Action<object> thisEvent;
 
-            if (_instance.eventParamDictionary.TryGetValue(eventName, out thisEvent))
+            if (Instance.eventParamDictionary.TryGetValue(eventName, out thisEvent))
             {
                 thisEvent += listener;  
-                _instance.eventParamDictionary[eventName] = thisEvent;
+                Instance.eventParamDictionary[eventName] = thisEvent;
             }
             else
             {
                 thisEvent += listener;
-                _instance.eventParamDictionary.Add(eventName, listener);
+                Instance.eventParamDictionary.Add(eventName, listener);
             }
         }
 
@@ -71,34 +71,34 @@ namespace Main.Event
         /// <param name="listener"></param>
         public static void StopListening(EventsType eventName, Action listener)
         {
-            if (_instance == null)
+            if (Instance == null)
             {
                 return;
             }
             Action thisEvent;
-            if (_instance.eventDictionary.TryGetValue(eventName, out thisEvent))
+            if (Instance.eventDictionary.TryGetValue(eventName, out thisEvent))
             {
                 //기존 이벤트에서 이벤트 제거
                 thisEvent -= listener;
 
                 //이벤트 업데이트 
-                _instance.eventDictionary[eventName] = thisEvent;
+                Instance.eventDictionary[eventName] = thisEvent;
             }
 
         }
 
         public static void StopListening(EventsType eventName, Action<object> listener)
         {
-            if (_instance == null)
+            if (Instance == null)
             {
                 return;
             }
             Action<object> thisEvent;
-            if (_instance.eventParamDictionary.TryGetValue(eventName, out thisEvent))
+            if (Instance.eventParamDictionary.TryGetValue(eventName, out thisEvent))
             {
                 thisEvent -= listener;
 
-                _instance.eventParamDictionary[eventName] = thisEvent;
+                Instance.eventParamDictionary[eventName] = thisEvent;
             }
         }
         /// <summary>
@@ -108,7 +108,7 @@ namespace Main.Event
         public static void TriggerEvent(EventsType eventName)
         {
             Action thisEvent = null;
-            if (_instance.eventDictionary.TryGetValue(eventName, out thisEvent))
+            if (Instance.eventDictionary.TryGetValue(eventName, out thisEvent))
             {
                 Debug.Log("이벤트 실행!");
                 thisEvent?.Invoke();
@@ -122,7 +122,7 @@ namespace Main.Event
         public static void TriggerEvent(EventsType eventName, object param)
         {
             Action<object> thisEvent = null;
-            if (_instance.eventParamDictionary.TryGetValue(eventName, out thisEvent))
+            if (Instance.eventParamDictionary.TryGetValue(eventName, out thisEvent))
             {
                 thisEvent?.Invoke(param);
             }

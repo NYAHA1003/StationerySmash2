@@ -83,7 +83,7 @@ public class UnitStat
         _moveSpeedPercent = 100 * grade;
         _attackSpeedPercent = 100 * grade;
         _attackPercent = 100 * grade;
-        _maxHp = _unitData.unit_Hp * grade;
+        _maxHp = _unitData._hp * grade;
         _hp = _maxHp;
     }
     public void GradeUp(int grade)
@@ -99,7 +99,7 @@ public class UnitStat
     /// </summary>
     public void SetWeight()
     {
-        _weight = _unitData.unit_Weight;
+        _weight = _unitData._weight;
     }
     /// <summary>
     /// 체력 감소
@@ -235,7 +235,7 @@ public class UnitStat
     /// <returns></returns>
     public int Return_Attack()
     {
-        return Mathf.RoundToInt((_unitData.damage + _bonusAttack) * (float)_attackPercent / 100);
+        return Mathf.RoundToInt((_unitData._damage + _bonusAttack) * (float)_attackPercent / 100);
     }
     /// <summary>
     /// 이동속도 스탯 반환
@@ -243,7 +243,7 @@ public class UnitStat
     /// <returns></returns>
     public float Return_MoveSpeed()
     {
-        return (_unitData.moveSpeed + _bonusMoveSpeed) * (float)_moveSpeedPercent / 100;
+        return (_unitData._moveSpeed + _bonusMoveSpeed) * (float)_moveSpeedPercent / 100;
     }
     /// <summary>
     /// 공격속도 스탯 반환
@@ -251,7 +251,7 @@ public class UnitStat
     /// <returns></returns>
     public float Return_AttackSpeed()
     {
-        return (_unitData.attackSpeed + _bonusAttackSpeed) * (float)_attackSpeedPercent / 100;
+        return (_unitData._attackSpeed + _bonusAttackSpeed) * (float)_attackSpeedPercent / 100;
     }
     /// <summary>
     /// 사거리 스탯 반환
@@ -259,7 +259,7 @@ public class UnitStat
     /// <returns></returns>
     public float Return_Range()
     {
-        return (_unitData.range +_bonusRange) * (float)_rangePercent / 100;
+        return (_unitData._range +_bonusRange) * (float)_rangePercent / 100;
     }
     /// <summary>
     /// 무게 스탯 반환
@@ -267,7 +267,7 @@ public class UnitStat
     /// <returns></returns>
     public int Return_Weight()
     {
-        return Mathf.RoundToInt((_unitData.unit_Weight + _bonusWeight) * (float)_weightPercent / 100);
+        return Mathf.RoundToInt((_unitData._weight + _bonusWeight) * (float)_weightPercent / 100);
     }
     /// <summary>
     /// 명중률 스탯 반환
@@ -275,7 +275,7 @@ public class UnitStat
     /// <returns></returns>
     public float Return_Accuracy()
     {
-        return (_unitData.accuracy + _bonusAccuracy) * (float)_accuracyPercent / 100;
+        return (_unitData._accuracy + _bonusAccuracy) * (float)_accuracyPercent / 100;
     }
     /// <summary>
     /// 넉백 스탯 반환
@@ -283,7 +283,7 @@ public class UnitStat
     /// <returns></returns>
     public int Return_Knockback()
     {
-        return Mathf.RoundToInt((_unitData.knockback + _bonusKnockback) * (float)_knockbackPercent / 100);
+        return Mathf.RoundToInt((_unitData._knockback + _bonusKnockback) * (float)_knockbackPercent / 100);
     }
     /// <summary>
     /// 공격력 퍼센트 조절

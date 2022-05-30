@@ -30,7 +30,7 @@ namespace Utill.Data
         PencilCase = 10000,
     }
 
-    public enum StarategyType
+    public enum StrategyType
     {
         None,
 

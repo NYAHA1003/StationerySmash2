@@ -15,8 +15,6 @@ namespace Main.Skin
 	{
 		//인스펙터 변수
 		[SerializeField]
-		private SaveDataSO _saveDataSO;
-		[SerializeField]
 		private SkinMakeDataSO _skinMakeDataSO;
 		[SerializeField]
 		private Transform _skinParent = null; // 스킨 선택 버튼 관리 부모
@@ -68,9 +66,9 @@ namespace Main.Skin
 				for (int i = 0; i < _selectSkinData._needMaterial.Count; i++)
 				{
 					MaterialData materialData = _selectSkinData._needMaterial[i];
-					_saveDataSO.userSaveData._materialDatas.Find(x => x._materialType == materialData._materialType)._count -= materialData._count;
+					UserSaveManagerSO.UserSaveData._materialDatas.Find(x => x._materialType == materialData._materialType)._count -= materialData._count;
 				}
-				_saveDataSO.userSaveData._haveSkinList.Add(_selectSkinData.skinType);
+				UserSaveManagerSO.UserSaveData._haveSkinList.Add(_selectSkinData.skinType);
 				SetMaterialBoxs(_selectSkinData);
 				PullSkinButtons();
 			}
@@ -120,7 +118,7 @@ namespace Main.Skin
 					_materialParent.GetChild(i).gameObject.SetActive(true);
 
 					//재료 데이터가 있는지 탐색
-					MaterialData materialData = _saveDataSO.userSaveData._materialDatas.Find(x => x._materialType == skinMakeData._needMaterial[i]._materialType);
+					MaterialData materialData = UserSaveManagerSO.UserSaveData._materialDatas.Find(x => x._materialType == skinMakeData._needMaterial[i]._materialType);
 					int haveMaterialCount = 0;
 
 					//인벤토리에 재료가 있다면 그거의 갯수로 바꾼다
@@ -147,7 +145,7 @@ namespace Main.Skin
 		{
 			for (int i = 0; i < skinMakeData._needMaterial.Count; i++)
 			{
-				MaterialData haveMaterialData = _saveDataSO.userSaveData._materialDatas.Find(x => x._materialType == skinMakeData._needMaterial[i]._materialType);
+				MaterialData haveMaterialData = UserSaveManagerSO.UserSaveData._materialDatas.Find(x => x._materialType == skinMakeData._needMaterial[i]._materialType);
 				if (haveMaterialData != null)
 				{
 					if (haveMaterialData._count < skinMakeData._needMaterial[i]._count)
@@ -190,7 +188,7 @@ namespace Main.Skin
 				{
 					skinButton = Instantiate(_skinButtonPrefeb, _skinParent).GetComponent<SkinDataButton>();
 				}
-				skinButton.SetSkinData(_skinMakeDatas[i], _saveDataSO.userSaveData._haveSkinList.Contains(_skinMakeDatas[i].skinType), this);
+				skinButton.SetSkinData(_skinMakeDatas[i], UserSaveManagerSO.UserSaveData._haveSkinList.Contains(_skinMakeDatas[i].skinType), this);
 				skinButton.gameObject.SetActive(true);
 
 			}

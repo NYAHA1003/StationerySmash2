@@ -76,10 +76,10 @@ public class CardObj : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         _isDrag = false;
         this._id = id;
         this._cardData = dataBase;
-        _nameText.text = dataBase.card_Name;
-        _costText.text = dataBase.card_Cost.ToString();
-        _originCardCost = dataBase.card_Cost;
-        _cardCost = dataBase.card_Cost;
+        _nameText.text = dataBase._name;
+        _costText.text = dataBase._cost.ToString();
+        _originCardCost = dataBase._cost;
+        _cardCost = dataBase._cost;
         _cardimage.sprite = SkinData.GetSkin(dataBase._skinData._skinType);
         _grade = 1;
         SetUnitGrade();
@@ -90,14 +90,15 @@ public class CardObj : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         SetSticker();
 
         //카드 타입별 초기화
-        switch (dataBase.cardType)
+        switch (dataBase._cardType)
         {
             default:
             case CardType.Execute:
             case CardType.SummonTrap:
             case CardType.Installation:
-                _cardData.strategyData.starategy_State.SetBattleManager(_battleManager);
-                _cardData.strategyData.starategy_State.SetCard(this);
+                StrategyData strategyData = StrategyDataManagerSO.FindStrategyData(_cardData._starategyType);
+                strategyData.ReturnState().SetBattleManager(_battleManager);
+                strategyData.ReturnState().SetCard(this);
                 break;
             case CardType.SummonUnit:
                 break;
@@ -364,8 +365,10 @@ public class CardObj : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if(StickerData.CheckCanSticker(_cardData))
         {
-            _stickerImage.sprite = SkinData.GetSkin(_cardData.unitData.stickerData._skinType);
-            _stickerRect.anchoredPosition = StickerData.ReturnStickerPos(_cardData.unitData.unitType);
+            UnitData unitData = UnitDataManagerSO.FindUnitData(_cardData._unitType);
+            StickerData stickerData = StickerDataManagerSO.FindStickerData(unitData._stickerType);
+            _stickerImage.sprite = SkinData.GetSkin(stickerData._skinType);
+            _stickerRect.anchoredPosition = StickerData.ReturnStickerPos(_cardData._unitType);
             _stickerRect.gameObject.SetActive(true);
         }
         else

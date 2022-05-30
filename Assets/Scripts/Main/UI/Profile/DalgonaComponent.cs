@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using Main.Deck;
+using Utill.Tool;
+using Utill.Data;
 public class DalgonaComponent : MonoBehaviour, IUserData
 {
     [SerializeField]
@@ -16,14 +18,14 @@ public class DalgonaComponent : MonoBehaviour, IUserData
 
     public void Awake()
     {
-        SaveManager._instance.SaveData.AddObserver(this);
-        _previousDalgona = SaveManager._instance.SaveData.userSaveData._dalgona;
+        UserSaveManagerSO.AddObserver(this);
+        _previousDalgona = UserSaveManagerSO.UserSaveData._dalgona;
         SetDalgonaText();
     }
 
-    public void Notify(ref UserSaveData userSaveData)
+    public void Notify()
     {
-        _currentDalgona = userSaveData._dalgona;
+        _currentDalgona = UserSaveManagerSO.UserSaveData._dalgona;
 
         SetDalgonaText();
         StartCoroutine(UpCountingDalgona());

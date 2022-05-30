@@ -23,7 +23,6 @@ namespace Battle.PCAbility
         private CardData _redCarData = null;
         private CardData _yellowCarData = null;
         private CardData _greenCarData = null;
-        private UnitDataSO _unitDataSO = null;
 
         //Ai º¯¼ö
         private float _delay = 0f;
@@ -71,9 +70,9 @@ namespace Battle.PCAbility
         /// </summary>
         private async void SetDatas()
         {
-            AsyncOperationHandle<UnitDataSO> handle = Addressables.LoadAssetAsync<UnitDataSO>("ProjectileUnitSO");
-            await handle.Task;
-            _unitDataSO = handle.Result;
+            //AsyncOperationHandle<UnitDataSO> handle = Addressables.LoadAssetAsync<UnitDataSO>("ProjectileUnitSO");
+            //await handle.Task;
+            //_unitDataSO = handle.Result;
             SetRedCar();
             SetYellowCar();
             SetGreenCar();
@@ -86,7 +85,7 @@ namespace Battle.PCAbility
         /// </summary>
         private void SetRedCar()
         {
-            _redCarData = _unitDataSO.unitDatas.Find(x => x.unitData.unitType == UnitType.RedCar);
+            //_redCarData = UnitDataManagerSO.FindUnitData(UnitType.RedCar);
         }
 
         /// <summary>
@@ -94,7 +93,7 @@ namespace Battle.PCAbility
         /// </summary>
         private void SetYellowCar()
         {
-            _yellowCarData = _unitDataSO.unitDatas.Find(x => x.unitData.unitType == UnitType.YellowCar);
+            //_yellowCarData = UnitDataManagerSO.FindUnitData(UnitType.YellowCar);
         }
 
         /// <summary>
@@ -102,7 +101,7 @@ namespace Battle.PCAbility
         /// </summary>
         private void SetGreenCar()
         {
-            _greenCarData = _unitDataSO.unitDatas.Find(x => x.unitData.unitType == UnitType.GreenCar);
+            //_greenCarData = UnitDataManagerSO.FindUnitData(UnitType.GreenCar);
         }
 
         public override bool AIAbilityCondition()

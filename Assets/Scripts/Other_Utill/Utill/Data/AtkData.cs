@@ -123,7 +123,7 @@ namespace Utill.Data
                 case EffAttackType.Inherence:
                     break;
                 case EffAttackType.PCKill:
-                    if (unit.UnitData.unitType == UnitType.PencilCase)
+                    if (unit.UnitData._unitType == UnitType.PencilCase)
                     {
                         Reset_Damage(damage * 2);
                     }

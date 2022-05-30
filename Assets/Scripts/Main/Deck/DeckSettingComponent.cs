@@ -15,9 +15,6 @@ namespace Main.Deck
         public List<GameObject> EquipDeckCards => _equipDeckCards;
         public List<GameObject> HavePencilCaseCards => _havePencilCaseCards;
 
-
-        [SerializeField]
-        private SaveDataSO _saveDataSO = null;
         [SerializeField]
         private UserDeckDataComponent _userDeckData; //유저 데이터 컴포넌트
         [SerializeField]
@@ -53,11 +50,6 @@ namespace Main.Deck
 
         private bool _isActivePC; //필통 스크롤이 켜져있는지
 
-        private void Awake()
-        {
-            SaveManager._instance.SaveData.AddObserver(this);
-        }
-
         private void Start()
         {
             _haveCardParent = _haveDeckScroll.transform.GetChild(0).GetChild(0);
@@ -75,6 +67,8 @@ namespace Main.Deck
             EventManager.StartListening(EventsType.ChangePCAndDeck, OnChangePencilAndCards);
             EventManager.StartListening(EventsType.UpdateHaveAndEquipDeck, UpdateHaveAndEquipDeck);
             EventManager.StartListening(EventsType.UpdateHaveAndEquipPCDeck, UpdateHaveAndEquipPCDeck);
+
+            UserSaveManagerSO.AddObserver(this);
         }
 
         /// <summary>
@@ -126,7 +120,7 @@ namespace Main.Deck
             _equipPCDeckScroll.SetActive(_isActivePC);
 
         }
-        public void Notify(ref UserSaveData userSaveData)
+        public void Notify()
         {
             UpdateHaveAndEquipDeck();
             UpdateHaveAndEquipPCDeck();
@@ -199,11 +193,11 @@ namespace Main.Deck
         public void SetHavePCDeck()
         {
             _userDeckData.SetPencilCaseData();
-            for (int i = 0; i < _userDeckData._havePCDataSO._pencilCaseDataList.Count; i++)
+            for (int i = 0; i < PencilCaseDataManagerSO.HavePencilCaseDataList.Count; i++)
             {
                 GameObject cardObj = PoolHavePCCard();
                 Button cardButton = cardObj.GetComponent<Button>();
-                PencilCaseData pencilCaseData = _userDeckData._havePCDataSO._pencilCaseDataList[i];
+                PencilCaseData pencilCaseData = PencilCaseDataManagerSO.HavePencilCaseDataList[i];
                 cardObj.GetComponent<PencilCaseCard>().SetPencilCaseData(pencilCaseData);
                 cardButton.onClick.RemoveAllListeners();
                 cardButton.onClick.AddListener(() =>

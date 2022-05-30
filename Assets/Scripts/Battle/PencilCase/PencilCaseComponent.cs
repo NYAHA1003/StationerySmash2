@@ -16,8 +16,6 @@ namespace Battle
     public class PencilCaseComponent : BattleComponent
     {
         //프로퍼티
-        public PencilCaseDataSO PencilCaseDataMy => pencilCaseDataMy;
-        public PencilCaseDataSO PencilCaseDataEnemy => pencilCaseDataEnemy;
         public PencilCaseUnit PlayerPencilCase => _playerPencilCase;
         public PencilCaseUnit EnemyPencilCase => _enemyPencilCase;
         public AbstractPencilCaseAbility PlayerAbilityState => _playerAbilityState;
@@ -26,8 +24,6 @@ namespace Battle
         //참조 변수
         private UnitComponent _unitCommand = null;
         private StageData _stageData = null;
-        private PencilCaseDataSO pencilCaseDataMy = null;
-        private PencilCaseDataSO pencilCaseDataEnemy = null;
         private AbstractPencilCaseAbility _playerAbilityState = null;
         private AbstractPencilCaseAbility _enemyAbilityState = null;
         private PencilCaseBadgeComponent _pencilCaseBadgeComponent = null;
@@ -60,16 +56,13 @@ namespace Battle
             this._unitCommand = unitCommand;
             this._stageData = stageData;
 
-            pencilCaseDataMy = _playerPencilCase.PencilCaseData;
-            pencilCaseDataEnemy = _enemyPencilCase.PencilCaseData;
-
             _pencilCaseBadgeComponent.SetInitialization(this);
 
             //플레이어 필통
-            SetPencilCaseUnit(_playerPencilCase, pencilCaseDataMy, TeamType.MyTeam, -1);
+            SetPencilCaseUnit(_playerPencilCase, PencilCaseDataManagerSO.InGamePencilCaseData, TeamType.MyTeam, -1);
 
             //적 필통
-            SetPencilCaseUnit(_enemyPencilCase, pencilCaseDataEnemy, TeamType.EnemyTeam, -2);
+            SetPencilCaseUnit(_enemyPencilCase, PencilCaseDataManagerSO.EnemyGamePencilCaseData, TeamType.EnemyTeam, -2);
 
 
             EventManager.StartListening(EventsType.PencilCaseAbility, OnPencilCaseAbility);
@@ -150,7 +143,7 @@ namespace Battle
         /// </summary>
         private void SetEnemyBadgeAbility()
         {
-            _pencilCaseBadgeComponent.SetEnemyBadgeAbility(pencilCaseDataEnemy._pencilCaseData._badgeDatas, EnemyPencilCase);
+            _pencilCaseBadgeComponent.SetEnemyBadgeAbility(PencilCaseDataManagerSO.EnemyGamePencilCaseData._badgeDatas, EnemyPencilCase);
         }
 
         /// <summary>
@@ -158,7 +151,7 @@ namespace Battle
         /// </summary>
         private void SetPlayerBadgeAbility()
         {
-            _pencilCaseBadgeComponent.SetPlayerBadgeAbility(pencilCaseDataMy._pencilCaseData._badgeDatas, PlayerPencilCase);
+            _pencilCaseBadgeComponent.SetPlayerBadgeAbility(PencilCaseDataManagerSO.InGamePencilCaseData._badgeDatas, PlayerPencilCase);
         }
 
         /// <summary>
@@ -168,10 +161,10 @@ namespace Battle
         /// <param name="pencilCaseDataSO"></param>
         /// <param name="teamType"></param>
         /// <param name="index"></param>
-        private void SetPencilCaseUnit(PencilCaseUnit pencilCaseUnit, PencilCaseDataSO pencilCaseDataSO, TeamType teamType, int index)
+        private void SetPencilCaseUnit(PencilCaseUnit pencilCaseUnit, PencilCaseData pencilCaseData, TeamType teamType, int index)
         {
             //필통 유닛 설정
-            pencilCaseUnit.SetUnitData(pencilCaseDataSO._pencilCaseData._pencilCaseData, teamType, _stageData, index, 1, 0);
+            pencilCaseUnit.SetUnitData(pencilCaseData.ReturnCardData(), teamType, _stageData, index, 1, 0);
 
             //유닛 리스트에 필통 유닛을 넣는다
             if (teamType == TeamType.MyTeam)

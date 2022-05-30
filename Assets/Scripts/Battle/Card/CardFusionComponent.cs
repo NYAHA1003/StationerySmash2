@@ -50,17 +50,17 @@ namespace Battle
         private bool FusionCheck(CardObj targetCard1, CardObj targetCard2)
         {
             //카드 타입이 같은지 체크
-            if (targetCard1.CardDataValue.cardType != targetCard2.CardDataValue.cardType)
+            if (targetCard1.CardDataValue._cardType != targetCard2.CardDataValue._cardType)
             {
                 return false;
             }
             //유닛 타입이 같은지 체크
-            if (targetCard1.CardDataValue.unitData.unitType != targetCard2.CardDataValue.unitData.unitType)
+            if (targetCard1.CardDataValue._unitType != targetCard2.CardDataValue._unitType)
             {
                 return false;
             }
             //전략 타입이 같은지 체크
-            if (targetCard1.CardDataValue.strategyData.starategyType != targetCard2.CardDataValue.strategyData.starategyType)
+            if (targetCard1.CardDataValue._starategyType != targetCard2.CardDataValue._starategyType)
             {
                 return false;
             }

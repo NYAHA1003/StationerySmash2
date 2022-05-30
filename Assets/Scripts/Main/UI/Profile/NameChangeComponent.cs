@@ -7,6 +7,7 @@ using DG.Tweening;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
 using Main.Deck;
+using Utill.Tool;
 public class NameChangeComponent : MonoBehaviour, IUserData
 {
     [SerializeField]
@@ -20,7 +21,7 @@ public class NameChangeComponent : MonoBehaviour, IUserData
 
     private void Awake()
     {
-        SaveManager._instance.SaveData.AddObserver(this);
+        UserSaveManagerSO.AddObserver(this);
     }
 
     private void Start()
@@ -34,9 +35,9 @@ public class NameChangeComponent : MonoBehaviour, IUserData
 
     }
 
-    public void Notify(ref UserSaveData userSaveData)
+    public void Notify()
     {
-        SetNameText(ref userSaveData);
+        SetNameText();
     }
 
     /// <summary>
@@ -57,16 +58,15 @@ public class NameChangeComponent : MonoBehaviour, IUserData
             return;
         }
 
-        SaveManager._instance.SaveData.userSaveData._name = name;
-        SaveManager._instance.SaveJsonData();
+        UserSaveManagerSO.UserSaveData._name = name;
 
     }
 
     /// <summary>
     /// 이름 텍스트 값 수정
     /// </summary>
-    public void SetNameText(ref UserSaveData userSaveData)
+    public void SetNameText()
     {
-        _nameText.text = userSaveData._name;
+        _nameText.text = UserSaveManagerSO.UserSaveData._name;
     }
 }

@@ -24,7 +24,7 @@ namespace Main.Card
         public void SetButtonImages(StickerData stickerData)
         {
             _stickerNameText.text = stickerData._name;
-            _stickerLevelText.text = $"Lv{stickerData._stickerLevel}";
+            _stickerLevelText.text = $"Lv{stickerData._level}";
             _stickerImage.sprite = SkinData.GetSkin(stickerData._skinType);
         }
     }

@@ -12,7 +12,6 @@ namespace Battle.Units
 	{
 		public CardData SharpsimPieceData => _sharpsimPieceData;
 		private CardData _sharpsimPieceData = null;
-		private UnitDataSO _unitDataSO = null;
 		public override void SetState()
 		{
 			//스테이트들을 설정한다
@@ -40,7 +39,7 @@ namespace Battle.Units
 		public override void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
 		{
 			base.Reset_State(myTrm, mySprTrm, myUnit);
-			_sharpsimPieceData = AddressableTool.ReturnProjectileUnitAsync(UnitType.SharpSim).Result;
+			//_sharpsimPieceData = AddressableTool.ReturnProjectileUnitAsync(UnitType.SharpSim).Result;
 			myUnit.SetIsInvincibility(false);
 			myUnit.SetIsNeverDontThrow(false);
 		}

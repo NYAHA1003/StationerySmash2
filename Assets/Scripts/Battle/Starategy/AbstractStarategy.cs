@@ -12,7 +12,7 @@ namespace Battle.Starategy
     {
         protected BattleManager _battleManager;
         protected CardObj _card;
-        protected StarategyData _starategyData;
+        protected StrategyData _starategyData;
         public void SetBattleManager(BattleManager battleManager)
         {
             this._battleManager = battleManager;
@@ -25,7 +25,7 @@ namespace Battle.Starategy
 
         public void SetValuse(params float[] valuse)
         {
-            _starategyData.starategyablityData = valuse;
+            _starategyData._starategyablityData = valuse;
         }
         public abstract void Run_Card(TeamType eTeam);
     }

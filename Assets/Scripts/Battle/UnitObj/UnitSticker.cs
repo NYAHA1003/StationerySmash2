@@ -21,7 +21,7 @@ public class UnitSticker
         //데이터 설정
         _myUnit = myUnit;
         _unitData = _myUnit.UnitData;
-        _stickerData = _unitData.stickerData;
+        _stickerData = StickerDataManagerSO.FindStickerData(_unitData._stickerType);
 
         //스티커 능력 가져오기
         SetStickerAbility();
@@ -137,7 +137,7 @@ public class UnitSticker
     /// </summary>
     private void SetStickerAbility()
     {
-        switch (_unitData.stickerData._stickerType)
+        switch (_unitData._stickerType)
         {
             case StickerType.None:
                 _stickerablity = null;
@@ -193,7 +193,7 @@ public class UnitSticker
     /// </summary>
     private void SetPosition()
     {
-        switch (_unitData.unitType)
+        switch (_unitData._unitType)
         {
             case UnitType.Pencil:
                 _stickerSprite.transform.position = Vector2.zero;

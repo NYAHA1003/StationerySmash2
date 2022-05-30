@@ -81,7 +81,8 @@ public class Unit : MonoBehaviour
         OrderIndex = orderIndex;
 
         //유닛 데이터 받아오기
-        _unitData = dataBase.unitData;
+        UnitData unitData = UnitDataManagerSO.FindUnitData(dataBase._unitType);
+        _unitData = unitData;
 
         //스킨 데이터 받아오기
         _skinData = dataBase._skinData;
@@ -96,11 +97,11 @@ public class Unit : MonoBehaviour
         {
             transform.localScale = new Vector3(-1, 1, 1);
         }
-        transform.name = dataBase.card_Name + _eTeam;
+        transform.name = dataBase._name + _eTeam;
 
         //물리판정 설정
         _collideData = new CollideData();
-        _collideData.originpoints = dataBase.unitData.colideData.originpoints;
+        _collideData.originpoints = unitData._colideData.originpoints;
 
         //딜레이시스템
         SetIsInvincibility(false);
@@ -178,7 +179,7 @@ public class Unit : MonoBehaviour
     {
         RemoveUnitList();
         _battleManager.UnitComponent.DeletePoolUnit(this);
-        _unitStateChanger.DeleteState(_unitData.unitType);
+        _unitStateChanger.DeleteState(_unitData._unitType);
         _unitStateChanger.StateNull();
         _unitStateEff.DeleteEffStetes();
         _unitSticker.DeleteSticekr();

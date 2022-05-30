@@ -14,10 +14,10 @@ namespace Battle.PCAbility
         CardData pencil;
         public async override void SetState(BattleManager battleManager)
         {
-            base.SetState(battleManager);
-            AsyncOperationHandle<UnitDataSO> unitList = Addressables.LoadAssetAsync<UnitDataSO>("ProjectileUnitSO");
-            await unitList.Task;
-            pencil = unitList.Result.unitDatas.Find(x => x.unitData.unitType == UnitType.Pencil);
+            //base.SetState(battleManager);
+            //AsyncOperationHandle<UnitDataSO> unitList = Addressables.LoadAssetAsync<UnitDataSO>("ProjectileUnitSO");
+            //await unitList.Task;
+            //pencil = unitList.Result.unitDatas.Find(x => x.unitType == UnitType.Pencil);
         }
         public override void RunPencilCaseAbility()
         {

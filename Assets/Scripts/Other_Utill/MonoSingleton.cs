@@ -10,7 +10,7 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
     private static bool shuttingDown = false;
     private static object locker = new object();
     private static T instance = null;
-    public static T _instance
+    public static T Instance
     {
         get
         {
