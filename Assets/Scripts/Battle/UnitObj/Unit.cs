@@ -240,7 +240,7 @@ public class Unit : MonoBehaviour
     /// <returns></returns>
     public Unit Pull_Unit()
     {
-        return _unitStateChanger.UnitState.PullUnit();
+        return _unitStateChanger?.UnitState?.PullUnit();
     }
 
     /// <summary>

@@ -52,7 +52,7 @@ namespace Battle
             CurrentCost += addCost;
             Vector2 animationPos = _costText.rectTransform.localPosition;
             animationPos.x += 250;
-            _textAnimationComponent.SetText($"+{addCost}", animationPos, 0.3f, TextAnimationComponent.AnimationDirType.Right);
+            _textAnimationComponent.SetText($"+{addCost}", animationPos, 0.5f, TextAnimationComponent.AnimationDirType.Right, TextAnimationComponent.AnimationType.BigToSmall);
             UpdateCostText();
         }
 
@@ -65,7 +65,7 @@ namespace Battle
             CurrentCost -= subtractCost;
             Vector2 animationPos = _costText.rectTransform.localPosition;
             animationPos.x += 250;
-            _textAnimationComponent.SetText($"-{subtractCost}", animationPos, 0.3f, TextAnimationComponent.AnimationDirType.Right);
+            _textAnimationComponent.SetText($"-{subtractCost}", animationPos, 0.5f, TextAnimationComponent.AnimationDirType.Right, TextAnimationComponent.AnimationType.BigToSmall);
             UpdateCostText();
         }
 

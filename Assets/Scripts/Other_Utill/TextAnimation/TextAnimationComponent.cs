@@ -15,6 +15,12 @@ public class TextAnimationComponent : MonoBehaviour
 		Right
 	}
 
+	public enum AnimationType
+	{
+		Normal = 0,
+		BigToSmall,
+	}
+
 	[SerializeField]
 	private GameObject _textPrefeb;
 
@@ -26,7 +32,7 @@ public class TextAnimationComponent : MonoBehaviour
 	/// </summary>
 	/// <param name="text"></param>
 	/// <param name="animationDirType"></param>
-	public void SetText(string text, Vector2 startPos, float duration, AnimationDirType animationDirType)
+	public void SetText(string text, Vector2 startPos, float duration, AnimationDirType animationDirType, AnimationType animationType)
 	{
 		GameObject textobj = PoolTextObj();
 		textobj.GetComponent<RectTransform>().anchoredPosition = startPos;
@@ -49,7 +55,7 @@ public class TextAnimationComponent : MonoBehaviour
 				endPos.x += 50;
 				break;
 		}
-		MoveAnimation(textobj, endPos, duration);
+		MoveAnimation(textobj, animationType, endPos, duration);
 	}
 
 	/// <summary>
@@ -79,20 +85,34 @@ public class TextAnimationComponent : MonoBehaviour
 	/// <param name="textobj"></param>
 	/// <param name="vector"></param>
 	/// <param name="duration"></param>
-	private void MoveAnimation(GameObject textobj, Vector2 vector, float duration)
+	private void MoveAnimation(GameObject textobj, AnimationType animationType, Vector2 vector, float duration)
 	{
 		RectTransform rect = textobj.GetComponent<RectTransform>();
-		rect.localScale = Vector2.zero;
-		rect.DOScale(1f, duration - 0.2f)
-			.OnComplete(() => 
-			{
-				rect.DOScale(0f, 0.2f).SetEase(Ease.InExpo);
-			}).SetEase(Ease.OutExpo);
+
+		switch(animationType)
+		{
+			case AnimationType.Normal:
+				break;
+			case AnimationType.BigToSmall:
+				BigToSmallAnimation(rect, duration);
+				break;
+		}
+
 		rect.DOAnchorPos(vector, duration)
 			.OnComplete(() =>
 			{
 				textobj.SetActive(false);
 				textobj.transform.SetParent(_textParent);
 			});
+	}
+
+	private void BigToSmallAnimation(RectTransform rect, float duration)
+	{
+		rect.localScale = Vector2.zero;
+		rect.DOScale(1f, duration - 0.2f)
+			.OnComplete(() =>
+			{
+				rect.DOScale(0f, 0.2f).SetEase(Ease.InExpo);
+			}).SetEase(Ease.OutExpo);
 	}
 }
