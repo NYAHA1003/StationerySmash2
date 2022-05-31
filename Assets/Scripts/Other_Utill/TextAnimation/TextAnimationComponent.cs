@@ -82,6 +82,12 @@ public class TextAnimationComponent : MonoBehaviour
 	private void MoveAnimation(GameObject textobj, Vector2 vector, float duration)
 	{
 		RectTransform rect = textobj.GetComponent<RectTransform>();
+		rect.localScale = Vector2.zero;
+		rect.DOScale(1f, duration - 0.2f)
+			.OnComplete(() => 
+			{
+				rect.DOScale(0f, 0.2f).SetEase(Ease.InExpo);
+			}).SetEase(Ease.OutExpo);
 		rect.DOAnchorPos(vector, duration)
 			.OnComplete(() =>
 			{
