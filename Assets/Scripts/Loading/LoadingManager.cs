@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
-using Utill.Tool;
 
 public class LoadingManager : MonoBehaviour
 {
@@ -21,7 +20,7 @@ public class LoadingManager : MonoBehaviour
 	[SerializeField]
 	protected GameObject decoObject;
 	[SerializeField]
-	LoadingToolTipSO loadingToolTipSO;
+	private LoadingToolTipSO loadingToolTipSO;
 	[SerializeField]
 	protected TextMeshProUGUI tip_Text;
 	[Range(0, 5)]
