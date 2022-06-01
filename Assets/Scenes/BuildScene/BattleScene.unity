@@ -639,12 +639,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 99729027}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children: []
-  m_Father: {fileID: 1514155264}
-  m_RootOrder: 8
+  m_Father: {fileID: 1520252006}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5112,7 +5112,6 @@ RectTransform:
   - {fileID: 208719801}
   - {fileID: 669288410}
   - {fileID: 373137102}
-  - {fileID: 99729028}
   - {fileID: 1722391928}
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -5216,6 +5215,7 @@ RectTransform:
   - {fileID: 643925638}
   - {fileID: 268473077}
   - {fileID: 1925270142}
+  - {fileID: 99729028}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8390,6 +8390,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1514155264}
     m_Modifications:
+    - target: {fileID: 2509207390123811857, guid: bf4797493a3905c4bb889f17d9e7fe1d, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2509207391207671440, guid: bf4797493a3905c4bb889f17d9e7fe1d, type: 3}
       propertyPath: m_Name
       value: CostText
@@ -9211,7 +9215,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7787461151636175484, guid: 0d33b8e25dafce444a6298d4c5b43017, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7787461151636175484, guid: 0d33b8e25dafce444a6298d4c5b43017, type: 3}
       propertyPath: m_AnchorMax.x
