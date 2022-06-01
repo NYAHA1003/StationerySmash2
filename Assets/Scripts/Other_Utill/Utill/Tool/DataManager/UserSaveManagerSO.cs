@@ -170,7 +170,7 @@ namespace Utill.Tool
 		{
             _userSaveData.AddExp(exp);
             DeliverDataToObserver();
-
+            PostUserSaveData();
         }
 
         /// <summary>
@@ -181,8 +181,19 @@ namespace Utill.Tool
         {
             _userSaveData.AddMoney(money);
             DeliverDataToObserver();
-
+            PostUserSaveData();
         }
+
+        /// <summary>
+        /// 이름 변경
+        /// </summary>
+        public static void ChangeName(string name)
+        {
+            _userSaveData._name = name;
+            DeliverDataToObserver();
+            PostUserSaveData();
+        }
+
     }
 
 }
