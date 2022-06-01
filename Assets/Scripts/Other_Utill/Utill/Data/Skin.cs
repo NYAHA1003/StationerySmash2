@@ -36,6 +36,7 @@ namespace Utill.Data
         PostItSweetDessert = 4400,
         MechaPencilLeadSweetDessert = 4500,
     }
+
     [System.Serializable]
     public class SkinData
     {

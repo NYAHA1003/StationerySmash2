@@ -77,8 +77,8 @@ namespace Battle
             //카드 크기를 돌려놓음
             card.SetCardScale(Vector3.one * 1, 0.3f);
 
-            //선택한 카드를 Null로 돌려놓고 카드 선택을 False로 처리함
-            _selectedCard.SetIsSelected(false);
+            //선택한 카드를 Null로 돌려놓고 카드 선택을 False로 처리함s
+            _selectedCard?.SetIsSelected(false);
             _selectedCard = null;
             IsSelectCard = false;
 

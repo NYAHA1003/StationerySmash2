@@ -106,6 +106,7 @@ namespace Utill.Tool
                 _userSaveData._haveSkinList.Add(SkinType.PencilCaseNormal);
                 _userSaveData._haveProfileList.Add(ProfileType.ProPencil);
                 _userSaveData._havePencilCaseList.Add(PencilCaseType.Normal);
+                _userSaveData._haveThemeSkinTypeList.Add(ThemeSkinType.Normal);
                 _userSaveData._haveCardSaveDatas.Add(new CardSaveData()
                 {
                     _cardNamingType = CardNamingType.Pencil,
@@ -169,7 +170,7 @@ namespace Utill.Tool
 		{
             _userSaveData.AddExp(exp);
             DeliverDataToObserver();
-
+            PostUserSaveData();
         }
 
         /// <summary>
@@ -180,8 +181,19 @@ namespace Utill.Tool
         {
             _userSaveData.AddMoney(money);
             DeliverDataToObserver();
-
+            PostUserSaveData();
         }
+
+        /// <summary>
+        /// 이름 변경
+        /// </summary>
+        public static void ChangeName(string name)
+        {
+            _userSaveData._name = name;
+            DeliverDataToObserver();
+            PostUserSaveData();
+        }
+
     }
 
 }

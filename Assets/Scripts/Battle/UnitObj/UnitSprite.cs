@@ -19,13 +19,18 @@ public class UnitSprite
 
     //인스펙터 참조 변수
     [SerializeField]
-    private SortingGroup _sortingGroup;
+    private SortingGroup _delayBarSortingGroup;
+    //인스펙터 참조 변수
+    [SerializeField]
+    private SortingGroup _delayHalfBarSortingGroup;
     [SerializeField]
     private GameObject _delayBar;
     [SerializeField]
-    private SpriteRenderer _delayRotate;
+    private GameObject _delayHalfBar;
     [SerializeField]
-    private SpriteRenderer _delayPart;
+    private SpriteRenderer _delayBarImage;
+    [SerializeField]
+    private SpriteMask _delayMaskPart;
     [SerializeField]
     private SpriteMask _delayMask;
     [SerializeField]
@@ -34,8 +39,6 @@ public class UnitSprite
     private SpriteRenderer _spriteRenderer = null; //유닛 스프라이트렌더러
     [SerializeField]
     private SpriteRenderer _hpSpriteRenderer = null; //유닛 깨짐이미지 렌더러
-    [SerializeField]
-    private SpriteRenderer _throwSpriteRenderer = null; //유닛 던지기 가능 렌더러
     [SerializeField]
     private Sprite[] _hpSprites = null; // 유닛 깨짐이미지들
 
@@ -47,7 +50,7 @@ public class UnitSprite
         UpdateDelayBar(unitStat.AttackDelay);
         ShowUI(true);
         SetTeamColor(teamType);
-        Set_HPSprite(unitStat.Hp, unitStat.MaxHp);
+        SetHPSprite(unitStat.Hp, unitStat.MaxHp);
         OrderDraw(orderIndex);
     }
 
@@ -71,22 +74,14 @@ public class UnitSprite
     public void OrderDraw(int orderIndex)
     {
         _spriteRenderer.sortingOrder = -orderIndex;
-        _sortingGroup.sortingOrder = -orderIndex;
-    }
-
-    /// <summary>
-    /// 던지기 렌더러 키기 끄기
-    /// </summary>
-    /// <param name="isActive"></param>
-    public void SetThrowRenderer(bool isActive)
-    {
-        _throwSpriteRenderer.gameObject.SetActive(isActive);
+        _delayBarSortingGroup.sortingOrder = -orderIndex;
+        _delayHalfBarSortingGroup.sortingOrder = -orderIndex;
     }
 
     /// <summary>
     /// 체력 비율에 따른 깨짐 이미지
     /// </summary>
-    public void Set_HPSprite(int hp, int maxhp)
+    public void SetHPSprite(int hp, int maxhp)
     {
         float percent = (float)hp / maxhp;
 
@@ -109,10 +104,11 @@ public class UnitSprite
     /// </summary>
     public void SetDelayBar()
     {
-        _delayPart.gameObject.SetActive(false);
-        _delayPart.transform.rotation = Quaternion.Euler(0, 0, 180);
+        _delayMaskPart.gameObject.SetActive(true);
+        _delayMaskPart.transform.rotation = Quaternion.Euler(0, 0, 180);
         _delayMask.transform.rotation = Quaternion.identity;
-        _delayRotate.transform.rotation = Quaternion.identity;
+        _delayBarImage.transform.rotation = Quaternion.identity;
+        _delayHalfBar.SetActive(false);
     }
 
     /// <summary>
@@ -121,17 +117,19 @@ public class UnitSprite
     /// <param name="delay"></param>
     public void UpdateDelayBar(float delay)
     {
-        _delayRotate.transform.rotation = Quaternion.Euler(0, 0, delay * 360);
+        _delayMask.transform.rotation = Quaternion.Euler(0, 0, delay * 360);
 
         if (delay >= 0.5f)
         {
-            _delayPart.gameObject.SetActive(true);
-            _delayMask.gameObject.SetActive(false);
+            _delayMaskPart.gameObject.SetActive(false);
+            _delayMask.gameObject.SetActive(true);
+            _delayHalfBar.SetActive(true);
         }
         else
         {
-            _delayPart.gameObject.SetActive(false);
+            _delayMaskPart.gameObject.SetActive(true);
             _delayMask.gameObject.SetActive(true);
+            _delayHalfBar.SetActive(false);
         }
     }
 
@@ -142,6 +140,7 @@ public class UnitSprite
     public void ShowUI(bool isShow)
     {
         _delayBar.SetActive(isShow);
+        _delayHalfBar.SetActive(false);
     }
 
     /// <summary>
@@ -163,4 +162,12 @@ public class UnitSprite
                 break;
         }
     }
+
+    /// <summary>
+    /// 머테리얼을 변경한다
+    /// </summary>
+    public void ChangeMaterial(Material material)
+	{
+        _spriteRenderer.material = material;
+	}
 }

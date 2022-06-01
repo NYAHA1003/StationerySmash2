@@ -9,11 +9,15 @@ namespace Battle
 {
     public class ThrowGaugeComponent : BattleComponent
     {
+        //참조 변수
         private RectTransform _throwBarFrame;
         private RectTransform _throwGaugeBar;
         private ThrowComponent _throwComponent;
         private UnitComponent _unitCommand = null;
+        private Material _defaultShader;
+        private Material _throwShader;
 
+        //속성
         private float _throwGauge = 0f;
         private float _throwGaugeSpeed = 0f;
 
@@ -32,6 +36,8 @@ namespace Battle
             this._throwBarFrame = throwBarFrame;
             this._throwGaugeBar = throwGaugeBar;
             this._throwGaugeSpeed = pencilCaseData._throwGaugeSpeed;
+            AddressableTool.GetAddressableAssetAsync<Material>(SetDefaultShader, "defaultShader");
+            AddressableTool.GetAddressableAssetAsync<Material>(SetThrowShader, "throwShader");
         }
 
         /// <summary>
@@ -83,8 +89,34 @@ namespace Battle
             int count = _unitCommand._playerUnitList.Count;
             for (int i = 1; i < count; i++)
             {
-                _unitCommand._playerUnitList[i].SetThrowRenderer(_throwGauge);
-            }
+                Unit unit = _unitCommand._playerUnitList[i];
+                if(unit.UnitStat.Return_Weight() < _throwGauge && unit.CheckCanThrow())
+				{
+                    unit.ChangeMaterial(_throwShader);
+				}
+                else
+                {
+                    unit.ChangeMaterial(_defaultShader);
+                }
+			}
+		}
+
+		/// <summary>
+		/// 기본 쉐이더를 설정
+		/// </summary>
+		/// <param name="material"></param>
+		private void SetDefaultShader(Material material)
+		{
+			_defaultShader = material;
+		}
+
+		/// <summary>
+		/// 던지기 쉐이더를 설정
+		/// </summary>
+		/// <param name="material"></param>
+		private void SetThrowShader(Material material)
+        {
+            _throwShader = material;
         }
     }
 

@@ -28,6 +28,7 @@ namespace Utill.Data
         EraserPiece = 1100,
         PostItPiece = 1200,
         PencilCase = 10000,
+        SharpSim = 11000,
     }
 
     public enum StrategyType

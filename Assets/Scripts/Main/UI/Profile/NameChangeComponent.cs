@@ -26,11 +26,7 @@ public class NameChangeComponent : MonoBehaviour, IUserData
 
     private void Start()
 	{
-        if (_warrningComponent == null)
-		{
-            _warrningComponent = FindObjectOfType<WarrningComponent>();
-		}
-
+        _warrningComponent ??= FindObjectOfType<WarrningComponent>();
         _nameChangeButton.onClick.AddListener(() => OnChangeName());
 
     }
@@ -58,8 +54,7 @@ public class NameChangeComponent : MonoBehaviour, IUserData
             return;
         }
 
-        UserSaveManagerSO.UserSaveData._name = name;
-
+        UserSaveManagerSO.ChangeName(name);
     }
 
     /// <summary>
