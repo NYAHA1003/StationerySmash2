@@ -31,6 +31,8 @@ namespace Battle
 		[SerializeField]
 		private GameObject _introCanvas = null;
 		[SerializeField]
+		private GameObject _cardDatas = null;
+		[SerializeField]
 		private AIDataSO _enemyAIDataSO = null;
 		[SerializeField]
 		private CardDeckSO _inGameCardDataSO = null;
@@ -38,6 +40,12 @@ namespace Battle
 		private PencilCaseCard _pencilCaseCard = null;
 		[SerializeField]
 		private List<DeckCard> _deckCards = null;
+		[SerializeField]
+		private Canvas _uiCanvas = null;
+		[SerializeField]
+		private Image _fadeUp = null;
+		[SerializeField]
+		private Image _fadeDown = null;
 
 		//변수
 		private bool _isEndIntro = false;
@@ -106,9 +114,15 @@ namespace Battle
 		/// </summary>
 		private IEnumerator SetIntro()
 		{
+			_uiCanvas.gameObject.SetActive(false);
+			_introCanvas.gameObject.SetActive(true);
 			_countText.gameObject.SetActive(true);
 
 			//맵 중앙을 보여준다
+			_fadeUp.rectTransform.sizeDelta = new Vector2(5000, 300);
+			_fadeDown.rectTransform.sizeDelta = new Vector2(5000, 300);
+			_fadeUp.DOFade(1, 0.3f);
+			_fadeDown.DOFade(1, 0.3f);
 			_countText.text = "3";
 			_countTextRect.localScale = new Vector2(0.1f, 0.1f);
 			_countTextRect.DOScale(2, 0.3f);
@@ -122,9 +136,9 @@ namespace Battle
 			_cameraComponent.MovingCamera(_playerPencilCase.position, 0.5f, 0.2f, 0.85f);
 			ShowDeckInfo(TeamType.MyTeam);
 			yield return new WaitForSeconds(0.2f);
-			_introCanvas.SetActive(true);
+			_cardDatas.SetActive(true);
 			yield return new WaitForSeconds(1f);
-			_introCanvas.SetActive(false);
+			_cardDatas.SetActive(false);
 
 			//상대 필통을 보여준다
 			_countText.text = "1";
@@ -133,16 +147,21 @@ namespace Battle
 			_cameraComponent.MovingCamera(_enemyPencilCase.position, 0.5f, 0.2f, 0.85f);
 			ShowDeckInfo(TeamType.EnemyTeam);
 			yield return new WaitForSeconds(0.2f);
-			_introCanvas.SetActive(true);
+			_cardDatas.SetActive(true);
 			yield return new WaitForSeconds(1f);
-			_introCanvas.SetActive(false);
+			_cardDatas.SetActive(false);
 
 			//다시 내 필통쪽으로 클로즈업한다
+			_fadeUp.DOFade(0, 0.3f);
+			_fadeDown.DOFade(0, 0.3f);
+			_uiCanvas.gameObject.SetActive(true);
 			_countText.text = "GO!";
 			_countTextRect.localScale = new Vector2(0.1f, 0.1f);
 			_countTextRect.DOScale(2.5f, 0.3f);
 			_cameraComponent.MovingCamera(_playerPencilCase.position, 1f, 0.2f);
-			yield return new WaitForSeconds(1f);
+			yield return new WaitForSeconds(0.3f);
+			_introCanvas.gameObject.SetActive(false);
+			yield return new WaitForSeconds(0.7f);
 			_countText.gameObject.SetActive(false);
 			_isEndIntro = true;
 

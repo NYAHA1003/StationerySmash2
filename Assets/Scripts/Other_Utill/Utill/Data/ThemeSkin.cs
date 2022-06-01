@@ -20,6 +20,7 @@ namespace Utill.Data
         PCButton,
         StButton,
         ThrowBar,
+        ThemePreview,
     }
     public static class ThemeSkin
     {

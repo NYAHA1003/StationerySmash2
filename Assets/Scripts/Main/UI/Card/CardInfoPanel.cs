@@ -346,7 +346,7 @@ namespace Main.Card
 				_userDeckData.AddCardInDeck(_selectCardData, _selectCardData._level);
 			}
 			SetEquipText();
-
+			UserSaveManagerSO.PostUserSaveData();
 		}
 
 		/// <summary>

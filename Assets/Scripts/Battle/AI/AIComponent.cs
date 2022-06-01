@@ -113,14 +113,15 @@ namespace Battle
                 enemyThrowCurDelay += enemyThrowSpeed * Time.deltaTime;
                 return;
             }
-            int selectUnit = Random.Range(2, _unitCommand._enemyUnitList.Count - 1);
-            Vector2 pos = _unitCommand._enemyUnitList[selectUnit].transform.position;
+            int selectUnitIndex = Random.Range(2, _unitCommand._enemyUnitList.Count - 1);
+            Unit selectUnit = _unitCommand._enemyUnitList[selectUnitIndex];
+            Vector2 pos = _unitCommand._enemyUnitList[selectUnitIndex].transform.position;
             pos.x += Random.Range(2.0f, 4.0f);
             pos.y -= Random.Range(2.0f, 4.0f);
             
-            if(!_unitCommand._enemyUnitList[selectUnit].IsDontThrow || !_unitCommand._enemyUnitList[selectUnit].IsNeverDontThrow)
+            if(!selectUnit.IsDontThrow && !selectUnit.IsNeverDontThrow)
 			{
-                _unitCommand._enemyUnitList[selectUnit].Throw_Unit(pos);
+                _unitCommand._enemyUnitList[selectUnitIndex].Throw_Unit(pos);
                 enemyThrowCurDelay = 0;
 			}
         }
@@ -160,12 +161,17 @@ namespace Battle
                 playerThrowCurDelay += playerThrowSpeed * Time.deltaTime;
                 return;
             }
-            int selectUnit = Random.Range(2, _unitCommand._playerUnitList.Count - 1);
-            Vector2 pos = _unitCommand._playerUnitList[selectUnit].transform.position;
+            int selectUnitIndex = Random.Range(2, _unitCommand._playerUnitList.Count - 1);
+            Unit selectUnit = _unitCommand._playerUnitList[selectUnitIndex];
+            Vector2 pos = _unitCommand._playerUnitList[selectUnitIndex].transform.position;
             pos.x -= Random.Range(2.0f, 4.0f);
             pos.y -= Random.Range(2.0f, 4.0f);
-            _unitCommand._playerUnitList[selectUnit].Throw_Unit(pos);
-            playerThrowCurDelay = 0;
+
+            if (!selectUnit.IsDontThrow && !selectUnit.IsNeverDontThrow)
+            {
+                _unitCommand._playerUnitList[selectUnitIndex].Throw_Unit(pos);
+                playerThrowCurDelay = 0;
+            }
         }
 
         /// <summary>
