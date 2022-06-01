@@ -61,21 +61,7 @@ namespace Utill.Tool
 		{
 			testList = pencilCaseDatas;
 			_stdPencilCaseDataList = pencilCaseDatas.post;
-			_havePencilCaseDataList.Clear();
-
-			int count = UserSaveManagerSO.UserSaveData._havePencilCaseList.Count;
-			
-			for (int i = 0; i < count; i++)
-			{
-				PencilCaseType pcType = UserSaveManagerSO.UserSaveData._havePencilCaseList[i];
-
-				PencilCaseData pcData = _stdPencilCaseDataList.Find(x => x._pencilCaseType == pcType);
-
-				if (pcData != null)
-				{
-					_havePencilCaseDataList.Add(pcData);
-				}
-			}
+			ResetPencilCaseList();
 		}
 
 		/// <summary>
@@ -89,7 +75,7 @@ namespace Utill.Tool
 
 			for (int i = 0; i < count; i++)
 			{
-				PencilCaseType pcType = UserSaveManagerSO.UserSaveData._havePencilCaseList[i];
+				PencilCaseType pcType = UserSaveManagerSO.UserSaveData._havePencilCaseList[i]._pencilCaseType;
 
 				PencilCaseData pcData = _stdPencilCaseDataList.Find(x => x._pencilCaseType == pcType);
 

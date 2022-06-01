@@ -77,25 +77,5 @@ namespace Utill.Data
 	{
 		public PencilCaseType _pencilCaseType;
 		public List<BadgeSaveData> _badgeDatas;
-
-		public static PencilCaseSaveData DeepCopyFromPCData(PencilCaseData pcData)
-		{
-			PencilCaseSaveData pencilCaseSaveData = new PencilCaseSaveData
-			{
-				_pencilCaseType = pcData._pencilCaseType,
-			};
-
-			for (int i = 0; i < pcData._badgeDatas.Count; i++)
-			{
-				BadgeSaveData badgeSaveData = new BadgeSaveData
-				{
-					_level = pcData._badgeDatas[i]._level,
-					_BadgeType = pcData._badgeDatas[i]._badgeType,
-				};
-				pencilCaseSaveData._badgeDatas.Add(badgeSaveData);
-			}
-
-			return pencilCaseSaveData;
-		}
 	}
 }

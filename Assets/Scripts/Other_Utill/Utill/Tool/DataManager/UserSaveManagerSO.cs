@@ -61,7 +61,6 @@ namespace Utill.Tool
         public static void SetUserSaveData(UserSaveData userSaveData)
         {
             _userSaveData = userSaveData;
-            Debug.Log(_userSaveData._name);
 		}
 
         /// <summary>
@@ -95,6 +94,7 @@ namespace Utill.Tool
                 //UserID를 저장한다
                 string jsonData = JsonUtility.ToJson(userIDobj);
                 File.WriteAllText(path, jsonData);
+                AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
 
                 _userSaveData._userID = userIDobj.userID;
 
@@ -105,7 +105,11 @@ namespace Utill.Tool
                 _userSaveData._haveSkinList.Add(SkinType.SharpNormal);
                 _userSaveData._haveSkinList.Add(SkinType.PencilCaseNormal);
                 _userSaveData._haveProfileList.Add(ProfileType.ProPencil);
-                _userSaveData._havePencilCaseList.Add(PencilCaseType.Normal);
+                _userSaveData._havePencilCaseList.Add(new PencilCaseSaveData
+                {
+                    _pencilCaseType = PencilCaseType.Normal,
+                    _badgeDatas = null
+                });
                 _userSaveData._haveThemeSkinTypeList.Add(ThemeSkinType.Normal);
                 _userSaveData._haveCardSaveDatas.Add(new CardSaveData()
                 {
@@ -123,14 +127,17 @@ namespace Utill.Tool
                     _level = 1,
                     _skinType = SkinType.SharpNormal,
                 });
-
+                _userSaveData._presetPencilCaseType1 = _userSaveData._currentPencilCaseType;
+                _userSaveData._presetCardDatas1.Add(CardNamingType.Pencil);
+                _userSaveData._presetCardDatas1.Add(CardNamingType.Sharp);
+                _userSaveData._presetPencilCaseType2 = _userSaveData._currentPencilCaseType;
+                _userSaveData._presetPencilCaseType3 = _userSaveData._currentPencilCaseType;
+                _userSaveData._setPrestIndex = 0;
 
                 PostUserSaveData();
             }
 
         }
-
-
 
         /// <summary>
         /// 관찰자 추가
@@ -194,6 +201,13 @@ namespace Utill.Tool
             PostUserSaveData();
         }
 
+        /// <summary>
+        /// 인게임 데이터를 프리셋 데이터에 따라 변경한다
+        /// </summary>
+        public static void ChangeIngameData(int preset)
+		{
+            _userSaveData.ChangeIngameData(preset);
+		}
     }
 
 }
