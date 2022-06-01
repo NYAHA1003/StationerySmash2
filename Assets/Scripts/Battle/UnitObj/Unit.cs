@@ -346,18 +346,26 @@ public class Unit : MonoBehaviour
     }
 
     /// <summary>
-    /// 던지기 게이지에 따른 던지기 가능여부
+    /// 던지기가 가능한지 체크
     /// </summary>
-    /// <param name="gauge"></param>
-    public void SetThrowRenderer(float gauge)
+    /// <returns></returns>
+    public bool CheckCanThrow()
     {
-        if(_unitStat.Return_Weight() <= gauge && !isThrowring && !IsDontThrow && !IsNeverDontThrow)
-        {
-            _unitSprite.SetThrowRenderer(true);
-        }
+        if (!isThrowring && !IsDontThrow && !IsNeverDontThrow)
+		{
+            return true;
+		}
         else
-        {
-            _unitSprite.SetThrowRenderer(false);
-        }
+		{
+            return false;
+		}
     }
+
+    /// <summary>
+    /// 머테리얼을 변경한다
+    /// </summary>
+    public void ChangeMaterial(Material material)
+	{
+        _unitSprite.ChangeMaterial(material);
+	}
 }

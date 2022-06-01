@@ -40,8 +40,6 @@ public class UnitSprite
     [SerializeField]
     private SpriteRenderer _hpSpriteRenderer = null; //유닛 깨짐이미지 렌더러
     [SerializeField]
-    private SpriteRenderer _throwSpriteRenderer = null; //유닛 던지기 가능 렌더러
-    [SerializeField]
     private Sprite[] _hpSprites = null; // 유닛 깨짐이미지들
 
     private TeamType _eTeam = TeamType.Null;
@@ -78,15 +76,6 @@ public class UnitSprite
         _spriteRenderer.sortingOrder = -orderIndex;
         _delayBarSortingGroup.sortingOrder = -orderIndex;
         _delayHalfBarSortingGroup.sortingOrder = -orderIndex;
-    }
-
-    /// <summary>
-    /// 던지기 렌더러 키기 끄기
-    /// </summary>
-    /// <param name="isActive"></param>
-    public void SetThrowRenderer(bool isActive)
-    {
-        _throwSpriteRenderer.gameObject.SetActive(isActive);
     }
 
     /// <summary>
@@ -173,4 +162,12 @@ public class UnitSprite
                 break;
         }
     }
+
+    /// <summary>
+    /// 머테리얼을 변경한다
+    /// </summary>
+    public void ChangeMaterial(Material material)
+	{
+        _spriteRenderer.material = material;
+	}
 }
