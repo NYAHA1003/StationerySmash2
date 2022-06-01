@@ -27,7 +27,7 @@ public class SetSkinComponent : MonoBehaviour
     /// <summary>
     /// 모든 스프라이트를 불러온다
     /// </summary>
-    private async void SetSkinAll()
+    private void SetSkinAll()
     {
         int cardTypeCount = _skinListSO._cardNamingSkins.Count;
         
@@ -40,7 +40,7 @@ public class SetSkinComponent : MonoBehaviour
 			{
                 SkinData skinData = cardNamingSkins._skinDatas[j];
                 skinData.AddSkinDataIntCardDictionary(cardNamingSkins._cardNamingType);
-                await SkinData.SetSkinStaticAsync(skinData._skinType);
+                SkinData.SetSkin(skinData._skinType);
 			}
         }
     }

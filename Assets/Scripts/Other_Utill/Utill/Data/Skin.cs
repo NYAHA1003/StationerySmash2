@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
+using Utill.Tool;
 
 namespace Utill.Data
 {
@@ -79,8 +80,9 @@ namespace Utill.Data
             Sprite sprite = null;
             if(_spriteDictionary.TryGetValue(skinType, out sprite))
 			{
-                return _spriteDictionary[skinType];
-			}
+                return sprite;
+
+            }
             else
 			{
                 return null;
@@ -91,7 +93,7 @@ namespace Utill.Data
         /// 정적으로 스킨의 스프라이트를 등록한다.
         /// </summary>
         /// <param name="skinType"></param>
-        public static async Task SetSkinStaticAsync(SkinType skinType)
+        public static void SetSkin(SkinType skinType)
         {
             if (_spriteDictionary.TryGetValue(skinType, out var data))
             {
@@ -100,10 +102,25 @@ namespace Utill.Data
             else
             {
                 string name = System.Enum.GetName(typeof(SkinType), skinType);
-                var handle = Addressables.LoadAssetAsync<Sprite>(name);
-                await handle.Task;
-                _spriteDictionary.Add(skinType, handle.Result);
+                AddressableTool.GetAddressableAssetDicAsync<SkinType, Sprite>(AddSpriteDictionary, skinType, name);
             }
+        }
+
+        /// <summary>
+        /// 딕셔너리에 키와 스프라이트를 추가한다
+        /// </summary>
+        /// <param name="skinType"></param>
+        /// <param name="sprite"></param>
+        private static void AddSpriteDictionary(SkinType skinType, Sprite sprite)
+        {
+            if (_spriteDictionary.TryGetValue(skinType, out var data))
+            {
+                return;
+            }
+            else
+			{
+                _spriteDictionary.Add(skinType, sprite);
+			}
         }
     }
 }

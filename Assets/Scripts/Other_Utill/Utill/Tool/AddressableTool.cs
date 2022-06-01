@@ -23,5 +23,18 @@ namespace Utill.Tool
 			await handle.Task;
 			actioin.Invoke(handle.Result);
 		}
+
+		/// <summary>
+		/// 어드레서블 에셋을 가져온다 딕셔너리용도
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="name"></param>
+		/// <returns></returns>
+		public static async void GetAddressableAssetDicAsync<K, T>(Action<K, T> actioin, K key, string name)
+		{
+			var handle = Addressables.LoadAssetAsync<T>(name);
+			await handle.Task;
+			actioin.Invoke(key, handle.Result);
+		}
 	}
 }
