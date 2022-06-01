@@ -28,15 +28,12 @@ const UserSaveSchema = mongoose.model('users', new mongoose.Schema({
       _haveCollectionDatas: {
         type: [mongoose.Schema.Types.Mixed]
       },
-      _presetData1: {
-        type: [mongoose.Schema.Types.Mixed]
-      },
-      _presetData2: {
-        type: [mongoose.Schema.Types.Mixed]
-      },
-      _presetData3: {
-        type: [mongoose.Schema.Types.Mixed]
-      },
+      _presetCardDatas1 : [Number],
+      _presetCardDatas2 : [Number],
+      _presetCardDatas3 : [Number],
+      _presetPencilCaseType1 : Number,
+      _presetPencilCaseType2 : Number,
+      _presetPencilCaseType3 : Number,
       _setPrestIndex: Number,
       _money: Number,
       _dalgona: Number,
