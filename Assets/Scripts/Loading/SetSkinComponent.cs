@@ -20,6 +20,7 @@ public class SetSkinComponent : MonoBehaviour
     private void Start()
     {
         SetSkinAll();
+        SetShaderAll();
         SetThemeSkinAll();
         _isAllSetSkin = true;
     }
@@ -46,6 +47,19 @@ public class SetSkinComponent : MonoBehaviour
     }
 
     /// <summary>
+    /// 모든 쉐이더를 불러온다
+    /// </summary>
+    private void SetShaderAll()
+    {
+        int shaderTypeCount = System.Enum.GetValues(typeof(ShaderType)).Length;
+
+        for (int i = 0; i < shaderTypeCount; ++i)
+        {
+            ShaderData.SetSkin((ShaderType)System.Enum.ToObject(typeof(ShaderType), i));
+        }
+    }
+
+    /// <summary>
     /// 모든 테마 스킨 데이터를 불러온다
     /// </summary>
     private async void SetThemeSkinAll()
@@ -61,4 +75,6 @@ public class SetSkinComponent : MonoBehaviour
 			}
 		}
     }
+
+    
 }

@@ -366,6 +366,6 @@ public class Unit : MonoBehaviour
     /// </summary>
     public void ChangeMaterial(Material material)
 	{
-        _unitSprite.ChangeMaterial(material);
+        //_unitSprite.ChangeMaterial(material);
 	}
 }

@@ -25,7 +25,6 @@ namespace Utill.Tool
 			_battleManager = FindObjectOfType<BattleManager>();
 		}
 
-
 		/// <summary>
 		/// 오브젝트 생성
 		/// </summary>
@@ -127,6 +126,7 @@ namespace Utill.Tool
 				stateDictionary.Add(typeof(T).Name, q);
 			}
 		}
+
 		/// <summary>
 		/// 스티커 풀링 매니저 생성
 		/// </summary>
@@ -154,7 +154,6 @@ namespace Utill.Tool
 				stateDictionary.Add(typeof(T).Name, q);
 			}
 		}
-
 
 		/// <summary>
 		/// 뱃지 생성
