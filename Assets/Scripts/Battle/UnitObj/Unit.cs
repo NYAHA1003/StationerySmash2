@@ -118,7 +118,7 @@ public class Unit : MonoBehaviour
         _unitStateEff.SetStateEff(this, _unitSprite.SpriteRenderer);
 
         //스프라이트 초기화
-        _unitSprite.ResetSprite(eTeam, dataBase, _unitStat, orderIndex);
+        _unitSprite.ResetSprite(eTeam, dataBase, _unitStat, orderIndex, grade);
 
         //스테이트 설정
         _unitStateChanger.ResetUnitStateChanger(dataBase, transform, stageData, _unitSprite, this);

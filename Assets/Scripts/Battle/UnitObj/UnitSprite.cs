@@ -28,6 +28,8 @@ public class UnitSprite
     [SerializeField]
     private GameObject _delayHalfBar;
     [SerializeField]
+    private SpriteRenderer _delayHalfBarImage;
+    [SerializeField]
     private SpriteRenderer _delayBarImage;
     [SerializeField]
     private SpriteMask _delayMaskPart;
@@ -41,12 +43,14 @@ public class UnitSprite
     private SpriteRenderer _hpSpriteRenderer = null; //¿Ø¥÷ ±˙¡¸¿ÃπÃ¡ˆ ∑ª¥ı∑Ø
     [SerializeField]
     private Sprite[] _hpSprites = null; // ¿Ø¥÷ ±˙¡¸¿ÃπÃ¡ˆµÈ
+    [SerializeField]
+    private Sprite[] _delaySprites = null; // ¿Ø¥÷ µÙ∑π¿ÃπŸ¿ÃπÃ¡ˆµÈ
 
     private TeamType _eTeam = TeamType.Null;
 
-    public void ResetSprite(TeamType teamType, CardData cardData, UnitStat unitStat, int orderIndex)
+    public void ResetSprite(TeamType teamType, CardData cardData, UnitStat unitStat, int orderIndex, int grade)
     {
-        SetUIAndSprite(teamType, SkinData.GetSkin(cardData._skinData._skinType));
+        SetUIAndSprite(teamType, SkinData.GetSkin(cardData._skinData._skinType), grade);
         UpdateDelayBar(unitStat.AttackDelay);
         ShowUI(true);
         SetTeamColor(teamType);
@@ -59,13 +63,29 @@ public class UnitSprite
     /// </summary>
     /// <param name="eTeam"></param>
     /// <param name="sprite"></param>
-    public void SetUIAndSprite(TeamType eTeam, Sprite sprite)
+    public void SetUIAndSprite(TeamType eTeam, Sprite sprite, int grade)
     {
         _eTeam = eTeam;
         SetDelayBar();
         
         _spriteRenderer.sprite = sprite;
         _spriteMask.sprite = sprite;
+
+        switch(grade)
+		{
+            case 1:
+                _delayBarImage.sprite = _delaySprites[0];
+                _delayHalfBarImage.sprite = _delaySprites[0];
+                break;
+            case 2:
+                _delayBarImage.sprite = _delaySprites[1];
+                _delayHalfBarImage.sprite = _delaySprites[1];
+                break;
+            case 3:
+                _delayBarImage.sprite = _delaySprites[2];
+                _delayHalfBarImage.sprite = _delaySprites[2];
+                break;
+        }
     }
 
     /// <summary>
