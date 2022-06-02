@@ -52,5 +52,7 @@ public class SceneLoadComponenet : MonoBehaviour
         Time.timeScale = 1f;
         //세이브 데이터에 접근하는 오브젝트들 제거
         UserSaveManagerSO.ClearObserver();
+        // 등록해둔 이벤트 초기화 
+        EventManager.ClearEvents(); 
     }
 }

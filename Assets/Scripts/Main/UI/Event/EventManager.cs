@@ -12,17 +12,10 @@ namespace Main.Event
 
         private Dictionary<EventsType, Action> eventDictionary = new Dictionary<EventsType, Action>();
         private Dictionary<EventsType, Action<object>> eventParamDictionary = new Dictionary<EventsType, Action<object>>();
-        void Initialize()
+        public static void ClearEvents()
         {
-            if (eventDictionary == null)
-            {
-                eventDictionary = new Dictionary<EventsType, Action>();
-            }
-            if (eventParamDictionary == null)
-            {
-                eventParamDictionary = new Dictionary<EventsType, Action<object>>();
-            }
-
+            Instance.eventDictionary.Clear();
+            Instance.eventParamDictionary.Clear(); 
         }
 
         /// <summary>
