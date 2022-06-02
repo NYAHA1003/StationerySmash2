@@ -89,21 +89,8 @@ public class Unit : MonoBehaviour
 
         //팀, 이름 설정
         _eTeam = eTeam;
-        if(_eTeam == TeamType.MyTeam)
-		{
-            transform.localScale = new Vector3(1, 1, 1);
-		}
-        else if(_eTeam == TeamType.EnemyTeam)
+        switch (grade)
         {
-            transform.localScale = new Vector3(-1, 1, 1);
-        }
-        transform.name = dataBase._name + _eTeam;
-
-        //물리판정 설정
-        _collideData = new CollideData();
-        _collideData.originpoints = unitData._colideData.originpoints;
-        switch(grade)
-		{
             default:
             case 1:
                 _collideData.SetMultiple(1);
@@ -117,7 +104,20 @@ public class Unit : MonoBehaviour
                 _collideData.SetMultiple(1.5f);
                 transform.localScale = Vector3.one * 1.5f;
                 break;
+        }
+        if (_eTeam == TeamType.MyTeam)
+		{
+            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
 		}
+        else if(_eTeam == TeamType.EnemyTeam)
+        {
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        }
+        transform.name = dataBase._name + _eTeam;
+
+        //물리판정 설정
+        _collideData = new CollideData();
+        _collideData.originpoints = unitData._colideData.originpoints;
 
         //딜레이시스템
         SetIsInvincibility(false);

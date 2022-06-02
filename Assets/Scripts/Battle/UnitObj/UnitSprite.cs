@@ -36,13 +36,9 @@ public class UnitSprite
     [SerializeField]
     private SpriteMask _delayMask;
     [SerializeField]
-    private SpriteMask _spriteMask = null; //À¯´Ö ¸¶½ºÅ©
-    [SerializeField]
     private SpriteRenderer _spriteRenderer = null; //À¯´Ö ½ºÇÁ¶óÀÌÆ®·»´õ·¯
     [SerializeField]
-    private SpriteRenderer _hpSpriteRenderer = null; //À¯´Ö ±úÁüÀÌ¹ÌÁö ·»´õ·¯
-    [SerializeField]
-    private Sprite[] _hpSprites = null; // À¯´Ö ±úÁüÀÌ¹ÌÁöµé
+    private SpriteRenderer _hpSpriteRenderer = null; //À¯´Ö Ã¼·Â ½ºÇÁ¶óÀÌÆ®
     [SerializeField]
     private Sprite[] _delaySprites = null; // À¯´Ö µô·¹ÀÌ¹ÙÀÌ¹ÌÁöµé
 
@@ -69,7 +65,7 @@ public class UnitSprite
         SetDelayBar();
         
         _spriteRenderer.sprite = sprite;
-        _spriteMask.sprite = sprite;
+        _hpSpriteRenderer.sprite = sprite;
 
         switch(grade)
 		{
@@ -103,20 +99,11 @@ public class UnitSprite
     /// </summary>
     public void SetHPSprite(int hp, int maxhp)
     {
-        float percent = (float)hp / maxhp;
+        float percent = (float)(maxhp - hp) / maxhp;
 
-        if (percent > 0.5f)
-        {
-            _hpSpriteRenderer.sprite = null;
-        }
-        else if (percent > 0.2f)
-        {
-            _hpSpriteRenderer.sprite = _hpSprites[0];
-        }
-        else
-        {
-            _hpSpriteRenderer.sprite = _hpSprites[1];
-        }
+        Color color = new Color(1,0,0, percent);
+
+        _hpSpriteRenderer.color = color;
     }
 
     /// <summary>
