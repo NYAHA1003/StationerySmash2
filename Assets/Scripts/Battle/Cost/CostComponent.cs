@@ -29,6 +29,8 @@ namespace Battle
         [SerializeField]
         private Image _costImage = null;
         [SerializeField]
+        private Image _disableImage = null;
+        [SerializeField]
         private TextAnimationComponent _textAnimationComponent;
 
         /// <summary>
@@ -113,8 +115,13 @@ namespace Battle
         {
             if (CurrentCost >= MaxCost)
 			{
+                SetDisableImage(false);
                 return;
 			}
+            else
+            {
+                SetDisableImage(true);
+            }
             if (_costDelay > 0)
             {
                 _costDelay -= _costSpeed * Time.deltaTime;
@@ -125,6 +132,14 @@ namespace Battle
             UpdateCostText();
             _costDelay = 100;
             _costImage.fillAmount = (100 - _costDelay) / 100;
+        }
+
+        /// <summary>
+        /// 코스트 증가 버튼의 비활성화 이미지를 킬지 끌지
+        /// </summary>
+        private void SetDisableImage(bool setActive)
+        {
+            _disableImage.gameObject.SetActive(setActive);
         }
 
         /// <summary>

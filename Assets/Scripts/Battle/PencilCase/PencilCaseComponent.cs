@@ -23,6 +23,7 @@ namespace Battle
 
         //참조 변수
         private UnitComponent _unitCommand = null;
+        private CardComponent _cardComponent = null;
         private StageData _stageData = null;
         private AbstractPencilCaseAbility _playerAbilityState = null;
         private AbstractPencilCaseAbility _enemyAbilityState = null;
@@ -37,9 +38,13 @@ namespace Battle
         private Button _pencilCaseAbilityButton = null;
         [SerializeField]
         private RectTransform _bloodEffectImage = null;
+        [SerializeField]
+        private Image _disableImage = null;
 
         //변수
         private Sequence _bloodEffect = null;
+        private int _needGauge = 0;
+        private int _currentGauge = 0;
 
         /// <summary>
         /// 초기화
@@ -49,12 +54,14 @@ namespace Battle
         /// <param name="pencilCase_Enemy"></param>
         /// <param name="pencilCaseDataMy"></param>
         /// <param name="pencilCaseDataEnemy"></param>
-        public void SetInitialization(UnitComponent unitCommand, StageData stageData)
+        public void SetInitialization(CardComponent cardComponent , UnitComponent unitCommand, StageData stageData)
         {
             _pencilCaseBadgeComponent = new PencilCaseBadgeComponent();
 
             this._unitCommand = unitCommand;
             this._stageData = stageData;
+            this._cardComponent = cardComponent;
+            this._needGauge = PencilCaseDataManagerSO.InGamePencilCaseData._needGauge;
 
             _pencilCaseBadgeComponent.SetInitialization(this);
 
@@ -64,6 +71,7 @@ namespace Battle
             //적 필통
             SetPencilCaseUnit(_enemyPencilCase, PencilCaseDataManagerSO.EnemyGamePencilCaseData, TeamType.EnemyTeam, -2);
 
+            _cardComponent.AddDictionary<CardObj>(_cardComponent.SetUseCard, AddGaugeAsCost);
 
             EventManager.StartListening(EventsType.PencilCaseAbility, OnPencilCaseAbility);
         }
@@ -73,7 +81,12 @@ namespace Battle
         /// </summary>
         public void RunPlayerPencilCaseAbility()
         {
-            _playerAbilityState.RunPencilCaseAbility();
+            if(_currentGauge >= _needGauge)
+			{
+                _currentGauge = 0;
+                _playerAbilityState.RunPencilCaseAbility();
+                DrawPencilCaseButtonDisable();
+            }
         }
 
         /// <summary>
@@ -105,6 +118,20 @@ namespace Battle
 		{
             return _pencilCaseBadgeComponent.FindBadge(teamType, badgeType);
 		}
+
+        /// <summary>
+        /// 코스트 만큼 게이지를 증가시킨다
+        /// </summary>
+        /// <param name="cardObj"></param>
+        private void AddGaugeAsCost(CardObj cardObj)
+		{
+            if(_currentGauge < _needGauge)
+			{
+               _currentGauge += cardObj.CardCost;
+                DrawPencilCaseButtonDisable();
+
+            }
+        }
 
         /// <summary>
         /// 피격 이펙트 설정
@@ -218,6 +245,14 @@ namespace Battle
 
             //시작 뱃지 능력 발동
             RunBadgeAbility(teamType);
+        }
+
+        /// <summary>
+        /// 필통 능력 사용 여부를 그린다
+        /// </summary>
+        private void DrawPencilCaseButtonDisable()
+        {
+            _disableImage.fillAmount = (float)(_needGauge - _currentGauge) / _needGauge;
         }
 
     }

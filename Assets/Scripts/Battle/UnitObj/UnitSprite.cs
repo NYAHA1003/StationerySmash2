@@ -152,13 +152,13 @@ public class UnitSprite
         switch (eTeam)
         {
             case TeamType.Null:
-                _spriteRenderer.color = Color.white;
+                _spriteRenderer.material = ShaderData.GetShader(ShaderType.DefaultShader);
                 break;
             case TeamType.MyTeam:
-                _spriteRenderer.color = Color.red;
+                _spriteRenderer.material = ShaderData.GetShader(ShaderType.MyTeamNormalShader);
                 break;
             case TeamType.EnemyTeam:
-                _spriteRenderer.color = Color.blue;
+                _spriteRenderer.material = ShaderData.GetShader(ShaderType.EnemyTeamNormalShader);
                 break;
         }
     }

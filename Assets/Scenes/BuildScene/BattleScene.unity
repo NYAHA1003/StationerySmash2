@@ -1174,6 +1174,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1514155264}
     m_Modifications:
+    - target: {fileID: 938437421, guid: 6b4c3a4b4a538fe41aee03f2caf913eb, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 938437421, guid: 6b4c3a4b4a538fe41aee03f2caf913eb, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 938437421, guid: 6b4c3a4b4a538fe41aee03f2caf913eb, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 938437422, guid: 6b4c3a4b4a538fe41aee03f2caf913eb, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9011835457039872940, guid: 6b4c3a4b4a538fe41aee03f2caf913eb, type: 3}
       propertyPath: m_Name
       value: PencilCaseButton (1)
@@ -1278,6 +1294,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &373137104 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 938437422, guid: 6b4c3a4b4a538fe41aee03f2caf913eb, type: 3}
+  m_PrefabInstance: {fileID: 373137101}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &455647791
@@ -1787,6 +1814,17 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &564102200 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 564102200, guid: 3abbf7a4ce1a0d540921b8f6c983e66d, type: 3}
+  m_PrefabInstance: {fileID: 669288409}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &603366383
 GameObject:
   m_ObjectHideFlags: 0
@@ -2067,6 +2105,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1514155264}
     m_Modifications:
+    - target: {fileID: 564102198, guid: 3abbf7a4ce1a0d540921b8f6c983e66d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1444787826257935188, guid: 3abbf7a4ce1a0d540921b8f6c983e66d, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -6049,12 +6091,14 @@ MonoBehaviour:
     _costDelay: 0
     _costText: {fileID: 208719802}
     _costImage: {fileID: 1289383225}
+    _disableImage: {fileID: 564102200}
     _textAnimationComponent: {fileID: 77665936}
   _pencilCaseComponent:
     _playerPencilCase: {fileID: 1179323816}
     _enemyPencilCase: {fileID: 1346881229}
     _pencilCaseAbilityButton: {fileID: 373137103}
     _bloodEffectImage: {fileID: 1095065798}
+    _disableImage: {fileID: 373137104}
   _pauseComponent:
     _pauseUI: {fileID: 1476667448}
     _pauseCanvas: {fileID: 1461045864}
@@ -8432,7 +8476,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2509207391207671441, guid: bf4797493a3905c4bb889f17d9e7fe1d, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 2509207391207671441, guid: bf4797493a3905c4bb889f17d9e7fe1d, type: 3}
       propertyPath: m_LocalPosition.x

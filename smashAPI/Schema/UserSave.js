@@ -5,9 +5,6 @@ const UserSaveSchema = mongoose.model('users', new mongoose.Schema({
     _haveCardSaveDatas: {
         type: [mongoose.Schema.Types.Mixed]
       },
-      _ingameSaveDatas: {
-        type: [mongoose.Schema.Types.Mixed]
-      },
       _haveSkinList: {
         type: [Number]
       },
@@ -15,7 +12,7 @@ const UserSaveSchema = mongoose.model('users', new mongoose.Schema({
         type: [mongoose.Schema.Types.Mixed]
       },
       _havePencilCaseList: {
-        type: [Number]
+        type: [mongoose.Schema.Types.Mixed]
       },
       _currentPencilCaseType: Number,
       _haveBadgeSaveDatas: {
@@ -31,6 +28,12 @@ const UserSaveSchema = mongoose.model('users', new mongoose.Schema({
       _haveCollectionDatas: {
         type: [mongoose.Schema.Types.Mixed]
       },
+      _presetCardDatas1 : [Number],
+      _presetCardDatas2 : [Number],
+      _presetCardDatas3 : [Number],
+      _presetPencilCaseType1 : Number,
+      _presetPencilCaseType2 : Number,
+      _presetPencilCaseType3 : Number,
       _setPrestIndex: Number,
       _money: Number,
       _dalgona: Number,

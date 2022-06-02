@@ -11,10 +11,9 @@ namespace Main.Deck
     {
         public string _userID = "";
         public List<CardSaveData> _haveCardSaveDatas = new List<CardSaveData>();    //카드 데이터 저장
-        public List<CardSaveData> _ingameSaveDatas = new List<CardSaveData>();    //인게임덱 카드 데이터 저장
         public List<SkinType> _haveSkinList = new List<SkinType>();    //가지고 있는 스킨
         public List<StickerSaveData> _haveStickerList = new List<StickerSaveData>(); //가지고 있는 스티커
-        public List<PencilCaseType> _havePencilCaseList = new List<PencilCaseType>();    //가지고 있는 필통
+        public List<PencilCaseSaveData> _havePencilCaseList = new List<PencilCaseSaveData>();    //가지고 있는 필통
         public PencilCaseType _currentPencilCaseType = PencilCaseType.Normal; // 현재 착용한 필통
         public List<BadgeSaveData> _haveBadgeSaveDatas = new List<BadgeSaveData>();
         public ProfileType _currentProfileType = ProfileType.ProNone;    //현재 프로필
@@ -33,6 +32,13 @@ namespace Main.Deck
         public int _loseCount = 0; //패배한 횟수
         public ThemeSkinType _themeSkinType = ThemeSkinType.Normal; // 마지막으로 선택한 테마 타입
         public List<ThemeSkinType> _haveThemeSkinTypeList = new List<ThemeSkinType>(); // 가진 테마 타입
+
+        public List<CardNamingType> _presetCardDatas1 = new List<CardNamingType>();
+        public List<CardNamingType> _presetCardDatas2 = new List<CardNamingType>();
+        public List<CardNamingType> _presetCardDatas3 = new List<CardNamingType>();
+        public PencilCaseType _presetPencilCaseType1 = PencilCaseType.Normal;
+        public PencilCaseType _presetPencilCaseType2 = PencilCaseType.Normal;
+        public PencilCaseType _presetPencilCaseType3 = PencilCaseType.Normal;
 
         /// <summary>
         /// 경험치 증가
@@ -66,6 +72,107 @@ namespace Main.Deck
 			}
             _money = money;
 		}
+
+        /// <summary>
+        /// 인게임 데이터를 프리셋 데이터에 따라 변경한다
+        /// </summary>
+        public void ChangeIngameData(int preset)
+		{
+            switch(preset)
+			{
+                case 0:
+                    _currentPencilCaseType = _presetPencilCaseType1;
+                    break;
+                case 1:
+                    _currentPencilCaseType = _presetPencilCaseType2;
+                    break;
+                case 2:
+                    _currentPencilCaseType = _presetPencilCaseType3;
+                    break;
+            }
+            _setPrestIndex = preset;
+		}
+
+        /// <summary>
+        /// 현재 카드 덱을 반환한다
+        /// </summary>
+        /// <returns></returns>
+        public List<CardSaveData> GetIngameCardData()
+		{
+            List<CardNamingType> currentCardList = null;
+            List<CardSaveData> cardSaveDatas = new List<CardSaveData>();
+            switch (_setPrestIndex)
+			{
+                case 0:
+                    currentCardList = _presetCardDatas1;
+                    break;
+                case 1:
+                    currentCardList = _presetCardDatas2;
+                    break;
+                case 2:
+                    currentCardList = _presetCardDatas3;
+                    break;
+            }
+
+            int count = currentCardList.Count;
+            for(int i = 0; i < count; ++i)
+			{
+                CardSaveData ingameData = _haveCardSaveDatas.Find(x => x._cardNamingType == currentCardList[i]);
+                cardSaveDatas.Add(ingameData);
+			}
+
+            return cardSaveDatas;
+        }
+
+        /// <summary>
+        /// 프리셋에 카드를 추가한다
+        /// </summary>
+        /// <param name="addCard"></param>
+        public void AddIngameCardData(CardNamingType addCard)
+        {
+            List<CardNamingType> currentCardList = null;
+            switch (_setPrestIndex)
+            {
+                case 0:
+                    currentCardList = _presetCardDatas1;
+                    break;
+                case 1:
+                    currentCardList = _presetCardDatas2;
+                    break;
+                case 2:
+                    currentCardList = _presetCardDatas3;
+                    break;
+            }
+            if (!currentCardList.Contains(addCard))
+			{
+                currentCardList.Add(addCard);
+			}
+        }
+
+        /// <summary>
+        /// 프리셋에 카드를 제거한다
+        /// </summary>
+        /// <param name="removeCard"></param>
+        public void RemoveIngameCardData(CardNamingType removeCard)
+        {
+            List<CardNamingType> currentCardList = null;
+            switch (_setPrestIndex)
+            {
+                case 0:
+                    currentCardList = _presetCardDatas1;
+                    break;
+                case 1:
+                    currentCardList = _presetCardDatas2;
+                    break;
+                case 2:
+                    currentCardList = _presetCardDatas3;
+                    break;
+            }
+            if (currentCardList.Contains(removeCard))
+            {
+                currentCardList.Remove(removeCard);
+            }
+        }
     }
 
     [System.Serializable]

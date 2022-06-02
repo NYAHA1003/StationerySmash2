@@ -211,8 +211,8 @@ namespace Battle
 			{
                 //Ä«µå À¶ÇÕ
                 SetDelayFusion();
-			}
-
+            }
+            RunAction(SetUseCard, card);
         }
 
         /// <summary>

@@ -20,6 +20,7 @@ public class SetSkinComponent : MonoBehaviour
     private void Start()
     {
         SetSkinAll();
+        SetShaderAll();
         SetThemeSkinAll();
         _isAllSetSkin = true;
     }
@@ -27,7 +28,7 @@ public class SetSkinComponent : MonoBehaviour
     /// <summary>
     /// 모든 스프라이트를 불러온다
     /// </summary>
-    private async void SetSkinAll()
+    private void SetSkinAll()
     {
         int cardTypeCount = _skinListSO._cardNamingSkins.Count;
         
@@ -40,8 +41,21 @@ public class SetSkinComponent : MonoBehaviour
 			{
                 SkinData skinData = cardNamingSkins._skinDatas[j];
                 skinData.AddSkinDataIntCardDictionary(cardNamingSkins._cardNamingType);
-                await SkinData.SetSkinStaticAsync(skinData._skinType);
+                SkinData.SetSkin(skinData._skinType);
 			}
+        }
+    }
+
+    /// <summary>
+    /// 모든 쉐이더를 불러온다
+    /// </summary>
+    private void SetShaderAll()
+    {
+        int shaderTypeCount = System.Enum.GetValues(typeof(ShaderType)).Length;
+
+        for (int i = 0; i < shaderTypeCount; ++i)
+        {
+            ShaderData.SetSkin((ShaderType)System.Enum.ToObject(typeof(ShaderType), i));
         }
     }
 
@@ -61,4 +75,6 @@ public class SetSkinComponent : MonoBehaviour
 			}
 		}
     }
+
+    
 }
