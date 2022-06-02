@@ -102,6 +102,22 @@ public class Unit : MonoBehaviour
         //물리판정 설정
         _collideData = new CollideData();
         _collideData.originpoints = unitData._colideData.originpoints;
+        switch(grade)
+		{
+            default:
+            case 1:
+                _collideData.SetMultiple(1);
+                transform.localScale = Vector3.one;
+                break;
+            case 2:
+                _collideData.SetMultiple(1.2f);
+                transform.localScale = Vector3.one * 1.2f;
+                break;
+            case 3:
+                _collideData.SetMultiple(1.5f);
+                transform.localScale = Vector3.one * 1.5f;
+                break;
+		}
 
         //딜레이시스템
         SetIsInvincibility(false);
