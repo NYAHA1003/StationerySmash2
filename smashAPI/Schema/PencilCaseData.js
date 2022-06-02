@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const PencilCaseDataSchema =  mongoose.model('pencilCaseData', new mongoose.Schema({
     _maxCard : Number,
     _maxBadgeCount : Number,
+    _needGauge : Number,
     _costSpeed : Number,
     _throwGaugeSpeed : Number,
     _name : String,
