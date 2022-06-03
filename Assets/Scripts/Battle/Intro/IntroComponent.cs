@@ -39,6 +39,8 @@ namespace Battle
 		[SerializeField]
 		private PencilCaseCard _pencilCaseCard = null;
 		[SerializeField]
+		private RectTransform _pencilCaseCardRectTrm;
+		[SerializeField]
 		private List<DeckCard> _deckCards = null;
 		[SerializeField]
 		private Canvas _uiCanvas = null;
@@ -131,6 +133,7 @@ namespace Battle
 
 			//내 필통을 보여준다
 			_countText.text = "2";
+			_pencilCaseCardRectTrm.anchoredPosition = new Vector2(-1450, 0);
 			_countTextRect.localScale = new Vector2(0.1f, 0.1f);
 			_countTextRect.DOScale(2, 0.3f);
 			_cameraComponent.MovingCamera(_playerPencilCase.position, 0.5f, 0.2f, 0.85f);
@@ -142,6 +145,7 @@ namespace Battle
 
 			//상대 필통을 보여준다
 			_countText.text = "1";
+			_pencilCaseCardRectTrm.anchoredPosition = new Vector2(1450, 0);
 			_countTextRect.localScale = new Vector2(0.1f, 0.1f);
 			_countTextRect.DOScale(2, 0.3f);
 			_cameraComponent.MovingCamera(_enemyPencilCase.position, 0.5f, 0.2f, 0.85f);
