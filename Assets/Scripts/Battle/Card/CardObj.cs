@@ -23,6 +23,14 @@ public class CardObj : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public PRS OriginPRS => _originPRS; //카드 위치
     public bool IsSelected => _isSelected;
 
+    public RectTransform RectTransform
+	{
+        get
+		{
+            return _rectTransform;
+		}
+	}
+
     //변수
     private int _cardCost = 0;   
     private int _originCardCost = 0; 
