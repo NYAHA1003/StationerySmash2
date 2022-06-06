@@ -207,6 +207,7 @@ namespace Utill.Tool
         public static void ChangeIngameData(int preset)
 		{
             _userSaveData.ChangeIngameData(preset);
+            PostUserSaveData();
 		}
     }
 
