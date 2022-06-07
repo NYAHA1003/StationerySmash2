@@ -63,10 +63,10 @@ namespace Main.Deck
             _presetButton2.onClick.AddListener(() => ChangePreset(1));
             _presetButton3.onClick.AddListener(() => ChangePreset(2));
 
-            EventManager.StartListening(EventsType.ActiveDeck, UpdateDeck);
-            EventManager.StartListening(EventsType.ChangePCAndDeck, OnChangePencilAndCards);
-            EventManager.StartListening(EventsType.UpdateHaveAndEquipDeck, UpdateHaveAndEquipDeck);
-            EventManager.StartListening(EventsType.UpdateHaveAndEquipPCDeck, UpdateHaveAndEquipPCDeck);
+            EventManager.Instance.StartListening(EventsType.ActiveDeck, UpdateDeck);
+            EventManager.Instance.StartListening(EventsType.ChangePCAndDeck, OnChangePencilAndCards);
+            EventManager.Instance.StartListening(EventsType.UpdateHaveAndEquipDeck, UpdateHaveAndEquipDeck);
+            EventManager.Instance.StartListening(EventsType.UpdateHaveAndEquipPCDeck, UpdateHaveAndEquipPCDeck);
 
             UserSaveManagerSO.AddObserver(this);
         }
@@ -160,8 +160,8 @@ namespace Main.Deck
                 cardButton.onClick.RemoveAllListeners();
                 cardButton.onClick.AddListener(() =>
                 {
-                    EventManager.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
-                    EventManager.TriggerEvent(EventsType.ActiveButtonComponent, ButtonType.cardDescription);
+                    EventManager.Instance.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
+                    EventManager.Instance.TriggerEvent(EventsType.ActiveButtonComponent, ButtonType.cardDescription);
                     
                 });
             }
@@ -180,8 +180,8 @@ namespace Main.Deck
 				cardButton.onClick.RemoveAllListeners();
 				cardButton.GetComponent<Button>().onClick.AddListener(() =>
 				{
-					EventManager.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
-					EventManager.TriggerEvent(EventsType.ActiveButtonComponent, ButtonType.cardDescription);
+					EventManager.Instance.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
+					EventManager.Instance.TriggerEvent(EventsType.ActiveButtonComponent, ButtonType.cardDescription);
 
 				});
 			}
@@ -202,7 +202,7 @@ namespace Main.Deck
                 cardButton.onClick.RemoveAllListeners();
                 cardButton.onClick.AddListener(() =>
                 {
-                   EventManager.TriggerEvent(EventsType.ActivePencilCaseDescription, pencilCaseData);
+                   EventManager.Instance.TriggerEvent(EventsType.ActivePencilCaseDescription, pencilCaseData);
                 });
             }
         }

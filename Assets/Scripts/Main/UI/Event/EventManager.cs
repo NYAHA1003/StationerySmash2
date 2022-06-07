@@ -12,17 +12,10 @@ namespace Main.Event
 
         private Dictionary<EventsType, Action> eventDictionary = new Dictionary<EventsType, Action>();
         private Dictionary<EventsType, Action<object>> eventParamDictionary = new Dictionary<EventsType, Action<object>>();
-        void Initialize()
-        {
-            if (eventDictionary == null)
-            {
-                eventDictionary = new Dictionary<EventsType, Action>();
-            }
-            if (eventParamDictionary == null)
-            {
-                eventParamDictionary = new Dictionary<EventsType, Action<object>>();
-            }
 
+        private void Start()
+        {
+            StartListening(EventsType.ClearEvents, ClearEvents);
         }
 
         /// <summary>
@@ -30,7 +23,7 @@ namespace Main.Event
         /// </summary>
         /// <param name="eventName"></param>
         /// <param name="listener"></param>
-        public static void StartListening(EventsType eventName, Action listener)
+        public void StartListening(EventsType eventName, Action listener)
         {
             Action thisEvent;
             if (Instance.eventDictionary.TryGetValue(eventName, out thisEvent))
@@ -48,7 +41,7 @@ namespace Main.Event
                 Instance.eventDictionary.Add(eventName, thisEvent);
             }
         }
-        public static void StartListening(EventsType eventName, Action<object> listener)
+        public void StartListening(EventsType eventName, Action<object> listener)
         {
             Action<object> thisEvent;
 
@@ -69,7 +62,7 @@ namespace Main.Event
         /// </summary>
         /// <param name="eventName"></param>
         /// <param name="listener"></param>
-        public static void StopListening(EventsType eventName, Action listener)
+        public void StopListening(EventsType eventName, Action listener)
         {
             if (Instance == null)
             {
@@ -87,7 +80,7 @@ namespace Main.Event
 
         }
 
-        public static void StopListening(EventsType eventName, Action<object> listener)
+        public void StopListening(EventsType eventName, Action<object> listener)
         {
             if (Instance == null)
             {
@@ -105,7 +98,7 @@ namespace Main.Event
         /// 이벤트 함수 실행 
         /// </summary>
         /// <param name="eventName"></param>
-        public static void TriggerEvent(EventsType eventName)
+        public void TriggerEvent(EventsType eventName)
         {
             Action thisEvent = null;
             if (Instance.eventDictionary.TryGetValue(eventName, out thisEvent))
@@ -119,7 +112,7 @@ namespace Main.Event
             }
         }
 
-        public static void TriggerEvent(EventsType eventName, object param)
+        public void TriggerEvent(EventsType eventName, object param)
         {
             Action<object> thisEvent = null;
             if (Instance.eventParamDictionary.TryGetValue(eventName, out thisEvent))
@@ -131,5 +124,15 @@ namespace Main.Event
                 Debug.LogError("빈 이벤트입니다");
             }
         }
+
+        public void ClearEvents()
+        {
+            Instance.eventDictionary.Clear();
+            Instance.eventParamDictionary.Clear();
+            StartListening(EventsType.ClearEvents, ClearEvents);
+
+        }
     }
+
+
 }

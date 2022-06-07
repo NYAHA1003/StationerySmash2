@@ -20,7 +20,7 @@ namespace Main.Scroll
         protected override void SettingAwake()
         {
             base.SettingAwake();
-            EventManager.StartListening(EventsType.MoveMainPn,(x) => OnMoveMainPanel((int)x));
+            EventManager.Instance.StartListening(EventsType.MoveMainPn,(x) => OnMoveMainPanel((int)x));
         }
         protected override void SettingStart()
         {
@@ -52,7 +52,7 @@ namespace Main.Scroll
             }
             Debug.Log("드래그끝,패널  옮겨짐");
             StressImage();
-            EventManager.TriggerEvent(EventsType.SetOriginShopPn);
+            EventManager.Instance.TriggerEvent(EventsType.SetOriginShopPn);
         }
 
         /// <summary>

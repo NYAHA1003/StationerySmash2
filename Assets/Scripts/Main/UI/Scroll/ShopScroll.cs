@@ -22,9 +22,9 @@ namespace Main.Scroll
         {
             base.SettingAwake();
 
-            EventManager.StartListening(EventsType.MoveShopPn, OnMoveShopPanel);
-            EventManager.StartListening(EventsType.CloaseAllPn, SetOriginScroll);
-            EventManager.StartListening(EventsType.SetOriginShopPn, SetOriginScroll);
+            EventManager.Instance.StartListening(EventsType.MoveShopPn, OnMoveShopPanel);
+            EventManager.Instance.StartListening(EventsType.CloaseAllPn, SetOriginScroll);
+            EventManager.Instance.StartListening(EventsType.SetOriginShopPn, SetOriginScroll);
         }
 
         protected override void SettingUpdate()

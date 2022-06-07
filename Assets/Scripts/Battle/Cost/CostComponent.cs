@@ -46,7 +46,7 @@ namespace Battle
         {
             updateAction += UpdateCost;
             SetCostSpeed(pencilCasePlayerData._costSpeed);
-            EventManager.StartListening(EventsType.CostUp, OnUpgradeCostGrade);
+            EventManager.Instance.StartListening(EventsType.CostUp, OnUpgradeCostGrade);
         }
 
         /// <summary>

@@ -27,7 +27,7 @@ namespace Battle
         /// <param name="pauseCanvas"></param>
         public void SetInitialization()
         {
-            EventManager.StartListening(EventsType.Pause, OnPause);
+            EventManager.Instance.StartListening(EventsType.Pause, OnPause);
         }
 
         /// <summary>

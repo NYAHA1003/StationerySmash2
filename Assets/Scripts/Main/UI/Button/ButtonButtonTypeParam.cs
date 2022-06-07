@@ -11,7 +11,7 @@ public class ButtonButtonTypeParam : ButtonAgent
     {
         for(int i = 0; i < eventTypes.Length; i++)
         {
-            EventManager.TriggerEvent(eventTypes[i], buttonType[i]);
+            EventManager.Instance.TriggerEvent(eventTypes[i], buttonType[i]);
         }
     }
 }

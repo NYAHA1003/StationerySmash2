@@ -39,6 +39,7 @@
         NextExplain, // 다음 튜토리얼 설명 
         SetTutorial, // 버튼 클릭시 어떤튜토리얼 나올지 
 
+        ClearEvents, // 이벤트 딕셔너리 초기화 
     }
 }
 
