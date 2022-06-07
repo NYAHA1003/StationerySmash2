@@ -11,7 +11,42 @@ using DG.Tweening;
 
 namespace Main.Store
 {
-    public class StickerPackage : MonoBehaviour 
+    [Serializable]
+    public class AllBadgeInfos
+    {
+        public DailyItemSO itemSO;
+
+        public List<DailyItemInfo> commonItemInfos = new List<DailyItemInfo>();
+        public List<DailyItemInfo> rareItemInfos = new List<DailyItemInfo>();
+        public List<DailyItemInfo> epicItemInfos = new List<DailyItemInfo>();
+
+        public void SetInfosGrade()
+        {
+            int itemCount = itemSO.dailyItemInfos.Count;
+
+            for (int i = 0; i < itemCount; i++)
+            {
+                DailyItemInfo badgeInfo = itemSO.dailyItemInfos[i];
+                if (badgeInfo._grade == Grade.Common)
+                {
+                    commonItemInfos.Add(badgeInfo);
+                }
+                else if (badgeInfo._grade == Grade.Rare)
+                {
+                    rareItemInfos.Add(badgeInfo);
+                }
+                else if (badgeInfo._grade == Grade.Epic)
+                {
+                    epicItemInfos.Add(badgeInfo);
+                }
+            }
+        }
+
+
+    }
+    
+
+    public class AbstractGacha : MonoBehaviour
     {
         [SerializeField]
         private AllBadgeInfos _allBadgeInfos;
@@ -20,20 +55,13 @@ namespace Main.Store
         [SerializeField]
         private GameObject itemsParent;
         [SerializeField]
-        private GachaCard badgePrefab;
+        private GachaCard itemPrefab;
         [SerializeField]
         private Image blackBackImage;
         [SerializeField]
         private GameObject nextBtn;
 
         private int _count = 11; // 최대 아이템 뜰 개수
-
-        [SerializeField]
-        Button _BadgeButton; // 1개
-        [SerializeField]
-        Button _BadgeSackButton; // 5개
-        [SerializeField]
-        Button _BadgeBoxButton; // 11개 
 
         [SerializeField]
         private Sprite _backBadgeImage; // 뱃지 뒷면 
@@ -47,26 +75,15 @@ namespace Main.Store
 
         private int currentNum; // 현재 몇번째 아이템 강조중 
         private int currentAmount; // 현재 총 뽑은 아이템 수 
+        private bool isCost = true; // 돈이 충분한상태인가 
 
         private int RandomNum;
 
         void Start()
         {
             ListenEvent();
-            ResetFunctionPakage_UI();
-            SetFunctionPakage_UI();
             _allBadgeInfos.SetInfosGrade();
             InstantiateItem();
-        }
-
-        /// <summary>
-        /// 이벤트 초기화
-        /// </summary>
-        private void ResetFunctionPakage_UI()
-        {
-            _BadgeButton.onClick.RemoveAllListeners();
-            _BadgeSackButton.onClick.RemoveAllListeners();
-            _BadgeBoxButton.onClick.RemoveAllListeners();
         }
 
         /// <summary>
@@ -74,34 +91,45 @@ namespace Main.Store
         /// </summary>
         private void ListenEvent()
         {
+            EventManager.StopListening(EventsType.CloseGacha, Close);
+            EventManager.StopListening(EventsType.CheckItem, CheckItem);
+            EventManager.StopListening(EventsType.CheckCost, (x) => CheckCost((int)x));
+            EventManager.StopListening(EventsType.StartGacha, (x) => Summons((int)x));
+
             EventManager.StartListening(EventsType.CloseGacha, Close);
             EventManager.StartListening(EventsType.CheckItem, CheckItem);
+            EventManager.StartListening(EventsType.CheckCost, (x) => CheckCost((int)x));
+            EventManager.StartListening(EventsType.StartGacha, (x) => Summons((int)x));
         }
+   
         /// <summary>
-        /// 이벤트 세팅
+        /// 현재 가진 돈이 충분한가 
         /// </summary>
-        private void SetFunctionPakage_UI()
-        {
-            _BadgeButton.onClick.AddListener(() => Summons(1, 10));
-            _BadgeSackButton.onClick.AddListener(() => Summons(5, 20));
-            _BadgeBoxButton.onClick.AddListener(() => Summons(11, 40));
-        }
-
-        private void Summons(int Amount, int cost)
+        /// <param name="cost"></param>
+        private void CheckCost(int cost) // 10, 20 ,40 단위 
         {
             /*
-             * if(현재 가진 달고나 < cost)
+             * if(현재 가진 달고나 < cost) 
              * {
+             *      isCost = false; 
              *      return; 
              * }
+             * isCost = true; 
              */
-            InitGacha(Amount);
-            BadgeSummons();
+        }
+        private void Summons(int amount)
+        {
+            if (isCost == false)
+            {
+                return;
+            }
+            InitGacha(amount);
+            ItemSummons();
         }
 
         // 일반 80% 희귀 15% 영웅 5%
         [ContextMenu("테스트")]
-        private void BadgeSummons()
+        private void ItemSummons()
         {
             blackBackImage.gameObject.SetActive(true);
             for (int i = 0; i < currentAmount; i++)
@@ -157,11 +185,6 @@ namespace Main.Store
         {
             currentAmount = amount;
             currentNum = 0;
-            if (amount == 1)
-            {
-                nextBtn.SetActive(false);
-                return;
-            }
             nextBtn.SetActive(true);
         }
         /// <summary>
@@ -183,7 +206,7 @@ namespace Main.Store
         {
             for (int i = 0; i < _count; ++i)
             {
-                GachaCard gachaCard = Instantiate(badgePrefab, itemsParent.transform);
+                GachaCard gachaCard = Instantiate(itemPrefab, itemsParent.transform);
                 gachaCard.gameObject.SetActive(false);
                 gachaCards.Add(gachaCard);
             }

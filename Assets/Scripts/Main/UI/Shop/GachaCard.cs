@@ -30,24 +30,36 @@ public class GachaCard : MonoBehaviour
     }
     private void Update()
     {
-        if (itemImage.transform.rotation.y >= 90 && itemImage.transform.rotation.y < 270)
-        {
-            itemImage.sprite = _backSprite;
-        }
-        else
-        {
-            itemImage.sprite = _frontSprite;
-        }
+        //if (itemImage.transform.rotation.y >= 90 && itemImage.transform.rotation.y < 270)
+        //{
+        //    itemImage.sprite = _backSprite;
+        //}
+        //else
+        //{
+        //    itemImage.sprite = _frontSprite;
+        //}
     }
-    private void OnEnable()
+
+    /// <summary>
+    /// 하나의 아이템 확대 강조 
+    /// </summary>
+    public void StressOneItem()
     {
-        StopAllCoroutines();
-        StartCoroutine(ChangeSprite()); 
+        gameObject.SetActive(true);
+        gameObject.transform.DOScale(3, 0.3f); 
+    }
+    /// <summary>
+    /// 활성화 후 애니메이션 연출 
+    /// </summary>
+    public void ActiveAndAnimate()
+    {
+        gameObject.SetActive(true); 
+        StartCoroutine(ChangeSprite());
 
         sequence = DOTween.Sequence();
         sequence.Append(itemImage.transform.DORotate(Vector3.up * 360 * 10, duration * 10, RotateMode.FastBeyond360).SetEase(Ease.OutCubic));
         sequence.Join(transform.DOScale(new Vector2(2, 2), duration * 10).SetEase(Ease.InCubic));
-        sequence.Append(itemImage.DOFade(0.5f,0.5f));
+        sequence.Append(itemImage.DOFade(0.5f, 0.5f));
         sequence.Join(transform.DOScale(new Vector2(1.5f, 1.5f), 0.5f));
         sequence.Append(itemImage.DOFade(1f, 0.3f));
         sequence.Join(transform.DOScale(new Vector2(2f, 2f), 0.3f));
@@ -56,7 +68,10 @@ public class GachaCard : MonoBehaviour
         {
             // 카드 틀 액티브
         });
-        //transform.DORotate(new Vector3(0, 360, 0), duration, RotateMode.FastBeyond360).SetLoops(10,LoopType.Restart);
+    }
+    private void OnEnable()
+    {
+        Reset(); 
     }
 
     IEnumerator ChangeSprite()
@@ -89,6 +104,7 @@ public class GachaCard : MonoBehaviour
     public void Reset()
     {
         StopAllCoroutines();
-        gameObject.SetActive(false); 
+        transform.rotation = Quaternion.identity;
+        transform.localScale = Vector3.one; 
     }
 }

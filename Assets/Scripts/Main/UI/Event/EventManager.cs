@@ -12,6 +12,10 @@ namespace Main.Event
 
         private Dictionary<EventsType, Action> eventDictionary = new Dictionary<EventsType, Action>();
         private Dictionary<EventsType, Action<object>> eventParamDictionary = new Dictionary<EventsType, Action<object>>();
+        
+        /// <summary>
+        /// 이벤트 초기화
+        /// </summary>
         public static void ClearEvents()
         {
             Instance.eventDictionary.Clear();
