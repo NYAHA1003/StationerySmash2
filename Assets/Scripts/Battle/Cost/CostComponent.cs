@@ -7,6 +7,7 @@ using Utill.Data;
 using Utill.Tool;
 using TMPro;
 using Main.Event;
+using DG.Tweening;
 
 namespace Battle
 {
@@ -22,12 +23,15 @@ namespace Battle
         //변수
         public float _costSpeed = 200;
         public float _costDelay;
+        private bool _isActiveButton; //버튼이 켜졌을 때
 
         //인스펙터 참조 변수
         [SerializeField]
         private TextMeshProUGUI _costText = null;
         [SerializeField]
         private Image _costImage = null;
+        [SerializeField]
+        private RectTransform _costUpButtonRect = null;
         [SerializeField]
         private Image _disableImage = null;
         [SerializeField]
@@ -116,10 +120,16 @@ namespace Battle
             if (CurrentCost >= MaxCost)
 			{
                 SetDisableImage(false);
+                if(!_isActiveButton)
+				{
+                    _isActiveButton = true;
+                    _costUpButtonRect.DOShakeAnchorPos(0.3f);
+				}
                 return;
 			}
             else
             {
+                _isActiveButton = false;
                 SetDisableImage(true);
             }
             if (_costDelay > 0)
