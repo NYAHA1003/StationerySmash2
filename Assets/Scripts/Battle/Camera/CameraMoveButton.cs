@@ -38,7 +38,7 @@ namespace Battle.Cameras
 		public void OnPointerUp(PointerEventData eventData)
 		{
 			isMove = false;
-			_image.DOFade(0f, 0.5f);
+			_image.DOFade(0.3f, 0.5f);
 		}
 
 		public void Update()

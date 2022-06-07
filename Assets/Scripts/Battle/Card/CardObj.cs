@@ -23,6 +23,14 @@ public class CardObj : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public PRS OriginPRS => _originPRS; //카드 위치
     public bool IsSelected => _isSelected;
 
+    public RectTransform RectTransform
+	{
+        get
+		{
+            return _rectTransform;
+		}
+	}
+
     //변수
     private int _cardCost = 0;   
     private int _originCardCost = 0; 
@@ -55,9 +63,13 @@ public class CardObj : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField]
     private Image _fusionEffect; // 융합시 카드 색깔이 바뀔 때 사용하는 이미지
     [SerializeField]
+    private Image _cardFilter; // 카드 배경 쉐이더 역할 이미지
+    [SerializeField]
     private RectTransform _rectTransform; // 카드의 렉트
     [SerializeField]
     private List<Sprite> _gradeFrameSprites; // 카드 테두리 스프라이트들
+    [SerializeField]
+    private List<Material> _gradeMaterial; // 카드 배경 쉐이더
     [SerializeField, Header("유닛용")]
     private Image _stickerImage; //스티커 이미지
     [SerializeField]
@@ -230,16 +242,19 @@ public class CardObj : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             case 1:
                 _gradeFrame.sprite = _gradeFrameSprites[0];
                 _outLineFrame.sprite = _gradeFrameSprites[0];
+                _cardFilter.material = _gradeMaterial[0];
                 _outLineFrame.color = Color.black;
                 break;
             case 2:
                 _gradeFrame.sprite = _gradeFrameSprites[1];
                 _outLineFrame.sprite = _gradeFrameSprites[1];
+                _cardFilter.material = _gradeMaterial[1];
                 _outLineFrame.color = Color.black;
                 break;
             case 3:
                 _gradeFrame.sprite = _gradeFrameSprites[2];
                 _outLineFrame.sprite = _gradeFrameSprites[2];
+                _cardFilter.material = _gradeMaterial[2];
                 _outLineFrame.color = Color.white;
                 break;
         }

@@ -7,6 +7,15 @@ using UnityEngine;
 /// </summary>
 public class UnitStat
 {
+    public enum WeightGrade
+	{
+        TooLight,
+        Light,
+        Normal,
+        Heavy,
+        TooHeavy,
+    }
+
     //프로퍼티
     public int AttackPercent => _attackPercent; //공격력 퍼센트
     public int MoveSpeedPercent => _moveSpeedPercent;//이동속도 퍼센트
@@ -269,6 +278,37 @@ public class UnitStat
     {
         return Mathf.RoundToInt((_unitData._weight + _bonusWeight) * (float)_weightPercent / 100);
     }
+
+    /// <summary>
+    /// 무게에 따른 등급 반환
+    /// </summary>
+    /// <returns></returns>
+    public WeightGrade ReturnWeightGrade()
+	{
+        int weight = Return_Weight();
+	    if(weight <= 40)
+		{
+            return WeightGrade.TooLight;
+		}
+        else if (weight <= 80)
+        {
+            return WeightGrade.Light;
+        }
+        else if (weight <= 120)
+        {
+            return WeightGrade.Normal;
+        }
+        else if (weight <= 160)
+        {
+            return WeightGrade.Heavy;
+        }
+        else
+        {
+            return WeightGrade.TooHeavy;
+        }
+
+    }
+
     /// <summary>
     /// 명중률 스탯 반환
     /// </summary>

@@ -25,6 +25,7 @@ namespace Battle.Units
 
 		public override void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
 		{
+			_animator = myUnit.Animator;
 			_idleState.ChangeUnit(myTrm, mySprTrm, myUnit);
 			_damagedState.ChangeUnit(myTrm, mySprTrm, myUnit);
 			_dieState.ChangeUnit(myTrm, mySprTrm, myUnit);
@@ -43,6 +44,7 @@ namespace Battle.Units
 		{
 			_curState = eState.IDLE;
 			_curEvent = eEvent.ENTER;
+			Animation(eState.IDLE);
 		}
 
 		public override Unit PullUnit()
@@ -78,8 +80,10 @@ namespace Battle.Units
 			if (_myUnit.UnitStat.Hp <= 0)
 			{
 				_stateManager.Set_Die();
+				Animation(eState.DIE);
 				return;
 			}
+			Animation(eState.DAMAGED);
 			_curEvent = eEvent.UPDATE;
 		}
 

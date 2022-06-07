@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Utill.Data;
 using Utill.Tool;
 using TMPro;
@@ -12,7 +13,9 @@ namespace Battle
     {
         //인스펙터 참조 변수
         [SerializeField]
-        private TextMeshProUGUI _timeText;
+        private RectTransform _timeHand;
+        [SerializeField]
+        private Image _timeDelay;
 
         //참조 변수
         private UnitComponent _unitCommand = null;
@@ -23,7 +26,8 @@ namespace Battle
         private StageData _stageData;
 
         //변수
-        private float _timer = 0;
+        private float _currentTimer = 0;
+        private float _firstTimer = 0;
         private float _bonustime = 0;
         private bool _isFinallyEnd;
 
@@ -37,7 +41,8 @@ namespace Battle
             _sudenDeathComponent = new SudenDeathComponent();
 
             _stageData = stageData;
-            _timer = _stageData.timeValue + _bonustime;
+            _currentTimer = _stageData.timeValue + _bonustime;
+            _firstTimer = _currentTimer;
 
             this._unitCommand = unitComponent;
             this._cardCommand = cardComponent;
@@ -55,7 +60,7 @@ namespace Battle
         /// <param name="time"></param>
         public void SetTime(float time)
         {
-            _timer = time;
+            _currentTimer = time;
         }
 
         /// <summary>
@@ -91,10 +96,12 @@ namespace Battle
                 return;
             }
 
-            if (_timer > 0)
+            if (_currentTimer > 0)
             {
-                _timer -= Time.deltaTime;
-                _timeText.text = $"{(int)_timer / 60}:{(int)_timer % 60}";
+                _currentTimer -= Time.deltaTime;
+                float betweenValue = (_firstTimer - _currentTimer) / _firstTimer;
+                _timeHand.rotation = Quaternion.Euler(new Vector3(0, 0, betweenValue * -360));
+                _timeDelay.fillAmount = betweenValue;
                 return;
             }
 

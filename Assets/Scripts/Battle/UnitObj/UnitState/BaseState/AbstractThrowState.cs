@@ -134,11 +134,22 @@ namespace Battle.Units
 			float dir = Vector2.Angle((Vector2)_myTrm.position, (Vector2)targetUnit.transform.position);
 			float extraKnockBack = (targetUnit.UnitStat.Return_Weight() - _myUnit.UnitStat.Return_Weight() * (float)targetUnit.UnitStat.Hp / targetUnit.UnitStat.MaxHp) * 0.025f;
 			AtkData atkData = new AtkData(_myUnit, 0, 0, 0, 0, true, _damageId, EffAttackType.Normal);
+			UnitStat.WeightGrade unitWeightGrade = _myUnit.UnitStat.ReturnWeightGrade();
+			UnitStat.WeightGrade targetWeightGrade = targetUnit.UnitStat.ReturnWeightGrade();
 
+			if(unitWeightGrade < targetWeightGrade)
+			{
+				WeightSmall(ref atkData, ref targetUnit, ref dir, ref extraKnockBack);
+			}
+			else if (unitWeightGrade == targetWeightGrade)
+			{
+				WeightEqual(ref atkData, ref targetUnit, ref dir, ref extraKnockBack);
+			}
+			else if(unitWeightGrade > targetWeightGrade)
+			{
+				WeightBig(ref atkData, ref targetUnit, ref dir, ref extraKnockBack);
+			}
 
-			WeightBig(ref atkData, ref targetUnit, ref dir, ref extraKnockBack);
-			WeightSmall(ref atkData, ref targetUnit, ref dir, ref extraKnockBack);
-			WeightEqual(ref atkData, ref targetUnit, ref dir, ref extraKnockBack);
 		}
 
 		/// <summary>
@@ -154,15 +165,12 @@ namespace Battle.Units
 
 			//기본데미지 100 + 무게
 			atkData.Reset_Damage(100 + (_myUnit.UnitStat.Return_Weight() > targetUnit.UnitStat.Return_Weight() ? (Mathf.RoundToInt((float)_myUnit.UnitStat.Return_Weight() - targetUnit.UnitStat.Return_Weight()) / 2) : Mathf.RoundToInt((float)(targetUnit.UnitStat.Return_Weight() - _myUnit.UnitStat.Return_Weight()) / 5)));
-			//무게가 더 클 경우
-			if (_myUnit.UnitStat.Return_Weight() > targetUnit.UnitStat.Return_Weight())
-			{
-				atkData.Reset_Kncockback(10, extraKnockBack, dir, false);
-				atkData.Reset_Type(EffAttackType.Stun);
-				atkData.Reset_Value(1);
-				targetUnit.Run_Damaged(atkData);
-				return;
-			}
+
+			atkData.Reset_Kncockback(10, extraKnockBack, dir, false);
+			atkData.Reset_Type(EffAttackType.Stun);
+			atkData.Reset_Value(1);
+			targetUnit.Run_Damaged(atkData);
+			return;
 		}
 
 		/// <summary>
@@ -178,22 +186,17 @@ namespace Battle.Units
 			//초기데미지 설정
 			SetThrowAttackDamage(ref atkData, targetUnit);
 
+			atkData.Reset_Kncockback(0, 0, 0, false);
+			atkData.Reset_Type(EffAttackType.Normal);
+			atkData.Reset_Value(null);
+			targetUnit.Run_Damaged(atkData);
 
-			//무게가 더 작을 경우
-			if (_myUnit.UnitStat.Return_Weight() < targetUnit.UnitStat.Return_Weight())
-			{
-				atkData.Reset_Kncockback(0, 0, 0, false);
-				atkData.Reset_Type(EffAttackType.Normal);
-				atkData.Reset_Value(null);
-				targetUnit.Run_Damaged(atkData);
-
-				atkDataMy.Reset_Kncockback(20, 0, dir, true);
-				atkDataMy.Reset_Type(EffAttackType.Stun);
-				atkDataMy.Reset_Value(1);
-				atkDataMy.Reset_Damage(0);
-				_myUnit.Run_Damaged(atkDataMy);
-				return;
-			}
+			atkDataMy.Reset_Kncockback(20, 0, dir, true);
+			atkDataMy.Reset_Type(EffAttackType.Stun);
+			atkDataMy.Reset_Value(1);
+			atkDataMy.Reset_Damage(0);
+			_myUnit.Run_Damaged(atkDataMy);
+			return;
 		}
 
 		/// <summary>
@@ -209,23 +212,19 @@ namespace Battle.Units
 			//초기데미지 설정
 			SetThrowAttackDamage(ref atkData, targetUnit);
 
-			//무게가 같을 경우
-			if (_myUnit.UnitStat.Return_Weight() == targetUnit.UnitStat.Return_Weight())
-			{
-				atkData.Reset_Kncockback(10, extraKnockBack, dir, false);
-				atkData.Reset_Type(EffAttackType.Stun);
-				atkData.Reset_Value(1);
-				targetUnit.Run_Damaged(atkData);
+			atkData.Reset_Kncockback(10, extraKnockBack, dir, false);
+			atkData.Reset_Type(EffAttackType.Stun);
+			atkData.Reset_Value(1);
+			targetUnit.Run_Damaged(atkData);
 
 
-				atkDataMy.Reset_Kncockback(20, 0, dir, true);
-				atkDataMy.Reset_Type(EffAttackType.Normal);
-				atkDataMy.Reset_Value(1);
-				atkDataMy.Reset_Damage(0);
-				_myUnit.Run_Damaged(atkDataMy);
+			atkDataMy.Reset_Kncockback(20, 0, dir, true);
+			atkDataMy.Reset_Type(EffAttackType.Normal);
+			atkDataMy.Reset_Value(1);
+			atkDataMy.Reset_Damage(0);
+			_myUnit.Run_Damaged(atkDataMy);
 
-				return;
-			}
+			return;
 		}
 
 		/// <summary>

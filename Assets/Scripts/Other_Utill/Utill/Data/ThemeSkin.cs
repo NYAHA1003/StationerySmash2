@@ -21,6 +21,7 @@ namespace Utill.Data
         StButton,
         ThrowBar,
         ThemePreview,
+        CardTheme,
     }
     public static class ThemeSkin
     {

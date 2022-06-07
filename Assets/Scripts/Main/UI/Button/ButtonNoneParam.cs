@@ -8,7 +8,7 @@ public class ButtonNoneParam : ButtonAgent
     {
         for(int i = 0; i < eventTypes.Length;i++)
         {
-            EventManager.TriggerEvent(eventTypes[i]);
+            EventManager.Instance.TriggerEvent(eventTypes[i]);
         }
     }
 

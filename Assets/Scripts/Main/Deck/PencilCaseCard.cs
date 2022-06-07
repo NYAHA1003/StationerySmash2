@@ -19,7 +19,7 @@ namespace Main.Deck
 		public void SetPencilCaseData(PencilCaseData pencilCaseData)
 		{
 			_pencilCaseImage.sprite = SkinData.GetSkin(pencilCaseData._skinType);
-			_nameText.text = pencilCaseData._skinType.ToString();
+			_nameText.text = pencilCaseData._name;
 		}
 	}
 }

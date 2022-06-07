@@ -18,23 +18,13 @@ namespace Main.Scroll
         [SerializeField]
         private RectTransform[] panelMoveBtns;
 
-        private void OnDestroy()
-        {
-            EventManager.StopListening(EventsType.MoveShopPn, OnMoveShopPanel);
-            EventManager.StopListening(EventsType.CloaseAllPn, SetOriginScroll);
-            EventManager.StopListening(EventsType.SetOriginShopPn, SetOriginScroll);
-        }
         protected override void SettingAwake()
         {
             base.SettingAwake();
 
-             EventManager.StopListening(EventsType.MoveShopPn, OnMoveShopPanel);
-             EventManager.StopListening(EventsType.CloaseAllPn, SetOriginScroll);
-             EventManager.StopListening(EventsType.SetOriginShopPn, SetOriginScroll);
-
-            EventManager.StartListening(EventsType.MoveShopPn, OnMoveShopPanel);
-            EventManager.StartListening(EventsType.CloaseAllPn, SetOriginScroll);
-            EventManager.StartListening(EventsType.SetOriginShopPn, SetOriginScroll);
+            EventManager.Instance.StartListening(EventsType.MoveShopPn, OnMoveShopPanel);
+            EventManager.Instance.StartListening(EventsType.CloaseAllPn, SetOriginScroll);
+            EventManager.Instance.StartListening(EventsType.SetOriginShopPn, SetOriginScroll);
         }
 
         protected override void SettingUpdate()

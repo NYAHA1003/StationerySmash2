@@ -37,6 +37,8 @@ namespace Battle
         [SerializeField]
         private Button _pencilCaseAbilityButton = null;
         [SerializeField]
+        private RectTransform _pencilCaseAbilityButtonRect = null;
+        [SerializeField]
         private RectTransform _bloodEffectImage = null;
         [SerializeField]
         private Image _disableImage = null;
@@ -45,11 +47,8 @@ namespace Battle
         private Sequence _bloodEffect = null;
         private int _needGauge = 0;
         private int _currentGauge = 0;
+        private bool _isActiveButton; //버튼이 켜졌을 때
 
-        public void OnDestroy()
-        {
-            EventManager.StopListening(EventsType.PencilCaseAbility, OnPencilCaseAbility);
-        }
         /// <summary>
         /// 초기화
         /// </summary>
@@ -77,8 +76,7 @@ namespace Battle
 
             _cardComponent.AddDictionary<CardObj>(_cardComponent.SetUseCard, AddGaugeAsCost);
 
-            EventManager.StopListening(EventsType.PencilCaseAbility, OnPencilCaseAbility);
-            EventManager.StartListening(EventsType.PencilCaseAbility, OnPencilCaseAbility);
+            EventManager.Instance.StartListening(EventsType.PencilCaseAbility, OnPencilCaseAbility);
         }
 
         /// <summary>
@@ -134,7 +132,14 @@ namespace Battle
 			{
                _currentGauge += cardObj.CardCost;
                 DrawPencilCaseButtonDisable();
-
+                if(_currentGauge >= _needGauge)
+				{
+                    if (!_isActiveButton)
+                    {
+                        _isActiveButton = true;
+                        _pencilCaseAbilityButtonRect.DOShakeAnchorPos(0.3f);
+                    }
+                }
             }
         }
 
@@ -158,6 +163,7 @@ namespace Battle
         /// </summary>
         private void OnPencilCaseAbility()
         {
+            _isActiveButton = false;
             RunPlayerPencilCaseAbility();
         }
 

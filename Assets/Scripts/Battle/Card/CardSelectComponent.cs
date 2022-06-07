@@ -137,7 +137,29 @@ namespace Battle
             {
                 return;
             }
-            _selectedCard.transform.position = Input.mousePosition;
+            Vector3 position = Input.mousePosition;
+
+            //소환 범위에 들었을 때
+            switch (_selectedCard.CardDataValue._cardType)
+            {
+                case CardType.Execute:
+                    break;
+                case CardType.SummonUnit:
+                case CardType.SummonTrap:
+                    Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    if(mousePos.y > 0)
+                    {
+                        if (mousePos.x >= _cardComponent.ReturnMinRange() && mousePos.x <= _cardComponent.ReturnMaxRange())
+                        {
+                            position.y = 1200;
+                        }
+                    }
+                    break;
+                case CardType.Installation:
+                    break;
+            }
+
+            _selectedCard.transform.position = position;
         }
 
         /// <summary>

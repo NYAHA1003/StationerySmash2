@@ -35,21 +35,12 @@ namespace Main.Setting
         [SerializeField]
         private GameObject ProfilePanel;
 
-        public void OnDestroy()
-        {
-
-        }
         public void ListenEvent()
         {
-            EventManager.StopListening(EventsType.ActiveProfileImgPn, OnActiveProfileImgPn);
-            EventManager.StopListening(EventsType.ChangeProfileImage, OnChangeProfileImage);
-           EventManager.StopListening(EventsType.ChabgeUserName, OnChangeUserName);
-            EventManager.StopListening(EventsType.CloaseAllPn, OnProfileDisabled);
-
-            EventManager.StartListening(EventsType.ActiveProfileImgPn, OnActiveProfileImgPn);
-            EventManager.StartListening(EventsType.ChangeProfileImage, OnChangeProfileImage);
-            EventManager.StartListening(EventsType.ChabgeUserName, OnChangeUserName);
-            EventManager.StartListening(EventsType.CloaseAllPn, OnProfileDisabled);
+            EventManager.Instance.StartListening(EventsType.ActiveProfileImgPn, OnActiveProfileImgPn);
+            EventManager.Instance.StartListening(EventsType.ChangeProfileImage, OnChangeProfileImage);
+            EventManager.Instance.StartListening(EventsType.ChabgeUserName, OnChangeUserName);
+            EventManager.Instance.StartListening(EventsType.CloaseAllPn, OnProfileDisabled);
         }
         public void OnChangeUserName()
         {

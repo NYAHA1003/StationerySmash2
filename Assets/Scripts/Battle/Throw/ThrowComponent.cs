@@ -27,6 +27,16 @@ namespace Battle
         private GameObject _parabolaBackground = null;
         [SerializeField]
         private TrailRenderer _throwTrail = null;
+        [SerializeField]
+        private GameObject _delayBar;
+        [SerializeField]
+        private GameObject _delayHalfBar;
+        [SerializeField]
+        private SpriteMask _delayMaskPart;
+        [SerializeField]
+        private SpriteMask _delayMask;
+        [SerializeField]
+        private SpriteRenderer _delayBarImage;
 
         //참조 변수
         private Unit _throwedUnit = null;
@@ -59,8 +69,10 @@ namespace Battle
             this._stageData = stageData;
 
             this._throwParabolaComponent.SetInitialization(_parabola, this, _stageData, _parabolaBackground, _cameraCommand, _parabolaArrow, _dirArrow);
-            this._throwSelectComponent.SetInitialization(this, _unitCommand);
+            this._throwSelectComponent.SetInitialization(this, _throwGaugeComponent, _unitCommand);
             this._throwGaugeComponent.SetInitialization(this, _unitCommand, _throwBarFrame, _throwGaugeBar, PencilCaseDataManagerSO.InGamePencilCaseData);
+            SetDelayBar();
+            UnSetDelayBar();
 
             updateAction += UpdateThrowGauge;
         }
@@ -70,6 +82,7 @@ namespace Battle
         /// </summary>
         public void ThrowUnit()
         {
+            UnSetDelayBar();
             if (_throwedUnit != null)
             {
                 _throwedUnit.Throw_Unit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
@@ -89,6 +102,52 @@ namespace Battle
                 _throwParabolaComponent.UnSetDirectionArrow();
             }
             _dirArrow.gameObject.SetActive(false);
+        }
+
+        /// <summary>
+        /// 딜레이바 설정
+        /// </summary>
+        public void SetDelayBar()
+        {
+            _delayMaskPart.gameObject.SetActive(true);
+            _delayMaskPart.transform.rotation = Quaternion.Euler(0, 0, 180);
+            _delayMask.transform.rotation = Quaternion.identity;
+            _delayBarImage.transform.rotation = Quaternion.identity;
+            _delayBar.SetActive(true);
+            _delayHalfBar.SetActive(false);
+        }
+
+        /// <summary>
+        /// 딜레이바 지우기
+        /// </summary>
+        public void UnSetDelayBar()
+		{
+            _delayBar.SetActive(false);
+            _delayHalfBar.SetActive(false);
+        }
+
+        /// <summary>
+        /// 딜레이바 업데이트
+        /// </summary>
+        /// <param name="delay"></param>
+        public void UpdateDelayBar(float delay)
+        {
+            _delayBar.transform.position = _throwedUnit.transform.position;
+            _delayHalfBar.transform.position = _throwedUnit.transform.position;
+            _delayMask.transform.rotation = Quaternion.Euler(0, 0, delay * 360);
+
+            if (delay >= 0.5f)
+            {
+                _delayMaskPart.gameObject.SetActive(false);
+                _delayMask.gameObject.SetActive(true);
+                _delayHalfBar.SetActive(true);
+            }
+            else
+            {
+                _delayMaskPart.gameObject.SetActive(true);
+                _delayMask.gameObject.SetActive(true);
+                _delayHalfBar.SetActive(false);
+            }
         }
 
         /// <summary>
@@ -122,6 +181,7 @@ namespace Battle
             }
 
             _pullTime = 2f;
+            SetDelayBar();
         }
 
         /// <summary>
@@ -146,8 +206,10 @@ namespace Battle
 
                 //시간이 지나면 취소
                 _pullTime -= Time.deltaTime;
+                UpdateDelayBar(_pullTime / 2);
                 if (_pullTime < 0)
                 {
+                    UnSetDelayBar();
                     _throwedUnit.UnitSprite.OrderDraw(_throwedUnit.OrderIndex);
                     _throwedUnit.UnitSticker.OrderDraw(_throwedUnit.OrderIndex);
                     _throwedUnit = null;
@@ -163,6 +225,7 @@ namespace Battle
                 //유닛이 다른 행동을 취하게 되면 취소
                 if (_throwedUnit.Pulling_Unit() == null)
                 {
+                    UnSetDelayBar();
                     _throwedUnit.UnitSprite.OrderDraw(_throwedUnit.OrderIndex);
                     _throwedUnit.UnitSticker.OrderDraw(_throwedUnit.OrderIndex);
                     _parabolaBackground.SetActive(false);

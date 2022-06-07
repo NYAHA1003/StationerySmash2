@@ -13,9 +13,11 @@ namespace Battle
     {
         private UnitComponent _unitCommand = null;
         private ThrowComponent _throwComponent = null;
-        public void SetInitialization(ThrowComponent throwComponent, UnitComponent unitComponent)
+        private ThrowGaugeComponent _throwGaugeComponent = null;
+        public void SetInitialization(ThrowComponent throwComponent, ThrowGaugeComponent throwGaugeComponent, UnitComponent unitComponent)
         {
             _throwComponent = throwComponent;
+            _throwGaugeComponent = throwGaugeComponent;
             _unitCommand = unitComponent;
         }
 
@@ -101,9 +103,12 @@ namespace Battle
 
                 if (CheckPoints(points, pos))
                 {
-                    throwedUnit = throwedUnit.Pull_Unit();
+                    if(_throwGaugeComponent.GetThrowGauge() >= throwedUnit.UnitStat.Return_Weight())
+                    {
+                        throwedUnit = throwedUnit.Pull_Unit();
+                        _throwComponent.SetThrowedUnit(throwedUnit);
+                    }
 
-                    _throwComponent.SetThrowedUnit(throwedUnit);
                 }
             }
         }

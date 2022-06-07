@@ -50,13 +50,6 @@ namespace Main.Deck
 
         private bool _isActivePC; //필통 스크롤이 켜져있는지
 
-        private void OnDestroy()
-        {
-            EventManager.StopListening(EventsType.ActiveDeck, UpdateDeck);
-            EventManager.StopListening(EventsType.ChangePCAndDeck, OnChangePencilAndCards);
-            EventManager.StopListening(EventsType.UpdateHaveAndEquipDeck, UpdateHaveAndEquipDeck);
-            EventManager.StopListening(EventsType.UpdateHaveAndEquipPCDeck, UpdateHaveAndEquipPCDeck);
-        }
         private void Start()
         {
             _haveCardParent = _haveDeckScroll.transform.GetChild(0).GetChild(0);
@@ -70,15 +63,10 @@ namespace Main.Deck
             _presetButton2.onClick.AddListener(() => ChangePreset(1));
             _presetButton3.onClick.AddListener(() => ChangePreset(2));
 
-            EventManager.StopListening(EventsType.ActiveDeck, UpdateDeck);
-             EventManager.StopListening(EventsType.ChangePCAndDeck, OnChangePencilAndCards);
-             EventManager.StopListening(EventsType.UpdateHaveAndEquipDeck, UpdateHaveAndEquipDeck);
-            EventManager.StopListening(EventsType.UpdateHaveAndEquipPCDeck, UpdateHaveAndEquipPCDeck);
-
-            EventManager.StartListening(EventsType.ActiveDeck, UpdateDeck);
-            EventManager.StartListening(EventsType.ChangePCAndDeck, OnChangePencilAndCards);
-            EventManager.StartListening(EventsType.UpdateHaveAndEquipDeck, UpdateHaveAndEquipDeck);
-            EventManager.StartListening(EventsType.UpdateHaveAndEquipPCDeck, UpdateHaveAndEquipPCDeck);
+            EventManager.Instance.StartListening(EventsType.ActiveDeck, UpdateDeck);
+            EventManager.Instance.StartListening(EventsType.ChangePCAndDeck, OnChangePencilAndCards);
+            EventManager.Instance.StartListening(EventsType.UpdateHaveAndEquipDeck, UpdateHaveAndEquipDeck);
+            EventManager.Instance.StartListening(EventsType.UpdateHaveAndEquipPCDeck, UpdateHaveAndEquipPCDeck);
 
             UserSaveManagerSO.AddObserver(this);
         }
@@ -172,8 +160,8 @@ namespace Main.Deck
                 cardButton.onClick.RemoveAllListeners();
                 cardButton.onClick.AddListener(() =>
                 {
-                    EventManager.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
-                    EventManager.TriggerEvent(EventsType.ActiveButtonComponent, ButtonType.cardDescription);
+                    EventManager.Instance.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
+                    EventManager.Instance.TriggerEvent(EventsType.ActiveButtonComponent, ButtonType.cardDescription);
                     
                 });
             }
@@ -192,8 +180,8 @@ namespace Main.Deck
 				cardButton.onClick.RemoveAllListeners();
 				cardButton.GetComponent<Button>().onClick.AddListener(() =>
 				{
-					EventManager.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
-					EventManager.TriggerEvent(EventsType.ActiveButtonComponent, ButtonType.cardDescription);
+					EventManager.Instance.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
+					EventManager.Instance.TriggerEvent(EventsType.ActiveButtonComponent, ButtonType.cardDescription);
 
 				});
 			}
@@ -214,7 +202,7 @@ namespace Main.Deck
                 cardButton.onClick.RemoveAllListeners();
                 cardButton.onClick.AddListener(() =>
                 {
-                   EventManager.TriggerEvent(EventsType.ActivePencilCaseDescription, pencilCaseData);
+                   EventManager.Instance.TriggerEvent(EventsType.ActivePencilCaseDescription, pencilCaseData);
                 });
             }
         }

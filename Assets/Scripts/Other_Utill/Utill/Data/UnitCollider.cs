@@ -9,14 +9,25 @@ namespace Utill.Data
     {
         public Vector2[] originpoints;
         private Vector2[] points;
+        private float _multiple;
+
+        /// <summary>
+        /// 얼마나 곱할지 결정
+        /// </summary>
+        /// <param name="multiple"></param>
+        public void SetMultiple(float multiple)
+		{
+            _multiple = multiple;
+
+        }
 
         public void SetPos(Vector2 trm_Pos)
         {
             Vector2[] points = new Vector2[4];
-            points[0] = trm_Pos + originpoints[0];
-            points[1] = trm_Pos + originpoints[1];
-            points[2] = trm_Pos + originpoints[2];
-            points[3] = trm_Pos + originpoints[3];
+            points[0] = trm_Pos + (originpoints[0] * _multiple);
+            points[1] = trm_Pos + (originpoints[1] * _multiple);
+            points[2] = trm_Pos + (originpoints[2] * _multiple);
+            points[3] = trm_Pos + (originpoints[3] * _multiple);
             this.points = points;
         }
         public Vector2[] GetPoint(Vector2 pos)

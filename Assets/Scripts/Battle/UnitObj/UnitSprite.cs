@@ -28,25 +28,25 @@ public class UnitSprite
     [SerializeField]
     private GameObject _delayHalfBar;
     [SerializeField]
+    private SpriteRenderer _delayHalfBarImage;
+    [SerializeField]
     private SpriteRenderer _delayBarImage;
     [SerializeField]
     private SpriteMask _delayMaskPart;
     [SerializeField]
     private SpriteMask _delayMask;
     [SerializeField]
-    private SpriteMask _spriteMask = null; //¿Ø¥÷ ∏∂Ω∫≈©
-    [SerializeField]
     private SpriteRenderer _spriteRenderer = null; //¿Ø¥÷ Ω∫«¡∂Û¿Ã∆Æ∑ª¥ı∑Ø
     [SerializeField]
-    private SpriteRenderer _hpSpriteRenderer = null; //¿Ø¥÷ ±˙¡¸¿ÃπÃ¡ˆ ∑ª¥ı∑Ø
+    private SpriteRenderer _hpSpriteRenderer = null; //¿Ø¥÷ √º∑¬ Ω∫«¡∂Û¿Ã∆Æ
     [SerializeField]
-    private Sprite[] _hpSprites = null; // ¿Ø¥÷ ±˙¡¸¿ÃπÃ¡ˆµÈ
+    private Sprite[] _delaySprites = null; // ¿Ø¥÷ µÙ∑π¿ÃπŸ¿ÃπÃ¡ˆµÈ
 
     private TeamType _eTeam = TeamType.Null;
 
-    public void ResetSprite(TeamType teamType, CardData cardData, UnitStat unitStat, int orderIndex)
+    public void ResetSprite(TeamType teamType, CardData cardData, UnitStat unitStat, int orderIndex, int grade)
     {
-        SetUIAndSprite(teamType, SkinData.GetSkin(cardData._skinData._skinType));
+        SetUIAndSprite(teamType, SkinData.GetSkin(cardData._skinData._skinType), grade);
         UpdateDelayBar(unitStat.AttackDelay);
         ShowUI(true);
         SetTeamColor(teamType);
@@ -59,13 +59,29 @@ public class UnitSprite
     /// </summary>
     /// <param name="eTeam"></param>
     /// <param name="sprite"></param>
-    public void SetUIAndSprite(TeamType eTeam, Sprite sprite)
+    public void SetUIAndSprite(TeamType eTeam, Sprite sprite, int grade)
     {
         _eTeam = eTeam;
         SetDelayBar();
         
         _spriteRenderer.sprite = sprite;
-        _spriteMask.sprite = sprite;
+        _hpSpriteRenderer.sprite = sprite;
+
+        switch(grade)
+		{
+            case 1:
+                _delayBarImage.sprite = _delaySprites[0];
+                _delayHalfBarImage.sprite = _delaySprites[0];
+                break;
+            case 2:
+                _delayBarImage.sprite = _delaySprites[1];
+                _delayHalfBarImage.sprite = _delaySprites[1];
+                break;
+            case 3:
+                _delayBarImage.sprite = _delaySprites[2];
+                _delayHalfBarImage.sprite = _delaySprites[2];
+                break;
+        }
     }
 
     /// <summary>
@@ -83,20 +99,11 @@ public class UnitSprite
     /// </summary>
     public void SetHPSprite(int hp, int maxhp)
     {
-        float percent = (float)hp / maxhp;
+        float percent = (float)(maxhp - hp) / maxhp;
 
-        if (percent > 0.5f)
-        {
-            _hpSpriteRenderer.sprite = null;
-        }
-        else if (percent > 0.2f)
-        {
-            _hpSpriteRenderer.sprite = _hpSprites[0];
-        }
-        else
-        {
-            _hpSpriteRenderer.sprite = _hpSprites[1];
-        }
+        Color color = new Color(1,0,0, percent);
+
+        _hpSpriteRenderer.color = color;
     }
 
     /// <summary>

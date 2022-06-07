@@ -19,10 +19,6 @@ namespace Battle
         [SerializeField]
         private Canvas _pauseCanvas = null;
 
-        public void OnDestroy()
-        {
-            EventManager.StopListening(EventsType.Pause, OnPause);
-        }
         /// <summary>
         /// 초기화
         /// </summary>
@@ -31,10 +27,9 @@ namespace Battle
         /// <param name="pauseCanvas"></param>
         public void SetInitialization()
         {
-            EventManager.StopListening(EventsType.Pause, OnPause);  
-            EventManager.StartListening(EventsType.Pause, OnPause);
+            EventManager.Instance.StartListening(EventsType.Pause, OnPause);
         }
-       
+
         /// <summary>
         /// 일시정지 창을 껐다 키는 함수
         /// </summary>

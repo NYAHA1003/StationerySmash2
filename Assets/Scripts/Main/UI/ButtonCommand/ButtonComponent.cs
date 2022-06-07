@@ -38,22 +38,11 @@ namespace Main.Buttons
 
 		private int unSetCount = 2; //이 스크립트가 아닌 다른 스크립트에서 버튼 생성및 함수등록해준 커맨드수
 		private List<ActiveCommand> buttonCommands = new List<ActiveCommand>();
-
-        private void OnDestroy()
-        {
-			EventManager.StopListening(EventsType.CloaseAllPn, CloseAllPanels);
-			EventManager.StopListening(EventsType.ActiveButtonComponent, (x) => OnActiveBtn((ButtonType)x));
-			EventManager.StopListening(EventsType.UndoStack, OnUndoBtn);
-		}
-        private void Awake()
+		private void Awake()
 		{
-			 EventManager.StopListening(EventsType.CloaseAllPn, CloseAllPanels);
-			 EventManager.StopListening(EventsType.ActiveButtonComponent, (x) => OnActiveBtn((ButtonType)x));
-			 EventManager.StopListening(EventsType.UndoStack, OnUndoBtn);
-
-			EventManager.StartListening(EventsType.CloaseAllPn, CloseAllPanels); 
-			EventManager.StartListening(EventsType.ActiveButtonComponent, (x) => OnActiveBtn((ButtonType)x));
-			EventManager.StartListening(EventsType.UndoStack, OnUndoBtn);
+			EventManager.Instance.StartListening(EventsType.CloaseAllPn, CloseAllPanels); 
+			EventManager.Instance.StartListening(EventsType.ActiveButtonComponent, (x) => OnActiveBtn((ButtonType)x));
+			EventManager.Instance.StartListening(EventsType.UndoStack, OnUndoBtn);
 			//덱에 있는 카드 클릭시 카드설명이 뜸, DeckSetting에서 카드 만들어주면서 AddListener로 EventTrigger로 등록해줌     
 			
 		}
@@ -75,7 +64,7 @@ namespace Main.Buttons
 		/// </summary>
 		private void AddListner()
 		{
-			clickBtns[(int)ButtonType.credit].onClick.AddListener(() => EventManager.TriggerEvent(EventsType.MoveCredit));
+			clickBtns[(int)ButtonType.credit].onClick.AddListener(() => EventManager.Instance.TriggerEvent(EventsType.MoveCredit));
 		}
 		/// <summary>
 		/// 패널 활성화시킬 때 발동되는 버튼함수 
