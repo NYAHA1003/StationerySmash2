@@ -11,4 +11,5 @@ public class ButtonNoneParam : ButtonAgent
             EventManager.TriggerEvent(eventTypes[i]);
         }
     }
+
 }

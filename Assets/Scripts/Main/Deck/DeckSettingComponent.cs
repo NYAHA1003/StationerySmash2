@@ -50,6 +50,13 @@ namespace Main.Deck
 
         private bool _isActivePC; //필통 스크롤이 켜져있는지
 
+        private void OnDestroy()
+        {
+            EventManager.StopListening(EventsType.ActiveDeck, UpdateDeck);
+            EventManager.StopListening(EventsType.ChangePCAndDeck, OnChangePencilAndCards);
+            EventManager.StopListening(EventsType.UpdateHaveAndEquipDeck, UpdateHaveAndEquipDeck);
+            EventManager.StopListening(EventsType.UpdateHaveAndEquipPCDeck, UpdateHaveAndEquipPCDeck);
+        }
         private void Start()
         {
             _haveCardParent = _haveDeckScroll.transform.GetChild(0).GetChild(0);
@@ -62,6 +69,11 @@ namespace Main.Deck
             _presetButton1.onClick.AddListener(() => ChangePreset(0));
             _presetButton2.onClick.AddListener(() => ChangePreset(1));
             _presetButton3.onClick.AddListener(() => ChangePreset(2));
+
+            EventManager.StopListening(EventsType.ActiveDeck, UpdateDeck);
+             EventManager.StopListening(EventsType.ChangePCAndDeck, OnChangePencilAndCards);
+             EventManager.StopListening(EventsType.UpdateHaveAndEquipDeck, UpdateHaveAndEquipDeck);
+            EventManager.StopListening(EventsType.UpdateHaveAndEquipPCDeck, UpdateHaveAndEquipPCDeck);
 
             EventManager.StartListening(EventsType.ActiveDeck, UpdateDeck);
             EventManager.StartListening(EventsType.ChangePCAndDeck, OnChangePencilAndCards);

@@ -41,38 +41,42 @@ namespace Main.Store
                 }
             }
         }
-
-
     }
-    
+
+    [CreateAssetMenu(menuName ="SO/Gacha/GachaSO")]
+    public class GachaSO : ScriptableObject
+    {
+        public float rarePercent;
+        public float epicPercent;
+        public int maxAmount; 
+    }
+
+    public class GachaInfo
+    {
+        public GachaSO gachaSO;
+        public AllBadgeInfos allBadgeInfos;
+        public GameObject itemsParent;
+        public GachaCard itemPrefab;
+    }
 
     public class AbstractGacha : MonoBehaviour
     {
         [SerializeField]
-        private AllBadgeInfos _allBadgeInfos;
+        private GachaInfo gachaInfo; 
         [SerializeField]
         private Canvas gachaCanvas;
-        [SerializeField]
-        private GameObject itemsParent;
-        [SerializeField]
-        private GachaCard itemPrefab;
         [SerializeField]
         private Image blackBackImage;
         [SerializeField]
         private GameObject nextBtn;
 
-        private int _count = 11; // 최대 아이템 뜰 개수
+        private int _count; // 최대 아이템 뜰 개수
 
         [SerializeField]
         private Sprite _backBadgeImage; // 뱃지 뒷면 
 
         private List<GachaCard> gachaCards = new List<GachaCard>();
-        // 
-        [SerializeField]
-        private int _RarePercent = 15;
-        [SerializeField]
-        private int _EpicPercent = 5;
-
+         
         private int currentNum; // 현재 몇번째 아이템 강조중 
         private int currentAmount; // 현재 총 뽑은 아이템 수 
         private bool isCost = true; // 돈이 충분한상태인가 
@@ -82,7 +86,7 @@ namespace Main.Store
         void Start()
         {
             ListenEvent();
-            _allBadgeInfos.SetInfosGrade();
+            gachaInfo.allBadgeInfos.SetInfosGrade();
             InstantiateItem();
         }
 
@@ -91,7 +95,7 @@ namespace Main.Store
         /// </summary>
         private void ListenEvent()
         {
-            EventManager.StopListening(EventsType.CloseGacha, Close);
+             EventManager.StopListening(EventsType.CloseGacha, Close);
             EventManager.StopListening(EventsType.CheckItem, CheckItem);
             EventManager.StopListening(EventsType.CheckCost, (x) => CheckCost((int)x));
             EventManager.StopListening(EventsType.StartGacha, (x) => Summons((int)x));
@@ -132,29 +136,33 @@ namespace Main.Store
         private void ItemSummons()
         {
             blackBackImage.gameObject.SetActive(true);
+            AllBadgeInfos allBadgeInfos = gachaInfo.allBadgeInfos;
+            float epicPercent = gachaInfo.gachaSO.epicPercent;
+            float rarePercent = gachaInfo.gachaSO.rarePercent;
+
             for (int i = 0; i < currentAmount; i++)
             {
                 int Percent = Random.Range(0, 100 + 1);
                 Debug.Log("Percent : " + Percent);
-                if (_EpicPercent >= Percent)
+                if (epicPercent >= Percent)
                 {
                     //에픽 스티커 소환
-                    RandomNum = Random.Range(0, _allBadgeInfos.epicItemInfos.Count);
-                    Debug.Log($"\"영웅\"등급 {_allBadgeInfos.epicItemInfos[RandomNum]} 뱃지가 나왔습니다.");
+                    RandomNum = Random.Range(0, allBadgeInfos.epicItemInfos.Count);
+                    Debug.Log($"\"영웅\"등급 {allBadgeInfos.epicItemInfos[RandomNum]} 뱃지가 나왔습니다.");
                 }
-                else if (_RarePercent + _EpicPercent >= Percent)
+                else if (rarePercent + epicPercent >= Percent)
                 {
                     //레어 스티커 소환
-                    RandomNum = Random.Range(0, _allBadgeInfos.rareItemInfos.Count);
-                    Debug.Log($"\"레어\"등급 {_allBadgeInfos.rareItemInfos[RandomNum]} 뱃지가 나왔습니다.");
+                    RandomNum = Random.Range(0, allBadgeInfos.rareItemInfos.Count);
+                    Debug.Log($"\"레어\"등급 {allBadgeInfos.rareItemInfos[RandomNum]} 뱃지가 나왔습니다.");
                 }
                 else
                 {
                     //일반 스티커 소환
-                    RandomNum = Random.Range(0, _allBadgeInfos.commonItemInfos.Count);
-                    Debug.Log($"\"일반\"등급 {_allBadgeInfos.commonItemInfos[RandomNum]} 뱃지가 나왔습니다.");
+                    RandomNum = Random.Range(0, allBadgeInfos.commonItemInfos.Count);
+                    Debug.Log($"\"일반\"등급 {allBadgeInfos.commonItemInfos[RandomNum]} 뱃지가 나왔습니다.");
                 }
-                DailyItemInfo getItemInfo = _allBadgeInfos.commonItemInfos[RandomNum];
+                DailyItemInfo getItemInfo = allBadgeInfos.commonItemInfos[RandomNum];
                 gachaCards[i].ActiveAndAnimate();
                 gachaCards[i].SetSprite(getItemInfo._itemSprite, _backBadgeImage);
             }
@@ -204,9 +212,11 @@ namespace Main.Store
         /// </summary>
         private void InstantiateItem()
         {
+            GachaCard itemPrefab = gachaInfo.itemPrefab;
+            GameObject itemParent = gachaInfo.itemsParent;
             for (int i = 0; i < _count; ++i)
             {
-                GachaCard gachaCard = Instantiate(itemPrefab, itemsParent.transform);
+                GachaCard gachaCard = Instantiate(itemPrefab, itemParent.transform);
                 gachaCard.gameObject.SetActive(false);
                 gachaCards.Add(gachaCard);
             }

@@ -46,6 +46,10 @@ namespace Battle
         private int _needGauge = 0;
         private int _currentGauge = 0;
 
+        public void OnDestroy()
+        {
+            EventManager.StopListening(EventsType.PencilCaseAbility, OnPencilCaseAbility);
+        }
         /// <summary>
         /// √ ±‚»≠
         /// </summary>
@@ -73,6 +77,7 @@ namespace Battle
 
             _cardComponent.AddDictionary<CardObj>(_cardComponent.SetUseCard, AddGaugeAsCost);
 
+            EventManager.StopListening(EventsType.PencilCaseAbility, OnPencilCaseAbility);
             EventManager.StartListening(EventsType.PencilCaseAbility, OnPencilCaseAbility);
         }
 

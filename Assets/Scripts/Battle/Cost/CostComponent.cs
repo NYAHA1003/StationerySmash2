@@ -33,6 +33,10 @@ namespace Battle
         [SerializeField]
         private TextAnimationComponent _textAnimationComponent;
 
+        public void OnDestroy()
+        {
+            EventManager.StopListening(EventsType.CostUp, OnUpgradeCostGrade);
+        }
         /// <summary>
         /// √ ±‚»≠
         /// </summary>
@@ -42,6 +46,7 @@ namespace Battle
         {
             updateAction += UpdateCost;
             SetCostSpeed(pencilCasePlayerData._costSpeed);
+            EventManager.StopListening(EventsType.CostUp, OnUpgradeCostGrade);
             EventManager.StartListening(EventsType.CostUp, OnUpgradeCostGrade);
         }
 

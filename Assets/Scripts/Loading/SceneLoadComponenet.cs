@@ -12,8 +12,16 @@ public class SceneLoadComponenet : MonoBehaviour
     [SerializeField, Header("메인이라면 넣어줘야함")]
     private UserDeckDataComponent _userDeckDataComponent;
 
+    private void OnDestroy()
+    {
+        EventManager.StopListening(EventsType.LoadMainScene, SceneLoadMain);
+        EventManager.StopListening(EventsType.LoadBattleScene, SceneLoadBattle);
+    }
     private void Awake()
     {
+        EventManager.StopListening(EventsType.LoadMainScene, SceneLoadMain);
+        EventManager.StopListening(EventsType.LoadBattleScene, SceneLoadBattle);
+
         EventManager.StartListening(EventsType.LoadMainScene, SceneLoadMain);
         EventManager.StartListening(EventsType.LoadBattleScene, SceneLoadBattle);
     }
@@ -22,13 +30,13 @@ public class SceneLoadComponenet : MonoBehaviour
     /// </summary>
     public void SceneLoadBattle()
     {
-        if(_userDeckDataComponent != null)
-		{
+        if (_userDeckDataComponent != null)
+        {
             if (!_userDeckDataComponent.CheckCanPlayGame())
-			{
+            {
                 return;
-			}
-		}
+            }
+        }
         SceneLoadBase();
         LoadingManager.LoadScene("BattleScene");
     }
@@ -46,6 +54,7 @@ public class SceneLoadComponenet : MonoBehaviour
     /// </summary>
     public void SceneLoadBase()
     {
+        Debug.Log("이벤트 초기화");
         //모든 닷트윈 제거
         DOTween.KillAll();
         //시간을 1로 되돌림
@@ -53,6 +62,6 @@ public class SceneLoadComponenet : MonoBehaviour
         //세이브 데이터에 접근하는 오브젝트들 제거
         UserSaveManagerSO.ClearObserver();
         // 등록해둔 이벤트 초기화 
-        EventManager.ClearEvents(); 
+         EventManager.ClearEvents();
     }
 }
