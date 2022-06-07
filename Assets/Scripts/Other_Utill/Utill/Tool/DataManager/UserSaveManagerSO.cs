@@ -28,6 +28,8 @@ namespace Utill.Tool
 
         private static List<IUserData> _userDataObservers = new List<IUserData>();
 
+        public CardSaveData _cardAddData;
+
         /// <summary>
         /// 서버 데이터를 받아 초기화
         /// </summary>
@@ -160,6 +162,16 @@ namespace Utill.Tool
                 _userDataObservers[i].Notify();
             }
         }
+
+        [ContextMenu("유저데이터에 카드를 추가해 포스트")]
+        /// <summary>
+        /// 유저 데이터에 카드를 추가한다
+        /// </summary>
+        public void CardAdd()
+		{
+            _userSaveData._haveCardSaveDatas.Add(_cardAddData);
+            PostUserSaveData();
+		}
 
         /// <summary>
         /// 모든 관찰자를 제거
