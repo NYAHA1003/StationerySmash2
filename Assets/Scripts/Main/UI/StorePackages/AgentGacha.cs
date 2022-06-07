@@ -50,7 +50,7 @@ namespace Main.Store
         public float epicPercent;
         public int maxAmount; 
     }
-
+    [Serializable]
     public class GachaInfo
     {
         public GachaSO gachaSO;
@@ -59,7 +59,7 @@ namespace Main.Store
         public GachaCard itemPrefab;
     }
 
-    public class AbstractGacha : MonoBehaviour
+    public class AgentGacha : MonoBehaviour
     {
         [SerializeField]
         private GachaInfo gachaInfo; 
@@ -95,15 +95,15 @@ namespace Main.Store
         /// </summary>
         private void ListenEvent()
         {
-             EventManager.StopListening(EventsType.CloseGacha, Close);
-            EventManager.StopListening(EventsType.CheckItem, CheckItem);
-            EventManager.StopListening(EventsType.CheckCost, (x) => CheckCost((int)x));
-            EventManager.StopListening(EventsType.StartGacha, (x) => Summons((int)x));
+            EventManager.Instance.StopListening(EventsType.CloseGacha, Close);
+            EventManager.Instance.StopListening(EventsType.CheckItem, CheckItem);
+            EventManager.Instance.StopListening(EventsType.CheckCost, (x) => CheckCost((int)x));
+            EventManager.Instance.StopListening(EventsType.StartGacha, (x) => Summons((int)x));
 
-            EventManager.StartListening(EventsType.CloseGacha, Close);
-            EventManager.StartListening(EventsType.CheckItem, CheckItem);
-            EventManager.StartListening(EventsType.CheckCost, (x) => CheckCost((int)x));
-            EventManager.StartListening(EventsType.StartGacha, (x) => Summons((int)x));
+            EventManager.Instance.StartListening(EventsType.CloseGacha, Close);
+            EventManager.Instance.StartListening(EventsType.CheckItem, CheckItem);
+            EventManager.Instance.StartListening(EventsType.CheckCost, (x) => CheckCost((int)x));
+            EventManager.Instance.StartListening(EventsType.StartGacha, (x) => Summons((int)x));
         }
    
         /// <summary>

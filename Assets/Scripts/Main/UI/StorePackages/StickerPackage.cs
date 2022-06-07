@@ -74,8 +74,8 @@ namespace Main.Store
         /// </summary>
         private void ListenEvent()
         {
-            EventManager.StartListening(EventsType.CloseGacha, Close);
-            EventManager.StartListening(EventsType.CheckItem, CheckItem);
+            EventManager.Instance.StartListening(EventsType.CloseGacha, Close);
+            EventManager.Instance.StartListening(EventsType.CheckItem, CheckItem);
         }
         /// <summary>
         /// 이벤트 세팅
