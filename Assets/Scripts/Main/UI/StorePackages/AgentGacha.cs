@@ -9,6 +9,7 @@ using Utill.Data;
 using Main.Event;
 using DG.Tweening;
 
+
 namespace Main.Store
 {
     [Serializable]
@@ -43,13 +44,7 @@ namespace Main.Store
         }
     }
 
-    [CreateAssetMenu(menuName ="SO/Gacha/GachaSO")]
-    public class GachaSO : ScriptableObject
-    {
-        public float rarePercent;
-        public float epicPercent;
-        public int maxAmount; 
-    }
+
     [Serializable]
     public class GachaInfo
     {
