@@ -86,10 +86,10 @@ public class UnitStateChanger
                 _stateManager = PoolManager.GetUnit<SharpState>(transform, spriteRendererTransform, unit);
                 break;
             case UnitType.Pen:
-                _stateManager = PoolManager.GetUnit<BallpenState>(transform, spriteRendererTransform, unit);
+                _stateManager = PoolManager.GetUnit<PenState>(transform, spriteRendererTransform, unit);
                 break;
             case UnitType.Scissors:
-                _stateManager = PoolManager.GetUnit<ScissorState>(transform, spriteRendererTransform, unit);
+                _stateManager = PoolManager.GetUnit<ScissorsState>(transform, spriteRendererTransform, unit);
                 break;
             case UnitType.Glue:
                 _stateManager = PoolManager.GetUnit<GlueState>(transform, spriteRendererTransform, unit);
