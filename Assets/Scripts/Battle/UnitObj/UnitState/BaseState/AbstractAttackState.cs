@@ -119,11 +119,11 @@ namespace Battle.Units
 		{
 			for (int targetIndex = _targetUnit.OrderIndex; targetIndex >= 0; targetIndex--)
 			{
-				Unit targetUnit = list[targetIndex];
-				if(targetUnit == null)
+				if(targetIndex >= list.Count)
 				{
 					continue;
 				}
+				Unit targetUnit = list[targetIndex];
 				if (targetUnit.IsInvincibility || targetUnit.transform.position.y > _myTrm.transform.position.y)
 				{
 					continue;

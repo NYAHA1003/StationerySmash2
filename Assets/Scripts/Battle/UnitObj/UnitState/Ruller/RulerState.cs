@@ -7,7 +7,7 @@ using Utill.Tool;
 
 namespace Battle.Units
 {
-    public class RulerStateState : AbstractStateManager
+    public class RulerState : AbstractStateManager
     {
         public override void SetState()
         {
@@ -37,8 +37,8 @@ namespace Battle.Units
         {
             base.Reset_State(myTrm, mySprTrm, myUnit);
             myUnit.SetIsInvincibility(false);
-            myUnit.SetIsDontThrow(false);
-            myUnit.SetIsNeverDontThrow(false);
+            myUnit.SetIsDontThrow(true);
+            myUnit.SetIsNeverDontThrow(true);
         }
     }
 
@@ -54,11 +54,11 @@ namespace Battle.Units
     {
     }
 
-    public class RulerStateAttackState : PcKillAttackState
+    public class RulerStateAttackState : AbstractAttackState
     {
     }
 
-    public class RulerStateDamagedState : AbstractDamagedState
+    public class RulerStateDamagedState : BlockDamagedState
     {
     }
 

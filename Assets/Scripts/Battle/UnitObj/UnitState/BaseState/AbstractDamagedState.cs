@@ -46,6 +46,26 @@ namespace Battle.Units
 
 			base.Enter();
 		}
+
+		/// <summary>
+		/// 넉백 적용
+		/// </summary>
+		public virtual void KnockBack()
+		{
+			//넉백 계산
+			float calculated_knockback = _atkData.Caculated_Knockback(_myUnit.UnitStat.Return_Weight(), _myUnit.UnitStat.Hp, _myUnit.UnitStat.MaxHp, _myUnit.ETeam == TeamType.MyTeam);
+			float height = _atkData.baseKnockback * 0.01f + Parabola.Caculated_Height((_atkData.baseKnockback + _atkData.extraKnockback) * 0.15f, _atkData.direction, 1);
+			float time = _atkData.baseKnockback * 0.005f + Mathf.Abs((_atkData.baseKnockback * 0.5f + _atkData.extraKnockback) / (Physics2D.gravity.y));
+			_animationTime = time;
+			//회전 애니메이션
+			Animation(eState.DAMAGED);
+
+			SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x - calculated_knockback, 0, _myTrm.position.z), height, 1, time).OnComplete(() =>
+			{
+				_stateManager.Set_Wait(0.4f);
+			}));
+
+		}
 		public override void Update()
 		{
 			//넉백중에 스테이지 끝에 닿았는지 체크
@@ -72,26 +92,6 @@ namespace Battle.Units
 		public void Set_AtkData(AtkData atkData)
 		{
 			_atkData = atkData;
-		}
-
-		/// <summary>
-		/// 넉백 적용
-		/// </summary>
-		private void KnockBack()
-		{
-			//넉백 계산
-			float calculated_knockback = _atkData.Caculated_Knockback(_myUnit.UnitStat.Return_Weight(), _myUnit.UnitStat.Hp, _myUnit.UnitStat.MaxHp, _myUnit.ETeam == TeamType.MyTeam);
-			float height = _atkData.baseKnockback * 0.01f + Parabola.Caculated_Height((_atkData.baseKnockback + _atkData.extraKnockback) * 0.15f, _atkData.direction, 1);
-			float time = _atkData.baseKnockback * 0.005f + Mathf.Abs((_atkData.baseKnockback * 0.5f + _atkData.extraKnockback) / (Physics2D.gravity.y));
-			_animationTime = time;
-			//회전 애니메이션
-			Animation(eState.DAMAGED);
-
-			SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x - calculated_knockback, 0, _myTrm.position.z), height, 1, time).OnComplete(() =>
-			{
-				_stateManager.Set_Wait(0.4f);
-			}));
-
 		}
 	}
 }
