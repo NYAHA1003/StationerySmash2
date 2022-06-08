@@ -66,11 +66,12 @@ namespace Battle.Units
     {
         protected override void Will()
         {
+            base.Will();
+
             //지우개 조각 소환
             var eraserPiece = DeckDataManagerSO.FindCardData(CardNamingType.EraserPiece);
             _myUnit.BattleManager.UnitComponent.SummonUnit(eraserPiece, _myTrm.position, _myUnit.UnitStat.Grade, _myUnit.ETeam);
 
-            base.Will();
         }
     }
 

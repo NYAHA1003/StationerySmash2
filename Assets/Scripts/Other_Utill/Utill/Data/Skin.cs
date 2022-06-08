@@ -23,6 +23,9 @@ namespace Utill.Data
         PostItNormal = 800,
         SharpLeadCaseNormal = 900,
         PenNormal = 1000,
+
+        //프로젝타일
+        EraserPieceNormal = 100000,
     }
 
     [System.Serializable]
