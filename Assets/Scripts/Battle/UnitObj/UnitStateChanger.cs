@@ -98,7 +98,7 @@ public class UnitStateChanger
 				_stateManager = PoolManager.GetUnit<RulerState>(transform, spriteRendererTransform, unit);
 				break;
 			case UnitType.Cutterknife:
-				_stateManager = PoolManager.GetUnit<CutterState>(transform, spriteRendererTransform, unit);
+				_stateManager = PoolManager.GetUnit<CutterKnifeState>(transform, spriteRendererTransform, unit);
 				break;
 			case UnitType.Postit:
 				_stateManager = PoolManager.GetUnit<PostItState>(transform, spriteRendererTransform, unit);
