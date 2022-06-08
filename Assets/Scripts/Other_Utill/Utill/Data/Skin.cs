@@ -26,6 +26,7 @@ namespace Utill.Data
 
         //프로젝타일
         EraserPieceNormal = 100000,
+        PostItPieceNormal = 100001,
     }
 
     [System.Serializable]

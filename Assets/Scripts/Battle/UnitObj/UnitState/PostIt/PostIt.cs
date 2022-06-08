@@ -54,8 +54,14 @@ namespace Battle.Units
     {
     }
 
-    public class PostItAttackState : PcKillAttackState
+    public class PostItAttackState : SummonAttackState
     {
+        protected override void Summon()
+        {
+            //포스트잇 쪼가리
+            var postItPiece = DeckDataManagerSO.FindCardData(CardNamingType.PostItPiece);
+            _myUnit.BattleManager.UnitComponent.SummonUnit(postItPiece, _myTrm.position, _myUnit.UnitStat.Grade, _myUnit.ETeam);
+        }
     }
 
     public class PostItDamagedState : AbstractDamagedState

@@ -106,9 +106,6 @@ public class UnitStateChanger
 			case UnitType.MechaPencilLead:
 				_stateManager = PoolManager.GetUnit<SharpLeadCaseState>(transform, spriteRendererTransform, unit);
 				break;
-			case UnitType.Apostit:
-				//_stateManager = PoolManager.GetUnit<GlueState>(transform, spriteRendererTransform, unit);
-				break;
 
 
 			//필통 관련
@@ -126,6 +123,9 @@ public class UnitStateChanger
 				break;
 			case UnitType.EraserPiece:
 				_stateManager = PoolManager.GetUnit<EraserPieceState>(transform, spriteRendererTransform, unit);
+				break;
+			case UnitType.Apostit:
+				_stateManager = PoolManager.GetUnit<PostItPieceState>(transform, spriteRendererTransform, unit);
 				break;
 		}
 		_stateManager.Set_Idle();
