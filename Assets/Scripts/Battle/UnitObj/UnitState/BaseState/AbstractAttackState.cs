@@ -119,14 +119,19 @@ namespace Battle.Units
 		{
 			for (int targetIndex = _targetUnit.OrderIndex; targetIndex >= 0; targetIndex--)
 			{
-				if (list[targetIndex].IsInvincibility || list[targetIndex].transform.position.y > _myTrm.transform.position.y)
+				Unit targetUnit = list[targetIndex];
+				if(targetUnit == null)
+				{
+					continue;
+				}
+				if (targetUnit.IsInvincibility || targetUnit.transform.position.y > _myTrm.transform.position.y)
 				{
 					continue;
 				}
 
-				if (Vector2.Distance(_myTrm.position, list[targetIndex].transform.position) < _myUnit.UnitStat.Return_Range())
+				if (Vector2.Distance(_myTrm.position, targetUnit.transform.position) < _myUnit.UnitStat.Return_Range())
 				{
-					list[targetIndex].Run_Damaged(atkData);
+					targetUnit.Run_Damaged(atkData);
 				}
 				else
 				{
