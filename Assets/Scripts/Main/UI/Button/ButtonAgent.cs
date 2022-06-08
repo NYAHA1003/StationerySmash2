@@ -10,7 +10,6 @@ public abstract class ButtonAgent : MonoBehaviour
 
     private void Start()
     {
-        gameObject.GetComponent<Button>().onClick.RemoveAllListeners(); 
         gameObject.GetComponent<Button>().onClick.AddListener(() => Execute());
     }
     public abstract void Execute();
