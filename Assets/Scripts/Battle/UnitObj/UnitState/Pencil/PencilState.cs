@@ -36,6 +36,7 @@ namespace Battle.Units
         {
             base.Reset_State(myTrm, mySprTrm, myUnit);
             myUnit.SetIsInvincibility(false);
+            myUnit.SetIsDontThrow(false);
             myUnit.SetIsNeverDontThrow(false);
         }
     }
