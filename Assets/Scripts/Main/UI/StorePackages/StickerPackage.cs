@@ -128,7 +128,7 @@ namespace Main.Store
                 }
                 DailyItemInfo getItemInfo = _allBadgeInfos.commonItemInfos[RandomNum];
                 gachaCards[i].ActiveAndAnimate();
-                gachaCards[i].SetSprite(getItemInfo._itemSprite, _backBadgeImage);
+                gachaCards[i].SetSprite(getItemInfo._itemSprite, _backBadgeImage,true);
             }
 
         }

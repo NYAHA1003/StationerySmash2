@@ -4,6 +4,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using Utill.Data;
 using System;
+using Main.Event;
 
 namespace Utill.Data
 {
@@ -116,12 +117,13 @@ public class DailyShop : MonoBehaviour
         UpdateNotHaveItems();
         ShowFreeDailyCard();    
         ShowDailyCard();
+        EventManager.Instance.StartListening(EventsType.ResetDailyShop, ResetDailyShop);
         //Shuffle();
         //CreateDailyItem();
     }
 
     [ContextMenu("새로운 카드 데이터 넣어주기")]
-    public void OnTest()
+    public void ResetDailyShop()
     {
         UpdateNotHaveItems();
         ShowDailyCard();

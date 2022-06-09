@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI; 
-public class BadgeGacha : GachaCard
+public class BadgeGachaItem : GachaCard
 {
     [SerializeField]
     protected float duration;
 
-    private Sequence sequence;
     /// <summary>
     /// 활성화 후 애니메이션 연출 
     /// </summary>
@@ -31,7 +30,13 @@ public class BadgeGacha : GachaCard
         });
     }
 
-
+    public override void StopCoroutine()
+    {
+        base.StopCoroutine();
+        itemImage.transform.rotation = Quaternion.identity;
+        transform.localScale = new Vector2(2, 2);
+        itemImage.sprite = _frontSprite;
+    }
     IEnumerator ChangeSprite()
     {
         float rotationY;

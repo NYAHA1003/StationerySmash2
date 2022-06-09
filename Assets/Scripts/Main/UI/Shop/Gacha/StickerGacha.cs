@@ -1,27 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using DG.Tweening;
-using DG.Tweening; 
-public class StickerGacha : GachaCard
-{
-    private Sequence sequence;
-    public override void ActiveAndAnimate()
-    {
-        gameObject.SetActive(true);
-                
-            
-    }
+//using System.Collections;
+//using System.Collections.Generic;
+//using UnityEngine;
+//using Main.Store;
+//public class StickerGacha : AbstractGacha
+//{
+//    public override void CheckItem()
+//    {
+//        throw new System.NotImplementedException();
+//    }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+//    public override void ItemSummons()
+//    {
+//        throw new System.NotImplementedException();
+//    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-}
+//    public override void Summon(int amount)
+//    {
+//        if (CheckCost(amount) == true)
+//        {
+//            InitGacha();
+//            ItemSummons();
+//        }
+//    }
+//}

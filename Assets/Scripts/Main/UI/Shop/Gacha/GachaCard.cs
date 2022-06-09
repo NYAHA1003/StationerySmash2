@@ -20,8 +20,9 @@ public abstract class GachaCard : MonoBehaviour
     protected TextMeshProUGUI _itemName;
 
     protected RectTransform _rect;
+    protected Sequence sequence;
 
-
+    private bool isFront = false; 
     private void Awake()
     {
         if (_rect == null)
@@ -41,21 +42,38 @@ public abstract class GachaCard : MonoBehaviour
     
     private void OnEnable()
     {
-        Reset(); 
+        Reset();
+        ActiveAndAnimate(); 
     }
-
   
-    public void SetSprite(Sprite frontSprite, Sprite backSprite)
+    public void SetSprite(Sprite frontSprite, Sprite backSprite, bool isFront)
     {
         _frontSprite = frontSprite;
         _backSprite = backSprite;
+        this.isFront = isFront; 
+        if (isFront == true)
+        {
+            itemImage.sprite = _frontSprite;
+            return;
+        }
+        itemImage.sprite = _backSprite;
+    }
+    public virtual void StopCoroutine()
+    {
+        sequence.Kill();
 
-        itemImage.sprite = _frontSprite; 
     }
     public void Reset()
     {
         StopAllCoroutines();
         transform.rotation = Quaternion.identity;
         transform.localScale = Vector3.one; 
+        if(isFront == true)
+        {
+            itemImage.sprite = _frontSprite;
+            return; 
+        }
+        itemImage.sprite = _backSprite;
+
     }
 }

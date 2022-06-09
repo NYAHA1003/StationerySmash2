@@ -12,47 +12,47 @@ using DG.Tweening;
 
 namespace Main.Store
 {
-    [Serializable]
-    public class AllBadgeInfos
-    {
-        public DailyItemSO itemSO;
+    //[Serializable]
+    //public class AllBadgeInfos
+    //{
+    //    public DailyItemSO itemSO;
 
-        public List<DailyItemInfo> commonItemInfos = new List<DailyItemInfo>();
-        public List<DailyItemInfo> rareItemInfos = new List<DailyItemInfo>();
-        public List<DailyItemInfo> epicItemInfos = new List<DailyItemInfo>();
+    //    public List<DailyItemInfo> commonItemInfos = new List<DailyItemInfo>();
+    //    public List<DailyItemInfo> rareItemInfos = new List<DailyItemInfo>();
+    //    public List<DailyItemInfo> epicItemInfos = new List<DailyItemInfo>();
 
-        public void SetInfosGrade()
-        {
-            int itemCount = itemSO.dailyItemInfos.Count;
+    //    public void SetInfosGrade()
+    //    {
+    //        int itemCount = itemSO.dailyItemInfos.Count;
 
-            for (int i = 0; i < itemCount; i++)
-            {
-                DailyItemInfo badgeInfo = itemSO.dailyItemInfos[i];
-                if (badgeInfo._grade == Grade.Common)
-                {
-                    commonItemInfos.Add(badgeInfo);
-                }
-                else if (badgeInfo._grade == Grade.Rare)
-                {
-                    rareItemInfos.Add(badgeInfo);
-                }
-                else if (badgeInfo._grade == Grade.Epic)
-                {
-                    epicItemInfos.Add(badgeInfo);
-                }
-            }
-        }
-    }
+    //        for (int i = 0; i < itemCount; i++)
+    //        {
+    //            DailyItemInfo badgeInfo = itemSO.dailyItemInfos[i];
+    //            if (badgeInfo._grade == Grade.Common)
+    //            {
+    //                commonItemInfos.Add(badgeInfo);
+    //            }
+    //            else if (badgeInfo._grade == Grade.Rare)
+    //            {
+    //                rareItemInfos.Add(badgeInfo);
+    //            }
+    //            else if (badgeInfo._grade == Grade.Epic)
+    //            {
+    //                epicItemInfos.Add(badgeInfo);
+    //            }
+    //        }
+    //    }
+    //}
 
 
-    [Serializable]
-    public class GachaInfo
-    {
-        public GachaSO gachaSO;
-        public AllBadgeInfos allBadgeInfos;
-        public GameObject itemsParent;
-        public GachaCard itemPrefab;
-    }
+    //[Serializable]
+    //public class GachaInfo
+    //{
+    //    public GachaSO gachaSO;
+    //    public AllBadgeInfos allBadgeInfos;
+    //    public GameObject itemsParent;
+    //    public GachaCard itemPrefab;
+    //}
 
     public class AgentGacha : MonoBehaviour
     {
@@ -70,7 +70,8 @@ namespace Main.Store
         [SerializeField]
         private Sprite _backBadgeImage; // 뱃지 뒷면 
 
-        private List<GachaCard> gachaCards = new List<GachaCard>();
+        public List<GachaCard> gachaCards = new List<GachaCard>(); // 총 아이템개수 
+        private List<GachaCard> curGachaCards = new List<GachaCard>(); // 현재 뽑을 아이템 개수 
          
         private int currentNum; // 현재 몇번째 아이템 강조중 
         private int currentAmount; // 현재 총 뽑은 아이템 수 
@@ -83,6 +84,7 @@ namespace Main.Store
             ListenEvent();
             gachaInfo.allBadgeInfos.SetInfosGrade();
             InstantiateItem();
+
         }
 
         /// <summary>
@@ -90,15 +92,17 @@ namespace Main.Store
         /// </summary>
         private void ListenEvent()
         {
-            EventManager.Instance.StopListening(EventsType.CloseGacha, Close);
-            EventManager.Instance.StopListening(EventsType.CheckItem, CheckItem);
-            EventManager.Instance.StopListening(EventsType.CheckCost, (x) => CheckCost((int)x));
-            EventManager.Instance.StopListening(EventsType.StartGacha, (x) => Summons((int)x));
+            //EventManager.Instance.StopListening(EventsType.CloseGacha, Close);
+            //EventManager.Instance.StopListening(EventsType.CheckItem, CheckItem);
+            //EventManager.Instance.StopListening(EventsType.CheckCost, (x) => CheckCost((int)x));
+            //EventManager.Instance.StopListening(EventsType.StartGacha, (x) => Summons((int)x));
 
             EventManager.Instance.StartListening(EventsType.CloseGacha, Close);
             EventManager.Instance.StartListening(EventsType.CheckItem, CheckItem);
             EventManager.Instance.StartListening(EventsType.CheckCost, (x) => CheckCost((int)x));
             EventManager.Instance.StartListening(EventsType.StartGacha, (x) => Summons((int)x));
+
+            EventManager.Instance.StartListening(EventsType.SkipAnimation, SkipAnimation); 
         }
    
         /// <summary>
@@ -130,7 +134,9 @@ namespace Main.Store
         [ContextMenu("테스트")]
         private void ItemSummons()
         {
+            curGachaCards.Clear(); 
             blackBackImage.gameObject.SetActive(true);
+            
             AllBadgeInfos allBadgeInfos = gachaInfo.allBadgeInfos;
             float epicPercent = gachaInfo.gachaSO.epicPercent;
             float rarePercent = gachaInfo.gachaSO.rarePercent;
@@ -159,7 +165,8 @@ namespace Main.Store
                 }
                 DailyItemInfo getItemInfo = allBadgeInfos.commonItemInfos[RandomNum];
                 gachaCards[i].ActiveAndAnimate();
-                gachaCards[i].SetSprite(getItemInfo._itemSprite, _backBadgeImage);
+                gachaCards[i].SetSprite(getItemInfo._itemSprite, _backBadgeImage,true);
+                curGachaCards.Add(gachaCards[i]);
             }
 
         }
@@ -169,6 +176,8 @@ namespace Main.Store
         /// </summary>
         private void CheckItem()
         {
+            gachaCards[currentNum].StopCoroutine();
+
             if (currentNum == currentAmount - 1)
             {
                 nextBtn.SetActive(false);
@@ -188,16 +197,31 @@ namespace Main.Store
         {
             currentAmount = amount;
             currentNum = 0;
+            if(amount == 1)
+            {
+                nextBtn.SetActive(false);
+                return; 
+            }
             nextBtn.SetActive(true);
+        }
+
+        public void SkipAnimation()
+        {
+            for(int i =0; i< curGachaCards.Count; i++)
+            {
+                curGachaCards[i].StopCoroutine();
+            }
         }
         /// <summary>
         ///  뽑기 닫기 
         /// </summary>
         private void Close()
         {
+
             for (int i = 0; i < _count; i++)
             {
                 gachaCards[i].gameObject.SetActive(false);
+                gachaCards[i].StopCoroutine(); 
             }
             // 검은 이미지 닫기 
             blackBackImage.gameObject.SetActive(false);
@@ -207,6 +231,7 @@ namespace Main.Store
         /// </summary>
         private void InstantiateItem()
         {
+            _count = gachaInfo.gachaSO.maxAmount;
             GachaCard itemPrefab = gachaInfo.itemPrefab;
             GameObject itemParent = gachaInfo.itemsParent;
             for (int i = 0; i < _count; ++i)
