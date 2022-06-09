@@ -152,7 +152,27 @@ namespace Main.Card
 			_attackText.text = unitData._damage.ToString();
 			_attackSpeedText.text = unitData._attackSpeed.ToString();
 			_moveSpeedText.text = unitData._moveSpeed.ToString();
-			_weightText.text = unitData._weight.ToString();
+			
+			if(unitData._weight <= 40)
+			{
+				_weightText.text = "아주 가벼움";
+			}
+			else if (unitData._weight <= 80)
+			{
+				_weightText.text = "가벼움";
+			}
+			else if (unitData._weight <= 120)
+			{
+				_weightText.text = "보통";
+			}
+			else if (unitData._weight <= 160)
+			{
+				_weightText.text = "무거움";
+			}
+			else
+			{
+				_weightText.text = "아주 무거움";
+			}
 		}
 		/// <summary>
 		/// 함정 소환형의 UI 설정
