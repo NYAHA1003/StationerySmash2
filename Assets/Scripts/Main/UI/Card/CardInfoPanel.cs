@@ -25,6 +25,7 @@ namespace Main.Card
 		//기타
 		[SerializeField]
 		private Button _equipButton = null; //장착버튼
+		private Sequence _equipButtonSequence = null; //장착버튼 애니메이션 시퀀스
 		[SerializeField]
 		private TextMeshProUGUI _equipText = null;
 		[SerializeField]
@@ -202,7 +203,7 @@ namespace Main.Card
 				int j = i;
 
 				StickerData stickerData = null;
-				if(j >= commonCount)
+				if (j >= commonCount)
 				{
 					//전용 유닛 스티커 데이터
 					stickerData = onlyUnitStickerList[j - commonCount];
@@ -239,7 +240,7 @@ namespace Main.Card
 		public bool CheckAlreadyEquipSticker(StickerData stickerData)
 		{
 			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData._unitType);
-			if(unitData._stickerType == stickerData._stickerType)
+			if (unitData._stickerType == stickerData._stickerType)
 			{
 				return true;
 			}
@@ -282,7 +283,7 @@ namespace Main.Card
 			List<SkinData> skinList = SkinData.GetSkinDataList(_selectCardData._cardNamingType);
 
 			//모든 스킨 버튼 끄기
-			for(int i = 0; i < _skinButtonParent.childCount; i++)
+			for (int i = 0; i < _skinButtonParent.childCount; i++)
 			{
 				_skinButtonParent.GetChild(i).gameObject.SetActive(false);
 			}
@@ -346,6 +347,7 @@ namespace Main.Card
 				_userDeckData.AddCardInDeck(_selectCardData, _selectCardData._level);
 			}
 			SetEquipText();
+			EquipButtonAnimation();
 			UserSaveManagerSO.PostUserSaveData();
 		}
 
@@ -367,5 +369,28 @@ namespace Main.Card
 				_equipText.text = "장착";
 			}
 		}
+
+		/// <summary>
+		/// 장착 버튼 애니메이션
+		/// </summary>
+		private void EquipButtonAnimation()
+		{
+			_equipButton.interactable = false;
+			if (_equipButtonSequence == null)
+			{
+				RectTransform rectTransform = _equipButton.GetComponent<RectTransform>();
+				_equipButtonSequence = DOTween.Sequence()
+					.SetAutoKill(false)
+					.Append(rectTransform.DOScale(new Vector3(1, 0.2f, 0), 0.2f))
+					.Append(rectTransform.DOScale(new Vector3(0.2f, 1, 0), 0.2f))
+					.Append(rectTransform.DOScale(Vector3.one, 0.5f))
+					.AppendCallback(() => _equipButton.interactable = true);
+			}
+			else
+			{
+				_equipButtonSequence.Restart();
+			}
+		}
+
 	}
 }

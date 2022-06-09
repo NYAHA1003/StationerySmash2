@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Utill.Data;
 using Utill.Tool;
 using Main.Event;
+using DG.Tweening;
 
 namespace Main.Deck
 {
@@ -164,9 +165,9 @@ namespace Main.Deck
                     EventManager.TriggerEvent(EventsType.ActiveButtonComponent, ButtonType.cardDescription);
                     
                 });
+
             }
         }
-            
         /// <summary>
         /// 장착 카드 세팅
         /// </summary>
@@ -184,7 +185,12 @@ namespace Main.Deck
 					EventManager.TriggerEvent(EventsType.ActiveButtonComponent, ButtonType.cardDescription);
 
 				});
-			}
+
+                if (i == _userDeckData._inGameDeckListSO.cardDatas.Count - 1)
+                {
+                    CardSetAnimation(cardButton);
+                }
+            }
         }
 
         /// <summary>
@@ -353,5 +359,17 @@ namespace Main.Deck
             }
         }
 
-	}
+
+        /// <summary>
+        /// 카드 장착 애니메이션
+        /// </summary>
+        private void CardSetAnimation(Button cardButton)
+        {
+            var rectTransform = cardButton.GetComponent<RectTransform>();
+
+            rectTransform.localScale = Vector3.one * 2;
+            rectTransform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutExpo);
+        }
+
+    }
 }
