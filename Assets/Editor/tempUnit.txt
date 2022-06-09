@@ -1,0 +1,74 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using DG.Tweening;
+using Utill.Data;
+using Utill.Tool;
+
+namespace Battle.Units
+{
+    public class $NAME$State : AbstractStateManager
+    {
+        public override void SetState()
+        {
+            //스테이트들을 설정한다
+            _idleState = new $NAME$IdleState();
+            _waitState = new $NAME$WaitState();
+            _moveState = new $NAME$MoveState();
+            _attackState = new $NAME$AttackState();
+            _damagedState = new $NAME$DamagedState();
+            _dieState = new $NAME$DieState();
+            _throwState = new $NAME$ThrowState();
+
+            Reset_CurrentUnitState(_idleState);
+
+            _abstractUnitStateList.Add(_idleState);
+            _abstractUnitStateList.Add(_waitState);
+            _abstractUnitStateList.Add(_moveState);
+            _abstractUnitStateList.Add(_attackState);
+            _abstractUnitStateList.Add(_damagedState);
+            _abstractUnitStateList.Add(_dieState);
+            _abstractUnitStateList.Add(_throwState);
+
+            SetInStateList();
+        }
+
+        public override void Reset_State(Transform myTrm, Transform mySprTrm, Unit myUnit)
+        {
+            base.Reset_State(myTrm, mySprTrm, myUnit);
+            myUnit.SetIsInvincibility(false);
+            myUnit.SetIsDontThrow(false);
+            myUnit.SetIsNeverDontThrow(false);
+        }
+    }
+
+    public class $NAME$IdleState : AbstractIdleState
+    {
+    }
+
+    public class $NAME$WaitState : AbstractWaitState
+    {
+    }
+
+    public class $NAME$MoveState : AbstractMoveState
+    {
+    }
+
+    public class $NAME$AttackState : PcKillAttackState
+    {
+    }
+
+    public class $NAME$DamagedState : AbstractDamagedState
+    {
+    }
+
+    public class $NAME$DieState : AbstractDieState
+    {
+    }
+
+    public class $NAME$ThrowState : AbstractThrowState
+    {
+
+    }
+}
+

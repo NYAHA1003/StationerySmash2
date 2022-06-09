@@ -79,7 +79,7 @@ namespace Main.Card
                 if (_targetIndex == i)
                 {
                     _stressIcons[i].transform.localScale = _orginIconScale * 1.5f;
-                    _stressIcons[i].color = Color.yellow;
+                    _stressIcons[i].color = new Color(1, 0.75f, 0);
                 }
                 else
                 {

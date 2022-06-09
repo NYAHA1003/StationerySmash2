@@ -31,7 +31,7 @@ namespace Battle.Effect
 					_effectState ??= new EffectStun();
 					break;
 				case EffectType.Ink:
-					//effectState ??= new Effect_Slow();
+					_effectState ??= new EffectInk();
 					break;
 				case EffectType.Slow:
 					_effectState ??= new EffectSlow();

@@ -68,55 +68,74 @@ public class UnitStateChanger
     /// </summary>
     public void SetStateManager(UnitType unitType, Transform transform, Transform spriteRendererTransform, Unit unit)
     {
-        switch (unitType)
-        {
-            case UnitType.PencilCase:
-                _stateManager = PoolManager.GetUnit<PencilCaseStateManager>(transform, spriteRendererTransform, unit);
-                break;
+		switch (unitType)
+		{
+			case UnitType.PencilCase:
+				_stateManager = PoolManager.GetUnit<PencilCaseStateManager>(transform, spriteRendererTransform, unit);
+				break;
 
-            default:
-            case UnitType.None:
-            case UnitType.Pencil:
-                _stateManager = PoolManager.GetUnit<PencilState>(transform, spriteRendererTransform, unit);
-                break;
-            case UnitType.Eraser:
-                _stateManager = PoolManager.GetUnit<EraserState>(transform, spriteRendererTransform, unit);
-                break;
-            case UnitType.MechaPencil:
-                _stateManager = PoolManager.GetUnit<SharpState>(transform, spriteRendererTransform, unit);
-                break;
-            case UnitType.Pen:
-                _stateManager = PoolManager.GetUnit<BallpenState>(transform, spriteRendererTransform, unit);
-                break;
-            case UnitType.Scissors:
-                _stateManager = PoolManager.GetUnit<ScissorState>(transform, spriteRendererTransform, unit);
-                break;
-            case UnitType.Glue:
-                _stateManager = PoolManager.GetUnit<GlueState>(transform, spriteRendererTransform, unit);
-                break;
-
-            //필통 관련
-            case UnitType.RedCar:
-                _stateManager = PoolManager.GetUnit<RedCarState>(transform, spriteRendererTransform, unit);
-                break;
-            case UnitType.YellowCar:
-                _stateManager = PoolManager.GetUnit<YellowCarState>(transform, spriteRendererTransform, unit);
-                break;
-            case UnitType.GreenCar:
-                _stateManager = PoolManager.GetUnit<GreenCarState>(transform, spriteRendererTransform, unit);
-                break;
-            case UnitType.SharpSim:
-                _stateManager = PoolManager.GetUnit<SharpsimState>(transform, spriteRendererTransform, unit);
-                break;
-        }
-        _stateManager.Set_Idle();
-    }
+			default:
+			case UnitType.None:
+			case UnitType.Pencil:
+				_stateManager = PoolManager.GetUnit<PencilState>(transform, spriteRendererTransform, unit);
+				break;
+			case UnitType.Eraser:
+				_stateManager = PoolManager.GetUnit<EraserState>(transform, spriteRendererTransform, unit);
+				break;
+			case UnitType.MechaPencil:
+				_stateManager = PoolManager.GetUnit<SharpState>(transform, spriteRendererTransform, unit);
+				break;
+			case UnitType.Pen:
+				_stateManager = PoolManager.GetUnit<PenState>(transform, spriteRendererTransform, unit);
+				break;
+			case UnitType.Scissors:
+				_stateManager = PoolManager.GetUnit<ScissorsState>(transform, spriteRendererTransform, unit);
+				break;
+			case UnitType.Glue:
+				_stateManager = PoolManager.GetUnit<GlueState>(transform, spriteRendererTransform, unit);
+				break;
+			case UnitType.Ruller:
+				_stateManager = PoolManager.GetUnit<RulerState>(transform, spriteRendererTransform, unit);
+				break;
+			case UnitType.Cutterknife:
+				_stateManager = PoolManager.GetUnit<CutterKnifeState>(transform, spriteRendererTransform, unit);
+				break;
+			case UnitType.Postit:
+				_stateManager = PoolManager.GetUnit<PostItState>(transform, spriteRendererTransform, unit);
+				break;
+			case UnitType.MechaPencilLead:
+				_stateManager = PoolManager.GetUnit<SharpLeadCaseState>(transform, spriteRendererTransform, unit);
+				break;
 
 
-    /// <summary>
-    /// 스테이트 삭제
-    /// </summary>
-    public void DeleteState(UnitType unitType)
+			//필통 관련
+			case UnitType.RedCar:
+				_stateManager = PoolManager.GetUnit<RedCarState>(transform, spriteRendererTransform, unit);
+				break;
+			case UnitType.YellowCar:
+				_stateManager = PoolManager.GetUnit<YellowCarState>(transform, spriteRendererTransform, unit);
+				break;
+			case UnitType.GreenCar:
+				_stateManager = PoolManager.GetUnit<GreenCarState>(transform, spriteRendererTransform, unit);
+				break;
+			case UnitType.SharpSim:
+				_stateManager = PoolManager.GetUnit<SharpsimState>(transform, spriteRendererTransform, unit);
+				break;
+			case UnitType.EraserPiece:
+				_stateManager = PoolManager.GetUnit<EraserPieceState>(transform, spriteRendererTransform, unit);
+				break;
+			case UnitType.Apostit:
+				_stateManager = PoolManager.GetUnit<PostItPieceState>(transform, spriteRendererTransform, unit);
+				break;
+		}
+		_stateManager.Set_Idle();
+	}
+
+
+	/// <summary>
+	/// 스테이트 삭제
+	/// </summary>
+	public void DeleteState(UnitType unitType)
     {
         PoolManager.AddUnitState(_stateManager);
     }
