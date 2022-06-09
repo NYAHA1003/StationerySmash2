@@ -76,11 +76,16 @@ namespace Main.Card
 
 		private void Awake()
 		{
+
+
 			EventManager.Instance.StartListening(EventsType.ActiveCardDescription, (x) => OnSetCardInfoPanel((DeckCard)x));
 		}
 
 		private void Start()
 		{
+			_userDeckData ??= FindObjectOfType<UserDeckDataComponent>();
+			_deckSettingComponent ??= FindObjectOfType<DeckSettingComponent>();
+
 			SetEquipText();
 			_equipButton.onClick.AddListener(() =>
 			{
