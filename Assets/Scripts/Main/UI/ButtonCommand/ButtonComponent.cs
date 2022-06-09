@@ -40,9 +40,9 @@ namespace Main.Buttons
 		private List<ActiveCommand> buttonCommands = new List<ActiveCommand>();
 		private void Awake()
 		{
-			EventManager.StartListening(EventsType.CloaseAllPn, CloseAllPanels); 
-			EventManager.StartListening(EventsType.ActiveButtonComponent, (x) => OnActiveBtn((ButtonType)x));
-			EventManager.StartListening(EventsType.UndoStack, OnUndoBtn);
+			EventManager.Instance.StartListening(EventsType.CloaseAllPn, CloseAllPanels); 
+			EventManager.Instance.StartListening(EventsType.ActiveButtonComponent, (x) => OnActiveBtn((ButtonType)x));
+			EventManager.Instance.StartListening(EventsType.UndoStack, OnUndoBtn);
 			//덱에 있는 카드 클릭시 카드설명이 뜸, DeckSetting에서 카드 만들어주면서 AddListener로 EventTrigger로 등록해줌     
 			
 		}
@@ -64,7 +64,7 @@ namespace Main.Buttons
 		/// </summary>
 		private void AddListner()
 		{
-			clickBtns[(int)ButtonType.credit].onClick.AddListener(() => EventManager.TriggerEvent(EventsType.MoveCredit));
+			clickBtns[(int)ButtonType.credit].onClick.AddListener(() => EventManager.Instance.TriggerEvent(EventsType.MoveCredit));
 		}
 		/// <summary>
 		/// 패널 활성화시킬 때 발동되는 버튼함수 

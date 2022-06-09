@@ -76,7 +76,7 @@ namespace Main.Card
 
 		private void Awake()
 		{
-			EventManager.StartListening(EventsType.ActiveCardDescription, (x) => OnSetCardInfoPanel((DeckCard)x));
+			EventManager.Instance.StartListening(EventsType.ActiveCardDescription, (x) => OnSetCardInfoPanel((DeckCard)x));
 		}
 
 		private void Start()

@@ -8,6 +8,7 @@ namespace Utill.Data
     // 카드 등큽
     public enum Grade
     {
+        Null, // 등급 없음
         Common, //일반
         Rare, //레어
         Epic //에픽 

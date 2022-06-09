@@ -23,6 +23,17 @@ public enum TutorialType
 
 public class BattleTurtorialComponent : MonoBehaviour
 {
+    //프로퍼티
+    public GameObject TutorialCanvas
+    {
+        get
+        {
+            tutorialCanvas ??= GameObject.Find("TutorialCanvas");
+
+            return tutorialCanvas;
+        }
+    }
+
     public static Queue<Action> tutorialEventQueue = new Queue<Action>();
 
     [SerializeField]
@@ -40,7 +51,7 @@ public class BattleTurtorialComponent : MonoBehaviour
     [SerializeField]
     private Image speechBubble; // 말풍선 
     [SerializeField]
-    private Canvas tutorialCanvas; // 튜토리얼 캔버스 
+    private GameObject tutorialCanvas; // 튜토리얼 캔버스 
 
     [SerializeField]
     private TutorialTextSO tutorialTextSO; // 설명 텍스트정보
@@ -109,7 +120,7 @@ public class BattleTurtorialComponent : MonoBehaviour
     /// </summary>
     public void ActiveTutorialCanvas()
     {
-        tutorialCanvas.gameObject.SetActive(!tutorialCanvas.gameObject.activeSelf); 
+        TutorialCanvas.gameObject.SetActive(!TutorialCanvas.gameObject.activeSelf); 
     }
     /// <summary>
     /// 다음 설명 

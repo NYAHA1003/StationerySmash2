@@ -76,7 +76,7 @@ namespace Battle
 
             _cardComponent.AddDictionary<CardObj>(_cardComponent.SetUseCard, AddGaugeAsCost);
 
-            EventManager.StartListening(EventsType.PencilCaseAbility, OnPencilCaseAbility);
+            EventManager.Instance.StartListening(EventsType.PencilCaseAbility, OnPencilCaseAbility);
         }
 
         /// <summary>

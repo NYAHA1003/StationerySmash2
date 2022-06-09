@@ -20,6 +20,11 @@
         ActivePencilCaseDescription, // 덱에서 필통 정보창 활성화
         UndoStack = 65, // 스택에 넣어둘 패널 활성화 해줄 버튼  
 
+        CloseGacha = 75, // 뽑기하고 창 닫기
+        CheckItem, // 뽑기한 아이템 하나씩 확인하기
+        CheckCost, // 돈이 충분한가 확인 
+        StartGacha, // 뽑기 버튼 클릭시 뽑기 시작 
+
         // 세팅 부분
         ActiveProfileImgPn = 100, // 프로필 이미지 패널 활성화 
         ChangeProfileImage, // 유저 이미지 변경 
@@ -39,6 +44,7 @@
         NextExplain, // 다음 튜토리얼 설명 
         SetTutorial, // 버튼 클릭시 어떤튜토리얼 나올지 
 
+        ClearEvents, // 이벤트 딕셔너리 초기화 
     }
 }
 

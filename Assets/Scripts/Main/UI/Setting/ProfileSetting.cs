@@ -37,10 +37,10 @@ namespace Main.Setting
 
         public void ListenEvent()
         {
-            EventManager.StartListening(EventsType.ActiveProfileImgPn, OnActiveProfileImgPn);
-            EventManager.StartListening(EventsType.ChangeProfileImage, OnChangeProfileImage);
-            EventManager.StartListening(EventsType.ChabgeUserName, OnChangeUserName);
-            EventManager.StartListening(EventsType.CloaseAllPn, OnProfileDisabled);
+            EventManager.Instance.StartListening(EventsType.ActiveProfileImgPn, OnActiveProfileImgPn);
+            EventManager.Instance.StartListening(EventsType.ChangeProfileImage, OnChangeProfileImage);
+            EventManager.Instance.StartListening(EventsType.ChabgeUserName, OnChangeUserName);
+            EventManager.Instance.StartListening(EventsType.CloaseAllPn, OnProfileDisabled);
         }
         public void OnChangeUserName()
         {
