@@ -217,11 +217,11 @@ namespace Battle
             //필통 위치 설정
             if (teamType == TeamType.MyTeam)
             {
-                pencilCaseUnit.transform.position = new Vector2(-_stageData.max_Range, 0);
+                pencilCaseUnit.transform.position = new Vector2(-_stageData.max_Range + 0.05f, 0);
             }
             else if (teamType == TeamType.EnemyTeam)
             {
-                pencilCaseUnit.transform.position = new Vector2(_stageData.max_Range, 0);
+                pencilCaseUnit.transform.position = new Vector2(_stageData.max_Range - 0.05f, 0);
             }
 
             //필통 특수 능력 설정
