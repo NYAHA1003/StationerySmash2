@@ -73,10 +73,21 @@ public class BattleTurtorialComponent : MonoBehaviour
     public static bool _isTutorial = false; // 튜토리얼 했는지 
     private void Start()
     {
-        speechBubbleText.text = tutorialTextSO._textDatas[(int)currentBattleStageType]._tutorialText[0];
         checkButton.onClick.AddListener(() => NextExplain());
         SetTutorial(); 
         // EventManager.StartListening(EventsType.NextExplain, NextExplain);
+    }
+
+    /// <summary>
+    /// 큐에 할 게 들어있는지 
+    /// </summary>
+    public static bool CheckQueue()
+    {
+        if (tutorialEventQueue.Count == 0)
+        {
+            return false;
+        }
+        return true;
     }
 
     /// <summary>
@@ -86,7 +97,7 @@ public class BattleTurtorialComponent : MonoBehaviour
     /// SceneLoadButtonManager의 SetBattleLoadButton에서 이벤트로 설정해줄거임
     public void SetTutorial()
     {
-        currentBattleStageType = _loadingBattleDataSO.CurrentStageData.battleStageType;
+        currentBattleStageType = _loadingBattleDataSO.CurrentStageData.battleStageType; // 현재 몇 스테이지인지 받아옴
         switch (currentBattleStageType)
         {
             case BattleStageType.S1_1:
@@ -98,6 +109,8 @@ public class BattleTurtorialComponent : MonoBehaviour
                 break;
             case BattleStageType.S1_4:
                 break;
+            default: // 튜토리얼이 있는 스테이지가 아니면 리턴 
+                return; 
         }
         tutorialEventQueue.Enqueue(StartTutorial);
         currentStageTutorial.SetQueue();
@@ -155,4 +168,5 @@ public class BattleTurtorialComponent : MonoBehaviour
         Time.timeScale = 0;
         _isPause = true;
     }
+
 }
