@@ -34,7 +34,11 @@ namespace Utill.Tool
 
 		public static List<PencilCaseData> HavePencilCaseDataList => _havePencilCaseDataList;
 
-		public PencilCaseServerData testList;
+		[SerializeField]
+		private PencilCaseServerData testList;
+
+		[SerializeField]
+		private List<PencilCaseData> _debugStdPencilCaseDataList;
 
 		/// <summary>
 		/// 서버 데이터를 받아 초기화
@@ -43,6 +47,14 @@ namespace Utill.Tool
 		public void Initialize()
 		{
 			ServerDataConnect.Instance.GetData<PencilCaseServerData>(SetPencilCaseList, ServerDataConnect.DataType.PencilCaseData);
+		}
+
+		/// <summary>
+		/// 디버그용 초기화
+		/// </summary>
+		public void DebugInitialize()
+		{
+			_stdPencilCaseDataList = _debugStdPencilCaseDataList;
 		}
 
 		/// <summary>

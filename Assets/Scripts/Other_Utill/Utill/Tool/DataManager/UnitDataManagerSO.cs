@@ -21,8 +21,10 @@ namespace Utill.Tool
 
 		private static List<UnitData> _stdUnitDataList = new List<UnitData>(); //Unit데이터 리스트
 
-		public UnitServerData testList;
-
+		[SerializeField]
+		private UnitServerData testList;
+		[SerializeField]
+		private List<UnitData> _debugStdUnitDataList;
 
 		/// <summary>
 		/// 기준 데이터에 입력 데이터를 넣는다
@@ -30,6 +32,14 @@ namespace Utill.Tool
 		public void Initialize()
 		{
 			ServerDataConnect.Instance.GetData<UnitServerData>(SetUnitDataList, ServerDataConnect.DataType.UnitData);
+		}
+
+		/// <summary>
+		/// 디버그용 초기화
+		/// </summary>
+		public void DebugInitialize()
+		{
+			_stdUnitDataList = _debugStdUnitDataList;
 		}
 
 		/// <summary>

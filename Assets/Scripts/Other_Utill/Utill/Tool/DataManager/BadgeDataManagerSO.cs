@@ -27,7 +27,14 @@ namespace Utill.Tool
 		private static List<BadgeData> _stdBadgeDataList = new List<BadgeData>(); //Badge 기준 데이터 리스트
 		private static List<BadgeData> _haveBadgeDataList = new List<BadgeData>(); //Badge 가진 데이터 리스트
 
-		public BadgeServerData testList;
+		//디버그용
+
+		[SerializeField]
+		private BadgeServerData testList;
+
+		[SerializeField]
+		private List<BadgeData> _debugStdBadgeDataList;
+
 
 		/// <summary>
 		/// 서버 데이터를 받아 초기화
@@ -36,6 +43,14 @@ namespace Utill.Tool
 		public void Initialize()
 		{
 			ServerDataConnect.Instance.GetData<BadgeServerData>(SetUnitDataList, ServerDataConnect.DataType.UnitData);
+		}
+
+		/// <summary>
+		/// 디버그용 초기화
+		/// </summary>
+		public void DebugInitialize()
+		{
+			_stdBadgeDataList = _debugStdBadgeDataList;
 		}
 
 		/// <summary>

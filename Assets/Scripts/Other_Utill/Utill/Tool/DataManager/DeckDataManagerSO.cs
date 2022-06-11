@@ -24,7 +24,13 @@ namespace Utill.Tool
 		private static List<CardData> _stdDeckDataList = new List<CardData>(); //기준 카드 데이터 리스트
 		private static List<CardData> _haveDeckList = new List<CardData>(); //보유 카드 데이터 리스트
 
-		public DeckServerData testList;
+		/// <summary>
+		/// 디버그용
+		/// </summary>
+		[SerializeField]
+		private DeckServerData testList;
+		[SerializeField]
+		private List<CardData> _debugStdDeckDataList;
 
 		/// <summary>
 		/// 기준 데이터를 받아온다
@@ -32,6 +38,14 @@ namespace Utill.Tool
 		public void Initialize()
 		{
 			ServerDataConnect.Instance.GetData<DeckServerData>(SetDeckDataList, ServerDataConnect.DataType.DeckData);
+		}
+
+		/// <summary>
+		/// 디버그용 데이터 초기화
+		/// </summary>
+		public void DebugInitialize()
+		{
+			_stdDeckDataList = _debugStdDeckDataList;
 		}
 
 		/// <summary>

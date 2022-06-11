@@ -28,7 +28,13 @@ namespace Utill.Tool
 
         private static List<IUserData> _userDataObservers = new List<IUserData>();
 
-        public CardSaveData _cardAddData;
+
+        //디버그용
+        [SerializeField]
+        private CardSaveData _cardAddData;
+
+        [SerializeField]
+        private UserSaveData _debugSaveData;
 
         /// <summary>
         /// 서버 데이터를 받아 초기화
@@ -37,6 +43,14 @@ namespace Utill.Tool
 		public void Initialize()
         {
             SetUserID();
+        }
+
+        /// <summary>
+        /// 디버그용 초기화
+        /// </summary>
+        public void DebugInitialize()
+		{
+            _userSaveData = _debugSaveData;
         }
 
         /// <summary>

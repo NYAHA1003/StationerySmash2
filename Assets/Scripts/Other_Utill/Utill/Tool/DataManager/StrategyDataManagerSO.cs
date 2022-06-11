@@ -21,7 +21,11 @@ namespace Utill.Tool
 
 		private static List<StrategyData> _stdStarategyList = new List<StrategyData>(); //Strategy데이터 리스트
 
-		public StrategyServerData testList;
+		//디버그용
+		[SerializeField]
+		private StrategyServerData testList;
+		[SerializeField]
+		private List<StrategyData> _debugStdStarategyList;
 
 		/// <summary>
 		/// 기준 데이터에 입력 데이터를 넣는다
@@ -29,6 +33,14 @@ namespace Utill.Tool
 		public void Initialize()
 		{
 			ServerDataConnect.Instance.GetData<StrategyServerData>(SetStrategyList, ServerDataConnect.DataType.StrategyData);
+		}
+
+		/// <summary>
+		/// 디버그용 초기화
+		/// </summary>
+		public void DebugInitialize()
+		{
+			_stdStarategyList = _debugStdStarategyList;
 		}
 
 		/// <summary>

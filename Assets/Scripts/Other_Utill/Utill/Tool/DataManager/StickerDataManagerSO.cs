@@ -24,7 +24,12 @@ namespace Utill.Tool
 		private static List<StickerData> _stdStickerDataList = new List<StickerData>(); //Unit데이터 리스트
 		private static List<StickerData> _haveStickerDataList = new List<StickerData>(); //Unit데이터 리스트
 
-		public StickerServerData testList;
+		[SerializeField]
+		private StickerServerData testList;
+
+		[SerializeField]
+		private List<StickerData> _debugStdStickerDataList = new List<StickerData>(); //Unit데이터 리스트
+
 
 		/// <summary>
 		/// 기준 데이터에 입력 데이터를 넣는다
@@ -32,6 +37,14 @@ namespace Utill.Tool
 		public void Initialize()
 		{
 			ServerDataConnect.Instance.GetData<StickerServerData>(SetStickerDataList, ServerDataConnect.DataType.StickerData);
+		}
+
+		/// <summary>
+		/// 디버그용 초기화
+		/// </summary>
+		public void DebugInitialize()
+		{
+			_stdStickerDataList = _debugStdStickerDataList;
 		}
 
 		/// <summary>

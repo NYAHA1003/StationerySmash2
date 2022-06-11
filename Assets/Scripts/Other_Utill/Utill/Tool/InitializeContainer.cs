@@ -8,13 +8,22 @@ namespace Utill.Tool
     {
 		[SerializeField]
 		private List<Object> _Iinitializes;
+		[SerializeField]
+		private bool _isDebugMode;
 
 		private void Awake()
 		{
 			int count = _Iinitializes.Count;
 			for(int i = 0; i < count; i++)
 			{
-				(_Iinitializes[i] as Iinitialize).Initialize();
+				if(_isDebugMode)
+				{
+					(_Iinitializes[i] as Iinitialize).Initialize();
+				}
+				else
+				{
+					(_Iinitializes[i] as Iinitialize).DebugInitialize();
+				}
 			}
 		}
 	}
