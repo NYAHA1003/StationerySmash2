@@ -28,13 +28,13 @@ namespace Utill.Tool
 
         private static List<IUserData> _userDataObservers = new List<IUserData>();
 
-
         //디버그용
         [SerializeField]
         private CardSaveData _cardAddData;
 
         [SerializeField]
         private UserSaveData _debugSaveData;
+        private static bool _isDebugMod = false;
 
         /// <summary>
         /// 서버 데이터를 받아 초기화
@@ -42,6 +42,7 @@ namespace Utill.Tool
         /// <param name="serverDataConnect"></param>
 		public void Initialize()
         {
+            _isDebugMod = false;
             SetUserID();
         }
 
@@ -49,7 +50,8 @@ namespace Utill.Tool
         /// 디버그용 초기화
         /// </summary>
         public void DebugInitialize()
-		{
+        {
+            _isDebugMod = true;
             _userSaveData = _debugSaveData;
         }
 
@@ -58,6 +60,10 @@ namespace Utill.Tool
         /// </summary>
         public static void GetUserSaveData()
         {
+            if(_isDebugMod)
+			{
+                return;
+			}
             ServerDataConnect.Instance.GetUserSaveData();
         }
 
@@ -66,6 +72,10 @@ namespace Utill.Tool
         /// </summary>
         public static void PostUserSaveData()
         {
+            if (_isDebugMod)
+            {
+                return;
+            }
             ServerDataConnect.Instance.PostUserSaveData();
         }
 
@@ -231,8 +241,12 @@ namespace Utill.Tool
         /// 인게임 데이터를 프리셋 데이터에 따라 변경한다
         /// </summary>
         public static void ChangeIngameData(int preset)
-		{
+        {
             _userSaveData.ChangeIngameData(preset);
+            if (_isDebugMod)
+            {
+                return;
+            }
             PostUserSaveData();
 		}
     }
