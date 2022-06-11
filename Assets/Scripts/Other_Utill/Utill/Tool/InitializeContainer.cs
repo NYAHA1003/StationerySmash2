@@ -18,11 +18,11 @@ namespace Utill.Tool
 			{
 				if(_isDebugMode)
 				{
-					(_Iinitializes[i] as Iinitialize).Initialize();
+					(_Iinitializes[i] as Iinitialize).DebugInitialize();
 				}
 				else
 				{
-					(_Iinitializes[i] as Iinitialize).DebugInitialize();
+					(_Iinitializes[i] as Iinitialize).Initialize();
 				}
 			}
 		}
