@@ -15,9 +15,9 @@ namespace Battle.StateEff
 
         public override void Enter()
         {
-            SprTrm.GetComponent<SpriteRenderer>().color = Color.green;
             _myUnit.UnitStat.IncreaseAttackPercent(-(int)damageSubtractPercent);
             _myUnit.UnitStat.IncreaseAccuracyPercent(-(int)accuracySubtractPercent);
+            _effectObj = _battleManager.EffectComponent.SetEffect(EffectType.Ink, new EffData(new Vector2(Trm.position.x, Trm.position.y + 0.1f), inkTime, Trm));
 
             base.Enter();
         }
@@ -30,7 +30,7 @@ namespace Battle.StateEff
         {
             _myUnit.UnitStat.IncreaseAttackPercent((int)damageSubtractPercent);
             _myUnit.UnitStat.IncreaseAccuracyPercent((int)accuracySubtractPercent);
-            SprTrm.GetComponent<SpriteRenderer>().color = Color.red;
+            DeleteEffectObject();
 
             base.Exit();
         }

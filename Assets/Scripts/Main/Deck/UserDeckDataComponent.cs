@@ -83,7 +83,8 @@ namespace Main.Deck
 				if (cardDataobj != null)
 				{
 					//세이브데이터의 레벨만큼 수치를 변경하고 새로운 카드데이터로 만들어 받아 덱리스트에 추가
-					SkinData skinData = _skinListSO._cardNamingSkins.Find(x => x._cardNamingType == saveDataobj._cardNamingType)._skinDatas.Find(x => x._skinType == saveDataobj._skinType);
+					var skinDatas = _skinListSO._cardNamingSkins.Find(x => x._cardNamingType == saveDataobj._cardNamingType)._skinDatas;
+					SkinData skinData = skinDatas.Find(x => x._skinType == saveDataobj._skinType);
 					CardData cardData = cardDataobj.DeepCopy();
 					cardData._level = saveDataobj._level;
 					cardData._skinData = skinData;
