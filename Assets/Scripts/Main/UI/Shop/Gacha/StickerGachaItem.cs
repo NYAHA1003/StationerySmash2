@@ -20,15 +20,18 @@ public class StickerGachaItem : GachaCard
         sequence.Join(transform.DOScaleY(1f, 0.5f));
     }
 
-    public void SetData(Grade grade)
+    public void CheckGrade()
     {
-        switch (grade)
+        switch (_grade)
         {
             case Grade.Common:
+
                 break;
             case Grade.Rare:
+
                 break;
             case Grade.Epic:
+
                 break;
         }
 

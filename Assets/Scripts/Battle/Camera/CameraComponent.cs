@@ -189,10 +189,10 @@ namespace Battle
                 if (_camera.orthographic)
                 {
                     // ... change the orthographic size based on the change in distance between the touches.
-                    _camera.orthographicSize += deltaMagnitudeDiff * _orthoZoomSpeed;
+                    _camera.orthographicSize += deltaMagnitudeDiff * _orthoZoomSpeed * Time.deltaTime;
 
                     // Make sure the orthographic size never drops below zero.
-                    _camera.orthographicSize = Mathf.Max(_camera.orthographicSize, 0.1f);
+                    _camera.orthographicSize = Mathf.Clamp(_camera.orthographicSize, 1, _stageData.max_Range - 1);
                 }
                 else
                 {
