@@ -70,10 +70,10 @@ namespace Main.Store
                     randomIndex = Random.Range(0, allItemInfos.commonItemInfos.Count);
                     break;
                 case Grade.Rare:
-                    randomIndex = Random.Range(0, allItemInfos.commonItemInfos.Count);
-
+                    randomIndex = Random.Range(0, allItemInfos.rareItemInfos.Count);
                     break;
                 case Grade.Epic:
+                    randomIndex = Random.Range(0, allItemInfos.epicItemInfos.Count);
                     break;
             }
 
