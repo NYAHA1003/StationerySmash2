@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using TMPro;
 using Utill.Data;
 using Utill.Tool;
 using Main.Event;
@@ -16,7 +17,8 @@ namespace Main.Scroll
         private Slider accentSlider;
         [SerializeField]
         private RectTransform[] panelIcons;
-
+        [SerializeField]
+        private GameObject[] panelTexts;
         protected override void SettingAwake()
         {
             base.SettingAwake();
@@ -61,8 +63,13 @@ namespace Main.Scroll
                 if (_targetIndex == i)
                 {
                     panelIcons[i].anchoredPosition3D = new Vector3(0, 0);
+                    panelTexts[i].SetActive(true);
                 }
-                else panelIcons[i].anchoredPosition3D = new Vector3(0, 0);
+                else
+                {
+                    panelIcons[i].anchoredPosition3D = new Vector3(0, 0);
+                    panelTexts[i].SetActive(false);
+                }
             }
         }
 
