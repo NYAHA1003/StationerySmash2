@@ -19,10 +19,10 @@ public class SceneLoadButtonManager : MonoBehaviour
 
 
     // Start is called before the first frame update
-    private void Start()
+    private void Awake()
     {
-        SetBattleLoadButtons();
         buttons[0].onClick.AddListener(() => LoadBattleDataStageMake(BattleStageType.ST_MAKE));
+        SetBattleLoadButtons();
     }
    
     private void SetBattleLoadButtons()
@@ -36,6 +36,7 @@ public class SceneLoadButtonManager : MonoBehaviour
     }
     private void LoadBattleData(BattleStageType battleStageType)
     {
+        Debug.Log($"{battleStageType} is loding...");
         loadingBattleDataSO.SetCurrentIndex(battleStageType);
         var currentData = loadingBattleDataSO.CurrentStageData;
         PencilCaseDataManagerSO.SetEnemyPencilCaseData(currentData);
@@ -44,6 +45,7 @@ public class SceneLoadButtonManager : MonoBehaviour
     }
     private void LoadBattleDataStageMake(BattleStageType battleStageType)
     {
+        Debug.Log($"{battleStageType} is loding...");
         loadingBattleDataSO.SetCurrentIndex(battleStageType);
         var currentData = loadingBattleDataSO.CurrentStageData;
         PencilCaseDataManagerSO.SetEnemyPencilCaseData(currentData);
