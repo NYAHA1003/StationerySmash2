@@ -30,6 +30,18 @@ namespace Main.Card
 		private TextMeshProUGUI _equipText = null;
 		[SerializeField]
 		private CardDescriptionScroll _infoScroll = null; //스크롤 조절창
+		[SerializeField]
+		private Image _expGaugeBar; //EXP 게이지 바
+		[SerializeField]
+		private GameObject _levelUpArrow; //레벨업 화살표
+		[SerializeField]
+		private TextMeshProUGUI _levelText; //레벨텍스트
+		[SerializeField]
+		private TextMeshProUGUI _expText; //레벨텍스트
+		[SerializeField]
+		private Button _levelUpButton; //레벨업버튼
+		[SerializeField]
+		private GameObject _levelUpDontImage; //레벨업 막는 이미지
 
 		//스탯패널(유닛)
 		[SerializeField]
@@ -44,6 +56,16 @@ namespace Main.Card
 		private TextMeshProUGUI _moveSpeedText = null;
 		[SerializeField]
 		private TextMeshProUGUI _weightText = null;
+		[SerializeField]
+		private TextMeshProUGUI _plusHpText = null;
+		[SerializeField]
+		private TextMeshProUGUI _plusAttackText = null;
+		[SerializeField]
+		private TextMeshProUGUI _plusAttackSpeedText = null;
+		[SerializeField]
+		private TextMeshProUGUI _plusMoveSpeedText = null;
+		[SerializeField]
+		private TextMeshProUGUI _plusWeightText = null;
 
 		//스티커 창
 		[SerializeField]
@@ -92,6 +114,8 @@ namespace Main.Card
 				OnEquipCardInDeck();
 				_deckSettingComponent.UpdateHaveAndEquipDeck();
 			});
+
+			_levelUpButton.onClick.AddListener(() => OnLevelUp());
 		}
 
 
@@ -125,6 +149,7 @@ namespace Main.Card
 			}
 			SetSkinList(_selectCardData);
 			SetStickerList(_selectCardData);
+			SetExpBar();
 			_deckCard.SetCard(_selectCardData);
 		}
 
@@ -152,7 +177,7 @@ namespace Main.Card
 			_infoScroll.SetIcons(4);
 
 			//스탯 텍스트 설정
-			UnitData unitData = UnitDataManagerSO.FindUnitData(cardData._unitType);
+			UnitData unitData = UnitDataManagerSO.FindHaveUnitData(_selectCardData._unitType);
 			_hpText.text = unitData._hp.ToString();
 			_attackText.text = unitData._damage.ToString();
 			_attackSpeedText.text = unitData._attackSpeed.ToString();
@@ -200,6 +225,58 @@ namespace Main.Card
 			_stickerPanel.SetActive(false);
 
 			_infoScroll.SetIcons(3);
+		}
+
+		/// <summary>
+		/// 레벨업 함수
+		/// </summary>
+		public void OnLevelUp()
+		{
+			UnitData unitData = UnitDataManagerSO.FindHaveUnitData(_selectCardData._unitType);
+			unitData._hp += unitData._hp * _selectCardData._level / 10;
+			unitData._damage += unitData._damage / 10 * _selectCardData._level;
+
+			//카드 타입에 따라 설명창 설정
+			switch (_selectCardData._cardType)
+			{
+				case CardType.Execute:
+					SetCardExecute(_selectCardData);
+					break;
+				case CardType.SummonUnit:
+					SetCardSummonUnit(_selectCardData);
+					break;
+				case CardType.SummonTrap:
+					SetCardSummonTrap(_selectCardData);
+					break;
+				case CardType.Installation:
+					SetCardInstallation(_selectCardData);
+					break;
+			}
+
+			SetExpBar();
+		}
+
+		/// <summary>
+		/// EXP바 설정
+		/// </summary>
+		private void SetExpBar()
+		{
+			_levelText.text = $"LV.{_selectCardData._level}";
+			_expText.text = $"{_selectCardData._count} / 100";
+			float expPercent = (float)_selectCardData._count / 100;
+			_expGaugeBar.fillAmount = expPercent;
+			bool levelUpOn = expPercent >= 1;
+
+			_levelUpArrow.SetActive(levelUpOn);
+			_levelUpButton.interactable = levelUpOn;
+			_levelUpDontImage.SetActive(!levelUpOn);
+
+			UnitData unitData = UnitDataManagerSO.FindHaveUnitData(_selectCardData._unitType);
+
+			_plusHpText.text = $"{unitData._hp * _selectCardData._level / 10}";
+			_plusAttackText.text = $"{unitData._damage / 10 * _selectCardData._level}";
+			_plusHpText.gameObject.SetActive(true);
+			_plusAttackText.gameObject.SetActive(true);
 		}
 
 		//스티커 함수들
@@ -264,7 +341,7 @@ namespace Main.Card
 		/// <returns></returns>
 		public bool CheckAlreadyEquipSticker(StickerData stickerData)
 		{
-			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData._unitType);
+			UnitData unitData = UnitDataManagerSO.FindStdUnitData(_selectCardData._unitType);
 			if (unitData._stickerType == stickerData._stickerType)
 			{
 				return true;
@@ -278,7 +355,7 @@ namespace Main.Card
 		/// <param name="stickerData"></param>
 		public void SetSticker(StickerData stickerData)
 		{
-			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData._unitType);
+			UnitData unitData = UnitDataManagerSO.FindStdUnitData(_selectCardData._unitType);
 			unitData._stickerType = stickerData._stickerType;
 			_selectDeckCard.SetCard(_selectCardData);
 			_userDeckData.ChangeCardInInGameSaveData(_selectCardData);
@@ -289,7 +366,7 @@ namespace Main.Card
 		/// </summary>
 		public void ReleaseSticker()
 		{
-			UnitData unitData = UnitDataManagerSO.FindUnitData(_selectCardData._unitType);
+			UnitData unitData = UnitDataManagerSO.FindStdUnitData(_selectCardData._unitType);
 			unitData._stickerType = StickerType.None;
 			_selectDeckCard.SetCard(_selectCardData);
 			_userDeckData.ChangeCardInInGameSaveData(_selectCardData);

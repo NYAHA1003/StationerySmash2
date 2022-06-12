@@ -205,7 +205,7 @@ namespace Main.Deck
             cardSaveData._cardNamingType = cardData._cardNamingType;
             cardSaveData._skinType = cardData._skinData._skinType;
 
-            UnitData unitData = UnitDataManagerSO.FindUnitData(cardData._unitType);
+            UnitData unitData = UnitDataManagerSO.FindStdUnitData(cardData._unitType);
             cardSaveData._stickerType = unitData._stickerType;
             return cardSaveData;
 		}

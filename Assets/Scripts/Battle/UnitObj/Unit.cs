@@ -81,7 +81,7 @@ public class Unit : MonoBehaviour
         OrderIndex = orderIndex;
 
         //유닛 데이터 받아오기
-        UnitData unitData = UnitDataManagerSO.FindUnitData(dataBase._unitType);
+        UnitData unitData = UnitDataManagerSO.FindStdUnitData(dataBase._unitType);
         _unitData = unitData;
 
         //스킨 데이터 받아오기

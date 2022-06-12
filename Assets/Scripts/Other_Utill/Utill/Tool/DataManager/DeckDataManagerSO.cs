@@ -20,6 +20,7 @@ namespace Utill.Tool
 
 		//프로퍼티
 		public static List<CardData> StdDeckDataList => _stdDeckDataList;
+		public static List<CardData> HaveDeckDataList => _haveDeckList;
 
 		private static List<CardData> _stdDeckDataList = new List<CardData>(); //기준 카드 데이터 리스트
 		private static List<CardData> _haveDeckList = new List<CardData>(); //보유 카드 데이터 리스트

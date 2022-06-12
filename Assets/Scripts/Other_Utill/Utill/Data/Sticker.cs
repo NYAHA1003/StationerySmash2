@@ -51,7 +51,7 @@ namespace Utill.Data
 		{
 			if (cardData._cardType == CardType.SummonUnit)
 			{
-				UnitData unitData = UnitDataManagerSO.FindUnitData(cardData._unitType);
+				UnitData unitData = UnitDataManagerSO.FindStdUnitData(cardData._unitType);
 				if(unitData == null)
 				{
 					return false;

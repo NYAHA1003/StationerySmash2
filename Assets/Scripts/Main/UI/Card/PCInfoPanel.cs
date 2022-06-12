@@ -75,7 +75,7 @@ namespace Main.Card
 		{
 			_selectPCData = pencilCaseData;
 
-			UnitData unitData = UnitDataManagerSO.FindUnitData(pencilCaseData._unitType);
+			UnitData unitData = UnitDataManagerSO.FindStdUnitData(pencilCaseData._unitType);
 			_nameText.text = $"{System.Enum.GetName(typeof(PencilCaseType), pencilCaseData._pencilCaseType)}";
 			_hpText.text = $"{unitData._hp}";
 			_maxBadgeText.text = $"{pencilCaseData._maxBadgeCount}";
