@@ -43,7 +43,6 @@ public abstract class GachaCard : MonoBehaviour
     private void OnEnable()
     {
         Reset();
-        ActiveAndAnimate(); 
     }
   
     public void SetSprite(Sprite frontSprite, Sprite backSprite, bool isFront)

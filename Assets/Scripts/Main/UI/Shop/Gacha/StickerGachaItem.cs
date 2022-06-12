@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Utill.Data; 
 public class StickerGachaItem : GachaCard
 {
     public override void ActiveAndAnimate()
@@ -19,4 +20,17 @@ public class StickerGachaItem : GachaCard
         sequence.Join(transform.DOScaleY(1f, 0.5f));
     }
 
+    public void SetData(Grade grade)
+    {
+        switch (grade)
+        {
+            case Grade.Common:
+                break;
+            case Grade.Rare:
+                break;
+            case Grade.Epic:
+                break;
+        }
+
+    }
 }

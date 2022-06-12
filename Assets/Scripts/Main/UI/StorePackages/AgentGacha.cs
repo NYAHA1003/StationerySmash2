@@ -57,7 +57,7 @@ namespace Main.Store
     public class AgentGacha : MonoBehaviour
     {
         [SerializeField]
-        private GachaInfo gachaInfo; 
+        private GachaInfo _gachaInfo; 
         [SerializeField]
         private Canvas gachaCanvas;
         [SerializeField]
@@ -71,7 +71,7 @@ namespace Main.Store
         private Sprite _backBadgeImage; // 뱃지 뒷면 
 
         public List<GachaCard> gachaCards = new List<GachaCard>(); // 총 아이템개수 
-        private List<GachaCard> curGachaCards = new List<GachaCard>(); // 현재 뽑을 아이템 개수 
+        public List<GachaCard> curGachaCards = new List<GachaCard>(); // 현재 뽑을 아이템 개수 
          
         private int currentNum; // 현재 몇번째 아이템 강조중 
         private int currentAmount; // 현재 총 뽑은 아이템 수 
@@ -82,7 +82,7 @@ namespace Main.Store
         void Start()
         {
             ListenEvent();
-            gachaInfo.allBadgeInfos.SetInfosGrade();
+            _gachaInfo.allItemInfos.SetInfosGrade();
             InstantiateItem();
 
         }
@@ -92,17 +92,14 @@ namespace Main.Store
         /// </summary>
         private void ListenEvent()
         {
-            //EventManager.Instance.StopListening(EventsType.CloseGacha, Close);
-            //EventManager.Instance.StopListening(EventsType.CheckItem, CheckItem);
-            //EventManager.Instance.StopListening(EventsType.CheckCost, (x) => CheckCost((int)x));
-            //EventManager.Instance.StopListening(EventsType.StartGacha, (x) => Summons((int)x));
 
             EventManager.Instance.StartListening(EventsType.CloseGacha, Close);
             EventManager.Instance.StartListening(EventsType.CheckItem, CheckItem);
             EventManager.Instance.StartListening(EventsType.CheckCost, (x) => CheckCost((int)x));
             EventManager.Instance.StartListening(EventsType.StartGacha, (x) => Summons((int)x));
 
-            EventManager.Instance.StartListening(EventsType.SkipAnimation, SkipAnimation); 
+            EventManager.Instance.StartListening(EventsType.SkipAnimation, SkipAnimation);
+            EventManager.Instance.StartListening(EventsType.ActiveNextBtn, ActiveNextBtn);
         }
    
         /// <summary>
@@ -127,19 +124,19 @@ namespace Main.Store
                 return;
             }
             InitGacha(amount);
-            ItemSummons();
+            SummonItems();
         }
 
         // 일반 80% 희귀 15% 영웅 5%
         [ContextMenu("테스트")]
-        private void ItemSummons()
+        private void SummonItems()
         {
             curGachaCards.Clear(); 
-            blackBackImage.gameObject.SetActive(true);
+       //     gachaCanvas.gameObject.SetActive(true);
             
-            AllBadgeInfos allBadgeInfos = gachaInfo.allBadgeInfos;
-            float epicPercent = gachaInfo.gachaSO.epicPercent;
-            float rarePercent = gachaInfo.gachaSO.rarePercent;
+            AllItemInfos allBadgeInfos = _gachaInfo.allItemInfos;
+            float epicPercent = _gachaInfo.gachaSO.epicPercent;
+            float rarePercent = _gachaInfo.gachaSO.rarePercent;
 
             for (int i = 0; i < currentAmount; i++)
             {
@@ -176,7 +173,7 @@ namespace Main.Store
         /// </summary>
         private void CheckItem()
         {
-            gachaCards[currentNum].StopCoroutine();
+          //  gachaCards[currentNum].StopCoroutine();
 
             if (currentNum == currentAmount - 1)
             {
@@ -191,18 +188,12 @@ namespace Main.Store
         }
 
         /// <summary>
-        /// 뽑기 캔버스 초기화
+        /// 뽑기 초기화
         /// </summary>
         private void InitGacha(int amount)
         {
             currentAmount = amount;
             currentNum = 0;
-            if(amount == 1)
-            {
-                nextBtn.SetActive(false);
-                return; 
-            }
-            nextBtn.SetActive(true);
         }
 
         public void SkipAnimation()
@@ -211,6 +202,7 @@ namespace Main.Store
             {
                 curGachaCards[i].StopCoroutine();
             }
+            ActiveNextBtn(); 
         }
         /// <summary>
         ///  뽑기 닫기 
@@ -224,21 +216,32 @@ namespace Main.Store
                 gachaCards[i].StopCoroutine(); 
             }
             // 검은 이미지 닫기 
-            blackBackImage.gameObject.SetActive(false);
+           // gachaCanvas.gameObject.SetActive(false);
         }
         /// <summary>
         /// 최대로 뜰 아이템 개수만큼 미리 생성해두기 
         /// </summary>
         private void InstantiateItem()
         {
-            _count = gachaInfo.gachaSO.maxAmount;
-            GachaCard itemPrefab = gachaInfo.itemPrefab;
-            GameObject itemParent = gachaInfo.itemsParent;
+            _count = _gachaInfo.gachaSO.maxAmount;
+            GachaCard itemPrefab = _gachaInfo.itemPrefab;
+            GameObject itemParent = _gachaInfo.itemsParent;
             for (int i = 0; i < _count; ++i)
             {
                 GachaCard gachaCard = Instantiate(itemPrefab, itemParent.transform);
                 gachaCard.gameObject.SetActive(false);
                 gachaCards.Add(gachaCard);
+            }
+        }
+
+        /// <summary>
+        /// 다음 아이템 확인하는 버튼 활성화
+        /// </summary>
+        private void ActiveNextBtn()
+        {
+            if (currentAmount > 1)
+            {
+                nextBtn.SetActive(true);
             }
         }
 

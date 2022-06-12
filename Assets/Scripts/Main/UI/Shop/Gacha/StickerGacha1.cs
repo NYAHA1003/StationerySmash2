@@ -42,7 +42,7 @@ namespace Main.Store
         void Start()
         {
             ListenEvent();
-            gachaInfo.allBadgeInfos.SetInfosGrade();
+            gachaInfo.allItemInfos.SetInfosGrade();
             InstantiateItem();
         }
 
@@ -113,7 +113,7 @@ namespace Main.Store
                     break; 
             }
 
-            AllBadgeInfos allBadgeInfos = gachaInfo.allBadgeInfos;
+            AllItemInfos allBadgeInfos = gachaInfo.allItemInfos;
 
             for (int i = 0; i < currentAmount; i++)
             {

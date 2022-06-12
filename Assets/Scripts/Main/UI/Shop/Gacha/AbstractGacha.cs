@@ -9,7 +9,7 @@ using UnityEngine.UI;
 namespace Main.Store
 {
     [Serializable]
-    public class AllBadgeInfos
+    public class AllItemInfos
     {
         public DailyItemSO itemSO;
 
@@ -45,7 +45,7 @@ namespace Main.Store
     public class GachaInfo
     {
         public GachaSO gachaSO;
-        public AllBadgeInfos allBadgeInfos;
+        public AllItemInfos allItemInfos;
         public GameObject itemsParent;
         public GachaCard itemPrefab;
     }

@@ -48,7 +48,7 @@ namespace Main.Store
     public class BadgePackage : MonoBehaviour
     {
         [SerializeField]
-        private AllBadgeInfos _allBadgeInfos;
+        private AllItemInfos _allBadgeInfos;
         [SerializeField]
         private Canvas gachaCanvas;
         [SerializeField]

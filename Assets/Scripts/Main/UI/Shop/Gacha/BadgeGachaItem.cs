@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.UI; 
+using UnityEngine.UI;
+using Main.Event;
+using Utill.Data; 
 public class BadgeGachaItem : GachaCard
 {
     [SerializeField]
@@ -23,6 +25,11 @@ public class BadgeGachaItem : GachaCard
         sequence.Join(transform.DOScale(new Vector2(1.5f, 1.5f), 0.5f));
         sequence.Append(itemImage.DOFade(1f, 0.3f));
         sequence.Join(transform.DOScale(new Vector2(2f, 2f), 0.3f));
+        sequence.AppendCallback(() =>
+        {
+            EventManager.Instance.TriggerEvent(EventsType.ActiveNextBtn);
+            // next버튼 활성화 
+        });
 
         sequence.AppendCallback(() =>
         {
@@ -43,7 +50,7 @@ public class BadgeGachaItem : GachaCard
         while (gameObject.activeSelf == true)
         {
             rotationY = _rect.eulerAngles.y;
-            Debug.Log("rotationY : " + rotationY);
+            //Debug.Log("rotationY : " + rotationY);
             if (rotationY >= 90 && rotationY < 270)
             {
                 itemImage.sprite = _backSprite;
