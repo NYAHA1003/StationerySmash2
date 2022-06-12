@@ -27,7 +27,7 @@ public class AIDataSO : ScriptableObject
         cardDataList.Clear();
         for (int i = 0; i < loadData.cardStageData.Count; i++)
         {
-            CardData cardData = DeckDataManagerSO.FindCardData(loadData.cardStageData[i]._cardNamingType).DeepCopy();
+            CardData cardData = DeckDataManagerSO.FindStdCardData(loadData.cardStageData[i]._cardNamingType).DeepCopy();
             cardData._level = loadData.cardStageData[i]._level;
             cardDataList.Add(cardData);
         }

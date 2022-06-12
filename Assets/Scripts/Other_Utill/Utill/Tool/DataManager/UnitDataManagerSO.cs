@@ -105,6 +105,7 @@ namespace Utill.Tool
 				{
 					unitData._hp += unitData._hp * count / 10;
 					unitData._damage += unitData._damage / 10 * count;
+					count++;
 				}
 
 				_haveUnitDataList.Add(unitData);

@@ -47,14 +47,24 @@ namespace Utill.Tool
 		public void DebugInitialize()
 		{
 			_stdDeckDataList = _debugStdDeckDataList;
+			SetHaveDataList();
 		}
 
 		/// <summary>
 		/// 카드 데이터 찾기
 		/// </summary>
-		public static CardData FindCardData(CardNamingType cardNamingType)
+		public static CardData FindStdCardData(CardNamingType cardNamingType)
 		{
 			return _stdDeckDataList.Find(x => x._cardNamingType == cardNamingType);
+		}
+
+
+		/// <summary>
+		/// 가진 카드 데이터 찾기
+		/// </summary>
+		public static CardData FindHaveCardData(CardNamingType cardNamingType)
+		{
+			return _haveDeckList.Find(x => x._cardNamingType == cardNamingType);
 		}
 
 		/// <summary>
@@ -65,6 +75,23 @@ namespace Utill.Tool
 		{
 			testList = deckDatas;
 			_stdDeckDataList = deckDatas.post;
+			SetHaveDataList();
+		}
+
+		/// <summary>
+		/// 가진 카드 데이터 설정
+		/// </summary>
+		private void SetHaveDataList()
+		{
+
+			int count = UserSaveManagerSO.UserSaveData._haveCardSaveDatas.Count;
+			for (int i = 0; i < count; ++i)
+			{
+				CardData cardData = FindStdCardData(UserSaveManagerSO.UserSaveData._haveCardSaveDatas[i]._cardNamingType).DeepCopy();
+				cardData._level = UserSaveManagerSO.UserSaveData._haveCardSaveDatas[i]._level;
+				cardData._count = UserSaveManagerSO.UserSaveData._haveCardSaveDatas[i]._count;
+				_haveDeckList.Add(cardData);
+			}
 		}
 	}
 }

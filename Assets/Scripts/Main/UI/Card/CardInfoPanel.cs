@@ -88,6 +88,8 @@ namespace Main.Card
 		private UserDeckDataComponent _userDeckData; // 유저 데이터 컴포넌트
 		[SerializeField]
 		private DeckSettingComponent _deckSettingComponent; //덱 설정 컴포넌트
+		[SerializeField]
+		private WarrningComponent _warrningComponent; //경고 컴포넌트
 
 		//카드 데이터들
 		[SerializeField]
@@ -98,8 +100,6 @@ namespace Main.Card
 
 		private void Awake()
 		{
-
-
 			EventManager.Instance.StartListening(EventsType.ActiveCardDescription, (x) => OnSetCardInfoPanel((DeckCard)x));
 		}
 
@@ -107,6 +107,7 @@ namespace Main.Card
 		{
 			_userDeckData ??= FindObjectOfType<UserDeckDataComponent>();
 			_deckSettingComponent ??= FindObjectOfType<DeckSettingComponent>();
+			_warrningComponent ??= FindObjectOfType<WarrningComponent>();
 
 			SetEquipText();
 			_equipButton.onClick.AddListener(() =>
@@ -128,7 +129,7 @@ namespace Main.Card
 		{
 			_cardInfoPanel.SetActive(true);
 			_selectDeckCard = deckCard;
-			_selectCardData = _haveDeckSO.cardDatas.Find(x => x._cardNamingType == deckCard._cardNamingType);
+			_selectCardData = DeckDataManagerSO.FindHaveCardData(deckCard._cardNamingType);
 			SetEquipText();
 
 			//카드 타입에 따라 설명창 설정
@@ -232,28 +233,37 @@ namespace Main.Card
 		/// </summary>
 		public void OnLevelUp()
 		{
-			UnitData unitData = UnitDataManagerSO.FindHaveUnitData(_selectCardData._unitType);
-			unitData._hp += unitData._hp * _selectCardData._level / 10;
-			unitData._damage += unitData._damage / 10 * _selectCardData._level;
-
-			//카드 타입에 따라 설명창 설정
-			switch (_selectCardData._cardType)
+			if(UserSaveManagerSO.UserSaveData._money < 1000)
 			{
-				case CardType.Execute:
-					SetCardExecute(_selectCardData);
-					break;
-				case CardType.SummonUnit:
-					SetCardSummonUnit(_selectCardData);
-					break;
-				case CardType.SummonTrap:
-					SetCardSummonTrap(_selectCardData);
-					break;
-				case CardType.Installation:
-					SetCardInstallation(_selectCardData);
-					break;
+				_warrningComponent.SetWarrning("돈이 부족합니다");
 			}
+			else if(_selectCardData._count >= 100)
+			{
+				UnitData unitData = UnitDataManagerSO.FindHaveUnitData(_selectCardData._unitType);
+				unitData._hp += unitData._hp * _selectCardData._level / 10;
+				unitData._damage += unitData._damage / 10 * _selectCardData._level;
+				_selectCardData._count = 1;
+				_selectCardData._level++;
 
-			SetExpBar();
+				//카드 타입에 따라 설명창 설정
+				switch (_selectCardData._cardType)
+				{
+					case CardType.Execute:
+						SetCardExecute(_selectCardData);
+						break;
+					case CardType.SummonUnit:
+						SetCardSummonUnit(_selectCardData);
+						break;
+					case CardType.SummonTrap:
+						SetCardSummonTrap(_selectCardData);
+						break;
+					case CardType.Installation:
+						SetCardInstallation(_selectCardData);
+						break;
+				}
+
+				SetExpBar();
+			}
 		}
 
 		/// <summary>
@@ -273,10 +283,10 @@ namespace Main.Card
 
 			UnitData unitData = UnitDataManagerSO.FindHaveUnitData(_selectCardData._unitType);
 
-			_plusHpText.text = $"{unitData._hp * _selectCardData._level / 10}";
-			_plusAttackText.text = $"{unitData._damage / 10 * _selectCardData._level}";
-			_plusHpText.gameObject.SetActive(true);
-			_plusAttackText.gameObject.SetActive(true);
+			_plusHpText.text = $"+{unitData._hp * _selectCardData._level / 10}";
+			_plusAttackText.text = $"+{unitData._damage / 10 * _selectCardData._level}";
+			_plusHpText.gameObject.SetActive(levelUpOn);
+			_plusAttackText.gameObject.SetActive(levelUpOn);
 		}
 
 		//스티커 함수들
