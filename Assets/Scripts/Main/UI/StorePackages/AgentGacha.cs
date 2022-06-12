@@ -57,11 +57,10 @@ namespace Main.Store
     public class AgentGacha : MonoBehaviour
     {
         [SerializeField]
-        private GachaInfo _gachaInfo; 
+        private GachaInfo _gachaInfo;
+
         [SerializeField]
-        private Canvas gachaCanvas;
-        [SerializeField]
-        private Image blackBackImage;
+        private GameObject skipButton; 
         [SerializeField]
         private GameObject nextBtn;
 
@@ -131,7 +130,6 @@ namespace Main.Store
         [ContextMenu("Å×½ºÆ®")]
         private void SummonItems()
         {
-
             curGachaCards.Clear(); 
        //     gachaCanvas.gameObject.SetActive(true);
             
@@ -196,6 +194,7 @@ namespace Main.Store
         {
             currentAmount = amount;
             currentNum = 0;
+            skipButton.SetActive(true);
         }
 
         public void SkipAnimation()
@@ -204,7 +203,8 @@ namespace Main.Store
             {
                 curGachaCards[i].StopCoroutine();
             }
-            ActiveNextBtn(); 
+            ActiveNextBtn();
+            skipButton.SetActive(false); 
         }
         /// <summary>
         ///  »Ì±â ´Ý±â 
