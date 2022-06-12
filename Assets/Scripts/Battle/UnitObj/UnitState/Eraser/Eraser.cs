@@ -69,7 +69,7 @@ namespace Battle.Units
             base.Will();
 
             //지우개 조각 소환
-            var eraserPiece = DeckDataManagerSO.FindCardData(CardNamingType.EraserPiece);
+            var eraserPiece = DeckDataManagerSO.FindStdCardData(CardNamingType.EraserPiece);
             _myUnit.BattleManager.UnitComponent.SummonUnit(eraserPiece, _myTrm.position, _myUnit.UnitStat.Grade, _myUnit.ETeam);
 
         }

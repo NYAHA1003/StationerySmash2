@@ -20,6 +20,7 @@ namespace Utill.Tool
 		}
 
 		private static List<UnitData> _stdUnitDataList = new List<UnitData>(); //Unit데이터 리스트
+		private static List<UnitData> _haveUnitDataList = new List<UnitData>(); //가지고 있는 Unit데이터 리스트
 
 		[SerializeField]
 		private UnitServerData testList;
@@ -40,6 +41,7 @@ namespace Utill.Tool
 		public void DebugInitialize()
 		{
 			_stdUnitDataList = _debugStdUnitDataList;
+			SetHaveData();
 		}
 
 		/// <summary>
@@ -47,10 +49,27 @@ namespace Utill.Tool
 		/// </summary>
 		/// <param name="strategyType"></param>
 		/// <returns></returns>
-		public static UnitData FindUnitData(UnitType unitType)
+		public static UnitData FindStdUnitData(UnitType unitType)
 		{
 			UnitData findData = null;
 			findData = _stdUnitDataList.Find(x => x._unitType == unitType);
+			if (findData == null)
+			{
+				Debug.LogError($"{unitType} : 유닛 데이터가 존재하지 않음");
+				return null;
+			}
+			return findData;
+		}
+
+		/// <summary>
+		/// StrategyType에 맞는 Strategy데이터를 반환함
+		/// </summary>
+		/// <param name="strategyType"></param>
+		/// <returns></returns>
+		public static UnitData FindHaveUnitData(UnitType unitType)
+		{
+			UnitData findData = null;
+			findData = _haveUnitDataList.Find(x => x._unitType == unitType);
 			if (findData == null)
 			{
 				Debug.LogError($"{unitType} : 유닛 데이터가 존재하지 않음");
@@ -67,6 +86,30 @@ namespace Utill.Tool
 		{
 			testList = unitDatas;
 			_stdUnitDataList = unitDatas.post;
+			SetHaveData();
+		}
+
+		/// <summary>
+		/// 가진 데이터 설정
+		/// </summary>
+		private void SetHaveData()
+		{
+			_haveUnitDataList.Clear();
+
+			for (int i = 0; i < DeckDataManagerSO.HaveDeckDataList.Count; ++i)
+			{
+				UnitData unitData = FindStdUnitData(DeckDataManagerSO.HaveDeckDataList[i]._unitType);
+				int count = 1;
+				int level = DeckDataManagerSO.HaveDeckDataList[i]._level;
+				while (count <= level)
+				{
+					unitData._hp += unitData._hp * count / 10;
+					unitData._damage += unitData._damage / 10 * count;
+					count++;
+				}
+
+				_haveUnitDataList.Add(unitData);
+			}
 		}
 	}
 

@@ -59,7 +59,7 @@ namespace Battle.Units
         protected override void Summon()
         {
             //포스트잇 쪼가리
-            var postItPiece = DeckDataManagerSO.FindCardData(CardNamingType.PostItPiece);
+            var postItPiece = DeckDataManagerSO.FindStdCardData(CardNamingType.PostItPiece);
             _myUnit.BattleManager.UnitComponent.SummonUnit(postItPiece, _myTrm.position, _myUnit.UnitStat.Grade, _myUnit.ETeam);
         }
     }

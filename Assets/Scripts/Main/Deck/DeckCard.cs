@@ -37,7 +37,7 @@ namespace Main.Deck
 
             if(StickerData.CheckCanSticker(cardData))
             {
-                UnitData unitData = UnitDataManagerSO.FindUnitData(cardData._unitType);
+                UnitData unitData = UnitDataManagerSO.FindStdUnitData(cardData._unitType);
                 StickerData stickerData = StickerDataManagerSO.FindStickerData(unitData._stickerType);
                 _stickerImage.sprite = SkinData.GetSkin(stickerData._skinType);
                 _stickerRect.anchoredPosition = StickerData.ReturnStickerPos(cardData._unitType);

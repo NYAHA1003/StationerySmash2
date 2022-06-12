@@ -380,7 +380,7 @@ public class CardObj : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if(StickerData.CheckCanSticker(_cardData))
         {
-            UnitData unitData = UnitDataManagerSO.FindUnitData(_cardData._unitType);
+            UnitData unitData = UnitDataManagerSO.FindStdUnitData(_cardData._unitType);
             StickerData stickerData = StickerDataManagerSO.FindStickerData(unitData._stickerType);
             _stickerImage.sprite = SkinData.GetSkin(stickerData._skinType);
             _stickerRect.anchoredPosition = StickerData.ReturnStickerPos(_cardData._unitType);

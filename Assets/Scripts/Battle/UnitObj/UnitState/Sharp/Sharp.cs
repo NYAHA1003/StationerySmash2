@@ -59,7 +59,7 @@ namespace Battle.Units
         protected override void Summon()
         {
             //샤프심 소환
-            var sharpsimData = DeckDataManagerSO.FindCardData(CardNamingType.SharpSim);
+            var sharpsimData = DeckDataManagerSO.FindStdCardData(CardNamingType.SharpSim);
             _myUnit.BattleManager.UnitComponent.SummonUnit(sharpsimData, _myTrm.position, _myUnit.UnitStat.Grade, _myUnit.ETeam);
         }
     }
