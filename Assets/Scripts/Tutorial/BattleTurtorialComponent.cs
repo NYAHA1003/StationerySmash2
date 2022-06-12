@@ -89,9 +89,6 @@ public class BattleTurtorialComponent : MonoBehaviour
         currentBattleStageType = _loadingBattleDataSO.CurrentStageData.battleStageType;
         switch (currentBattleStageType)
         {
-            case BattleStageType.ST_MAKE:
-                currentStageTutorial = one_ZeroStageTutorial;
-                break;
             case BattleStageType.S1_1:
                 currentStageTutorial = one_ZeroStageTutorial;
                 break;
@@ -100,8 +97,6 @@ public class BattleTurtorialComponent : MonoBehaviour
             case BattleStageType.S1_3:
                 break;
             case BattleStageType.S1_4:
-                break;
-            default:
                 break;
         }
         tutorialEventQueue.Enqueue(StartTutorial);

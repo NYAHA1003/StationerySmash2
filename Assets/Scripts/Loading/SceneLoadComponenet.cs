@@ -16,7 +16,6 @@ public class SceneLoadComponenet : MonoBehaviour
     {
         EventManager.Instance.StartListening(EventsType.LoadMainScene, SceneLoadMain);
         EventManager.Instance.StartListening(EventsType.LoadBattleScene, SceneLoadBattle);
-        EventManager.Instance.StartListening(EventsType.LoadStageMakeScene, SceneLoadStageMake);
     }
     /// <summary>
     /// 배틀씬을 로딩씬을 거쳐 이동한다
@@ -40,14 +39,6 @@ public class SceneLoadComponenet : MonoBehaviour
     {
         SceneLoadBase();
         LoadingManager.LoadScene("MainScene");
-    }
-    /// <summary>
-    /// 스테이지 제작용씬을 로딩씬을 거쳐 이동한다
-    /// </summary>
-    public void SceneLoadStageMake()
-    {
-        SceneLoadBase();
-        LoadingManager.LoadScene("StageMakeScene");
     }
 
     /// <summary>

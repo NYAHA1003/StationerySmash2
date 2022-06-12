@@ -16,8 +16,8 @@ public class LoadingBattleDataSO : ScriptableObject
 	}
 	private int _currentIndex = 0;
 
-	public void SetCurrentIndex(BattleStageType battleStageType)
+	public void SetCurrentIndex(int index)
 	{
-		_currentIndex = loadDatas.FindIndex(x => x.battleStageType == battleStageType);
+		_currentIndex = index;
 	}
 }
