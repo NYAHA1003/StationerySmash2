@@ -41,8 +41,8 @@ namespace Main.Store
         private int _amount; // 전체 스티커 개수 
         private void Start()
         {
+            allItemInfos.SetInfosGrade();
             InstantiateItem();
-
         }
 
         private void InstantiateItem()
@@ -61,6 +61,21 @@ namespace Main.Store
             Instantiate(_itemParent, _canvasParent);
         }
 
+        private void DrawSticker(Grade grade)
+        {
+            int randomIndex; 
+            switch (grade)
+            {
+                case Grade.Common:
+                    allItemInfos.commonItemInfos.Count
+                    break;
+                case Grade.Rare:
+                    break;
+                case Grade.Epic:
+                    break;
+            }
+
+        }
         /// <summary>
         /// 스티커판 초기화 
         /// 스티커판 만들기 버튼에 넣기 

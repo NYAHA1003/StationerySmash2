@@ -11345,7 +11345,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 111527509792061201}
-  - component: {fileID: 111527509792061200}
+  - component: {fileID: 6639805081633266962}
   m_Layer: 5
   m_Name: Badge
   m_TagString: Untagged
@@ -11375,34 +11375,33 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -2700}
   m_SizeDelta: {x: 900, y: 900}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &111527509792061200
+--- !u!114 &6639805081633266962
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 111527509792061206}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1605b900a7c90154e9e434dcea8c3dc3, type: 3}
+  m_Script: {fileID: 11500000, guid: a3b66bcccf7ef9d409e7af13e4cfeb61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _allBadgeInfos:
-    itemSO: {fileID: 0}
-    commonItemInfos: []
-    rareItemInfos: []
-    epicItemInfos: []
+  _gachaInfo:
+    gachaSO: {fileID: 11400000, guid: 5eb6e7be86aa1834ea6b9fdbbbcf8c80, type: 2}
+    allItemInfos:
+      itemSO: {fileID: 11400000, guid: b98f62ff1f22a5146a93fd5c7ad58655, type: 2}
+      commonItemInfos: []
+      rareItemInfos: []
+      epicItemInfos: []
+    itemsParent: {fileID: 0}
+    itemPrefab: {fileID: 8163426775514722914, guid: f8dd93df376d2614eafb3f702afd232f, type: 3}
   gachaCanvas: {fileID: 0}
-  itemsParent: {fileID: 0}
-  badgePrefab: {fileID: 9205042254236356155, guid: f8dd93df376d2614eafb3f702afd232f, type: 3}
   blackBackImage: {fileID: 0}
   nextBtn: {fileID: 0}
-  _BadgeButton: {fileID: 111527508290718140}
-  _BadgeSackButton: {fileID: 111527509920019373}
-  _BadgeBoxButton: {fileID: 111527509526791001}
-  _backBadgeImage: {fileID: 21300000, guid: 0df83e8524ff54548ab3b7a1ee0feb50, type: 3}
-  _RarePercent: 15
-  _EpicPercent: 5
+  _backBadgeImage: {fileID: 21300000, guid: 933891f03a7cd884d9aa2fb57544a342, type: 3}
+  gachaCards: []
+  curGachaCards: []
 --- !u!1 &111527509793707344
 GameObject:
   m_ObjectHideFlags: 0
@@ -15138,7 +15137,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 419307997683100113}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.22222224
+  m_Size: 0.22222222
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -18943,7 +18942,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 419307997343019259}
   m_HandleRect: {fileID: 419307997343019258}
   m_Direction: 0
-  m_Value: 1.0000001
+  m_Value: 1
   m_Size: 0.33333334
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -19764,8 +19763,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 419307996116490259}
   m_HandleRect: {fileID: 419307996116490258}
   m_Direction: 2
-  m_Value: 1.0000031
-  m_Size: 0.8888896
+  m_Value: 1.0000018
+  m_Size: 0.8888897
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
