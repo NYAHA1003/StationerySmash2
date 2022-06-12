@@ -67,9 +67,11 @@ namespace Main.Store
             switch (grade)
             {
                 case Grade.Common:
-                    allItemInfos.commonItemInfos.Count
+                    randomIndex = Random.Range(0, allItemInfos.commonItemInfos.Count);
                     break;
                 case Grade.Rare:
+                    randomIndex = Random.Range(0, allItemInfos.commonItemInfos.Count);
+
                     break;
                 case Grade.Epic:
                     break;
