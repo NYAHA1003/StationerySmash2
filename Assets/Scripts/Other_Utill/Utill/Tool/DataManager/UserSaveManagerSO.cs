@@ -229,6 +229,17 @@ namespace Utill.Tool
         }
 
         /// <summary>
+        /// 달고나 추가
+        /// </summary>
+        /// <param name="dalgona"></param>
+        public static void AddDalgona(int dalgona)
+        {
+            _userSaveData.AddDalgona(dalgona);
+            DeliverDataToObserver();
+            PostUserSaveData();
+        }
+
+        /// <summary>
         /// 이름 변경
         /// </summary>
         public static void ChangeName(string name)
