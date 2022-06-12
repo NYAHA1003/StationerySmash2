@@ -27,6 +27,8 @@
         SkipAnimation, // 뽑기 애니메이션 스킵 
         ResetDailyShop, // 일일상점리셋
         ActiveNextBtn, // 뽑기 다음 버튼 활성화 
+        DrawSticker, // 스티커 뽑기 
+        ActiveBadgePanel, // 뱃지 패널 활성화 비활성화 
 
         // 세팅 부분
         ActiveProfileImgPn = 100, // 프로필 이미지 패널 활성화 
