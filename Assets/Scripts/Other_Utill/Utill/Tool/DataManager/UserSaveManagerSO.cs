@@ -120,8 +120,9 @@ namespace Utill.Tool
                 //UserID를 저장한다
                 string jsonData = JsonUtility.ToJson(userIDobj);
                 File.WriteAllText(path, jsonData);
+#if UNITY_EDITOR
                 AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
-
+#endif
                 _userSaveData._userID = userIDobj.userID;
 
                 //기본적인 데이터 추가

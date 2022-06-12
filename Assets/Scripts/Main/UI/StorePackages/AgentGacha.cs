@@ -57,11 +57,10 @@ namespace Main.Store
     public class AgentGacha : MonoBehaviour
     {
         [SerializeField]
-        private GachaInfo _gachaInfo; 
+        private GachaInfo _gachaInfo;
+
         [SerializeField]
-        private Canvas gachaCanvas;
-        [SerializeField]
-        private Image blackBackImage;
+        private GameObject skipButton; 
         [SerializeField]
         private GameObject nextBtn;
 
@@ -77,7 +76,7 @@ namespace Main.Store
         private int currentAmount; // 현재 총 뽑은 아이템 수 
         private bool isCost = true; // 돈이 충분한상태인가 
 
-        private int RandomNum;
+   
 
         void Start()
         {
@@ -138,6 +137,8 @@ namespace Main.Store
             float epicPercent = _gachaInfo.gachaSO.epicPercent;
             float rarePercent = _gachaInfo.gachaSO.rarePercent;
 
+            int randomIndex;
+            DailyItemInfo getItemInfo;
             for (int i = 0; i < currentAmount; i++)
             {
                 int Percent = Random.Range(0, 100 + 1);
@@ -145,22 +146,24 @@ namespace Main.Store
                 if (epicPercent >= Percent)
                 {
                     //에픽 스티커 소환
-                    RandomNum = Random.Range(0, allBadgeInfos.epicItemInfos.Count);
-                    Debug.Log($"\"영웅\"등급 {allBadgeInfos.epicItemInfos[RandomNum]} 뱃지가 나왔습니다.");
+                    randomIndex = Random.Range(0, allBadgeInfos.epicItemInfos.Count);
+                    getItemInfo = allBadgeInfos.epicItemInfos[randomIndex];
+                    Debug.Log($"\"영웅\"등급 {allBadgeInfos.epicItemInfos[randomIndex]} 뱃지가 나왔습니다.");
                 }
                 else if (rarePercent + epicPercent >= Percent)
                 {
                     //레어 스티커 소환
-                    RandomNum = Random.Range(0, allBadgeInfos.rareItemInfos.Count);
-                    Debug.Log($"\"레어\"등급 {allBadgeInfos.rareItemInfos[RandomNum]} 뱃지가 나왔습니다.");
+                    randomIndex = Random.Range(0, allBadgeInfos.rareItemInfos.Count);
+                    getItemInfo = allBadgeInfos.rareItemInfos[randomIndex];
+                    Debug.Log($"\"레어\"등급 {allBadgeInfos.rareItemInfos[randomIndex]} 뱃지가 나왔습니다.");
                 }
                 else
                 {
                     //일반 스티커 소환
-                    RandomNum = Random.Range(0, allBadgeInfos.commonItemInfos.Count);
-                    Debug.Log($"\"일반\"등급 {allBadgeInfos.commonItemInfos[RandomNum]} 뱃지가 나왔습니다.");
+                    randomIndex = Random.Range(0, allBadgeInfos.commonItemInfos.Count);
+                    getItemInfo = allBadgeInfos.commonItemInfos[randomIndex];
+                    Debug.Log($"\"일반\"등급 {allBadgeInfos.commonItemInfos[randomIndex]} 뱃지가 나왔습니다.");
                 }
-                DailyItemInfo getItemInfo = allBadgeInfos.commonItemInfos[RandomNum];
                 gachaCards[i].ActiveAndAnimate();
                 gachaCards[i].SetSprite(getItemInfo._itemSprite, _backBadgeImage,true);
                 curGachaCards.Add(gachaCards[i]);
@@ -194,6 +197,7 @@ namespace Main.Store
         {
             currentAmount = amount;
             currentNum = 0;
+            skipButton.SetActive(true);
         }
 
         public void SkipAnimation()
@@ -202,7 +206,8 @@ namespace Main.Store
             {
                 curGachaCards[i].StopCoroutine();
             }
-            ActiveNextBtn(); 
+            ActiveNextBtn();
+            skipButton.SetActive(false); 
         }
         /// <summary>
         ///  뽑기 닫기 
