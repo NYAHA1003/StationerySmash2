@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.UI; 
-public class BadgeGacha : GachaCard
+using UnityEngine.UI;
+using Main.Event;
+using Utill.Data; 
+public class BadgeGachaItem : GachaCard
 {
     [SerializeField]
     protected float duration;
 
-    private Sequence sequence;
     /// <summary>
     /// 활성화 후 애니메이션 연출 
     /// </summary>
@@ -24,6 +25,11 @@ public class BadgeGacha : GachaCard
         sequence.Join(transform.DOScale(new Vector2(1.5f, 1.5f), 0.5f));
         sequence.Append(itemImage.DOFade(1f, 0.3f));
         sequence.Join(transform.DOScale(new Vector2(2f, 2f), 0.3f));
+        sequence.AppendCallback(() =>
+        {
+            EventManager.Instance.TriggerEvent(EventsType.ActiveNextBtn);
+            // next버튼 활성화 
+        });
 
         sequence.AppendCallback(() =>
         {
@@ -31,14 +37,20 @@ public class BadgeGacha : GachaCard
         });
     }
 
-
+    public override void StopCoroutine()
+    {
+        base.StopCoroutine();
+        itemImage.transform.rotation = Quaternion.identity;
+        transform.localScale = new Vector2(2, 2);
+        itemImage.sprite = _frontSprite;
+    }
     IEnumerator ChangeSprite()
     {
         float rotationY;
         while (gameObject.activeSelf == true)
         {
             rotationY = _rect.eulerAngles.y;
-            Debug.Log("rotationY : " + rotationY);
+            //Debug.Log("rotationY : " + rotationY);
             if (rotationY >= 90 && rotationY < 270)
             {
                 itemImage.sprite = _backSprite;
