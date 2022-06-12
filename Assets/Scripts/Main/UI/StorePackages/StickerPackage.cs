@@ -11,184 +11,102 @@ using DG.Tweening;
 
 namespace Main.Store
 {
-    public class StickerPackage : MonoBehaviour 
+    public class StickerPackage : MonoBehaviour
     {
         [SerializeField]
-        private AllBadgeInfos _allBadgeInfos;
+        private GameObject _canvas;
         [SerializeField]
-        private Canvas gachaCanvas;
+        private GameObject _gachaCanvas;
+        
         [SerializeField]
-        private GameObject itemsParent;
+        private Transform _itemParent; // 기본 canvas 
         [SerializeField]
-        private GachaCard badgePrefab;
+        private Transform _canvasParent; // gachaCanvas 
         [SerializeField]
-        private Image blackBackImage;
-        [SerializeField]
-        private GameObject nextBtn;
-
-        private int _count = 11; // 최대 아이템 뜰 개수
+        private GachaCard _stickerPrefab;
 
         [SerializeField]
-        Button _BadgeButton; // 1개
+        private int _epicCount; // 영웅스터커 수 (받아올거)
         [SerializeField]
-        Button _BadgeSackButton; // 5개
-        [SerializeField]
-        Button _BadgeBoxButton; // 11개 
+        private int _rareCount; // 레어 스티커 수 (받아올거) 
 
         [SerializeField]
-        private Sprite _backBadgeImage; // 뱃지 뒷면 
+        private AllItemInfos allItemInfos; 
 
-        private List<GachaCard> gachaCards = new List<GachaCard>();
-        // 
-        [SerializeField]
-        private int _RarePercent = 15;
-        [SerializeField]
-        private int _EpicPercent = 5;
+        private List<int> _emptyList; // 뽑은 오브젝트 인덱스 저장 (자장 후 받아올거)
+        private List<Grade> _stickerGrades; // 스티커 등급  (자장 후 받아올거)
 
-        private int currentNum; // 현재 몇번째 아이템 강조중 
-        private int currentAmount; // 현재 총 뽑은 아이템 수 
-
-        private int RandomNum;
-
-        void Start()
+        private int _gradeIdx = 0;  // 등급 인덱스 
+        private int _emptyIdx = 0; // 빈 오브젝트 인덱스 
+        private int _amount; // 전체 스티커 개수 
+        private void Start()
         {
-            ListenEvent();
-            ResetFunctionPakage_UI();
-            SetFunctionPakage_UI();
-            _allBadgeInfos.SetInfosGrade();
             InstantiateItem();
-        }
-
-        /// <summary>
-        /// 이벤트 초기화
-        /// </summary>
-        private void ResetFunctionPakage_UI()
-        {
-            _BadgeButton.onClick.RemoveAllListeners();
-            _BadgeSackButton.onClick.RemoveAllListeners();
-            _BadgeBoxButton.onClick.RemoveAllListeners();
-        }
-
-        /// <summary>
-        /// 이벤트매니저에 이벤트 등록 
-        /// </summary>
-        private void ListenEvent()
-        {
-            EventManager.Instance.StartListening(EventsType.CloseGacha, Close);
-            EventManager.Instance.StartListening(EventsType.CheckItem, CheckItem);
-        }
-        /// <summary>
-        /// 이벤트 세팅
-        /// </summary>
-        private void SetFunctionPakage_UI()
-        {
-            _BadgeButton.onClick.AddListener(() => Summons(1, 10));
-            _BadgeSackButton.onClick.AddListener(() => Summons(5, 20));
-            _BadgeBoxButton.onClick.AddListener(() => Summons(11, 40));
-        }
-
-        private void Summons(int Amount, int cost)
-        {
-            /*
-             * if(현재 가진 달고나 < cost)
-             * {
-             *      return; 
-             * }
-             */
-            InitGacha(Amount);
-            BadgeSummons();
-        }
-
-        // 일반 80% 희귀 15% 영웅 5%
-        [ContextMenu("테스트")]
-        private void BadgeSummons()
-        {
-            blackBackImage.gameObject.SetActive(true);
-            for (int i = 0; i < currentAmount; i++)
-            {
-                int Percent = Random.Range(0, 100 + 1);
-                Debug.Log("Percent : " + Percent);
-                if (_EpicPercent >= Percent)
-                {
-                    //에픽 스티커 소환
-                    RandomNum = Random.Range(0, _allBadgeInfos.epicItemInfos.Count);
-                    Debug.Log($"\"영웅\"등급 {_allBadgeInfos.epicItemInfos[RandomNum]} 뱃지가 나왔습니다.");
-                }
-                else if (_RarePercent + _EpicPercent >= Percent)
-                {
-                    //레어 스티커 소환
-                    RandomNum = Random.Range(0, _allBadgeInfos.rareItemInfos.Count);
-                    Debug.Log($"\"레어\"등급 {_allBadgeInfos.rareItemInfos[RandomNum]} 뱃지가 나왔습니다.");
-                }
-                else
-                {
-                    //일반 스티커 소환
-                    RandomNum = Random.Range(0, _allBadgeInfos.commonItemInfos.Count);
-                    Debug.Log($"\"일반\"등급 {_allBadgeInfos.commonItemInfos[RandomNum]} 뱃지가 나왔습니다.");
-                }
-                DailyItemInfo getItemInfo = _allBadgeInfos.commonItemInfos[RandomNum];
-                gachaCards[i].ActiveAndAnimate();
-                gachaCards[i].SetSprite(getItemInfo._itemSprite, _backBadgeImage);
-            }
 
         }
 
-        /// <summary>
-        /// 카드 한장씩 볼 수 있도록 
-        /// </summary>
-        private void CheckItem()
-        {
-            if (currentNum == currentAmount - 1)
-            {
-                nextBtn.SetActive(false);
-                return;
-            }
-            for (int i = 0; i < currentAmount; i++)
-            {
-                gachaCards[i].gameObject.SetActive(false);
-            }
-            gachaCards[++currentNum].StressOneItem();
-        }
-
-        /// <summary>
-        /// 뽑기 캔버스 초기화
-        /// </summary>
-        private void InitGacha(int amount)
-        {
-            currentAmount = amount;
-            currentNum = 0;
-            if (amount == 1)
-            {
-                nextBtn.SetActive(false);
-                return;
-            }
-            nextBtn.SetActive(true);
-        }
-        /// <summary>
-        ///  뽑기 닫기 
-        /// </summary>
-        private void Close()
-        {
-            for (int i = 0; i < _count; i++)
-            {
-                gachaCards[i].gameObject.SetActive(false);
-            }
-            // 검은 이미지 닫기 
-            blackBackImage.gameObject.SetActive(false);
-        }
-        /// <summary>
-        /// 최대로 뜰 아이템 개수만큼 미리 생성해두기 
-        /// </summary>
         private void InstantiateItem()
         {
-            for (int i = 0; i < _count; ++i)
+            for(int i = 0; i < _amount; i++)
             {
-                GachaCard gachaCard = Instantiate(badgePrefab, itemsParent.transform);
-                gachaCard.gameObject.SetActive(false);
-                gachaCards.Add(gachaCard);
+                if (_amount == _emptyList[_emptyIdx])
+                {
+                    Instantiate(new GameObject(), _itemParent);
+                    _emptyIdx++; 
+                }
+                GachaCard sticker = Instantiate(_stickerPrefab, _itemParent);
+                // 초기화 함수 sticker.Init(Grade)
+                _gradeIdx++;
             }
+            Instantiate(_itemParent, _canvasParent);
+        }
+
+        /// <summary>
+        /// 스티커판 초기화 
+        /// 스티커판 만들기 버튼에 넣기 
+        /// </summary>
+        private void InitializeStciker()
+        {
+            _stickerGrades.Clear(); 
+            for (int i = 0; i < _epicCount; i++)
+            {
+                _stickerGrades.Add(Grade.Epic);
+            }
+            for(int i = 0; i < _rareCount; i++)
+            {
+                _stickerGrades.Add(Grade.Rare);
+            }
+            while(_stickerGrades.Count < 70)
+            {
+                _stickerGrades.Add(Grade.Common);
+            }
+            Shuffle();
+        }
+        private void Shuffle()
+        {
+            for (int i = 0; i < 500; i++)
+            {
+                int idx1, idx2;
+                Grade temp;
+                idx1 = Random.Range(0, _amount);
+                idx2 = Random.Range(0, _amount);
+
+                temp = _stickerGrades[idx1];
+                _stickerGrades[idx1] = _stickerGrades[idx2];
+                _stickerGrades[idx2] = temp;
+            }
+        }
+        private void SummonItem(int amount)
+        {
+            
+        }
+        /// <summary>
+        /// 오름차운 리스트 정렬
+        /// </summary>
+        private void SortList()
+        {
+            _emptyList.Sort();
         }
 
     }
-
 }

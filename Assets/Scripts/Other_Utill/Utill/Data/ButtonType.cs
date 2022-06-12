@@ -17,6 +17,6 @@ namespace Utill.Data
 		profile,
 		cardDescription,
 		pencilCaseDescription,
-
+		gachaCanvas,
 	}
 }

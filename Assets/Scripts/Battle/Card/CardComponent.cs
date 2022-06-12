@@ -122,7 +122,7 @@ namespace Battle
         /// </summary>
         public void CheckTutorialCard()
         {
-            if(_cardDrawComponent.CheckMaxCard())
+            if(_cardDrawComponent.CheckMaxCard() && BattleTurtorialComponent.CheckQueue())
             {
                 BattleTurtorialComponent.tutorialEventQueue.Dequeue().Invoke(); 
             }

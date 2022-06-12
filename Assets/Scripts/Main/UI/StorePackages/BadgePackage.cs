@@ -48,7 +48,7 @@ namespace Main.Store
     public class BadgePackage : MonoBehaviour
     {
         [SerializeField]
-        private AllBadgeInfos _allBadgeInfos;
+        private AllItemInfos _allBadgeInfos;
         [SerializeField]
         private Canvas gachaCanvas;
         [SerializeField]
@@ -162,7 +162,7 @@ namespace Main.Store
                 }
                 DailyItemInfo getItemInfo = _allBadgeInfos.commonItemInfos[RandomNum];
                 gachaCards[i].ActiveAndAnimate(); 
-                gachaCards[i].SetSprite(getItemInfo._itemSprite, _backBadgeImage);
+                gachaCards[i].SetSprite(getItemInfo._itemSprite, _backBadgeImage,true);
             }
 
         }
