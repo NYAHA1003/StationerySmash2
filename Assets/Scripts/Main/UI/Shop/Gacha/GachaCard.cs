@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro; 
-using DG.Tweening;
-using Utill.Data;
+using DG.Tweening; 
 
 public abstract class GachaCard : MonoBehaviour
 {
@@ -23,7 +22,6 @@ public abstract class GachaCard : MonoBehaviour
     protected RectTransform _rect;
     protected Sequence sequence;
 
-    protected Grade _grade; 
     private bool isFront = false; 
     private void Awake()
     {
@@ -47,10 +45,6 @@ public abstract class GachaCard : MonoBehaviour
         Reset();
     }
   
-    public void SetGrade(Grade grade)
-    {
-        _grade = grade; 
-    }
     public void SetSprite(Sprite frontSprite, Sprite backSprite, bool isFront)
     {
         _frontSprite = frontSprite;

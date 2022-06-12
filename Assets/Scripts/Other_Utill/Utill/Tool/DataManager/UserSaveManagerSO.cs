@@ -120,9 +120,8 @@ namespace Utill.Tool
                 //UserID를 저장한다
                 string jsonData = JsonUtility.ToJson(userIDobj);
                 File.WriteAllText(path, jsonData);
-#if UNITY_EDITOR
                 AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
-#endif
+
                 _userSaveData._userID = userIDobj.userID;
 
                 //기본적인 데이터 추가
@@ -224,17 +223,6 @@ namespace Utill.Tool
         public static void AddMoney(int money)
         {
             _userSaveData.AddMoney(money);
-            DeliverDataToObserver();
-            PostUserSaveData();
-        }
-
-        /// <summary>
-        /// 달고나 추가
-        /// </summary>
-        /// <param name="dalgona"></param>
-        public static void AddDalgona(int dalgona)
-        {
-            _userSaveData.AddDalgona(dalgona);
             DeliverDataToObserver();
             PostUserSaveData();
         }

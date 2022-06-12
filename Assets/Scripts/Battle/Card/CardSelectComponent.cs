@@ -155,7 +155,7 @@ namespace Battle
                     {
                         if (mousePos.x >= _cardComponent.ReturnMinRange() && mousePos.x <= _cardComponent.ReturnMaxRange())
                         {
-                            position.y = Screen.height * 0.8f;
+                            position.y = 1200;
                         }
                     }
                     break;
