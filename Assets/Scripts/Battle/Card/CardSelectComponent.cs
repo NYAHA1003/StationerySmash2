@@ -111,12 +111,16 @@ namespace Battle
 
             //카드 사용
             Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, _cardComponent.ReturnMinRange(), _cardComponent.ReturnMaxRange());
+
+            if (!_cardComponent.IsAlwaysSpawn)
+            {
+                mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, _cardComponent.ReturnMinRange(), _cardComponent.ReturnMaxRange());
+            }
 
             switch (card.CardDataValue._cardType)
             {
                 case CardType.SummonUnit:
-                    _unitComponent.SummonUnit(card.CardDataValue, new Vector3(mouse_Pos.x, 0, 0), card.Grade);
+                    _unitComponent.SummonUnit(card.CardDataValue, new Vector3(mouse_Pos.x, 0, 0), card.Grade, _unitComponent.eTeam);
                     return true;
                 default:
                 case CardType.Execute:

@@ -45,6 +45,7 @@ namespace Main.Scroll
         private void Start()
         {
             SettingStart();
+            OnMoveMainPanel(Size - 1);
         }
         private void Update()
         {
@@ -162,12 +163,26 @@ namespace Main.Scroll
                 if (_scrollbar.value < _pos[i] + _distance * 0.5f && _scrollbar.value > _pos[i] - _distance * 0.5f)
                 {
                     _targetIndex = Size - i - 1;
-                    Debug.Log("타겟인덱스@@" + _targetIndex);
                     NotifyToObserver();
                     return _pos[i];
                 }
             }
             return 0;
+        }
+
+        /// <summary>
+        /// 패널 이동
+        /// </summary>
+        /// <param name="index">0=상점 1=메인 2=스테이지</param>
+        public virtual void OnMoveMainPanel(int index)
+        {
+            if (index < 0 || index > Size - 1)
+            {
+                Debug.LogError("메인 패널 움직이는 범위 넘어감 0~SIZE-1 사이 값이 아님");
+                return;
+            }
+            _targetIndex = Size - index - 1;
+            _targetPos = _pos[index];
         }
     }
 }

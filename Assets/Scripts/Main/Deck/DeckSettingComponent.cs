@@ -58,7 +58,7 @@ namespace Main.Deck
             _havePCCardParent = _havePCDeckScroll.transform.GetChild(0).GetChild(0);
 
             UpdateHaveAndEquipDeck();
-            UpdateHaveAndEquipPCDeck(); 
+            UpdateHaveAndEquipPCDeck();
 
             _presetButton1.onClick.AddListener(() => ChangePreset(0));
             _presetButton2.onClick.AddListener(() => ChangePreset(1));
@@ -70,6 +70,7 @@ namespace Main.Deck
             EventManager.Instance.StartListening(EventsType.UpdateHaveAndEquipPCDeck, UpdateHaveAndEquipPCDeck);
 
             UserSaveManagerSO.AddObserver(this);
+            UpdatePresetButtonColor();
         }
 
         /// <summary>
@@ -146,6 +147,7 @@ namespace Main.Deck
             _userDeckData.SetPencilCaseData();
             UpdateHaveAndEquipDeck();
             UpdateHaveAndEquipPCDeck();
+            UpdatePresetButtonColor();
         }
 
         /// <summary>
@@ -371,5 +373,29 @@ namespace Main.Deck
             rectTransform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutExpo);
         }
 
+        /// <summary>
+        /// 프리셋 버튼 카드들을 수정한다
+        /// </summary>
+        private void UpdatePresetButtonColor()
+		{
+            if(UserSaveManagerSO.UserSaveData._setPrestIndex == 0)
+			{
+                _presetButton1.GetComponent<Image>().color = new Color(1, 0.4f, 0.4f);
+                _presetButton2.GetComponent<Image>().color = new Color(1, 0.9f, 0.9f);
+                _presetButton3.GetComponent<Image>().color = new Color(1, 0.9f, 0.9f);
+            }
+            if (UserSaveManagerSO.UserSaveData._setPrestIndex == 1)
+            {
+                _presetButton1.GetComponent<Image>().color = new Color(1, 0.9f, 0.9f);
+                _presetButton2.GetComponent<Image>().color = new Color(1, 0.4f, 0.4f);
+                _presetButton3.GetComponent<Image>().color = new Color(1, 0.9f, 0.9f);
+            }
+            if (UserSaveManagerSO.UserSaveData._setPrestIndex == 2)
+            {
+                _presetButton1.GetComponent<Image>().color = new Color(1, 0.9f, 0.9f);
+                _presetButton2.GetComponent<Image>().color = new Color(1, 0.9f, 0.9f);
+                _presetButton3.GetComponent<Image>().color = new Color(1, 0.4f, 0.4f);
+            }
+        }
     }
 }

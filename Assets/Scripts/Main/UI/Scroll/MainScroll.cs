@@ -25,9 +25,6 @@ namespace Main.Scroll
         protected override void SettingStart()
         {
             base.SettingStart();
-            _targetPos = _pos[1];
-            _targetIndex = 1;
-            StressImage();
         }
         protected override void SettingUpdate()
         {
@@ -50,7 +47,6 @@ namespace Main.Scroll
                 }
                 return; 
             }
-            Debug.Log("드래그끝,패널  옮겨짐");
             StressImage();
             EventManager.Instance.TriggerEvent(EventsType.SetOriginShopPn);
         }
@@ -65,7 +61,6 @@ namespace Main.Scroll
                 if (_targetIndex == i)
                 {
                     panelIcons[i].anchoredPosition3D = new Vector3(0, 0);
-                    Debug.Log("현재 타겟 인덱스 : " + _targetIndex);
                 }
                 else panelIcons[i].anchoredPosition3D = new Vector3(0, 0);
             }
@@ -75,15 +70,9 @@ namespace Main.Scroll
         /// 상점,메인,스테이지창 중 한곳으로 이동하는 것 
         /// </summary>
         /// <param name="n">0=상점 1=메인 2=스테이지</param>
-        public void OnMoveMainPanel(int n)
+        public override void OnMoveMainPanel(int index)
         {
-            if (n < 0 || n > Size - 1)
-            {
-                Debug.LogError("메인 패널 움직이는 범위 넘어감 0~SIZE-1 사이 값이 아님");
-                return;
-            }
-            _targetIndex = Size - n - 1;
-            _targetPos = _pos[n];
+            base.OnMoveMainPanel(index);
             StressImage();
         }
     }

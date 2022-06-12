@@ -5,6 +5,7 @@ namespace Utill.Load
 {
     public enum BattleStageType
     {
+        ST_MAKE = 0,
         S1_1,
         S1_2,
         S1_3,

@@ -48,6 +48,8 @@ namespace Battle
         private bool _isAlwaysSpawn = false;
         [SerializeField]
         private CardDeckSO _cardDeckSO = null;
+        [SerializeField]
+        private StageLog _stageLog = null;
 
         //참조 변수
         private StageData _stageData = null;
@@ -212,6 +214,11 @@ namespace Battle
                 //카드 융합
                 SetDelayFusion();
             }
+
+            if(_commandUnit.eTeam == TeamType.EnemyTeam)
+			{
+                _stageLog.Add_Log(card.CardDataValue);
+			}
             RunAction(SetUseCard, card);
         }
 

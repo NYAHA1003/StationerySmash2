@@ -70,7 +70,7 @@ namespace Main.Deck
                 money = 100000000;
                 return;
 			}
-            _money = money;
+            _money += money;
 		}
 
         /// <summary>

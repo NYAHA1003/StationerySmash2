@@ -13,18 +13,21 @@ public class SceneLoadButtonManager : MonoBehaviour
     [SerializeField]
     private LoadingBattleDataSO loadingBattleDataSO;
     [SerializeField]
+    private SceneLoadComponenet _sceneLoadComponenet;
+    [SerializeField]
     private AIDataSO aIDataSO;
 
 
     // Start is called before the first frame update
-    private void Awake()
+    private void Start()
     {
         SetBattleLoadButtons();
+        buttons[0].onClick.AddListener(() => LoadBattleDataStageMake(BattleStageType.ST_MAKE));
     }
    
     private void SetBattleLoadButtons()
     {
-        for (int i = 0; i < System.Enum.GetValues(typeof(BattleStageType)).Length; i++)
+        for (int i = 1; i < System.Enum.GetValues(typeof(BattleStageType)).Length; i++)
         {
             //각 버튼에 enum값 대입하기
             int temp = i;
@@ -33,12 +36,18 @@ public class SceneLoadButtonManager : MonoBehaviour
     }
     private void LoadBattleData(BattleStageType battleStageType)
     {
-        //so데이터를 aidataSO와 PencilCaseDataSO에 넣어줌
-        loadingBattleDataSO.SetCurrentIndex(loadingBattleDataSO.loadDatas.FindIndex(x => x.battleStageType == battleStageType));
+        loadingBattleDataSO.SetCurrentIndex(battleStageType);
         var currentData = loadingBattleDataSO.CurrentStageData;
         PencilCaseDataManagerSO.SetEnemyPencilCaseData(currentData);
         aIDataSO.SetAIData(currentData);
-
-        //pencilCaseDataSO.battleStageType = currentData.battleStageType;
+        _sceneLoadComponenet.SceneLoadBattle();
+    }
+    private void LoadBattleDataStageMake(BattleStageType battleStageType)
+    {
+        loadingBattleDataSO.SetCurrentIndex(battleStageType);
+        var currentData = loadingBattleDataSO.CurrentStageData;
+        PencilCaseDataManagerSO.SetEnemyPencilCaseData(currentData);
+        aIDataSO.SetAIData(currentData);
+        _sceneLoadComponenet.SceneLoadStageMake();
     }
 }
