@@ -63,20 +63,24 @@ namespace Main.Store
 
         private void DrawSticker(Grade grade)
         {
-            int randomIndex; 
+            int randomIndex;
+            DailyItemInfo getItemInfo; 
             switch (grade)
             {
                 case Grade.Common:
                     randomIndex = Random.Range(0, allItemInfos.commonItemInfos.Count);
+                    getItemInfo = allItemInfos.commonItemInfos[randomIndex];
                     break;
                 case Grade.Rare:
                     randomIndex = Random.Range(0, allItemInfos.rareItemInfos.Count);
+                    getItemInfo = allItemInfos.rareItemInfos[randomIndex];
                     break;
                 case Grade.Epic:
                     randomIndex = Random.Range(0, allItemInfos.epicItemInfos.Count);
+                    getItemInfo = allItemInfos.epicItemInfos[randomIndex];
                     break;
             }
-
+            
         }
         /// <summary>
         /// 스티커판 초기화 

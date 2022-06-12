@@ -138,6 +138,7 @@ namespace Main.Store
             float rarePercent = _gachaInfo.gachaSO.rarePercent;
 
             int randomIndex;
+            DailyItemInfo getItemInfo;
             for (int i = 0; i < currentAmount; i++)
             {
                 int Percent = Random.Range(0, 100 + 1);
@@ -146,21 +147,23 @@ namespace Main.Store
                 {
                     //에픽 스티커 소환
                     randomIndex = Random.Range(0, allBadgeInfos.epicItemInfos.Count);
+                    getItemInfo = allBadgeInfos.epicItemInfos[randomIndex];
                     Debug.Log($"\"영웅\"등급 {allBadgeInfos.epicItemInfos[randomIndex]} 뱃지가 나왔습니다.");
                 }
                 else if (rarePercent + epicPercent >= Percent)
                 {
                     //레어 스티커 소환
                     randomIndex = Random.Range(0, allBadgeInfos.rareItemInfos.Count);
+                    getItemInfo = allBadgeInfos.rareItemInfos[randomIndex];
                     Debug.Log($"\"레어\"등급 {allBadgeInfos.rareItemInfos[randomIndex]} 뱃지가 나왔습니다.");
                 }
                 else
                 {
                     //일반 스티커 소환
                     randomIndex = Random.Range(0, allBadgeInfos.commonItemInfos.Count);
+                    getItemInfo = allBadgeInfos.commonItemInfos[randomIndex];
                     Debug.Log($"\"일반\"등급 {allBadgeInfos.commonItemInfos[randomIndex]} 뱃지가 나왔습니다.");
                 }
-                DailyItemInfo getItemInfo = allBadgeInfos.commonItemInfos[randomIndex];
                 gachaCards[i].ActiveAndAnimate();
                 gachaCards[i].SetSprite(getItemInfo._itemSprite, _backBadgeImage,true);
                 curGachaCards.Add(gachaCards[i]);
