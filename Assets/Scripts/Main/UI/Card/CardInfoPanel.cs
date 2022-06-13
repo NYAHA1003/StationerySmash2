@@ -157,7 +157,7 @@ namespace Main.Card
 			}
 			SetSkinList(_selectCardData);
 			SetStickerList(_selectCardData);
-			//SetViedo(_selectCardData._cardNamingType);
+			SetViedo(_selectCardData._cardNamingType);
 			SetExpBar();
 			_deckCard.SetCard(_selectCardData);
 		}
