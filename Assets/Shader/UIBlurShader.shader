@@ -7,8 +7,9 @@ Shader "Unlit/BlurShader"
 
         Category
     {
-        Tags{ "Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Opaque" }
-
+        Tags{ "Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Opaque" "RenderPipeline" = "UniversalPipeline" "LightMode" = "UniversalForward" }
+        //Alternatively
+        //Tags { "LightMode" = "SRPDefaultUnlit" }
         SubShader
         {
             GrabPass
