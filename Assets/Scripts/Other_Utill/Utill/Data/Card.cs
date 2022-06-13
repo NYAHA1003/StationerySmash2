@@ -10,6 +10,7 @@ namespace Utill.Data
         SummonUnit,
         SummonTrap,
         Installation,
+        Projectile,
     }
 
     public enum CardNamingType

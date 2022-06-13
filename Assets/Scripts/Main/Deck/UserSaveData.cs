@@ -74,6 +74,19 @@ namespace Main.Deck
 		}
 
         /// <summary>
+        /// 달고나 증가
+        /// </summary>
+        public void AddDalgona(int dalgona)
+        {
+            if (dalgona >= 100000000)
+            {
+                _dalgona = 100000000;
+                return;
+            }
+            _dalgona += dalgona;
+        }
+
+        /// <summary>
         /// 인게임 데이터를 프리셋 데이터에 따라 변경한다
         /// </summary>
         public void ChangeIngameData(int preset)
@@ -192,7 +205,7 @@ namespace Main.Deck
             cardSaveData._cardNamingType = cardData._cardNamingType;
             cardSaveData._skinType = cardData._skinData._skinType;
 
-            UnitData unitData = UnitDataManagerSO.FindUnitData(cardData._unitType);
+            UnitData unitData = UnitDataManagerSO.FindStdUnitData(cardData._unitType);
             cardSaveData._stickerType = unitData._stickerType;
             return cardSaveData;
 		}
