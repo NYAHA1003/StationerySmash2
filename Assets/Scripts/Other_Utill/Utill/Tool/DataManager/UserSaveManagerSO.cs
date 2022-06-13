@@ -202,7 +202,7 @@ namespace Utill.Tool
         /// 카드를 유저 데이터에 추가한다
         /// </summary>
         /// <param name="cardData"></param>
-        public void AddCardData(CardData cardData)
+        public static void AddCardData(CardData cardData)
         {
             CardSaveData cardSaveData = _userSaveData._haveCardSaveDatas.Find(x => x._cardNamingType == cardData._cardNamingType);
             if (cardSaveData != null)
