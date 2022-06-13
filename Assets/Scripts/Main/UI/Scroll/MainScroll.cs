@@ -16,7 +16,8 @@ namespace Main.Scroll
         private Slider accentSlider;
         [SerializeField]
         private RectTransform[] panelIcons;
-
+        [SerializeField]
+        private GameObject[] texts;
         protected override void SettingAwake()
         {
             base.SettingAwake();
@@ -60,9 +61,14 @@ namespace Main.Scroll
             {
                 if (_targetIndex == i)
                 {
+                    texts[i].SetActive(true);
                     panelIcons[i].anchoredPosition3D = new Vector3(0, 0);
                 }
-                else panelIcons[i].anchoredPosition3D = new Vector3(0, 0);
+                else
+                {
+                    panelIcons[i].anchoredPosition3D = new Vector3(0, 0);
+                    texts[i].SetActive(false);
+                }
             }
         }
 

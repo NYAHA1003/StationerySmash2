@@ -954,7 +954,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -30, y: 109}
-  m_SizeDelta: {x: 700, y: 500}
+  m_SizeDelta: {x: 700, y: 394}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3870621301680547808
 CanvasRenderer:
@@ -1908,6 +1908,7 @@ MonoBehaviour:
   _plusAttackSpeedText: {fileID: 3270451300220067944}
   _plusMoveSpeedText: {fileID: 7850904440525154396}
   _plusWeightText: {fileID: 1499138922978333538}
+  _videoPlayer: {fileID: 3870621301680547839}
   _stickerPanel: {fileID: 3870621303052228032}
   _stickerInfoPanel: {fileID: 3870621302100006068}
   _sktickerButtonPrefeb: {fileID: 169027642307460132, guid: b1fb091b1437bee4d8f9d9be43b23b53, type: 3}
@@ -1916,6 +1917,7 @@ MonoBehaviour:
   _skinButtonParent: {fileID: 3870621303113352791}
   _userDeckData: {fileID: 0}
   _deckSettingComponent: {fileID: 0}
+  _warrningComponent: {fileID: 0}
   _haveDeckSO: {fileID: 11400000, guid: 5e34cc2e62886a64f8c645bcb65715ec, type: 2}
 --- !u!1 &3870621302342322257
 GameObject:
@@ -4432,7 +4434,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 3870621303428431759}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.24907988
+  m_Size: 0.2490799
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

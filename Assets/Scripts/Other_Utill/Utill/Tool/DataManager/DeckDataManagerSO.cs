@@ -81,7 +81,7 @@ namespace Utill.Tool
 		/// <summary>
 		/// 가진 카드 데이터 설정
 		/// </summary>
-		private void SetHaveDataList()
+		public static void SetHaveDataList()
 		{
 
 			int count = UserSaveManagerSO.UserSaveData._haveCardSaveDatas.Count;
