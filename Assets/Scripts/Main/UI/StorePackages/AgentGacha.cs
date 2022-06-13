@@ -63,6 +63,8 @@ namespace Main.Store
         private GameObject skipButton; 
         [SerializeField]
         private GameObject nextBtn;
+        [SerializeField]
+        private GameObject _badgePanel; // gacahCanvas의 뱃지 패널부분 
 
         private int _count; // 최대 아이템 뜰 개수
 
@@ -99,8 +101,13 @@ namespace Main.Store
 
             EventManager.Instance.StartListening(EventsType.SkipAnimation, SkipAnimation);
             EventManager.Instance.StartListening(EventsType.ActiveNextBtn, ActiveNextBtn);
+            EventManager.Instance.StartListening(EventsType.ActiveBadgePanel, ActiveBadgePanel); 
         }
-   
+        
+        private void ActiveBadgePanel()
+        {
+            _badgePanel.SetActive(!_badgePanel.activeSelf);
+        }
         /// <summary>
         /// 현재 가진 돈이 충분한가 
         /// </summary>
@@ -220,8 +227,9 @@ namespace Main.Store
                 gachaCards[i].gameObject.SetActive(false);
                 gachaCards[i].StopCoroutine(); 
             }
+            ActiveBadgePanel(); 
             // 검은 이미지 닫기 
-           // gachaCanvas.gameObject.SetActive(false);
+            // gachaCanvas.gameObject.SetActive(false);
         }
         /// <summary>
         /// 최대로 뜰 아이템 개수만큼 미리 생성해두기 

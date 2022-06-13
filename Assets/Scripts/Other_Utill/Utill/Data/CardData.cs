@@ -19,6 +19,7 @@ public class CardData : IDeepCopy<CardData>
     public int _cost;
     public SkinData _skinData;
     public int _level;
+    public int _count;
 
     /// <summary>
     /// CardData를 깊은 복사해서 반환함

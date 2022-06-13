@@ -190,13 +190,40 @@ namespace Utill.Tool
 
         [ContextMenu("유저데이터에 카드를 추가해 포스트")]
         /// <summary>
-        /// 유저 데이터에 카드를 추가한다
+        /// 디버그용 유저 데이터에 카드를 추가한다
         /// </summary>
-        public void CardAdd()
+        public void DebugCardAdd()
 		{
             _userSaveData._haveCardSaveDatas.Add(_cardAddData);
             PostUserSaveData();
 		}
+
+        /// <summary>
+        /// 카드를 유저 데이터에 추가한다
+        /// </summary>
+        /// <param name="cardData"></param>
+        public static void AddCardData(CardData cardData)
+        {
+            CardSaveData cardSaveData = _userSaveData._haveCardSaveDatas.Find(x => x._cardNamingType == cardData._cardNamingType);
+            if (cardSaveData != null)
+			{
+                cardSaveData._count++;
+
+            }
+			else
+            {
+                cardSaveData = new CardSaveData()
+                {
+                    _cardNamingType = cardData._cardNamingType,
+                    _skinType = cardData._skinData._skinType,
+                    _stickerType = StickerType.None,
+                    _level = 1,
+                    _count = 1,
+                };
+                _userSaveData._haveCardSaveDatas.Add(cardSaveData);
+            }
+            PostUserSaveData();
+        }
 
         /// <summary>
         /// 모든 관찰자를 제거

@@ -23,7 +23,7 @@ public abstract class GachaCard : MonoBehaviour
     protected RectTransform _rect;
     protected Sequence sequence;
 
-    protected Grade _grade; 
+    public Grade _grade; 
     private bool isFront = false; 
     private void Awake()
     {
@@ -51,7 +51,7 @@ public abstract class GachaCard : MonoBehaviour
     {
         _grade = grade; 
     }
-    public void SetSprite(Sprite frontSprite, Sprite backSprite, bool isFront)
+    public void SetSprite(Sprite frontSprite , Sprite backSprite , bool isFront)
     {
         _frontSprite = frontSprite;
         _backSprite = backSprite;

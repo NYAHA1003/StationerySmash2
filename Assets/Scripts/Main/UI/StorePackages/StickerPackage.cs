@@ -17,55 +17,71 @@ namespace Main.Store
         private GameObject _canvas;
         [SerializeField]
         private GameObject _gachaCanvas;
-        
+        [SerializeField]
+        private GameObject _stickerPanel; 
+
         [SerializeField]
         private Transform _itemParent; // 기본 canvas 
         [SerializeField]
-        private Transform _canvasParent; // gachaCanvas 
+        private Transform _gachaCanvasItemParent; // gachaCanvas 
         [SerializeField]
         private GachaCard _stickerPrefab;
+        [SerializeField]
+        private Sprite _backStickerImage;
 
         [SerializeField]
-        private int _epicCount; // 영웅스터커 수 (받아올거)
-        [SerializeField]
-        private int _rareCount; // 레어 스티커 수 (받아올거) 
+        private GachaSO _gachaSO; // 영웅,레어 스티커수, 총 스티커 수 
 
         [SerializeField]
         private AllItemInfos allItemInfos; 
 
-        private List<int> _emptyList; // 뽑은 오브젝트 인덱스 저장 (자장 후 받아올거)
-        private List<Grade> _stickerGrades; // 스티커 등급  (자장 후 받아올거)
+        private List<int> _emptyList = new List<int>(); // 뽑은 오브젝트 인덱스 저장 (자장 후 받아올거)
+        private List<Grade> _stickerGrades = new List<Grade>(); // 스티커 등급  (자장 후 받아올거)
 
         private int _gradeIdx = 0;  // 등급 인덱스 
         private int _emptyIdx = 0; // 빈 오브젝트 인덱스 
-        private int _amount; // 전체 스티커 개수 
+
         private void Start()
         {
+            ListenEvent();
+            InitializeStciker(); 
             allItemInfos.SetInfosGrade();
             InstantiateItem();
         }
 
+        private void ListenEvent()
+        {
+            EventManager.Instance.StartListening(EventsType.DrawSticker, (x) => DrawSticker((GachaCard)x));
+        }
         private void InstantiateItem()
         {
-            for(int i = 0; i < _amount; i++)
+            for(int i = 0; i < _gachaSO.maxAmount; i++)
             {
-                if (_amount == _emptyList[_emptyIdx])
+                GachaCard sticker;
+                if (_emptyList.Count != 0 && i == _emptyList[_emptyIdx])
                 {
-                    Instantiate(new GameObject(), _itemParent);
-                    _emptyIdx++; 
+                    sticker = Instantiate(_stickerPrefab, _itemParent);
+                    sticker.GetComponent<Image>().enabled = false; 
+                    _emptyIdx++;
+                    continue; 
                 }
-                GachaCard sticker = Instantiate(_stickerPrefab, _itemParent);
+                sticker = Instantiate(_stickerPrefab, _itemParent);
+                
+                sticker.SetGrade(_stickerGrades[i]);
+                sticker.SetSprite(null, _backStickerImage, false);
+                //sticker.SetSprite();
                 // 초기화 함수 sticker.Init(Grade)
                 _gradeIdx++;
             }
-            Instantiate(_itemParent, _canvasParent);
+            Transform gachaCanvasParent = Instantiate(_itemParent, _gachaCanvasItemParent);
+            gachaCanvasParent.GetChild(gachaCanvasParent.childCount - 1).gameObject.SetActive(false); // 버튼 못누르게 가리는 패널 false
         }
-
-        private void DrawSticker(Grade grade)
+        
+        private void DrawSticker(GachaCard stickerItem)
         {
             int randomIndex;
-            DailyItemInfo getItemInfo; 
-            switch (grade)
+            DailyItemInfo getItemInfo = null; 
+            switch (stickerItem._grade)
             {
                 case Grade.Common:
                     randomIndex = Random.Range(0, allItemInfos.commonItemInfos.Count);
@@ -80,7 +96,8 @@ namespace Main.Store
                     getItemInfo = allItemInfos.epicItemInfos[randomIndex];
                     break;
             }
-            
+            stickerItem.SetSprite(getItemInfo._itemSprite,_backStickerImage, false);
+            stickerItem.ActiveAndAnimate(); 
         }
         /// <summary>
         /// 스티커판 초기화 
@@ -89,11 +106,11 @@ namespace Main.Store
         private void InitializeStciker()
         {
             _stickerGrades.Clear(); 
-            for (int i = 0; i < _epicCount; i++)
+            for (int i = 0; i < _gachaSO.epicCount; i++)
             {
                 _stickerGrades.Add(Grade.Epic);
             }
-            for(int i = 0; i < _rareCount; i++)
+            for(int i = 0; i < _gachaSO.rareCount; i++)
             {
                 _stickerGrades.Add(Grade.Rare);
             }
@@ -109,8 +126,8 @@ namespace Main.Store
             {
                 int idx1, idx2;
                 Grade temp;
-                idx1 = Random.Range(0, _amount);
-                idx2 = Random.Range(0, _amount);
+                idx1 = Random.Range(0, _gachaSO.maxAmount);
+                idx2 = Random.Range(0, _gachaSO.maxAmount);
 
                 temp = _stickerGrades[idx1];
                 _stickerGrades[idx1] = _stickerGrades[idx2];
