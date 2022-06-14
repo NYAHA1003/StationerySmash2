@@ -44,6 +44,17 @@ namespace Utill.Data
 				_animatorDictionary.Add(skintype, runtimeAnimatorController);
 			}
 		}
+
+		/// <summary>
+		/// 해당 타입 카드의 애니메이션 데이터 가져오기
+		/// </summary>
+		/// <param name="cardNamingType"></param>
+		/// <returns></returns>
+		public static RuntimeAnimatorController GetAnimator(SkinType skinType)
+		{
+			_animatorDictionary.TryGetValue(skinType, out var animator);
+			return animator;
+		}
 	}
 
 }

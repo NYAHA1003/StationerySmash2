@@ -74,7 +74,7 @@ public class SetSkinComponent : MonoBehaviour
 
             for (int j = 0; j < skinCount; j++)
             {
-                AnimationData.SetAnimator(cardNamingSkins._skinDatas[i]._skinType);
+                AnimationData.SetAnimator(cardNamingSkins._skinDatas[j]._skinType);
             }
         }
     }

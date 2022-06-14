@@ -60,14 +60,7 @@ public class UnitSprite
         SetTeamColor(teamType);
         SetHPSprite(unitStat.Hp, unitStat.MaxHp);
         OrderDraw(orderIndex);
-
-        string path = System.Enum.GetName(typeof(UnitType), cardData._unitType) + "_Anim";
-            Addressables.LoadAssetAsync<RuntimeAnimatorController>(path).Completed +=
-                (AsyncOperationHandle<RuntimeAnimatorController> obj) =>
-                {
-                    _animator.runtimeAnimatorController = obj.Result;
-                    Addressables.Release(obj);
-                };
+        _animator.runtimeAnimatorController = AnimationData.GetAnimator(cardData._skinData._skinType);
     }
 
     /// <summary>
