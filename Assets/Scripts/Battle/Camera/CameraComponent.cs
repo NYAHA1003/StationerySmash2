@@ -133,6 +133,25 @@ namespace Battle
         }
 
         /// <summary>
+        /// 카메라가 움직일 수 없는 설정한
+        /// </summary>
+        /// <param name="boolean"></param>
+        public void SetIsDontMove(bool boolean)
+        {
+            _isDontMove = boolean;
+        }
+
+        /// <summary>
+        /// 카메라 흔들기
+        /// </summary>
+        /// <param name="power"></param>
+        /// <param name="time"></param>
+        public void ShakeCamera(float power, float time)
+		{
+            _camera.DOShakePosition(time, power);
+        }
+
+        /// <summary>
         /// 카메라 크기 조정
         /// </summary>
         private void UpdateCameraScale()
@@ -248,15 +267,6 @@ namespace Battle
             }
 
         }
-
-        /// <summary>
-        /// 카메라가 움직일 수 없는 설정한
-        /// </summary>
-        /// <param name="boolean"></param>
-        public void SetIsDontMove(bool boolean)
-		{
-            _isDontMove = boolean;
-		}
 
     }
 

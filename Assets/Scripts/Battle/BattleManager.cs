@@ -83,7 +83,7 @@ namespace Battle
 			//프레임 60 고정
 			Application.targetFrameRate = 60;
 
-			_pencilCaseComponent.SetInitialization(CardComponent, UnitComponent, CurrentStageData);
+			_pencilCaseComponent.SetInitialization(_cameraComponent, CardComponent, UnitComponent, CurrentStageData);
 			_cardComponent.SetInitialization(this, WinLoseComponent, CameraComponent, UnitComponent, CostComponent, ref _updateAction, CurrentStageData, PencilCaseDataManagerSO.InGamePencilCaseData._maxCard);
 			_cameraComponent.SetInitialization(CardComponent, WinLoseComponent, ref _updateAction, CurrentStageData);
 			_unitComponent.SetInitialization(ref _updateAction, CurrentStageData);
