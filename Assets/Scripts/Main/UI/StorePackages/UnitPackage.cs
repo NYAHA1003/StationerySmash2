@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill;
 using Utill.Data;
+using Utill.Tool;
 using System.Threading.Tasks;
 using UnityEngine.UI;
+using Main.Event;
 
 namespace Main.Store
 {
@@ -14,7 +16,7 @@ namespace Main.Store
         private List<string> _UnitNameList = new List<string>();
         private List<bool> _IsHave = new List<bool>();
         private List<int> _NHnum = new List<int>();
-        private List<int> _UnitAmountList = new List<int>();
+        private List<int> _curCardAmountList = new List<int>();
 
        
         private bool _Pencil = true;
@@ -37,52 +39,32 @@ namespace Main.Store
         int _newPercent = 0;        //신규 캐릭터가 나올 확률(팩당)
         int _useMoney = 0;          //사용하는 돈 수량
         int _useDalgona = 0;        //사용하는 달고나 갯수
-        int _CurrentUnitAmount = 0;
-        int _unitMaxAmount = 0;
+
+        [SerializeField]
+        private CardPackSO cardPackSO; // 각 카드팩에 대한 정보 
+
+        private CardPackInfo _pickCardPackInfo; // 뽑은 카드팩 정보 
+
+        int _CurrentUnitAmount = 0; // 나올 총 유닛인데 처음엔 총 카드수로 초기화후 뽑은 카드량만큼 뺄 것 / 뽑을 때 마다 초기화 
+        int _unitMaxAmount = 0; // 나올 총 카드 
 
 
         /// <summary>
         /// 랜덤으로 바뀌는 정보
         /// </summary>
         int _Quantity = 0;          //정해진 범위안에서 랜덤으로 정해지는 수량 
-        int _newChPercent = 0;      //랜덤 숫자
-        int _newCharacter = 0;      //새로운 캐릭터로 뽑힌 유닛 번호
-
-        [SerializeField]
-        Button _CommonButton;       //커먼등급 학용품 소환버튼
-        [SerializeField]        
-        Button _ShinyButton;        //샤이니등급 학용품 소환버튼
-        [SerializeField]
-        Button _LegendaryButton;    //레전더리등급 학용품 소환버튼
+        int _newChPercent = 0;      //랜덤 숫자 퍼센트 
+        int _newCharacter = 0;      //새로운 분실물로 뽑힌 유닛 번호
 
         void Start()
         {
-            ResetFunctionPakage_UI();
-            SetFunctionPakage_UI();
-        }
-        
-        /// <summary>
-        /// 이벤트 리셋
-        /// </summary>
-        private void ResetFunctionPakage_UI()
-        {
-            _CommonButton.onClick.RemoveAllListeners();
-            _ShinyButton.onClick.RemoveAllListeners();
-            _LegendaryButton.onClick.RemoveAllListeners();
-        }
-
-        /// <summary>
-        /// 이벤트 세팅
-        /// </summary>
-        private void SetFunctionPakage_UI()
-        {
-            _CommonButton.onClick.AddListener(CommonButtonClick);
-            _ShinyButton.onClick.AddListener(ShinyButtonClick);
-            _LegendaryButton.onClick.AddListener(LegendaryButtonClick);
-
             SetList();
         }
 
+        private void ListenEvent()
+        {
+            //EventManager.Instance.StartListening(EventsType.)
+        }
         /// <summary>
         /// 가지고 있는것과 가지고 있지 않은 학용품을 불러오는 함수
         /// </summary>
@@ -111,56 +93,35 @@ namespace Main.Store
             _UnitNameList.Add("볼펜");                 //Pen
         }
 
-        /// <summary>
-        /// Common패키지를 구매할때 실행하는 함수
-        /// </summary>
-        private void CommonButtonClick()
+        private void CardPackClick(int cardPackType)
         {
-            SetPakageSelect(PackageType.CommonPack);
+            SetPakageSelect((PackageType)cardPackType);
             /*if(현재 가진 돈 < _useMoney)
             {
                 return;
             }*/
-            RandomUnitSummons();
+            // RandomUnitSummons();
             RandomNewUnit();
         }
-
-        /// <summary>
-        /// Shiny패키지를 구매할때 실행하는 함수
-        /// </summary>
-        private void ShinyButtonClick()
+        
+        public void DrawCardPack(PackageType cardPackType)
         {
-            SetPakageSelect(PackageType.ShinyPack);
-            /*if(현재 가진 달고나 <  _useDalgona)
-            {
-                return;
-            }*/
-            //현재 달고나 -= _useDalgona;
-            RandomUnitSummons();
-            RandomNewUnit();
-        }
+            _pickCardPackInfo = cardPackSO.cardPackInfos[(int)cardPackType];
 
-        /// <summary>
-        /// Legendary패키지를 구매할때 실행하는 함수
-        /// </summary>
-        private void LegendaryButtonClick()
-        {
-            SetPakageSelect(PackageType.LegendaryPack);
-            /*if(현재 가진 달고나 <  _useDalgona)
-            {
-                return;
-            }*/
-            RandomUnitSummons();
-            RandomNewUnit();
-        }
+            int quantity = Random.Range(_pickCardPackInfo.minCount, _pickCardPackInfo.maxCount);
+            int newCardPercent = Random.Range(1, 101); 
 
+            bool isNewCard = _pickCardPackInfo.newCardPercent <= newCardPercent; // 새로운 분실물이 나오는지
+
+            RandomUnitSummons(quantity, _pickCardPackInfo.amount);
+        }
         /// <summary>
         /// 패키지를 골랐을때 여러가지 값을 대입
         /// </summary>
-        /// <param name="pack"></param>
-        public void SetPakageSelect(PackageType pack)
+        /// <param name="cardPackType"></param>
+        public void SetPakageSelect(PackageType cardPackType)
         {
-            switch (pack)
+            switch (cardPackType)
             {
                 case PackageType.CommonPack:
                     _min = 2; _max = 3;
@@ -191,52 +152,98 @@ namespace Main.Store
         }
 
         /// <summary>
-        /// 랜덤 유닛을 소환하는 함수
+        /// 랜덤 카드조각개수 나눠서 넣어두기 
         /// </summary>
-        private void RandomUnitSummons()
+        private void RandomUnitSummons(int quantity, int cardMaxAmount)
         {
             int temp = 0;
-            int quantity = 0;
+            int curQuantity = 0;
 
-            _UnitAmountList.Clear();
-            HaveUnit();
-            Shuffle();
-            QuantityOverCheck();
+            _curCardAmountList.Clear();
+            //HaveUnit();
+            //Shuffle();
+            //QuantityOverCheck();
 
 
-            int devide = _unitMaxAmount / _Quantity;
+            int devide = cardMaxAmount / _Quantity; // 나올 총 카드 / 나올 카드 종류 
 
             for (int i = 0; i < _Quantity; i++)                                            //위에서 랜덤으로 정해진 수량만큼 실행
             {
                 if (i == _Quantity - 1)                                                    //마지막 팩에는 남은 카드갯수만큼 넣어준다.
                 {
-                    _UnitAmountList.Add(_CurrentUnitAmount);
-                    Debug.Log($"학용품 종류 : {_UnitNameList[_NHnum[i]]}, 수량 : {_UnitAmountList[i]}");
+                    _curCardAmountList.Add(_CurrentUnitAmount);
+                    Debug.Log($"학용품 종류 : {_UnitNameList[_NHnum[i]]}, 수량 : {_curCardAmountList[i]}");
                     return;
                 }
 
-                quantity = Random.Range(devide/2 + temp, devide + temp);                   //이번에 나올 수량
-                _CurrentUnitAmount -= quantity;                                            //남아있는 뽑힐 유닛 갯수에서 나온 수량을 뺌                                         
-                _UnitAmountList.Add(quantity);                                             //유닛별 수량 넣어주기
-                temp = devide - quantity;                                                  //다음에 추가될 수량
-                Debug.Log($"학용품 종류 : {_UnitNameList[_NHnum[i]]}, 수량 : {_UnitAmountList[i]}");
+                curQuantity = Random.Range(devide/2 + temp, devide + temp);                   //이번에 나올 수량
+                _CurrentUnitAmount -= curQuantity;                                            //남아있는 뽑힐 유닛 갯수에서 나온 수량을 뺌                                         
+                _curCardAmountList.Add(curQuantity);                                             //유닛별 수량 넣어주기
+                temp = devide - curQuantity;                                                  //다음에 추가될 수량
+                Debug.Log($"학용품 종류 : {_UnitNameList[_NHnum[i]]}, 수량 : {_curCardAmountList[i]}");
             }
+
         }
 
+        List<CardData> haveCardList = DeckDataManagerSO.HaveDeckDataList;
+        List<CardNamingType> cardNamingTypes = new List<CardNamingType>();
+        List<CardNamingType> NatHaveCardNamingTypes = new List<CardNamingType>();
+
+        private void SetHaveCard()
+        {
+            int haveCardCount = haveCardList.Count;
+
+            for (int i = 0; i < haveCardCount; i++)
+            {
+                cardNamingTypes.Add(haveCardList[0]._cardNamingType);
+            }
+        }
+        private void SetNotHaveCard()
+        {
+
+        }
         /// <summary>
         /// 신규 유닛 획득 함수
         /// </summary>
         private void RandomNewUnit()
         {
+            // 가지고 있는 카드 
+          
+
+ 
+
+            // 가지고 있지 않은 카드 
+            int cardCount = System.Enum.GetValues(typeof(CardNamingType)).Length;
+            bool isNotHave = true; 
+            for (int i = 0; i < cardCount; i++ )
+            {
+                cardNamingTypes.ForEach((x) =>
+                {
+                    if (x == (CardNamingType)i)
+                    {
+                        isNotHave = false; 
+                    }
+                });
+
+                if(isNotHave == true)
+                {
+                    NatHaveCardNamingTypes.Add((CardNamingType)i);
+                    isNotHave = false; 
+                }
+            }
             
+
             if (_newPercent >= _newChPercent)                               //캐릭터 확률이 랜덤 숫자보다 클경우
             {
-                NotHaveUnit();
+
+                //NotHaveUnit();
+                CardNamingType cardNamingType; 
                 if (_NHnum.Count != 0)
                 {
-                    _newCharacter = _NHnum[Random.Range(0, _NHnum.Count)];     //없는 유닛들중 새로운 유닛을 선택
-                    _IsHave[_newCharacter] = true;                             //유닛을 생성
-                    Debug.Log($"새로운 유닛 \"{_UnitNameList[_newCharacter]}\"이/가 뽑혔습니다.");
+                    cardNamingType = NatHaveCardNamingTypes[Random.Range(0, NatHaveCardNamingTypes.Count)];     //없는 유닛들중 새로운 유닛을 선택
+                    UserSaveManagerSO.AddCardData(DeckDataManagerSO.FindStdCardData(cardNamingType));
+                    // 가지고 있지 않은 리스트 초기화 or NatHaveCardNamingTypes.Remove(cardNamingType); 
+                    Debug.Log($"새로운 유닛 \"{cardNamingType}\"이/가 뽑혔습니다.");
                 }
             }
             
@@ -308,3 +315,49 @@ namespace Main.Store
         }
     }
 }
+
+
+
+
+///// <summary>
+///// Common패키지를 구매할때 실행하는 함수
+///// </summary>
+//private void CommonButtonClick()
+//{
+//    SetPakageSelect(PackageType.CommonPack);
+//    /*if(현재 가진 돈 < _useMoney)
+//    {
+//        return;
+//    }*/
+//    RandomUnitSummons();
+//    RandomNewUnit();
+//}
+
+///// <summary>
+///// Shiny패키지를 구매할때 실행하는 함수
+///// </summary>
+//private void ShinyButtonClick()
+//{
+//    SetPakageSelect(PackageType.ShinyPack);
+//    /*if(현재 가진 달고나 <  _useDalgona)
+//    {
+//        return;
+//    }*/
+//    //현재 달고나 -= _useDalgona;
+//    RandomUnitSummons();
+//    RandomNewUnit();
+//}
+
+///// <summary>
+///// Legendary패키지를 구매할때 실행하는 함수
+///// </summary>
+//private void LegendaryButtonClick()
+//{
+//    SetPakageSelect(PackageType.LegendaryPack);
+//    /*if(현재 가진 달고나 <  _useDalgona)
+//    {
+//        return;
+//    }*/
+//    RandomUnitSummons();
+//    RandomNewUnit();
+//}
