@@ -7,6 +7,9 @@ using Utill.Data;
 using Utill.Tool;
 using Main.Scroll;
 using Main.Deck;
+using UnityEngine.Video;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.AddressableAssets;
 
 public class PreviewVideoControll : MonoBehaviour, IScroll
 {
@@ -22,6 +25,7 @@ public class PreviewVideoControll : MonoBehaviour, IScroll
     private void Start()
     {
         _scrollObj.AddObserver(this);
+        _previewVideo.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -30,7 +34,12 @@ public class PreviewVideoControll : MonoBehaviour, IScroll
     /// <param name="cardNamingType"></param>
     public void SetVideo(CardNamingType cardNamingType)
     {
-        //어드레서블로 영상 가져오기
+        string name = System.Enum.GetName(typeof(CardNamingType), cardNamingType) + "_Video";
+        Addressables.LoadAssetAsync<VideoClip>(name).Completed +=
+          (AsyncOperationHandle<VideoClip> obj) =>
+          {
+              _previewVideo.clip = obj.Result;
+          };
     }
 
     /// <summary>
@@ -39,6 +48,7 @@ public class PreviewVideoControll : MonoBehaviour, IScroll
     public void PlayVideo()
     {
         _previewVideo.Play();
+        _previewVideo.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -47,6 +57,7 @@ public class PreviewVideoControll : MonoBehaviour, IScroll
     public void StopVideo()
     {
         _previewVideo.Stop();
+        _previewVideo.gameObject.SetActive(false);
     }
 
     /// <summary>

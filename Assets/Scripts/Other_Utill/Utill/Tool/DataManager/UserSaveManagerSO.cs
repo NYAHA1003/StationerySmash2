@@ -79,6 +79,16 @@ namespace Utill.Tool
             ServerDataConnect.Instance.PostUserSaveData();
         }
 
+        /// <summary>
+        /// 프로필 변경
+        /// </summary>
+        /// <param name="profileType"></param>
+        public static void ChangeProfileType(ProfileType profileType)
+		{
+            UserSaveData._currentProfileType = profileType;
+            PostUserSaveData();
+            DeliverDataToObserver();
+        }
 
         /// <summary>
         /// 유저 세이브 데이터 설정
@@ -208,7 +218,7 @@ namespace Utill.Tool
             if (cardSaveData != null)
 			{
                 cardSaveData._count++;
-
+                DeckDataManagerSO.FindHaveCardData(cardData._cardNamingType)._count++;
             }
 			else
             {
@@ -221,6 +231,7 @@ namespace Utill.Tool
                     _count = 1,
                 };
                 _userSaveData._haveCardSaveDatas.Add(cardSaveData);
+                DeckDataManagerSO.SetHaveDataList();
             }
             PostUserSaveData();
         }

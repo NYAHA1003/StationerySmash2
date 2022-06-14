@@ -19,7 +19,7 @@ namespace Main.Deck
 		/// <summary>
 		/// 드롭다운 값이 변함에 따라 정렬 해준다
 		/// </summary>
-		public void CahgneValueToSort()
+		public void ChangeValueToSort()
 		{
 			_deckSettingComponent.ChangeSortSystem(_dropdown.value);
 		}

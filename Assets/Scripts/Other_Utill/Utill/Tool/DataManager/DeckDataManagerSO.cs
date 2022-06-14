@@ -81,9 +81,8 @@ namespace Utill.Tool
 		/// <summary>
 		/// 가진 카드 데이터 설정
 		/// </summary>
-		private void SetHaveDataList()
+		public static void SetHaveDataList()
 		{
-
 			int count = UserSaveManagerSO.UserSaveData._haveCardSaveDatas.Count;
 			for (int i = 0; i < count; ++i)
 			{
@@ -92,6 +91,24 @@ namespace Utill.Tool
 				cardData._count = UserSaveManagerSO.UserSaveData._haveCardSaveDatas[i]._count;
 				_haveDeckList.Add(cardData);
 			}
+		}
+
+		/// <summary>
+		/// 이름순으로 가진 카드 정렬
+		/// </summary>
+		public static void HaveCardSortABC()
+		{
+			var list = _haveDeckList.OrderBy(x => x._name);
+			_haveDeckList = list.ToList<CardData>();
+		}
+
+		/// <summary>
+		/// 코스트순으로 가진 카드 정렬
+		/// </summary>
+		public static void HaveCardSortCost()
+		{
+			var list = _haveDeckList.OrderBy(x => x._cost);
+			_haveDeckList = list.ToList<CardData>();
 		}
 	}
 }

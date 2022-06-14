@@ -10,6 +10,9 @@ using Main.Deck;
 using Main.Card;
 using Main.Event;
 using Main.Skin;
+using UnityEngine.Video;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.AddressableAssets;
 
 namespace Main.Card
 {
@@ -66,6 +69,10 @@ namespace Main.Card
 		private TextMeshProUGUI _plusMoveSpeedText = null;
 		[SerializeField]
 		private TextMeshProUGUI _plusWeightText = null;
+
+		//미리보기 창
+		[SerializeField]
+		private PreviewVideoControll _videoPlayer = null;
 
 		//스티커 창
 		[SerializeField]
@@ -150,6 +157,7 @@ namespace Main.Card
 			}
 			SetSkinList(_selectCardData);
 			SetStickerList(_selectCardData);
+			SetViedo(_selectCardData._cardNamingType);
 			SetExpBar();
 			_deckCard.SetCard(_selectCardData);
 		}
@@ -504,5 +512,12 @@ namespace Main.Card
 			}
 		}
 
+		/// <summary>
+		/// 비디오 설정
+		/// </summary>
+		private void SetViedo(CardNamingType cardNamingType)
+		{
+			_videoPlayer.SetVideo(cardNamingType);
+		}
 	}
 }
