@@ -29,6 +29,10 @@ namespace Main.Setting
         private Button _EffBtn;
         [SerializeField]
         private Button _BgmBtn;
+        [SerializeField]
+        private GameObject _dontBgm;
+        [SerializeField]
+        private GameObject _dontEff;
 
 
         private bool iseffSound = false;
@@ -115,13 +119,15 @@ namespace Main.Setting
                 _audioMixer.SetFloat("EFF", minValue);
                 _effectSoundSlider.interactable = false;
                 iseffSound = true;
-                return;
             }
-            _effectSoundSlider.value = effValue;
-            _audioMixer.SetFloat("EFF", effValue);
-            _effectSoundSlider.interactable = true;
-            iseffSound = false;
-            return;
+            else
+            {
+                _effectSoundSlider.value = effValue;
+                _audioMixer.SetFloat("EFF", effValue);
+                _effectSoundSlider.interactable = true;
+                iseffSound = false;
+            }
+            _dontEff.SetActive(iseffSound);
         }
 
         /// <summary>
@@ -137,13 +143,15 @@ namespace Main.Setting
                 _audioMixer.SetFloat("BGM", minValue);
                 _bgmSlider.interactable = false;
                 isbgmSound = true;
-                return;
             }
-            _bgmSlider.value = bgmValue;
-            _audioMixer.SetFloat("BGM", bgmValue);
-            _bgmSlider.interactable = true;
-            isbgmSound = false;
-            return;
+            else
+            {
+                _bgmSlider.value = bgmValue;
+                _audioMixer.SetFloat("BGM", bgmValue);
+                _bgmSlider.interactable = true;
+                isbgmSound = false;
+            }
+            _dontBgm.SetActive(isbgmSound);
         }
 
         private void MusicStart()
