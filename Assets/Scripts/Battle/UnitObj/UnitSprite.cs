@@ -5,6 +5,7 @@ using UnityEngine.Rendering;
 using UnityEngine.UI;
 using Utill.Data;
 using Utill.Tool;
+using DG.Tweening;
 using Battle;
 
 [System.Serializable]
@@ -40,6 +41,8 @@ public class UnitSprite
     [SerializeField]
     private SpriteRenderer _hpSpriteRenderer = null; //유닛 체력 스프라이트
     [SerializeField]
+    private Transform _starTransform = null; //별 트랜스폼
+    [SerializeField]
     private Sprite[] _delaySprites = null; // 유닛 딜레이바이미지들
 
     private TeamType _eTeam = TeamType.Null;
@@ -66,8 +69,9 @@ public class UnitSprite
         
         _spriteRenderer.sprite = sprite;
         _hpSpriteRenderer.sprite = sprite;
+        _starTransform.DOScale(Vector3.one * 0.12f, 1f).SetEase(Ease.OutQuad).SetLoops(-1, LoopType.Yoyo);
 
-        switch(grade)
+        switch (grade)
 		{
             case 1:
                 _delayBarImage.sprite = _delaySprites[0];
@@ -176,5 +180,13 @@ public class UnitSprite
     public void ChangeMaterial(Material material)
 	{
         _spriteRenderer.material = material;
+	}
+
+    /// <summary>
+    /// 던지기가 가능 여부에 따른 이미지를 껐다 킨다
+    /// </summary>
+    public void SetThrowImage(bool isActive)
+	{
+        _starTransform.gameObject.SetActive(isActive);
 	}
 }

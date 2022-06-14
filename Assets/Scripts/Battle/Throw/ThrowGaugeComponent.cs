@@ -88,11 +88,12 @@ namespace Battle
                 Unit unit = _unitCommand._playerUnitList[i];
                 if(unit.UnitStat.Return_Weight() < _throwGauge && unit.CheckCanThrow())
 				{
-                    //던지기 가능
-				}
+                    unit.SetThrowImageActive(true);
+
+                }
                 else
                 {
-                    //던지기 불가
+                    unit.SetThrowImageActive(false);
                 }
 			}
 		}

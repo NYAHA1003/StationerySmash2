@@ -384,12 +384,13 @@ public class Unit : MonoBehaviour
             return false;
 		}
     }
-
+    
     /// <summary>
-    /// 머테리얼을 변경한다
+    /// 던지기 가능 여부에 따른 던지기 이미지를 껐다 킨다
     /// </summary>
-    public void ChangeMaterial(Material material)
+    /// <param name="isActive"></param>
+    public void SetThrowImageActive(bool isActive)
 	{
-        //_unitSprite.ChangeMaterial(material);
+        _unitSprite.SetThrowImage(isActive);
 	}
 }
