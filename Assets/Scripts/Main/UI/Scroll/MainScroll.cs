@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 using Utill.Data;
 using Utill.Tool;
 using Main.Event;
+using Main.Setting;
 
 namespace Main.Scroll
 {
@@ -15,13 +16,16 @@ namespace Main.Scroll
         [SerializeField]
         private Slider accentSlider;
         [SerializeField]
-        private RectTransform[] panelIcons;
+        private static RectTransform[] panelIcons;
         [SerializeField]
-        private GameObject[] texts;
+        private static GameObject[] texts;
+
+        //지금은 bool로 때우는데 추후 바꿀것..
+        private static bool isChangeStage=false;
         protected override void SettingAwake()
         {
             base.SettingAwake();
-            EventManager.Instance.StartListening(EventsType.MoveMainPn,(x) => OnMoveMainPanel((int)x));
+            EventManager.Instance.StartListening(EventsType.MoveMainPn, (x) => OnMoveMainPanel((int)x));
         }
         protected override void SettingStart()
         {
@@ -40,13 +44,14 @@ namespace Main.Scroll
         public override void OnEndDrag(PointerEventData eventData)
         {
             base.OnEndDrag(eventData);
+
             if (_curPos == _targetPos)
             {
-                if(DeltaSlide(eventData.delta.y) == true)
+                if (DeltaSlide(eventData.delta.y) == true)
                 {
-                    StressImage(); 
+                    StressImage();
                 }
-                return; 
+                return;
             }
             StressImage();
             EventManager.Instance.TriggerEvent(EventsType.SetOriginShopPn);
@@ -55,8 +60,20 @@ namespace Main.Scroll
         /// <summary>
         /// 우측 패널이동 이미지 강조(왼쪽으로 움직임)
         /// </summary>
-        private void StressImage()
+        private static void StressImage()
         {
+            if (_targetIndex == 0 && !isChangeStage)
+            {
+                Sound.StopBgm(1);
+                Sound.PlayBgm(2);
+                isChangeStage = true;
+            }
+            else if(isChangeStage)
+            {
+                Sound.StopBgm(2);
+                Sound.PlayBgm(1);
+                isChangeStage = false;
+            }
             for (int i = 0; i < panelIcons.Length; i++)
             {
                 if (_targetIndex == i)
@@ -81,5 +98,7 @@ namespace Main.Scroll
             base.OnMoveMainPanel(index);
             StressImage();
         }
+
+
     }
 }
