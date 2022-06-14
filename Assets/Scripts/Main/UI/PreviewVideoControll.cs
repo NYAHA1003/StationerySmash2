@@ -7,6 +7,7 @@ using Utill.Data;
 using Utill.Tool;
 using Main.Scroll;
 using Main.Deck;
+using System.IO;
 using UnityEngine.Video;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
@@ -34,12 +35,15 @@ public class PreviewVideoControll : MonoBehaviour, IScroll
     /// <param name="cardNamingType"></param>
     public void SetVideo(CardNamingType cardNamingType)
     {
-        string name = System.Enum.GetName(typeof(CardNamingType), cardNamingType) + "_Video";
-        Addressables.LoadAssetAsync<VideoClip>(name).Completed +=
-          (AsyncOperationHandle<VideoClip> obj) =>
-          {
-              _previewVideo.clip = obj.Result;
-          };
+        string name = "/" + System.Enum.GetName(typeof(CardNamingType), cardNamingType) + "_Video.mp4";
+#if UNITY_EDITOR
+        // 유니티 에디터일 경우
+        string path = "file://" + Application.streamingAssetsPath + name;
+#else
+	// 런타임일 경우
+	string path = Application.streamingAssetsPath + name;
+#endif
+        _previewVideo.url = path;
     }
 
     /// <summary>
