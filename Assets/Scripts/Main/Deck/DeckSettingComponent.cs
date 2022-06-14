@@ -206,7 +206,8 @@ namespace Main.Deck
                 GameObject cardObj = PoolHavePCCard();
                 Button cardButton = cardObj.GetComponent<Button>();
                 PencilCaseData pencilCaseData = PencilCaseDataManagerSO.HavePencilCaseDataList[i];
-                cardObj.GetComponent<PencilCaseCard>().SetPencilCaseData(pencilCaseData);
+                PencilCaseCard caseCard = cardObj.GetComponent<PencilCaseCard>();
+                caseCard.SetPencilCaseData(pencilCaseData);
                 cardButton.onClick.RemoveAllListeners();
                 cardButton.onClick.AddListener(() =>
                 {

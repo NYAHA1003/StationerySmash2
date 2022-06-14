@@ -42,7 +42,7 @@ public class LoadingManager : MonoBehaviour
 	public static void LoadScene(string sceneName)
 	{
 		nextScene = sceneName;
-		SceneManager.LoadScene("LoadingScene");
+		SceneManager.LoadScene("LoadingSceneRework");
 	}
 	protected void LoadingAnim()
 	{

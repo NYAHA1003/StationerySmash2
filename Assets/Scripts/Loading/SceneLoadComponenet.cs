@@ -31,7 +31,7 @@ public class SceneLoadComponenet : MonoBehaviour
 			}
 		}
         SceneLoadBase();
-        LoadingManager.LoadScene("BattleScene");
+        LoadingManager.LoadScene("BattleSceneRework");
     }
     /// <summary>
     /// 메인씬을 로딩씬을 거쳐 이동한다
@@ -39,7 +39,7 @@ public class SceneLoadComponenet : MonoBehaviour
     public void SceneLoadMain()
     {
         SceneLoadBase();
-        LoadingManager.LoadScene("MainScene");
+        LoadingManager.LoadScene("MainSceneRework");
     }
     /// <summary>
     /// 스테이지 제작용씬을 로딩씬을 거쳐 이동한다
