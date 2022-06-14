@@ -87,6 +87,7 @@ namespace Utill.Tool
 		{
             UserSaveData._currentProfileType = profileType;
             PostUserSaveData();
+            DeliverDataToObserver();
         }
 
         /// <summary>
