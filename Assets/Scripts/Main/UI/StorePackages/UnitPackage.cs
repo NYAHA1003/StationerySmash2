@@ -157,8 +157,12 @@ namespace Main.Store
         /// </summary>
         private void Reset()
         {
+            for(int i =0; i < _gachaInfo.gachaSO.maxAmount;i++)
+            {
+                gachaCards[i].gameObject.SetActive(true); 
+            }
             _curCardAmountList.Clear();
-            _curCardType.Clear(); 
+            _curCardType.Clear();
             _quantity = 0;
             _currentUnitAmount = 0;
         }
@@ -180,21 +184,29 @@ namespace Main.Store
         }
 
         /// <summary>
-        /// 뽑은 카드 값 설정 ( 스프라이트, 이름 등) 
+        /// 뽑은 카드 값 설정 ( 스프라이트, 이름 등, 유저데이터 설정 ) 
         /// </summary>
         private void SetGachaCard(bool isNew)
         {
             for (int i = 0; i < _quantity; i++)
             {
+                UserSaveManagerSO.AddCardData(DeckDataManagerSO.FindStdCardData(_curCardType[i]), _curCardAmountList[i]); // 유저데이터에 카드조각추가 
                 gachaCards[i].GetComponent<DeckCard>().SetCard(DeckDataManagerSO.FindHaveCardData(_curCardType[i]));
                 gachaCards[i].ActiveAndAnimate();
             }
+
            if(isNew == true)
             {
                 CardNamingType newCardNamingType =  DrawNewCard();
-                gachaCards[_quantity],
+                UserSaveManagerSO.AddCardData(DeckDataManagerSO.FindStdCardData(newCardNamingType), 1); // 유저데이터 저장 
+                gachaCards[_quantity].GetComponent<DeckCard>().SetCard(DeckDataManagerSO.FindHaveCardData(newCardNamingType));
+                gachaCards[_quantity].ActiveAndAnimate(); 
             }
+            for (int i = 0; i < _quantity; i++)
+            {
+                
         }
+    }
         /// <summary>
         /// 최대로 나올 뽑기 아이템 생성 
         /// </summary>
@@ -226,7 +238,7 @@ namespace Main.Store
                                 ? cardNamingTypes.Count : _pickCardPackInfo.maxCount;
 
             _quantity = Random.Range(minCount, maxCount);
-
+            
             // 카드 종류
             bool isOverlap = false;
             for (int i = 0; i < _quantity; i++)
@@ -298,7 +310,6 @@ namespace Main.Store
         {
             CardNamingType _newCardNamingType;
             _newCardNamingType = NatHaveCardNamingTypes[Random.Range(0, NatHaveCardNamingTypes.Count)];     //없는 유닛들중 새로운 유닛을 선택
-            UserSaveManagerSO.AddCardData(DeckDataManagerSO.FindStdCardData(_newCardNamingType)); // 유저데이터 저장 
             // 가지고 있지 않은 리스트 초기화 or NatHaveCardNamingTypes.Remove(cardNamingType); 
             Debug.Log($"새로운 유닛 \"{_newCardNamingType}\"이/가 뽑혔습니다.");
             return _newCardNamingType; 
