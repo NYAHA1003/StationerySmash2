@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 using Utill.Data;
 using Utill.Tool;
 using DG.Tweening;
 using Battle;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 [System.Serializable]
 /// <summary>
@@ -21,6 +24,8 @@ public class UnitSprite
     //인스펙터 참조 변수
     [SerializeField]
     private SortingGroup _delayBarSortingGroup;
+    [SerializeField]
+    private Animator _animator;
     //인스펙터 참조 변수
     [SerializeField]
     private SortingGroup _delayHalfBarSortingGroup;
@@ -55,6 +60,14 @@ public class UnitSprite
         SetTeamColor(teamType);
         SetHPSprite(unitStat.Hp, unitStat.MaxHp);
         OrderDraw(orderIndex);
+
+        string path = System.Enum.GetName(typeof(UnitType), cardData._unitType) + "_Anim";
+            Addressables.LoadAssetAsync<RuntimeAnimatorController>(path).Completed +=
+                (AsyncOperationHandle<RuntimeAnimatorController> obj) =>
+                {
+                    _animator.runtimeAnimatorController = obj.Result;
+                    Addressables.Release(obj);
+                };
     }
 
     /// <summary>
