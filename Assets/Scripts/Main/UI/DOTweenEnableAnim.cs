@@ -11,7 +11,7 @@ public class DOTweenEnableAnim : MonoBehaviour
 	{
 		_sequence ??= DOTween.Sequence()
 			.SetAutoKill(false)
-			.Append(transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutElastic));
+			.Append(transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack));
 
 		transform.localScale = Vector3.zero;
 		_sequence.Restart();
