@@ -72,7 +72,7 @@ namespace Main.Card
 
 		//미리보기 창
 		[SerializeField]
-		private VideoPlayer _videoPlayer = null;
+		private PreviewVideoControll _videoPlayer = null;
 
 		//스티커 창
 		[SerializeField]
@@ -517,12 +517,7 @@ namespace Main.Card
 		/// </summary>
 		private void SetViedo(CardNamingType cardNamingType)
 		{
-			string name = System.Enum.GetName(typeof(CardNamingType), cardNamingType) + "_Video";
-			Addressables.LoadAssetAsync<VideoClip>(name).Completed +=
-			  (AsyncOperationHandle<VideoClip> obj) =>
-			  {
-				  _videoPlayer.clip = obj.Result;
-			  };
+			_videoPlayer.SetVideo(cardNamingType);
 		}
 	}
 }

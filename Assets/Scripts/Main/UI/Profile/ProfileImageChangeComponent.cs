@@ -35,7 +35,7 @@ public class ProfileImageChangeComponent : MonoBehaviour, IUserData
 	/// <param name="profileType"></param>
 	public void OnChangeProfileImage(ProfileType profileType)
 	{
-		UserSaveManagerSO.UserSaveData._currentProfileType = profileType;
+		UserSaveManagerSO.ChangeProfileType(profileType);
 	}
 
 	public void Notify()
@@ -51,7 +51,7 @@ public class ProfileImageChangeComponent : MonoBehaviour, IUserData
 	}
 
 	/// <summary>
-	/// 스킨 버튼들 제작
+	/// 프로필 버튼들 제작
 	/// </summary>
 	private void SetProfileImageChangeButtons()
 	{

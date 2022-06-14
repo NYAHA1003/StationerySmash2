@@ -79,6 +79,16 @@ namespace Utill.Tool
             ServerDataConnect.Instance.PostUserSaveData();
         }
 
+        /// <summary>
+        /// 프로필 변경
+        /// </summary>
+        /// <param name="profileType"></param>
+        public static void ChangeProfileType(ProfileType profileType)
+		{
+            UserSaveData._currentProfileType = profileType;
+            PostUserSaveData();
+            DeliverDataToObserver();
+        }
 
         /// <summary>
         /// 유저 세이브 데이터 설정
