@@ -36,7 +36,7 @@ namespace Main.Scroll
         protected float _curPos = 0f; // 현재 scrollbar value
         protected float _targetPos = 0f; // 클릭이 끝났을 때의 scrollbar value 
         protected bool _isDrag = false; // 드래그중인가 
-        protected int _targetIndex = 0; // 현재 있는 패널의 인덱스 
+        protected static int _targetIndex = 0; // 현재 있는 패널의 인덱스 
 
         private void Awake()
         {
