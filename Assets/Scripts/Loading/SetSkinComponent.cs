@@ -22,6 +22,7 @@ public class SetSkinComponent : MonoBehaviour
         SetSkinAll();
         SetShaderAll();
         SetThemeSkinAll();
+        SetAnimationAll();
         _isAllSetSkin = true;
     }
 
@@ -56,6 +57,25 @@ public class SetSkinComponent : MonoBehaviour
         for (int i = 0; i < shaderTypeCount; ++i)
         {
             ShaderData.SetSkin((ShaderType)System.Enum.ToObject(typeof(ShaderType), i));
+        }
+    }
+
+    /// <summary>
+    /// 모든 애니메이션을 불러온다
+    /// </summary>
+    private void SetAnimationAll()
+    {
+        int cardTypeCount = _skinListSO._cardNamingSkins.Count;
+
+        for (int i = 0; i < cardTypeCount; i++)
+        {
+            CardNamingSkins cardNamingSkins = _skinListSO._cardNamingSkins[i];
+            int skinCount = cardNamingSkins._skinDatas.Count;
+
+            for (int j = 0; j < skinCount; j++)
+            {
+                AnimationData.SetAnimator(cardNamingSkins._skinDatas[i]._skinType);
+            }
         }
     }
 
