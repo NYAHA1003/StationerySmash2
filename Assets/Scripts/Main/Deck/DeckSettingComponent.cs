@@ -155,11 +155,11 @@ namespace Main.Deck
         /// </summary>
         public void SetHaveDeck()
         {
-            for (int i = 0; i < _userDeckData._haveDeckListSO.cardDatas.Count; i++)
+            for (int i = 0; i < DeckDataManagerSO.HaveDeckDataList.Count; i++)
             {
                 GameObject cardObj = PoolHaveCard();
                 Button cardButton = cardObj.GetComponent<Button>();
-                cardObj.GetComponent<DeckCard>().SetCard(_userDeckData._haveDeckListSO.cardDatas[i]);
+                cardObj.GetComponent<DeckCard>().SetCard(DeckDataManagerSO.HaveDeckDataList[i]);
                 cardButton.onClick.RemoveAllListeners();
                 cardButton.onClick.AddListener(() =>
                 {
@@ -227,7 +227,7 @@ namespace Main.Deck
 				{
                     _haveDeckCards[i] = PoolHaveCard();
 				}
-                _haveDeckCards[i].GetComponent<DeckCard>().SetCard(_userDeckData._haveDeckListSO.cardDatas[i]);
+                _haveDeckCards[i].GetComponent<DeckCard>().SetCard(DeckDataManagerSO.HaveDeckDataList[i]);
             }
         }
         /// <summary>

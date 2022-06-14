@@ -12,7 +12,6 @@ namespace Main.Deck
 	public class UserDeckDataComponent : MonoBehaviour, IUserData
 	{
 		//카드 관련
-		public CardDeckSO _haveDeckListSO; //보유 카드 데이터
 		public CardDeckSO _inGameDeckListSO; //장착 카드 데이터
 
 		//스킨 관련
@@ -72,25 +71,7 @@ namespace Main.Deck
 		/// </summary>
 		public void SetHaveDeckCardList()
 		{
-			_haveDeckListSO.cardDatas.Clear();
-			int count = UserSaveManagerSO.UserSaveData._haveCardSaveDatas.Count;
-			for (int i = 0; i < count; i++)
-			{
-				CardSaveData saveDataobj = UserSaveManagerSO.UserSaveData._haveCardSaveDatas[i];
-				//같은 카드 타입 찾기
-				CardData cardDataobj = DeckDataManagerSO.StdDeckDataList.Find(x => x._cardNamingType == saveDataobj._cardNamingType);
-
-				if (cardDataobj != null)
-				{
-					//세이브데이터의 레벨만큼 수치를 변경하고 새로운 카드데이터로 만들어 받아 덱리스트에 추가
-					var skinDatas = _skinListSO._cardNamingSkins.Find(x => x._cardNamingType == saveDataobj._cardNamingType)._skinDatas;
-					SkinData skinData = skinDatas.Find(x => x._skinType == saveDataobj._skinType);
-					CardData cardData = cardDataobj.DeepCopy();
-					cardData._level = saveDataobj._level;
-					cardData._skinData = skinData;
-					_haveDeckListSO.cardDatas.Add(cardData);
-				}
-			}
+			DeckDataManagerSO.SetHaveDataList();
 		}
 
 		/// <summary>
@@ -98,8 +79,7 @@ namespace Main.Deck
 		/// </summary>
 		public void HaveDeckSortABC()
 		{
-			var list = _haveDeckListSO.cardDatas.OrderBy(x => x._name);
-			_haveDeckListSO.cardDatas = list.ToList<CardData>();
+		 	DeckDataManagerSO.HaveCardSortABC();
 		}
 
 		/// <summary>
@@ -107,8 +87,7 @@ namespace Main.Deck
 		/// </summary>
 		public void HaveDeckSortCost()
 		{
-			var list = _haveDeckListSO.cardDatas.OrderBy(x => x._cost);
-			_haveDeckListSO.cardDatas = list.ToList<CardData>();
+			DeckDataManagerSO.HaveCardSortCost();
 		}
 
 		/// <summary>
@@ -122,7 +101,7 @@ namespace Main.Deck
 			{
 				CardSaveData saveDataobj = UserSaveManagerSO.UserSaveData.GetIngameCardData()[i];
 				//세가지 타입이 세이브데이터와 모두 같은 기준 데이터 찾기
-				CardData cardDataobj = _haveDeckListSO.cardDatas.Find(x => x._cardNamingType == saveDataobj._cardNamingType);
+				CardData cardDataobj = DeckDataManagerSO.FindHaveCardData(saveDataobj._cardNamingType);
 
 				if (cardDataobj != null)
 				{

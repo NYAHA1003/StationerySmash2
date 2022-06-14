@@ -93,5 +93,23 @@ namespace Utill.Tool
 				_haveDeckList.Add(cardData);
 			}
 		}
+
+		/// <summary>
+		/// 이름순으로 가진 카드 정렬
+		/// </summary>
+		public static void HaveCardSortABC()
+		{
+			var list = _haveDeckList.OrderBy(x => x._name);
+			_haveDeckList = list.ToList<CardData>();
+		}
+
+		/// <summary>
+		/// 코스트순으로 가진 카드 정렬
+		/// </summary>
+		public static void HaveCardSortCost()
+		{
+			var list = _haveDeckList.OrderBy(x => x._cost);
+			_haveDeckList = list.ToList<CardData>();
+		}
 	}
 }
