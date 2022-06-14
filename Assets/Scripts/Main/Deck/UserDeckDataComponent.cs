@@ -40,10 +40,7 @@ namespace Main.Deck
 		/// </summary>
 		public void SetCardData()
 		{
-			//카드 데이터 초기화
-			SetHaveDeckCardList();
 			SetIngameCardList();
-
 		}
 
 
@@ -64,14 +61,6 @@ namespace Main.Deck
 		{
 			UserSaveManagerSO.ChangeIngameData(index);
 			PencilCaseDataManagerSO.SetInGamePencilCase(UserSaveManagerSO.UserSaveData._currentPencilCaseType);
-		}
-
-		/// <summary>
-		/// 보유 카드 데이터 설정
-		/// </summary>
-		public void SetHaveDeckCardList()
-		{
-			DeckDataManagerSO.SetHaveDataList();
 		}
 
 		/// <summary>
