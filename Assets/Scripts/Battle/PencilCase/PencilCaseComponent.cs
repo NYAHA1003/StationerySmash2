@@ -28,6 +28,7 @@ namespace Battle
         private AbstractPencilCaseAbility _playerAbilityState = null;
         private AbstractPencilCaseAbility _enemyAbilityState = null;
         private PencilCaseBadgeComponent _pencilCaseBadgeComponent = null;
+        private CameraComponent _cameraComponent = null;
 
         //인스펙터 참조 변수
         [SerializeField]
@@ -57,13 +58,14 @@ namespace Battle
         /// <param name="pencilCase_Enemy"></param>
         /// <param name="pencilCaseDataMy"></param>
         /// <param name="pencilCaseDataEnemy"></param>
-        public void SetInitialization(CardComponent cardComponent , UnitComponent unitCommand, StageData stageData)
+        public void SetInitialization(CameraComponent cameraComponent, CardComponent cardComponent , UnitComponent unitCommand, StageData stageData)
         {
             _pencilCaseBadgeComponent = new PencilCaseBadgeComponent();
 
             this._unitCommand = unitCommand;
             this._stageData = stageData;
             this._cardComponent = cardComponent;
+            this._cameraComponent = cameraComponent;
             this._needGauge = PencilCaseDataManagerSO.InGamePencilCaseData._needGauge;
 
             _pencilCaseBadgeComponent.SetInitialization(this);
@@ -156,6 +158,7 @@ namespace Battle
                 })
                 .Append(_bloodEffectImage.DOSizeDelta(new Vector2(2700, 1000), 0.2f).SetAutoKill(false))
                 .Append(_bloodEffectImage.DOSizeDelta(new Vector2(2700, 0), 0.1f).SetAutoKill(false));
+            _cameraComponent.ShakeCamera(0.1f, 0.3f);
         }
 
         /// <summary>
