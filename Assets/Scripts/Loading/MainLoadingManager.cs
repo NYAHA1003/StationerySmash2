@@ -18,7 +18,7 @@ public class MainLoadingManager : LoadingManager
     }
     public static void MainSceneLoad()
     {
-        nextScene ="MainScene";
+        nextScene ="MainSceneRework";
     }
 
 

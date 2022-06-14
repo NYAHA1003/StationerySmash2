@@ -57,8 +57,6 @@ public class CardObj : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField]
     private Image _gradeFrame; // 카드의 등급 테두리
     [SerializeField]
-    private Image _outLineFrame; // 카드 외곽획
-    [SerializeField]
     private TextMeshProUGUI _nameText; //카드의 이름
     [SerializeField]
     private Image _fusionEffect; // 융합시 카드 색깔이 바뀔 때 사용하는 이미지
@@ -241,21 +239,15 @@ public class CardObj : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             case 0:
             case 1:
                 _gradeFrame.sprite = _gradeFrameSprites[0];
-                _outLineFrame.sprite = _gradeFrameSprites[0];
                 _cardFilter.material = _gradeMaterial[0];
-                _outLineFrame.color = Color.black;
                 break;
             case 2:
                 _gradeFrame.sprite = _gradeFrameSprites[1];
-                _outLineFrame.sprite = _gradeFrameSprites[1];
                 _cardFilter.material = _gradeMaterial[1];
-                _outLineFrame.color = Color.black;
                 break;
             case 3:
                 _gradeFrame.sprite = _gradeFrameSprites[2];
-                _outLineFrame.sprite = _gradeFrameSprites[2];
                 _cardFilter.material = _gradeMaterial[2];
-                _outLineFrame.color = Color.white;
                 break;
         }
     }

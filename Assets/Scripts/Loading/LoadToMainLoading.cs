@@ -10,7 +10,7 @@ public class LoadToMainLoading : MonoBehaviour
 	/// </summary>
 	public void LoadToMainLoadingScene()
 	{
-		SceneManager.LoadScene("MainLoading");
+		SceneManager.LoadScene("MainLoadingRework");
 	}
 
 }
