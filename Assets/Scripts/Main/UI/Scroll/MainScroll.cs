@@ -13,18 +13,23 @@ namespace Main.Scroll
 {
     public class MainScroll : AgentScroll
     {
+        private static RectTransform[] _staticPanelIcons;
+        private static GameObject[] _staticTexts;
+
         [SerializeField]
         private Slider accentSlider;
         [SerializeField]
-        private static RectTransform[] panelIcons;
+        private RectTransform[] panelIcons;
         [SerializeField]
-        private static GameObject[] texts;
+        private GameObject[] texts;
 
         //지금은 bool로 때우는데 추후 바꿀것..
         private static bool isChangeStage=false;
         protected override void SettingAwake()
         {
             base.SettingAwake();
+            _staticPanelIcons = panelIcons;
+            _staticTexts = texts;
             EventManager.Instance.StartListening(EventsType.MoveMainPn, (x) => OnMoveMainPanel((int)x));
         }
         protected override void SettingStart()
@@ -74,17 +79,17 @@ namespace Main.Scroll
                 Sound.PlayBgm(1);
                 isChangeStage = false;
             }
-            for (int i = 0; i < panelIcons.Length; i++)
+            for (int i = 0; i < _staticPanelIcons.Length; i++)
             {
                 if (_targetIndex == i)
                 {
-                    texts[i].SetActive(true);
-                    panelIcons[i].anchoredPosition3D = new Vector3(0, 0);
+                    _staticTexts[i].SetActive(true);
+                    _staticPanelIcons[i].anchoredPosition3D = new Vector3(0, 0);
                 }
                 else
                 {
-                    panelIcons[i].anchoredPosition3D = new Vector3(0, 0);
-                    texts[i].SetActive(false);
+                    _staticPanelIcons[i].anchoredPosition3D = new Vector3(0, 0);
+                    _staticTexts[i].SetActive(false);
                 }
             }
         }
