@@ -57,7 +57,7 @@ namespace Main.Store
         private List<CardNamingType> _curCardType = new List<CardNamingType>(); // 현재 나올 카드타입 리스트 
 
         [SerializeField]
-        private List<CardData> haveCardList; // 가지고 있는 카드정보 
+        private List<CardData> DeckDataManagerSOHaveDeckDataList; // 가지고 있는 카드정보 
         [SerializeField]
         private List<CardNamingType> cardNamingTypes = new List<CardNamingType>(); // 가지고 있는 카드타입 리스트
         [SerializeField]
@@ -79,9 +79,10 @@ namespace Main.Store
 
         void Start()
         {
+         //   UserSaveManagerSO.AddCardData(DeckDataManagerSO.FindHaveCardData)
             ListenEvent();
             instantiateItem();
-            haveCardList = DeckDataManagerSO.HaveDeckDataList;
+            //DeckDataManagerSOHaveDeckDataList = DeckDataManagerSO.HaveDeckDataList;
             UpdateCurrentCard();
             Debug.Log(DeckDataManagerSO.HaveDeckDataList.Count);
         }
@@ -103,11 +104,11 @@ namespace Main.Store
         private void SetHaveCard()
         {
             cardNamingTypes.Clear();
-            int haveCardCount = haveCardList.Count;
+            int haveCardCount = DeckDataManagerSO.HaveDeckDataList.Count;
 
             for (int i = 0; i < haveCardCount; i++)
             {
-                cardNamingTypes.Add(haveCardList[i]._cardNamingType);
+                cardNamingTypes.Add(DeckDataManagerSO.HaveDeckDataList[i]._cardNamingType);
             }
         }
         /// <summary>
@@ -115,9 +116,9 @@ namespace Main.Store
         /// </summary>
         private void SetNotHaveCard()
         {
-            _notHaveCardNamingTypes.Clear();
+             _notHaveCardNamingTypes.Clear();
 
-            List<CardData> allCardList = DeckDataManagerSO.StdDeckDataList;
+            List<CardData> allCardList = DeckDataManagerSO.StdDeckDataList.ToList();
             allCardList.Remove(DeckDataManagerSO.FindStdCardData(CardNamingType.SharpSim));
             allCardList.Remove(DeckDataManagerSO.FindStdCardData(CardNamingType.PencilCase));
 

@@ -60,13 +60,16 @@ public class BattleTurtorialComponent : MonoBehaviour
 
     public TutorialTextSO TutorialTextSO => tutorialTextSO;
     public TextMeshProUGUI SpeechBubbleText => speechBubbleText;
-    public Image BlackBackground => blackBackground; 
-    
+    public Image BlackBackground => blackBackground;
+
+    [SerializeField]
+    private ST_MakeStageTutorial ST_MakeStageTutorial; // 디버그용 스테이지 튜토리얼 
     [SerializeField]
     private One_ZeroStageTutorial one_ZeroStageTutorial; // 1-0스테이지 튜토리얼 
 
 
     private AbstractStageTutorial currentStageTutorial; // 현재 튜토리얼 
+    [SerializeField]
     private BattleStageType currentBattleStageType;
 
     private bool _isPause = false;
@@ -100,6 +103,9 @@ public class BattleTurtorialComponent : MonoBehaviour
         currentBattleStageType = _loadingBattleDataSO.CurrentStageData.battleStageType; // 현재 몇 스테이지인지 받아옴
         switch (currentBattleStageType)
         {
+            case BattleStageType.ST_MAKE: 
+                currentStageTutorial = ST_MakeStageTutorial;
+                break; 
             case BattleStageType.S1_1:
                 currentStageTutorial = one_ZeroStageTutorial;
                 break;
