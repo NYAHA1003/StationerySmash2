@@ -113,7 +113,7 @@ namespace Battle
                 return;
             }
 
-            if (_stageData.timeType == TimeType.DisabledTime)
+            if (_stageData._timeType == TimeType.DisabledTime)
             {
                 return;
             }

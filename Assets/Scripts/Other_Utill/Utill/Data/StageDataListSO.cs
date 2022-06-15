@@ -4,22 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Utill.Data;
+using Utill.Load;
 using Utill.Tool;
 
 [CreateAssetMenu(fileName = "StageDataSO", menuName = "Scriptable Object/StageDataSO")]
-public class StageDataSO : ScriptableObject
+public class StageDataListSO : ScriptableObject
 {
-    [Header("임시 스테이지 데이터")]
     public List<StageData> stageDatas;
-    public PencilCaseData enemyPencilCase;
 }
 
 [System.Serializable]
 public class StageData
 {
-    public string name;
+    public BattleStageType stageType;
+    public TimeType _timeType;
     public float max_Range;
-    public TimeType timeType;
-    [Header("ActiveTime일 때만")]
     public float timeValue;
 }

@@ -19,7 +19,7 @@ namespace Battle
 		{
 			get
 			{
-				return _stageDataSO.stageDatas[0];
+				return _stageDataSO._currentStageDatas;
 			}
 
 			private set
@@ -48,7 +48,7 @@ namespace Battle
 
 		//인스펙터 변수
 		[SerializeField]
-		private StageDataSO _stageDataSO = null;
+		private CurrentStageDataSO _stageDataSO = null;
 
 		//컴포넌트들
 		[SerializeField, Header("카드시스템 BattleCard"), Space(30)]
