@@ -91,10 +91,10 @@ namespace Battle
 			_throwComponent.SetInitialization(ref _updateAction, _unitComponent, _cameraComponent, CurrentStageData);
 			_unitSignComponent.SetInitialization();
 			_aiComponent.SetInitialization(PencilCaseComponent, UnitComponent, ref _updateAction);
-			_timeComponent.SetInitialization(ref _updateAction, CurrentStageData, _unitComponent, _cardComponent, _costComponent, _pencilCaseComponent);
+			_timeComponent.SetInitialization(ref _updateAction, CurrentStageData, _unitComponent, _cardComponent, _costComponent, _pencilCaseComponent, _winLoseComponent);
 			_costComponent.SetInitialization(ref _updateAction, PencilCaseDataManagerSO.InGamePencilCaseData);
 			_pauseComponent.SetInitialization();
-			_winLoseComponent.SetInitialization();
+			_winLoseComponent.SetInitialization(_pencilCaseComponent);
 			_introComponent.SetInitialization(_cameraComponent, this);
 
 			_isEndSetting = true;

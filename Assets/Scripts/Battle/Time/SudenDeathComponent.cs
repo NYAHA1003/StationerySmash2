@@ -48,19 +48,21 @@ namespace Battle
             //체력 비교
             if (_pencilCaseComponent.PlayerPencilCase.UnitStat.Hp > _pencilCaseComponent.EnemyPencilCase.UnitStat.Hp)
             {
-                Debug.Log("서든데스 승리");
+                _timeComponent.Win();
                 _timeComponent.SetFinallyEnd(true);
                 return;
             }
-            if (_pencilCaseComponent.PlayerPencilCase.UnitStat.Hp < _pencilCaseComponent.EnemyPencilCase.UnitStat.Hp)
+            else if (_pencilCaseComponent.PlayerPencilCase.UnitStat.Hp < _pencilCaseComponent.EnemyPencilCase.UnitStat.Hp)
             {
-                Debug.Log("서든데스 패배");
+                _timeComponent.Lose();
                 _timeComponent.SetFinallyEnd(true);
                 return;
             }
-
-            Debug.Log("서든데스 무승부");
-            _timeComponent.SetFinallyEnd(true);
+            else
+            {
+                _timeComponent.Lose();
+                _timeComponent.SetFinallyEnd(true);
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Utill.Data;
 using Utill.Tool;
 using TMPro;
+using DG.Tweening;
 
 namespace Battle
 {
@@ -14,6 +15,9 @@ namespace Battle
         //인스펙터 참조 변수
         [SerializeField]
         private RectTransform _timeHand;
+        //인스펙터 참조 변수
+        [SerializeField]
+        private GameObject _suddenDeathTextObj;
         [SerializeField]
         private Image _timeDelay;
 
@@ -21,6 +25,7 @@ namespace Battle
         private UnitComponent _unitCommand = null;
         private CardComponent _cardCommand = null;
         private CostComponent _costCommand = null;
+        WinLoseComponent _winLoseComponent = null;
         private PencilCaseComponent _pencilCaseComponent = null;
         private SudenDeathComponent _sudenDeathComponent = null;
         private StageData _stageData;
@@ -36,7 +41,7 @@ namespace Battle
         /// </summary>
         /// <param name="battleManager"></param>
         /// <param name="timeText"></param>
-        public void SetInitialization(ref System.Action updateAction, StageData stageData, UnitComponent unitComponent, CardComponent cardComponent, CostComponent costComponent, PencilCaseComponent pencilCaseComponent)
+        public void SetInitialization(ref System.Action updateAction, StageData stageData, UnitComponent unitComponent, CardComponent cardComponent, CostComponent costComponent, PencilCaseComponent pencilCaseComponent, WinLoseComponent winLoseComponent)
         {
             _sudenDeathComponent = new SudenDeathComponent();
 
@@ -48,6 +53,7 @@ namespace Battle
             this._cardCommand = cardComponent;
             this._costCommand = costComponent;
             this._pencilCaseComponent = pencilCaseComponent;
+            this._winLoseComponent = winLoseComponent;
 
             _sudenDeathComponent.SetInitialization(this, _unitCommand, _cardCommand, _costCommand, _pencilCaseComponent);
 
@@ -79,6 +85,22 @@ namespace Battle
         public void IncreaseTime(float time)
         {
             _bonustime = time;
+        }
+        
+        /// <summary>
+        /// 승리
+        /// </summary>
+        public void Win()
+		{
+            _winLoseComponent.SetWinLosePanel(true);
+        }
+
+        /// <summary>
+        /// 패배
+        /// </summary>
+        public void Lose()
+        {
+            _winLoseComponent.SetWinLosePanel(false);
         }
 
         /// <summary>
@@ -113,6 +135,10 @@ namespace Battle
         /// </summary>
         private void SetSuddenDeath()
         {
+            _suddenDeathTextObj.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack)
+                .SetLoops(2, LoopType.Yoyo)
+                .OnComplete(() =>_suddenDeathTextObj.gameObject.SetActive(false));
+
             _sudenDeathComponent.SetSuddenDeath();
         }
     }
