@@ -10,6 +10,7 @@ namespace Utill.Data
         Stun,
         Ink,
         Slow,
+        Throw,
     }
     public struct EffData
     {
