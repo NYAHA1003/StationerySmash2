@@ -21,7 +21,7 @@ namespace Main.Setting
         private List<AudioSource> _effSources;
         [SerializeField]
         private List<AudioSource> _bgmSources;
-        
+
         private static List<AudioSource> _staticEffSources;
         private static List<AudioSource> _staticBgmSources;
 
@@ -186,14 +186,14 @@ namespace Main.Setting
         }
 
         public static void StopBgm(int num)
-        { 
+        {
             _staticBgmSources[num].Stop();
         }
         public void BgmSetting()
         {
             Scene scene = SceneManager.GetActiveScene();
             if (scene.name == "MainSceneRework") //ÃßÈÄ ¾À ÀÌ¸§ ¹Ù²Ü°Í
-                PlayBgm(1);
+                PlayBgm(2);
             else if (scene.name == "BattleSceneRework")
                 PlayBgm(3);
         }

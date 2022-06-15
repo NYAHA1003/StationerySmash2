@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Utill.Load;
 using Utill.Tool;
 using Main.Deck;
-
+using Main.Setting;
 public class SceneLoadButtonManager : MonoBehaviour
 {
     [SerializeField]
@@ -36,6 +36,7 @@ public class SceneLoadButtonManager : MonoBehaviour
     }
     private void LoadBattleData(BattleStageType battleStageType)
     {
+        Sound.PlayEff(2);
         Debug.Log($"{battleStageType} is loding...");
         loadingBattleDataSO.SetCurrentIndex(battleStageType);
         var currentData = loadingBattleDataSO.CurrentStageData;
@@ -45,6 +46,7 @@ public class SceneLoadButtonManager : MonoBehaviour
     }
     private void LoadBattleDataStageMake(BattleStageType battleStageType)
     {
+        Sound.PlayEff(2);
         Debug.Log($"{battleStageType} is loding...");
         loadingBattleDataSO.SetCurrentIndex(battleStageType);
         var currentData = loadingBattleDataSO.CurrentStageData;

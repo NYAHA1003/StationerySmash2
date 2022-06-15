@@ -65,7 +65,7 @@ namespace Main.Scroll
         /// <summary>
         /// 우측 패널이동 이미지 강조(왼쪽으로 움직임)
         /// </summary>
-        private static void StressImage()
+        private void StressImage()
         {
             if (_targetIndex == 0 && !isChangeStage)
             {
@@ -73,7 +73,7 @@ namespace Main.Scroll
                 Sound.PlayBgm(2);
                 isChangeStage = true;
             }
-            else if(isChangeStage)
+            else if(_targetIndex>0 &&isChangeStage)
             {
                 Sound.StopBgm(2);
                 Sound.PlayBgm(1);

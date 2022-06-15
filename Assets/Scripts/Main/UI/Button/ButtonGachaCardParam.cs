@@ -2,7 +2,8 @@ using Main.Event;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill.Data; 
+using Utill.Data;
+using Main.Setting;
 
 public class ButtonGachaCardParam : ButtonAgent
 {
@@ -10,6 +11,7 @@ public class ButtonGachaCardParam : ButtonAgent
     private GachaCard[] _gachaCards;
     public override void Execute()
     {
+        Sound.PlayEff(5);
         for(int i = 0; i < eventTypes.Length; i++)
         {
             EventManager.Instance.TriggerEvent(eventTypes[i], _gachaCards[i]);
