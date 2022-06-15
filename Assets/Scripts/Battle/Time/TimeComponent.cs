@@ -55,7 +55,7 @@ namespace Battle
             this._pencilCaseComponent = pencilCaseComponent;
             this._winLoseComponent = winLoseComponent;
 
-            _sudenDeathComponent.SetInitialization(this, _unitCommand, _cardCommand, _costCommand, _pencilCaseComponent);
+            _sudenDeathComponent.SetInitialization(_suddenDeathTextObj, this, _unitCommand, _cardCommand, _costCommand, _pencilCaseComponent);
 
             updateAction += UpdateTime;
         }
@@ -67,6 +67,7 @@ namespace Battle
         public void SetTime(float time)
         {
             _currentTimer = time;
+            _firstTimer = time;
         }
 
         /// <summary>
@@ -135,10 +136,6 @@ namespace Battle
         /// </summary>
         private void SetSuddenDeath()
         {
-            _suddenDeathTextObj.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack)
-                .SetLoops(2, LoopType.Yoyo)
-                .OnComplete(() =>_suddenDeathTextObj.gameObject.SetActive(false));
-
             _sudenDeathComponent.SetSuddenDeath();
         }
     }

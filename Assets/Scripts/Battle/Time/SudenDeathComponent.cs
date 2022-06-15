@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 namespace Battle
 {
@@ -11,6 +12,7 @@ namespace Battle
         private UnitComponent _unitCommand = null;
         private CardComponent _cardCommand = null;
         private CostComponent _costCommand = null;
+        private GameObject _suddenDeathTextObj = null;
         private PencilCaseComponent _pencilCaseComponent = null;
         private Unit _playerPencilCase = null;
         private Unit _enemyPencilCase = null;
@@ -18,8 +20,9 @@ namespace Battle
         //º¯¼ö
         private bool _isSuddenDeath;
 
-        public void SetInitialization(TimeComponent timeComponent, UnitComponent unitComponent, CardComponent cardComponent, CostComponent costComponent, PencilCaseComponent pencilCaseComponent)
+        public void SetInitialization(GameObject suddenDeathTextObj, TimeComponent timeComponent, UnitComponent unitComponent, CardComponent cardComponent, CostComponent costComponent, PencilCaseComponent pencilCaseComponent)
 		{
+            _suddenDeathTextObj = suddenDeathTextObj;
             _timeComponent = timeComponent;
             _unitCommand = unitComponent;
             _cardCommand = cardComponent;
@@ -38,10 +41,14 @@ namespace Battle
 
             if (!_isSuddenDeath)
             {
+                _suddenDeathTextObj.gameObject.SetActive(true);
+                _suddenDeathTextObj.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack)
+                    .SetLoops(2, LoopType.Yoyo)
+                    .OnComplete(() => _suddenDeathTextObj.gameObject.SetActive(false));
                 _cardCommand.SetMaxCard(8);
                 _costCommand.SetCostSpeed(500);
                 _isSuddenDeath = true;
-                _timeComponent.SetTime(1);
+                _timeComponent.SetTime(20);
                 return;
             }
 
