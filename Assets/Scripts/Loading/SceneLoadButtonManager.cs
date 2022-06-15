@@ -21,6 +21,7 @@ public class SceneLoadButtonManager : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
+        Debug.Log("버튼 로딩중");
         buttons[0].onClick.AddListener(() => LoadBattleDataStageMake(BattleStageType.ST_MAKE));
         SetBattleLoadButtons();
     }
