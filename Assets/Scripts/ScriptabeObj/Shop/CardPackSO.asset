@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f335ed38b1567c24ea28d38e1f2abff7, type: 3}
+  m_Name: CardPackSO
+  m_EditorClassIdentifier: 
+  cardPackInfos:
+  - amount: 20
+    minCount: 2
+    maxCount: 3
+    newCardPercent: 1
+    useDalgona: 5
+  - amount: 68
+    minCount: 4
+    maxCount: 5
+    newCardPercent: 4
+    useDalgona: 10
+  - amount: 300
+    minCount: 6
+    maxCount: 8
+    newCardPercent: 15
+    useDalgona: 45
