@@ -3207,12 +3207,19 @@ MonoBehaviour:
   tutorialCanvas: {fileID: 990802824}
   tutorialTextSO: {fileID: 11400000, guid: 75d97b8f0ebbccd41a969bb217eca609, type: 2}
   _loadingBattleDataSO: {fileID: 11400000, guid: bdee87f569e643c46a74cc7e1cac9807, type: 2}
+  ST_MakeStageTutorial:
+    battleTurtorialComponent: {fileID: 765451856}
+    impactTrans:
+    - {fileID: 1664341364}
+    - {fileID: 1796147864}
+    - {fileID: 1573140532}
   one_ZeroStageTutorial:
     battleTurtorialComponent: {fileID: 765451856}
     impactTrans:
     - {fileID: 1664341364}
     - {fileID: 1796147864}
     - {fileID: 1573140532}
+  currentBattleStageType: 0
 --- !u!4 &765451857
 Transform:
   m_ObjectHideFlags: 0
@@ -3707,7 +3714,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -0, y: 1350.0002}
+  m_AnchoredPosition: {x: 0, y: 1350.0002}
   m_SizeDelta: {x: 2700, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1095065799
