@@ -25,7 +25,7 @@ public abstract class GachaCard : MonoBehaviour
 
     public Grade _grade; 
     private bool isFront = false; 
-    private void Awake()
+    protected virtual void Awake()
     {
         if (_rect == null)
             _rect = itemImage.GetComponent<RectTransform>();
