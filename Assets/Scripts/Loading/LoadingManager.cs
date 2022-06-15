@@ -18,6 +18,8 @@ public class LoadingManager : MonoBehaviour
 	[SerializeField]
 	protected Slider progressBar;
 	[SerializeField]
+	protected TextMeshProUGUI _progressPercentText;
+	[SerializeField]
 	protected GameObject decoObject;
 	[SerializeField]
 	private LoadingToolTipSO loadingToolTipSO;
@@ -62,7 +64,6 @@ public class LoadingManager : MonoBehaviour
 			{
 				progressBar.value = op.progress;
 
-
 			}
 			else
 			{
@@ -74,6 +75,7 @@ public class LoadingManager : MonoBehaviour
 					yield break;
 				}
 			}
+			_progressPercentText.text = $"{(int)(progressBar.value * 100)}%";
 
 		}
 	}

@@ -142,6 +142,17 @@ namespace Battle
         }
 
         /// <summary>
+        /// 카메라 안에 들어오면 흔들림
+        /// </summary>
+        public void CameraInShake(Transform transform, float power, float time)
+		{
+            if(IsTargetVisible(transform))
+			{
+                ShakeCamera(power, time);
+            }
+		}
+
+        /// <summary>
         /// 카메라 흔들기
         /// </summary>
         /// <param name="power"></param>
@@ -149,6 +160,24 @@ namespace Battle
         public void ShakeCamera(float power, float time)
 		{
             _camera.DOShakePosition(time, power);
+        }
+
+        /// <summary>
+        /// 카메라 안에 타겟이 들어왔는지 체크
+        /// </summary>
+        /// <param name="_camera"></param>
+        /// <param name="_transform"></param>
+        /// <returns></returns>
+        public bool IsTargetVisible(Transform transform)
+        {
+            var planes = GeometryUtility.CalculateFrustumPlanes(_camera);
+            var point = transform.position;
+            foreach (var plane in planes)
+            {
+                if (plane.GetDistanceToPoint(point) < 0)
+                    return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -267,7 +296,6 @@ namespace Battle
             }
 
         }
-
     }
 
 }
