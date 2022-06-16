@@ -45,6 +45,8 @@ namespace Main.Card
 		private Button _levelUpButton; //레벨업버튼
 		[SerializeField]
 		private GameObject _levelUpDontImage; //레벨업 막는 이미지
+		[SerializeField]
+		private TextMeshProUGUI _descriptionText = null; //설명 텍스트
 
 		//스탯패널(유닛)
 		[SerializeField]
@@ -181,6 +183,7 @@ namespace Main.Card
 		{
 			_unitStatTexts.SetActive(true);
 			_stickerPanel.SetActive(true);
+			_descriptionText.text = $"{cardData._description}";
 
 			//스티커 패널 설정
 			_infoScroll.SetIcons(4);
@@ -501,8 +504,7 @@ namespace Main.Card
 				RectTransform rectTransform = _equipButton.GetComponent<RectTransform>();
 				_equipButtonSequence = DOTween.Sequence()
 					.SetAutoKill(false)
-					.Append(rectTransform.DOScale(new Vector3(1, 0.2f, 0), 0.2f))
-					.Append(rectTransform.DOScale(new Vector3(0.2f, 1, 0), 0.2f))
+					.Append(rectTransform.DOScale(new Vector3(0.2f, 0.2f, 0), 0.2f))
 					.Append(rectTransform.DOScale(Vector3.one, 0.5f))
 					.AppendCallback(() => _equipButton.interactable = true);
 			}

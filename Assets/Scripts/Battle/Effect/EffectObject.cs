@@ -36,6 +36,9 @@ namespace Battle.Effect
 				case EffectType.Slow:
 					_effectState ??= new EffectSlow();
 					break;
+				case EffectType.Throw:
+					_effectState ??= new EffectThrowAttack();
+					break;
 			}
 
 			this._effData = effData;

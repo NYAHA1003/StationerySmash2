@@ -16,6 +16,8 @@ public class SceneLoadButtonManager : MonoBehaviour
     private SceneLoadComponenet _sceneLoadComponenet;
     [SerializeField]
     private AIDataSO aIDataSO;
+    [SerializeField]
+    private Sprite[] _stageSprites;
 
 
     // Start is called before the first frame update

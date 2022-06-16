@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Utill.Data;
+using Utill.Load;
 using Utill.Tool;
 using Main.Deck;
 using Battle.Starategy;
@@ -298,6 +299,17 @@ namespace Utill.Tool
                 return;
             }
             PostUserSaveData();
+		}
+    
+        /// <summary>
+        /// 마지막으로 클리어한 스테이지 등록
+        /// </summary>
+        public static void SetLastClearStage(BattleStageType battleStageType)
+		{
+            if (battleStageType > UserSaveData._lastPlayStage)
+			{
+                UserSaveData._lastPlayStage = battleStageType;
+            }
 		}
     }
 
