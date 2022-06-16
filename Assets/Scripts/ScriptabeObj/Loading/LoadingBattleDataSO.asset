@@ -48,15 +48,19 @@ MonoBehaviour:
       _unitType: 1
       _badgeDatas: []
     summonGrade: 1
-    throwSpeed: 30
+    throwSpeed: 0
     isAIOn: 1
     cardStageData:
     - _level: 1
       _cardNamingType: 100
+    - _level: 1
+      _cardNamingType: 100
     pos:
-    - {x: 2.821423, y: 0.30118275}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
     max_Delay:
-    - 6
+    - 10
+    - 180
     _awardMoney: 1000
     _awardExp: 100
   - battleStageType: 2
@@ -87,18 +91,18 @@ MonoBehaviour:
     - _level: 1
       _cardNamingType: 100
     pos:
-    - {x: 3, y: 1.2}
-    - {x: 3, y: 1.2}
-    - {x: 3, y: 1.2}
-    - {x: 3, y: 1.2}
-    - {x: 3, y: 1.2}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
     max_Delay:
-    - 14
-    - 6
-    - 7
-    - 6
-    - 6
-    _awardMoney: 1000
+    - 2
+    - 1
+    - 1.5
+    - 1
+    - 1.5
+    _awardMoney: 100
     _awardExp: 100
   - battleStageType: 3
     _pencilCaseData:
@@ -128,19 +132,19 @@ MonoBehaviour:
     - _level: 1
       _cardNamingType: 300
     pos:
-    - {x: 3, y: 1}
-    - {x: 3, y: 1}
-    - {x: 3, y: 1}
-    - {x: 3, y: 1}
-    - {x: 3, y: 1}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
     max_Delay:
-    - 13.5
-    - 7.5
-    - 6.5
-    - 6.5
-    - 6
-    _awardMoney: 1000
-    _awardExp: 100
+    - 2
+    - 1
+    - 1
+    - 1.5
+    - 2
+    _awardMoney: 125
+    _awardExp: 125
   - battleStageType: 4
     _pencilCaseData:
       _maxCard: 5
@@ -171,21 +175,21 @@ MonoBehaviour:
     - _level: 1
       _cardNamingType: 200
     pos:
-    - {x: 2.8, y: 0.9}
-    - {x: 2.8, y: 0.9}
-    - {x: 2.8, y: 0.9}
-    - {x: 2.8, y: 0.9}
-    - {x: 2.8, y: 0.9}
-    - {x: 2.8, y: 0.9}
+    - {x: 2.8, y: 0.3}
+    - {x: 2.8, y: 0.3}
+    - {x: 2.8, y: 0.3}
+    - {x: 2.8, y: 0.3}
+    - {x: 2.8, y: 0.3}
+    - {x: 2.8, y: 0.3}
     max_Delay:
-    - 20
-    - 6
-    - 6
-    - 6
-    - 5
-    - 5
-    _awardMoney: 1000
-    _awardExp: 100
+    - 1
+    - 1.5
+    - 1
+    - 1.5
+    - 1
+    - 1.5
+    _awardMoney: 150
+    _awardExp: 150
   - battleStageType: 5
     _pencilCaseData:
       _maxCard: 5
@@ -216,18 +220,685 @@ MonoBehaviour:
     - _level: 1
       _cardNamingType: 200
     pos:
-    - {x: 2.7, y: 0.9}
-    - {x: 2.7, y: 0.9}
-    - {x: 3, y: 0.9}
-    - {x: 3, y: 1}
-    - {x: 3, y: 1}
-    - {x: 3, y: 1}
+    - {x: 2.7, y: 0.3}
+    - {x: 2.7, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
     max_Delay:
-    - 20
-    - 6
-    - 4
-    - 6
-    - 4
-    - 6
-    _awardMoney: 1000
+    - 2
+    - 2
+    - 1
+    - 1.5
+    - 1
+    - 1.5
+    _awardMoney: 300
+    _awardExp: 400
+  - battleStageType: 6
+    _pencilCaseData:
+      _maxCard: 5
+      _maxBadgeCount: 0
+      _needGauge: 0
+      _costSpeed: 100
+      _throwGaugeSpeed: 30
+      _name: "\uAE30\uBCF8\uD544\uD1B5"
+      _description: "\uAE30\uBCF8\uD544\uD1B5\uC774\uB2E4"
+      _pencilCaseType: 0
+      _skinType: 1
+      _unitType: 1
+      _badgeDatas: []
+    summonGrade: 1
+    throwSpeed: 40
+    isAIOn: 1
+    cardStageData:
+    - _level: 1
+      _cardNamingType: 300
+    - _level: 1
+      _cardNamingType: 200
+    - _level: 1
+      _cardNamingType: 300
+    - _level: 1
+      _cardNamingType: 200
+    pos:
+    - {x: 2.9, y: 0.3}
+    - {x: 2.9, y: 0.3}
+    - {x: 2.9, y: 0.3}
+    - {x: 2.9, y: 0.3}
+    max_Delay:
+    - 2
+    - 1.5
+    - 1.5
+    - 1.5
+    _awardMoney: 150
     _awardExp: 100
+  - battleStageType: 7
+    _pencilCaseData:
+      _maxCard: 5
+      _maxBadgeCount: 0
+      _needGauge: 0
+      _costSpeed: 100
+      _throwGaugeSpeed: 30
+      _name: "\uAE30\uBCF8\uD544\uD1B5"
+      _description: "\uAE30\uBCF8\uD544\uD1B5\uC774\uB2E4"
+      _pencilCaseType: 0
+      _skinType: 1
+      _unitType: 1
+      _badgeDatas: []
+    summonGrade: 1
+    throwSpeed: 10
+    isAIOn: 1
+    cardStageData:
+    - _level: 1
+      _cardNamingType: 100
+    - _level: 1
+      _cardNamingType: 100
+    - _level: 1
+      _cardNamingType: 100
+    - _level: 1
+      _cardNamingType: 100
+    - _level: 1
+      _cardNamingType: 400
+    pos:
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    max_Delay:
+    - 1
+    - 1
+    - 1
+    - 1
+    - 2
+    _awardMoney: 150
+    _awardExp: 100
+  - battleStageType: 8
+    _pencilCaseData:
+      _maxCard: 5
+      _maxBadgeCount: 0
+      _needGauge: 0
+      _costSpeed: 100
+      _throwGaugeSpeed: 30
+      _name: "\uAE30\uBCF8\uD544\uD1B5"
+      _description: "\uAE30\uBCF8\uD544\uD1B5\uC774\uB2E4"
+      _pencilCaseType: 0
+      _skinType: 1
+      _unitType: 1
+      _badgeDatas: []
+    summonGrade: 1
+    throwSpeed: 20
+    isAIOn: 1
+    cardStageData:
+    - _level: 1
+      _cardNamingType: 600
+    - _level: 1
+      _cardNamingType: 200
+    - _level: 1
+      _cardNamingType: 200
+    pos:
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    max_Delay:
+    - 2
+    - 1.5
+    - 1.5
+    _awardMoney: 175
+    _awardExp: 125
+  - battleStageType: 9
+    _pencilCaseData:
+      _maxCard: 5
+      _maxBadgeCount: 0
+      _needGauge: 0
+      _costSpeed: 100
+      _throwGaugeSpeed: 30
+      _name: "\uAE30\uBCF8\uD544\uD1B5"
+      _description: "\uAE30\uBCF8\uD544\uD1B5\uC774\uB2E4"
+      _pencilCaseType: 0
+      _skinType: 1
+      _unitType: 1
+      _badgeDatas: []
+    summonGrade: 1
+    throwSpeed: 30
+    isAIOn: 1
+    cardStageData:
+    - _level: 1
+      _cardNamingType: 500
+    - _level: 1
+      _cardNamingType: 500
+    - _level: 1
+      _cardNamingType: 200
+    - _level: 1
+      _cardNamingType: 500
+    - _level: 1
+      _cardNamingType: 200
+    - _level: 1
+      _cardNamingType: 200
+    pos:
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    max_Delay:
+    - 3.5
+    - 3.5
+    - 1.5
+    - 3
+    - 1.5
+    - 1
+    _awardMoney: 200
+    _awardExp: 150
+  - battleStageType: 10
+    _pencilCaseData:
+      _maxCard: 5
+      _maxBadgeCount: 0
+      _needGauge: 0
+      _costSpeed: 100
+      _throwGaugeSpeed: 30
+      _name: "\uAE30\uBCF8\uD544\uD1B5"
+      _description: "\uAE30\uBCF8\uD544\uD1B5\uC774\uB2E4"
+      _pencilCaseType: 0
+      _skinType: 1
+      _unitType: 1
+      _badgeDatas: []
+    summonGrade: 1
+    throwSpeed: 50
+    isAIOn: 1
+    cardStageData:
+    - _level: 1
+      _cardNamingType: 100
+    - _level: 1
+      _cardNamingType: 400
+    - _level: 1
+      _cardNamingType: 500
+    - _level: 1
+      _cardNamingType: 500
+    - _level: 1
+      _cardNamingType: 200
+    - _level: 1
+      _cardNamingType: 100
+    - _level: 1
+      _cardNamingType: 200
+    - _level: 1
+      _cardNamingType: 400
+    pos:
+    - {x: 3, y: 0.3}
+    - {x: 3.5, y: 0.3}
+    - {x: 3.2, y: 0.3}
+    - {x: 3.2, y: 0.3}
+    - {x: 2.9, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 2.9, y: 0.3}
+    - {x: 3.5, y: 0.3}
+    max_Delay:
+    - 1
+    - 3
+    - 3.5
+    - 3
+    - 1.5
+    - 1
+    - 1.5
+    - 3
+    _awardMoney: 400
+    _awardExp: 400
+  - battleStageType: 11
+    _pencilCaseData:
+      _maxCard: 5
+      _maxBadgeCount: 0
+      _needGauge: 0
+      _costSpeed: 100
+      _throwGaugeSpeed: 30
+      _name: "\uAE30\uBCF8\uD544\uD1B5"
+      _description: "\uAE30\uBCF8\uD544\uD1B5\uC774\uB2E4"
+      _pencilCaseType: 0
+      _skinType: 1
+      _unitType: 1
+      _badgeDatas: []
+    summonGrade: 2
+    throwSpeed: 50
+    isAIOn: 1
+    cardStageData:
+    - _level: 1
+      _cardNamingType: 100
+    - _level: 1
+      _cardNamingType: 100
+    - _level: 1
+      _cardNamingType: 800
+    pos:
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 2.8, y: 0.3}
+    max_Delay:
+    - 1
+    - 1
+    - 2
+    _awardMoney: 200
+    _awardExp: 200
+  - battleStageType: 12
+    _pencilCaseData:
+      _maxCard: 5
+      _maxBadgeCount: 0
+      _needGauge: 0
+      _costSpeed: 100
+      _throwGaugeSpeed: 30
+      _name: "\uAE30\uBCF8\uD544\uD1B5"
+      _description: "\uAE30\uBCF8\uD544\uD1B5\uC774\uB2E4"
+      _pencilCaseType: 0
+      _skinType: 1
+      _unitType: 1
+      _badgeDatas: []
+    summonGrade: 2
+    throwSpeed: 50
+    isAIOn: 1
+    cardStageData:
+    - _level: 1
+      _cardNamingType: 700
+    - _level: 1
+      _cardNamingType: 200
+    - _level: 1
+      _cardNamingType: 700
+    - _level: 1
+      _cardNamingType: 200
+    - _level: 1
+      _cardNamingType: 200
+    - _level: 1
+      _cardNamingType: 200
+    pos:
+    - {x: 3.3, y: 0.3}
+    - {x: 2.8, y: 0.3}
+    - {x: 3.3, y: 0.3}
+    - {x: 2.8, y: 0.3}
+    - {x: 2.8, y: 0.3}
+    - {x: 2.8, y: 0.3}
+    max_Delay:
+    - 5.5
+    - 1.5
+    - 5.5
+    - 1.5
+    - 1.5
+    - 1
+    _awardMoney: 200
+    _awardExp: 200
+  - battleStageType: 13
+    _pencilCaseData:
+      _maxCard: 5
+      _maxBadgeCount: 0
+      _needGauge: 0
+      _costSpeed: 100
+      _throwGaugeSpeed: 30
+      _name: "\uAE30\uBCF8\uD544\uD1B5"
+      _description: "\uAE30\uBCF8\uD544\uD1B5\uC774\uB2E4"
+      _pencilCaseType: 0
+      _skinType: 1
+      _unitType: 1
+      _badgeDatas: []
+    summonGrade: 2
+    throwSpeed: 10
+    isAIOn: 1
+    cardStageData:
+    - _level: 1
+      _cardNamingType: 300
+    - _level: 1
+      _cardNamingType: 300
+    - _level: 1
+      _cardNamingType: 300
+    - _level: 1
+      _cardNamingType: 800
+    - _level: 1
+      _cardNamingType: 300
+    - _level: 1
+      _cardNamingType: 400
+    - _level: 1
+      _cardNamingType: 800
+    pos:
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    max_Delay:
+    - 2
+    - 1.5
+    - 1.5
+    - 3
+    - 1.5
+    - 3
+    - 3
+    _awardMoney: 225
+    _awardExp: 225
+  - battleStageType: 14
+    _pencilCaseData:
+      _maxCard: 5
+      _maxBadgeCount: 0
+      _needGauge: 0
+      _costSpeed: 100
+      _throwGaugeSpeed: 30
+      _name: "\uAE30\uBCF8\uD544\uD1B5"
+      _description: "\uAE30\uBCF8\uD544\uD1B5\uC774\uB2E4"
+      _pencilCaseType: 0
+      _skinType: 1
+      _unitType: 1
+      _badgeDatas: []
+    summonGrade: 2
+    throwSpeed: 3
+    isAIOn: 1
+    cardStageData:
+    - _level: 1
+      _cardNamingType: 800
+    - _level: 1
+      _cardNamingType: 800
+    - _level: 1
+      _cardNamingType: 800
+    - _level: 1
+      _cardNamingType: 700
+    pos:
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    max_Delay:
+    - 2.5
+    - 2.5
+    - 2.5
+    - 4
+    _awardMoney: 200
+    _awardExp: 150
+  - battleStageType: 15
+    _pencilCaseData:
+      _maxCard: 5
+      _maxBadgeCount: 0
+      _needGauge: 0
+      _costSpeed: 100
+      _throwGaugeSpeed: 30
+      _name: "\uAE30\uBCF8\uD544\uD1B5"
+      _description: "\uAE30\uBCF8\uD544\uD1B5\uC774\uB2E4"
+      _pencilCaseType: 0
+      _skinType: 1
+      _unitType: 1
+      _badgeDatas: []
+    summonGrade: 2
+    throwSpeed: 35
+    isAIOn: 1
+    cardStageData:
+    - _level: 1
+      _cardNamingType: 800
+    - _level: 1
+      _cardNamingType: 300
+    - _level: 1
+      _cardNamingType: 700
+    - _level: 1
+      _cardNamingType: 300
+    - _level: 1
+      _cardNamingType: 200
+    - _level: 1
+      _cardNamingType: 800
+    - _level: 1
+      _cardNamingType: 200
+    - _level: 1
+      _cardNamingType: 700
+    - _level: 1
+      _cardNamingType: 300
+    - _level: 1
+      _cardNamingType: 200
+    pos:
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    max_Delay:
+    - 3
+    - 1.5
+    - 4
+    - 1.5
+    - 1.5
+    - 2.5
+    - 1.5
+    - 3.5
+    - 1.5
+    - 1
+    _awardMoney: 400
+    _awardExp: 400
+  - battleStageType: 16
+    _pencilCaseData:
+      _maxCard: 5
+      _maxBadgeCount: 0
+      _needGauge: 0
+      _costSpeed: 100
+      _throwGaugeSpeed: 30
+      _name: "\uAE30\uBCF8\uD544\uD1B5"
+      _description: "\uAE30\uBCF8\uD544\uD1B5\uC774\uB2E4"
+      _pencilCaseType: 0
+      _skinType: 1
+      _unitType: 1
+      _badgeDatas: []
+    summonGrade: 3
+    throwSpeed: 15
+    isAIOn: 1
+    cardStageData:
+    - _level: 1
+      _cardNamingType: 300
+    - _level: 1
+      _cardNamingType: 300
+    - _level: 1
+      _cardNamingType: 300
+    - _level: 1
+      _cardNamingType: 900
+    pos:
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    max_Delay:
+    - 2.5
+    - 2.5
+    - 2.5
+    - 5
+    _awardMoney: 250
+    _awardExp: 200
+  - battleStageType: 17
+    _pencilCaseData:
+      _maxCard: 5
+      _maxBadgeCount: 0
+      _needGauge: 0
+      _costSpeed: 100
+      _throwGaugeSpeed: 30
+      _name: "\uAE30\uBCF8\uD544\uD1B5"
+      _description: "\uAE30\uBCF8\uD544\uD1B5\uC774\uB2E4"
+      _pencilCaseType: 0
+      _skinType: 1
+      _unitType: 1
+      _badgeDatas: []
+    summonGrade: 3
+    throwSpeed: 15
+    isAIOn: 1
+    cardStageData:
+    - _level: 1
+      _cardNamingType: 500
+    - _level: 1
+      _cardNamingType: 100
+    - _level: 1
+      _cardNamingType: 100
+    - _level: 1
+      _cardNamingType: 500
+    - _level: 1
+      _cardNamingType: 100
+    - _level: 1
+      _cardNamingType: 100
+    - _level: 1
+      _cardNamingType: 900
+    - _level: 1
+      _cardNamingType: 100
+    pos:
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    max_Delay:
+    - 3
+    - 1
+    - 1
+    - 3
+    - 1
+    - 1
+    - 3.5
+    - 1
+    _awardMoney: 250
+    _awardExp: 200
+  - battleStageType: 18
+    _pencilCaseData:
+      _maxCard: 5
+      _maxBadgeCount: 0
+      _needGauge: 0
+      _costSpeed: 100
+      _throwGaugeSpeed: 30
+      _name: "\uAE30\uBCF8\uD544\uD1B5"
+      _description: "\uAE30\uBCF8\uD544\uD1B5\uC774\uB2E4"
+      _pencilCaseType: 0
+      _skinType: 1
+      _unitType: 1
+      _badgeDatas: []
+    summonGrade: 3
+    throwSpeed: 40
+    isAIOn: 1
+    cardStageData:
+    - _level: 1
+      _cardNamingType: 600
+    - _level: 1
+      _cardNamingType: 100
+    - _level: 1
+      _cardNamingType: 300
+    - _level: 1
+      _cardNamingType: 100
+    - _level: 1
+      _cardNamingType: 100
+    - _level: 1
+      _cardNamingType: 700
+    - _level: 1
+      _cardNamingType: 300
+    pos:
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    max_Delay:
+    - 2
+    - 1
+    - 2
+    - 1
+    - 1
+    - 3.5
+    - 1.5
+    _awardMoney: 275
+    _awardExp: 225
+  - battleStageType: 19
+    _pencilCaseData:
+      _maxCard: 5
+      _maxBadgeCount: 0
+      _needGauge: 0
+      _costSpeed: 100
+      _throwGaugeSpeed: 30
+      _name: "\uAE30\uBCF8\uD544\uD1B5"
+      _description: "\uAE30\uBCF8\uD544\uD1B5\uC774\uB2E4"
+      _pencilCaseType: 0
+      _skinType: 1
+      _unitType: 1
+      _badgeDatas: []
+    summonGrade: 3
+    throwSpeed: 10
+    isAIOn: 1
+    cardStageData:
+    - _level: 1
+      _cardNamingType: 800
+    - _level: 1
+      _cardNamingType: 800
+    - _level: 1
+      _cardNamingType: 500
+    - _level: 1
+      _cardNamingType: 800
+    - _level: 1
+      _cardNamingType: 900
+    pos:
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    - {x: 3, y: 0.3}
+    max_Delay:
+    - 2.5
+    - 2.5
+    - 3.5
+    - 2.5
+    - 4
+    _awardMoney: 300
+    _awardExp: 250
+  - battleStageType: 20
+    _pencilCaseData:
+      _maxCard: 5
+      _maxBadgeCount: 0
+      _needGauge: 0
+      _costSpeed: 100
+      _throwGaugeSpeed: 30
+      _name: "\uAE30\uBCF8\uD544\uD1B5"
+      _description: "\uAE30\uBCF8\uD544\uD1B5\uC774\uB2E4"
+      _pencilCaseType: 0
+      _skinType: 1
+      _unitType: 1
+      _badgeDatas: []
+    summonGrade: 3
+    throwSpeed: 10
+    isAIOn: 1
+    cardStageData:
+    - _level: 1
+      _cardNamingType: 300
+    - _level: 1
+      _cardNamingType: 900
+    - _level: 1
+      _cardNamingType: 500
+    - _level: 1
+      _cardNamingType: 500
+    - _level: 1
+      _cardNamingType: 600
+    - _level: 1
+      _cardNamingType: 700
+    - _level: 1
+      _cardNamingType: 300
+    - _level: 1
+      _cardNamingType: 900
+    pos:
+    - {x: 3.1, y: 0.3}
+    - {x: 3.1, y: 0.3}
+    - {x: 3.1, y: 0.3}
+    - {x: 3.1, y: 0.3}
+    - {x: 3.1, y: 0.3}
+    - {x: 3.1, y: 0.3}
+    - {x: 3.1, y: 0.3}
+    - {x: 3.1, y: 0.3}
+    max_Delay:
+    - 2
+    - 4
+    - 3
+    - 3
+    - 3.5
+    - 4
+    - 2
+    - 3
+    _awardMoney: 600
+    _awardExp: 600

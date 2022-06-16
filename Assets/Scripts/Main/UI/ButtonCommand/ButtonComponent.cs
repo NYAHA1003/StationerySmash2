@@ -46,26 +46,7 @@ namespace Main.Buttons
 			//덱에 있는 카드 클릭시 카드설명이 뜸, DeckSetting에서 카드 만들어주면서 AddListener로 EventTrigger로 등록해줌     
 			
 		}
-		private void Start()
-		{
-			Initialized();
-		}
 
-		/// <summary>
-		///  사용할 버튼 커맨드들 초기화, 
-		/// </summary>
-		private void Initialized()
-		{
-			AddListner();
-		}
-
-		/// <summary>
-		/// 클릭할 버튼들, 취소패널들 onClick함수 넣어줌
-		/// </summary>
-		private void AddListner()
-		{
-			clickBtns[(int)ButtonType.credit].onClick.AddListener(() => EventManager.Instance.TriggerEvent(EventsType.MoveCredit));
-		}
 		/// <summary>
 		/// 패널 활성화시킬 때 발동되는 버튼함수 
 		/// </summary>
