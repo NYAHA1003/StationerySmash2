@@ -4,7 +4,9 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 using Main.Event;
-using Utill.Data; 
+using Utill.Data;
+using UnityEngine.UI;
+
 [Serializable]
 public class MeshInfo
 {
@@ -23,6 +25,12 @@ public class CardMesh : MonoBehaviour
     private Transform _slicedParent;
     [SerializeField]
     private GameObject _slicedMeshObj;
+    [SerializeField]
+    private Image _impactImage;
+    [SerializeField]
+    private GameObject _cardPackParent;
+    [SerializeField]
+    private GameObject _skipButton; 
 
     private Mesh _mesh;
     private Mesh _slicedMesh;
@@ -52,6 +60,9 @@ public class CardMesh : MonoBehaviour
     [ContextMenu("MeshTest")]
     public void StartMesh()
     {
+        _cardPackParent.SetActive(true);
+        _impactImage.gameObject.SetActive(true);
+        _skipButton.SetActive(false); 
         StartCoroutine(OpenCard());
     }
     /// <summary>
@@ -69,7 +80,6 @@ public class CardMesh : MonoBehaviour
         _mesh?.Clear();
         _slicedMesh?.Clear();
         _slicedParent.rotation = Quaternion.identity;
-
     }
 
     /// <summary>
@@ -111,32 +121,32 @@ public class CardMesh : MonoBehaviour
     public IEnumerator OpenCard()
     {
         CreateMesh();
-        //vertices = new Vector3[4];
-        //uvs = new Vector2[4];
-        //triangles = new int[6];
+        vertices = new Vector3[4];
+        uvs = new Vector2[4];
+        triangles = new int[6];
 
-        //vertices[0] = new Vector3(0, 0, 0);
-        //vertices[1] = new Vector3(0, sepYpoint, 0);
-        //vertices[2] = new Vector3(sepXpoint, sepYpoint, 0);
-        //vertices[3] = new Vector3(sepXpoint, 0, 0);
+        vertices[0] = new Vector3(0, 0, 0);
+        vertices[1] = new Vector3(0, sepYpoint, 0);
+        vertices[2] = new Vector3(sepXpoint, sepYpoint, 0);
+        vertices[3] = new Vector3(sepXpoint, 0, 0);
 
-        //uvs[0] = Vector2.zero;
-        //uvs[1] = new Vector2(0, _meshInfo.sepYPoint);
-        //uvs[2] = new Vector2(_meshInfo.sepXPoint, _meshInfo.sepYPoint);
-        //uvs[3] = new Vector2(_meshInfo.sepXPoint, 0);
+        uvs[0] = Vector2.zero;
+        uvs[1] = new Vector2(0, _meshInfo.sepYPoint);
+        uvs[2] = new Vector2(_meshInfo.sepXPoint, _meshInfo.sepYPoint);
+        uvs[3] = new Vector2(_meshInfo.sepXPoint, 0);
 
-        //triangles[0] = 0;
-        //triangles[1] = 1;
-        //triangles[2] = 3;
-        //triangles[3] = 1;
-        //triangles[4] = 2;
-        //triangles[5] = 3;
+        triangles[0] = 0;
+        triangles[1] = 1;
+        triangles[2] = 3;
+        triangles[3] = 1;
+        triangles[4] = 2;
+        triangles[5] = 3;
 
-        //_mesh.vertices = vertices;
-        //_mesh.uv = uvs;
-        //_mesh.triangles = triangles;
-
-        //_meshFilter.mesh = _mesh;
+        _mesh.vertices = vertices;
+        _mesh.uv = uvs;
+        _mesh.triangles = triangles;
+    
+        _meshFilter.mesh = _mesh;
 
 
         _slicedMesh = new Mesh();
@@ -155,13 +165,6 @@ public class CardMesh : MonoBehaviour
         _slicedMesh.triangles = triangles;
         _slicedMesh.uv = uvs;
         _slicedMeshFilter.mesh = _slicedMesh;
-        //        GameObject g = new GameObject("SlicedMesh", typeof(MeshFilter), typeof(MeshRenderer), typeof(RectTransform));
-
-
-        //    g.transform.SetParent(_slicedParent.transform);
-        //      g.GetComponent<RectTransform>().anchoredPosition = new Vector3(-1.5f, 0, 0);
-        //  g.GetComponent<MeshFilter>().mesh = _slicedMesh;
-        //g.GetComponent<MeshRenderer>().material = _mat;
 
         yield return new WaitForSeconds(0.3f);
 
@@ -177,10 +180,16 @@ public class CardMesh : MonoBehaviour
         {
             // 카드 사이 빛나는 이펙트 추가 
         });
+        sequence.Append(_impactImage.DOFade(1, 0.5f));
+        sequence.AppendCallback(() =>_cardPackParent.SetActive(false));
+        sequence.Join(_impactImage.DOFade(0, 0.4f));
+
         sequence.AppendCallback(() =>
         {
-           // EventManager.Instance.TriggerEvent(EventsType.ActiveAndAnimateCard);
+            EventManager.Instance.TriggerEvent(EventsType.ActiveAndAnimateCard);
         });
+        sequence.AppendCallback(()=>_impactImage.gameObject.SetActive(false));
+        sequence.AppendCallback(() => _skipButton.SetActive(true)); 
         //sequence.Append(g.GetComponent<RectTransform>().DOAnchorPosX(-2f, 0.6f));
         //        sequence.Join(g.GetComponent<RectTransform>().DORotate(new Vector3(0, 360, -70), 0.6f,RotateMode.FastBeyond360));
         //sequence.Join(g.GetComponent<RectTransform>().DOScale(new Vector3(0.3f, 0.3f, 0.3f), 0.6f));

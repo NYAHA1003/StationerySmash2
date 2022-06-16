@@ -10,7 +10,7 @@ using Main.Event;
 using Main.Deck;
 using System.Linq;
 using System;
-using Random = UnityEngine.Random; 
+using Random = UnityEngine.Random;
 
 namespace Main.Store
 {
@@ -33,6 +33,7 @@ namespace Main.Store
         [SerializeField]
         private List<CardNamingType> _notHaveCardNamingTypes = new List<CardNamingType>(); // 가지고 있지 않은 카드타입 리스트
 
+ 
         [SerializeField]
         private GachaInfo _gachaInfo;
         [SerializeField]
@@ -40,7 +41,7 @@ namespace Main.Store
         [SerializeField]
         private GameObject _cardPanel;
         [SerializeField]
-        private CardMesh _cardMesh; 
+        private CardMesh _cardMesh;
 
         [SerializeField]
         private List<GachaCard> gachaCards = new List<GachaCard>(); // 총 아이템개수 
@@ -52,12 +53,13 @@ namespace Main.Store
         /// <summary>
         /// 랜덤으로 바뀌는 정보
         /// </summary>
-        int _quantity = 0;          //정해진 범위안에서 랜덤으로 정해지는 수량 
+        [SerializeField]
+        private int _quantity = 0;          //정해진 범위안에서 랜덤으로 정해지는 수량 
 
 
         void Start()
         {
-         //   UserSaveManagerSO.AddCardData(DeckDataManagerSO.FindHaveCardData)
+            //   UserSaveManagerSO.AddCardData(DeckDataManagerSO.FindHaveCardData)
             ListenEvent();
             instantiateItem();
             //DeckDataManagerSOHaveDeckDataList = DeckDataManagerSO.HaveDeckDataList;
@@ -69,7 +71,7 @@ namespace Main.Store
         private void ListenEvent()
         {
             EventManager.Instance.StartListening(EventsType.DrawCardPack, (x) => ClickCardPack((int)x));
-            EventManager.Instance.StartListening(EventsType.ActiveAndAnimateCard, ActiveAndAnimateCard); 
+            EventManager.Instance.StartListening(EventsType.ActiveAndAnimateCard, ActiveAndAnimateCard);
         }
         /// <summary>
         /// 최대로 나올 뽑기 아이템 생성 
@@ -93,11 +95,12 @@ namespace Main.Store
             {
                 SetHaveCard();
                 SetNotHaveCard();
-            }catch(Exception e)
-            {
-                Debug.LogError($"오류{e.Message}"); 
             }
-    }
+            catch (Exception e)
+            {
+                Debug.LogError($"오류{e.Message}");
+            }
+        }
         /// <summary>
         /// 보유 카드가 무엇인지 설정
         /// </summary>
@@ -116,11 +119,17 @@ namespace Main.Store
         /// </summary>
         private void SetNotHaveCard()
         {
-             _notHaveCardNamingTypes.Clear();
+            _notHaveCardNamingTypes.Clear();
 
             List<CardData> allCardList = DeckDataManagerSO.StdDeckDataList.ToList();
-            allCardList.Remove(DeckDataManagerSO.FindStdCardData(CardNamingType.SharpSim));
-            allCardList.Remove(DeckDataManagerSO.FindStdCardData(CardNamingType.PencilCase));
+
+            foreach (var type in System.Enum.GetValues(typeof(CardNamingType)))
+            {
+                if ((int)type > 1000)
+                {
+                    allCardList.Remove(DeckDataManagerSO.FindStdCardData((CardNamingType)type));
+                }
+            }
 
             cardNamingTypes.ForEach((x) =>
             {
@@ -182,7 +191,7 @@ namespace Main.Store
             _curCardAmountList.Clear();
             _curCardType.Clear();
             _quantity = 0;
-            UpdateCurrentCard(); 
+            UpdateCurrentCard();
         }
 
         /// <summary>
@@ -200,7 +209,7 @@ namespace Main.Store
             Reset();
             DrawCardPack((PackageType)cardPackType);
             _cardPanel.SetActive(true);
-            _cardMesh.StartMesh(); 
+            _cardMesh.StartMesh();
         }
         /// <summary>
         /// 카드팩뽑기시 데이터세팅 
@@ -222,28 +231,16 @@ namespace Main.Store
             _quantity = Random.Range(minCount, maxCount);
 
             // 카드 종류
-            bool isOverlap = false;
             for (int i = 0; i < _quantity; i++)
             {
                 int index = Random.Range(0, cardNamingTypes.Count);
                 CardNamingType cardNamingType = cardNamingTypes[index];
-                _curCardType.ForEach((x) =>
-                {
-                    if (x == cardNamingType)
-                    {
-                        isOverlap = true;
-                    }
-                });
-                if (isOverlap == true)
-                {
-                    --i;
-                    continue;
-                }
+                cardNamingTypes.Remove(cardNamingType);
                 _curCardType.Add(cardNamingType);
             }
             // 새 카드 뽑기 여부
             int newCardPercent = Random.Range(1, 101);
-             isNew = _pickCardPackInfo.newCardPercent >= newCardPercent; // 새로운 분실물이 나오는지
+            isNew = _pickCardPackInfo.newCardPercent >= newCardPercent; // 새로운 분실물이 나오는지
 
             SetCardSlices(_pickCardPackInfo.amount);
             SetGachaCard();
@@ -290,7 +287,7 @@ namespace Main.Store
         /// </summary>
         private void SetGachaCard()
         {
-            DeckCard curCard; 
+            DeckCard curCard;
             for (int i = 0; i < _quantity; i++)
             {
                 Debug.Log($"{i}번째 카드설정 {_curCardType[i]} {_curCardAmountList[i]} ");
@@ -300,7 +297,7 @@ namespace Main.Store
                 gachaCards[i].SetSprite(curCard.CardImage.sprite, _backCardpack, true);
             }
 
-            if (isNew == true)
+            if (isNew == true && _notHaveCardNamingTypes.Count > 0)
             {
                 CardNamingType newCardNamingType = DrawNewCard();
                 UserSaveManagerSO.AddCardData(DeckDataManagerSO.FindStdCardData(newCardNamingType), 1); // 유저데이터 저장 
@@ -312,10 +309,10 @@ namespace Main.Store
 
         private void ActiveAndAnimateCard()
         {
-            int count = isNew ? _quantity : _quantity - 1; 
-            for(int i = 0; i < count; i++)
+            int count = (isNew && _notHaveCardNamingTypes.Count > 0) ? _quantity : _quantity - 1;
+            for (int i = 0; i <= count; i++)
             {
-                gachaCards[i].ActiveAndAnimate(); 
+                gachaCards[i].ActiveAndAnimate();
             }
         }
 
@@ -324,7 +321,7 @@ namespace Main.Store
         /// </summary>
         private CardNamingType DrawNewCard()
         {
-            CardNamingType _newCardNamingType;
+             CardNamingType _newCardNamingType;
             _newCardNamingType = _notHaveCardNamingTypes[Random.Range(0, _notHaveCardNamingTypes.Count)];     //없는 유닛들중 새로운 유닛을 선택
             // 가지고 있지 않은 리스트 초기화 or NatHaveCardNamingTypes.Remove(cardNamingType); 
             Debug.Log($"새로운 유닛 \"{_newCardNamingType}\"이/가 뽑혔습니다.");
@@ -333,7 +330,7 @@ namespace Main.Store
 
     }
 
-    
+
 }
 
 
