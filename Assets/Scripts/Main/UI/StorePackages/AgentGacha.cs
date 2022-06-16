@@ -101,7 +101,6 @@ namespace Main.Store
 
             EventManager.Instance.StartListening(EventsType.SkipAnimation, SkipAnimation);
             EventManager.Instance.StartListening(EventsType.ActiveNextBtn, ActiveNextBtn);
-            EventManager.Instance.StartListening(EventsType.ActiveBadgePanel, ActiveBadgePanel); 
         }
         
         private void ActiveBadgePanel()
@@ -227,7 +226,7 @@ namespace Main.Store
                 gachaCards[i].gameObject.SetActive(false);
                 gachaCards[i].StopCoroutine(); 
             }
-            ActiveBadgePanel(); 
+           // ActiveBadgePanel(); 
             // 검은 이미지 닫기 
             // gachaCanvas.gameObject.SetActive(false);
         }
