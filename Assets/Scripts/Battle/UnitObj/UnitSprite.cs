@@ -44,6 +44,8 @@ public class UnitSprite
     [SerializeField]
     private SpriteRenderer _spriteRenderer = null; //유닛 스프라이트렌더러
     [SerializeField]
+    private SpriteRenderer _shadowSpriteRenderer = null; //유닛 그림자 스프라이트렌더러
+    [SerializeField]
     private SpriteRenderer _hpSpriteRenderer = null; //유닛 체력 스프라이트
     [SerializeField]
     private Transform _starTransform = null; //별 트랜스폼
@@ -74,6 +76,7 @@ public class UnitSprite
         SetDelayBar();
         
         _spriteRenderer.sprite = sprite;
+        _shadowSpriteRenderer.sprite = sprite;
         _hpSpriteRenderer.sprite = sprite;
         _starTransform.DOScale(Vector3.one * 0.12f, 1f).SetEase(Ease.OutQuad).SetLoops(-1, LoopType.Yoyo);
 
