@@ -47,4 +47,44 @@ public class CardData : IDeepCopy<CardData>
 
         return cardData;
     }
+
+
+}
+
+/// <summary>
+/// 카드 데이터가 같은지 체크함
+/// </summary>
+public class CardDataComparer : IEqualityComparer<CardData>
+{
+    public bool Equals(CardData x, CardData y)
+    {
+        // 참조 값 동일한지 비교
+        if (object.ReferenceEquals(x, y))
+        {
+            return true;
+        }
+
+        // 객체 참조 중 하나라도 null이면 false 반환 
+        if (object.ReferenceEquals(x, null) || object.ReferenceEquals(y, null))
+        {
+            return false;
+        }
+
+        // 객체의 속성을 하나씩 비교
+        return x._cardNamingType == y._cardNamingType;
+    }
+
+    public int GetHashCode(CardData obj)
+    {
+        // 객체가 존재하는지 체크
+        if (obj == null)
+        {
+            return 0;
+        }
+
+        // 문자열은 null이 가능하므로 예외 처리
+        int NameHashCode = obj._cardNamingType == CardNamingType.None ? 0 : obj._cardNamingType.GetHashCode();
+
+        return NameHashCode;
+    }
 }
