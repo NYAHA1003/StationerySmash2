@@ -48,7 +48,7 @@ namespace Battle
 
 		//인스펙터 변수
 		[SerializeField]
-		private CurrentStageDataSO _stageDataSO = null;
+		private CurrentStageData _stageDataSO = null;
 
 		//컴포넌트들
 		[SerializeField, Header("카드시스템 BattleCard"), Space(30)]

@@ -15,7 +15,7 @@ public class SceneLoadButtonManager : MonoBehaviour
     [SerializeField]
     private SceneLoadComponenet _sceneLoadComponenet;
     [SerializeField]
-    private AIDataSO aIDataSO;
+    private AIDatasSO aIDataSO;
     [SerializeField]
     private Sprite[] _stageSprites;
     [SerializeField]
@@ -23,7 +23,7 @@ public class SceneLoadButtonManager : MonoBehaviour
     [SerializeField]
     private StageDataListSO _stageDataListSO = null;
     [SerializeField]
-    private CurrentStageDataSO _currentDataSO = null;
+    private CurrentStageData _currentDataSO = null;
 
     private WarrningComponent _warrningComponent = null; //경고 컴포넌트
 

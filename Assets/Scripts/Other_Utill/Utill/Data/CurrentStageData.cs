@@ -8,7 +8,7 @@ using Utill.Tool;
 
 
 [CreateAssetMenu(fileName = "CurrentStageDataSO", menuName = "Scriptable Object/CurrentStageDataSO")]
-public class CurrentStageDataSO : ScriptableObject
+public class CurrentStageData : ScriptableObject
 {
     public StageData _currentStageDatas;
 }

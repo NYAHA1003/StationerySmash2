@@ -15,7 +15,7 @@ public class StageDetailPopupPanel : MonoBehaviour
 	[SerializeField]
 	private Image _previewImage = null;
 	[SerializeField]
-	private CurrentStageDataSO _currentStageDataSO = null;
+	private CurrentStageData _currentStageDataSO = null;
 	[SerializeField]
 	private Button _closeButton = null;
 
