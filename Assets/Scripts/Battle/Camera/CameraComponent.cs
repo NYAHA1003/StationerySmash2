@@ -50,7 +50,7 @@ namespace Battle
 			updateAction += UpdateCameraScale;
 			updateAction += UpdateInputMove;
 
-			_originVector = _camera.transform.position;
+			_originVector = _camera.transform.localPosition;
 
 			//관찰자를 등록한다
 			_commandWinLose.AddObservers(this);
@@ -168,7 +168,7 @@ namespace Battle
 			_camera.DOShakePosition(time, new Vector3(0, power))
 				.OnComplete(() =>
 				{
-					_camera.transform.position = _originVector;
+					_camera.transform.localPosition = _originVector;
 
 				});
 		}
