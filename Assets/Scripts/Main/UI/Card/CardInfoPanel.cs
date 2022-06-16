@@ -501,8 +501,7 @@ namespace Main.Card
 				RectTransform rectTransform = _equipButton.GetComponent<RectTransform>();
 				_equipButtonSequence = DOTween.Sequence()
 					.SetAutoKill(false)
-					.Append(rectTransform.DOScale(new Vector3(1, 0.2f, 0), 0.2f))
-					.Append(rectTransform.DOScale(new Vector3(0.2f, 1, 0), 0.2f))
+					.Append(rectTransform.DOScale(new Vector3(0.2f, 0.2f, 0), 0.2f))
 					.Append(rectTransform.DOScale(Vector3.one, 0.5f))
 					.AppendCallback(() => _equipButton.interactable = true);
 			}

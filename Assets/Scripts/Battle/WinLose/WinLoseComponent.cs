@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using DG.Tweening;
 using Utill.Tool;
+using TMPro;
 
 namespace Battle
 {
@@ -25,8 +26,13 @@ namespace Battle
         private RectTransform _winText;
         [SerializeField]
         private RectTransform _loseText;
+        [SerializeField]
+        private TextMeshProUGUI _playerHPText;
+        [SerializeField]
+        private TextMeshProUGUI _enemyHPText;
 
         private List<IWinLose> _observers = new List<IWinLose>(); //관찰자들
+        private PencilCaseComponent _pencilCaseComponent = null;
 
         /// <summary>
         /// 초기화
@@ -35,8 +41,9 @@ namespace Battle
         /// <param name="winLoseCanvas"></param>
         /// <param name="winPanel"></param>
         /// <param name="losePanel"></param>
-        public void SetInitialization()
+        public void SetInitialization(PencilCaseComponent pencilCaseComponent)
         {
+            _pencilCaseComponent = pencilCaseComponent;
         }
 
         /// <summary>
@@ -66,6 +73,9 @@ namespace Battle
         /// <param name="isWin"></param>
         public void SetWinLosePanel(bool isWin)
         {
+            _playerHPText.text = $"내 체력: {_pencilCaseComponent.PlayerPencilCase.UnitStat.Hp}";
+            _enemyHPText.text = $"상대 체력: {_pencilCaseComponent.EnemyPencilCase.UnitStat.Hp}";
+
             _winLoseCanvas.gameObject.SetActive(true);
             _cardCanvas.gameObject.SetActive(false);
 
