@@ -45,6 +45,8 @@ namespace Main.Card
 		private Button _levelUpButton; //레벨업버튼
 		[SerializeField]
 		private GameObject _levelUpDontImage; //레벨업 막는 이미지
+		[SerializeField]
+		private TextMeshProUGUI _descriptionText = null; //설명 텍스트
 
 		//스탯패널(유닛)
 		[SerializeField]
@@ -181,6 +183,7 @@ namespace Main.Card
 		{
 			_unitStatTexts.SetActive(true);
 			_stickerPanel.SetActive(true);
+			_descriptionText.text = $"{cardData._description}";
 
 			//스티커 패널 설정
 			_infoScroll.SetIcons(4);

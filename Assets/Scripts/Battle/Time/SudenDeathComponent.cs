@@ -55,7 +55,7 @@ namespace Battle
             //체력 비교
             if (_pencilCaseComponent.PlayerPencilCase.UnitStat.Hp > _pencilCaseComponent.EnemyPencilCase.UnitStat.Hp)
             {
-                _timeComponent.Win();
+                _timeComponent.Lose();
                 _timeComponent.SetFinallyEnd(true);
                 return;
             }
