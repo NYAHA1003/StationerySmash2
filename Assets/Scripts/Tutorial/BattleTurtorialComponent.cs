@@ -108,7 +108,7 @@ public class BattleTurtorialComponent : MonoBehaviour
         switch (currentBattleStageType)
         {
             case BattleStageType.ST_MAKE: 
-                currentStageTutorial = ST_MakeStageTutorial;
+                currentStageTutorial = one_ZeroStageTutorial;
                 break; 
             case BattleStageType.S1_1:
                 currentStageTutorial = one_ZeroStageTutorial;

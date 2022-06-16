@@ -60,4 +60,9 @@ public class ST_MakeStageTutorial : AbstractStageTutorial
 
         Debug.Log("업그레이드 설명");
     }
+
+    public override void EndTutorial()
+    {
+        throw new System.NotImplementedException();
+    }
 }

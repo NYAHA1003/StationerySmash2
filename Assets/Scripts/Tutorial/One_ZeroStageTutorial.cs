@@ -8,8 +8,11 @@ using DG.Tweening;
 [System.Serializable]
 public class One_ZeroStageTutorial : AbstractStageTutorial
 {
+
     [SerializeField]
-    private List<RectTransform> impactTrans = new List<RectTransform>(); 
+    private GameObject combineCard; 
+    [SerializeField]
+    private GameObject _fingerPoint; 
     /// <summary>
     /// 이벤트큐에 
     /// </summary>
@@ -39,18 +42,23 @@ public class One_ZeroStageTutorial : AbstractStageTutorial
     private void ExplainCards()
     {
         speechText.text = textDatas[(int)BattleStageType.S1_1]._tutorialText[1];
+        blackImpact.anchoredPosition = impactTrans[0].anchoredPosition; 
     }
     private void ExplainCardDetail()
     {
         speechText.text = textDatas[(int)BattleStageType.S1_1]._tutorialText[2];
+        blackImpact.anchoredPosition = impactTrans[1].anchoredPosition;
+
     }
     private void ExplainCombineCard()
     {
         speechText.text = textDatas[(int)BattleStageType.S1_1]._tutorialText[3];
+        combineCard.SetActive(true);
     }
     private void ExplainCoin()
     {
         speechText.text = textDatas[(int)BattleStageType.S1_1]._tutorialText[4];
+        combineCard.SetActive(false); 
     }
     private void ExplainUseCoin()
     {
@@ -59,7 +67,13 @@ public class One_ZeroStageTutorial : AbstractStageTutorial
     private void ExplainSummonCard()
     {
         speechText.text = textDatas[(int)BattleStageType.S1_1]._tutorialText[6];
+        _fingerPoint.SetActive(true); 
     }
+    public override void EndTutorial()
+    {
+        _fingerPoint.SetActive(false);
+    }
+
     /// <summary>
     /// 소환 설명
     /// </summary>
@@ -98,4 +112,6 @@ public class One_ZeroStageTutorial : AbstractStageTutorial
 
         Debug.Log("업그레이드 설명"); 
     }
+
+
 }

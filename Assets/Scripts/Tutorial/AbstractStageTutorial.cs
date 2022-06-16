@@ -9,9 +9,15 @@ using Battle.Tutorial;
 using System.Linq; 
 public abstract class AbstractStageTutorial
 {
+    [SerializeField]
+    protected List<RectTransform> impactTrans = new List<RectTransform>();
+    [SerializeField]
+    private RectTransform originTrans; // 검은색으로 덮이는 위치 
+
     protected BattleTurtorialComponent battleTurtorialComponent;
     protected TextMeshProUGUI speechText;
-    protected List<TextData> textDatas; 
+    protected List<TextData> textDatas;
+    protected RectTransform blackImpact; 
 
     private bool isPause = false;
 
@@ -19,8 +25,14 @@ public abstract class AbstractStageTutorial
     {
         battleTurtorialComponent = GameObject.FindObjectOfType<BattleTurtorialComponent>();
         speechText = battleTurtorialComponent.SpeechBubbleText;
-        textDatas = battleTurtorialComponent.TutorialTextSO._textDatas.ToList(); 
+        textDatas = battleTurtorialComponent.TutorialTextSO._textDatas.ToList();
+        blackImpact = battleTurtorialComponent.BlackBackground.GetComponent<RectTransform>(); 
     }
+    /// <summary>
+    /// 튜토리얼 끝나고 설정해줄거 해주기 
+    /// </summary>
+    public abstract void EndTutorial();
+
       /// <summary>
     /// 큐 설정 
     /// </summary>
