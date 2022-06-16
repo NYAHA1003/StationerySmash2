@@ -18,6 +18,8 @@ public class SceneLoadButtonManager : MonoBehaviour
     private AIDataSO aIDataSO;
     [SerializeField]
     private Sprite[] _stageSprites;
+    [SerializeField]
+    private StageDetailPopupPanel _popupPanel = null;
 
     private WarrningComponent _warrningComponent = null; //경고 컴포넌트
 
@@ -63,7 +65,7 @@ public class SceneLoadButtonManager : MonoBehaviour
         var currentData = loadingBattleDataSO.CurrentStageData;
         PencilCaseDataManagerSO.SetEnemyPencilCaseData(currentData);
         aIDataSO.SetAIData(currentData);
-        _sceneLoadComponenet.SceneLoadBattle();
+        _popupPanel.Setting();
     }
     private void LoadBattleDataStageMake(BattleStageType battleStageType)
     {
