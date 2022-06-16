@@ -24,6 +24,12 @@ public class StageDetailPopupPanel : MonoBehaviour
 		_closeButton.onClick.AddListener(() => gameObject.SetActive(false));
 	}
 
+	private void OnDisable()
+	{
+		//부모가 꺼지면 같이 꺼지게 만듦
+		gameObject.SetActive(false);
+	}
+
 	/// <summary>
 	/// 스테이지 팝업창 설정
 	/// </summary>

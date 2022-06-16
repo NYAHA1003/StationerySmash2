@@ -13,49 +13,24 @@ MonoBehaviour:
   m_Name: StageDataSO
   m_EditorClassIdentifier: 
   stageDatas:
-  - name: "\uC2A4\uD14C\uC774\uC9C01"
+  - _stageName: "\uC2A4\uD14C\uC774\uC9C0 \uC81C\uC791"
+    _rewardExp: 0
+    _rewardMoney: 0
+    _stageType: 0
+    _timeType: 0
     max_Range: 3
-    timeType: 0
     timeValue: 300
-  enemyPencilCase:
-    _maxCard: 0
-    _maxBadgeCount: 0
-    _costSpeed: 0
-    _throwGaugeSpeed: 0
-    _description: 
-    _pencilCaseType: 0
-    _pencilCaseData:
-      _cardNamingType: 0
-      cardType: 0
-      card_Name: 
-      card_Description: 
-      card_Cost: 0
-      _skinData:
-        _skinType: 0
-        _effectType: 0
-      level: 0
-      strategyData:
-        starategyType: 0
-        starategyablityData: []
-      unitData:
-        unit_Hp: 0
-        unit_Weight: 0
-        knockback: 0
-        dir: 0
-        accuracy: 0
-        moveSpeed: 0
-        damage: 0
-        attackSpeed: 0
-        range: 0
-        colideData:
-          originpoints: []
-        stickerData:
-          _skinType: 0
-          _name: 
-          _decription: 
-          _stickerType: 0
-          _stickerLevel: 1
-        attackType: 0
-        unitType: 0
-        unitablityData: []
-    _badgeDatas: []
+  - _stageName: "\uC2A4\uD14C\uC774\uC9C0 1"
+    _rewardExp: 100
+    _rewardMoney: 100
+    _stageType: 1
+    _timeType: 0
+    max_Range: 3
+    timeValue: 300
+  - _stageName: "\uC2A4\uD14C\uC774\uC9C0 2"
+    _rewardExp: 110
+    _rewardMoney: 110
+    _stageType: 2
+    _timeType: 0
+    max_Range: 3
+    timeValue: 300
