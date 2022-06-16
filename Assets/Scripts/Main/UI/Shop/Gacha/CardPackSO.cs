@@ -16,7 +16,7 @@ public class CardPackInfo
     [Range(20,300)] public int amount; // 나올 분실물 조각 총량 
     [Range(2,6)] public int minCount = 0;               //팩에서 나오는 분실물 조각 종류 최소 갯수
     [Range(3,8)]public int maxCount= 0;               //팩에서 나오는 분실물 조각 종류 최대 갯수
-    [Range(1, 15)] public int newCardPercent = 0;        //신규 캐릭터가 나올 확률(팩당)
+    [Range(1, 100)] public int newCardPercent = 0;        //신규 캐릭터가 나올 확률(팩당)
     [Range(5, 45)] public int useDalgona = 0;        //사용하는 달고나 갯수
 }
 
