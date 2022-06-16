@@ -77,6 +77,6 @@ public class BadgeGachaItem : GachaCard
 
             yield return null;
         }
-
     }
+
 }

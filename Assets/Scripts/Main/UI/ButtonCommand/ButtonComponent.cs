@@ -13,7 +13,7 @@ namespace Main.Buttons
 	class ButtonComponent : MonoBehaviour
 	{
 
-		private Stack<AbstractBtn> activeButtonsStack = new Stack<AbstractBtn>(); // 활성화 시킨 버튼들을 넣어둘 스택
+		public Stack<AbstractBtn> activeButtonsStack = new Stack<AbstractBtn>(); // 활성화 시킨 버튼들을 넣어둘 스택
 		private List<AbstractBtn> allBtns = new List<AbstractBtn>(); // 기본적으로 세팅해두는 모든 버튼커맨드들 
 
 		[Header("클릭할 버튼들")]
@@ -89,7 +89,8 @@ namespace Main.Buttons
 		/// </summary>
 		public void CloseAllPanels()
 		{
-			for (int i = 0; i < activeButtonsStack.Count; i++)
+			int stackCount = activeButtonsStack.Count; 
+			for (int i = 0; i < stackCount; i++)
 			{
 				activeButtonsStack.Pop().Undo();
 			}
