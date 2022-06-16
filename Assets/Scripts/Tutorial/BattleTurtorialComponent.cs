@@ -28,7 +28,10 @@ public class BattleTurtorialComponent : MonoBehaviour
     {
         get
         {
-            tutorialCanvas ??= GameObject.Find("TutorialCanvas");
+            if(tutorialCanvas == null)
+            {
+                tutorialCanvas = GameObject.Find("TutorialCanvasParent").transform.Find("TutorialCanvas").gameObject;
+            }
 
             return tutorialCanvas;
         }
@@ -50,7 +53,7 @@ public class BattleTurtorialComponent : MonoBehaviour
     private TextMeshProUGUI speechBubbleText; // ¸»Ç³¼±¿¡ ¶ã ¼³¸í ÅØ½ºÆ®  
     [SerializeField]
     private Image speechBubble; // ¸»Ç³¼± 
-    [SerializeField]
+    
     private GameObject tutorialCanvas; // Æ©Åä¸®¾ó Äµ¹ö½º 
 
     [SerializeField]
