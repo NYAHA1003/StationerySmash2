@@ -11,7 +11,7 @@ public class SNSComponent : MonoBehaviour
         None = 0,
         Naver = 1,
         Discord = 2,
-        Youtube = 2,
+        Youtube = 3,
 
     }
 

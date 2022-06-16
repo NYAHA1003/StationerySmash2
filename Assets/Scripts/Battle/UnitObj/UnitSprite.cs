@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 using Utill.Data;
 using Utill.Tool;
+using DG.Tweening;
 using Battle;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 [System.Serializable]
 /// <summary>
@@ -20,6 +24,8 @@ public class UnitSprite
     //인스펙터 참조 변수
     [SerializeField]
     private SortingGroup _delayBarSortingGroup;
+    [SerializeField]
+    private Animator _animator;
     //인스펙터 참조 변수
     [SerializeField]
     private SortingGroup _delayHalfBarSortingGroup;
@@ -38,7 +44,11 @@ public class UnitSprite
     [SerializeField]
     private SpriteRenderer _spriteRenderer = null; //유닛 스프라이트렌더러
     [SerializeField]
+    private SpriteRenderer _shadowSpriteRenderer = null; //유닛 그림자 스프라이트렌더러
+    [SerializeField]
     private SpriteRenderer _hpSpriteRenderer = null; //유닛 체력 스프라이트
+    [SerializeField]
+    private Transform _starTransform = null; //별 트랜스폼
     [SerializeField]
     private Sprite[] _delaySprites = null; // 유닛 딜레이바이미지들
 
@@ -52,6 +62,7 @@ public class UnitSprite
         SetTeamColor(teamType);
         SetHPSprite(unitStat.Hp, unitStat.MaxHp);
         OrderDraw(orderIndex);
+        _animator.runtimeAnimatorController = AnimationData.GetAnimator(cardData._skinData._skinType);
     }
 
     /// <summary>
@@ -65,9 +76,11 @@ public class UnitSprite
         SetDelayBar();
         
         _spriteRenderer.sprite = sprite;
+        _shadowSpriteRenderer.sprite = sprite;
         _hpSpriteRenderer.sprite = sprite;
+        _starTransform.DOScale(Vector3.one * 0.12f, 1f).SetEase(Ease.OutQuad).SetLoops(-1, LoopType.Yoyo);
 
-        switch(grade)
+        switch (grade)
 		{
             case 1:
                 _delayBarImage.sprite = _delaySprites[0];
@@ -176,5 +189,13 @@ public class UnitSprite
     public void ChangeMaterial(Material material)
 	{
         _spriteRenderer.material = material;
+	}
+
+    /// <summary>
+    /// 던지기가 가능 여부에 따른 이미지를 껐다 킨다
+    /// </summary>
+    public void SetThrowImage(bool isActive)
+	{
+        _starTransform.gameObject.SetActive(isActive);
 	}
 }

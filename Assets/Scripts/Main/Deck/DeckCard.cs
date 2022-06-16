@@ -12,6 +12,7 @@ namespace Main.Deck
     {
         [SerializeField]
         private Image _cardImage;
+        public Image CardImage => _cardImage; 
         [SerializeField]
         private TextMeshProUGUI _unitNameText;
         [SerializeField]

@@ -131,9 +131,12 @@ namespace Battle.Units
 		/// <param name="targetUnit"></param>
 		protected virtual void ThrowAttack(Unit targetUnit)
 		{
+			//카메라 흔들림
+			_myUnit.BattleManager.CameraComponent.CameraInShake(_myTrm, 0.1f, 0.3f);
+
 			float dir = Vector2.Angle((Vector2)_myTrm.position, (Vector2)targetUnit.transform.position);
 			float extraKnockBack = (targetUnit.UnitStat.Return_Weight() - _myUnit.UnitStat.Return_Weight() * (float)targetUnit.UnitStat.Hp / targetUnit.UnitStat.MaxHp) * 0.025f;
-			AtkData atkData = new AtkData(_myUnit, 0, 0, 0, 0, true, _damageId, EffAttackType.Normal);
+			AtkData atkData = new AtkData(_myUnit, 0, 0, 0, 0, true, _damageId, EffAttackType.Normal, EffectType.Throw);
 			UnitStat.WeightGrade unitWeightGrade = _myUnit.UnitStat.ReturnWeightGrade();
 			UnitStat.WeightGrade targetWeightGrade = targetUnit.UnitStat.ReturnWeightGrade();
 
@@ -181,7 +184,7 @@ namespace Battle.Units
 		/// <param name="extraKnockBack"></param>
 		private void WeightSmall(ref AtkData atkData, ref Unit targetUnit, ref float dir, ref float extraKnockBack)
 		{
-			AtkData atkDataMy = new AtkData(_myUnit, 0, 0, 0, 0, true, _damageId, EffAttackType.Normal);
+			AtkData atkDataMy = new AtkData(_myUnit, 0, 0, 0, 0, true, _damageId, EffAttackType.Normal, EffectType.Throw);
 
 			//초기데미지 설정
 			SetThrowAttackDamage(ref atkData, targetUnit);

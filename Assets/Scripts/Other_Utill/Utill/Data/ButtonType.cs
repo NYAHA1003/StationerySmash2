@@ -18,5 +18,8 @@ namespace Utill.Data
 		cardDescription,
 		pencilCaseDescription,
 		gachaCanvas,
+		cardpackPanel,
+		stickerPanel,
+		badgePanel,
 	}
 }

@@ -15,10 +15,11 @@ namespace Battle
     public class CostComponent : BattleComponent
     {
         //프로퍼티
-        public int CurrentCost { get; private set; } = 0;
-        public int MaxCost { get; private set; } = 2;
-        public int MaxGrade { get; private set; } = 5;
-        public int CurrentGrade { get; private set; } = 1;
+        public int MaxCost { get; private set; } = 10; //최대 코스트
+        public float AddCostSpeedValue { get; private set; } = 35f; //코스트 업그레이드시 증가하는 코스트 스피드값
+        public int CurrentCost { get; private set; } = 0; //현재 코스트
+        public int MaxGrade { get; private set; } = 5; //최대단계
+        public int CurrentGrade { get; private set; } = 1; //현재 단계
 
         //변수
         public float _costSpeed = 200;
@@ -174,10 +175,10 @@ namespace Battle
                 return;
             }
 
-            CurrentGrade++;
             SubtractCost(MaxCost);
-            AddCostSpeed(0.25f);
-            MaxCost += 2;
+            MaxCost += CurrentGrade * 5; //최대 코스트 증가
+            CurrentGrade++;
+            AddCostSpeed(AddCostSpeedValue); //업그레이드시 빨라지는 속도값
             UpdateCostText();
         }
 

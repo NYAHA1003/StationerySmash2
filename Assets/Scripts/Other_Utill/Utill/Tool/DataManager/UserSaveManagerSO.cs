@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Utill.Data;
+using Utill.Load;
 using Utill.Tool;
 using Main.Deck;
 using Battle.Starategy;
@@ -212,12 +213,12 @@ namespace Utill.Tool
         /// 카드를 유저 데이터에 추가한다
         /// </summary>
         /// <param name="cardData"></param>
-        public static void AddCardData(CardData cardData)
+        public static void AddCardData(CardData cardData, int count)
         {
             CardSaveData cardSaveData = _userSaveData._haveCardSaveDatas.Find(x => x._cardNamingType == cardData._cardNamingType);
             if (cardSaveData != null)
 			{
-                cardSaveData._count++;
+                cardSaveData._count += count;
                 DeckDataManagerSO.FindHaveCardData(cardData._cardNamingType)._count++;
             }
 			else
@@ -298,6 +299,17 @@ namespace Utill.Tool
                 return;
             }
             PostUserSaveData();
+		}
+    
+        /// <summary>
+        /// 마지막으로 클리어한 스테이지 등록
+        /// </summary>
+        public static void SetLastClearStage(BattleStageType battleStageType)
+		{
+            if (battleStageType > UserSaveData._lastPlayStage)
+			{
+                UserSaveData._lastPlayStage = battleStageType;
+            }
 		}
     }
 

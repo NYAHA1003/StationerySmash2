@@ -19,6 +19,8 @@ public abstract class GachaCard : MonoBehaviour
     protected Image CardFrame; 
     [SerializeField]
     protected TextMeshProUGUI _itemName;
+    [SerializeField]
+    protected TextMeshProUGUI _itemCountText;
 
     protected RectTransform _rect;
     protected Sequence sequence;
@@ -51,8 +53,9 @@ public abstract class GachaCard : MonoBehaviour
     {
         _grade = grade; 
     }
-    public void SetSprite(Sprite frontSprite , Sprite backSprite , bool isFront)
+    public void SetSprite(Sprite frontSprite , Sprite backSprite , bool isFront, int itemCount = 1)
     {
+
         _frontSprite = frontSprite;
         _backSprite = backSprite;
         this.isFront = isFront; 
@@ -62,6 +65,7 @@ public abstract class GachaCard : MonoBehaviour
             return;
         }
         itemImage.sprite = _backSprite;
+        _itemCountText.text = string.Format("X{0}",itemCount);
     }
     public virtual void StopCoroutine()
     {

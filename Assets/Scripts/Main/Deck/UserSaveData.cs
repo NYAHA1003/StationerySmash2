@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill.Data;
 using Utill.Tool;
+using Utill.Load;
 
 namespace Main.Deck
 {
@@ -26,13 +27,12 @@ namespace Main.Deck
         public string _name = "";    //이름
         public int _level = 1; //레벨
         public int _nowExp = 0; //현재 경험치
-        public StageType _lastPlayStage = StageType.None; //마지막으로 플레이한 스테이지
+        public BattleStageType _lastPlayStage = BattleStageType.ST_MAKE; //마지막으로 플레이한 스테이지
         public int _winCount = 0; //승리한 횟수
         public int _winningStreakCount = 0; //가장 크게 연승한 횟수
         public int _loseCount = 0; //패배한 횟수
         public ThemeSkinType _themeSkinType = ThemeSkinType.Normal; // 마지막으로 선택한 테마 타입
         public List<ThemeSkinType> _haveThemeSkinTypeList = new List<ThemeSkinType>(); // 가진 테마 타입
-
         public List<CardNamingType> _presetCardDatas1 = new List<CardNamingType>();
         public List<CardNamingType> _presetCardDatas2 = new List<CardNamingType>();
         public List<CardNamingType> _presetCardDatas3 = new List<CardNamingType>();

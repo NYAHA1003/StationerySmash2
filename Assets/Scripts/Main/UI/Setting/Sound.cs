@@ -9,7 +9,7 @@ using Utill.Tool;
 using TMPro;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
-
+using UnityEngine.SceneManagement;
 
 namespace Main.Setting
 {
@@ -36,6 +36,7 @@ namespace Main.Setting
 
             _staticBgmSources = _bgmSources;
             _staticEffSources = _effSources;
+            BgmSetting();
         }
 
         /// <summary>
@@ -174,7 +175,7 @@ namespace Main.Setting
             }
         }
 
-        public void PlayBgm(int num)
+        public static void PlayBgm(int num)
         {
             _staticBgmSources[num].Play();
         }
@@ -182,6 +183,19 @@ namespace Main.Setting
         public static void PlayEff(int num)
         {
             _staticEffSources[num].Play();
+        }
+
+        public static void StopBgm(int num)
+        { 
+            _staticBgmSources[num].Stop();
+        }
+        public void BgmSetting()
+        {
+            Scene scene = SceneManager.GetActiveScene();
+            if (scene.name == "MainSceneRework") //ÃßÈÄ ¾À ÀÌ¸§ ¹Ù²Ü°Í
+                PlayBgm(1);
+            else if (scene.name == "BattleSceneRework")
+                PlayBgm(3);
         }
     }
 }

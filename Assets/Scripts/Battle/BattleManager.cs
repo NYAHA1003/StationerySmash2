@@ -19,7 +19,7 @@ namespace Battle
 		{
 			get
 			{
-				return _stageDataSO.stageDatas[0];
+				return _stageDataSO._currentStageDatas;
 			}
 
 			private set
@@ -48,7 +48,7 @@ namespace Battle
 
 		//인스펙터 변수
 		[SerializeField]
-		private StageDataSO _stageDataSO = null;
+		private CurrentStageDataSO _stageDataSO = null;
 
 		//컴포넌트들
 		[SerializeField, Header("카드시스템 BattleCard"), Space(30)]
@@ -83,7 +83,7 @@ namespace Battle
 			//프레임 60 고정
 			Application.targetFrameRate = 60;
 
-			_pencilCaseComponent.SetInitialization(CardComponent, UnitComponent, CurrentStageData);
+			_pencilCaseComponent.SetInitialization(_cameraComponent, CardComponent, UnitComponent, CurrentStageData);
 			_cardComponent.SetInitialization(this, WinLoseComponent, CameraComponent, UnitComponent, CostComponent, ref _updateAction, CurrentStageData, PencilCaseDataManagerSO.InGamePencilCaseData._maxCard);
 			_cameraComponent.SetInitialization(CardComponent, WinLoseComponent, ref _updateAction, CurrentStageData);
 			_unitComponent.SetInitialization(ref _updateAction, CurrentStageData);
@@ -91,10 +91,10 @@ namespace Battle
 			_throwComponent.SetInitialization(ref _updateAction, _unitComponent, _cameraComponent, CurrentStageData);
 			_unitSignComponent.SetInitialization();
 			_aiComponent.SetInitialization(PencilCaseComponent, UnitComponent, ref _updateAction);
-			_timeComponent.SetInitialization(ref _updateAction, CurrentStageData, _unitComponent, _cardComponent, _costComponent, _pencilCaseComponent);
+			_timeComponent.SetInitialization(ref _updateAction, CurrentStageData, _unitComponent, _cardComponent, _costComponent, _pencilCaseComponent, _winLoseComponent);
 			_costComponent.SetInitialization(ref _updateAction, PencilCaseDataManagerSO.InGamePencilCaseData);
 			_pauseComponent.SetInitialization();
-			_winLoseComponent.SetInitialization();
+			_winLoseComponent.SetInitialization(_pencilCaseComponent, CurrentStageData);
 			_introComponent.SetInitialization(_cameraComponent, this);
 
 			_isEndSetting = true;

@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Scriptable Object/Gacha/GachaSO")]
 public class GachaSO : ScriptableObject
 {
+
     [Header("¹îÁö")]
     public float rarePercent; // ·¹¾î È®·ü
     public float epicPercent; // ¿µ¿õ È®·ü
