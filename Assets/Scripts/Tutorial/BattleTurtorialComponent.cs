@@ -103,6 +103,7 @@ public class BattleTurtorialComponent : MonoBehaviour
     /// SceneLoadButtonManager의 SetBattleLoadButton에서 이벤트로 설정해줄거임
     public void SetTutorial()
     {
+        tutorialEventQueue.Clear(); 
         currentBattleStageType = _loadingBattleDataSO.CurrentStageData.battleStageType; // 현재 몇 스테이지인지 받아옴
         switch (currentBattleStageType)
         {
@@ -122,6 +123,7 @@ public class BattleTurtorialComponent : MonoBehaviour
                 return; 
         }
         tutorialEventQueue.Enqueue(StartTutorial);
+        currentStageTutorial.Initialize(); 
         currentStageTutorial.SetQueue();
     }
 

@@ -3,13 +3,24 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using Utill.Load;
-
+using UnityEngine.UI;
+using TMPro;
+using Battle.Tutorial;
+using System.Linq; 
 public abstract class AbstractStageTutorial
 {
-    [SerializeField]
     protected BattleTurtorialComponent battleTurtorialComponent;
+    protected TextMeshProUGUI speechText;
+    protected List<TextData> textDatas; 
 
     private bool isPause = false;
+
+    public void Initialize()
+    {
+        battleTurtorialComponent = GameObject.FindObjectOfType<BattleTurtorialComponent>();
+        speechText = battleTurtorialComponent.SpeechBubbleText;
+        textDatas = battleTurtorialComponent.TutorialTextSO._textDatas.ToList(); 
+    }
       /// <summary>
     /// Å¥ ¼³Á¤ 
     /// </summary>

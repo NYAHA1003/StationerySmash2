@@ -17,11 +17,49 @@ public class One_ZeroStageTutorial : AbstractStageTutorial
     public override void SetQueue()
     {
         //ResetQueue(); 
-        BattleTurtorialComponent.tutorialEventQueue.Enqueue(ExplainSummon);
-        BattleTurtorialComponent.tutorialEventQueue.Enqueue(ExplainMoney);
-        BattleTurtorialComponent.tutorialEventQueue.Enqueue(ExplainUpgrade);
+        BattleTurtorialComponent.tutorialEventQueue.Enqueue(Welcome);
+        BattleTurtorialComponent.tutorialEventQueue.Enqueue(ExplainCards);
+        BattleTurtorialComponent.tutorialEventQueue.Enqueue(ExplainCardDetail);
+        BattleTurtorialComponent.tutorialEventQueue.Enqueue(ExplainCombineCard);
+        BattleTurtorialComponent.tutorialEventQueue.Enqueue(ExplainCoin);
+        BattleTurtorialComponent.tutorialEventQueue.Enqueue(ExplainUseCoin);
+        BattleTurtorialComponent.tutorialEventQueue.Enqueue(ExplainSummonCard);
     }
 
+    /// <summary>
+    /// 환영합니다 
+    /// </summary>
+    private void Welcome()
+    {
+        speechText.text = textDatas[(int)BattleStageType.S1_1]._tutorialText[0];
+    }
+    /// <summary>
+    /// 카드 설명
+    /// </summary>
+    private void ExplainCards()
+    {
+        speechText.text = textDatas[(int)BattleStageType.S1_1]._tutorialText[1];
+    }
+    private void ExplainCardDetail()
+    {
+        speechText.text = textDatas[(int)BattleStageType.S1_1]._tutorialText[2];
+    }
+    private void ExplainCombineCard()
+    {
+        speechText.text = textDatas[(int)BattleStageType.S1_1]._tutorialText[3];
+    }
+    private void ExplainCoin()
+    {
+        speechText.text = textDatas[(int)BattleStageType.S1_1]._tutorialText[4];
+    }
+    private void ExplainUseCoin()
+    {
+        speechText.text = textDatas[(int)BattleStageType.S1_1]._tutorialText[5];
+    }
+    private void ExplainSummonCard()
+    {
+        speechText.text = textDatas[(int)BattleStageType.S1_1]._tutorialText[6];
+    }
     /// <summary>
     /// 소환 설명
     /// </summary>
