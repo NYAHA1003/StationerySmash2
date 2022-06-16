@@ -44,8 +44,8 @@ public class CardMesh : MonoBehaviour
     private void Awake()
     {
         _meshFilter = GetComponent<MeshFilter>();
-        _slicedMeshFilter = _slicedMeshObj.GetComponent<MeshFilter>();
         meshRenderer = GetComponent<MeshRenderer>();
+        _slicedMeshFilter = _slicedMeshObj.GetComponent<MeshFilter>();
         _slicedRect = _slicedMeshObj.GetComponent<RectTransform>();
         __slicedParentRect = _slicedParent.GetComponent<RectTransform>();
     }
@@ -111,32 +111,32 @@ public class CardMesh : MonoBehaviour
     public IEnumerator OpenCard()
     {
         CreateMesh();
-        vertices = new Vector3[4];
-        uvs = new Vector2[4];
-        triangles = new int[6];
+        //vertices = new Vector3[4];
+        //uvs = new Vector2[4];
+        //triangles = new int[6];
 
-        vertices[0] = new Vector3(0, 0, 0);
-        vertices[1] = new Vector3(0, sepYpoint, 0);
-        vertices[2] = new Vector3(sepXpoint, sepYpoint, 0);
-        vertices[3] = new Vector3(sepXpoint, 0, 0);
+        //vertices[0] = new Vector3(0, 0, 0);
+        //vertices[1] = new Vector3(0, sepYpoint, 0);
+        //vertices[2] = new Vector3(sepXpoint, sepYpoint, 0);
+        //vertices[3] = new Vector3(sepXpoint, 0, 0);
 
-        uvs[0] = Vector2.zero;
-        uvs[1] = new Vector2(0, _meshInfo.sepYPoint);
-        uvs[2] = new Vector2(_meshInfo.sepXPoint, _meshInfo.sepYPoint);
-        uvs[3] = new Vector2(_meshInfo.sepXPoint, 0);
+        //uvs[0] = Vector2.zero;
+        //uvs[1] = new Vector2(0, _meshInfo.sepYPoint);
+        //uvs[2] = new Vector2(_meshInfo.sepXPoint, _meshInfo.sepYPoint);
+        //uvs[3] = new Vector2(_meshInfo.sepXPoint, 0);
 
-        triangles[0] = 0;
-        triangles[1] = 1;
-        triangles[2] = 3;
-        triangles[3] = 1;
-        triangles[4] = 2;
-        triangles[5] = 3;
+        //triangles[0] = 0;
+        //triangles[1] = 1;
+        //triangles[2] = 3;
+        //triangles[3] = 1;
+        //triangles[4] = 2;
+        //triangles[5] = 3;
 
-        _mesh.vertices = vertices;
-        _mesh.uv = uvs;
-        _mesh.triangles = triangles;
+        //_mesh.vertices = vertices;
+        //_mesh.uv = uvs;
+        //_mesh.triangles = triangles;
 
-        _meshFilter.mesh = _mesh;
+        //_meshFilter.mesh = _mesh;
 
 
         _slicedMesh = new Mesh();
@@ -179,7 +179,7 @@ public class CardMesh : MonoBehaviour
         });
         sequence.AppendCallback(() =>
         {
-            EventManager.Instance.TriggerEvent(EventsType.ActiveAndAnimateCard);
+           // EventManager.Instance.TriggerEvent(EventsType.ActiveAndAnimateCard);
         });
         //sequence.Append(g.GetComponent<RectTransform>().DOAnchorPosX(-2f, 0.6f));
         //        sequence.Join(g.GetComponent<RectTransform>().DORotate(new Vector3(0, 360, -70), 0.6f,RotateMode.FastBeyond360));

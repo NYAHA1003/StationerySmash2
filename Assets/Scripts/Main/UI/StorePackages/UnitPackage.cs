@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 using UnityEngine.UI;
 using Main.Event;
 using Main.Deck;
-using System.Linq; 
+using System.Linq;
+using System;
+using Random = UnityEngine.Random; 
 
 namespace Main.Store
 {
@@ -87,9 +89,15 @@ namespace Main.Store
         /// </summary>
         private void UpdateCurrentCard()
         {
-            SetHaveCard();
-            SetNotHaveCard();
-        }
+            try
+            {
+                SetHaveCard();
+                SetNotHaveCard();
+            }catch(Exception e)
+            {
+                Debug.LogError($"오류{e.Message}"); 
+            }
+    }
         /// <summary>
         /// 보유 카드가 무엇인지 설정
         /// </summary>
@@ -287,22 +295,18 @@ namespace Main.Store
             {
                 Debug.Log($"{i}번째 카드설정 {_curCardType[i]} {_curCardAmountList[i]} ");
                 UserSaveManagerSO.AddCardData(DeckDataManagerSO.FindStdCardData(_curCardType[i]), _curCardAmountList[i]); // 유저데이터에 카드조각추가 
-                gachaCards[i].gameObject.SetActive(true);
                 curCard = gachaCards[i].GetComponent<DeckCard>();
                 curCard.SetCard(DeckDataManagerSO.FindHaveCardData(_curCardType[i]));
                 gachaCards[i].SetSprite(curCard.CardImage.sprite, _backCardpack, true);
-                gachaCards[i].ActiveAndAnimate();
             }
 
             if (isNew == true)
             {
                 CardNamingType newCardNamingType = DrawNewCard();
                 UserSaveManagerSO.AddCardData(DeckDataManagerSO.FindStdCardData(newCardNamingType), 1); // 유저데이터 저장 
-                gachaCards[_quantity].gameObject.SetActive(true);
                 curCard = gachaCards[_quantity].GetComponent<DeckCard>();
                 curCard.SetCard(DeckDataManagerSO.FindHaveCardData(newCardNamingType));
                 gachaCards[_quantity].SetSprite(curCard.CardImage.sprite, _backCardpack, true);
-                gachaCards[_quantity].ActiveAndAnimate();
             }
         }
 
