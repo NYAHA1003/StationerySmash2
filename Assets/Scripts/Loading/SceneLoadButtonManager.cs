@@ -19,12 +19,15 @@ public class SceneLoadButtonManager : MonoBehaviour
     [SerializeField]
     private Sprite[] _stageSprites;
 
+    private WarrningComponent _warrningComponent = null; //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+
 
     // Start is called before the first frame update
-    private void Awake()
+    private void Start()
     {
-        Debug.Log("¹öÆ° ·ÎµùÁß");
-        buttons[0].onClick.AddListener(() => LoadBattleDataStageMake(BattleStageType.ST_MAKE));
+        Debug.Log("ï¿½ï¿½Æ° ï¿½Îµï¿½ï¿½ï¿½");
+        _warrningComponent = FindObjectOfType<WarrningComponent>();
+           buttons[0].onClick.AddListener(() => LoadBattleDataStageMake(BattleStageType.ST_MAKE));
         SetBattleLoadButtons();
     }
    
@@ -32,8 +35,20 @@ public class SceneLoadButtonManager : MonoBehaviour
     {
         for (int i = 1; i < System.Enum.GetValues(typeof(BattleStageType)).Length; i++)
         {
-            //°¢ ¹öÆ°¿¡ enum°ª ´ëÀÔÇÏ±â
+            //ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ enumï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
             int temp = i;
+            if(UserSaveManagerSO.UserSaveData._lastPlayStage >= (BattleStageType)i) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
+            {
+                buttons[temp].GetComponent<Image>().sprite = _stageSprites[2];
+            }
+            else if ((int)UserSaveManagerSO.UserSaveData._lastPlayStage - i == -1) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            {
+                buttons[temp].GetComponent<Image>().sprite = _stageSprites[1];
+            }
+            else if (UserSaveManagerSO.UserSaveData._lastPlayStage < (BattleStageType)i) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¬ï¿½ï¿½ï¿½ï¿½
+            {
+                buttons[temp].GetComponent<Image>().sprite = _stageSprites[0];
+            }
             buttons[temp].onClick.AddListener(() => LoadBattleData((BattleStageType)temp));
         }
     }
@@ -41,6 +56,11 @@ public class SceneLoadButtonManager : MonoBehaviour
     {
         Sound.PlayEff(2);
         Debug.Log($"{battleStageType} is loding...");
+        if ((int)UserSaveManagerSO.UserSaveData._lastPlayStage - (int)battleStageType < -1)
+        {
+            _warrningComponent.SetWarrning("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½Õ´Ï´ï¿½.");
+            return;
+        }
         loadingBattleDataSO.SetCurrentIndex(battleStageType);
         var currentData = loadingBattleDataSO.CurrentStageData;
         PencilCaseDataManagerSO.SetEnemyPencilCaseData(currentData);
