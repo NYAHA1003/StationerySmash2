@@ -8,7 +8,7 @@ namespace Utill.Tool
 	public class StageLog : MonoBehaviour
 	{
 		private float time;
-		public AIDataSO aIDataSO;
+		public AIDatasSO aIDataSO;
 
 		public void Add_Log(CardData dataBase)
 		{
