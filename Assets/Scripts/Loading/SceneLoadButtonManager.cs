@@ -15,7 +15,7 @@ public class SceneLoadButtonManager : MonoBehaviour
     [SerializeField]
     private SceneLoadComponenet _sceneLoadComponenet;
     [SerializeField]
-    private AIDatasSO aIDataSO;
+    private AIDataSO aIDataSO;
     [SerializeField]
     private Sprite[] _stageSprites;
     [SerializeField]

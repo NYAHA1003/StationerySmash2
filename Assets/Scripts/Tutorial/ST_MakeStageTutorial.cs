@@ -8,8 +8,6 @@ using DG.Tweening;
 [System.Serializable]
 public class ST_MakeStageTutorial : AbstractStageTutorial
 {
-    [SerializeField]
-    private List<RectTransform> impactTrans = new List<RectTransform>();
     /// <summary>
     /// 이벤트큐에 
     /// </summary>

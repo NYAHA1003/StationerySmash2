@@ -28,11 +28,14 @@ public class BattleTurtorialComponent : MonoBehaviour
     {
         get
         {
-            if(tutorialCanvas == null)
+            //if(tutorialCanvas == null)
+            //{
+            //    tutorialCanvas = GameObject.Find("TutorialCanvasParent").transform.Find("TutorialCanvas").gameObject;
+            //}
+            if (tutorialCanvas == null)
             {
-                tutorialCanvas = GameObject.Find("TutorialCanvasParent").transform.Find("TutorialCanvas").gameObject;
+                tutorialCanvas = GameObject.Find("TutorialCanvasParent").transform.GetChild(0).gameObject;
             }
-
             return tutorialCanvas;
         }
     }
@@ -45,22 +48,22 @@ public class BattleTurtorialComponent : MonoBehaviour
     private Image explainer; // 설명하는 돼지 
 
     [SerializeField]
-    private Button checkButton; // OK 버튼, 다음 설명으로 넘어감
-
-    [SerializeField]
     private TextMeshProUGUI expaineText; // 상단에 뜰 설명 텍스트    
     [SerializeField]
     private TextMeshProUGUI speechBubbleText; // 말풍선에 뜰 설명 텍스트  
     [SerializeField]
     private Image speechBubble; // 말풍선 
-    
+    [SerializeField]
+    private RectTransform _originTrans;
+    public RectTransform OriginTrans => _originTrans; 
     private GameObject tutorialCanvas; // 튜토리얼 캔버스 
 
     [SerializeField]
     private TutorialTextSO tutorialTextSO; // 설명 텍스트정보
     [SerializeField]
     private LoadingBattleDataSO _loadingBattleDataSO;
-
+    [SerializeField]
+    private CurrentStageData _currentStageSO; 
     public TutorialTextSO TutorialTextSO => tutorialTextSO;
     public TextMeshProUGUI SpeechBubbleText => speechBubbleText;
     public Image BlackBackground => blackBackground;
@@ -79,9 +82,8 @@ public class BattleTurtorialComponent : MonoBehaviour
     public static bool _isTutorial = false; // 튜토리얼 했는지 
     private void Start()
     {
-        checkButton.onClick.AddListener(() => NextExplain());
         SetTutorial(); 
-        // EventManager.StartListening(EventsType.NextExplain, NextExplain);
+        EventManager.Instance.StartListening(EventsType.NextExplain, NextExplain);
     }
 
     /// <summary>

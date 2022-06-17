@@ -34,7 +34,7 @@ namespace Battle
 		[SerializeField]
 		private GameObject _cardDatas = null;
 		[SerializeField]
-		private AIDatasSO _enemyAIDataSO = null;
+		private AIDataSO _enemyAIDataSO = null;
 		[SerializeField]
 		private CardDeckSO _inGameCardDataSO = null;
 		[SerializeField]

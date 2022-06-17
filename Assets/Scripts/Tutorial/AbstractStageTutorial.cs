@@ -11,9 +11,8 @@ public abstract class AbstractStageTutorial
 {
     [SerializeField]
     protected List<RectTransform> impactTrans = new List<RectTransform>();
-    [SerializeField]
+    
     private RectTransform originTrans; // 검은색으로 덮이는 위치 
-
     protected BattleTurtorialComponent battleTurtorialComponent;
     protected TextMeshProUGUI speechText;
     protected List<TextData> textDatas;
@@ -26,7 +25,8 @@ public abstract class AbstractStageTutorial
         battleTurtorialComponent = GameObject.FindObjectOfType<BattleTurtorialComponent>();
         speechText = battleTurtorialComponent.SpeechBubbleText;
         textDatas = battleTurtorialComponent.TutorialTextSO._textDatas.ToList();
-        blackImpact = battleTurtorialComponent.BlackBackground.GetComponent<RectTransform>(); 
+        blackImpact = battleTurtorialComponent.BlackBackground.GetComponent<RectTransform>();
+        originTrans = battleTurtorialComponent.OriginTrans; 
     }
     /// <summary>
     /// 튜토리얼 끝나고 설정해줄거 해주기 

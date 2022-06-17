@@ -7,7 +7,7 @@ using Utill.Tool;
 using Main.Deck;
 
 [CreateAssetMenu(fileName = "AIDataSO", menuName = "Scriptable Object/AIDataSO")]
-public class AIDatasSO : ScriptableObject
+public class AIDataSO : ScriptableObject
 {
     public int summonGrade;
     public float throwSpeed;
