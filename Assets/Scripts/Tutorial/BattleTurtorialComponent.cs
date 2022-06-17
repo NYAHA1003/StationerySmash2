@@ -8,6 +8,7 @@ using Main.Event;
 using Utill.Data;
 using Battle.Tutorial;
 using Utill.Load;
+using DG.Tweening; 
 /// <summary>
 /// 설명으로 나올 텍스트타입
 /// </summary>
@@ -28,11 +29,14 @@ public class BattleTurtorialComponent : MonoBehaviour
     {
         get
         {
-            if(tutorialCanvas == null)
+            //if(tutorialCanvas == null)
+            //{
+            //    tutorialCanvas = GameObject.Find("TutorialCanvasParent").transform.Find("TutorialCanvas").gameObject;
+            //}
+            if (tutorialCanvas == null)
             {
-                tutorialCanvas = GameObject.Find("TutorialCanvasParent").transform.Find("TutorialCanvas").gameObject;
+                tutorialCanvas = GameObject.Find("TutorialCanvasParent").transform.GetChild(0).gameObject;
             }
-
             return tutorialCanvas;
         }
     }
@@ -45,22 +49,24 @@ public class BattleTurtorialComponent : MonoBehaviour
     private Image explainer; // 설명하는 돼지 
 
     [SerializeField]
-    private Button checkButton; // OK 버튼, 다음 설명으로 넘어감
-
-    [SerializeField]
     private TextMeshProUGUI expaineText; // 상단에 뜰 설명 텍스트    
     [SerializeField]
     private TextMeshProUGUI speechBubbleText; // 말풍선에 뜰 설명 텍스트  
     [SerializeField]
     private Image speechBubble; // 말풍선 
-    
+    [SerializeField]
+    private RectTransform _originTrans;
+    [SerializeField]
+    private Transform[] _impactParent;
+    public RectTransform OriginTrans => _originTrans; 
     private GameObject tutorialCanvas; // 튜토리얼 캔버스 
 
     [SerializeField]
     private TutorialTextSO tutorialTextSO; // 설명 텍스트정보
     [SerializeField]
     private LoadingBattleDataSO _loadingBattleDataSO;
-
+    [SerializeField]
+    private CurrentStageData _currentStageSO; 
     public TutorialTextSO TutorialTextSO => tutorialTextSO;
     public TextMeshProUGUI SpeechBubbleText => speechBubbleText;
     public Image BlackBackground => blackBackground;
@@ -73,17 +79,38 @@ public class BattleTurtorialComponent : MonoBehaviour
 
     private AbstractStageTutorial currentStageTutorial; // 현재 튜토리얼 
     [SerializeField]
-    private BattleStageType currentBattleStageType;
+    private BattleStageType _currentBattleStageType;
+    public BattleStageType CurrentBattleStageType => _currentBattleStageType; 
 
     private bool _isPause = false;
     public static bool _isTutorial = false; // 튜토리얼 했는지 
     private void Start()
     {
-        checkButton.onClick.AddListener(() => NextExplain());
         SetTutorial(); 
-        // EventManager.StartListening(EventsType.NextExplain, NextExplain);
+        EventManager.Instance.StartListening(EventsType.NextExplain, NextExplain);
     }
 
+    public void DO(RectTransform rect)
+    {
+        rect.DOScale(2,1);
+    }
+    public void DOKill(RectTransform rect)
+    {
+        rect.DOKill();
+    }
+    [ContextMenu("테스트")]
+    private void Test()
+    {
+        tutorialEventQueue.Clear();
+        _currentBattleStageType = BattleStageType.S1_1;
+        currentStageTutorial = one_ZeroStageTutorial;
+
+        tutorialEventQueue.Enqueue(StartTutorial);
+        currentStageTutorial.Initialize(_impactParent[1]);
+        currentStageTutorial.SetQueue();
+
+        tutorialEventQueue.Dequeue().Invoke(); 
+    }
     /// <summary>
     /// 큐에 할 게 들어있는지 
     /// </summary>
@@ -103,8 +130,9 @@ public class BattleTurtorialComponent : MonoBehaviour
     /// SceneLoadButtonManager의 SetBattleLoadButton에서 이벤트로 설정해줄거임
     public void SetTutorial()
     {
-        currentBattleStageType = _loadingBattleDataSO.CurrentStageData.battleStageType; // 현재 몇 스테이지인지 받아옴
-        switch (currentBattleStageType)
+        tutorialEventQueue.Clear(); 
+        _currentBattleStageType = _loadingBattleDataSO.CurrentStageData.battleStageType; // 현재 몇 스테이지인지 받아옴
+        switch (_currentBattleStageType)
         {
             case BattleStageType.ST_MAKE: 
                 currentStageTutorial = ST_MakeStageTutorial;
@@ -122,6 +150,7 @@ public class BattleTurtorialComponent : MonoBehaviour
                 return; 
         }
         tutorialEventQueue.Enqueue(StartTutorial);
+        currentStageTutorial.Initialize(_impactParent[(int)_currentBattleStageType]); 
         currentStageTutorial.SetQueue();
     }
 

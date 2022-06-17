@@ -56,7 +56,6 @@ namespace Main.Scroll
                 {
                     StressImage();
                 }
-                return;
             }
             StressImage();
             EventManager.Instance.TriggerEvent(EventsType.SetOriginShopPn);
