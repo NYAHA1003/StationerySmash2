@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using Utill.Data;
 using Utill.Tool;
 using Main.Event;
+using TMPro; 
 
 namespace Main.Scroll
 {
@@ -16,8 +17,7 @@ namespace Main.Scroll
         [SerializeField]
         private Slider accentSlider;
         [SerializeField]
-        private RectTransform[] panelMoveBtns;
-
+        private TextMeshProUGUI[] movePanelBtnText; 
         protected override void SettingAwake()
         {
             base.SettingAwake();
@@ -40,7 +40,6 @@ namespace Main.Scroll
             if (_curPos == _targetPos)
             {
                 DeltaSlide(eventData.delta.x);
-                return; 
             }
             SetOriginScroll(); 
             ChangeBtnSize();
@@ -80,7 +79,7 @@ namespace Main.Scroll
         {
             for (int i = 0; i < Size; i++)
             {
-                panelMoveBtns[i].sizeDelta = new Vector2((_targetIndex == Size - i - 1) ? 320 : 160, panelMoveBtns[Size - i - 1].sizeDelta.y);
+                movePanelBtnText[i].fontSize = (_targetIndex == Size - i - 1) ? 60 : 36;  
             }
         }
 

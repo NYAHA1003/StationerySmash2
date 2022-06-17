@@ -24,7 +24,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3041263162406747908}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.00008, y: 1.00008, z: 1.00008}
   m_Children:
@@ -51,9 +51,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 940227e85c13b874d809e8987b9e8587, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _CommonButton: {fileID: 3041263163693163640}
-  _ShinyButton: {fileID: 0}
-  _LegendaryButton: {fileID: 0}
+  cardPackSO: {fileID: 0}
+  _curCardAmountList: 
+  _curCardType: 
+  DeckDataManagerSOHaveDeckDataList: []
+  cardNamingTypes: 
+  _notHaveCardNamingTypes: 
+  _gachaInfo:
+    gachaSO: {fileID: 0}
+    allItemInfos:
+      itemSO: {fileID: 0}
+      commonItemInfos: []
+      rareItemInfos: []
+      epicItemInfos: []
+    itemsParent: {fileID: 0}
+    itemPrefab: {fileID: 0}
+  _backCardpack: {fileID: 0}
+  _cardPanel: {fileID: 0}
+  _cardMesh: {fileID: 0}
+  gachaCards: []
+  cardPrefab: {fileID: -3030624547859563493, guid: 7a827e66a08b6dc45b8b6602001bd469, type: 3}
+  _quantity: 0
 --- !u!1001 &2659841082992643966
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -258,17 +276,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5389576280059625437, guid: 5134c84a68b5fc64fafbbfe9d45d30e7, type: 3}
   m_PrefabInstance: {fileID: 6989344359369065193}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3041263163693163640 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5389576278829147793, guid: 5134c84a68b5fc64fafbbfe9d45d30e7, type: 3}
-  m_PrefabInstance: {fileID: 6989344359369065193}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &8042921772376584996
 PrefabInstance:
   m_ObjectHideFlags: 0
