@@ -15,8 +15,7 @@ namespace Utill.Tool
 		{
 			if (collideData.originpoints.Length == 4)
 			{
-				collideData.SetMultiple(1);
-				var vec = collideData.GetPoint(transform.position);
+				var vec = collideData.GetPoint(transform.position, 1f);
 				DrawLine(vec[0], vec[1]);
 				DrawLine(vec[0], vec[2]);
 				DrawLine(vec[1], vec[3]);

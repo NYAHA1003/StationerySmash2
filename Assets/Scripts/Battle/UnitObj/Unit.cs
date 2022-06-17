@@ -29,6 +29,10 @@ public class Unit : MonoBehaviour
     public int OrderIndex { get; set; } = 0;
     public int ViewIndex => _viewIndex; //뷰 인덱스
     public Animator Animator => _animator; //애니메이터
+    public float Multiple
+    {
+        get { return _multiple; }
+    }
 
     //변수
     private CollideData _collideData = default; 
@@ -41,9 +45,9 @@ public class Unit : MonoBehaviour
     protected bool _isSettingEnd = false;
     protected Sequence _knockbackTweener;
     private int _viewIndex = 0;
-
-    //참조 변수
-    private UnitData _unitData= null;
+    private float _multiple = 1f;
+	//참조 변수
+	private UnitData _unitData= null;
     private SkinData _skinData= null;
     private StageData _stageData = null;
 
@@ -101,15 +105,15 @@ public class Unit : MonoBehaviour
         {
             default:
             case 1:
-                _collideData.SetMultiple(1);
+                _multiple = 1f;
                 transform.localScale = Vector3.one;
                 break;
             case 2:
-                _collideData.SetMultiple(1.2f);
+                _multiple = 1.2f;
                 transform.localScale = Vector3.one * 1.2f;
                 break;
             case 3:
-                _collideData.SetMultiple(1.5f);
+                _multiple = 1.5f;
                 transform.localScale = Vector3.one * 1.5f;
                 break;
         }

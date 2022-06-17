@@ -99,7 +99,7 @@ namespace Battle
                     _throwComponent.SetThrowedUnit(throwedUnit);
                     return;
                 }
-                Vector2[] points = throwedUnit.CollideData.GetPoint(throwedUnit.transform.position);
+                Vector2[] points = throwedUnit.CollideData.GetPoint(throwedUnit.transform.position, throwedUnit.Multiple);
 
                 if (CheckPoints(points, pos))
                 {
