@@ -8,6 +8,7 @@ using Main.Event;
 using Utill.Data;
 using Battle.Tutorial;
 using Utill.Load;
+using DG.Tweening; 
 /// <summary>
 /// 설명으로 나올 텍스트타입
 /// </summary>
@@ -55,6 +56,8 @@ public class BattleTurtorialComponent : MonoBehaviour
     private Image speechBubble; // 말풍선 
     [SerializeField]
     private RectTransform _originTrans;
+    [SerializeField]
+    private Transform[] _impactParent;
     public RectTransform OriginTrans => _originTrans; 
     private GameObject tutorialCanvas; // 튜토리얼 캔버스 
 
@@ -76,7 +79,8 @@ public class BattleTurtorialComponent : MonoBehaviour
 
     private AbstractStageTutorial currentStageTutorial; // 현재 튜토리얼 
     [SerializeField]
-    private BattleStageType currentBattleStageType;
+    private BattleStageType _currentBattleStageType;
+    public BattleStageType CurrentBattleStageType => _currentBattleStageType; 
 
     private bool _isPause = false;
     public static bool _isTutorial = false; // 튜토리얼 했는지 
@@ -86,6 +90,27 @@ public class BattleTurtorialComponent : MonoBehaviour
         EventManager.Instance.StartListening(EventsType.NextExplain, NextExplain);
     }
 
+    public void DO(RectTransform rect)
+    {
+        rect.DOScale(2,1);
+    }
+    public void DOKill(RectTransform rect)
+    {
+        rect.DOKill();
+    }
+    [ContextMenu("테스트")]
+    private void Test()
+    {
+        tutorialEventQueue.Clear();
+        _currentBattleStageType = BattleStageType.S1_1;
+        currentStageTutorial = one_ZeroStageTutorial;
+
+        tutorialEventQueue.Enqueue(StartTutorial);
+        currentStageTutorial.Initialize(_impactParent[1]);
+        currentStageTutorial.SetQueue();
+
+        tutorialEventQueue.Dequeue().Invoke(); 
+    }
     /// <summary>
     /// 큐에 할 게 들어있는지 
     /// </summary>
@@ -106,8 +131,8 @@ public class BattleTurtorialComponent : MonoBehaviour
     public void SetTutorial()
     {
         tutorialEventQueue.Clear(); 
-        currentBattleStageType = _loadingBattleDataSO.CurrentStageData.battleStageType; // 현재 몇 스테이지인지 받아옴
-        switch (currentBattleStageType)
+        _currentBattleStageType = _loadingBattleDataSO.CurrentStageData.battleStageType; // 현재 몇 스테이지인지 받아옴
+        switch (_currentBattleStageType)
         {
             case BattleStageType.ST_MAKE: 
                 currentStageTutorial = ST_MakeStageTutorial;
@@ -125,7 +150,7 @@ public class BattleTurtorialComponent : MonoBehaviour
                 return; 
         }
         tutorialEventQueue.Enqueue(StartTutorial);
-        currentStageTutorial.Initialize(); 
+        currentStageTutorial.Initialize(_impactParent[(int)_currentBattleStageType]); 
         currentStageTutorial.SetQueue();
     }
 
