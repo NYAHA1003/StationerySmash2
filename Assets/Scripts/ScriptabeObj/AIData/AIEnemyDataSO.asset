@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 25ba577580192304e8653126fc6927f6, type: 3}
-  m_Name: AIEnemyDataSO
+  m_Name: 
   m_EditorClassIdentifier: 
   summonGrade: 1
-  throwSpeed: 30
+  throwSpeed: 20
   isAIOn: 1
   cardDataList:
-  - _cardNamingType: 100
+  - _cardNamingType: 600
     _cardType: 1
     _starategyType: 0
-    _unitType: 2
-    _name: "\uC5F0\uD544"
-    _description: "\uC5F0\uD544\uC774\uB2E4"
-    _cost: 2
+    _unitType: 7
+    _name: "\uC790"
+    _description: "\uC790\uB2E4"
+    _cost: 4
     _skinData:
-      _skinType: 100
+      _skinType: 600
       _effectType: 0
     _level: 1
     _count: 0
@@ -40,18 +40,6 @@ MonoBehaviour:
       _effectType: 0
     _level: 1
     _count: 0
-  - _cardNamingType: 100
-    _cardType: 1
-    _starategyType: 0
-    _unitType: 2
-    _name: "\uC5F0\uD544"
-    _description: "\uC5F0\uD544\uC774\uB2E4"
-    _cost: 2
-    _skinData:
-      _skinType: 100
-      _effectType: 0
-    _level: 1
-    _count: 0
   - _cardNamingType: 200
     _cardType: 1
     _starategyType: 0
@@ -61,18 +49,6 @@ MonoBehaviour:
     _cost: 3
     _skinData:
       _skinType: 200
-      _effectType: 0
-    _level: 1
-    _count: 0
-  - _cardNamingType: 100
-    _cardType: 1
-    _starategyType: 0
-    _unitType: 2
-    _name: "\uC5F0\uD544"
-    _description: "\uC5F0\uD544\uC774\uB2E4"
-    _cost: 2
-    _skinData:
-      _skinType: 100
       _effectType: 0
     _level: 1
     _count: 0
@@ -80,11 +56,7 @@ MonoBehaviour:
   - {x: 3, y: 0.3}
   - {x: 3, y: 0.3}
   - {x: 3, y: 0.3}
-  - {x: 3, y: 0.3}
-  - {x: 3, y: 0.3}
   max_Delay:
-  - 2
+  - 5
+  - 5
   - 1
-  - 1.5
-  - 1
-  - 1.5
