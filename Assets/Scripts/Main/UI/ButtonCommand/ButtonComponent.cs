@@ -25,6 +25,8 @@ namespace Main.Buttons
 		[Header("활성화할 패널들")]
 		[SerializeField]
 		private GameObject[] activePanels;
+		[SerializeField]
+		private GameEndPanel _gameEndPanel;
 
 		//어떤 버튼커맨드들을 사용하는지 직관적으로 알기위함 
 		private ActiveCommand deckButtonCommand;
@@ -45,6 +47,22 @@ namespace Main.Buttons
 			EventManager.Instance.StartListening(EventsType.UndoStack, OnUndoBtn);
 			//덱에 있는 카드 클릭시 카드설명이 뜸, DeckSetting에서 카드 만들어주면서 AddListener로 EventTrigger로 등록해줌     
 			
+		}
+
+		public void Update()
+		{
+			//뒤로가기
+			if(Input.GetKeyDown(KeyCode.Backspace))
+			{
+				if(activeButtonsStack.Count > 0)
+				{
+					OnUndoBtn();
+				}
+				else
+				{
+					_gameEndPanel.Setting();
+				}
+			}
 		}
 
 		/// <summary>
