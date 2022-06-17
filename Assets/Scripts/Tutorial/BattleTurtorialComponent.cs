@@ -74,8 +74,15 @@ public class BattleTurtorialComponent : MonoBehaviour
     [SerializeField]
     private ST_MakeStageTutorial ST_MakeStageTutorial; // 디버그용 스테이지 튜토리얼 
     [SerializeField]
-    private One_ZeroStageTutorial one_ZeroStageTutorial; // 1-0스테이지 튜토리얼 
-
+    private One_OneStageTutorial one_OneStageTutorial; // 1-1스테이지 튜토리얼 
+    [SerializeField]
+    private One_TwoStageTutorial one_TwoStageTutorial; // 1-2스테이지 튜토리얼 
+    [SerializeField]
+    private One_ThreeStageTutorial one_ThreeStageTutorial; // 1-3스테이지 튜토리얼 
+    [SerializeField]
+    private One_FourStageTutorial one_FourStageTutorial; // 1-4스테이지 튜토리얼 
+    [SerializeField]
+    private One_FiveStageTutorial one_FiveStageTutorial; // 1-5스테이지 튜토리얼 
 
     private AbstractStageTutorial currentStageTutorial; // 현재 튜토리얼 
     [SerializeField]
@@ -86,7 +93,7 @@ public class BattleTurtorialComponent : MonoBehaviour
     public static bool _isTutorial = false; // 튜토리얼 했는지 
     private void Start()
     {
-        SetTutorial(); 
+     //   SetTutorial(); 
         EventManager.Instance.StartListening(EventsType.NextExplain, NextExplain);
     }
 
@@ -103,7 +110,7 @@ public class BattleTurtorialComponent : MonoBehaviour
     {
         tutorialEventQueue.Clear();
         _currentBattleStageType = BattleStageType.S1_1;
-        currentStageTutorial = one_ZeroStageTutorial;
+        currentStageTutorial = one_OneStageTutorial;
 
         tutorialEventQueue.Enqueue(StartTutorial);
         currentStageTutorial.Initialize(_impactParent[1]);
@@ -138,13 +145,19 @@ public class BattleTurtorialComponent : MonoBehaviour
                 currentStageTutorial = ST_MakeStageTutorial;
                 break; 
             case BattleStageType.S1_1:
-                currentStageTutorial = one_ZeroStageTutorial;
+                currentStageTutorial = one_OneStageTutorial;
                 break;
             case BattleStageType.S1_2:
+                currentStageTutorial = one_TwoStageTutorial;
                 break;
             case BattleStageType.S1_3:
+                currentStageTutorial = one_ThreeStageTutorial;
                 break;
             case BattleStageType.S1_4:
+                currentStageTutorial = one_FourStageTutorial;
+                break; 
+            case BattleStageType.S1_5:
+                currentStageTutorial = one_FiveStageTutorial;
                 break;
             default: // 튜토리얼이 있는 스테이지가 아니면 리턴 
                 return; 

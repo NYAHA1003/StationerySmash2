@@ -19,7 +19,7 @@ public abstract class AbstractStageTutorial
     protected RectTransform blackImpact; 
 
     private bool isPause = false;
-    public int _curTextIndex = 0; 
+    private int _curTextIndex = 0; 
     /// <summary>
     /// 현재 스테이지의 말할 텍스트 설정
     /// </summary>
