@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utill.Data;
-using UnityEngine.UI; 
+using UnityEngine.UI;
 public abstract class ButtonAgent : MonoBehaviour
 {
     public EventsType[] eventTypes;
