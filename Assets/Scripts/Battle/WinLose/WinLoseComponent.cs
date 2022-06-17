@@ -13,8 +13,6 @@ namespace Battle
 	public class WinLoseComponent : BattleComponent
 	{
 		[SerializeField]
-		private LoadingBattleDataSO _loadingBattleDataSO;
-		[SerializeField]
 		private Canvas _cardCanvas;
 		[SerializeField]
 		private Canvas _winLoseCanvas;
@@ -92,8 +90,8 @@ namespace Battle
 					OnComplete(() =>
 					{
 
-						UserSaveManagerSO.AddExp(_loadingBattleDataSO.CurrentStageData._awardExp);
-						UserSaveManagerSO.AddMoney(_loadingBattleDataSO.CurrentStageData._awardMoney);
+						UserSaveManagerSO.AddExp(_currentStageData._rewardExp);
+						UserSaveManagerSO.AddMoney(_currentStageData._rewardMoney);
 						_winText.DOScale(1.5f, 0.3f).SetLoops(-1, LoopType.Yoyo);
 					});
 				return;

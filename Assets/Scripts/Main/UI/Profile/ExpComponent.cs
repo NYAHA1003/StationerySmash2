@@ -11,7 +11,7 @@ using Utill.Tool;
 public class ExpComponent : MonoBehaviour, IUserData
 {
 	[SerializeField]
-	private Image _expImage = null;
+	private Slider _expSlider = null;
 	[SerializeField]
 	private TextMeshProUGUI _expText = null;
 	[SerializeField]
@@ -25,11 +25,11 @@ public class ExpComponent : MonoBehaviour, IUserData
 	private int _previousExp = 0;
 	private Sequence _textSequence = null;
 
-	public void Awake()
+	public void Start()
 	{
-		UserSaveManagerSO.AddObserver(this);
 		_previousLevel = UserSaveManagerSO.UserSaveData._level;
 		_previousExp = UserSaveManagerSO.UserSaveData._nowExp;
+		UserSaveManagerSO.AddObserver(this);
 
 		if (CheckExpOverLevelExp())
 		{
@@ -110,7 +110,7 @@ public class ExpComponent : MonoBehaviour, IUserData
 	{
 		_levelText.text = _previousLevel.ToString();
 		_expText.text = $"{_previousExp}/{(_previousLevel * 100)}";
-		_expImage.fillAmount = (float)_previousExp / (_previousLevel * 100);
+		_expSlider.value = (float)_previousExp / (_previousLevel * 100);
 	}
 
 	/// <summary>
