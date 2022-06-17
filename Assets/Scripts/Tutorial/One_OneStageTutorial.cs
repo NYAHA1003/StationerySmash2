@@ -6,7 +6,7 @@ using DG.Tweening;
 
 // 1-0 스테이지 튜토리얼 
 [System.Serializable]
-public class One_ZeroStageTutorial : AbstractStageTutorial
+public class One_OneStageTutorial : AbstractStageTutorial
 {
 
     [SerializeField]
