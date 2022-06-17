@@ -11,9 +11,9 @@ namespace Battle
     {
         //인스펙터 참조 변수
         [SerializeField]
-        private AIDatasSO _aiEnemyDataSO;
+        private AIDataSO _aiEnemyDataSO;
         [SerializeField]
-        private AIDatasSO _aiPlayerDataSO;
+        private AIDataSO _aiPlayerDataSO;
         [SerializeField]
         private StageLog _aiLog;
         private bool isEnemyAIOn = false;

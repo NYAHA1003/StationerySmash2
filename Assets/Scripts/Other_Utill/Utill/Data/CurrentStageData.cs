@@ -11,4 +11,5 @@ using Utill.Tool;
 public class CurrentStageData : ScriptableObject
 {
     public StageData _currentStageDatas;
+    //
 }

@@ -8,6 +8,7 @@ using Utill.Load;
 using DG.Tweening;
 using TMPro;
 using Main.Deck;
+using System.Linq;
 
 namespace Battle
 {
@@ -33,7 +34,7 @@ namespace Battle
 		[SerializeField]
 		private GameObject _cardDatas = null;
 		[SerializeField]
-		private AIDatasSO _enemyAIDataSO = null;
+		private AIDataSO _enemyAIDataSO = null;
 		[SerializeField]
 		private CardDeckSO _inGameCardDataSO = null;
 		[SerializeField]
@@ -66,7 +67,8 @@ namespace Battle
 		{
 			_cameraComponent = cameraCommand;
 			_playerCardDatas = _inGameCardDataSO.cardDatas;
-			_enemyCardDatas = _enemyAIDataSO.cardDataList;
+
+			_enemyCardDatas = _enemyAIDataSO.cardDataList.Distinct(new CardDataComparer()).ToList();
 			_managerBase = managerBase;
 		}
 
