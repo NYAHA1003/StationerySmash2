@@ -14,6 +14,7 @@ public class One_FourStageTutorial : AbstractStageTutorial
 
     public override void EndTutorial()
     {
+        base.EndTutorial();
     }
 
     /// <summary>
@@ -30,7 +31,6 @@ public class One_FourStageTutorial : AbstractStageTutorial
     private void ExpainThrowDetail()
     {
         SetSpeechText();
-        SetImpactPos(impactTrans[1].anchoredPosition);
     }
     /// <summary>
     /// Á¶¾ð 

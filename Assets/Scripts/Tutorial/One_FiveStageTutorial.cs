@@ -13,6 +13,7 @@ public class One_FiveStageTutorial : AbstractStageTutorial
 
     public override void EndTutorial()
     {
+        base.EndTutorial(); 
     }
 
     /// <summary>
