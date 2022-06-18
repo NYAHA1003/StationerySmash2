@@ -6,6 +6,7 @@ using Utill.Data;
 using Utill.Tool;
 using Main.Event;
 using DG.Tweening;
+using Main.Setting;
 
 namespace Main.Deck
 {
@@ -72,7 +73,7 @@ namespace Main.Deck
             UserSaveManagerSO.AddObserver(this);
             UpdatePresetButtonColor();
         }
-
+     
         /// <summary>
         /// 정렬 방식을 바꾼다
         /// </summary>
@@ -163,9 +164,9 @@ namespace Main.Deck
                 cardButton.onClick.RemoveAllListeners();
                 cardButton.onClick.AddListener(() =>
                 {
+                    Sound.PlayEff(4);
                     EventManager.Instance.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
                     EventManager.Instance.TriggerEvent(EventsType.ActiveButtonComponent, ButtonType.cardDescription);
-                    
                 });
 
             }
@@ -190,6 +191,7 @@ namespace Main.Deck
 
                 if (i == _userDeckData._inGameDeckListSO.cardDatas.Count - 1)
                 {
+                    Sound.PlayEff(5);
                     CardSetAnimation(cardButton);
                 }
             }

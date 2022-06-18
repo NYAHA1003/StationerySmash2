@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using DG.Tweening;
 using Utill.Tool;
 using TMPro;
-
+using Main.Setting;
 namespace Battle
 {
 	[System.Serializable]
@@ -96,6 +96,8 @@ namespace Battle
 						UserSaveManagerSO.AddMoney(_loadingBattleDataSO.CurrentStageData._awardMoney);
 						_winText.DOScale(1.5f, 0.3f).SetLoops(-1, LoopType.Yoyo);
 					});
+				Sound.StopBgm(3);
+				Sound.PlayBgm(7);
 				return;
 			}
 			_losePanel.sizeDelta = new Vector2(3, 3);
@@ -104,7 +106,8 @@ namespace Battle
 					{
 						_loseText.DOScale(1.5f, 0.3f).SetLoops(-1, LoopType.Yoyo);
 					});
-
+			Sound.StopBgm(3);
+			Sound.PlayBgm(8);
 		}
 	}
 

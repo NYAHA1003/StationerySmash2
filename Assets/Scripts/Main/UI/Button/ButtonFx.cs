@@ -2,16 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Main.Setting;
-using Main.Event;
-using Utill.Data;
+using UnityEngine.UI;
 
 public class ButtonFx : MonoBehaviour
 {
+    private Button button;
     [SerializeField]
-    private EventsType eventType;
+    private int idx;
     private void Awake()
     {
-        EventManager.Instance.StartListening(eventType, (x) => PlaySound((int)x));
+        button = GetComponent<Button>();
+        button.onClick.AddListener(()=>PlaySound(idx));
     }
     private void PlaySound(int x)
     {
