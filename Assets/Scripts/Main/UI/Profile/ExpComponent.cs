@@ -31,14 +31,6 @@ public class ExpComponent : MonoBehaviour, IUserData
 		_previousExp = UserSaveManagerSO.UserSaveData._nowExp;
 		UserSaveManagerSO.AddObserver(this);
 
-		if (CheckExpOverLevelExp())
-		{
-			_previousLevel++;
-			_previousExp = 0;
-		}
-
-
-
 		_textSequence = DOTween.Sequence().SetAutoKill(false).OnStart(() =>
 		{
 			_levelText.color = Color.white;
@@ -52,7 +44,7 @@ public class ExpComponent : MonoBehaviour, IUserData
 			.OnComplete(() => _levelText.DOColor(Color.blue, 0.1f)
 			.OnComplete(() => _levelText.DOColor(Color.magenta, 0.1f)
 			.OnComplete(() => _levelText.DOColor(Color.white, 0.1f))))));
-
+		_textSequence.Pause();
 		UpdateText();
 	}
 
@@ -101,6 +93,7 @@ public class ExpComponent : MonoBehaviour, IUserData
 				yield return new WaitForSeconds(interval);
 			}
 		}
+		UpdateText();
 	}
 
 	/// <summary>
