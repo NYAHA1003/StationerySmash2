@@ -219,7 +219,8 @@ namespace Utill.Tool
             if (cardSaveData != null)
 			{
                 cardSaveData._count += count;
-                DeckDataManagerSO.FindHaveCardData(cardData._cardNamingType)._count++;
+                DeckDataManagerSO.FindHaveCardData(cardData._cardNamingType)._count += count;
+                DeckDataManagerSO.SetHaveDataList();
             }
 			else
             {
@@ -232,6 +233,11 @@ namespace Utill.Tool
                     _count = 1,
                 };
                 _userSaveData._haveCardSaveDatas.Add(cardSaveData);
+                if(cardData._unitType != UnitType.None)
+				{
+                    UnitDataManagerSO.AddHaveData(cardData._unitType);
+				}
+
                 DeckDataManagerSO.SetHaveDataList();
             }
             PostUserSaveData();

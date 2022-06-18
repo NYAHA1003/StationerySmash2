@@ -46,12 +46,12 @@ namespace Main.Deck
         public void AddExp(int exp)
 		{
             _nowExp += exp;
-            for(;_nowExp > _level * 100; )
+            for(;_nowExp >= _level * 100; )
             {
-                if (_nowExp > (_level * 100))
+                if (_nowExp >= (_level * 100))
                 {
-                    _level++;
                     _nowExp -= _level * 100;
+                    _level++;
                 }
             }
             if(_nowExp < 0)

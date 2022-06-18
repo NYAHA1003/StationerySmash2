@@ -11,7 +11,7 @@ using Utill.Tool;
 public class ExpComponent : MonoBehaviour, IUserData
 {
 	[SerializeField]
-	private Image _expImage = null;
+	private Slider _expSlider = null;
 	[SerializeField]
 	private TextMeshProUGUI _expText = null;
 	[SerializeField]
@@ -25,19 +25,11 @@ public class ExpComponent : MonoBehaviour, IUserData
 	private int _previousExp = 0;
 	private Sequence _textSequence = null;
 
-	public void Awake()
+	public void Start()
 	{
-		UserSaveManagerSO.AddObserver(this);
 		_previousLevel = UserSaveManagerSO.UserSaveData._level;
 		_previousExp = UserSaveManagerSO.UserSaveData._nowExp;
-
-		if (CheckExpOverLevelExp())
-		{
-			_previousLevel++;
-			_previousExp = 0;
-		}
-
-
+		UserSaveManagerSO.AddObserver(this);
 
 		_textSequence = DOTween.Sequence().SetAutoKill(false).OnStart(() =>
 		{
@@ -52,7 +44,7 @@ public class ExpComponent : MonoBehaviour, IUserData
 			.OnComplete(() => _levelText.DOColor(Color.blue, 0.1f)
 			.OnComplete(() => _levelText.DOColor(Color.magenta, 0.1f)
 			.OnComplete(() => _levelText.DOColor(Color.white, 0.1f))))));
-
+		_textSequence.Pause();
 		UpdateText();
 	}
 
@@ -101,6 +93,7 @@ public class ExpComponent : MonoBehaviour, IUserData
 				yield return new WaitForSeconds(interval);
 			}
 		}
+		UpdateText();
 	}
 
 	/// <summary>
@@ -110,7 +103,7 @@ public class ExpComponent : MonoBehaviour, IUserData
 	{
 		_levelText.text = _previousLevel.ToString();
 		_expText.text = $"{_previousExp}/{(_previousLevel * 100)}";
-		_expImage.fillAmount = (float)_previousExp / (_previousLevel * 100);
+		_expSlider.value = (float)_previousExp / (_previousLevel * 100);
 	}
 
 	/// <summary>

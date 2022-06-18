@@ -157,14 +157,14 @@ namespace Battle
 			yield return new WaitForSeconds(1f);
 			_cardDatas.SetActive(false);
 
-			//다시 내 필통쪽으로 클로즈업한다
+			//스테이지 중앙으로 카메라를 옮긴다
 			_fadeUp.DOFade(0, 0.3f);
 			_fadeDown.DOFade(0, 0.3f);
 			_uiCanvas.gameObject.SetActive(true);
 			_countText.text = "GO!";
 			_countTextRect.localScale = new Vector2(0.1f, 0.1f);
 			_countTextRect.DOScale(2.5f, 0.3f);
-			_cameraComponent.MovingCamera(_playerPencilCase.position, 1f, 0.2f);
+			_cameraComponent.MovingCameraMoverOrigin(0.2f);
 			yield return new WaitForSeconds(0.3f);
 			_introCanvas.gameObject.SetActive(false);
 			yield return new WaitForSeconds(0.7f);
