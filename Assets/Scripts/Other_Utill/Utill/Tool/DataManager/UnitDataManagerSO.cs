@@ -79,6 +79,16 @@ namespace Utill.Tool
 		}
 
 		/// <summary>
+		/// 가진 유닛데이터 추가
+		/// </summary>
+		/// <param name="unitType"></param>
+		public static void AddHaveData(UnitType unitType)
+		{
+			UnitData unitData = FindStdUnitData(unitType);
+			_haveUnitDataList.Add(unitData);
+		}
+
+		/// <summary>
 		/// 유닛 데이터 리스트 설정
 		/// </summary>
 		/// <param name="unitDatas"></param>
@@ -111,6 +121,7 @@ namespace Utill.Tool
 				_haveUnitDataList.Add(unitData);
 			}
 		}
+
 	}
 
 
