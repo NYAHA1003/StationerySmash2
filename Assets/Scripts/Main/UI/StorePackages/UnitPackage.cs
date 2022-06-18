@@ -33,13 +33,15 @@ namespace Main.Store
         [SerializeField]
         private List<CardNamingType> _notHaveCardNamingTypes = new List<CardNamingType>(); // 가지고 있지 않은 카드타입 리스트
 
- 
+
         [SerializeField]
         private GachaInfo _gachaInfo;
         [SerializeField]
         private Sprite _backCardpack;
         [SerializeField]
-        private GameObject _cardPanel;
+        private GameObject _cardPackPanel;
+        [SerializeField]
+        private GameObject _gachaCanvas;
         [SerializeField]
         private CardMesh _cardMesh;
 
@@ -74,6 +76,7 @@ namespace Main.Store
         {
             EventManager.Instance.StartListening(EventsType.DrawCardPack, (x) => ClickCardPack((int)x));
             EventManager.Instance.StartListening(EventsType.ActiveAndAnimateCard, () => ActiveAndAnimateCard());
+            EventManager.Instance.StartListening(EventsType.CloseCardPack, () => CloseCardPackPanel());
         }
         /// <summary>
         /// 최대로 나올 뽑기 아이템 생성 
@@ -93,15 +96,8 @@ namespace Main.Store
         /// </summary>
         private void UpdateCurrentCard()
         {
-            try
-            {
-                SetHaveCard();
-                SetNotHaveCard();
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"오류{e.Message}");
-            }
+            SetHaveCard();
+            SetNotHaveCard();
         }
         /// <summary>
         /// 보유 카드가 무엇인지 설정
@@ -195,7 +191,11 @@ namespace Main.Store
             _quantity = 0;
             UpdateCurrentCard();
         }
-
+        private void CloseCardPackPanel()
+        {
+            _gachaCanvas.SetActive(false);
+            _cardPackPanel.SetActive(false);
+        }
         /// <summary>
         /// 카드팩 클릭시 
         /// </summary>
@@ -208,16 +208,17 @@ namespace Main.Store
             //    Debug.Log("달고나가 부족합니다. ");
             //    return;
             //}
-            if(UserSaveManagerSO.UserSaveData._money < cardPackSO.cardPackInfos[cardPackType].useDalgona)
-			{
-                _warningComponent ??= FindObjectOfType<WarrningComponent>();
-                _warningComponent.SetWarrning("돈이 부족합니다");
-                return;
-			}
+            //         if(UserSaveManagerSO.UserSaveData._money < cardPackSO.cardPackInfos[cardPackType].useDalgona)
+            //{
+            //             _warningComponent ??= FindObjectOfType<WarrningComponent>();
+            //             _warningComponent.SetWarrning("돈이 부족합니다");
+            //             return;
+            //}
 
             ResetData();
             DrawCardPack((PackageType)cardPackType);
-            _cardPanel.SetActive(true);
+            _gachaCanvas.SetActive(true);
+            _cardPackPanel.SetActive(true);
             _cardMesh.StartMesh((PackageType)cardPackType);
         }
         /// <summary>
@@ -333,7 +334,7 @@ namespace Main.Store
         /// </summary>
         private CardNamingType DrawNewCard()
         {
-             CardNamingType _newCardNamingType;
+            CardNamingType _newCardNamingType;
             _newCardNamingType = _notHaveCardNamingTypes[Random.Range(0, _notHaveCardNamingTypes.Count)];     //없는 유닛들중 새로운 유닛을 선택
             // 가지고 있지 않은 리스트 초기화 or NatHaveCardNamingTypes.Remove(cardNamingType); 
             Debug.Log($"새로운 유닛 \"{_newCardNamingType}\"이/가 뽑혔습니다.");
