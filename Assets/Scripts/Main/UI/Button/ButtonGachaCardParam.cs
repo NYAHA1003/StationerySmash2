@@ -2,7 +2,8 @@ using Main.Event;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utill.Data; 
+using Utill.Data;
+using Main.Setting;
 
 public class ButtonGachaCardParam : ButtonAgent
 {

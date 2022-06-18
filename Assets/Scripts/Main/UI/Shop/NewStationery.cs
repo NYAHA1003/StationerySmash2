@@ -10,6 +10,7 @@ public class NewStationery : IPerchase
 
     public Grade _grade;
     private CardNamingType _stationeryType;
+    private WarrningComponent _warrningComponent; //경고창
     public NewStationery(DailyItemSO dailyItemSO)
     {
         _newStationeryInfo = dailyItemSO;
@@ -22,11 +23,22 @@ public class NewStationery : IPerchase
         itemInfo._dailyItem = this;
         return itemInfo;
     }
-    public void Purchase()
+    public void Purchase(out bool isbuy)
     {
         // 돈 체크 
-        //UserSaveManagerSO.AddMoney(-_price);
-        Debug.Log("새 카드 구매");
+        if (UserSaveManagerSO.UserSaveData._money >= _price)
+        {
+            UserSaveManagerSO.AddMoney(-_price);
+        }
+        else
+		{
+            _warrningComponent ??= GameObject.FindObjectOfType<WarrningComponent>();
+            _warrningComponent.SetWarrning("돈이 부족합니다");
+            isbuy = false;
+            return;
+		}
+        //새카드구매
         UserSaveManagerSO.AddCardData(DeckDataManagerSO.FindStdCardData(_stationeryType), 1);
+        isbuy = true;
     }
 }

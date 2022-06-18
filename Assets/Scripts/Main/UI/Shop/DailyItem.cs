@@ -38,19 +38,22 @@ public class DailyItem : MonoBehaviour
         }
         _itemNameText.text = dailyItemInfo._cardName;
         _countText.text = string.Format("X {0}",itemCount.ToString());
-
-        _itemButton.onClick.AddListener(() => dailyItemInfo._dailyItem.Purchase()); 
-        _itemButton.onClick.AddListener(() => Purchased());
+        bool isbuy = false;
+        _itemButton.onClick.AddListener(() => dailyItemInfo._dailyItem.Purchase(out isbuy)); 
+        _itemButton.onClick.AddListener(() => Purchased(isbuy));
 
     }
 
     /// <summary>
     /// ±¸¸ÅµÊ
     /// </summary>
-   public void Purchased()
+   public void Purchased(bool isbuy)
     {
-        _itemButton.enabled = false;
-        _blackImage.SetActive(true);
+        if(isbuy)
+		{
+            _itemButton.enabled = false;
+            _blackImage.SetActive(true);
+		}
     }
 
 }

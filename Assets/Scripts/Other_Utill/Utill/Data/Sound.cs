@@ -29,6 +29,8 @@ namespace Utill.Data
         Stage2,
         Stage3,
         Stage4,
-        GongJackSo
+        GongJackSo,
+        Win,
+        Loose
     }
 }

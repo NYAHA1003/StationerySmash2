@@ -49,6 +49,7 @@ namespace Main.Store
         private GachaCard cardPrefab;
 
         private DeckSettingComponent _deckSettingComponent;
+        private WarrningComponent _warningComponent; //경고창
         private bool isNew = false;  // 새로운 카드가 떴냐 
 
         /// <summary>
@@ -66,14 +67,13 @@ namespace Main.Store
             instantiateItem();
             //DeckDataManagerSOHaveDeckDataList = DeckDataManagerSO.HaveDeckDataList;
             UpdateCurrentCard();
-            Debug.Log(DeckDataManagerSO.HaveDeckDataList.Count);
         }
 
         #region 세팅관련 
         private void ListenEvent()
         {
             EventManager.Instance.StartListening(EventsType.DrawCardPack, (x) => ClickCardPack((int)x));
-            EventManager.Instance.StartListening(EventsType.ActiveAndAnimateCard, ActiveAndAnimateCard);
+            EventManager.Instance.StartListening(EventsType.ActiveAndAnimateCard, () => ActiveAndAnimateCard());
         }
         /// <summary>
         /// 최대로 나올 뽑기 아이템 생성 
@@ -208,10 +208,17 @@ namespace Main.Store
             //    Debug.Log("달고나가 부족합니다. ");
             //    return;
             //}
+            if(UserSaveManagerSO.UserSaveData._money < cardPackSO.cardPackInfos[cardPackType].useDalgona)
+			{
+                _warningComponent ??= FindObjectOfType<WarrningComponent>();
+                _warningComponent.SetWarrning("돈이 부족합니다");
+                return;
+			}
+
             ResetData();
             DrawCardPack((PackageType)cardPackType);
             _cardPanel.SetActive(true);
-            _cardMesh.StartMesh();
+            _cardMesh.StartMesh((PackageType)cardPackType);
         }
         /// <summary>
         /// 카드팩뽑기시 데이터세팅 
