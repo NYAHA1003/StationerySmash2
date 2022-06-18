@@ -64,8 +64,6 @@ public class BattleTurtorialComponent : MonoBehaviour
     [SerializeField]
     private TutorialTextSO tutorialTextSO; // 설명 텍스트정보
     [SerializeField]
-    private LoadingBattleDataSO _loadingBattleDataSO;
-    [SerializeField]
     private CurrentStageData _currentStageSO; 
     public TutorialTextSO TutorialTextSO => tutorialTextSO;
     public TextMeshProUGUI SpeechBubbleText => speechBubbleText;
@@ -93,18 +91,10 @@ public class BattleTurtorialComponent : MonoBehaviour
     public static bool _isTutorial = false; // 튜토리얼 했는지 
     private void Start()
     {
-        //SetTutorial(); 
+        SetTutorial(); 
         EventManager.Instance.StartListening(EventsType.NextExplain, NextExplain);
     }
 
-    public void DO(RectTransform rect)
-    {
-        rect.DOScale(2,1);
-    }
-    public void DOKill(RectTransform rect)
-    {
-        rect.DOKill();
-    }
     [ContextMenu("테스트")]
     private void Test()
     {
@@ -139,7 +129,7 @@ public class BattleTurtorialComponent : MonoBehaviour
     public void SetTutorial()
     {
         tutorialEventQueue.Clear(); 
-        //_currentBattleStageType = _loadingBattleDataSO.CurrentStageData.battleStageType; // 현재 몇 스테이지인지 받아옴
+        _currentBattleStageType = _currentStageSO._currentStageDatas._stageType; // 현재 몇 스테이지인지 받아옴
         switch (_currentBattleStageType)
         {
             case BattleStageType.ST_MAKE: 
@@ -167,7 +157,6 @@ public class BattleTurtorialComponent : MonoBehaviour
         currentStageTutorial.Initialize(_impactParent[(int)_currentBattleStageType]); 
         currentStageTutorial.SetQueue();
 
-        tutorialEventQueue.Dequeue().Invoke();
     }
 
     /// <summary>

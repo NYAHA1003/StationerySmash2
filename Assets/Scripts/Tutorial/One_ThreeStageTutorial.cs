@@ -9,7 +9,8 @@ public class One_ThreeStageTutorial : AbstractStageTutorial
     private GameObject _eraser; // 지우개 
     [SerializeField]
     private GameObject _eraserPiece; // 지우개 조각
-    
+    [SerializeField]
+    private GameObject _arrow; // 화살표
     public override void SetQueue()
     {
         BattleTurtorialComponent.tutorialEventQueue.Enqueue(ExplainEraser);
@@ -20,6 +21,10 @@ public class One_ThreeStageTutorial : AbstractStageTutorial
     }
     public override void EndTutorial()
     {
+        base.EndTutorial();
+        _eraser.SetActive(false);
+        _eraserPiece.SetActive(false);
+        _arrow.SetActive(false); 
     }
 
     /// <summary>
@@ -36,6 +41,7 @@ public class One_ThreeStageTutorial : AbstractStageTutorial
     private void ExplainEraserPiece()
     {
         SetSpeechText();
+        _arrow.SetActive(true);
         _eraserPiece.SetActive(true); 
     }
     /// <summary>
