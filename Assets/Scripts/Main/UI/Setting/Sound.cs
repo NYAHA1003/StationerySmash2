@@ -179,16 +179,15 @@ namespace Main.Setting
         {
             _staticBgmSources[num].Play();
         }
-
+        public static void StopBgm(int num)
+        { 
+            _staticBgmSources[num].Stop();
+        }
         public static void PlayEff(int num)
         {
             _staticEffSources[num].Play();
         }
 
-        public static void StopBgm(int num)
-        { 
-            _staticBgmSources[num].Stop();
-        }
         public void BgmSetting()
         {
             Scene scene = SceneManager.GetActiveScene();
