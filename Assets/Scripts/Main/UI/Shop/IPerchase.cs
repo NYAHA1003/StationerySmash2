@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utill.Data;
 
-public abstract class AbstractDailyItem : MonoBehaviour
+public interface IPerchase
 {
-  
+    public void Purchase(); 
 }
 #region 이전 코드
 //public DailyItemSO _newItemInfo;

@@ -5,7 +5,6 @@ using Random = UnityEngine.Random;
 using Utill.Data;
 using System;
 using Main.Event;
-using Main.Deck;
 using Utill.Tool;
 using System.Linq; 
 namespace Utill.Data
@@ -103,6 +102,7 @@ public class DailyShop : MonoBehaviour
     {
         CreateItems();
         InitializeDailyCards();
+        SetHaveCard(); 
         UpdateNotHaveItems();
         ShowFreeDailyCard();    
         ShowDailyCard();
@@ -111,16 +111,27 @@ public class DailyShop : MonoBehaviour
         //CreateDailyItem();
     }
 
-    private void PurchaseCard()
-    {
-        
-    }
     [ContextMenu("새로운 카드 데이터 넣어주기")]
     public void ResetDailyShop()
     {
+        SetHaveCard(); 
         UpdateNotHaveItems();
         ShowDailyCard();
         ShowFreeDailyCard();
+    }
+
+    /// <summary>
+    /// 보유 카드 설정
+    /// </summary>
+    private void SetHaveCard()
+    {
+        _haveStationaryTypes.Clear();
+        int haveCardCount = DeckDataManagerSO.HaveDeckDataList.Count;
+
+        for (int i = 0; i < haveCardCount; i++)
+        {
+            _haveStationaryTypes.Add(DeckDataManagerSO.HaveDeckDataList[i]._cardNamingType);
+        }
     }
     /// <summary>
     /// 보유하고 있지 않은 아이템들 넣어주기 
@@ -287,7 +298,7 @@ public class DailyShop : MonoBehaviour
             //}
 
             DailyItemInfo dailyItemInfo = Check(_dailyCardTypes[i]);
-            paidDailyCard.SetCardInfo(dailyItemInfo,dailyItemInfo._itemCount);
+            paidDailyCard.SetCardInfo(dailyItemInfo, dailyItemInfo._itemCount);
         }
     }
 
@@ -308,7 +319,8 @@ public class DailyShop : MonoBehaviour
                 index = Random.Range(0, length);
                 CardNamingType stationaryType = _haveStationaryTypes[index];
                 StationerySheet stationerySheet = new StationerySheet(_stationerySheetSO);
-                Debug.Log(stationerySheet.ReturnItemInfo(stationaryType)._cardPrice);
+               
+                Debug.Log(stationaryType);
                 return stationerySheet.ReturnItemInfo(stationaryType);
             // 아래 두줄은 나중에 StationerySheet를 부모 클래스(ReturnItemInfo() 보유) 상속 받게 해서
             // int length 밑에 부모 클래스 선언 후 case문 돌려서 할당 후 
