@@ -83,6 +83,7 @@ namespace Utill.Tool
 		/// </summary>
 		public static void SetHaveDataList()
 		{
+			_haveDeckList.Clear();
 			int count = UserSaveManagerSO.UserSaveData._haveCardSaveDatas.Count;
 			for (int i = 0; i < count; ++i)
 			{

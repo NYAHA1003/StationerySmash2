@@ -16,6 +16,12 @@ namespace Main.Deck
 		[SerializeField]
 		private DeckSettingComponent _deckSettingComponent = null;
 
+		private void Start()
+		{
+			_dropdown ??= GetComponent<TMP_Dropdown>();
+			_deckSettingComponent ??= FindObjectOfType<DeckSettingComponent>();
+		}
+
 		/// <summary>
 		/// 드롭다운 값이 변함에 따라 정렬 해준다
 		/// </summary>

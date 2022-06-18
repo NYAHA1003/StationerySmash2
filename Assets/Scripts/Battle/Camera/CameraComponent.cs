@@ -72,6 +72,18 @@ namespace Battle
 			DOTween.To(() => _camera.orthographicSize, x => _camera.orthographicSize = x, size, duration);
 
 		}
+		/// <summary>
+		/// 카메라의 Y위치를 원래 위치Y로 이동하게 함
+		/// </summary>
+		/// <param name="pos"></param>
+		/// <param name="size"></param>
+		/// <param name="duration"></param>
+		public void MovingCameraMoverOrigin(float duration)
+		{
+			_camera.transform.DOMove(_originVector, duration).SetEase(Ease.OutExpo);
+			_camera.transform.DOScale(Vector3.one, duration).SetEase(Ease.OutExpo);
+			DOTween.To(() => _camera.orthographicSize, x => _camera.orthographicSize = x, 1, duration);
+		}
 
 		/// <summary>
 		/// 왼쪽으로 카메라 이동
@@ -90,7 +102,7 @@ namespace Battle
 			{
 				return;
 			}
-			if (-_stageData.max_Range - 1f > _camera.transform.position.x)
+			if (-_stageData.max_Range - 1f > _cameraMover.transform.position.x)
 			{
 				return;
 			}
@@ -115,7 +127,7 @@ namespace Battle
 				return;
 			}
 
-			if (_stageData.max_Range + 1f < _camera.transform.position.x)
+			if (_stageData.max_Range + 1f < _cameraMover.transform.position.x)
 			{
 				return;
 			}

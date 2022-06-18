@@ -99,7 +99,7 @@ namespace Battle
                     _throwComponent.SetThrowedUnit(throwedUnit);
                     return;
                 }
-                Vector2[] points = throwedUnit.CollideData.GetPoint(throwedUnit.transform.position);
+                Vector2[] points = throwedUnit.CollideData.GetPoint(throwedUnit.transform.position, throwedUnit.Multiple);
 
                 if (CheckPoints(points, pos))
                 {
@@ -121,19 +121,8 @@ namespace Battle
         /// <returns></returns>
         private bool CheckPoints(Vector2[] box, Vector2 inPoint)
         {
+            //포인트1(왼쪽 위)
             if (box[0].x - 0.2f > inPoint.x)
-            {
-                return false;
-            }
-            if (box[1].x + 0.2f < inPoint.x)
-            {
-                return false;
-            }
-            if (box[2].x - 0.2f > inPoint.x)
-            {
-                return false;
-            }
-            if (box[3].x + 0.2f < inPoint.x)
             {
                 return false;
             }
@@ -141,11 +130,29 @@ namespace Battle
             {
                 return false;
             }
+
+            //포인트2(오른쪽 위)
+            if (box[1].x + 0.2f < inPoint.x)
+            {
+                return false;
+            }
             if (box[1].y + 0.15f < inPoint.y)
             {
                 return false;
             }
+
+            //포인트3 왼쪽 아래
+            if (box[2].x - 0.2f > inPoint.x)
+            {
+                return false;
+            }
             if (box[2].y - 0.1f > inPoint.y)
+            {
+                return false;
+            }
+
+            //포인트4 오른쪽 아래
+            if (box[3].x + 0.2f < inPoint.x)
             {
                 return false;
             }

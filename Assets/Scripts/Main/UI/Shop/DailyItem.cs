@@ -12,20 +12,19 @@ public class DailyItem : MonoBehaviour
     [SerializeField]
     private Image _itemImage; // 아이템 이미지
     [SerializeField]
+    private GameObject _blackImage; // 구매시 가릴 이미지 
+    [SerializeField]
     private TextMeshProUGUI _priceText; // 가격텍스트
     [SerializeField]
     private TextMeshProUGUI _itemNameText; // 이름 텍스트
     [SerializeField]
     private TextMeshProUGUI _countText; // 개수 텍스트
 
-    public void SetCardInfo(DailyItemInfo dailyItemInfo, int itemCount = 0)
+    private IPerchase _dailyItem;
+    [SerializeField]
+    private Button _itemButton; 
+    public void SetCardInfo(DailyItemInfo dailyItemInfo,int itemCount = 0)
     {
-        Transform itemInfoObj = transform.Find("ItemInfo");
-        _itemImage = transform.Find("ItemImage").GetComponent<Image>();
-        _priceText = itemInfoObj.Find("PriceText").GetComponent<TextMeshProUGUI>();
-        _itemNameText = itemInfoObj.Find("NameText").GetComponent<TextMeshProUGUI>();
-        _countText = itemInfoObj.Find("CountText").GetComponent<TextMeshProUGUI>();
-
         // DailyItemInfo dailyItemInfo = _dailyItemInfo.dailyItemInfos[(int)dailyCardType];
         _itemImage.sprite = dailyItemInfo._itemSprite;
         itemCount = dailyItemInfo._itemCount;
@@ -35,12 +34,26 @@ public class DailyItem : MonoBehaviour
         }
         else
         {
-            _priceText.text = (dailyItemInfo._cardPrice * itemCount).ToString();
+            _priceText.text = string.Format("{0} 원",(dailyItemInfo._cardPrice * itemCount).ToString());
         }
         _itemNameText.text = dailyItemInfo._cardName;
-        _countText.text = itemCount.ToString();
+        _countText.text = string.Format("X {0}",itemCount.ToString());
+        bool isbuy = false;
+        _itemButton.onClick.AddListener(() => dailyItemInfo._dailyItem.Purchase(out isbuy)); 
+        _itemButton.onClick.AddListener(() => Purchased(isbuy));
 
+    }
 
+    /// <summary>
+    /// 구매됨
+    /// </summary>
+   public void Purchased(bool isbuy)
+    {
+        if(isbuy)
+		{
+            _itemButton.enabled = false;
+            _blackImage.SetActive(true);
+		}
     }
 
 }

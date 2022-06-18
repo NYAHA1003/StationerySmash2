@@ -48,6 +48,7 @@ namespace Main.Store
         [SerializeField]
         private GachaCard cardPrefab;
 
+        private DeckSettingComponent _deckSettingComponent;
         private bool isNew = false;  // 새로운 카드가 떴냐 
 
         /// <summary>
@@ -60,6 +61,7 @@ namespace Main.Store
         void Start()
         {
             //   UserSaveManagerSO.AddCardData(DeckDataManagerSO.FindHaveCardData)
+            _deckSettingComponent = FindObjectOfType<DeckSettingComponent>();
             ListenEvent();
             instantiateItem();
             //DeckDataManagerSOHaveDeckDataList = DeckDataManagerSO.HaveDeckDataList;
@@ -182,7 +184,7 @@ namespace Main.Store
         /// <summary>
         /// 데이터 초기화 
         /// </summary>
-        private void Reset()
+        private void ResetData()
         {
             for (int i = 0; i < _gachaInfo.gachaSO.maxAmount; i++)
             {
@@ -206,10 +208,10 @@ namespace Main.Store
             //    Debug.Log("달고나가 부족합니다. ");
             //    return;
             //}
-            Reset();
+            ResetData();
             DrawCardPack((PackageType)cardPackType);
             _cardPanel.SetActive(true);
-            _cardMesh.StartMesh();
+            _cardMesh.StartMesh((PackageType)cardPackType);
         }
         /// <summary>
         /// 카드팩뽑기시 데이터세팅 
@@ -297,6 +299,7 @@ namespace Main.Store
                 gachaCards[i].SetSprite(curCard.CardImage.sprite, _backCardpack, true);
             }
 
+            //가지고 있지 않은 카드 뽑기
             if (isNew == true && _notHaveCardNamingTypes.Count > 0)
             {
                 CardNamingType newCardNamingType = DrawNewCard();
@@ -305,6 +308,8 @@ namespace Main.Store
                 curCard.SetCard(DeckDataManagerSO.FindHaveCardData(newCardNamingType));
                 gachaCards[_quantity].SetSprite(curCard.CardImage.sprite, _backCardpack, true);
             }
+            _deckSettingComponent.UpdateDeck();
+            _deckSettingComponent.UpdateHaveAndEquipDeck();
         }
 
         private void ActiveAndAnimateCard()

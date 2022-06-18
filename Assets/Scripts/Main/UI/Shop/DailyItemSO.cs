@@ -22,7 +22,9 @@ public class DailyItemInfo
     public Sprite _itemSprite;
     public string _cardName;
     public int _cardPrice;
-    public int _itemCount; 
+    public int _itemCount;
+    public CardNamingType _unitCardType; 
+    public IPerchase _dailyItem; 
 
     public void DeepCopy(DailyItemInfo dailyItemInfo)
     {

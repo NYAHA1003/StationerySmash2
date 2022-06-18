@@ -30,16 +30,19 @@ public class CardMesh : MonoBehaviour
     [SerializeField]
     private GameObject _cardPackParent;
     [SerializeField]
-    private GameObject _skipButton; 
+    private GameObject _skipButton;
+    [SerializeField]
+    private Material[] _cardPackMats; 
 
     private Mesh _mesh;
     private Mesh _slicedMesh;
     private MeshFilter _meshFilter;
     private MeshFilter _slicedMeshFilter;
-    private MeshRenderer meshRenderer;
+    private MeshRenderer _meshRenderer;
+    private MeshRenderer _slicedMeshRenderer;
 
     private RectTransform _slicedRect;
-    private RectTransform __slicedParentRect;
+    private RectTransform _slicedParentRect;
     private Vector3[] vertices;
     private Vector2[] uvs;
     private int[] triangles;
@@ -52,18 +55,29 @@ public class CardMesh : MonoBehaviour
     private void Awake()
     {
         _meshFilter = GetComponent<MeshFilter>();
-        meshRenderer = GetComponent<MeshRenderer>();
+        _meshRenderer = GetComponent<MeshRenderer>();
         _slicedMeshFilter = _slicedMeshObj.GetComponent<MeshFilter>();
         _slicedRect = _slicedMeshObj.GetComponent<RectTransform>();
-        __slicedParentRect = _slicedParent.GetComponent<RectTransform>();
+        _slicedParentRect = _slicedParent.GetComponent<RectTransform>();
+        _slicedMeshRenderer = _slicedMeshObj.GetComponent<MeshRenderer>(); 
     }
     [ContextMenu("MeshTest")]
-    public void StartMesh()
+    public void StartMesh(PackageType packageType)
     {
         _cardPackParent.SetActive(true);
         _impactImage.gameObject.SetActive(true);
-        _skipButton.SetActive(false); 
+        _skipButton.SetActive(false);
+        SetMat(packageType); 
         StartCoroutine(OpenCard());
+    }
+
+   /// <summary>
+   /// 카드팩 이미지 설정
+   /// </summary>
+    private void SetMat(PackageType packageType)
+    {
+        _meshRenderer.material =  _cardPackMats[(int)packageType];
+        _slicedMeshRenderer.material = _cardPackMats[(int)packageType]; 
     }
     /// <summary>
     /// 카드 포지션 세팅  
@@ -74,7 +88,7 @@ public class CardMesh : MonoBehaviour
         y = _meshInfo.y;
         sepXpoint = x * _meshInfo.sepXPoint;
         sepYpoint = y * _meshInfo.sepYPoint;
-        __slicedParentRect.anchoredPosition = new Vector3(sepXpoint, 0, 0);
+        _slicedParentRect.anchoredPosition = new Vector3(sepXpoint, 0, 0);
         _slicedRect.anchoredPosition = new Vector3(-sepXpoint, 0, 0);
 
         _mesh?.Clear();
