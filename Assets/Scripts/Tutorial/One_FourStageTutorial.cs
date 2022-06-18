@@ -5,6 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public class One_FourStageTutorial : AbstractStageTutorial
 {
+    [SerializeField]
+    private GameObject _throwGlue;
     public override void SetQueue()
     {
         BattleTurtorialComponent.tutorialEventQueue.Enqueue(ExplainWhatIsThrow);
@@ -23,7 +25,9 @@ public class One_FourStageTutorial : AbstractStageTutorial
     private void ExplainWhatIsThrow()
     {
         SetSpeechText();
+        blackImpact.localScale = new Vector2(0.5f, 1); 
         SetImpactPos(impactTrans[0].anchoredPosition);
+
     }
     /// <summary>
     /// 던지기 자세히 설명 
@@ -31,6 +35,8 @@ public class One_FourStageTutorial : AbstractStageTutorial
     private void ExpainThrowDetail()
     {
         SetSpeechText();
+        blackImpact.localScale = Vector2.one;
+        _throwGlue.SetActive(true);
     }
     /// <summary>
     /// 조언 
@@ -38,5 +44,6 @@ public class One_FourStageTutorial : AbstractStageTutorial
     private void Advice()
     {
         SetSpeechText();
+        _throwGlue.SetActive(false);
     }
 }
