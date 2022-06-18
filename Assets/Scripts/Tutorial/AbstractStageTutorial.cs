@@ -43,8 +43,9 @@ public abstract class AbstractStageTutorial
         textDatas = battleTurtorialComponent.TutorialTextSO._textDatas.ToList();
         blackImpact = battleTurtorialComponent.BlackBackground.GetComponent<RectTransform>();
         originTrans = battleTurtorialComponent.OriginTrans;
-        
-        for(int i = 0; i  < impactTransParent.childCount;i++)
+
+        impactTrans.Clear(); 
+        for (int i = 0; i  < impactTransParent.childCount;i++)
         {
             impactTrans.Add(impactTransParent.GetChild(i).GetComponent<RectTransform>()); 
         }
