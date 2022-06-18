@@ -5,7 +5,7 @@ using Utill.Data;
 
 public interface IPerchase
 {
-    public void Purchase(); 
+    public void Purchase(out bool isbuy); 
 }
 #region 이전 코드
 //public DailyItemSO _newItemInfo;

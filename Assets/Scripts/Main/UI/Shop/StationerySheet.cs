@@ -12,7 +12,8 @@ public class StationerySheet : IPerchase
 
     public Grade _grade;
     private CardNamingType _stationeryType;
-    private int _curCount; 
+    private int _curCount;
+    private WarrningComponent _warrningComponent; //경고창
     public StationerySheet(DailyItemSO dailyItemSO)
     {
         _stationerySheetInfo = dailyItemSO;
@@ -32,12 +33,22 @@ public class StationerySheet : IPerchase
         itemInfo._dailyItem = this; 
         return itemInfo;
     }
-    public void Purchase()
+    public void Purchase(out bool isbuy)
     {
         // 돈 체크 
-        //UserSaveManagerSO.AddMoney(-_price * _curCount);
-        Debug.Log("카드 조각 구매");
+        if(UserSaveManagerSO.UserSaveData._money >= _price * _curCount)
+		{
+            UserSaveManagerSO.AddMoney(-_price * _curCount);
+        }
+        else
+        {
+            _warrningComponent ??= GameObject.FindObjectOfType<WarrningComponent>();
+            _warrningComponent.SetWarrning("돈이 부족합니다");
+            isbuy = false;
+            return;
+        }
+        //카드조각구매
         UserSaveManagerSO.AddCardData(DeckDataManagerSO.FindStdCardData(_stationeryType), _curCount);
-        
+        isbuy = true;
     }
 }
