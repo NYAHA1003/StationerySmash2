@@ -6,7 +6,8 @@ using Utill.Load;
 using UnityEngine.UI;
 using TMPro;
 using Battle.Tutorial;
-using System.Linq; 
+using System.Linq;
+using DG.Tweening; 
 public abstract class AbstractStageTutorial
 {
     [SerializeField]
@@ -17,7 +18,7 @@ public abstract class AbstractStageTutorial
     protected TextMeshProUGUI speechText;
     protected List<TextData> textDatas;
     protected RectTransform blackImpact; 
-
+    
     private bool isPause = false;
     private int _curTextIndex = 0; 
     /// <summary>
@@ -33,7 +34,8 @@ public abstract class AbstractStageTutorial
     /// </summary>
     protected void SetImpactPos(Vector2 anchorPos)
     {
-        blackImpact.anchoredPosition = anchorPos; 
+        blackImpact.DOAnchorPos(anchorPos,0.4f).SetUpdate(true);
+        //blackImpact.anchoredPosition = anchorPos; 
     }
     public void Initialize(Transform impactTransParent)
     {
@@ -54,11 +56,14 @@ public abstract class AbstractStageTutorial
     /// <summary>
     /// 튜토리얼 끝나고 설정해줄거 해주기 
     /// </summary>
-    public abstract void EndTutorial();
+    public virtual void EndTutorial()
+    {
+        SetImpactPos(originTrans.anchoredPosition); 
+    }
 
       /// <summary>
-    /// 큐 설정 
-    /// </summary>
+      /// 큐 설정 
+      /// </summary>
     public abstract void SetQueue();
     /// <summary>
     /// 큐 초기화 
