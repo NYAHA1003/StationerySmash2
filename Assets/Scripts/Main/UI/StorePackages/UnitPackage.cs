@@ -211,7 +211,7 @@ namespace Main.Store
             ResetData();
             DrawCardPack((PackageType)cardPackType);
             _cardPanel.SetActive(true);
-            _cardMesh.StartMesh();
+            _cardMesh.StartMesh((PackageType)cardPackType);
         }
         /// <summary>
         /// 카드팩뽑기시 데이터세팅 
