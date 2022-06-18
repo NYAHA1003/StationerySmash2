@@ -311,6 +311,11 @@ public class DailyShop : MonoBehaviour
     {
         int length, index ; 
         int commonPercent, rarePercent, epicPercent, randomGrade;
+
+        if(_notHaveStationaryTypes.Count == 0)
+        {
+            dailyCardType = DailyCardType.StationerySheet;
+        }
         Debug.Log(dailyCardType);
         switch (dailyCardType)
         {
@@ -387,7 +392,7 @@ public class DailyShop : MonoBehaviour
             // 뱃지 13개 조각 중 랜덤으로 하나 
 
             case DailyCardType.NewStationary:
-
+                
                 length = _notHaveStationaryTypes.Count;
                 index = Random.Range(0, length);
                 CardNamingType newStationaryType = _notHaveStationaryTypes[index];

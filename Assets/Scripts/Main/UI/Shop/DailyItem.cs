@@ -37,7 +37,7 @@ public class DailyItem : MonoBehaviour
             _priceText.text = string.Format("{0} ¿ø",(dailyItemInfo._cardPrice * itemCount).ToString());
         }
         _itemNameText.text = dailyItemInfo._cardName;
-        _countText.text = string.Format("X{0}",itemCount.ToString());
+        _countText.text = string.Format("X {0}",itemCount.ToString());
 
         _itemButton.onClick.AddListener(() => dailyItemInfo._dailyItem.Purchase()); 
         _itemButton.onClick.AddListener(() => Purchased());
