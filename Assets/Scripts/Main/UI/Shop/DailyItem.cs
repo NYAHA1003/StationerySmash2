@@ -20,12 +20,6 @@ public class DailyItem : MonoBehaviour
 
     public void SetCardInfo(DailyItemInfo dailyItemInfo, int itemCount = 0)
     {
-        Transform itemInfoObj = transform.Find("ItemInfo");
-        _itemImage = transform.Find("ItemImage").GetComponent<Image>();
-        _priceText = itemInfoObj.Find("PriceText").GetComponent<TextMeshProUGUI>();
-        _itemNameText = itemInfoObj.Find("NameText").GetComponent<TextMeshProUGUI>();
-        _countText = itemInfoObj.Find("CountText").GetComponent<TextMeshProUGUI>();
-
         // DailyItemInfo dailyItemInfo = _dailyItemInfo.dailyItemInfos[(int)dailyCardType];
         _itemImage.sprite = dailyItemInfo._itemSprite;
         itemCount = dailyItemInfo._itemCount;
