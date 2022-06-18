@@ -9,7 +9,7 @@ public class FreeItem : IPerchase
     public int _minCount = 1;
     public int _maxCount = 50;
     public int _price = 100;
-    private int _curCount; 
+    private int _curCount;
 
     public DailyFreeItemType _dailyFreeItemType;
     public FreeItem(DailyItemSO dailyItemSO, DailyFreeItemType dailyFreeItemType)
@@ -51,9 +51,9 @@ public class FreeItem : IPerchase
         return _freeItemInfo.dailyItemInfos[(int)index];
     }
 
-    public void Purchase()
+    public void Purchase(out bool isbuy)
     {
-        Debug.Log("무료 카드 구매");
+        //무료 카드 구매
         if (_dailyFreeItemType == DailyFreeItemType.Gold)
         {
             UserSaveManagerSO.AddMoney(_curCount);
@@ -62,5 +62,6 @@ public class FreeItem : IPerchase
         {
             UserSaveManagerSO.AddDalgona(_curCount);
         }
+        isbuy = true;
     }
 }
