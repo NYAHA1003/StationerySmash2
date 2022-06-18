@@ -81,7 +81,8 @@ namespace Battle
 		public void MovingCameraMoverOrigin(float duration)
 		{
 			_camera.transform.DOMove(_originVector, duration).SetEase(Ease.OutExpo);
-			_camera.transform.DOScale(1, duration).SetEase(Ease.OutExpo);
+			_camera.transform.DOScale(Vector3.one, duration).SetEase(Ease.OutExpo);
+			DOTween.To(() => _camera.orthographicSize, x => _camera.orthographicSize = x, 1, duration);
 		}
 
 		/// <summary>
