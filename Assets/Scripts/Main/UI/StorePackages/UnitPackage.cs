@@ -208,12 +208,12 @@ namespace Main.Store
             //    Debug.Log("달고나가 부족합니다. ");
             //    return;
             //}
-            //         if(UserSaveManagerSO.UserSaveData._money < cardPackSO.cardPackInfos[cardPackType].useDalgona)
-            //{
-            //             _warningComponent ??= FindObjectOfType<WarrningComponent>();
-            //             _warningComponent.SetWarrning("돈이 부족합니다");
-            //             return;
-            //}
+            if (UserSaveManagerSO.UserSaveData._money < cardPackSO.cardPackInfos[cardPackType].useDalgona)
+            {
+                _warningComponent ??= FindObjectOfType<WarrningComponent>();
+                _warningComponent.SetWarrning("돈이 부족합니다");
+                return;
+            }
 
             ResetData();
             DrawCardPack((PackageType)cardPackType);
