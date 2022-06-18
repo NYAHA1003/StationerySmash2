@@ -20,7 +20,7 @@ public class StationerySheet
     {
         return Random.Range(_minCount, _maxCount+1); 
     }
-    public DailyItemInfo ReturnItemInfo(StationeryType index)
+    public DailyItemInfo ReturnItemInfo(CardNamingType index)
     {
         // 아이템 개수 할당후 반환 
         _stationerySheetInfo.dailyItemInfos[(int)index]._itemCount = ReturnRandomCount(); 

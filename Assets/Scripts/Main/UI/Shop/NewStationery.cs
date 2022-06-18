@@ -14,8 +14,9 @@ public class NewStationery
     {
         _newStationeryInfo = dailyItemSO;
     }
-    public DailyItemInfo ReturnItemInfo(StationeryType index)
+    public DailyItemInfo ReturnItemInfo(CardNamingType index)
     {
+        _newStationeryInfo.dailyItemInfos[(int)index]._itemCount = 1; 
         return _newStationeryInfo.dailyItemInfos[(int)index];
     }
 }

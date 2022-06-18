@@ -5,24 +5,11 @@ using Random = UnityEngine.Random;
 using Utill.Data;
 using System;
 using Main.Event;
-
+using Main.Deck;
+using Utill.Tool;
+using System.Linq; 
 namespace Utill.Data
 {
-    public enum StationeryType
-    {
-        Pencil, // 연필 
-        Sharp, // 샤프
-        Eraser, // 지우개
-        Scissors, // 가위
-        Glue, // 풀
-        Ruler, // 자
-        Boxcutter, // 커터칼
-        Postit, // 포스트잇
-        Sharplead, // 샤프심
-        ballpointPen, // 볼펜
-        EraserPiece, // 지우개 조각
-        PostitSheet // 포스트잇 조각
-    }
     public enum StickersType
     {
         Magu, //마구 스티커
@@ -103,7 +90,9 @@ public class DailyShop : MonoBehaviour
     private List<DailyItem> _dailyItems = new List<DailyItem>(); // 6개의 일일상점 아이템 
 
     [SerializeField]
-    private List<StationeryType> _notHaveStationaryTypes = new List<StationeryType>(); // 보유하고 있지 않은 학용품리스트
+    private List<CardNamingType> _notHaveStationaryTypes = new List<CardNamingType>(); // 보유하고 있지 않은 학용품리스트
+    [SerializeField]
+    private List<CardNamingType> _haveStationaryTypes = new List<CardNamingType>(); // 보유하고 있지 않은 학용품리스트
     [SerializeField]
     private List<StickersType> _notHaveStickersTypes = new List<StickersType>(); // 보유하고 있지 않은 스티커리스트
     [SerializeField]
@@ -122,6 +111,10 @@ public class DailyShop : MonoBehaviour
         //CreateDailyItem();
     }
 
+    private void PurchaseCard()
+    {
+        
+    }
     [ContextMenu("새로운 카드 데이터 넣어주기")]
     public void ResetDailyShop()
     {
@@ -138,10 +131,27 @@ public class DailyShop : MonoBehaviour
         _notHaveStickersTypes.Clear();
         _notHaveBadgeTypes.Clear();
 
+        List<CardData> allCardList = DeckDataManagerSO.StdDeckDataList.ToList();
+
+        foreach (var type in System.Enum.GetValues(typeof(CardNamingType)))
+        {
+            if ((int)type > 1000)
+            {
+                allCardList.Remove(DeckDataManagerSO.FindStdCardData((CardNamingType)type));
+            }
+        }
+
+        _haveStationaryTypes.ForEach((x) =>
+        {
+            allCardList.Remove(DeckDataManagerSO.FindStdCardData(x));
+        });
+
+        allCardList.ForEach((x) =>
+        {
+            _notHaveStationaryTypes.Add(x._cardNamingType);
+        });
+
         // 임시 코드 (나중에 지울거야)
-        _notHaveStationaryTypes.Add(StationeryType.Pencil);
-        _notHaveStationaryTypes.Add(StationeryType.Sharp);
-        _notHaveStationaryTypes.Add(StationeryType.Eraser);
 
         _notHaveStickersTypes.Add(StickersType.Magu);
         _notHaveStickersTypes.Add(StickersType.Run);
@@ -153,15 +163,9 @@ public class DailyShop : MonoBehaviour
         // 임시 코드 끝
 
         // 나중에 유저 데이터에서 받아올거야 
-        int stationeryTypeLength = Enum.GetValues(typeof(StationeryType)).Length;
         int stickerTypeLength = Enum.GetValues(typeof(StickersType)).Length;
         int badgeTypeLength = Enum.GetValues(typeof(BadgeType)).Length;
 
-        for (int i = 0; i < stationeryTypeLength; i++)
-        {
-            //if(유저.가지고있지않은 학용품 == (StationaryType)i) 
-            // notHaveStationaryTypes.Add((StationaryType)i);
-        }
         for (int i = 0; i < stickerTypeLength; i++)
         {
 
@@ -187,26 +191,26 @@ public class DailyShop : MonoBehaviour
         {
             _dailyCardTypes.Add(DailyCardType.StationerySheet);
         }
-        for (int i = 0; i < 250; i++)
-        {
-            _dailyCardTypes.Add(DailyCardType.StickerSheet);
-        }
-        for (int i = 0; i < 130; i++)
-        {
-            _dailyCardTypes.Add(DailyCardType.BadgeSheet);
-        }
+        //for (int i = 0; i < 250; i++)
+        //{
+        //    _dailyCardTypes.Add(DailyCardType.StickerSheet);
+        //}
+        //for (int i = 0; i < 130; i++)
+        //{
+        //    _dailyCardTypes.Add(DailyCardType.BadgeSheet);
+        //}
         for (int i = 0; i < 10; i++)
         {
             _dailyCardTypes.Add(DailyCardType.NewStationary);
         }
-        for (int i = 0; i < 7; i++)
-        {
-            _dailyCardTypes.Add(DailyCardType.NewSticker);
-        }
-        for (int i = 0; i < 3; i++)
-        {
-            _dailyCardTypes.Add(DailyCardType.NewBadge);
-        }
+        //for (int i = 0; i < 7; i++)
+        //{
+        //    _dailyCardTypes.Add(DailyCardType.NewSticker);
+        //}
+        //for (int i = 0; i < 3; i++)
+        //{
+        //    _dailyCardTypes.Add(DailyCardType.NewBadge);
+        //}
     }
 
     /// <summary>
@@ -283,7 +287,7 @@ public class DailyShop : MonoBehaviour
             //}
 
             DailyItemInfo dailyItemInfo = Check(_dailyCardTypes[i]);
-            paidDailyCard.SetCardInfo(dailyItemInfo);
+            paidDailyCard.SetCardInfo(dailyItemInfo,dailyItemInfo._itemCount);
         }
     }
 
@@ -294,14 +298,15 @@ public class DailyShop : MonoBehaviour
     /// <returns></returns>
     private DailyItemInfo Check(DailyCardType dailyCardType)
     {
-        int length;
+        int length, index ; 
         int commonPercent, rarePercent, epicPercent, randomGrade;
         Debug.Log(dailyCardType);
         switch (dailyCardType)
         {
             case DailyCardType.StationerySheet:
-                length = Enum.GetValues(typeof(StationeryType)).Length;
-                StationeryType stationaryType = (StationeryType)(Random.Range(0, length));
+                length = _haveStationaryTypes.Count;
+                index = Random.Range(0, length);
+                CardNamingType stationaryType = _haveStationaryTypes[index];
                 StationerySheet stationerySheet = new StationerySheet(_stationerySheetSO);
                 Debug.Log(stationerySheet.ReturnItemInfo(stationaryType)._cardPrice);
                 return stationerySheet.ReturnItemInfo(stationaryType);
@@ -372,8 +377,8 @@ public class DailyShop : MonoBehaviour
             case DailyCardType.NewStationary:
 
                 length = _notHaveStationaryTypes.Count;
-                int index = Random.Range(0, length);
-                StationeryType newStationaryType = _notHaveStationaryTypes[index];
+                index = Random.Range(0, length);
+                CardNamingType newStationaryType = _notHaveStationaryTypes[index];
                 NewStationery newStationery = new NewStationery(_newStationerySO);
                 return newStationery.ReturnItemInfo(newStationaryType);
 
