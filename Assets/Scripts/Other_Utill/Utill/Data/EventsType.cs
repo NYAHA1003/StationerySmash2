@@ -30,7 +30,7 @@
         DrawSticker, // 스티커 뽑기 
         DrawCardPack, // 카드팩 뽑기 
         ActiveAndAnimateCard, // 뽑은 카드팩 활성화, 애니메이션  
-
+        CloseCardPack, // 카드팩 패널들 모두 닫기 
         // 세팅 부분
         ActiveProfileImgPn = 100, // 프로필 이미지 패널 활성화 
         ChangeProfileImage, // 유저 이미지 변경 

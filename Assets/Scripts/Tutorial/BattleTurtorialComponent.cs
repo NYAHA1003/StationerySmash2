@@ -63,8 +63,6 @@ public class BattleTurtorialComponent : MonoBehaviour
 
     [SerializeField]
     private TutorialTextSO tutorialTextSO; // 설명 텍스트정보
-    [SerializeField]
-    private CurrentStageData _currentStageSO; 
     public TutorialTextSO TutorialTextSO => tutorialTextSO;
     public TextMeshProUGUI SpeechBubbleText => speechBubbleText;
     public Image BlackBackground => blackBackground;
