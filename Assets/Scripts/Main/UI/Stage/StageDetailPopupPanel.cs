@@ -15,8 +15,6 @@ public class StageDetailPopupPanel : MonoBehaviour
 	[SerializeField]
 	private Image _previewImage = null;
 	[SerializeField]
-	private CurrentStageData _currentStageDataSO = null;
-	[SerializeField]
 	private Button _closeButton = null;
 
 	public void Start()
@@ -35,9 +33,9 @@ public class StageDetailPopupPanel : MonoBehaviour
 	/// </summary>
 	public void Setting()
 	{
-		_stageNameText.text = _currentStageDataSO._currentStageDatas._stageName;
-		_moneyText.text = _currentStageDataSO._currentStageDatas._rewardMoney.ToString();
-		_expText.text = _currentStageDataSO._currentStageDatas._rewardMoney.ToString();
+		_stageNameText.text = AIAndStageData.Instance._currentStageDatas._stageName;
+		_moneyText.text = AIAndStageData.Instance._currentStageDatas._rewardMoney.ToString();
+		_expText.text = AIAndStageData.Instance._currentStageDatas._rewardExp.ToString();
 		gameObject.SetActive(true);
 	}
 }

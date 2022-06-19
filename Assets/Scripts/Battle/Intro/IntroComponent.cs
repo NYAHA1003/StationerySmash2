@@ -68,7 +68,7 @@ namespace Battle
 			_cameraComponent = cameraCommand;
 			_playerCardDatas = _inGameCardDataSO.cardDatas;
 
-			_enemyCardDatas = _enemyAIDataSO.cardDataList.Distinct(new CardDataComparer()).ToList();
+			_enemyCardDatas = AIAndStageData.Instance.cardDataList.Distinct(new CardDataComparer()).ToList();
 			_managerBase = managerBase;
 		}
 
