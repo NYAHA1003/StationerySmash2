@@ -5,6 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class One_FiveStageTutorial : AbstractStageTutorial
 {
+    public static bool isTutorial = false;
     public override void SetQueue()
     {
         BattleTurtorialComponent.tutorialEventQueue.Enqueue(Explain);
@@ -13,6 +14,7 @@ public class One_FiveStageTutorial : AbstractStageTutorial
 
     public override void EndTutorial()
     {
+        isTutorial = true;
         base.EndTutorial(); 
     }
 

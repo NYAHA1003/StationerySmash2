@@ -18,6 +18,8 @@ public class One_OneStageTutorial : AbstractStageTutorial
     [SerializeField]
     private GameObject _combineCard; 
     private Vector3 _originPos;
+
+    public static bool isTutorial = false; 
     /// <summary>
     /// 이벤트큐에 
     /// </summary>
@@ -36,10 +38,12 @@ public class One_OneStageTutorial : AbstractStageTutorial
     }
     public override void EndTutorial()
     {
+        isTutorial = true;
         _fingerPoint.DOKill();
         base.EndTutorial();
         _fingerPoint.anchoredPosition = _originPos; 
         _fingerPoint.gameObject.SetActive(false);
+
     }
 
     /// <summary>

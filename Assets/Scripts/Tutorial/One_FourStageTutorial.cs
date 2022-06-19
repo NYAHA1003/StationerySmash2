@@ -7,6 +7,8 @@ public class One_FourStageTutorial : AbstractStageTutorial
 {
     [SerializeField]
     private GameObject _throwGlue;
+
+    public static bool isTutorial = false;
     public override void SetQueue()
     {
         BattleTurtorialComponent.tutorialEventQueue.Enqueue(ExplainWhatIsThrow);
@@ -16,6 +18,7 @@ public class One_FourStageTutorial : AbstractStageTutorial
 
     public override void EndTutorial()
     {
+        isTutorial = true; 
         base.EndTutorial();
     }
 
