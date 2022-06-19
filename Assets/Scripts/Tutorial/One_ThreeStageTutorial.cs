@@ -11,6 +11,8 @@ public class One_ThreeStageTutorial : AbstractStageTutorial
     private GameObject _eraserPiece; // 지우개 조각
     [SerializeField]
     private GameObject _arrow; // 화살표
+
+    public static bool isTutorial = false;
     public override void SetQueue()
     {
         BattleTurtorialComponent.tutorialEventQueue.Enqueue(ExplainEraser);
@@ -21,6 +23,7 @@ public class One_ThreeStageTutorial : AbstractStageTutorial
     }
     public override void EndTutorial()
     {
+        isTutorial = true;
         base.EndTutorial();
         _eraser.SetActive(false);
         _eraserPiece.SetActive(false);

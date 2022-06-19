@@ -109,7 +109,7 @@ namespace Battle
 			{
 				return;
 			}
-			if(BattleTurtorialComponent._isTutorial == false)
+			if(BattleTurtorialComponent.CheckTutorial() == false)
             {
 				_cardComponent.CheckTutorialCard(); 
 			}

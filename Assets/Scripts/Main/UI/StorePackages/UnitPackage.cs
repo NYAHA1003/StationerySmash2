@@ -208,13 +208,13 @@ namespace Main.Store
             //    Debug.Log("달고나가 부족합니다. ");
             //    return;
             //}
-            if (UserSaveManagerSO.UserSaveData._money < cardPackSO.cardPackInfos[cardPackType].useDalgona)
+            if (UserSaveManagerSO.UserSaveData._money < cardPackSO.cardPackInfos[cardPackType].useCoin)
             {
                 _warningComponent ??= FindObjectOfType<WarrningComponent>();
                 _warningComponent.SetWarrning("돈이 부족합니다");
                 return;
             }
-
+            UserSaveManagerSO.AddMoney(-cardPackSO.cardPackInfos[cardPackType].useCoin); 
             ResetData();
             DrawCardPack((PackageType)cardPackType);
             _gachaCanvas.SetActive(true);
@@ -304,7 +304,7 @@ namespace Main.Store
                 UserSaveManagerSO.AddCardData(DeckDataManagerSO.FindStdCardData(_curCardType[i]), _curCardAmountList[i]); // 유저데이터에 카드조각추가 
                 curCard = gachaCards[i].GetComponent<DeckCard>();
                 curCard.SetCard(DeckDataManagerSO.FindHaveCardData(_curCardType[i]));
-                gachaCards[i].SetSprite(curCard.CardImage.sprite, _backCardpack, true);
+                gachaCards[i].SetSprite(curCard.CardImage.sprite, _backCardpack, true, _curCardAmountList[i]);
             }
 
             //가지고 있지 않은 카드 뽑기

@@ -62,10 +62,18 @@ public abstract class GachaCard : MonoBehaviour
         if (isFront == true)
         {
             itemImage.sprite = _frontSprite;
-            return;
         }
-        itemImage.sprite = _backSprite;
-        _itemCountText.text = string.Format("X{0}",itemCount);
+        else
+        {
+            itemImage.sprite = _backSprite;
+        }
+
+        if (itemCount >= 2)
+        {
+            _itemCountText.text = string.Format("X{0}", itemCount);
+            return; 
+        }
+        _itemCountText.text = string.Format("NEW!");
     }
     public virtual void StopCoroutine()
     {
