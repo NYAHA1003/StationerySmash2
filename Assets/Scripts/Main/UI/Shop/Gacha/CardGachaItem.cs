@@ -5,9 +5,7 @@ using TMPro;
 public class CardGachaItem : GachaCard
 {
     [SerializeField]
-    private TextMeshProUGUI _sliceCount;// 조각 개수 
-    [SerializeField]
-    private CardMesh _cardMesh; 
+    private GameObject _sliceImage;
     public override void ActiveAndAnimate()
     {
         gameObject.SetActive(true);

@@ -25,7 +25,7 @@ public class One_FourStageTutorial : AbstractStageTutorial
     private void ExplainWhatIsThrow()
     {
         SetSpeechText();
-        blackImpact.localScale = new Vector2(0.5f, 1); 
+        blackImpact.localScale = new Vector2(0.6f, 1); 
         SetImpactPos(impactTrans[0].anchoredPosition);
 
     }

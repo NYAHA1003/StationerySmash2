@@ -17,11 +17,11 @@ public class One_OneStageTutorial : AbstractStageTutorial
     private Image _arrow;
     [SerializeField]
     private GameObject _combineCard; 
-    private Vector3 _originPos; 
+    private Vector3 _originPos;
     /// <summary>
     /// 이벤트큐에 
     /// </summary>
-   
+
     public override void SetQueue()
     {
         //ResetQueue(); 
@@ -64,7 +64,7 @@ public class One_OneStageTutorial : AbstractStageTutorial
     {
         SetSpeechText();
         SetImpactPos(impactTrans[1].anchoredPosition);
-        blackImpact.transform.localScale = new Vector2(0.4f, 0.6f);
+        blackImpact.transform.localScale = new Vector2(0.45f, 0.6f);
     }
     private void ExplainCombine()
     {
@@ -73,7 +73,7 @@ public class One_OneStageTutorial : AbstractStageTutorial
         blackImpact.transform.localScale = Vector2.one;
 
         _cardParent.gameObject.SetActive(true);
-        _cardParent.DOAnchorPos(Vector2.zero, 0.4f).SetUpdate(true);
+        _cardParent.DOAnchorPos(new Vector2(0, -386), 0.4f).SetUpdate(true);
     }
     private void ExplainCombineCard()
     {
@@ -84,10 +84,9 @@ public class One_OneStageTutorial : AbstractStageTutorial
         seq.AppendCallback(()=> _combineCard.SetActive(true)).SetUpdate(true); 
     }
     private void ExplainCoin()
-    {
-
+    {    
         SetSpeechText();
-        SetImpactPos(impactTrans[2].anchoredPosition);
+        SetImpactPos(impactTrans[2].anchoredPosition);                          
         _cardParent.gameObject.SetActive(false); 
     }
     private void ExplainUseCoin()
