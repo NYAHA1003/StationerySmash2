@@ -11,8 +11,6 @@ namespace Battle
     {
         //인스펙터 참조 변수
         [SerializeField]
-        private AIDataSO _aiEnemyDataSO;
-        [SerializeField]
         private AIDataSO _aiPlayerDataSO;
         [SerializeField]
         private StageLog _aiLog;
@@ -61,12 +59,12 @@ namespace Battle
             this._pencilCaseCommand = pencilCaseCommand;
             
             //적 AI
-            this.enemySummonGrade = _aiEnemyDataSO.summonGrade;
-            this.enemyCardDataList = _aiEnemyDataSO.cardDataList;
-            this.enemyPos = _aiEnemyDataSO.pos;
-            this.enemyMaxDelay = _aiEnemyDataSO.max_Delay;
-            this.enemyThrowSpeed = _aiEnemyDataSO.throwSpeed;
-            this.isEnemyAIOn = _aiEnemyDataSO.isAIOn;
+            this.enemySummonGrade = AIAndStageData.Instance.summonGrade;
+            this.enemyCardDataList = AIAndStageData.Instance.cardDataList;
+            this.enemyPos = AIAndStageData.Instance.pos;
+            this.enemyMaxDelay = AIAndStageData.Instance.max_Delay;
+            this.enemyThrowSpeed = AIAndStageData.Instance.throwSpeed;
+            this.isEnemyAIOn = AIAndStageData.Instance.isAIOn;
 
             //테스트용 Player AI
             this.playerSummonGrade = _aiPlayerDataSO.summonGrade;

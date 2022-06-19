@@ -46,6 +46,8 @@ namespace Main.Card
 		[SerializeField]
 		private GameObject _levelUpDontImage; //레벨업 막는 이미지
 		[SerializeField]
+		private TextMeshProUGUI _levelUpMoneyText = null; //레벨업에 필요한 텍스트
+		[SerializeField]
 		private TextMeshProUGUI _descriptionText = null; //설명 텍스트
 
 		//스탯패널(유닛)
@@ -194,8 +196,8 @@ namespace Main.Card
 			_attackText.text = unitData._damage.ToString();
 			_attackSpeedText.text = unitData._attackSpeed.ToString();
 			_moveSpeedText.text = unitData._moveSpeed.ToString();
-			
-			if(unitData._weight <= 40)
+
+			if (unitData._weight <= 40)
 			{
 				_weightText.text = "아주 가벼움";
 			}
@@ -244,16 +246,18 @@ namespace Main.Card
 		/// </summary>
 		public void OnLevelUp()
 		{
-			if(UserSaveManagerSO.UserSaveData._money < 1000)
+			if (UserSaveManagerSO.UserSaveData._money < GetUpgradeMoney(_selectCardData._level))
 			{
 				_warrningComponent.SetWarrning("돈이 부족합니다");
 			}
-			else if(_selectCardData._count >= 100)
+			else if (_selectCardData._count >= GetUpgradeCard(_selectCardData._level))
 			{
 				UnitData unitData = UnitDataManagerSO.FindHaveUnitData(_selectCardData._unitType);
 				unitData._hp += unitData._hp * _selectCardData._level / 10;
 				unitData._damage += unitData._damage / 10 * _selectCardData._level;
-				_selectCardData._count = 1;
+				_selectCardData._count -= GetUpgradeCard(_selectCardData._level);
+				UserSaveManagerSO.AddMoney(-GetUpgradeMoney(_selectCardData._level));
+				UserSaveManagerSO.UserSaveData._haveCardSaveDatas.Find(x => x._cardNamingType == _selectCardData._cardNamingType)._level++;
 				_selectCardData._level++;
 
 				//카드 타입에 따라 설명창 설정
@@ -283,13 +287,14 @@ namespace Main.Card
 		private void SetExpBar()
 		{
 			_levelText.text = $"LV.{_selectCardData._level}";
-			_expText.text = $"{_selectCardData._count} / 100";
-			float expPercent = (float)_selectCardData._count / 100;
+			_expText.text = $"{_selectCardData._count} / {GetUpgradeCard(_selectCardData._level)}";
+			float expPercent = (float)_selectCardData._count / GetUpgradeCard(_selectCardData._level);
 			_expGaugeBar.fillAmount = expPercent;
 			bool levelUpOn = expPercent >= 1;
 
 			_levelUpArrow.SetActive(levelUpOn);
 			_levelUpButton.interactable = levelUpOn;
+			_levelUpMoneyText.text = $"{GetUpgradeMoney(_selectCardData._level)}원";
 			_levelUpDontImage.SetActive(!levelUpOn);
 
 			UnitData unitData = UnitDataManagerSO.FindHaveUnitData(_selectCardData._unitType);
@@ -520,6 +525,96 @@ namespace Main.Card
 		private void SetViedo(CardNamingType cardNamingType)
 		{
 			_videoPlayer.SetVideo(cardNamingType);
+		}
+
+		/// <summary>
+		/// 강화에 필요한 카드 갯수 구하기
+		/// </summary>
+		/// <param name="n"></param>
+		/// <param name="first"></param>
+		private int GetUpgradeCard(int n)
+		{
+			int nData = 0;
+			int b = 2;
+
+			for (int i = 0; i < n; i++)
+			{
+				nData = nData + b;
+				if (i > 11)
+				{
+					b = 2000;
+				}
+				else if (i > 9)
+				{
+					b *= 3;
+				}
+				else if (i > 6)
+
+				{
+					b *= 2;
+				}
+				else if (i > 3)
+				{
+					b += 20;
+				}
+				else
+				{
+					b += 4;
+				}
+
+			}
+			return nData;
+		}
+
+
+		/// <summary>
+		/// 강화에 필요한 돈 구하기
+		/// </summary>
+		/// <param name="n"></param>
+		/// <param name="first"></param>
+		private int GetUpgradeMoney(int n)
+		{
+			int nData = 0;
+			switch(n)
+			{
+				case 0:
+					nData = 0;
+					break;
+				case 1:
+					nData = 5;
+					break;
+				case 2:
+					nData = 20;
+					break;
+				case 3:
+					nData = 50;
+					break;
+				case 4:
+					nData = 150;
+					break;
+				case 5:
+					nData = 400;
+					break;
+				case 6:
+					nData = 1000;
+					break;
+				case 7:
+					nData = 2000;
+					break;
+				case 8:
+					nData = 4000;
+					break;
+				case 9:
+					nData = 8000;
+					break;
+				case 10:
+					nData = 20000;
+					break;
+				default:
+					nData = 50000;
+					break;
+			}
+			return nData;
 		}
 	}
 }

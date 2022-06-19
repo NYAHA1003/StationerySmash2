@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using Utill;
+using Utill.Data;
 using Utill.Load;
 using Utill.Tool;
-using Main.Deck;
 
-[CreateAssetMenu(fileName = "AIDataSO", menuName = "Scriptable Object/AIDataSO")]
-public class AIDataSO : ScriptableObject
+public class AIAndStageData : MonoSingleton<AIAndStageData>
 {
-    //
+    public StageData _currentStageDatas;
+
     public int summonGrade;
     public float throwSpeed;
     public bool isAIOn;

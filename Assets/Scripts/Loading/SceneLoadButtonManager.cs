@@ -15,15 +15,11 @@ public class SceneLoadButtonManager : MonoBehaviour
     [SerializeField]
     private SceneLoadComponenet _sceneLoadComponenet;
     [SerializeField]
-    private AIDataSO aIDataSO;
-    [SerializeField]
     private Sprite[] _stageSprites;
     [SerializeField]
     private StageDetailPopupPanel _popupPanel = null;
     [SerializeField]
     private StageDataListSO _stageDataListSO = null;
-    [SerializeField]
-    private CurrentStageData _currentDataSO = null;
 
     private WarrningComponent _warrningComponent = null; //경고 컴포넌트
 
@@ -68,8 +64,8 @@ public class SceneLoadButtonManager : MonoBehaviour
         loadingBattleDataSO.SetCurrentIndex(battleStageType);
         var currentData = loadingBattleDataSO.CurrentStageData;
         PencilCaseDataManagerSO.SetEnemyPencilCaseData(currentData);
-        aIDataSO.SetAIData(currentData);
-        _currentDataSO._currentStageDatas = _stageDataListSO.stageDatas.Find(x => x._stageType == battleStageType);
+        AIAndStageData.Instance.SetAIData(currentData);
+        AIAndStageData.Instance._currentStageDatas = _stageDataListSO.stageDatas.Find(x => x._stageType == battleStageType);
         _popupPanel.Setting();
     }
     private void LoadBattleDataStageMake(BattleStageType battleStageType)
@@ -78,7 +74,7 @@ public class SceneLoadButtonManager : MonoBehaviour
         loadingBattleDataSO.SetCurrentIndex(battleStageType);
         var currentData = loadingBattleDataSO.CurrentStageData;
         PencilCaseDataManagerSO.SetEnemyPencilCaseData(currentData);
-        aIDataSO.SetAIData(currentData);
+        AIAndStageData.Instance.SetAIData(currentData);
         _sceneLoadComponenet.SceneLoadStageMake();
     }
 }

@@ -21,5 +21,8 @@ namespace Utill.Data
 		cardpackPanel,
 		stickerPanel,
 		badgePanel,
+		chapter2,
+		chapter3,
+		chapter4
 	}
 }
