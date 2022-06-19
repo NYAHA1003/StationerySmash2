@@ -15,7 +15,7 @@ public class MoneyComponent : MonoBehaviour, IUserData
     private int _previousMoney = 0;
 
 
-    public void Awake()
+    public void Start()
     {
         UserSaveManagerSO.AddObserver(this);
         _previousMoney = UserSaveManagerSO.UserSaveData._money;
@@ -51,6 +51,11 @@ public class MoneyComponent : MonoBehaviour, IUserData
             SetMoneyText();
 
             yield return new WaitForSeconds(interval);
+        }
+        if(_previousMoney > _currentMoney)
+        {
+            _previousMoney = _currentMoney;
+            SetMoneyText();
         }
     }
 
