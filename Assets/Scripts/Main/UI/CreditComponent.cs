@@ -13,12 +13,12 @@ public class CreditComponent : MonoBehaviour
     [SerializeField]
     private RectTransform _creditTextTrm = null;
     [SerializeField]
-    private TextMeshProUGUI _creditText = null;
+    private TMP_Text _creditText = null;
     private Tweener _creditTweener = null;
 
-    private void Start()
+    private void Awake()
     {
-        EventManager.Instance.StartListening(EventsType.MoveCredit, StartCredit); 
+        EventManager.Instance.StartListening(EventsType.MoveCredit, StartCredit);
     }
 
     /// <summary>
@@ -26,6 +26,7 @@ public class CreditComponent : MonoBehaviour
     /// </summary>
     public void Initialized()
     {
+        _creditText ??= _creditTextTrm.GetComponent<TMP_Text>();
         _creditText.ForceMeshUpdate();
         int moveY = _creditText.textInfo.lineCount * 120;
         float duration = _creditText.textInfo.lineCount * 1f;
@@ -38,12 +39,11 @@ public class CreditComponent : MonoBehaviour
     public void StartCredit()
     {
         _creditTextTrm.anchoredPosition = new Vector2(0, -1200);
-
         if (_creditTweener == null)
-        {
+		{
+
             Initialized();
         }
-
         _creditTweener.Pause();
         _creditTweener.Restart();
     }
