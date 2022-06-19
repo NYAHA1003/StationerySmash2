@@ -255,7 +255,9 @@ namespace Main.Card
 				UnitData unitData = UnitDataManagerSO.FindHaveUnitData(_selectCardData._unitType);
 				unitData._hp += unitData._hp * _selectCardData._level / 10;
 				unitData._damage += unitData._damage / 10 * _selectCardData._level;
-				_selectCardData._count = 1;
+				_selectCardData._count -= GetUpgradeCard(_selectCardData._level);
+				UserSaveManagerSO.AddMoney(-GetUpgradeMoney(_selectCardData._level));
+				UserSaveManagerSO.UserSaveData._haveCardSaveDatas.Find(x => x._cardNamingType == _selectCardData._cardNamingType)._level++;
 				_selectCardData._level++;
 
 				//카드 타입에 따라 설명창 설정
