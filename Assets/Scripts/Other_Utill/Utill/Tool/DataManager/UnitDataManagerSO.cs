@@ -111,7 +111,7 @@ namespace Utill.Tool
 				UnitData unitData = FindStdUnitData(DeckDataManagerSO.HaveDeckDataList[i]._unitType);
 				int count = 1;
 				int level = DeckDataManagerSO.HaveDeckDataList[i]._level;
-				while (count <= level)
+				while (count < level)
 				{
 					unitData._hp += unitData._hp * count / 10;
 					unitData._damage += unitData._damage / 10 * count;
