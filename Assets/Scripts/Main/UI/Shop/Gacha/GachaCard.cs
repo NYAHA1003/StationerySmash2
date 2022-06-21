@@ -6,7 +6,7 @@ using TMPro;
 using DG.Tweening;
 using Utill.Data;
 
-public abstract class GachaCard : MonoBehaviour
+public class GachaCard : MonoBehaviour
 {
 
     [SerializeField]
@@ -33,7 +33,10 @@ public abstract class GachaCard : MonoBehaviour
             _rect = itemImage.GetComponent<RectTransform>();
     }
 
-    public abstract void ActiveAndAnimate();
+    public virtual void ActiveAndAnimate()
+	{
+
+	}
 
     /// <summary>
     /// 하나의 아이템 확대 강조 
