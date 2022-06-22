@@ -5,6 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class One_TwoStageTutorial : AbstractStageTutorial
 {
+    public static bool isTutorial = false;
     public override void SetQueue()
     {
         BattleTurtorialComponent.tutorialEventQueue.Enqueue(ExplainUseAbility);
@@ -13,7 +14,8 @@ public class One_TwoStageTutorial : AbstractStageTutorial
 
     }
     public override void EndTutorial()
-    {       
+    {
+        isTutorial = true;
         base.EndTutorial();
     }
 
@@ -24,7 +26,7 @@ public class One_TwoStageTutorial : AbstractStageTutorial
     {
         SetSpeechText();
         SetImpactPos(impactTrans[0].anchoredPosition);
-        blackImpact.localScale = new Vector2(0.5f, 0.7f);
+        //blackImpact.localScale = new Vector2(0.6f, 1f);
     }
     /// <summary>
     /// 특수 능력 설명 

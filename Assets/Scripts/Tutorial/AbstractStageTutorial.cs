@@ -27,7 +27,7 @@ public abstract class AbstractStageTutorial
     /// <param name="index"></param>
     protected void SetSpeechText()
     {
-        speechText.text = textDatas[(int)battleTurtorialComponent.CurrentBattleStageType]._tutorialText[_curTextIndex++];
+        speechText.text = textDatas[(int)BattleTurtorialComponent.CurrentBattleStageType]._tutorialText[_curTextIndex++];
     }
     /// <summary>
     /// 강조 이미지 위치 설정 

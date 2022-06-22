@@ -82,14 +82,14 @@ public class BattleTurtorialComponent : MonoBehaviour
 
     private AbstractStageTutorial currentStageTutorial; // 현재 튜토리얼 
     [SerializeField]
-    private BattleStageType _currentBattleStageType;
-    public BattleStageType CurrentBattleStageType => _currentBattleStageType; 
+    private static BattleStageType _currentBattleStageType;
+    public static BattleStageType CurrentBattleStageType => _currentBattleStageType; 
 
     private bool _isPause = false;
     public static bool _isTutorial = false; // 튜토리얼 했는지 
     private void Start()
     {
-        //SetTutorial(); 
+        SetTutorial(); 
         EventManager.Instance.StartListening(EventsType.NextExplain, NextExplain);
     }
 
@@ -117,7 +117,81 @@ public class BattleTurtorialComponent : MonoBehaviour
         }
         return true;
     }
+    private void DoneTutorial()
+    {
+        switch (_currentBattleStageType)
+        {
+            case BattleStageType.S1_1:
+                if (One_OneStageTutorial.isTutorial == false)
+                {
+                    One_OneStageTutorial.isTutorial = true; 
+                }
+                break;
+            case BattleStageType.S1_2:
+                if (One_TwoStageTutorial.isTutorial == false)
+                {
+                    One_TwoStageTutorial.isTutorial = true;
+                }
+                break;
+            case BattleStageType.S1_3:
+                if (One_ThreeStageTutorial.isTutorial == false)
+                {
+                    One_ThreeStageTutorial.isTutorial = true; 
+                }
+                break;
+            case BattleStageType.S1_4:
+                if (One_FourStageTutorial.isTutorial == false)
+                {
+                    One_FourStageTutorial.isTutorial = true; 
+                }
+                break;
+            case BattleStageType.S1_5:
+                if (One_FiveStageTutorial.isTutorial == false)
+                {
+                    One_FiveStageTutorial.isTutorial = true; 
+                }
+                break;
+        }
+    }
 
+    public static bool CheckTutorial()
+    {
+        bool isTutorial = true; 
+        switch (_currentBattleStageType)
+        {
+            case BattleStageType.S1_1:
+                if (One_OneStageTutorial.isTutorial == false)
+                {
+                    isTutorial = false;
+                }
+                break;
+            case BattleStageType.S1_2:
+                if (One_TwoStageTutorial.isTutorial == false)
+                {
+                    isTutorial = false;
+                }
+                break;
+            case BattleStageType.S1_3:
+                if (One_ThreeStageTutorial.isTutorial == false)
+                {
+                    isTutorial = false;
+                }
+                break;
+            case BattleStageType.S1_4:
+                if (One_FourStageTutorial.isTutorial == false)
+                {
+                    isTutorial = false;
+                }
+                break;
+            case BattleStageType.S1_5:
+                if (One_FiveStageTutorial.isTutorial == false)
+                {
+                    isTutorial = false;
+                }
+                break;
+        }
+        return isTutorial;
+    }
     /// <summary>
     /// 현재 스테이지에 따른 튜토리얼 설정 
     /// </summary>
@@ -127,7 +201,7 @@ public class BattleTurtorialComponent : MonoBehaviour
     public void SetTutorial()
     {
         tutorialEventQueue.Clear(); 
-        //_currentBattleStageType = _currentStageSO._currentStageDatas._stageType; // 현재 몇 스테이지인지 받아옴
+        _currentBattleStageType = AIAndStageData.Instance._currentStageDatas._stageType; // 현재 몇 스테이지인지 받아옴
         switch (_currentBattleStageType)
         {
             case BattleStageType.ST_MAKE: 
@@ -155,7 +229,6 @@ public class BattleTurtorialComponent : MonoBehaviour
         currentStageTutorial.Initialize(_impactParent[(int)_currentBattleStageType]); 
         currentStageTutorial.SetQueue();
 
-        tutorialEventQueue.Dequeue().Invoke(); 
     }
 
     /// <summary>
@@ -164,7 +237,8 @@ public class BattleTurtorialComponent : MonoBehaviour
     [ContextMenu("튜토리얼 테스트")]
     public void StartTutorial()
     {
-        _isTutorial = true; 
+        DoneTutorial(); 
+        //_isTutorial = true; 
         SetTimeScale();
         ActiveTutorialCanvas();
         NextExplain();
