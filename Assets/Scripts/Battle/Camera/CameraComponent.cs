@@ -33,6 +33,10 @@ namespace Battle
 		private Transform _enemyPencilCase = null;
 		[SerializeField]
 		private EventTrigger eventTrigger;
+		[SerializeField]
+		private GameObject _leftButton;
+		[SerializeField]
+		private GameObject _rightButton;
 
 		private Vector3 _originVector = Vector3.zero;
 
@@ -70,8 +74,21 @@ namespace Battle
 			_camera.transform.DOMove(pos, duration).SetEase(Ease.OutExpo);
 			_camera.transform.DOScale(size, duration).SetEase(Ease.OutExpo);
 			DOTween.To(() => _camera.orthographicSize, x => _camera.orthographicSize = x, size, duration);
-
 		}
+		/// <summary>
+		/// 사이즈를 제어하지않고 카메라를 이동시킨다
+		/// </summary>
+		/// <param name="pos"></param>
+		/// <param name="duration"></param>
+		/// <param name="lerp"></param>
+		public void MovingCameraMoverNoneSize(Vector3 pos, float duration, float lerp = 1)
+		{
+			pos.x = Mathf.Lerp(_cameraMover.transform.position.x, pos.x, lerp);
+			pos.y += 0.1f;
+			pos.z = -10;
+			_cameraMover.transform.DOMove(pos, duration).SetEase(Ease.OutExpo);
+		}
+
 		/// <summary>
 		/// 카메라의 Y위치를 원래 위치Y로 이동하게 함
 		/// </summary>
@@ -217,6 +234,18 @@ namespace Battle
 				return;
 			}
 
+			//카메라 크기가 클 때
+			if ((_stageData.max_Range - 1) - _camera.orthographicSize <= 0.2f)
+			{
+				SetFalseCameraMoveButton();
+				MovingCameraMoverNoneSize(Vector2.zero, 0.2f, 0.1f);
+			}
+			//카메라 크기가 작을 때
+			else
+			{
+				SetActiveCameraMoveButton();
+			}
+
 			if (Input.GetKey(KeyCode.UpArrow))
 			{
 				if (_stageData.max_Range - 1 < _camera.orthographicSize)
@@ -318,6 +347,25 @@ namespace Battle
 				OnLeftMove();
 			}
 
+		}
+
+
+		/// <summary>
+		/// 카메라 이동 버튼 활성화
+		/// </summary>
+		private void SetActiveCameraMoveButton()
+		{
+			_leftButton.SetActive(true);
+			_rightButton.SetActive(true);
+		}
+
+		/// <summary>
+		/// 카메라 이동 버튼 비활성화
+		/// </summary>
+		private void SetFalseCameraMoveButton()
+		{
+			_leftButton.SetActive(false);
+			_rightButton.SetActive(false);
 		}
 	}
 
