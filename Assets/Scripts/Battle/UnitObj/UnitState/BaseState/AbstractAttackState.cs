@@ -164,7 +164,15 @@ namespace Battle.Units
 				_stateManager.Set_Move();
 				return;
 			}
-			if (Vector2.Distance(_myTrm.position, _targetUnit.transform.position) > _myUnit.UnitStat.Return_Range())
+			if(_targetUnit.UnitData._unitType == UnitType.PencilCase)
+			{
+				if (Vector2.Distance(_myTrm.position, _targetUnit.transform.position) > _myUnit.UnitStat.Return_Range() + 0.4f)
+				{
+					_stateManager.Set_Move();
+					return;
+				}
+			}
+			else if (Vector2.Distance(_myTrm.position, _targetUnit.transform.position) > _myUnit.UnitStat.Return_Range())
 			{
 				_stateManager.Set_Move();
 				return;

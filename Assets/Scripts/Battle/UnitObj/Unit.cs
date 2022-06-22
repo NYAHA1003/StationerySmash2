@@ -85,6 +85,7 @@ public class Unit : MonoBehaviour
         OrderIndex = orderIndex;
 
         //유닛 데이터 받아오기
+        _eTeam = eTeam;
         UnitData unitData = null;
         if(_eTeam == TeamType.MyTeam && dataBase._cardType == CardType.SummonUnit)
         {
@@ -100,7 +101,6 @@ public class Unit : MonoBehaviour
         _skinData = dataBase._skinData;
 
         //팀, 이름 설정
-        _eTeam = eTeam;
         switch (grade)
         {
             default:

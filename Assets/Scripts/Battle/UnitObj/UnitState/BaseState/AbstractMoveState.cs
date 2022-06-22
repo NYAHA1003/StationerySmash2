@@ -110,7 +110,15 @@ namespace Battle.Units
 
 			if (targetUnit != null)
 			{
-				if (Vector2.Distance(_myTrm.position, targetUnit.transform.position) < _myUnit.UnitStat.Return_Range())
+				if(targetUnit.UnitData._unitType == UnitType.PencilCase)
+				{
+					if (Vector2.Distance(_myTrm.position, targetUnit.transform.position) < _myUnit.UnitStat.Return_Range() + 0.4f)
+					{
+						//사정거리에 상대가 있으면 공격
+						CheckTargetUnit(targetUnit);
+					}
+				}
+				else if(Vector2.Distance(_myTrm.position, targetUnit.transform.position) < _myUnit.UnitStat.Return_Range())
 				{
 					//사정거리에 상대가 있으면 공격
 					CheckTargetUnit(targetUnit);

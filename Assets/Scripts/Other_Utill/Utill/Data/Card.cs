@@ -11,6 +11,7 @@ namespace Utill.Data
         SummonTrap,
         Installation,
         Projectile,
+        PencilCase,
     }
 
     public enum CardNamingType

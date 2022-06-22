@@ -55,7 +55,7 @@ namespace Utill.Data
 			var cardData = new CardData
 			{
 				_cost = 0,
-				_cardType = CardType.SummonUnit,
+				_cardType = CardType.PencilCase,
 				_description = "",
 				_name = "",
 				_cardNamingType = CardNamingType.PencilCase,
