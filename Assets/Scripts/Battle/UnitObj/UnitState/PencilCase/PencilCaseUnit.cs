@@ -5,11 +5,14 @@ using Utill.Data;
 using Utill.Tool;
 using Battle;
 using Battle.PCAbility;
+using TMPro;
 
 public class PencilCaseUnit : Unit
 {
     public AbstractPencilCaseAbility AbilityState { get; private set; }
     public Dictionary<System.Action<AtkData>, System.Action<AtkData>> _actionsAtkData = new Dictionary<System.Action<AtkData>, System.Action<AtkData>>();
+    [SerializeField]
+    private TextMeshPro _hpText;
 
     /// <summary>
     /// 필통 데이터 초기화
@@ -24,6 +27,11 @@ public class PencilCaseUnit : Unit
         _battleManager ??= FindObjectOfType<BattleManager>();
         base.SetUnitData(dataBase, eTeam, stageData, id, grade, orderIndex);
         SetPencilCaseAbility(PencilCaseDataManagerSO.InGamePencilCaseData);
+        _hpText.text = $"{UnitStat.Hp}/{UnitStat.MaxHp}";
+        if(eTeam == TeamType.EnemyTeam)
+        {
+            _hpText.transform.localScale = new Vector3(-1, 1, 1);
+        }
     }
 
     /// <summary>
@@ -78,6 +86,7 @@ public class PencilCaseUnit : Unit
         {
             _actionsAtkData[Run_Damaged].Invoke(atkData);
         }
+        _hpText.text = $"{UnitStat.Hp}/{UnitStat.MaxHp}";
     }
 
     public override void AddInherence(AtkData atkData)
