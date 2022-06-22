@@ -107,6 +107,9 @@ namespace Battle
 			Sound.StopBgm(3);
 			Sound.PlayBgm(8);
 		}
+		
+		
+
 	}
 
 }

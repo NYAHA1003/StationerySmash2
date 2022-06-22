@@ -143,14 +143,6 @@ namespace Battle
                     break;
                 case CardType.SummonUnit:
                 case CardType.SummonTrap:
-                    Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    if(mousePos.y > 0)
-                    {
-                        if (mousePos.x >= _cardComponent.ReturnMinRange() && mousePos.x <= _cardComponent.ReturnMaxRange())
-                        {
-                            position.y = Screen.height * 0.8f;
-                        }
-                    }
                     break;
                 case CardType.Installation:
                     break;
