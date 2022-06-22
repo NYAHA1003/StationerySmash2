@@ -82,7 +82,7 @@ namespace Battle
 		{
 			_camera.transform.DOMove(_originVector, duration).SetEase(Ease.OutExpo);
 			_camera.transform.DOScale(Vector3.one, duration).SetEase(Ease.OutExpo);
-			DOTween.To(() => _camera.orthographicSize, x => _camera.orthographicSize = x, 1, duration);
+			DOTween.To(() => _camera.orthographicSize, x => _camera.orthographicSize = x, _stageData.max_Range - 1, duration);
 		}
 
 		/// <summary>
