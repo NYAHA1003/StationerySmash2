@@ -14,9 +14,6 @@ namespace Battle
 		//참조변수
 		private StageData _stageData = null;
 		private GameObject _summonRangeImage = null;
-		private RectTransform _summonArrow = null;
-		private GameObject _unitAfterImage = null;
-		private SpriteRenderer _afterImageSpriteRenderer = null;
 		private CardComponent _cardComponent = null;
 		private CardSelectComponent _cardSelectComponent = null;
 		private CostComponent _costComponent = null;
@@ -33,7 +30,7 @@ namespace Battle
 		/// <summary>
 		/// 초기화
 		/// </summary>
-		public void SetInitialization(CardComponent cardComponent, CardSelectComponent cardSelectComponent, CostComponent costComponent, GameObject summonRangeImage, RectTransform summonArrow,  StageData stageData, GameObject unitAfterImage, SpriteRenderer afterImageSprRenderer)
+		public void SetInitialization(CardComponent cardComponent, CardSelectComponent cardSelectComponent, CostComponent costComponent, GameObject summonRangeImage, RectTransform summonArrow,  StageData stageData)
 		{
 			//컴포넌트
 			_cardComponent = cardComponent;
@@ -42,14 +39,9 @@ namespace Battle
 
 			//소한 범위
 			_summonRangeImage = summonRangeImage;
-			_summonArrow = summonArrow;
 			_stageData = stageData;
 			this._maxsummonRange = -_stageData.max_Range + _stageData.max_Range / 4;
 			this._minsummonRange = -_stageData.max_Range;
-
-			//미리보기
-			_unitAfterImage = unitAfterImage;
-			_afterImageSpriteRenderer = afterImageSprRenderer;
 
 			DrawSummonRange();
 		}
@@ -94,58 +86,6 @@ namespace Battle
 		}
 
 		/// <summary>
-		/// 카드 소환 미리보기
-		/// </summary>
-		/// <param name="unitData"></param>
-		/// <param name="pos"></param>
-		/// <param name="isDelete"></param>
-		public void UpdateUnitAfterImage()
-		{
-			//마우스 위치를 가져온다
-			Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			
-			pos.x = Mathf.Clamp(pos.x, -_stageData.max_Range, _maxsummonRange);
-
-			//소환 미리보기가 될 수 있는지 체크
-
-			if (_cardSelectComponent.SelectedCard == null || pos.y < 0 || _cardSelectComponent.SelectedCard.CardDataValue._unitType == UnitType.None)
-			{
-				SetSummonArrowImage(false, pos);
-				_unitAfterImage.SetActive(false);
-				return;
-			}
-
-			//소환 미리보기 적용
-			_unitAfterImage.SetActive(true);
-			_afterImageSpriteRenderer.color = Color.white;
-
-			if (CheckPossibleSummon())
-			{
-				_afterImageSpriteRenderer.color = Color.red;
-			}
-
-			_unitAfterImage.transform.position = new Vector3(pos.x, 0);
-			_afterImageSpriteRenderer.sprite = SkinData.GetSkin(_cardSelectComponent.SelectedCard.CardDataValue._skinData._skinType);
-
-			//소환 화살표 적용
-			SetSummonArrowImage(true, pos);
-		}
-
-		/// <summary>
-		/// 소환 화살표 설정
-		/// </summary>
-		private void SetSummonArrowImage(bool isActive, Vector2 pos)
-		{
-			//소환 화살표 적용
-			_summonArrow.gameObject.SetActive(isActive);
-			_summonArrow.transform.position = pos;
-			_summonArrow.anchoredPosition = new Vector2(_summonArrow.anchoredPosition.x, Mathf.Clamp(_summonArrow.anchoredPosition.y, 520, 1000));
-			_summonArrow.sizeDelta = new Vector2(_summonArrow.sizeDelta.x, _summonArrow.anchoredPosition.y);
-
-			return;
-		}
-
-		/// <summary>
 		/// 카드를 여러 조건에 따라 사용할 수 있는지 체크
 		/// </summary>
 		private bool CheckPossibleSummon()
@@ -166,13 +106,6 @@ namespace Battle
 					break;
 				case CardType.SummonUnit:
 				case CardType.SummonTrap:
-					Vector3 mouse_Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-					mouse_Pos.x = Mathf.Clamp(mouse_Pos.x, -_stageData.max_Range, _maxsummonRange);
-					if (mouse_Pos.x < -_stageData.max_Range || mouse_Pos.x > _maxsummonRange)
-					{
-						return false;
-					}
-					break;
 				case CardType.Installation:
 					break;
 			}

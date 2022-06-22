@@ -39,11 +39,7 @@ namespace Battle
         [SerializeField]
         private RectTransform _cardRightPosition = null;
         [SerializeField]
-        private RectTransform _cardSpawnPosition = null;
-        [SerializeField]
-        private GameObject _unitAfterImage = null;
-        [SerializeField]
-        private SpriteRenderer _afterImageSpriteRenderer = null;
+        private RectTransform _cardSpawnPosition = null;    
         [SerializeField]
         private bool _isAlwaysSpawn = false;
         [SerializeField]
@@ -92,13 +88,12 @@ namespace Battle
             SetDeckCard();
 
             _cardDrawComponent.SetInitialization(this, _deckData, _cardList, _cardMovePrefeb, _cardPoolManager, _cardCanvas, _cardSpawnPosition);
-            _cardRangeComponent.SetInitialization(this, _cardSelectComponent, _commandCost, _summonRangeImage, _summonArrow, _stageData, _unitAfterImage, _afterImageSpriteRenderer);
+            _cardRangeComponent.SetInitialization(this, _cardSelectComponent, _commandCost, _summonRangeImage, _summonArrow, _stageData);
             _cardSelectComponent.SetInitialization(this, _commandUnit, _commandCost);
             _cardFusionComponent.SetInitialization(this, _managerBase);
             _cardSortComponent.SetInitialization(this, _cardSelectComponent, _cardLeftPosition, _cardRightPosition);
 
             //업데이트할 함수들 전달
-            updateAction += UpdateUnitAfterImage;
             updateAction += UpdateSelectCardPos;
             updateAction += UpdateCardDraw;
             updateAction += UpdateSummonRange;
@@ -339,17 +334,6 @@ namespace Battle
                 CardData cardData = _cardDeckSO.cardDatas[i];
                 _deckData.Add_CardData(cardData);
             }
-        }
-
-        /// <summary>
-        /// 카드 소환 미리보기
-        /// </summary>
-        /// <param name="unitData"></param>
-        /// <param name="pos"></param>
-        /// <param name="isDelete"></param>
-        private void UpdateUnitAfterImage()
-        {
-            _cardRangeComponent.UpdateUnitAfterImage();
         }
 
         /// <summary>
