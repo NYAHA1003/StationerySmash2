@@ -88,11 +88,31 @@ public class UnitStat
     /// <param name="grade"></param>
     public void SetGradeStat(int grade)
     {
+        float multiple = 0;
+        switch(grade)
+		{
+            case 0:
+                multiple = 0;
+                break;
+            case 1:
+                multiple = 1;
+                break;
+            case 2:
+                multiple = 1.2f;
+                break;
+            case 3:
+                multiple = 1.5f;
+                break;
+            case 4:
+                multiple = 2f;
+                break;
+        }
+
         _grade = grade;
-        _moveSpeedPercent = 100 * grade;
-        _attackSpeedPercent = 100 * grade;
-        _attackPercent = 100 * grade;
-        _maxHp = _unitData._hp * grade;
+        _moveSpeedPercent = (int)(100 * multiple);
+        _attackSpeedPercent = (int)(100 * multiple);
+        _attackPercent = (int)(100 * multiple);
+        _maxHp = (int)(_unitData._hp * multiple);
         _hp = _maxHp;
     }
     public void GradeUp(int grade)
