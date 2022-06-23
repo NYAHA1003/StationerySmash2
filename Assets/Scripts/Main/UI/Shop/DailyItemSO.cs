@@ -24,8 +24,8 @@ public class DailyItemInfo
     public int _cardPrice;
     public int _itemCount;
     public CardNamingType _unitCardType; 
-    public IPerchase _dailyItem; 
-
+    public IPerchase _dailyItem;
+    public bool _isBuy;
     public void DeepCopy(DailyItemInfo dailyItemInfo)
     {
         this._grade = dailyItemInfo._grade;
@@ -33,6 +33,8 @@ public class DailyItemInfo
         this._cardName = dailyItemInfo._cardName;
         this._cardPrice = dailyItemInfo._cardPrice;
         this._itemCount = dailyItemInfo._itemCount; 
+        this._unitCardType = dailyItemInfo._unitCardType;
+        this._dailyItem = dailyItemInfo._dailyItem; 
     }
 }
 

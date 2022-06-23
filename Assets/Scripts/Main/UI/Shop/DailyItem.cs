@@ -6,8 +6,6 @@ using TMPro;
 using Utill.Data;
 public class DailyItem : MonoBehaviour
 {
-    [SerializeField]
-    private DailyItemSO _dailyItemInfo;
 
     [SerializeField]
     private Image _itemImage; // 아이템 이미지
@@ -20,11 +18,15 @@ public class DailyItem : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _countText; // 개수 텍스트
 
+    private DailyItemInfo _dailyItemInfo;
+    public DailyItemInfo DailyItemInfo => _dailyItemInfo;
     private IPerchase _dailyItem;
     [SerializeField]
-    private Button _itemButton; 
+    private Button _itemButton;
+    private bool _isbuy  = false;
     public void SetCardInfo(DailyItemInfo dailyItemInfo,int itemCount = 0)
     {
+        _dailyItemInfo = dailyItemInfo; 
         // DailyItemInfo dailyItemInfo = _dailyItemInfo.dailyItemInfos[(int)dailyCardType];
         _itemImage.sprite = dailyItemInfo._itemSprite;
         itemCount = dailyItemInfo._itemCount;
@@ -49,11 +51,21 @@ public class DailyItem : MonoBehaviour
     /// </summary>
    public void Purchased(bool isbuy)
     {
-        if(isbuy)
+        _isbuy = isbuy; 
+        if (_isbuy)
 		{
-            _itemButton.enabled = false;
-            _blackImage.SetActive(true);
-		}
+            Purchase(); 
+            _dailyItemInfo._isBuy = true; 
+
+        }
     }
 
+    /// <summary>
+    /// 구매시 바뀐는 부분 
+    /// </summary>
+    public void Purchase()
+    {
+        _itemButton.enabled = false;
+        _blackImage.SetActive(true);
+    }
 }
