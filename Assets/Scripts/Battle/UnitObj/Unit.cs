@@ -130,10 +130,6 @@ public class Unit : MonoBehaviour
         //물리판정 설정
         _collideData = new CollideData();
         _collideData.originpoints = unitData._colideData.originpoints;
-
-        //딜레이시스템
-        SetIsInvincibility(false);
-        SetIsDontThrow(false);
         
         //스테이지 데이터 가져오기
         _stageData = stageData;

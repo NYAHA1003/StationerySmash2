@@ -163,7 +163,7 @@ namespace Battle.Units
 			targetUnit.Run_Damaged(atkData);
 
 
-			atkDataMy.Reset_Kncockback(20, 0, dir, true);
+			atkDataMy.Reset_Kncockback(1, 0, dir, true);
 			atkDataMy.Reset_Type(EffAttackType.Normal);
 			atkDataMy.Reset_Value(1);
 			atkDataMy.Reset_Damage(0);
