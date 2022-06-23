@@ -147,7 +147,7 @@ namespace Battle
             toCombineCard.FusionFadeInEffect(color);
             fromCombineCard.FusionFadeInEffect(color);
 
-            yield return new WaitForSeconds(0.23f);
+            yield return new WaitForSeconds(0.15f);
             fromCombineCard.ShowCard(false);
 
             toCombineCard.FusionFadeOutEffect();
@@ -168,7 +168,7 @@ namespace Battle
         /// <returns></returns>
         private IEnumerator DelayFusion()
         {
-            yield return new WaitForSeconds(0.4f);
+            yield return new WaitForSeconds(0.35f);
             FusionCard();
         }
     }
