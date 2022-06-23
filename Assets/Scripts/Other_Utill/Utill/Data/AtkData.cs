@@ -65,7 +65,9 @@ namespace Utill.Data
         }
         public float Caculated_Knockback(int weight, int hp, int maxhp, bool isMyTeam)
         {
-            return ((baseKnockback + extraKnockback) / (weight * (((float)hp / maxhp) + 0.1f))) * (isMyTeam ? 1 : -1);
+            float percent = ((float)hp / maxhp) + 0.01f;
+
+            return (baseKnockback + extraKnockback) / (weight * 0.8f * percent) * (isMyTeam ? 1 : -1);
         }
 
         public void Reset_Kncockback(float baseKnockback, float extraKnockback, float direction, bool isMyTeam)
