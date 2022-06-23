@@ -89,27 +89,33 @@ public class UnitStat
     public void SetGradeStat(int grade)
     {
         float multiple = 0;
+        float divid = 0;
         switch(grade)
 		{
             case 0:
                 multiple = 0;
+                divid = 0;
                 break;
             case 1:
                 multiple = 1;
+                divid = 1;
                 break;
             case 2:
                 multiple = 1.2f;
+                divid = 0.8f;
                 break;
             case 3:
                 multiple = 1.5f;
+                divid = 0.5f;
                 break;
             case 4:
                 multiple = 2f;
+                divid = 0.3f;
                 break;
         }
 
         _grade = grade;
-        _moveSpeedPercent = (int)(100 * multiple);
+        _moveSpeedPercent = (int)(100 * divid);
         _attackSpeedPercent = (int)(100 * multiple);
         _attackPercent = (int)(100 * multiple);
         _maxHp = (int)(_unitData._hp * multiple);
