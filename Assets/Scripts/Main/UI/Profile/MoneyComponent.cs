@@ -44,13 +44,13 @@ public class MoneyComponent : MonoBehaviour, IUserData
     /// <returns></returns>
     private IEnumerator UpCountingMoney()
     {
-        float interval = 0.05f;
+        int addMoney = (_currentMoney - _previousMoney) / 5;
         while (_previousMoney < _currentMoney)
         {
-            _previousMoney++;
+            _previousMoney += addMoney;
             SetMoneyText();
 
-            yield return new WaitForSeconds(interval);
+            yield return new WaitForSeconds(0.01f);
         }
         if(_previousMoney > _currentMoney)
         {
