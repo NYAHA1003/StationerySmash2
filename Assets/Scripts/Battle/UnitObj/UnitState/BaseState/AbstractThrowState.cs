@@ -159,7 +159,7 @@ namespace Battle.Units
 
 			atkData.Reset_Kncockback(10, extraKnockBack, dir, false);
 			atkData.Reset_Type(EffAttackType.Stun);
-			atkData.Reset_Value(1);
+			atkData.Reset_Value(((float)_myUnit.UnitStat.Return_Weight() / 100) + 15);
 			targetUnit.Run_Damaged(atkData);
 
 

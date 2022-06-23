@@ -14,7 +14,6 @@ namespace Battle.StateEff
 
         public override void Enter()
         {
-            stunTime = stunTime + (stunTime * (((float)_myUnit.UnitStat.MaxHp / (_myUnit.UnitStat.Hp + 70)) - 1));
             _stateManager.Set_Wait(stunTime);
             _stateManager.Set_WaitExtraTime(stunTime);
 
@@ -40,7 +39,6 @@ namespace Battle.StateEff
             if (stunTime < value[0])
             {
                 stunTime = value[0];
-                stunTime = stunTime + (stunTime * (((float)_myUnit.UnitStat.MaxHp / (_myUnit.UnitStat.Hp + 70)) - 1));
             }
         }
 
