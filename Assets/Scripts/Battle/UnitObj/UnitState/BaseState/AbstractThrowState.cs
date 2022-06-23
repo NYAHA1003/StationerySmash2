@@ -42,15 +42,14 @@ namespace Battle.Units
 				EndThrow();
 			}
 
-			//상대 유닛이랑 부딪치는지 체크
 			if (_myUnit.ETeam == TeamType.MyTeam)
 			{
-				CheckCollide(_myUnit.BattleManager.UnitComponent._enemyUnitList);
+				CheckCollide(_myUnit.BattleManager.UnitComponent._enemyUnitList, 0.1f);
 				return;
 			}
 			if (_myUnit.ETeam == TeamType.EnemyTeam)
 			{
-				CheckCollide(_myUnit.BattleManager.UnitComponent._playerUnitList);
+				CheckCollide(_myUnit.BattleManager.UnitComponent._playerUnitList, 0.1f);
 				return;
 			}
 		}
@@ -60,7 +59,7 @@ namespace Battle.Units
 		/// 유닛 물리판정이랑 부딪치는지 체크
 		/// </summary>
 		/// <param name="list"></param>
-		private void CheckCollide(List<Unit> list)
+		private void CheckCollide(List<Unit> list, float dis)
 		{
 			Unit targetUnit = null;
 			for (int i = 0; i < list.Count; i++)
@@ -71,7 +70,7 @@ namespace Battle.Units
 					continue;
 				}
 				float distance = UnitCollider.FindDistanceBetweenSegments(_myUnit.CollideData.GetPoint(_myTrm.position, _myUnit.Multiple), targetUnit.CollideData.GetPoint(targetUnit.transform.position, targetUnit.Multiple));
-				if (distance < 0.2f)
+				if (distance < dis)
 				{
 					EndThrow();
 					ThrowAttack(targetUnit);
@@ -119,8 +118,19 @@ namespace Battle.Units
 			SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x - width, 0, _myTrm.position.z), height, 1, time).OnComplete(() =>
 			{
 				EndThrow();
-			//땅에 닿으면 대기 상태로 돌아감
-			_stateManager.Set_Wait(0.5f);
+				//상대 유닛이랑 부딪치는지 체크
+				if (_myUnit.ETeam == TeamType.MyTeam)
+				{
+					CheckCollide(_myUnit.BattleManager.UnitComponent._enemyUnitList, 0.3f);
+					return;
+				}
+				if (_myUnit.ETeam == TeamType.EnemyTeam)
+				{
+					CheckCollide(_myUnit.BattleManager.UnitComponent._playerUnitList, 0.3f);
+					return;
+				}
+				//땅에 닿으면 대기 상태로 돌아감
+				_stateManager.Set_Wait(0.5f);
 			}).SetEase(Parabola.Return_ParabolaCurve()));
 
 		}
@@ -137,8 +147,6 @@ namespace Battle.Units
 			float dir = Vector2.Angle((Vector2)_myTrm.position, (Vector2)targetUnit.transform.position);
 			float extraKnockBack = (targetUnit.UnitStat.Return_Weight() - _myUnit.UnitStat.Return_Weight() * (float)targetUnit.UnitStat.Hp / targetUnit.UnitStat.MaxHp) * 0.025f;
 			AtkData atkData = new AtkData(_myUnit, 0, 0, 0, 0, true, _damageId, EffAttackType.Normal, EffectType.Throw);
-			UnitStat.WeightGrade unitWeightGrade = _myUnit.UnitStat.ReturnWeightGrade();
-			UnitStat.WeightGrade targetWeightGrade = targetUnit.UnitStat.ReturnWeightGrade();
 
 			WeightEqual(ref atkData, ref targetUnit, ref dir, ref extraKnockBack);
 
