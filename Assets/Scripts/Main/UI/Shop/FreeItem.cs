@@ -32,7 +32,8 @@ public class FreeItem : IPerchase
         _curCount = Random.Range(_minCount, _maxCount + 1);
         if (_dailyFreeItemType == DailyFreeItemType.Gold)
         {
-            return _curCount - _curCount % 10; // 일의 자리수 버림 
+            _curCount = _curCount - _curCount % 10; 
+            return _curCount; // 일의 자리수 버림 
         }
         else if(_dailyFreeItemType == DailyFreeItemType.Dalgona)
         {

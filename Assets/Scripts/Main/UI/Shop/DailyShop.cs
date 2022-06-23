@@ -71,6 +71,9 @@ public class DailyShop : MonoBehaviour
 
     // 나올 아이템 조각들의 데이터 
     [SerializeField]
+    private DailyItemSO _curDailyCardSO; // 현재 일일상점에 있는 카드 데이터들 불러올 데이터 
+
+    [SerializeField]
     private DailyItemSO _freeItemSO;
     [SerializeField]
     private DailyItemSO _stationerySheetSO;
@@ -98,15 +101,21 @@ public class DailyShop : MonoBehaviour
     private List<BadgeType> _notHaveBadgeTypes = new List<BadgeType>(); // 보유하고 있지 않은 뱃지리스트 
 
     private int _dailyCardCount = 6;
+
+    private static bool _isLoadCard; // 카드 로드가 가능하냐 
     private void Start()
     {
-        CreateItems();
-        InitializeDailyCards();
-        SetHaveCard(); 
-        UpdateNotHaveItems();
-        ShowFreeDailyCard();    
-        ShowDailyCard();
         EventManager.Instance.StartListening(EventsType.ResetDailyShop, ResetDailyShop);
+        CreateItems();
+        if(_isLoadCard  == true) // 처음으로 카드를 불러오는 것이 아니면 불러오기 
+        {
+            Debug.Log("로드");
+            LoadDailyCard();
+            return; 
+        }
+        Debug.Log("생성");
+        ResetDailyShop(); 
+        //ResetDailyShop(); 
         //Shuffle();
         //CreateDailyItem();
     }
@@ -114,10 +123,13 @@ public class DailyShop : MonoBehaviour
     [ContextMenu("새로운 카드 데이터 넣어주기")]
     public void ResetDailyShop()
     {
-        SetHaveCard(); 
+        _curDailyCardSO.dailyItemInfos.Clear(); 
+        _isLoadCard = true; 
+        InitializeDailyCards();
+        SetHaveCard();
         UpdateNotHaveItems();
-        ShowDailyCard();
         ShowFreeDailyCard();
+        ShowDailyCard();
     }
 
     /// <summary>
@@ -298,7 +310,12 @@ public class DailyShop : MonoBehaviour
             //}
 
             DailyItemInfo dailyItemInfo = Check(_dailyCardTypes[i]);
-            paidDailyCard.SetCardInfo(dailyItemInfo, dailyItemInfo._itemCount);
+
+            DailyItemInfo dailyItemInfo2 = new DailyItemInfo();
+            dailyItemInfo2.DeepCopy(dailyItemInfo); 
+            paidDailyCard.SetCardInfo(dailyItemInfo2, dailyItemInfo._itemCount);
+            _curDailyCardSO.dailyItemInfos.Add(dailyItemInfo2);
+
         }
     }
 
@@ -309,10 +326,10 @@ public class DailyShop : MonoBehaviour
     /// <returns></returns>
     private DailyItemInfo Check(DailyCardType dailyCardType)
     {
-        int length, index ; 
+        int length, index;
         int commonPercent, rarePercent, epicPercent, randomGrade;
 
-        if(_notHaveStationaryTypes.Count == 0)
+        if (_notHaveStationaryTypes.Count == 0)
         {
             dailyCardType = DailyCardType.StationerySheet;
         }
@@ -324,7 +341,7 @@ public class DailyShop : MonoBehaviour
                 index = Random.Range(0, length);
                 CardNamingType stationaryType = _haveStationaryTypes[index];
                 StationerySheet stationerySheet = new StationerySheet(_stationerySheetSO);
-               
+
                 Debug.Log(stationaryType);
                 return stationerySheet.ReturnItemInfo(stationaryType);
             // 아래 두줄은 나중에 StationerySheet를 부모 클래스(ReturnItemInfo() 보유) 상속 받게 해서
@@ -392,7 +409,7 @@ public class DailyShop : MonoBehaviour
             // 뱃지 13개 조각 중 랜덤으로 하나 
 
             case DailyCardType.NewStationary:
-                
+
                 length = _notHaveStationaryTypes.Count;
                 index = Random.Range(0, length);
                 CardNamingType newStationaryType = _notHaveStationaryTypes[index];
@@ -415,7 +432,7 @@ public class DailyShop : MonoBehaviour
                     newStickerGrade = Grade.Rare;
                 }
                 else if (randomGrade <= commonPercent + rarePercent + epicPercent)
-                {   
+                {
                     newStickerGrade = Grade.Epic;
                 }
                 else
@@ -485,6 +502,30 @@ public class DailyShop : MonoBehaviour
         FreeItem freeItem = new FreeItem(_freeItemSO, dailyFreeItemType);
         //  freeItemCount = freeItem.ReturnRandomCount();
         DailyItem freeDailyCard = _dailyItems[0];
-        freeDailyCard.SetCardInfo(freeItem.ReturnItemInfo(dailyFreeItemType));
+        DailyItemInfo dailyItemInfo = freeItem.ReturnItemInfo(dailyFreeItemType);
+        freeDailyCard.SetCardInfo(dailyItemInfo);
+
+        _curDailyCardSO.dailyItemInfos.Add(dailyItemInfo);
     }
+
+    private void LoadDailyCard()
+    {
+        DailyItem freeDailyCard = _dailyItems[0];
+        freeDailyCard.SetCardInfo(_curDailyCardSO.dailyItemInfos[0]);
+        if(freeDailyCard.DailyItemInfo._isBuy == true)
+        {
+            freeDailyCard.Purchase(); 
+        }
+        for (int i = 0; i < _dailyCardCount - 1; i++)
+        {
+            DailyItem paidDailyCard = _dailyItems[i + 1];
+            paidDailyCard.SetCardInfo(_curDailyCardSO.dailyItemInfos[i + 1]);
+
+            if (paidDailyCard.DailyItemInfo._isBuy == true)
+            {
+                paidDailyCard.Purchase();
+            }
+        }
+    }
+
 }
