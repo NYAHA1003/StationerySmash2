@@ -148,16 +148,16 @@ namespace Battle.Units
 			
 			UnitStat.WeightGrade unitWeightGrade = _myUnit.UnitStat.ReturnWeightGrade();
 			UnitStat.WeightGrade targetWeightGrade = targetUnit.UnitStat.ReturnWeightGrade();
-
-
-			if(unitWeightGrade  <= targetWeightGrade && !isGround)
-			{
-				WeightLose(ref atkData, ref targetUnit, ref dir, ref extraKnockBack);
-			}
-			else
-			{
-				WeightWin(ref atkData, ref targetUnit, ref dir, ref extraKnockBack);
-			}
+			
+			WeightWin(ref atkData, ref targetUnit, ref dir, ref extraKnockBack);
+			//if (unitWeightGrade  <= targetWeightGrade && !isGround)
+			//{
+			//	WeightLose(ref atkData, ref targetUnit, ref dir, ref extraKnockBack);
+			//}
+			//else
+			//{
+			//	
+			//}
 
 		}
 
