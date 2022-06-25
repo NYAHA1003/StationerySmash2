@@ -1651,6 +1651,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1095134052}
   - component: {fileID: 1095134051}
+  - component: {fileID: 1095134053}
   m_Layer: 0
   m_Name: LoadingManager
   m_TagString: Untagged
@@ -1697,14 +1698,10 @@ MonoBehaviour:
   - {fileID: 7039156017304339046}
   - {fileID: 7039156017304339046}
   - {fileID: 7039156017304339046}
-  loadingBattleDataSO: {fileID: 11400000, guid: bdee87f569e643c46a74cc7e1cac9807, type: 2}
-  _sceneLoadComponenet: {fileID: 304459868}
   _stageSprites:
   - {fileID: 21300000, guid: a23a57be640054bf08deecbc33c70a5e, type: 3}
   - {fileID: 21300000, guid: 6a1f2ec1b291243919959448562d19aa, type: 3}
   - {fileID: 21300000, guid: 44fdb2fe54269466f8b0b810c0e57f86, type: 3}
-  _popupPanel: {fileID: 7039156017304339045}
-  _stageDataListSO: {fileID: 11400000, guid: a930bac7dd6fe314a9d2c68dd5b3deef, type: 2}
 --- !u!4 &1095134052
 Transform:
   m_ObjectHideFlags: 0
@@ -1719,6 +1716,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1095134053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1095134050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbc84ef54e7f1bb4c9ac39cf30688a30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sceneLoadComponenet: {fileID: 304459868}
+  _stageDataListSO: {fileID: 11400000, guid: a930bac7dd6fe314a9d2c68dd5b3deef, type: 2}
+  _popupPanel: {fileID: 7039156017304339045}
+  loadingBattleDataSO: {fileID: 11400000, guid: bdee87f569e643c46a74cc7e1cac9807, type: 2}
 --- !u!1001 &1123001652
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1960,7 +1973,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 419307995995508832, guid: 01f1ff345fe9d2a47b6f443bdb3a8ae4, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -1801.5046
+      value: -1801.5043
       objectReference: {fileID: 0}
     - target: {fileID: 419307996116490258, guid: 01f1ff345fe9d2a47b6f443bdb3a8ae4, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3809,7 +3822,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 314574447164307185}
   m_Direction: 3
   m_Value: 1
-  m_Size: 0.252
+  m_Size: 0.22399998
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -7174,7 +7187,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4845878020961893623, guid: ff58007c0af19ac4582429bdb90ad0c6, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -1170.9901
+      value: -1170.99
       objectReference: {fileID: 0}
     - target: {fileID: 5449632104214397747, guid: ff58007c0af19ac4582429bdb90ad0c6, type: 3}
       propertyPath: m_SizeDelta.y
@@ -7186,7 +7199,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5449632104643939286, guid: ff58007c0af19ac4582429bdb90ad0c6, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -1170.9901
+      value: -1170.9899
       objectReference: {fileID: 0}
     - target: {fileID: 5449632105680465942, guid: ff58007c0af19ac4582429bdb90ad0c6, type: 3}
       propertyPath: m_AnchorMax.x
