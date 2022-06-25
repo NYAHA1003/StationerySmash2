@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 using Utill.Data;
 using Utill.Tool;
@@ -23,6 +24,8 @@ namespace Battle
         private GameObject _suddenDeathBackground;
         [SerializeField]
         private GameObject _suddenDeathGlow;
+        [SerializeField]
+        private AudioMixerGroup _bgmMixerGruop;
 
         //참조 변수
         private UnitComponent _unitCommand = null;
@@ -58,7 +61,7 @@ namespace Battle
             this._pencilCaseComponent = pencilCaseComponent;
             this._winLoseComponent = winLoseComponent;
 
-            _sudenDeathComponent.SetInitialization(_suddenDeathTextObj, this, _unitCommand, _cardCommand, _costCommand, _pencilCaseComponent, _suddenDeathBackground, _suddenDeathGlow);
+            _sudenDeathComponent.SetInitialization(_suddenDeathTextObj, this, _unitCommand, _cardCommand, _costCommand, _pencilCaseComponent, _suddenDeathBackground, _suddenDeathGlow, _bgmMixerGruop);
 
             updateAction += UpdateTime;
         }

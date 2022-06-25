@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using DG.Tweening;
 
 namespace Battle
@@ -18,11 +19,13 @@ namespace Battle
         private Unit _enemyPencilCase = null;
         private GameObject _suddenDeathBackground;
         private GameObject _suddenDeathGlow;
+        private AudioMixerGroup _bgmMixerGruop = null;
 
         //º¯¼ö
         private bool _isSuddenDeath;
 
-        public void SetInitialization(GameObject suddenDeathTextObj, TimeComponent timeComponent, UnitComponent unitComponent, CardComponent cardComponent, CostComponent costComponent, PencilCaseComponent pencilCaseComponent, GameObject suddenBack, GameObject suddenGlow)
+
+        public void SetInitialization(GameObject suddenDeathTextObj, TimeComponent timeComponent, UnitComponent unitComponent, CardComponent cardComponent, CostComponent costComponent, PencilCaseComponent pencilCaseComponent, GameObject suddenBack, GameObject suddenGlow, AudioMixerGroup bgmMixerGruop)
 		{
             _suddenDeathTextObj = suddenDeathTextObj;
             _timeComponent = timeComponent;
@@ -32,7 +35,7 @@ namespace Battle
             _pencilCaseComponent = pencilCaseComponent;
             _suddenDeathBackground = suddenBack;
             _suddenDeathGlow = suddenGlow;
-
+            _bgmMixerGruop = bgmMixerGruop;
         }
 
         /// <summary>
@@ -55,6 +58,7 @@ namespace Battle
                 _timeComponent.SetTime(20);
                 _suddenDeathBackground.SetActive(true);
                 _suddenDeathGlow.SetActive(true);
+                _bgmMixerGruop.audioMixer.SetFloat("BGMPitch", 1.2f);
                 return;
             }
 

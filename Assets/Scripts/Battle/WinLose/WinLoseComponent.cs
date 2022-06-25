@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using DG.Tweening;
@@ -28,6 +29,8 @@ namespace Battle
 		private TextMeshProUGUI _playerHPText;
 		[SerializeField]
 		private TextMeshProUGUI _enemyHPText;
+		[SerializeField]
+		private AudioMixerGroup _bgmMixerGroup;
 
 		private List<IWinLose> _observers = new List<IWinLose>(); //관찰자들
 		private PencilCaseComponent _pencilCaseComponent = null;
@@ -52,6 +55,7 @@ namespace Battle
 		public void SendEndGame(bool isWin)
 		{
 			int count = _observers.Count;
+			_bgmMixerGroup.audioMixer.SetFloat("BGMPitch", 1f);
 			for (int i = 0; i < count; i++)
 			{
 				//게임이 끝났음을 모든 관찰자들에게 전달
