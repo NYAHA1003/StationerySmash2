@@ -69,9 +69,9 @@ namespace Battle.Units
     public class PenThrowState : AbstractThrowState
     {
         private float _inkRange = 1f;
-        protected override void ThrowAttack(Unit targetUnit)
+        protected override void ThrowAttack(Unit targetUnit, bool isGround)
         {
-            base.ThrowAttack(targetUnit);
+            base.ThrowAttack(targetUnit, isGround);
             switch (_myUnit.ETeam)
             {
                 case TeamType.Null:

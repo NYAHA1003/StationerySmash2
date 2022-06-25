@@ -42,15 +42,14 @@ namespace Battle.Units
 				EndThrow();
 			}
 
-			//상대 유닛이랑 부딪치는지 체크
 			if (_myUnit.ETeam == TeamType.MyTeam)
 			{
-				CheckCollide(_myUnit.BattleManager.UnitComponent._enemyUnitList);
+				CheckCollide(_myUnit.BattleManager.UnitComponent._enemyUnitList, 0.1f, false);
 				return;
 			}
 			if (_myUnit.ETeam == TeamType.EnemyTeam)
 			{
-				CheckCollide(_myUnit.BattleManager.UnitComponent._playerUnitList);
+				CheckCollide(_myUnit.BattleManager.UnitComponent._playerUnitList, 0.1f, false);
 				return;
 			}
 		}
@@ -60,7 +59,7 @@ namespace Battle.Units
 		/// 유닛 물리판정이랑 부딪치는지 체크
 		/// </summary>
 		/// <param name="list"></param>
-		private void CheckCollide(List<Unit> list)
+		private void CheckCollide(List<Unit> list, float dis, bool isGround)
 		{
 			Unit targetUnit = null;
 			for (int i = 0; i < list.Count; i++)
@@ -71,10 +70,10 @@ namespace Battle.Units
 					continue;
 				}
 				float distance = UnitCollider.FindDistanceBetweenSegments(_myUnit.CollideData.GetPoint(_myTrm.position, _myUnit.Multiple), targetUnit.CollideData.GetPoint(targetUnit.transform.position, targetUnit.Multiple));
-				if (distance < 0.2f)
+				if (distance < dis)
 				{
 					EndThrow();
-					ThrowAttack(targetUnit);
+					ThrowAttack(targetUnit, isGround);
 				}
 			}
 		}
@@ -119,8 +118,17 @@ namespace Battle.Units
 			SetKnockBack(_myTrm.DOJump(new Vector3(_myTrm.position.x - width, 0, _myTrm.position.z), height, 1, time).OnComplete(() =>
 			{
 				EndThrow();
-			//땅에 닿으면 대기 상태로 돌아감
-			_stateManager.Set_Wait(0.5f);
+				//상대 유닛이랑 부딪치는지 체크
+				if (_myUnit.ETeam == TeamType.MyTeam)
+				{
+					CheckCollide(_myUnit.BattleManager.UnitComponent._enemyUnitList, 0.3f, true);
+				}
+				if (_myUnit.ETeam == TeamType.EnemyTeam)
+				{
+					CheckCollide(_myUnit.BattleManager.UnitComponent._playerUnitList, 0.3f, true);
+				}
+				//땅에 닿으면 대기 상태로 돌아감
+				_stateManager.Set_Wait(0.5f);
 			}).SetEase(Parabola.Return_ParabolaCurve()));
 
 		}
@@ -129,7 +137,7 @@ namespace Battle.Units
 		/// 부딪힌 유닛에게 던지기 데미지를 가함
 		/// </summary>
 		/// <param name="targetUnit"></param>
-		protected virtual void ThrowAttack(Unit targetUnit)
+		protected virtual void ThrowAttack(Unit targetUnit, bool isGround)
 		{
 			//카메라 흔들림
 			_myUnit.BattleManager.CameraComponent.CameraInShake(_myTrm, 0.1f, 0.3f);
@@ -137,10 +145,18 @@ namespace Battle.Units
 			float dir = Vector2.Angle((Vector2)_myTrm.position, (Vector2)targetUnit.transform.position);
 			float extraKnockBack = (targetUnit.UnitStat.Return_Weight() - _myUnit.UnitStat.Return_Weight() * (float)targetUnit.UnitStat.Hp / targetUnit.UnitStat.MaxHp) * 0.025f;
 			AtkData atkData = new AtkData(_myUnit, 0, 0, 0, 0, true, _damageId, EffAttackType.Normal, EffectType.Throw);
+			
 			UnitStat.WeightGrade unitWeightGrade = _myUnit.UnitStat.ReturnWeightGrade();
 			UnitStat.WeightGrade targetWeightGrade = targetUnit.UnitStat.ReturnWeightGrade();
-
-			WeightEqual(ref atkData, ref targetUnit, ref dir, ref extraKnockBack);
+			
+			if (targetUnit.UnitData._unitType == UnitType.PencilCase)
+			{
+				WeightLose(ref atkData, ref targetUnit, ref dir, ref extraKnockBack);
+			}
+			else
+			{
+				WeightWin(ref atkData, ref targetUnit, ref dir, ref extraKnockBack);
+			}
 
 		}
 
@@ -150,7 +166,7 @@ namespace Battle.Units
 		/// <param name="targetUnit"></param>
 		/// <param name="dir"></param>
 		/// <param name="extraKnockBack"></param>
-		private void WeightEqual(ref AtkData atkData, ref Unit targetUnit, ref float dir, ref float extraKnockBack)
+		private void WeightWin(ref AtkData atkData, ref Unit targetUnit, ref float dir, ref float extraKnockBack)
 		{
 			AtkData atkDataMy = new AtkData(_myUnit, 0, 0, 0, 0, true, _damageId, EffAttackType.Normal);
 
@@ -159,11 +175,32 @@ namespace Battle.Units
 
 			atkData.Reset_Kncockback(10, extraKnockBack, dir, false);
 			atkData.Reset_Type(EffAttackType.Stun);
-			atkData.Reset_Value(1);
+			atkData.Reset_Value(((float)_myUnit.UnitStat.Return_Weight() / 100) + 15);
+			targetUnit.Run_Damaged(atkData);
+
+			return;
+		}
+
+		/// <summary>
+		/// 무게가 질 경우의 던지기 공격
+		/// </summary>
+		/// <param name="targetUnit"></param>
+		/// <param name="dir"></param>
+		/// <param name="extraKnockBack"></param>
+		private void WeightLose(ref AtkData atkData, ref Unit targetUnit, ref float dir, ref float extraKnockBack)
+		{
+			AtkData atkDataMy = new AtkData(_myUnit, 0, 0, 0, 0, true, _damageId, EffAttackType.Normal);
+
+			//초기데미지 설정
+			SetThrowAttackDamage(ref atkData, targetUnit);
+
+			atkData.Reset_Kncockback(15, extraKnockBack, dir, false);
+			atkData.Reset_Type(EffAttackType.Stun);
+			atkData.Reset_Value(((float)_myUnit.UnitStat.Return_Weight() / 100) + 15);
 			targetUnit.Run_Damaged(atkData);
 
 
-			atkDataMy.Reset_Kncockback(1, 0, dir, true);
+			atkDataMy.Reset_Kncockback(10, 0, dir, true);
 			atkDataMy.Reset_Type(EffAttackType.Normal);
 			atkDataMy.Reset_Value(1);
 			atkDataMy.Reset_Damage(0);
@@ -196,6 +233,7 @@ namespace Battle.Units
 		/// </summary>
 		private void EndThrow()
 		{
+			_myUnit.SetIsDontThrow(false);
 			_myUnit.BattleManager.ThrowComponent.EndThrowUnit(_myUnit);
 		}
 	}

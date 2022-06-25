@@ -82,7 +82,16 @@ namespace Battle.Units
 	{
 		public override void Enter()
 		{
-			_stateManager.Set_Wait(0.1f);
+			_stateManager.Set_Move();
+		}
+
+		public override void Update()
+		{
+
+		}
+
+		public override void Exit()
+		{
 		}
 	}
 }

@@ -21,7 +21,11 @@ namespace Main.Setting
         private List<AudioSource> _effSources;
         [SerializeField]
         private List<AudioSource> _bgmSources;
-        
+        [SerializeField]
+        private AudioMixerGroup _effAudioMixerGroup;
+        [SerializeField]
+        private AudioMixerGroup _bgmAudioMixerGroup;
+
         private static List<AudioSource> _staticEffSources;
         private static List<AudioSource> _staticBgmSources;
 
@@ -161,6 +165,7 @@ namespace Main.Setting
             for (int i = 0; i < System.Enum.GetValues(typeof(EffSoundType)).Length; i++)
             {
                 _effSources[i].clip = GetEFFSound((EffSoundType)i);
+                _effSources[i].outputAudioMixerGroup = _effAudioMixerGroup;
             }
         }
 
@@ -172,6 +177,7 @@ namespace Main.Setting
             for (int i = 0; i < System.Enum.GetValues(typeof(BGMSoundType)).Length; i++)
             {
                 _bgmSources[i].clip = GetBGMSound((BGMSoundType)i);
+                _bgmSources[i].outputAudioMixerGroup = _bgmAudioMixerGroup; 
             }
         }
 

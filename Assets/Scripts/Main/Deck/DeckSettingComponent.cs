@@ -30,9 +30,7 @@ namespace Main.Deck
         [SerializeField]
         private GameObject _havePCDeckScroll; //보유 필통 카드 스크롤
         [SerializeField]
-        private GameObject _equipPCDeckScroll; //장착 필통 카드 스크롤
-        [SerializeField]
-        private GameObject _equipPencilCaseCards = null; //장착된 필통
+        private PencilCaseCard _equipPencilCaseCards = null; //장착된 필통
 
         private Transform _haveCardParent = null; // 스크롤 content
         private Transform _equipCardParent = null; // 스크롤 content
@@ -117,10 +115,8 @@ namespace Main.Deck
             _isActivePC = !_isActivePC;
 
             _haveDeckScroll.SetActive(!_isActivePC);
-            _equipDeckScroll.SetActive(!_isActivePC);
 
             _havePCDeckScroll.SetActive(_isActivePC);
-            _equipPCDeckScroll.SetActive(_isActivePC);
 
         }
         public void Notify()
@@ -135,7 +131,8 @@ namespace Main.Deck
         public void UpdateHaveAndEquipPCDeck()
         {
             AllFalseHavePCCard();
-            SetHavePCDeck(); 
+            SetHavePCDeck();
+            SetEquipPCCard();
         }
 
         /// <summary>
@@ -217,6 +214,14 @@ namespace Main.Deck
                 });
             }
         }
+
+        /// <summary>
+        /// 장착 필통 카드 UI 수정
+        /// </summary>
+        public void SetEquipPCCard()
+		{
+            _equipPencilCaseCards.SetPencilCaseData(PencilCaseDataManagerSO.InGamePencilCaseData);
+		}
 
         /// <summary>
         /// 게임 실행중 덱 업데이트 (카드 추가)

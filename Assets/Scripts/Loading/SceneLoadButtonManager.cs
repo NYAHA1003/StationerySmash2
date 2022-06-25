@@ -11,24 +11,17 @@ public class SceneLoadButtonManager : MonoBehaviour
     [SerializeField]
     private Button[] buttons;
     [SerializeField]
-    private LoadingBattleDataSO loadingBattleDataSO;
-    [SerializeField]
-    private SceneLoadComponenet _sceneLoadComponenet;
-    [SerializeField]
     private Sprite[] _stageSprites;
-    [SerializeField]
-    private StageDetailPopupPanel _popupPanel = null;
-    [SerializeField]
-    private StageDataListSO _stageDataListSO = null;
-
+    private InitLoadButton initLoadButton;
     private WarrningComponent _warrningComponent = null; //경고 컴포넌트
 
 
     // Start is called before the first frame update
     private void Start()
     {
+        initLoadButton = GetComponent<InitLoadButton>();
         _warrningComponent = FindObjectOfType<WarrningComponent>();
-           buttons[0].onClick.AddListener(() => LoadBattleDataStageMake(BattleStageType.ST_MAKE));
+         buttons[0].onClick.AddListener(() => initLoadButton.LoadBattleDataStageMake(BattleStageType.ST_MAKE));
         SetBattleLoadButtons();
     }
    
@@ -61,20 +54,7 @@ public class SceneLoadButtonManager : MonoBehaviour
             _warrningComponent.SetWarrning("이전 스테이지를 클리어해야합니다.");
             return;
         }
-        loadingBattleDataSO.SetCurrentIndex(battleStageType);
-        var currentData = loadingBattleDataSO.CurrentStageData;
-        PencilCaseDataManagerSO.SetEnemyPencilCaseData(currentData);
-        AIAndStageData.Instance.SetAIData(currentData);
-        AIAndStageData.Instance._currentStageDatas = _stageDataListSO.stageDatas.Find(x => x._stageType == battleStageType);
-        _popupPanel.Setting();
+        initLoadButton.InitBattleData(battleStageType);
     }
-    private void LoadBattleDataStageMake(BattleStageType battleStageType)
-    {
-        Debug.Log($"{battleStageType} is loding...");
-        loadingBattleDataSO.SetCurrentIndex(battleStageType);
-        var currentData = loadingBattleDataSO.CurrentStageData;
-        PencilCaseDataManagerSO.SetEnemyPencilCaseData(currentData);
-        AIAndStageData.Instance.SetAIData(currentData);
-        _sceneLoadComponenet.SceneLoadStageMake();
-    }
+    
 }

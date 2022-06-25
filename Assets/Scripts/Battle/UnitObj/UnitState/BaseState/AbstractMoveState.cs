@@ -217,7 +217,8 @@ namespace Battle.Units
 			{
 				if (list.Count == 0)
 				{
-					return;
+					targetUnit = null;
+					break;
 				}
 
 				if (currentIndex - 1 < 0)
