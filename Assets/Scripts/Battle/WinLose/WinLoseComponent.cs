@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using DG.Tweening;
@@ -28,6 +29,8 @@ namespace Battle
 		private TextMeshProUGUI _playerHPText;
 		[SerializeField]
 		private TextMeshProUGUI _enemyHPText;
+		[SerializeField]
+		private AudioMixerGroup _bgmMixerGroup;
 
 		private List<IWinLose> _observers = new List<IWinLose>(); //관찰자들
 		private PencilCaseComponent _pencilCaseComponent = null;
@@ -73,6 +76,7 @@ namespace Battle
 		/// <param name="isWin"></param>
 		public void SetWinLosePanel(bool isWin)
 		{
+			_bgmMixerGroup.audioMixer.SetFloat("BGMPitch", 1f);
 			_playerHPText.text = $"내 체력: {_pencilCaseComponent.PlayerPencilCase.UnitStat.Hp}";
 			_enemyHPText.text = $"상대 체력: {_pencilCaseComponent.EnemyPencilCase.UnitStat.Hp}";
 

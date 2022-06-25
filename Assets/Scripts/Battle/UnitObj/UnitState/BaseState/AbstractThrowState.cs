@@ -233,6 +233,7 @@ namespace Battle.Units
 		/// </summary>
 		private void EndThrow()
 		{
+			_myUnit.SetIsDontThrow(false);
 			_myUnit.BattleManager.ThrowComponent.EndThrowUnit(_myUnit);
 		}
 	}

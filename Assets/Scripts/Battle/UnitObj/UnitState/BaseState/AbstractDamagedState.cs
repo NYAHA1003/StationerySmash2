@@ -25,7 +25,6 @@ namespace Battle.Units
 			}
 
 			//무적여부, 데미지 적용
-			//_myUnit.SetIsDontThrow(true);
 			_myUnit.SetIsInvincibility(true);
 			_myUnit.BattleManager.EffectComponent.SetEffect(_atkData._effectType, new EffData(_myTrm.transform.position, 0.2f));
 			_myUnit.SubtractHP(_atkData.damage * (_myUnit.UnitStat.DamagedPercent / 100) - _myUnit.UnitStat.DamageDecrese); //여기

@@ -56,7 +56,6 @@ namespace Main.Card
 
 		private void Awake()
 		{
-			Debug.Log("필통패널");
 			EventManager.Instance.StartListening(EventsType.ChangePencilCase, () => OnChangePencilCase());
 			EventManager.Instance.StartListening(EventsType.ActivePencilCaseDescription, (x) => OnSetPCInfoPanel((PencilCaseData)x));
 		}
@@ -84,7 +83,6 @@ namespace Main.Card
 			_descriptionText.text = $"{pencilCaseData._description}";
 
 			EventManager.Instance.TriggerEvent(EventsType.ActiveButtonComponent, ButtonType.pencilCaseDescription);
-			//_pcPanel.SetActive(true);
 			SetBadgeList();
 		}
 
