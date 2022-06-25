@@ -55,7 +55,6 @@ namespace Battle
 		public void SendEndGame(bool isWin)
 		{
 			int count = _observers.Count;
-			_bgmMixerGroup.audioMixer.SetFloat("BGMPitch", 1f);
 			for (int i = 0; i < count; i++)
 			{
 				//게임이 끝났음을 모든 관찰자들에게 전달
@@ -77,6 +76,7 @@ namespace Battle
 		/// <param name="isWin"></param>
 		public void SetWinLosePanel(bool isWin)
 		{
+			_bgmMixerGroup.audioMixer.SetFloat("BGMPitch", 1f);
 			_playerHPText.text = $"내 체력: {_pencilCaseComponent.PlayerPencilCase.UnitStat.Hp}";
 			_enemyHPText.text = $"상대 체력: {_pencilCaseComponent.EnemyPencilCase.UnitStat.Hp}";
 

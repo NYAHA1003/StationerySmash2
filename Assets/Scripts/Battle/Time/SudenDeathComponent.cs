@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using DG.Tweening;
+using Main.Setting;
 
 namespace Battle
 {
@@ -59,6 +60,7 @@ namespace Battle
                 _suddenDeathBackground.SetActive(true);
                 _suddenDeathGlow.SetActive(true);
                 _bgmMixerGruop.audioMixer.SetFloat("BGMPitch", 1.2f);
+                Sound.PlayEff(1);
                 return;
             }
 
