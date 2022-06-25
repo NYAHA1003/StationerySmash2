@@ -185,7 +185,7 @@ namespace Main.Setting
         }
         public static void PlayEff(int num)
         {
-            _staticEffSources[num].Play();
+         //   _staticEffSources[num].Play();
         }
 
         public void BgmSetting()
