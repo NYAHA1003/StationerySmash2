@@ -16,11 +16,13 @@ namespace Battle
         private PencilCaseComponent _pencilCaseComponent = null;
         private Unit _playerPencilCase = null;
         private Unit _enemyPencilCase = null;
+        private GameObject _suddenDeathBackground;
+        private GameObject _suddenDeathGlow;
 
         //º¯¼ö
         private bool _isSuddenDeath;
 
-        public void SetInitialization(GameObject suddenDeathTextObj, TimeComponent timeComponent, UnitComponent unitComponent, CardComponent cardComponent, CostComponent costComponent, PencilCaseComponent pencilCaseComponent)
+        public void SetInitialization(GameObject suddenDeathTextObj, TimeComponent timeComponent, UnitComponent unitComponent, CardComponent cardComponent, CostComponent costComponent, PencilCaseComponent pencilCaseComponent, GameObject suddenBack, GameObject suddenGlow)
 		{
             _suddenDeathTextObj = suddenDeathTextObj;
             _timeComponent = timeComponent;
@@ -28,6 +30,8 @@ namespace Battle
             _cardCommand = cardComponent;
             _costCommand = costComponent;
             _pencilCaseComponent = pencilCaseComponent;
+            _suddenDeathBackground = suddenBack;
+            _suddenDeathGlow = suddenGlow;
 
         }
 
@@ -49,6 +53,8 @@ namespace Battle
                 _costCommand.SetCostSpeed(500);
                 _isSuddenDeath = true;
                 _timeComponent.SetTime(20);
+                _suddenDeathBackground.SetActive(true);
+                _suddenDeathGlow.SetActive(true);
                 return;
             }
 

@@ -15,11 +15,14 @@ namespace Battle
         //인스펙터 참조 변수
         [SerializeField]
         private RectTransform _timeHand;
-        //인스펙터 참조 변수
         [SerializeField]
         private GameObject _suddenDeathTextObj;
         [SerializeField]
         private Image _timeDelay;
+        [SerializeField]
+        private GameObject _suddenDeathBackground;
+        [SerializeField]
+        private GameObject _suddenDeathGlow;
 
         //참조 변수
         private UnitComponent _unitCommand = null;
@@ -55,7 +58,7 @@ namespace Battle
             this._pencilCaseComponent = pencilCaseComponent;
             this._winLoseComponent = winLoseComponent;
 
-            _sudenDeathComponent.SetInitialization(_suddenDeathTextObj, this, _unitCommand, _cardCommand, _costCommand, _pencilCaseComponent);
+            _sudenDeathComponent.SetInitialization(_suddenDeathTextObj, this, _unitCommand, _cardCommand, _costCommand, _pencilCaseComponent, _suddenDeathBackground, _suddenDeathGlow);
 
             updateAction += UpdateTime;
         }
