@@ -10,7 +10,7 @@ public class ButtonButtonTypeParam : ButtonAgent
     private ButtonType[] buttonType;
     public override void Execute()
     {
-        Sound.PlayEff(3);
+        Sound.PlayEff(EffSoundType.Button1);
         for (int i = 0; i < eventTypes.Length; i++)
         {
             EventManager.Instance.TriggerEvent(eventTypes[i], buttonType[i]);

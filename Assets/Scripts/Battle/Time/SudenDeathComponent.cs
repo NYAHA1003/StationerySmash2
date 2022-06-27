@@ -60,7 +60,7 @@ namespace Battle
                 _suddenDeathBackground.SetActive(true);
                 _suddenDeathGlow.SetActive(true);
                 _bgmMixerGruop.audioMixer.SetFloat("BGMPitch", 1.2f);
-                Sound.PlayEff(1);
+                Sound.PlayEff(Utill.Data.EffSoundType.Attack);
                 return;
             }
 

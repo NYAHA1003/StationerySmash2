@@ -63,7 +63,7 @@ namespace Battle.Effect
 			//        }
 			//    }
 			//}
-			Sound.PlayEff((int)EffSoundType.Attack);
+			Sound.PlayEff(EffSoundType.Attack);
 		}
 		private void Update()
 		{
