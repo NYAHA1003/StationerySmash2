@@ -48,8 +48,11 @@
         LoadMainScene, // 메인씬 로드 
         LoadBattleScene, // 배틀씬 로드 
         LoadStageMakeScene = 3000, //스테이지 제작용 씬 로드
+        SetNextStageData = 3001, //다음 스테이지 데이터로 적용
         NextExplain = 305, // 다음 튜토리얼 설명 
         SetTutorial, // 버튼 클릭시 어떤튜토리얼 나올지 
+        SpinRoulette, // 룰렛 돌리기 
+        ActiveRouletteCanvas, // 룰렛 캔버스 활성화 비활성화 
 
         ClearEvents, // 이벤트 딕셔너리 초기화 
 

@@ -192,6 +192,7 @@ namespace Main.Setting
         public static void PlayEff(EffSoundType eff)
         {
             _staticEffSources[(int)eff].Play();
+         //   _staticEffSources[num].Play();
         }
 
         public void BgmSetting()
