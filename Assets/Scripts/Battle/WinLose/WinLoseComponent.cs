@@ -8,6 +8,8 @@ using DG.Tweening;
 using Utill.Tool;
 using TMPro;
 using Main.Setting;
+using Main.Event;
+
 namespace Battle
 {
     [System.Serializable]
@@ -31,6 +33,8 @@ namespace Battle
         private TextMeshProUGUI _enemyHPText;
         [SerializeField]
         private AudioMixerGroup _bgmMixerGroup;
+        [SerializeField]
+        private Canvas _rouletteCanvas;
 
         private List<IWinLose> _observers = new List<IWinLose>(); //관찰자들
         private PencilCaseComponent _pencilCaseComponent = null;
@@ -47,6 +51,8 @@ namespace Battle
         {
             _pencilCaseComponent = pencilCaseComponent;
             _currentStageData = currentStageDataSO;
+            EventManager.Instance.StartListening(Utill.Data.EventsType.ActiveWinCanvas, WinPanelActive);
+            EventManager.Instance.StartListening(Utill.Data.EventsType.ActiveLoseCanvas, LosePanelActive);
         }
 
         /// <summary>
@@ -76,32 +82,48 @@ namespace Battle
         /// <param name="isWin"></param>
         public void SetWinLosePanel(bool isWin)
         {
+            if(isWin)
+			{
+                _rouletteCanvas.gameObject.SetActive(true);
+            }
             _bgmMixerGroup.audioMixer.SetFloat("BGMPitch", 1f);
             _playerHPText.text = $"내 체력: {_pencilCaseComponent.PlayerPencilCase.UnitStat.Hp}";
             _enemyHPText.text = $"상대 체력: {_pencilCaseComponent.EnemyPencilCase.UnitStat.Hp}";
-
-            _winLoseCanvas.gameObject.SetActive(true);
             _cardCanvas.gameObject.SetActive(false);
 
-            _winPanel.gameObject.SetActive(isWin);
-            _losePanel.gameObject.SetActive(!isWin);
-            if (isWin)
-            {
-                //마지막 스테이지 등록
-                UserSaveManagerSO.SetLastClearStage(_currentStageData._stageType);
-                _winPanel.sizeDelta = new Vector2(3, 3);
-                _winPanel.DOScale(1, 0.3f).SetEase(Ease.OutExpo).
-                    OnComplete(() =>
-                    {
+        }
 
-                        UserSaveManagerSO.AddExp(_currentStageData._rewardExp);
-                        UserSaveManagerSO.AddMoney(_currentStageData._rewardMoney);
-                        _winText.DOScale(1.5f, 0.3f).SetLoops(-1, LoopType.Yoyo);
-                    });
-                Sound.StopBgm(Utill.Data.BGMSoundType.Stage1);
-                Sound.PlayBgm(Utill.Data.BGMSoundType.Win);
-                return;
-            }
+        /// <summary>
+        /// 승리패널 띄우기
+        /// </summary>
+        private void WinPanelActive()
+        {
+            _winLoseCanvas.gameObject.SetActive(true);
+            _winPanel.gameObject.SetActive(true);
+
+            //마지막 스테이지 등록
+            UserSaveManagerSO.SetLastClearStage(_currentStageData._stageType);
+            _winPanel.sizeDelta = new Vector2(3, 3);
+            _winPanel.DOScale(1, 0.3f).SetEase(Ease.OutExpo).
+                OnComplete(() =>
+                {
+
+                    UserSaveManagerSO.AddExp(_currentStageData._rewardExp);
+                    UserSaveManagerSO.AddMoney(_currentStageData._rewardMoney);
+                    _winText.DOScale(1.5f, 0.3f).SetLoops(-1, LoopType.Yoyo);
+                });
+            Sound.StopBgm(Utill.Data.BGMSoundType.Stage1);
+            Sound.PlayBgm(Utill.Data.BGMSoundType.Win);
+        }
+
+        /// <summary>
+        /// 패배 패널 띄우기
+        /// </summary>
+        private void LosePanelActive()
+        {
+            _winLoseCanvas.gameObject.SetActive(true);
+            _losePanel.gameObject.SetActive(true);
+
             _losePanel.sizeDelta = new Vector2(3, 3);
             _losePanel.DOScale(1, 0.3f).SetEase(Ease.OutExpo).
                     OnComplete(() =>
@@ -111,7 +133,6 @@ namespace Battle
             Sound.StopBgm(Utill.Data.BGMSoundType.Stage1);
             Sound.PlayBgm(Utill.Data.BGMSoundType.Loose);
         }
-
 
 
     }

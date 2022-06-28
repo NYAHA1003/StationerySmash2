@@ -44,8 +44,6 @@ public class RouletteComponent : MonoBehaviour
     [SerializeField]
     private Button _spinButton; // 돌리기 버튼 
     [SerializeField]
-    private GameObject _userInfo; // 돈, 유저 정보창 
-    [SerializeField]
     private RectTransform _gainedItemPanel; // 얻은 아이템 띄우는 패널 
     [SerializeField]
     private RectTransform _pig; // 돼지 저금통
@@ -99,7 +97,6 @@ public class RouletteComponent : MonoBehaviour
     private void ResetValues()
     {
         _spinButton.gameObject.SetActive(true);
-        _userInfo.SetActive(true);
         _blackImage.SetActive(false);
         _gainedItemPanel.gameObject.SetActive(false);
         _gainedItemPanel.anchoredPosition = Vector2.zero;
@@ -179,7 +176,6 @@ public class RouletteComponent : MonoBehaviour
     private void SpinRoulette()
     {
         _spinButton.gameObject.SetActive(false);
-        _userInfo.SetActive(false);
 
         _selectionIndex = GetItem();
         _gainedItemPanel.GetComponent< RouletteItem>().SetUp(_rouletteItemDataList[_selectionIndex]);
@@ -200,7 +196,6 @@ public class RouletteComponent : MonoBehaviour
         {
             _gainedItemPanel.gameObject.SetActive(true);
             _blackImage.SetActive(true);
-            _userInfo.SetActive(true);
         });
         
         seq.Append(_gainedItemPanel.transform.DOScale(0.8f, 0.5f));
