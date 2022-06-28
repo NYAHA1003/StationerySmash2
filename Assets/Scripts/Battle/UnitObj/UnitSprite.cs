@@ -64,11 +64,11 @@ public class UnitSprite
         SetUIAndSprite(teamType, SkinData.GetSkin(cardData._skinData._skinType), grade);
         if(cardType == CardType.AttackProjectile)
         {
-            ShowUI(false);
+            ShowGradeUI(false);
         }
         else
         {
-            ShowUI(true);
+            ShowGradeUI(true);
         }
         UpdateDelayBar(unitStat.AttackDelay);
         SetTeamColor(teamType);
@@ -175,8 +175,20 @@ public class UnitSprite
     {
         _delayBar.SetActive(isShow);
         _delayHalfBar.SetActive(false);
-        _gradeSpriteRender.gameObject.SetActive(false);
+        if(!isShow)
+		{
+            ShowGradeUI(false);
+		}
     }
+
+    /// <summary>
+    /// 단계 UI 표시
+    /// </summary>
+    /// <param name="isShow"></param>
+    public void ShowGradeUI(bool isShow)
+	{
+        _gradeSpriteRender.gameObject.SetActive(isShow);
+	}
 
     /// <summary>
     /// 팀 설정에 따른 색깔 설정
