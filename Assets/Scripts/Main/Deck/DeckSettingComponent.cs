@@ -161,7 +161,7 @@ namespace Main.Deck
                 cardButton.onClick.RemoveAllListeners();
                 cardButton.onClick.AddListener(() =>
                 {
-                    Sound.PlayEff(4);
+                    Sound.PlayEff(EffSoundType.Spawn);
                     EventManager.Instance.TriggerEvent(EventsType.ActiveCardDescription, cardObj.GetComponent<DeckCard>());
                     EventManager.Instance.TriggerEvent(EventsType.ActiveButtonComponent, ButtonType.cardDescription);
                 });
@@ -188,7 +188,7 @@ namespace Main.Deck
 
                 if (i == _userDeckData._inGameDeckListSO.cardDatas.Count - 1)
                 {
-                    Sound.PlayEff(5);
+                    Sound.PlayEff(EffSoundType.paperButton);
                     CardSetAnimation(cardButton);
                 }
             }

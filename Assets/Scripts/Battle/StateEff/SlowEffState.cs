@@ -17,7 +17,7 @@ namespace Battle.StateEff
         {
             _myUnit.UnitStat.IncreaseMoveSpeedPercent(-(int)moveSpeedSubtractPercent);
             _myUnit.UnitStat.IncreaseAttackSpeedPercent(-(int)attackSpeedSubtractPercent);
-            _effectObj = _battleManager.EffectComponent.SetEffect(EffectType.Slow, new EffData(new Vector2(Trm.position.x, Trm.position.y + 0.1f), slowDownTime, Trm));
+            _effectObj = _battleManager.EffectComponent.SetEffect(EffectType.Slow, new EffData(_myUnit,new Vector2(Trm.position.x, Trm.position.y + 0.1f), slowDownTime, Trm));
 
             base.Enter();
         }

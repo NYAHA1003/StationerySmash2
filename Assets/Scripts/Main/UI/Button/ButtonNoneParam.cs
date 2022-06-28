@@ -8,7 +8,7 @@ public class ButtonNoneParam : ButtonAgent
     public override void Execute()
     {
         Debug.Log("dd");
-        Sound.PlayEff(4);
+        Sound.PlayEff(Utill.Data.EffSoundType.Spawn);
         for(int i = 0; i < eventTypes.Length;i++)
         {
             EventManager.Instance.TriggerEvent(eventTypes[i]);

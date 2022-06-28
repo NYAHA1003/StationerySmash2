@@ -32,7 +32,6 @@ namespace Battle
 		public CameraComponent CameraComponent => _cameraComponent;
 		public EffectComponent EffectComponent => _effectComponent;
 		public ThrowComponent ThrowComponent => _throwComponent;
-		public UnitSignComponent UnitSignComponent => _unitSignComponent;
 		public TimeComponent TimeComponent => _timeComponent;
 		public AIComponent AIComponent => _aiComponent;
 		public CostComponent CostComponent => _costComponent;
@@ -57,8 +56,6 @@ namespace Battle
 		private EffectComponent _effectComponent = null;
 		[SerializeField, Header("던지기 시스템 BattleThrow"), Space(30)]
 		private ThrowComponent _throwComponent = null;
-		[SerializeField, Header("던지기바 유닛 표시시스템 BattleUnitSign"), Space(30)]
-		private UnitSignComponent _unitSignComponent = null;
 		[SerializeField, Header("시간시스템 BattleTime"), Space(30)]
 		private TimeComponent _timeComponent = null;
 		[SerializeField, Header("AI 시스템 BattleAi"), Space(30)]
@@ -85,7 +82,6 @@ namespace Battle
 			_unitComponent.SetInitialization(ref _updateAction, CurrentStageData);
 			_effectComponent.SetInitialization();
 			_throwComponent.SetInitialization(ref _updateAction, _unitComponent, _cameraComponent, CurrentStageData);
-			_unitSignComponent.SetInitialization();
 			_aiComponent.SetInitialization(PencilCaseComponent, UnitComponent, ref _updateAction);
 			_timeComponent.SetInitialization(ref _updateAction, CurrentStageData, _unitComponent, _cardComponent, _costComponent, _pencilCaseComponent, _winLoseComponent);
 			_costComponent.SetInitialization(ref _updateAction, PencilCaseDataManagerSO.InGamePencilCaseData);
