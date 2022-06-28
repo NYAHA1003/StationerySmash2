@@ -8,7 +8,7 @@ using Battle.Effect;
 
 public class EffectStun : IEffect
 {
-    private float angle = 0, starX = 0, starY = 0, speed = 5f, width = 0.2f, height = 0.05f;
+    private float angle = 0, starX = 0, starY = 0, speed = 5f, width = 0.2f, height = 0.1f;
 
     protected EffectObject effObj;
 
@@ -40,7 +40,8 @@ public class EffectStun : IEffect
         angle += Time.deltaTime * speed;
         starX = Mathf.Cos(angle) * width + effData.trm.position.x;
         starY = Mathf.Sin(angle) * height + effData.trm.position.y;
-        this.effObj.transform.position = new Vector3(starX, starY, 0);
+        
+        this.effObj.transform.position = new Vector3(starX, starY+ effData.unit.CollideData.originpoints[0].y, 0);
     }
     public void Delete_Effect()
     {
