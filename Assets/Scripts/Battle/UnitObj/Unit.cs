@@ -46,6 +46,7 @@ public class Unit : MonoBehaviour
     protected Sequence _knockbackTweener;
     private int _viewIndex = 0;
     private float _multiple = 1f;
+    private int _grade = 0;
 	//참조 변수
 	private UnitData _unitData= null;
     private SkinData _skinData= null;
@@ -82,6 +83,7 @@ public class Unit : MonoBehaviour
         _knockbackTweener = DOTween.Sequence();
 
         //순서 인덱스
+        _grade = grade;
         OrderIndex = orderIndex;
 
         //유닛 데이터 받아오기
@@ -344,6 +346,19 @@ public class Unit : MonoBehaviour
                 _viewIndex = 0;
             }
         }
+
+        switch(_grade)
+		{
+            case 2:
+                _viewIndex += 10;
+                break;
+            case 3:
+                _viewIndex += 20;
+                break;
+            default:
+                break;
+        }
+
         if(isThrowring)
         {
             _unitSprite.OrderDraw(_viewIndex);
