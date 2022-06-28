@@ -40,7 +40,7 @@ namespace Battle.Units
 		public override void KnockBack()
 		{
 			//자기 이하 무게의 넉백 무시
-			if(_atkData.attacker.UnitStat.Return_Weight() > _myUnit.UnitStat.Return_Weight())
+			if(_atkData.attacker == null || _atkData.attacker.UnitStat.Return_Weight() > _myUnit.UnitStat.Return_Weight())
 			{
 				base.KnockBack();
 			}
