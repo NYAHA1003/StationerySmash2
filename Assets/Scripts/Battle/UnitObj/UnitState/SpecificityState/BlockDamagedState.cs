@@ -21,7 +21,7 @@ namespace Battle.Units
 			}
 
 			//무적여부, 데미지 적용
-			_myUnit.BattleManager.EffectComponent.SetEffect(_atkData._effectType, new EffData(_myTrm.transform.position, 0.2f));
+			_myUnit.BattleManager.EffectComponent.SetEffect(_atkData._effectType, new EffData(_myUnit, _myTrm.transform.position, 0.2f));
 			_myUnit.SubtractHP(_atkData.damage * (_myUnit.UnitStat.DamagedPercent / 100) - _myUnit.UnitStat.DamageDecrese); //여기
 
 			//스티커 사용
