@@ -103,7 +103,7 @@ namespace Main.Event
             Action thisEvent = null;
             if (Instance.eventDictionary.TryGetValue(eventName, out thisEvent))
             {
-                Debug.Log("이벤트 실행!");
+                Debug.Log("이벤트 실행!");   
                 thisEvent?.Invoke();
             }
             else

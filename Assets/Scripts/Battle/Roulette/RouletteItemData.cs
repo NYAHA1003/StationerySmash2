@@ -8,6 +8,7 @@ public class RouletteItemData
 {
     public Sprite _itemImage; // ·ê·¿ ¾ÆÀÌÅÛ ÀÌ¹ÌÁö
     public int _itemCount;  // ·ê·¿ ¾ÆÀÌÅÛ °³¼ö 
+    public RoulletItemType rulletItemType;
 
     [Range(1, 100)]
     public int _chance = 100; // È®·ü 

@@ -5,23 +5,15 @@ using UnityEngine.UI;
 using DG.Tweening;
 using Main.Event;
 using Utill.Data;
-using Utill.Tool; 
+using Utill.Tool;
+using System.Linq; 
 
 public class RouletteComponent : MonoBehaviour
 {
     // 1 , 1.5 , 2 , 3
     // 50% 25% 18% 7%
     // 기본(최소) 획득 코인 
-
-    // 돌림판 나올 떄 스테이지에 따라 값 설정 ( 초기값만 알면 됨) 
-    // 돈 int 딕셔너리에 설정 
-    // 돈 이넘 타입으로 설정 후 리스트에 저장 
-    // 
-    // 돌리기 버튼 누를시 하나 정해짐 확률에 따라 
-    // 돌림판, 돼지 저금통 두개만 보이도록 돼지는 스윽 위치 옮겨줌 
-    // 설정한 회전 값만큼 돌아가고 정해진 이넘타입 번호에 멈추게됨 
-    // 돌림판 다 비활성화후 
-    // 어떤거 획득했는지 나오도록 
+ 
     [SerializeField]
     private List<RouletteItemData> _rouletteItemDataList = new List<RouletteItemData>();
     [SerializeField]
@@ -43,8 +35,7 @@ public class RouletteComponent : MonoBehaviour
     
     [SerializeField]
     private Button _spinButton; // 돌리기 버튼 
-    [SerializeField]
-    private GameObject _userInfo; // 돈, 유저 정보창 
+
     [SerializeField]
     private RectTransform _gainedItemPanel; // 얻은 아이템 띄우는 패널 
     [SerializeField]
@@ -63,6 +54,7 @@ public class RouletteComponent : MonoBehaviour
     private int _standardMoney; // 스테이지에 따라 얻는 최소 돈  
 
     private Vector3 _originPigPos; 
+    
     void Awake()
     {
         _itemAngle = 360 / _rouletteItemDataList.Count;
@@ -76,10 +68,10 @@ public class RouletteComponent : MonoBehaviour
 
     private void Start()
     {
-
+        SetWeight();
         CreateItemsAndLines();
 
-        SetWeight(); 
+
     }
 
     /// <summary>
@@ -99,7 +91,6 @@ public class RouletteComponent : MonoBehaviour
     private void ResetValues()
     {
         _spinButton.gameObject.SetActive(true);
-        _userInfo.SetActive(true);
         _blackImage.SetActive(false);
         _gainedItemPanel.gameObject.SetActive(false);
         _gainedItemPanel.anchoredPosition = Vector2.zero;
@@ -108,7 +99,7 @@ public class RouletteComponent : MonoBehaviour
 
     #region 데이터 설정 
     /// <summary>
-    /// 스테이지에 따라 달라지는 얻는 돈의 양 설정 
+    /// 스테이지에 따라 달라지는 얻는 돈의 양 설정 (스테이지 룰렛)  
     /// </summary>
     private void SetItemCount()
     {
@@ -120,12 +111,65 @@ public class RouletteComponent : MonoBehaviour
         _rouletteItemDataList[count - 1]._itemCount = _standardMoney * 3;
     }
 
+    [SerializeField]
+    private int[] dalgonaCounts;
+    [SerializeField]
+    private int[] coinCounts;
+    [SerializeField]
+    private Sprite[] itemSprites; 
+    /// <summary>
+    /// 65% : 돈      35% : 달고나 
+    /// </summary>
+    private void SetItemCounts()
+    {
+        bool isCoin = false; 
+        int count = _rouletteItemDataList.Count;
+        for (int i = 0; i < count ; i++)
+        {
+            if(Random.Range(0, 100) < 65)
+            {
+                isCoin = true;
+                _rouletteItemDataList[i]._itemCount = coinCounts[i];
+                _rouletteItemDataList[i].rulletItemType = RoulletItemType.Coin;
+                _rouletteItemDataList[i]._itemImage = itemSprites[(int)RoulletItemType.Coin];   
+            }
+            else
+            {
+                _rouletteItemDataList[i]._itemCount = dalgonaCounts[i];
+                _rouletteItemDataList[i].rulletItemType = RoulletItemType.Dalgona;
+                _rouletteItemDataList[i]._itemImage = itemSprites[(int)RoulletItemType.Dalgona];
+
+            }
+        }
+    }
+
+    CardData card;
+    ///// <summary>
+    ///// 분실물 설정  
+    ///// </summary>
+    private void SetItem(int idx)
+    {
+        List<CardData> cardDatas = DeckDataManagerSO.StdDeckDataList.ToList(); 
+        int cardCount = cardDatas.Count;
+        int index = Random.Range(0, cardCount);
+
+        card = cardDatas[index];
+
+        _rouletteItemDataList[idx]._itemImage = SkinData.GetSkin(card._skinData._skinType);
+        _rouletteItemDataList[idx].rulletItemType = RoulletItemType.Card;
+        _rouletteItemDataList[idx]._itemCount = 1;
+        // 모든 분실물들 가져오고 
+        // 리스트 가져와서 랜덤으로 n개 가져와 
+        // 스프라이트 가져오고, 
+        // 개수 설정 
+    }
     /// <summary>
     /// 룰렛에 나올 아이템과 선 생성 
     /// </summary>
     private void CreateItemsAndLines()
     {
-        SetItemCount();
+        SetItemCounts();
+        SetItem(0);
         int count = _rouletteItemDataList.Count;
         for (int i = 0; i < count; i++)
         {
@@ -137,6 +181,7 @@ public class RouletteComponent : MonoBehaviour
             Transform line = Instantiate(_linePrefab, _lineParent.position, Quaternion.identity, _lineParent);
             line.transform.RotateAround(_lineParent.position, Vector3.back, (_itemAngle * i) + _lineAngle);
         }
+        //SetItem(); 
     }
 
     /// <summary>
@@ -145,8 +190,10 @@ public class RouletteComponent : MonoBehaviour
     private void SetWeight()
     {
         int count = _rouletteItemDataList.Count;
+        Debug.Log("D");
         for (int i = 0; i < count; i++)
         {
+            Debug.Log("S");
             _rouletteItemDataList[i].index = i;
 
             _accumulatedWeight += _rouletteItemDataList[i]._chance;
@@ -164,7 +211,7 @@ public class RouletteComponent : MonoBehaviour
 
         for (int i = 0; i < count; i++)
         {
-            if (randWeight > _rouletteItemDataList[i].weght)
+            if (randWeight < _rouletteItemDataList[i].weght)
             {
                 return i;
             }
@@ -172,6 +219,24 @@ public class RouletteComponent : MonoBehaviour
         return 0; 
     }
 
+    /// <summary>
+    /// 뽑은 아이템 데이터 저장하기 
+    /// </summary>
+    private void SaveItemData(RoulletItemType roulletItemType, int amount)
+    {
+        if(roulletItemType == RoulletItemType.Coin)
+        {
+            UserSaveManagerSO.AddMoney(amount);
+        }
+        else if (roulletItemType == RoulletItemType.Dalgona)
+        {
+            UserSaveManagerSO.AddCardData(card, amount);
+        }
+        else if(roulletItemType == RoulletItemType.Card)
+        {
+            UserSaveManagerSO.AddCardData(card, amount);
+        }
+    }
     // 클릭시 버튼 없애고 
     // 아이템 뽑고 이에 따라 회전값 i * _itemAngle ( 이게 멈출 곳 ) 
     // 총 회전 값 int angle = 360 * angleSpeed * angleDuration 
@@ -179,7 +244,6 @@ public class RouletteComponent : MonoBehaviour
     private void SpinRoulette()
     {
         _spinButton.gameObject.SetActive(false);
-        _userInfo.SetActive(false);
 
         _selectionIndex = GetItem();
         _gainedItemPanel.GetComponent< RouletteItem>().SetUp(_rouletteItemDataList[_selectionIndex]);
@@ -200,15 +264,12 @@ public class RouletteComponent : MonoBehaviour
         {
             _gainedItemPanel.gameObject.SetActive(true);
             _blackImage.SetActive(true);
-            _userInfo.SetActive(true);
         });
         
         seq.Append(_gainedItemPanel.transform.DOScale(0.8f, 0.5f));
         seq.Append(_gainedItemPanel.transform.DOScale(1.2f, 0.5f));
         seq.Append(_gainedItemPanel.transform.DOScale(1f, 0.5f));
-        seq.AppendCallback(() => UserSaveManagerSO.AddMoney(getItemCount));
-
-
+        seq.AppendCallback(() => SaveItemData(_rouletteItemDataList[_selectionIndex].rulletItemType, getItemCount ));
     }
 
 }
