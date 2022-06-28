@@ -67,7 +67,7 @@ namespace Utill.Data
         {
             float percent = ((float)hp / maxhp) + 0.01f;
 
-            return (baseKnockback + extraKnockback) / (weight * 0.8f * percent) * (isMyTeam ? 1 : -1);
+            return (baseKnockback + extraKnockback) / (weight * percent) * (isMyTeam ? 1 : -1);
         }
 
         public void Reset_Kncockback(float baseKnockback, float extraKnockback, float direction, bool isMyTeam)

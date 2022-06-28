@@ -86,6 +86,11 @@ namespace Battle
 			{
                 _rouletteCanvas.gameObject.SetActive(true);
             }
+            else
+			{
+                LosePanelActive();
+
+            }
             _bgmMixerGroup.audioMixer.SetFloat("BGMPitch", 1f);
             _playerHPText.text = $"내 체력: {_pencilCaseComponent.PlayerPencilCase.UnitStat.Hp}";
             _enemyHPText.text = $"상대 체력: {_pencilCaseComponent.EnemyPencilCase.UnitStat.Hp}";
