@@ -137,14 +137,14 @@ public class Unit : MonoBehaviour
         _stageData = stageData;
 
         //스탯 설정
-        _unitStat.ResetStat(_unitData, grade);
+        _unitStat.ResetStat(dataBase._cardType, _unitData, grade);
         MyUnitId = id;
 
         //상태이상
         _unitStateEff.SetStateEff(this, _unitSprite.SpriteRenderer);
 
         //스프라이트 초기화
-        _unitSprite.ResetSprite(eTeam, dataBase, _unitStat, orderIndex, grade);
+        _unitSprite.ResetSprite(this, dataBase._cardType, eTeam, dataBase, _unitStat, orderIndex, grade);
 
         //스테이트 설정
         _unitStateChanger.ResetUnitStateChanger(dataBase, transform, stageData, _unitSprite, this);

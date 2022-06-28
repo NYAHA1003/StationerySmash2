@@ -10,7 +10,8 @@ namespace Utill.Data
         SummonUnit,
         SummonTrap,
         Installation,
-        Projectile,
+        AttackProjectile,
+        SummonProjectile,
         PencilCase,
     }
 

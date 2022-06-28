@@ -225,7 +225,6 @@ namespace Battle.Units
 			{
 				atkData.Reset_Damage(100 + Mathf.RoundToInt((float)(targetUnit.UnitStat.Return_Weight() - _myUnit.UnitStat.Return_Weight()) / 5));
 			}
-
 		}
 
 		/// <summary>

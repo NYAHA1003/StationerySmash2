@@ -49,14 +49,28 @@ public class UnitSprite
     private SpriteRenderer _hpSpriteRenderer = null; //유닛 체력 스프라이트
     [SerializeField]
     private Sprite[] _delaySprites = null; // 유닛 딜레이바이미지들
+    [SerializeField]
+    private Sprite[] _gradeSprite = null; //유닛 단계 이미지
+    [SerializeField]
+    private SpriteRenderer _gradeSpriteRender = null; //유닛 단계 이미지렌더러
 
     private TeamType _eTeam = TeamType.Null;
 
-    public void ResetSprite(TeamType teamType, CardData cardData, UnitStat unitStat, int orderIndex, int grade)
+    public void ResetSprite(Unit unit, CardType cardType, TeamType teamType, CardData cardData, UnitStat unitStat, int orderIndex, int grade)
     {
+        Vector2 pos = _gradeSpriteRender.transform.position;
+        pos.y = unit.CollideData.originpoints[0].y + 0.2f;
+        _gradeSpriteRender.transform.position = pos;
         SetUIAndSprite(teamType, SkinData.GetSkin(cardData._skinData._skinType), grade);
+        if(cardType == CardType.AttackProjectile)
+        {
+            ShowUI(false);
+        }
+        else
+        {
+            ShowUI(true);
+        }
         UpdateDelayBar(unitStat.AttackDelay);
-        ShowUI(true);
         SetTeamColor(teamType);
         SetHPSprite(unitStat.Hp, unitStat.MaxHp);
         OrderDraw(orderIndex);
@@ -80,14 +94,17 @@ public class UnitSprite
         switch (grade)
 		{
             case 1:
+                _gradeSpriteRender.sprite = _gradeSprite[0];
                 _delayBarImage.sprite = _delaySprites[0];
                 _delayHalfBarImage.sprite = _delaySprites[0];
                 break;
             case 2:
+                _gradeSpriteRender.sprite = _gradeSprite[1];
                 _delayBarImage.sprite = _delaySprites[1];
                 _delayHalfBarImage.sprite = _delaySprites[1];
                 break;
             case 3:
+                _gradeSpriteRender.sprite = _gradeSprite[2];
                 _delayBarImage.sprite = _delaySprites[2];
                 _delayHalfBarImage.sprite = _delaySprites[2];
                 break;
@@ -158,6 +175,7 @@ public class UnitSprite
     {
         _delayBar.SetActive(isShow);
         _delayHalfBar.SetActive(false);
+        _gradeSpriteRender.gameObject.SetActive(false);
     }
 
     /// <summary>
