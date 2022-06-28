@@ -37,6 +37,10 @@ namespace Battle
         private SpriteMask _delayMask;
         [SerializeField]
         private SpriteRenderer _delayBarImage;
+        [SerializeField]
+        private GameObject _throwStackPanel;
+        [SerializeField]
+        private GameObject _throwStackObj;
 
         //참조 변수
         private Unit _throwedUnit = null;
@@ -70,7 +74,7 @@ namespace Battle
 
             this._throwParabolaComponent.SetInitialization(_parabola, this, _stageData, _parabolaBackground, _cameraCommand, _parabolaArrow, _dirArrow);
             this._throwSelectComponent.SetInitialization(this, _throwGaugeComponent, _unitCommand);
-            this._throwGaugeComponent.SetInitialization(this, _unitCommand, _throwBarFrame, _throwGaugeBar, PencilCaseDataManagerSO.InGamePencilCaseData);
+            this._throwGaugeComponent.SetInitialization(this, _unitCommand, _throwBarFrame, _throwGaugeBar, _throwStackPanel, _throwStackObj, PencilCaseDataManagerSO.InGamePencilCaseData);
             SetDelayBar();
             UnSetDelayBar();
 
@@ -87,7 +91,7 @@ namespace Battle
             {
                 _throwedUnit.Throw_Unit(Camera.main.ScreenToWorldPoint(Input.mousePosition));
                 
-                IncreaseThrowGauge(-_throwedUnit.UnitStat.Return_Weight());
+                IncreaseThrowStack(-1);
                 
                 _throwTrail.transform.SetParent(_throwedUnit.transform);
                 _throwTrail.transform.localPosition = Vector2.zero;
@@ -162,7 +166,7 @@ namespace Battle
 			{
                 return;
 			}
-            if (_throwGaugeComponent.GetThrowGauge() < _throwedUnit.UnitStat.Return_Weight())
+            if (_throwGaugeComponent.GetThrowStack() <= 0)
             {
                 _throwedUnit = null;
                 return;
@@ -316,9 +320,9 @@ namespace Battle
         /// 던지기 게이지 증감
         /// </summary>
         /// <param name="add"></param>
-        private void IncreaseThrowGauge(float add)
+        private void IncreaseThrowStack(int stack)
         {
-            _throwGaugeComponent.IncreaseThrowGauge(add);
+            _throwGaugeComponent.IncreaseThrowStack(stack);
         }
 
         /// <summary>

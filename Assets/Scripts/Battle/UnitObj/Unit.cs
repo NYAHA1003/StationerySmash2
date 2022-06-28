@@ -384,13 +384,4 @@ public class Unit : MonoBehaviour
             return false;
 		}
     }
-    
-    /// <summary>
-    /// 던지기 가능 여부에 따른 던지기 이미지를 껐다 킨다
-    /// </summary>
-    /// <param name="isActive"></param>
-    public void SetThrowImageActive(bool isActive)
-	{
-        _unitSprite.SetThrowImage(isActive);
-	}
 }
