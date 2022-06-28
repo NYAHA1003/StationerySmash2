@@ -14,9 +14,14 @@ namespace Battle
         private RectTransform _throwGaugeBar;
         private ThrowComponent _throwComponent;
         private UnitComponent _unitCommand = null;
+        private GameObject _throwStackPanel;
+        private GameObject _throwStackObj;
+        private List<Transform> _throwStackObjList = new List<Transform>();
 
         //속성
         private float _throwGauge = 0f;
+        private int _throwStack = 0;
+        private int _throwMaxStack = 0;
         private float _throwGaugeSpeed = 0f;
 
         /// <summary>
@@ -27,39 +32,38 @@ namespace Battle
         /// <param name="throwBarFrame"></param>
         /// <param name="throwGaugeBar"></param>
         /// <param name="pencilCaseDataSO"></param>
-        public void SetInitialization(ThrowComponent throwComponent, UnitComponent unitComponent, RectTransform throwBarFrame, RectTransform throwGaugeBar , PencilCaseData pencilCaseData)
+        public void SetInitialization(ThrowComponent throwComponent, UnitComponent unitComponent, RectTransform throwBarFrame, RectTransform throwGaugeBar , GameObject throwStackPanel, GameObject throwStackObj, PencilCaseData pencilCaseData)
         {
             this._throwComponent = throwComponent;
             this._unitCommand = unitComponent;
             this._throwBarFrame = throwBarFrame;
             this._throwGaugeBar = throwGaugeBar;
             this._throwGaugeSpeed = pencilCaseData._throwGaugeSpeed;
+            this._throwMaxStack = pencilCaseData._maxThrowStack;
+            this._throwStackPanel = throwStackPanel;
+            this._throwStackObj = throwStackObj;
+
+            StackInitialize();
+            StackSetting();
         }
 
         /// <summary>
-        /// 던지기 게이지를 가져온다
+        /// 쌓인 던지기 갯수를 가져온다
         /// </summary>
         /// <returns></returns>
-        public float GetThrowGauge()
-        {
-            return _throwGauge;
-        }
+        public int GetThrowStack()
+		{
+            return _throwStack;
+		}
 
         /// <summary>
         /// 던지기 게이지 증감
         /// </summary>
         /// <param name="add"></param>
-        public void IncreaseThrowGauge(float add)
+        public void IncreaseThrowStack(int stack)
         {
-            _throwGauge += add;
-            if (_throwGauge < 0)
-            {
-                _throwGauge = 0;
-            }
-            else if (_throwGauge > 200)
-            {
-                _throwGauge = 200;
-            }
+            _throwStack += stack;
+            StackSetting();
         }
 
         /// <summary>
@@ -67,36 +71,68 @@ namespace Battle
         /// </summary>
         public void UpdateThrowGauge()
         {
+            if (_throwStack == _throwMaxStack)
+			{
+                return;
+			}
+
             if (_throwGauge <= 200f)
             {
                 IncreaseThrowGauge(Time.deltaTime * _throwGaugeSpeed);
                 Vector2 rectSize = _throwGaugeBar.sizeDelta;
                 rectSize.x = _throwBarFrame.rect.width * (_throwGauge / 200f);
                 _throwGaugeBar.sizeDelta = rectSize;
-                CheckCanThrow();
+            }
+            else
+			{
+                _throwGauge = 0;
+                _throwStack++;
+                StackSetting();
+
             }
         }
 
         /// <summary>
-        /// 던지기 가능한 유닛들의 시각적 효과를 설정한다.
+        /// 게이지 증감
         /// </summary>
-        private void CheckCanThrow()
-        {
-            int count = _unitCommand._playerUnitList.Count;
-            for (int i = 1; i < count; i++)
-            {
-                Unit unit = _unitCommand._playerUnitList[i];
-                if(unit.UnitStat.Return_Weight() < _throwGauge && unit.CheckCanThrow())
-				{
-                    unit.SetThrowImageActive(true);
+        /// <param name="add"></param>
+        private void IncreaseThrowGauge(float add)
+		{
+            _throwGauge += add;
 
-                }
-                else
-                {
-                    unit.SetThrowImageActive(false);
-                }
-			}
+        }
+
+        /// <summary>
+        /// 스택생성
+        /// </summary>
+        private void StackInitialize()
+		{
+            for(int i = 0; i < _throwMaxStack; ++i)
+			{
+                Transform obj = GameObject.Instantiate(_throwStackObj, _throwStackPanel.transform).transform;
+                _throwStackObjList.Add(obj);
+            }
 		}
+
+        /// <summary>
+        /// 스택 세팅
+        /// </summary>
+        private void StackSetting()
+		{
+            for(int i = 0; i < _throwMaxStack; ++i)
+			{
+                if(i < _throwStack)
+				{
+                    _throwStackObjList[i].GetChild(0).gameObject.SetActive(true);
+				}
+                else
+				{
+                    _throwStackObjList[i].GetChild(0).gameObject.SetActive(false);
+				}
+            }
+		}
+
+
     }
 
 }

@@ -13,6 +13,7 @@ namespace Utill.Data
 		public int _maxCard;
 		public int _maxBadgeCount;
 		public int _needGauge;
+		public int _maxThrowStack = 2;
 		public float _costSpeed;
 		public float _throwGaugeSpeed;
 		public string _name;

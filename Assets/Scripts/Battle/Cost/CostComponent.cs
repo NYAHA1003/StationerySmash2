@@ -46,6 +46,7 @@ namespace Battle
         public void SetInitialization(ref System.Action updateAction, PencilCaseData pencilCasePlayerData)
         {
             updateAction += UpdateCost;
+            UpdateCostText();
             SetCostSpeed(pencilCasePlayerData._costSpeed);
             EventManager.Instance.StartListening(EventsType.CostUp, OnUpgradeCostGrade);
         }
