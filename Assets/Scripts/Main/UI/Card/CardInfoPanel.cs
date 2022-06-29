@@ -253,8 +253,9 @@ namespace Main.Card
 			else if (_selectCardData._count >= GetUpgradeCard(_selectCardData._level))
 			{
 				UnitData unitData = UnitDataManagerSO.FindHaveUnitData(_selectCardData._unitType);
-				unitData._hp += unitData._hp * _selectCardData._level / 10;
-				unitData._damage += unitData._damage / 10 * _selectCardData._level;
+				UnitData stdunitData = UnitDataManagerSO.FindStdUnitData(_selectCardData._unitType);
+				unitData._hp = stdunitData._hp + (stdunitData._hp * _selectCardData._level / 10);
+				unitData._damage = stdunitData._damage + (stdunitData._damage / 10 * _selectCardData._level);
 				_selectCardData._count -= GetUpgradeCard(_selectCardData._level);
 				UserSaveManagerSO.AddMoney(-GetUpgradeMoney(_selectCardData._level));
 				UserSaveManagerSO.UserSaveData._haveCardSaveDatas.Find(x => x._cardNamingType == _selectCardData._cardNamingType)._level++;
@@ -297,10 +298,10 @@ namespace Main.Card
 			_levelUpMoneyText.text = $"{GetUpgradeMoney(_selectCardData._level)}원";
 			_levelUpDontImage.SetActive(!levelUpOn);
 
-			UnitData unitData = UnitDataManagerSO.FindHaveUnitData(_selectCardData._unitType);
+			UnitData stdUnitData = UnitDataManagerSO.FindStdUnitData(_selectCardData._unitType);
 
-			_plusHpText.text = $"+{unitData._hp * _selectCardData._level / 10}";
-			_plusAttackText.text = $"+{unitData._damage / 10 * _selectCardData._level}";
+			_plusHpText.text = $"+{(stdUnitData._hp * _selectCardData._level / 10)}";
+			_plusAttackText.text = $"+{(stdUnitData._damage / 10 * _selectCardData._level)}";
 			_plusHpText.gameObject.SetActive(levelUpOn);
 			_plusAttackText.gameObject.SetActive(levelUpOn);
 		}
@@ -565,7 +566,6 @@ namespace Main.Card
 			}
 			return nData;
 		}
-
 
 		/// <summary>
 		/// 강화에 필요한 돈 구하기
