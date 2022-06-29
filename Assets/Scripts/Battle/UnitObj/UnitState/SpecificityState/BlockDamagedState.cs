@@ -21,6 +21,7 @@ namespace Battle.Units
 			}
 
 			//무적여부, 데미지 적용
+			_myUnit.SetIsInvincibility(true);
 			_myUnit.BattleManager.EffectComponent.SetEffect(_atkData._effectType, new EffData(_myUnit, _myTrm.transform.position, 0.2f));
 			_myUnit.SubtractHP(_atkData.damage * (_myUnit.UnitStat.DamagedPercent / 100) - _myUnit.UnitStat.DamageDecrese); //여기
 
@@ -34,20 +35,13 @@ namespace Battle.Units
 				return;
 			}
 
-			//넉백 적용
-			KnockBack();
+			_stateManager.Set_Wait(0.4f);
 		}
-		public override void KnockBack()
+
+		public override void Exit()
 		{
-			//자기 이하 무게의 넉백 무시
-			if(_atkData.attacker == null || _atkData.attacker.UnitStat.Return_Weight() > _myUnit.UnitStat.Return_Weight())
-			{
-				base.KnockBack();
-			}
-			else
-			{
-				_stateManager.Set_Wait(0.4f);
-			}
+			base.Exit();
+			_myUnit.SetIsInvincibility(false);
 		}
 	}
 }
