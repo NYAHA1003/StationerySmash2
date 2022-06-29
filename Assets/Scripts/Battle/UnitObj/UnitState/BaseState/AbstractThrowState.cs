@@ -175,7 +175,7 @@ namespace Battle.Units
 
 			atkData.Reset_Kncockback(10, extraKnockBack, dir, false);
 			atkData.Reset_Type(EffAttackType.Stun);
-			atkData.Reset_Value(((float)_myUnit.UnitStat.Return_Weight() / 100) + 15);
+			atkData.Reset_Value(((float)_myUnit.UnitStat.Return_Weight() / 100) + 1.5f);
 			targetUnit.Run_Damaged(atkData);
 
 			return;
@@ -196,7 +196,7 @@ namespace Battle.Units
 
 			atkData.Reset_Kncockback(15, extraKnockBack, dir, false);
 			atkData.Reset_Type(EffAttackType.Stun);
-			atkData.Reset_Value(((float)_myUnit.UnitStat.Return_Weight() / 100) + 15);
+			atkData.Reset_Value(((float)_myUnit.UnitStat.Return_Weight() / 100) + 1.5f);
 			targetUnit.Run_Damaged(atkData);
 
 
@@ -225,7 +225,6 @@ namespace Battle.Units
 			{
 				atkData.Reset_Damage(100 + Mathf.RoundToInt((float)(targetUnit.UnitStat.Return_Weight() - _myUnit.UnitStat.Return_Weight()) / 5));
 			}
-
 		}
 
 		/// <summary>

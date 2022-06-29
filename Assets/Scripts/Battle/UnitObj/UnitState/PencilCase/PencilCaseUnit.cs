@@ -32,6 +32,7 @@ public class PencilCaseUnit : Unit
         {
             _hpText.transform.localScale = new Vector3(-1, 1, 1);
         }
+        _viewIndex = -100;
     }
 
     /// <summary>
@@ -79,7 +80,7 @@ public class PencilCaseUnit : Unit
 
     }
 
-    public override void Run_Damaged(AtkData atkData)
+	public override void Run_Damaged(AtkData atkData)
     {
         _unitStateChanger.UnitState.RunDamaged(atkData);
         if (_actionsAtkData.TryGetValue(Run_Damaged, out var name))

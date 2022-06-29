@@ -44,7 +44,7 @@ public class Unit : MonoBehaviour
     protected BattleManager _battleManager = null;    
     protected bool _isSettingEnd = false;
     protected Sequence _knockbackTweener;
-    private int _viewIndex = 0;
+    protected int _viewIndex = 0;
     private float _multiple = 1f;
     private int _grade = 0;
 	//참조 변수
@@ -137,14 +137,14 @@ public class Unit : MonoBehaviour
         _stageData = stageData;
 
         //스탯 설정
-        _unitStat.ResetStat(_unitData, grade);
+        _unitStat.ResetStat(dataBase._cardType, _unitData, grade);
         MyUnitId = id;
 
         //상태이상
         _unitStateEff.SetStateEff(this, _unitSprite.SpriteRenderer);
 
         //스프라이트 초기화
-        _unitSprite.ResetSprite(eTeam, dataBase, _unitStat, orderIndex, grade);
+        _unitSprite.ResetSprite(this, dataBase._cardType, eTeam, dataBase, _unitStat, orderIndex, grade);
 
         //스테이트 설정
         _unitStateChanger.ResetUnitStateChanger(dataBase, transform, stageData, _unitSprite, this);
@@ -329,7 +329,7 @@ public class Unit : MonoBehaviour
     /// 보이기 순서 설정
     /// </summary>
     /// <param name="index"></param>
-    public void SetOrderIndex(int index)
+    public virtual void SetOrderIndex(int index)
     {
         OrderIndex = index;
         if(ETeam == TeamType.MyTeam)
