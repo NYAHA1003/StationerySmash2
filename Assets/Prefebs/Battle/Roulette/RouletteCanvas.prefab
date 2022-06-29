@@ -24631,6 +24631,7 @@ MonoBehaviour:
   rouletteItemData:
     _itemImage: {fileID: 0}
     _itemCount: 0
+    rulletItemType: 0
     _chance: 100
     index: 0
     weght: 0
@@ -24896,7 +24897,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6096024851641425453
 RectTransform:
   m_ObjectHideFlags: 0
@@ -37470,27 +37471,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2efde3647b6fc8f448cdc8ff0e68dd6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rouletteItemDataList:
-  - _itemImage: {fileID: 21300000, guid: 05d3ec4a054c30442b76462212ccf437, type: 3}
-    _itemCount: 0
-    _chance: 31
-    index: 0
-    weght: 0
-  - _itemImage: {fileID: 21300000, guid: 05d3ec4a054c30442b76462212ccf437, type: 3}
-    _itemCount: 0
-    _chance: 47
-    index: 0
-    weght: 0
-  - _itemImage: {fileID: 21300000, guid: 05d3ec4a054c30442b76462212ccf437, type: 3}
-    _itemCount: 0
-    _chance: 36
-    index: 0
-    weght: 0
-  - _itemImage: {fileID: 21300000, guid: 05d3ec4a054c30442b76462212ccf437, type: 3}
-    _itemCount: 0
-    _chance: 35
-    index: 0
-    weght: 0
   _rouletteItem: {fileID: 1529442781254088205, guid: f5fa07d85a97310419de5c4fdee7449a, type: 3}
   _linePrefab: {fileID: 1741828817996670649, guid: 2c5c89cc6c2cdc04fa9c10a969405dc5, type: 3}
   _itemParent: {fileID: 6096024850193085072}
@@ -37498,12 +37478,13 @@ MonoBehaviour:
   _spinDuration: 10
   _spinningRoulette: {fileID: 6367485685335615500}
   _spinButton: {fileID: 6367485686922954269}
-  _userInfo: {fileID: 0}
   _gainedItemPanel: {fileID: 6096024850196466766}
   _pig: {fileID: 453467295228597176}
   _rouletteCanvas: {fileID: 6096024851641425449}
   _blackImage: {fileID: 4567438824931227253}
+  _rouletteType: 0
   _standardMoney: 100
+  _rouletteDataSO: {fileID: 11400000, guid: 9d85d84e165f7de449ba572975f5ffac, type: 2}
 --- !u!1 &6367485686740193629
 GameObject:
   m_ObjectHideFlags: 0

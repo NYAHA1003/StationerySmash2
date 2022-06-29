@@ -6,16 +6,19 @@ using DG.Tweening;
 using Main.Event;
 using Utill.Data;
 using Utill.Tool;
-using System.Linq; 
+using System.Linq;
+
+public enum RouletteType
+{
+    Daily, // 일일룰렛
+    Stage, // 스테이지 룰렛
+}
 
 public class RouletteComponent : MonoBehaviour
 {
     // 1 , 1.5 , 2 , 3
     // 50% 25% 18% 7%
     // 기본(최소) 획득 코인 
- 
-    [SerializeField]
-    private List<RouletteItemData> _rouletteItemDataList = new List<RouletteItemData>();
     [SerializeField]
     private RouletteItem _rouletteItem; // 룰렛 아이템 프리팹
     [SerializeField]
@@ -48,16 +51,21 @@ public class RouletteComponent : MonoBehaviour
     private int _selectionIndex = 0; // 룰렛에서 선택된 아이템 
 
     private int _accumulatedWeight; // 가중치 계산을 위한 변수 
-    
 
+    [SerializeField]
+    private RouletteType _rouletteType;
     [SerializeField]
     private int _standardMoney; // 스테이지에 따라 얻는 최소 돈  
 
-    private Vector3 _originPigPos; 
-    
+    private Vector3 _originPigPos;
+
+    [SerializeField]
+    private RouletteDataSO _rouletteDataSO;  // 룰렛에 뜰 돈, 달고나 개수와 스프라이트 정보 
+
+    List<CardData> allCardList;
     void Awake()
     {
-        _itemAngle = 360 / _rouletteItemDataList.Count;
+        _itemAngle = 360 / _rouletteDataSO._rouletteItemDataList.Count;
         _lineAngle = _itemAngle * 0.5f;
         _originPigPos = _pig.anchoredPosition;
         //  _standardMoney = AIAndStageData.Instance._currentStageDatas._rewardMoney;
@@ -69,8 +77,8 @@ public class RouletteComponent : MonoBehaviour
     private void Start()
     {
         SetWeight();
+        SetCanRouletteItem();
         CreateItemsAndLines();
-
 
     }
 
@@ -101,80 +109,102 @@ public class RouletteComponent : MonoBehaviour
     /// <summary>
     /// 스테이지에 따라 달라지는 얻는 돈의 양 설정 (스테이지 룰렛)  
     /// </summary>
-    private void SetItemCount()
+    private void SetItemCountStage()
     {
-        int count = _rouletteItemDataList.Count;
+        _standardMoney = AIAndStageData.Instance._currentStageDatas._rewardMoney; 
+        int count = _rouletteDataSO._rouletteItemDataList.Count;
         for (int i = 0; i < count - 1; i++)
         {
-            _rouletteItemDataList[i]._itemCount = (int)(_standardMoney + (i * _standardMoney * 0.5f));
+            _rouletteDataSO._rouletteItemDataList[i]._itemCount = (int)(_standardMoney + (i * _standardMoney * 0.5f));
+            _rouletteDataSO._rouletteItemDataList[i]._itemImage = _rouletteDataSO.itemSprites[(int)RoulletItemType.Coin];
+
         }
-        _rouletteItemDataList[count - 1]._itemCount = _standardMoney * 3;
+        _rouletteDataSO._rouletteItemDataList[count - 1]._itemCount = _standardMoney * 3;
+        _rouletteDataSO._rouletteItemDataList[count - 1]._itemImage = _rouletteDataSO.itemSprites[(int)RoulletItemType.Coin];
+
     }
 
-    [SerializeField]
-    private int[] dalgonaCounts;
-    [SerializeField]
-    private int[] coinCounts;
-    [SerializeField]
-    private Sprite[] itemSprites; 
+
     /// <summary>
-    /// 65% : 돈      35% : 달고나 
+    /// 65% : 돈      35% : 달고나 ( 일일 룰렛 ) 
     /// </summary>
-    private void SetItemCounts()
+    private void SetItemCountDaily()
     {
-        bool isCoin = false; 
-        int count = _rouletteItemDataList.Count;
-        for (int i = 0; i < count ; i++)
+        int count = _rouletteDataSO._rouletteItemDataList.Count;
+        for (int i = 0; i < count - 1 ; i++)
         {
-            if(Random.Range(0, 100) < 65)
+            if(Random.Range(0, 100) < 65) // 코인일 경우 
             {
-                isCoin = true;
-                _rouletteItemDataList[i]._itemCount = coinCounts[i];
-                _rouletteItemDataList[i].rulletItemType = RoulletItemType.Coin;
-                _rouletteItemDataList[i]._itemImage = itemSprites[(int)RoulletItemType.Coin];   
+                _rouletteDataSO._rouletteItemDataList[i]._itemCount = _rouletteDataSO.coinCounts[i];
+                _rouletteDataSO._rouletteItemDataList[i].rulletItemType = RoulletItemType.Coin;
+                _rouletteDataSO._rouletteItemDataList[i]._itemImage = _rouletteDataSO.itemSprites[(int)RoulletItemType.Coin];   
             }
-            else
+            else // 달고나일 경우 
             {
-                _rouletteItemDataList[i]._itemCount = dalgonaCounts[i];
-                _rouletteItemDataList[i].rulletItemType = RoulletItemType.Dalgona;
-                _rouletteItemDataList[i]._itemImage = itemSprites[(int)RoulletItemType.Dalgona];
+                _rouletteDataSO._rouletteItemDataList[i]._itemCount = _rouletteDataSO.dalgonaCounts[i];
+                _rouletteDataSO._rouletteItemDataList[i].rulletItemType = RoulletItemType.Dalgona;
+                _rouletteDataSO._rouletteItemDataList[i]._itemImage = _rouletteDataSO.itemSprites[(int)RoulletItemType.Dalgona];
 
             }
         }
     }
 
+    /// <summary>
+    ///  룰렛으로 뽑을 수 있는 분실물 설정 
+    /// </summary>
+    private void SetCanRouletteItem()
+    {
+        allCardList = DeckDataManagerSO.StdDeckDataList.ToList();
+
+        foreach (var type in System.Enum.GetValues(typeof(CardNamingType)))
+        {
+            if ((int)type > 1000)
+            {
+                allCardList.Remove(DeckDataManagerSO.FindStdCardData((CardNamingType)type));
+            }
+        }
+    }
     CardData card;
     ///// <summary>
     ///// 분실물 설정  
     ///// </summary>
     private void SetItem(int idx)
     {
-        List<CardData> cardDatas = DeckDataManagerSO.StdDeckDataList.ToList(); 
-        int cardCount = cardDatas.Count;
+        int cardCount = allCardList.Count;
         int index = Random.Range(0, cardCount);
 
-        card = cardDatas[index];
+        card = allCardList[index];
 
-        _rouletteItemDataList[idx]._itemImage = SkinData.GetSkin(card._skinData._skinType);
-        _rouletteItemDataList[idx].rulletItemType = RoulletItemType.Card;
-        _rouletteItemDataList[idx]._itemCount = 1;
-        // 모든 분실물들 가져오고 
-        // 리스트 가져와서 랜덤으로 n개 가져와 
-        // 스프라이트 가져오고, 
-        // 개수 설정 
+        _rouletteDataSO._rouletteItemDataList[idx]._itemImage = SkinData.GetSkin(card._skinData._skinType);
+        _rouletteDataSO._rouletteItemDataList[idx].rulletItemType = RoulletItemType.Card;
+        _rouletteDataSO._rouletteItemDataList[idx]._itemCount = 1;
+        _rouletteDataSO._rouletteItemDataList[idx]._chance = 1;
     }
+
     /// <summary>
     /// 룰렛에 나올 아이템과 선 생성 
     /// </summary>
     private void CreateItemsAndLines()
     {
-        SetItemCounts();
-        SetItem(0);
-        int count = _rouletteItemDataList.Count;
+        int count = _rouletteDataSO._rouletteItemDataList.Count;
+        if (_rouletteType == RouletteType.Daily)
+        {
+            SetItemCountDaily();
+        }
+        else if (_rouletteType == RouletteType.Stage)
+        {
+            SetItemCountStage(); 
+        }
+        SetItem(count - 1);
+
         for (int i = 0; i < count; i++)
         {
             RouletteItem rouletteItem = Instantiate(_rouletteItem, _itemParent.position, Quaternion.identity, _itemParent);
-            rouletteItem.SetUp(_rouletteItemDataList[i]);
+            if(i == count -1)
+            {
+                rouletteItem.transform.GetChild(0).localScale = new Vector2(3, 3); 
+            }
+            rouletteItem.SetUp(_rouletteDataSO._rouletteItemDataList[i]);
 
             rouletteItem.transform.RotateAround(_itemParent.position, Vector3.back, _itemAngle * i);
 
@@ -189,15 +219,15 @@ public class RouletteComponent : MonoBehaviour
     /// </summary>
     private void SetWeight()
     {
-        int count = _rouletteItemDataList.Count;
+        int count = _rouletteDataSO._rouletteItemDataList.Count;
         Debug.Log("D");
         for (int i = 0; i < count; i++)
         {
             Debug.Log("S");
-            _rouletteItemDataList[i].index = i;
+            _rouletteDataSO._rouletteItemDataList[i].index = i;
 
-            _accumulatedWeight += _rouletteItemDataList[i]._chance;
-            _rouletteItemDataList[i].weght = _accumulatedWeight; 
+            _accumulatedWeight += _rouletteDataSO._rouletteItemDataList[i]._chance;
+            _rouletteDataSO._rouletteItemDataList[i].weght = _accumulatedWeight; 
         }
     }
     #endregion
@@ -207,11 +237,11 @@ public class RouletteComponent : MonoBehaviour
     private int GetItem()
     {
         int randWeight = Random.Range(0, _accumulatedWeight);
-        int count = _rouletteItemDataList.Count;
+        int count = _rouletteDataSO._rouletteItemDataList.Count;
 
         for (int i = 0; i < count; i++)
         {
-            if (randWeight < _rouletteItemDataList[i].weght)
+            if (randWeight < _rouletteDataSO._rouletteItemDataList[i].weght)
             {
                 return i;
             }
@@ -230,7 +260,7 @@ public class RouletteComponent : MonoBehaviour
         }
         else if (roulletItemType == RoulletItemType.Dalgona)
         {
-            UserSaveManagerSO.AddCardData(card, amount);
+            UserSaveManagerSO.AddDalgona(amount);
         }
         else if(roulletItemType == RoulletItemType.Card)
         {
@@ -246,9 +276,9 @@ public class RouletteComponent : MonoBehaviour
         _spinButton.gameObject.SetActive(false);
 
         _selectionIndex = GetItem();
-        _gainedItemPanel.GetComponent< RouletteItem>().SetUp(_rouletteItemDataList[_selectionIndex]);
+        _gainedItemPanel.GetComponent< RouletteItem>().SetUp(_rouletteDataSO._rouletteItemDataList[_selectionIndex]);
 
-        int getItemCount = _rouletteItemDataList[_selectionIndex]._itemCount; 
+        int getItemCount = _rouletteDataSO._rouletteItemDataList[_selectionIndex]._itemCount; 
         float angle = _itemAngle * _selectionIndex;
 
         float targetAngle = angle +  360 * _spinDuration;
@@ -269,7 +299,7 @@ public class RouletteComponent : MonoBehaviour
         seq.Append(_gainedItemPanel.transform.DOScale(0.8f, 0.5f));
         seq.Append(_gainedItemPanel.transform.DOScale(1.2f, 0.5f));
         seq.Append(_gainedItemPanel.transform.DOScale(1f, 0.5f));
-        seq.AppendCallback(() => SaveItemData(_rouletteItemDataList[_selectionIndex].rulletItemType, getItemCount ));
+        seq.AppendCallback(() => SaveItemData(_rouletteDataSO._rouletteItemDataList[_selectionIndex].rulletItemType, getItemCount ));
     }
 
 }
