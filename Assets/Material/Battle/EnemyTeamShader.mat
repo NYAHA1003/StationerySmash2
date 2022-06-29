@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: EnemyTeamShader
-  m_Shader: {fileID: 4800000, guid: 62505ee61d20098489c6f861ed25cce1, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: b007c2f70c601474f9f4364d92af3899, type: 3}
   m_ShaderKeywords: _OUTLINEENABLED_ON _OUTLINEMODE_SOLID _OUTLINEPOSITION_INSIDE_UNDER_SPRITE
     _OUTLINESHAPE_CONTOUR _TILEMODE_STRETCH
   m_LightmapFlags: 4
@@ -45,7 +45,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 04038f3c9a7106843aa9f2c017dacfc8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -60,7 +60,20 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_7654bd7bfec24744b3e0990664de79ca: 0.02
     - _AlphaThreshold: 0
     - _Angle: 0
     - _BumpScale: 1
@@ -88,6 +101,7 @@ Material:
     - _Weight: 0
     - _ZWrite: 1
     m_Colors:
+    - Color_97d8a9431f52471cadd11a0b6940bdd1: {r: 1, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GradientOutline1: {r: 1, g: 0.26139224, b: 0, a: 1}
