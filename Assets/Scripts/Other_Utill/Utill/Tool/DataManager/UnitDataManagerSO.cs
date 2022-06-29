@@ -111,14 +111,25 @@ namespace Utill.Tool
 				UnitData unitData = FindStdUnitData(DeckDataManagerSO.HaveDeckDataList[i]._unitType);
 				int count = 1;
 				int level = DeckDataManagerSO.HaveDeckDataList[i]._level;
-				while (count < level)
+				UnitData haveUnitData = new UnitData()
 				{
-					unitData._hp += unitData._hp * count / 10;
-					unitData._damage += unitData._damage / 10 * count;
-					count++;
-				}
+					_accuracy = unitData._accuracy,
+					_hp = unitData._hp + (unitData._hp * (level - 1) / 10),
+					_weight = unitData._weight,
+					_knockback = unitData._knockback,
+					_dir = unitData._dir,
+					_moveSpeed = unitData._moveSpeed,
+					_damage = unitData._damage + (unitData._damage / 10 * (level - 1)),
+					_attackSpeed = unitData._attackSpeed,
+					_range = unitData._range,
+					_colideData = unitData._colideData,
+					_stickerType = unitData._stickerType,
+					_attackType = unitData._attackType,
+					_unitType = unitData._unitType,
+					_unitablityData = unitData._unitablityData,
+				};
 
-				_haveUnitDataList.Add(unitData);
+				_haveUnitDataList.Add(haveUnitData);
 			}
 		}
 

@@ -4,6 +4,13 @@ using UnityEngine;
 using UnityEngine.UI; 
 using TMPro;
 
+public enum RoulletItemType
+{
+    Coin,
+    Dalgona,
+    Card
+}
+
 public class RouletteItem : MonoBehaviour
 {
     [SerializeField]
@@ -12,9 +19,12 @@ public class RouletteItem : MonoBehaviour
     private TextMeshProUGUI _itemCountText;
     [SerializeField]
     private RouletteItemData rouletteItemData;
+
+    public RoulletItemType RoulletItemType => rouletteItemData.rulletItemType; 
     public void SetUp(RouletteItemData rouletteItemData)
     {
         _itemImage.sprite = rouletteItemData._itemImage; 
-        _itemCountText.text = rouletteItemData._itemCount.ToString(); 
+        _itemCountText.text = rouletteItemData._itemCount.ToString();
+
     }
 }
