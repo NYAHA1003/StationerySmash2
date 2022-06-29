@@ -51,6 +51,8 @@
         SetNextStageData = 3001, //다음 스테이지 데이터로 적용
         ActiveWinCanvas = 3002, //승리 패널 키기
         ActiveLoseCanvas = 3003, //패배 패널 키기
+        SetNormalBattle = 3004, //노말 배틀
+        SetHardBattle = 3005, //하드 배틀
         NextExplain = 305, // 다음 튜토리얼 설명 
         SetTutorial, // 버튼 클릭시 어떤튜토리얼 나올지 
         SpinRoulette, // 룰렛 돌리기 
