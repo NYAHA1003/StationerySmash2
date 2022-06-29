@@ -136,6 +136,13 @@ namespace Battle
                 enemyCurDelay += Time.deltaTime;
                 return;
             }
+
+            if(BattleManager.IsHardMode)
+			{
+                enemyCardDataList[_enemyCurrentIndex]._level += 1;
+
+            }
+
             _unitCommand.SummonUnit(enemyCardDataList[_enemyCurrentIndex], new Vector3(enemyPos[_enemyCurrentIndex].x, 0, 0), enemySummonGrade, TeamType.EnemyTeam);
             _enemyCurrentIndex++;
             if (_enemyCurrentIndex == enemyMaxDelay.Count)

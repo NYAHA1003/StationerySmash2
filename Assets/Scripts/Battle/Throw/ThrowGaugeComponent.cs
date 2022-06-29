@@ -39,9 +39,16 @@ namespace Battle
             this._throwBarFrame = throwBarFrame;
             this._throwGaugeBar = throwGaugeBar;
             this._throwGaugeSpeed = pencilCaseData._throwGaugeSpeed;
-            this._throwMaxStack = pencilCaseData._maxThrowStack;
             this._throwStackPanel = throwStackPanel;
             this._throwStackObj = throwStackObj;
+            if(BattleManager.IsHardMode)
+			{
+                this._throwMaxStack = pencilCaseData._maxThrowStack - 1;
+            }
+            else
+			{
+                this._throwMaxStack = pencilCaseData._maxThrowStack;
+			}
 
             StackInitialize();
             StackSetting();
