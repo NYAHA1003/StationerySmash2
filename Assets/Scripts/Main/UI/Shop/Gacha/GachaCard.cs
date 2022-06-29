@@ -25,6 +25,8 @@ public class GachaCard : MonoBehaviour
     protected RectTransform _rect;
     protected Sequence sequence;
 
+    [SerializeField]
+    private Vector3 orginSize = new Vector3(0.8f, 0.8f);
     public Grade _grade; 
     private bool isFront = false; 
     private void Awake()
@@ -87,7 +89,7 @@ public class GachaCard : MonoBehaviour
     {
         StopAllCoroutines();
         transform.rotation = Quaternion.identity;
-        transform.localScale = Vector3.one; 
+        transform.localScale = orginSize; 
         if(isFront == true)
         {
             itemImage.sprite = _frontSprite;
