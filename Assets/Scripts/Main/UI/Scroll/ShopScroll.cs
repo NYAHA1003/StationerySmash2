@@ -27,6 +27,12 @@ namespace Main.Scroll
             EventManager.Instance.StartListening(EventsType.SetOriginShopPn, SetOriginScroll);
         }
 
+        protected override void Start()
+        {
+            base.Start();
+            _targetIndex = Size -1;
+            _targetPos = _pos[0]; 
+        }
         protected override void SettingUpdate()
         {
             base.SettingUpdate();

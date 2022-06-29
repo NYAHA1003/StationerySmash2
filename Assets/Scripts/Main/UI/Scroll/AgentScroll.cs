@@ -42,7 +42,7 @@ namespace Main.Scroll
         {
             SettingAwake();
         }
-        private void Start()
+        protected virtual void Start()
         {
             SettingStart();
             OnMoveMainPanel(Size - 1);
