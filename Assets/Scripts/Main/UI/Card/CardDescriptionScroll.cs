@@ -54,6 +54,7 @@ namespace Main.Card
         protected override void SettingStart()
         {
             base.SettingStart();
+            _targetIndex = 0;
             SetStressIconList();
             SetStressIconScale();
         }
