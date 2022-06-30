@@ -284,6 +284,18 @@ namespace Utill.Tool
             PostUserSaveData();
         }
 
+
+        /// <summary>
+        /// 쿠폰 추가
+        /// </summary>
+        /// <param name="exp"></param>
+        public static void AddCoupon(int coupon)
+        {
+            _userSaveData.AddCoupon(coupon);
+            DeliverDataToObserver();
+            PostUserSaveData();
+        }
+
         /// <summary>
         /// 이름 변경
         /// </summary>

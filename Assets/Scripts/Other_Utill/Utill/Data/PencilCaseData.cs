@@ -23,6 +23,7 @@ namespace Utill.Data
 		public SkinType _skinType;
 		public UnitType _unitType = UnitType.PencilCase;
 		public List<BadgeData> _badgeDatas;
+		public int _level = 1;
 
 		/// <summary>
 		/// 필통 데이터를 세이브데이터 기준으로 변환한다
@@ -65,7 +66,7 @@ namespace Utill.Data
 					_skinType = this._skinType,
 					_effectType = EffectType.Attack
 				},
-				_level = 1,
+				_level = _level,
 				_starategyType = StrategyType.None,
 				_unitType = UnitType.PencilCase,
 			};

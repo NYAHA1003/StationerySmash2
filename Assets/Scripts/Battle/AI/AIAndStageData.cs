@@ -16,6 +16,7 @@ public class AIAndStageData : MonoSingleton<AIAndStageData>
     public List<CardData> cardDataList;
     public List<Vector2> pos;
     public List<float> max_Delay;
+    public bool _isEventMode = false;
 
     /// <summary>
     /// AIData ¼³Á¤
@@ -34,6 +35,7 @@ public class AIAndStageData : MonoSingleton<AIAndStageData>
         }
         pos = loadData.pos;
         max_Delay = loadData.max_Delay;
+        _isEventMode = loadData._isEventMode;
     }
 
 }
