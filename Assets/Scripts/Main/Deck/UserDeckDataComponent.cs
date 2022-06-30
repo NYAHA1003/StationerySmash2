@@ -157,11 +157,11 @@ namespace Main.Deck
 		/// </summary>
 		public bool CheckCanPlayGame()
 		{
-			if (_inGameDeckListSO.cardDatas.Count < 2)
-			{
-				_warrningComponent.SetWarrning("장착 카드는 2장 이상이어야 합니다");
-				return false;
-			}
+			//if (_inGameDeckListSO.cardDatas.Count < 1)
+			//{
+			//	_warrningComponent.SetWarrning("장착 카드는 2장 이상이어야 합니다");
+			//	return false;
+			//}
 			return true;
 		}
 

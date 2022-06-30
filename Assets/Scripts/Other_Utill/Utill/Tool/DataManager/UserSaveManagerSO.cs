@@ -48,8 +48,8 @@ namespace Utill.Tool
         {
             _isDebugMod = true;
             _userSaveData = _debugSaveData;
-            SetUserID();
-            _debugSaveData = _userSaveData;
+            //SetUserID();
+            //_debugSaveData = _userSaveData;
         }
 
         /// <summary>
