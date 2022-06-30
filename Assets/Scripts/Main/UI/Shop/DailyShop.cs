@@ -508,6 +508,9 @@ public class DailyShop : MonoBehaviour
         _curDailyCardSO.dailyItemInfos.Add(dailyItemInfo);
     }
 
+    /// <summary>
+    /// 일일상점 카드 불러오기 
+    /// </summary>
     private void LoadDailyCard()
     {
         DailyItem freeDailyCard = _dailyItems[0];

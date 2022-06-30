@@ -8,6 +8,8 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
 using Main.Deck;
 using Utill.Tool;
+using Main.Event;
+
 public class ExpComponent : MonoBehaviour, IUserData
 {
 	[SerializeField]

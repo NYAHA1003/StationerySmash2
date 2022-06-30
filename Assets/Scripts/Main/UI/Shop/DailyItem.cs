@@ -6,7 +6,6 @@ using TMPro;
 using Utill.Data;
 public class DailyItem : MonoBehaviour
 {
-
     [SerializeField]
     private Image _itemImage; // 아이템 이미지
     [SerializeField]
@@ -41,6 +40,7 @@ public class DailyItem : MonoBehaviour
         _itemNameText.text = dailyItemInfo._cardName;
         _countText.text = string.Format("X {0}",itemCount.ToString());
         bool isbuy = false;
+        _itemButton.onClick.RemoveAllListeners(); 
         _itemButton.onClick.AddListener(() => dailyItemInfo._dailyItem.Purchase(out isbuy)); 
         _itemButton.onClick.AddListener(() => Purchased(isbuy));
 

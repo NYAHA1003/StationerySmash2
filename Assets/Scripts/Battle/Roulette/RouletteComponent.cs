@@ -7,6 +7,8 @@ using Main.Event;
 using Utill.Data;
 using Utill.Tool;
 using System.Linq;
+using TMPro;
+using Battle; 
 
 public enum RouletteType
 {
@@ -47,6 +49,8 @@ public class RouletteComponent : MonoBehaviour
     private GameObject _rouletteCanvas;
     [SerializeField]
     private GameObject _blackImage; // 뽑기 후 나타나는 검은 배경 이미지 
+    [SerializeField]
+    private TextMeshProUGUI _rouletteText; // 어떤 룰렛인지 설명 텍스트  
 
     private int _selectionIndex = 0; // 룰렛에서 선택된 아이템 
 
@@ -62,7 +66,9 @@ public class RouletteComponent : MonoBehaviour
     [SerializeField]
     private RouletteDataSO _rouletteDataSO;  // 룰렛에 뜰 돈, 달고나 개수와 스프라이트 정보 
 
-    List<CardData> allCardList;
+    private List<CardData> allCardList;
+    private List<RouletteItem> roulletItemList = new List<RouletteItem>(); 
+
     void Awake()
     {
         _itemAngle = 360 / _rouletteDataSO._rouletteItemDataList.Count;
@@ -78,10 +84,34 @@ public class RouletteComponent : MonoBehaviour
     {
         SetWeight();
         SetCanRouletteItem();
-        CreateItemsAndLines();
-
+        CreateItemsAndLines(); 
     }
 
+    private void OnEnable()
+    {
+        ResetValues();
+        SetRouletteTypeStage(1); 
+        StartCoroutine(AssignItemsAndLines());
+    }
+
+    /// <summary>
+    /// 0 : Daily(LevelUp) 1 : Stage 
+    /// </summary>
+    /// <param name="rouletteType"></param>
+    public void SetRouletteTypeStage(int rouletteType)
+    {
+        _rouletteType = (RouletteType)rouletteType;
+
+        if(_rouletteType == RouletteType.Daily)
+        {
+            _rouletteText.text = string.Format("LEVEL UP!");
+        }
+        else if (_rouletteType == RouletteType.Stage)
+        {
+            _rouletteText.text = string.Format("STAGE CLEAR!");
+        }
+
+    }
     /// <summary>
     ///  룰렛 캔버스 활성화 비활성화 , 비활성화 -> 활성화시 값들 재설정 
     /// </summary>
@@ -107,9 +137,9 @@ public class RouletteComponent : MonoBehaviour
 
     #region 데이터 설정 
     /// <summary>
-    /// 스테이지에 따라 달라지는 얻는 돈의 양 설정 (스테이지 룰렛)  
+    /// 스테이지에 따라 달라지는 얻는 돈의 양 설정 (하드 룰렛)  
     /// </summary>
-    private void SetItemCountStage()
+    private void SetItemCountEasy()
     {
         _standardMoney = AIAndStageData.Instance._currentStageDatas._rewardMoney; 
         int count = _rouletteDataSO._rouletteItemDataList.Count;
@@ -126,9 +156,9 @@ public class RouletteComponent : MonoBehaviour
 
 
     /// <summary>
-    /// 65% : 돈      35% : 달고나 ( 일일 룰렛 ) 
+    /// 65% : 돈      35% : 달고나 ( 이지 룰렛 ) 
     /// </summary>
-    private void SetItemCountDaily()
+    private void SetItemCountHard()
     {
         int count = _rouletteDataSO._rouletteItemDataList.Count;
         for (int i = 0; i < count - 1 ; i++)
@@ -182,34 +212,61 @@ public class RouletteComponent : MonoBehaviour
     }
 
     /// <summary>
-    /// 룰렛에 나올 아이템과 선 생성 
+    /// 선, 아이템 생성 
     /// </summary>
     private void CreateItemsAndLines()
     {
         int count = _rouletteDataSO._rouletteItemDataList.Count;
-        if (_rouletteType == RouletteType.Daily)
+        roulletItemList.Clear(); 
+        for (int i = 0; i < count; i++)
         {
-            SetItemCountDaily();
+            RouletteItem rouletteItem = Instantiate(_rouletteItem, _itemParent.position, Quaternion.identity, _itemParent);
+            roulletItemList.Add(rouletteItem);
+            if (i == count - 1)
+            {
+                roulletItemList[i].transform.GetChild(0).localScale = new Vector2(2, 2);
+            }
+            roulletItemList[i].transform.RotateAround(_itemParent.position, Vector3.back, _itemAngle * i);
+
+            Transform line = Instantiate(_linePrefab, _lineParent.position, Quaternion.identity, _lineParent);
+            line.transform.RotateAround(_lineParent.position, Vector3.back, (_itemAngle * i) + _lineAngle);
         }
-        else if (_rouletteType == RouletteType.Stage)
+    }
+    /// <summary>
+    /// 아이템 값 할당 
+    /// </summary>
+    private IEnumerator AssignItemsAndLines()
+    {
+        while(allCardList == null)
         {
-            SetItemCountStage(); 
+            yield return null; 
+        }
+        int count = _rouletteDataSO._rouletteItemDataList.Count;
+        if (BattleManager.IsHardMode == false)
+        {
+           // _rouletteText.text = string.Format("Level Up! 룰렛");
+            SetItemCountEasy();
+        }
+        else if (BattleManager.IsHardMode == true)
+        {
+            // _rouletteText.text = string.Format("Stage Clear! 룰렛");
+            SetItemCountHard(); 
         }
         SetItem(count - 1);
 
         for (int i = 0; i < count; i++)
         {
-            RouletteItem rouletteItem = Instantiate(_rouletteItem, _itemParent.position, Quaternion.identity, _itemParent);
-            if(i == count -1)
-            {
-                rouletteItem.transform.GetChild(0).localScale = new Vector2(3, 3); 
-            }
-            rouletteItem.SetUp(_rouletteDataSO._rouletteItemDataList[i]);
+            //RouletteItem rouletteItem = Instantiate(_rouletteItem, _itemParent.position, Quaternion.identity, _itemParent);
+            //if(i == count -1)
+            //{
+            //    roulletItemList[i].transform.GetChild(0).localScale = new Vector2(3, 3); 
+            //}
+            roulletItemList[i].SetUp(_rouletteDataSO._rouletteItemDataList[i]);
 
-            rouletteItem.transform.RotateAround(_itemParent.position, Vector3.back, _itemAngle * i);
+            //roulletItemList[i].transform.RotateAround(_itemParent.position, Vector3.back, _itemAngle * i);
 
-            Transform line = Instantiate(_linePrefab, _lineParent.position, Quaternion.identity, _lineParent);
-            line.transform.RotateAround(_lineParent.position, Vector3.back, (_itemAngle * i) + _lineAngle);
+            //Transform line = Instantiate(_linePrefab, _lineParent.position, Quaternion.identity, _lineParent);
+            //line.transform.RotateAround(_lineParent.position, Vector3.back, (_itemAngle * i) + _lineAngle);
         }
         //SetItem(); 
     }

@@ -36,13 +36,13 @@ public class StationerySheet : IPerchase
     public void Purchase(out bool isbuy)
     {
         // µ∑ √º≈© 
-        if(UserSaveManagerSO.UserSaveData._money >= _price * _curCount)
-		{
+        if (UserSaveManagerSO.UserSaveData._money >= _price * _curCount)
+        {
             UserSaveManagerSO.AddMoney(-_price * _curCount);
         }
         else
         {
-            _warrningComponent ??= GameObject.FindObjectOfType<WarrningComponent>();
+            _warrningComponent = GameObject.FindObjectOfType<WarrningComponent>();
             _warrningComponent.SetWarrning("µ∑¿Ã ∫Œ¡∑«’¥œ¥Ÿ");
             isbuy = false;
             return;
