@@ -16,12 +16,6 @@ namespace Utill.Tool
     [CreateAssetMenu(fileName = "UserSaveManagerSO", menuName = "Scriptable Object/UserSaveManagerSO")]
     public class UserSaveManagerSO : ScriptableObject, Iinitialize
     {
-        //유저ID 저장용
-        private class UserIDObj
-		{
-            public string userID;
-		}
-
         //속성
         private static UserSaveData _userSaveData = new UserSaveData(); //유저 데이터
         //프로퍼티
@@ -65,9 +59,13 @@ namespace Utill.Tool
         {
             if(_isDebugMod)
 			{
+             
                 return;
 			}
-            ServerDataConnect.Instance.GetUserSaveData();
+            else
+            {
+                ServerDataConnect.Instance.GetUserSaveData();
+            }
         }
 
         /// <summary>
@@ -108,15 +106,15 @@ namespace Utill.Tool
         private static void SetUserID()
         {
             //유저ID 저장 경로
-            string path = Application.dataPath + "/" + "UserID.txt";
+            string path = Application.persistentDataPath + "/" + "UserID.txt";
             
             //저장 경로에 ID가 있을시
             if(File.Exists(path))
             {
                 //해당 ID값을 불러온다
                 string jsonData = File.ReadAllText(path);
-                UserIDObj userIDobj = JsonUtility.FromJson<UserIDObj>(jsonData);
-                _userSaveData._userID = userIDobj.userID;
+                UserSaveData saverData = JsonUtility.FromJson<UserSaveData>(jsonData);
+                _userSaveData = saverData;
                 GetUserSaveData();
             }
             else
@@ -125,18 +123,13 @@ namespace Utill.Tool
                 var inherenceID = SystemInfo.deviceUniqueIdentifier;
                 //현재 시간 값을 가져온다
                 var timeID = DateTime.Now.ToString("yyyy-mm-dd-HH-mm");
-                
                 //장치의 고유 ID + 현재 시간으로 새로운 UserID를 만든다
-                UserIDObj userIDobj = new UserIDObj();
-                userIDobj.userID = inherenceID + timeID;
-                
-                //UserID를 저장한다
-                string jsonData = JsonUtility.ToJson(userIDobj);
-                File.WriteAllText(path, jsonData);
+
+
 #if UNITY_EDITOR
                 AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
 #endif
-                _userSaveData._userID = userIDobj.userID;
+                _userSaveData._userID = inherenceID + timeID;
 
                 //기본적인 데이터 추가
                 _userSaveData._currentProfileType = ProfileType.ProPencil;
@@ -173,6 +166,10 @@ namespace Utill.Tool
                 _userSaveData._presetPencilCaseType2 = _userSaveData._currentPencilCaseType;
                 _userSaveData._presetPencilCaseType3 = _userSaveData._currentPencilCaseType;
                 _userSaveData._setPrestIndex = 0;
+
+                //UserID를 저장한다
+                string jsonData = JsonUtility.ToJson(_userSaveData);
+                File.WriteAllText(path, jsonData);
 
                 PostUserSaveData();
             }
