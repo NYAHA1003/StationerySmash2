@@ -17,12 +17,13 @@ namespace Utill.Data
         public Vector2 pos;
         public float lifeTime;
         public Transform trm;
-
-        public EffData(Vector2 pos, float lifeTime = 0.5f, Transform trm = null)
+        public Unit unit;
+        public EffData(Unit unit,Vector2 pos, float lifeTime = 0.5f, Transform trm = null)
         {
             this.pos = pos;
             this.lifeTime = lifeTime;
             this.trm = trm;
+            this.unit = unit;
         }
 
     }

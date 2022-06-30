@@ -103,7 +103,7 @@ namespace Battle
 
                 if (CheckPoints(points, pos))
                 {
-                    if(_throwGaugeComponent.GetThrowGauge() >= throwedUnit.UnitStat.Return_Weight())
+                    if(_throwGaugeComponent.GetThrowStack() > 0)
                     {
                         throwedUnit = throwedUnit.Pull_Unit();
                         _throwComponent.SetThrowedUnit(throwedUnit);

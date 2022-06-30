@@ -68,14 +68,14 @@ namespace Main.Scroll
         {
             if (_targetIndex == 0 && !isChangeStage)
             {
-                Sound.StopBgm(1);
-                Sound.PlayBgm(2);
+                Sound.StopBgm(BGMSoundType.Main);
+                Sound.PlayBgm(BGMSoundType.Stage1);
                 isChangeStage = true;
             }
             else if(isChangeStage)
             {
-                Sound.StopBgm(2);
-                Sound.PlayBgm(1);
+                Sound.PlayBgm(BGMSoundType.Stage1);
+                Sound.StopBgm(BGMSoundType.Main);
                 isChangeStage = false;
             }
             for (int i = 0; i < _staticPanelIcons.Length; i++)

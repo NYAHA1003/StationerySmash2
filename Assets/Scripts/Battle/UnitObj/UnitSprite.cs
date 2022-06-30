@@ -48,17 +48,27 @@ public class UnitSprite
     [SerializeField]
     private SpriteRenderer _hpSpriteRenderer = null; //유닛 체력 스프라이트
     [SerializeField]
-    private Transform _starTransform = null; //별 트랜스폼
-    [SerializeField]
     private Sprite[] _delaySprites = null; // 유닛 딜레이바이미지들
+    [SerializeField]
+    private Sprite[] _gradeSprite = null; //유닛 단계 이미지
+    [SerializeField]
+    private SpriteRenderer _gradeSpriteRender = null; //유닛 단계 이미지렌더러
 
     private TeamType _eTeam = TeamType.Null;
 
-    public void ResetSprite(TeamType teamType, CardData cardData, UnitStat unitStat, int orderIndex, int grade)
+    public void ResetSprite(Unit unit, CardType cardType, TeamType teamType, CardData cardData, UnitStat unitStat, int orderIndex, int grade)
     {
-        SetUIAndSprite(teamType, SkinData.GetSkin(cardData._skinData._skinType), grade);
-        UpdateDelayBar(unitStat.AttackDelay);
+        SetUIAndSprite(unit, teamType, SkinData.GetSkin(cardData._skinData._skinType), grade);
+        if(cardType == CardType.AttackProjectile)
+        {
+            ShowGradeUI(false);
+        }
+        else
+        {
+            ShowGradeUI(true);
+        }
         ShowUI(true);
+        UpdateDelayBar(unitStat.AttackDelay);
         SetTeamColor(teamType);
         SetHPSprite(unitStat.Hp, unitStat.MaxHp);
         OrderDraw(orderIndex);
@@ -70,7 +80,7 @@ public class UnitSprite
     /// </summary>
     /// <param name="eTeam"></param>
     /// <param name="sprite"></param>
-    public void SetUIAndSprite(TeamType eTeam, Sprite sprite, int grade)
+    public void SetUIAndSprite(Unit unit, TeamType eTeam, Sprite sprite, int grade)
     {
         _eTeam = eTeam;
         SetDelayBar();
@@ -78,23 +88,30 @@ public class UnitSprite
         _spriteRenderer.sprite = sprite;
         _shadowSpriteRenderer.sprite = sprite;
         _hpSpriteRenderer.sprite = sprite;
-        _starTransform.DOScale(Vector3.one * 0.12f, 1f).SetEase(Ease.OutQuad).SetLoops(-1, LoopType.Yoyo);
+        Vector2 pos = _gradeSpriteRender.transform.position;
 
         switch (grade)
 		{
             case 1:
+                _gradeSpriteRender.sprite = _gradeSprite[0];
                 _delayBarImage.sprite = _delaySprites[0];
                 _delayHalfBarImage.sprite = _delaySprites[0];
+                pos.y = unit.CollideData.originpoints[0].y + 0.2f;
                 break;
             case 2:
+                _gradeSpriteRender.sprite = _gradeSprite[1];
                 _delayBarImage.sprite = _delaySprites[1];
                 _delayHalfBarImage.sprite = _delaySprites[1];
+                pos.y = unit.CollideData.originpoints[0].y * 1.2f + 0.2f;
                 break;
             case 3:
+                _gradeSpriteRender.sprite = _gradeSprite[2];
                 _delayBarImage.sprite = _delaySprites[2];
                 _delayHalfBarImage.sprite = _delaySprites[2];
+                pos.y = unit.CollideData.originpoints[0].y * 1.5f + 0.2f;
                 break;
         }
+        _gradeSpriteRender.transform.position = pos;
     }
 
     /// <summary>
@@ -161,7 +178,20 @@ public class UnitSprite
     {
         _delayBar.SetActive(isShow);
         _delayHalfBar.SetActive(false);
+        if(!isShow)
+		{
+            ShowGradeUI(false);
+		}
     }
+
+    /// <summary>
+    /// 단계 UI 표시
+    /// </summary>
+    /// <param name="isShow"></param>
+    public void ShowGradeUI(bool isShow)
+	{
+        _gradeSpriteRender.gameObject.SetActive(isShow);
+	}
 
     /// <summary>
     /// 팀 설정에 따른 색깔 설정
@@ -189,13 +219,5 @@ public class UnitSprite
     public void ChangeMaterial(Material material)
 	{
         _spriteRenderer.material = material;
-	}
-
-    /// <summary>
-    /// 던지기가 가능 여부에 따른 이미지를 껐다 킨다
-    /// </summary>
-    public void SetThrowImage(bool isActive)
-	{
-        _starTransform.gameObject.SetActive(isActive);
 	}
 }

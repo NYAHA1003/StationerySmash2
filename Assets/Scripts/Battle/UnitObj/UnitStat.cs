@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utill.Data;
+using Utill.Tool;
+using Utill.Load;
 
 /// <summary>
 /// À¯´Ö ½ºÅÈ ÄÄÆ÷³ÍÆ®
@@ -64,12 +67,12 @@ public class UnitStat
     /// </summary>
     /// <param name="unitData"></param>
     /// <param name="grade"></param>
-    public void ResetStat(UnitData unitData, int grade)
+    public void ResetStat(CardType cardType, UnitData unitData, int grade)
     {
         ResetBonusStat();
         ResetAttackDelay();
         SetUnitData(unitData);
-        SetGradeStat(grade);
+        SetGradeStat(cardType, grade);
         SetWeight();
         SetAttackDelay(0);
     }
@@ -86,7 +89,7 @@ public class UnitStat
     /// ´Ü°è¿¡ µû¸¥ ½ºÅÈ Áõ°¡
     /// </summary>
     /// <param name="grade"></param>
-    public void SetGradeStat(int grade)
+    public void SetGradeStat(CardType cardType, int grade)
     {
         float multiple = 0;
         float divid = 0;
@@ -115,11 +118,15 @@ public class UnitStat
         }
 
         _grade = grade;
-        _moveSpeedPercent = (int)(100 * divid);
         _attackSpeedPercent = (int)(100 * multiple);
         _attackPercent = (int)(100 * multiple);
         _maxHp = (int)(_unitData._hp * multiple);
         _hp = _maxHp;
+
+        if(cardType != CardType.AttackProjectile)
+		{
+            _moveSpeedPercent = (int)(100 * divid);
+		}
     }
     public void GradeUp(int grade)
     {

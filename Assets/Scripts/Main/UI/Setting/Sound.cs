@@ -181,26 +181,27 @@ namespace Main.Setting
             }
         }
 
-        public static void PlayBgm(int num)
+        public static void PlayBgm(BGMSoundType bgm)
         {
-            _staticBgmSources[num].Play();
+            _staticBgmSources[(int)bgm].Play();
         }
-        public static void StopBgm(int num)
+        public static void StopBgm(BGMSoundType bgm)
         { 
-            _staticBgmSources[num].Stop();
+            _staticBgmSources[(int)bgm].Stop();
         }
-        public static void PlayEff(int num)
+        public static void PlayEff(EffSoundType eff)
         {
-            _staticEffSources[num].Play();
+            _staticEffSources[(int)eff].Play();
+         //   _staticEffSources[num].Play();
         }
 
         public void BgmSetting()
         {
             Scene scene = SceneManager.GetActiveScene();
             if (scene.name == "MainSceneRework") //ÃßÈÄ ¾À ÀÌ¸§ ¹Ù²Ü°Í
-                PlayBgm(1);
+                PlayBgm(BGMSoundType.Main);
             else if (scene.name == "BattleSceneRework")
-                PlayBgm(3);
+                PlayBgm(BGMSoundType.Stage2);
         }
     }
 }

@@ -44,8 +44,9 @@ public class Unit : MonoBehaviour
     protected BattleManager _battleManager = null;    
     protected bool _isSettingEnd = false;
     protected Sequence _knockbackTweener;
-    private int _viewIndex = 0;
+    protected int _viewIndex = 0;
     private float _multiple = 1f;
+    private int _grade = 0;
 	//참조 변수
 	private UnitData _unitData= null;
     private SkinData _skinData= null;
@@ -82,6 +83,7 @@ public class Unit : MonoBehaviour
         _knockbackTweener = DOTween.Sequence();
 
         //순서 인덱스
+        _grade = grade;
         OrderIndex = orderIndex;
 
         //유닛 데이터 받아오기
@@ -90,12 +92,30 @@ public class Unit : MonoBehaviour
         if(_eTeam == TeamType.MyTeam && dataBase._cardType == CardType.SummonUnit)
         {
             unitData = UnitDataManagerSO.FindHaveUnitData(dataBase._unitType);
+            _unitData = unitData;
         }
         else
         {
             unitData = UnitDataManagerSO.FindStdUnitData(dataBase._unitType);
+            UnitData unitDataCopy = new UnitData
+            {
+                _accuracy = unitData._accuracy,
+                _hp = unitData._hp + (unitData._hp * (dataBase._level - 1) / 10),
+                _weight = unitData._weight,
+                _knockback = unitData._knockback,
+                _dir = unitData._dir,
+                _moveSpeed = unitData._moveSpeed,
+                _damage = unitData._damage + (unitData._damage / 10 * (dataBase._level - 1)),
+                _attackSpeed = unitData._attackSpeed,
+                _range = unitData._range,
+                _colideData = unitData._colideData,
+                _stickerType = unitData._stickerType,
+                _attackType = unitData._attackType,
+                _unitType = unitData._unitType,
+                _unitablityData = unitData._unitablityData,
+            };
+            _unitData = unitDataCopy;
         }
-        _unitData = unitData;
 
         //스킨 데이터 받아오기
         _skinData = dataBase._skinData;
@@ -135,14 +155,14 @@ public class Unit : MonoBehaviour
         _stageData = stageData;
 
         //스탯 설정
-        _unitStat.ResetStat(_unitData, grade);
+        _unitStat.ResetStat(dataBase._cardType, _unitData, grade);
         MyUnitId = id;
 
         //상태이상
         _unitStateEff.SetStateEff(this, _unitSprite.SpriteRenderer);
 
         //스프라이트 초기화
-        _unitSprite.ResetSprite(eTeam, dataBase, _unitStat, orderIndex, grade);
+        _unitSprite.ResetSprite(this, dataBase._cardType, eTeam, dataBase, _unitStat, orderIndex, grade);
 
         //스테이트 설정
         _unitStateChanger.ResetUnitStateChanger(dataBase, transform, stageData, _unitSprite, this);
@@ -327,7 +347,7 @@ public class Unit : MonoBehaviour
     /// 보이기 순서 설정
     /// </summary>
     /// <param name="index"></param>
-    public void SetOrderIndex(int index)
+    public virtual void SetOrderIndex(int index)
     {
         OrderIndex = index;
         if(ETeam == TeamType.MyTeam)
@@ -344,6 +364,19 @@ public class Unit : MonoBehaviour
                 _viewIndex = 0;
             }
         }
+
+        switch(_grade)
+		{
+            case 2:
+                _viewIndex += 10;
+                break;
+            case 3:
+                _viewIndex += 20;
+                break;
+            default:
+                break;
+        }
+
         if(isThrowring)
         {
             _unitSprite.OrderDraw(_viewIndex);
@@ -384,13 +417,4 @@ public class Unit : MonoBehaviour
             return false;
 		}
     }
-    
-    /// <summary>
-    /// 던지기 가능 여부에 따른 던지기 이미지를 껐다 킨다
-    /// </summary>
-    /// <param name="isActive"></param>
-    public void SetThrowImageActive(bool isActive)
-	{
-        _unitSprite.SetThrowImage(isActive);
-	}
 }
