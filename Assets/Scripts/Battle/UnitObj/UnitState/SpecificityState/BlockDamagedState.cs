@@ -28,6 +28,17 @@ namespace Battle.Units
 			//스티커 사용
 			_myUnit.UnitSticker.RunDamagedStickerAbility(_curState, ref _atkData);
 
+			if(_atkData.attacker.UnitStateChanger.UnitState.CurState == eState.THROW)
+			{
+				AtkData atkDataMy = new AtkData(_myUnit, 0, 0, 0, 0, true, 0, EffAttackType.Normal);
+
+				atkDataMy.Reset_Kncockback(20, 0, 45, _myUnit.ETeam == TeamType.MyTeam);
+				atkDataMy.Reset_Type(EffAttackType.Normal);
+				atkDataMy.Reset_Value(1);
+				atkDataMy.Reset_Damage(0);
+				_atkData.attacker.Run_Damaged(atkDataMy);
+			}
+
 			//체력이 0 이하면 죽음 상태로 전환
 			if (_myUnit.UnitStat.Hp <= 0)
 			{
