@@ -21,11 +21,23 @@ namespace Battle.Units
 			}
 
 			//무적여부, 데미지 적용
+			_myUnit.SetIsInvincibility(true);
 			_myUnit.BattleManager.EffectComponent.SetEffect(_atkData._effectType, new EffData(_myUnit, _myTrm.transform.position, 0.2f));
 			_myUnit.SubtractHP(_atkData.damage * (_myUnit.UnitStat.DamagedPercent / 100) - _myUnit.UnitStat.DamageDecrese); //여기
 
 			//스티커 사용
 			_myUnit.UnitSticker.RunDamagedStickerAbility(_curState, ref _atkData);
+
+			if(_atkData.attacker.UnitStateChanger.UnitState.CurState == eState.THROW)
+			{
+				AtkData atkDataMy = new AtkData(_myUnit, 0, 0, 0, 0, true, 0, EffAttackType.Normal);
+
+				atkDataMy.Reset_Kncockback(20, 0, 45, _myUnit.ETeam == TeamType.MyTeam);
+				atkDataMy.Reset_Type(EffAttackType.Normal);
+				atkDataMy.Reset_Value(1);
+				atkDataMy.Reset_Damage(0);
+				_atkData.attacker.Run_Damaged(atkDataMy);
+			}
 
 			//체력이 0 이하면 죽음 상태로 전환
 			if (_myUnit.UnitStat.Hp <= 0)
@@ -34,20 +46,13 @@ namespace Battle.Units
 				return;
 			}
 
-			//넉백 적용
-			KnockBack();
+			_stateManager.Set_Wait(0.4f);
 		}
-		public override void KnockBack()
+
+		public override void Exit()
 		{
-			//자기 이하 무게의 넉백 무시
-			if(_atkData.attacker == null || _atkData.attacker.UnitStat.Return_Weight() > _myUnit.UnitStat.Return_Weight())
-			{
-				base.KnockBack();
-			}
-			else
-			{
-				_stateManager.Set_Wait(0.4f);
-			}
+			base.Exit();
+			_myUnit.SetIsInvincibility(false);
 		}
 	}
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Battle;
+using Main.Event;
 
 public class StageDetailPopupPanel : MonoBehaviour
 {
@@ -20,6 +22,8 @@ public class StageDetailPopupPanel : MonoBehaviour
 	public void Start()
 	{
 		_closeButton.onClick.AddListener(() => gameObject.SetActive(false));
+		EventManager.Instance.StartListening(Utill.Data.EventsType.SetNormalBattle, NormalBattle);
+		EventManager.Instance.StartListening(Utill.Data.EventsType.SetHardBattle, HardBattle);
 	}
 
 	private void OnDisable()
@@ -37,5 +41,21 @@ public class StageDetailPopupPanel : MonoBehaviour
 		_moneyText.text = AIAndStageData.Instance._currentStageDatas._rewardMoney.ToString();
 		_expText.text = AIAndStageData.Instance._currentStageDatas._rewardExp.ToString();
 		gameObject.SetActive(true);
+	}
+
+	/// <summary>
+	/// 일반전투 돌입
+	/// </summary>
+	private void NormalBattle()
+	{
+		BattleManager.IsHardMode = false;
+	}
+
+	/// <summary>
+	/// 어려운 전투 돌입
+	/// </summary>
+	private void HardBattle()
+	{
+		BattleManager.IsHardMode = true;
 	}
 }
