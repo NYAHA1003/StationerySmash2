@@ -84,7 +84,7 @@ namespace Battle
         {
             if(isWin)
 			{
-                _rouletteCanvas.gameObject.SetActive(true);
+                WinPanelActive();
             }
             else
 			{

@@ -27,6 +27,18 @@ namespace Battle
 			}
 		}
 
+		public static bool IsHardMode
+		{
+			get
+			{
+				return _isHarMode;
+			}
+			set
+			{
+				_isHarMode = value;
+			}
+		}
+
 		public CardComponent CardComponent => _cardComponent;
 		public UnitComponent UnitComponent => _unitComponent;
 		public CameraComponent CameraComponent => _cameraComponent;
@@ -70,6 +82,8 @@ namespace Battle
 		private WinLoseComponent _winLoseComponent = null;
 		[SerializeField, Header("인트로시스템 BattleIntro"), Space(30)]
 		private IntroComponent _introComponent = null;
+
+		private static bool _isHarMode = false;
 
 		private IEnumerator Start()
 		{

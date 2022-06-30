@@ -58,10 +58,7 @@ public class UnitSprite
 
     public void ResetSprite(Unit unit, CardType cardType, TeamType teamType, CardData cardData, UnitStat unitStat, int orderIndex, int grade)
     {
-        Vector2 pos = _gradeSpriteRender.transform.position;
-        pos.y = unit.CollideData.originpoints[0].y + 0.2f;
-        _gradeSpriteRender.transform.position = pos;
-        SetUIAndSprite(teamType, SkinData.GetSkin(cardData._skinData._skinType), grade);
+        SetUIAndSprite(unit, teamType, SkinData.GetSkin(cardData._skinData._skinType), grade);
         if(cardType == CardType.AttackProjectile)
         {
             ShowGradeUI(false);
@@ -70,6 +67,7 @@ public class UnitSprite
         {
             ShowGradeUI(true);
         }
+        ShowUI(true);
         UpdateDelayBar(unitStat.AttackDelay);
         SetTeamColor(teamType);
         SetHPSprite(unitStat.Hp, unitStat.MaxHp);
@@ -82,7 +80,7 @@ public class UnitSprite
     /// </summary>
     /// <param name="eTeam"></param>
     /// <param name="sprite"></param>
-    public void SetUIAndSprite(TeamType eTeam, Sprite sprite, int grade)
+    public void SetUIAndSprite(Unit unit, TeamType eTeam, Sprite sprite, int grade)
     {
         _eTeam = eTeam;
         SetDelayBar();
@@ -90,6 +88,7 @@ public class UnitSprite
         _spriteRenderer.sprite = sprite;
         _shadowSpriteRenderer.sprite = sprite;
         _hpSpriteRenderer.sprite = sprite;
+        Vector2 pos = _gradeSpriteRender.transform.position;
 
         switch (grade)
 		{
@@ -97,18 +96,22 @@ public class UnitSprite
                 _gradeSpriteRender.sprite = _gradeSprite[0];
                 _delayBarImage.sprite = _delaySprites[0];
                 _delayHalfBarImage.sprite = _delaySprites[0];
+                pos.y = unit.CollideData.originpoints[0].y + 0.2f;
                 break;
             case 2:
                 _gradeSpriteRender.sprite = _gradeSprite[1];
                 _delayBarImage.sprite = _delaySprites[1];
                 _delayHalfBarImage.sprite = _delaySprites[1];
+                pos.y = unit.CollideData.originpoints[0].y * 1.2f + 0.2f;
                 break;
             case 3:
                 _gradeSpriteRender.sprite = _gradeSprite[2];
                 _delayBarImage.sprite = _delaySprites[2];
                 _delayHalfBarImage.sprite = _delaySprites[2];
+                pos.y = unit.CollideData.originpoints[0].y * 1.5f + 0.2f;
                 break;
         }
+        _gradeSpriteRender.transform.position = pos;
     }
 
     /// <summary>
