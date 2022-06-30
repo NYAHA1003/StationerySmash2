@@ -24,6 +24,7 @@ namespace Main.Deck
         public int _setPrestIndex = 0; //마지막으로 사용했던 프리셋
         public int _money = 0;    //가지고 있는 돈
         public int _dalgona = 0;    //가지고 있는 달고나
+        public int _coupon = 0;    //가지고 있는 쿠폰
         public string _name = "";    //이름
         public int _level = 1; //레벨
         public int _nowExp = 0; //현재 경험치
