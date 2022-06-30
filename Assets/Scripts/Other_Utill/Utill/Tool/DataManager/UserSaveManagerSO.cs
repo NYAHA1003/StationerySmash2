@@ -54,6 +54,8 @@ namespace Utill.Tool
         {
             _isDebugMod = true;
             _userSaveData = _debugSaveData;
+            SetUserID();
+            _debugSaveData = _userSaveData;
         }
 
         /// <summary>
@@ -232,6 +234,7 @@ namespace Utill.Tool
                     _level = 1,
                     _count = 1,
                 };
+                _userSaveData._haveSkinList.Add(cardSaveData._skinType);
                 _userSaveData._haveCardSaveDatas.Add(cardSaveData);
                 if(cardData._unitType != UnitType.None)
 				{
