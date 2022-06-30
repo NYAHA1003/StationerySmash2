@@ -18,6 +18,7 @@ namespace Utill.Load
         public List<float> max_Delay;
         public int _awardMoney;
         public int _awardExp;
+        public bool _isEventMode = false;
     }
 
 

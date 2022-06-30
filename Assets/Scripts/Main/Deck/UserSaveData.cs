@@ -68,11 +68,25 @@ namespace Main.Deck
 		{
             if(money >= 100000000)
             {
-                money = 100000000;
+                _money = 100000000;
                 return;
 			}
             _money += money;
 		}
+
+
+        /// <summary>
+        /// 쿠폰 증가
+        /// </summary>
+        public void AddCoupon(int coupon)
+        {
+            if (coupon >= 100000000)
+            {
+                _coupon = 100000000;
+                return;
+            }
+            _coupon += coupon;
+        }
 
         /// <summary>
         /// 달고나 증가
