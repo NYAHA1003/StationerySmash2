@@ -23,6 +23,7 @@ namespace Utill.Data
 		badgePanel,
 		chapter2,
 		chapter3,
-		chapter4
+		chapter4,
+		eventPanel
 	}
 }
