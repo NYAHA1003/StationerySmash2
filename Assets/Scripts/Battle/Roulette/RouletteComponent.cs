@@ -226,7 +226,7 @@ public class RouletteComponent : MonoBehaviour
                 _rouletteDataSO._rouletteItemDataList[idx]._itemImage = _rouletteDataSO.itemSprites[(int)RouletteItemType.Coupon];
                 _rouletteDataSO._rouletteItemDataList[idx].rulletItemType = RouletteItemType.Coupon;
                 _rouletteDataSO._rouletteItemDataList[idx]._itemCount = 1;
-                _rouletteDataSO._rouletteItemDataList[idx]._chance = 1000;
+                _rouletteDataSO._rouletteItemDataList[idx]._chance = 10;
                 break;
         }
 
