@@ -4,11 +4,13 @@ using UnityEngine;
 using UnityEngine.UI; 
 using TMPro;
 
-public enum RoulletItemType
+public enum RouletteItemType
 {
     Coin,
     Dalgona,
-    Card
+    Coupon,
+    Card,
+
 }
 
 public class RouletteItem : MonoBehaviour
@@ -20,7 +22,7 @@ public class RouletteItem : MonoBehaviour
     [SerializeField]
     private RouletteItemData rouletteItemData;
 
-    public RoulletItemType RoulletItemType => rouletteItemData.rulletItemType; 
+    public RouletteItemType RoulletItemType => rouletteItemData.rulletItemType; 
     public void SetUp(RouletteItemData rouletteItemData)
     {
         _itemImage.sprite = rouletteItemData._itemImage; 

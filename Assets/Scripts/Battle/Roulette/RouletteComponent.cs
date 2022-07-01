@@ -16,6 +16,7 @@ public enum RouletteType
     Stage, // 스테이지 룰렛
 }
 
+
 public class RouletteComponent : MonoBehaviour
 {
     // 1 , 1.5 , 2 , 3
@@ -80,6 +81,12 @@ public class RouletteComponent : MonoBehaviour
         EventManager.Instance.StartListening(EventsType.ActiveRouletteCanvas, ActiveRoulleteCanvas); 
     }
 
+    [ContextMenu("테스트")]
+    public void Test()
+    {
+        ResetValues(); 
+        StartCoroutine(AssignItemsAndLines());
+    }
     private void Start()
     {
         SetWeight();
@@ -104,11 +111,11 @@ public class RouletteComponent : MonoBehaviour
 
         if(_rouletteType == RouletteType.Daily)
         {
-            _rouletteText.text = string.Format("LEVEL UP!");
+            _rouletteText.text = string.Format("레벨 업!");
         }
         else if (_rouletteType == RouletteType.Stage)
         {
-            _rouletteText.text = string.Format("STAGE CLEAR!");
+            _rouletteText.text = string.Format("스테이지 클리어!");
         }
 
     }
@@ -135,6 +142,7 @@ public class RouletteComponent : MonoBehaviour
         _pig.anchoredPosition = _originPigPos;
     }
 
+    private int _notCoinOrDalgona = 2; // 코인과 달고나가 아닌 아이템 개수
     #region 데이터 설정 
     /// <summary>
     /// 스테이지에 따라 달라지는 얻는 돈의 양 설정 (하드 룰렛)  
@@ -143,14 +151,14 @@ public class RouletteComponent : MonoBehaviour
     {
         _standardMoney = AIAndStageData.Instance._currentStageDatas._rewardMoney; 
         int count = _rouletteDataSO._rouletteItemDataList.Count;
-        for (int i = 0; i < count - 1; i++)
+        for (int i = 0; i < count - _notCoinOrDalgona; i++)
         {
             _rouletteDataSO._rouletteItemDataList[i]._itemCount = (int)(_standardMoney + (i * _standardMoney * 0.5f));
-            _rouletteDataSO._rouletteItemDataList[i]._itemImage = _rouletteDataSO.itemSprites[(int)RoulletItemType.Coin];
+            _rouletteDataSO._rouletteItemDataList[i]._itemImage = _rouletteDataSO.itemSprites[(int)RouletteItemType.Coin];
 
         }
         _rouletteDataSO._rouletteItemDataList[count - 1]._itemCount = _standardMoney * 3;
-        _rouletteDataSO._rouletteItemDataList[count - 1]._itemImage = _rouletteDataSO.itemSprites[(int)RoulletItemType.Coin];
+        _rouletteDataSO._rouletteItemDataList[count - 1]._itemImage = _rouletteDataSO.itemSprites[(int)RouletteItemType.Coin];
 
     }
 
@@ -161,19 +169,19 @@ public class RouletteComponent : MonoBehaviour
     private void SetItemCountHard()
     {
         int count = _rouletteDataSO._rouletteItemDataList.Count;
-        for (int i = 0; i < count - 1 ; i++)
+        for (int i = 0; i < count - _notCoinOrDalgona; i++)
         {
             if(Random.Range(0, 100) < 65) // 코인일 경우 
             {
                 _rouletteDataSO._rouletteItemDataList[i]._itemCount = _rouletteDataSO.coinCounts[i];
-                _rouletteDataSO._rouletteItemDataList[i].rulletItemType = RoulletItemType.Coin;
-                _rouletteDataSO._rouletteItemDataList[i]._itemImage = _rouletteDataSO.itemSprites[(int)RoulletItemType.Coin];   
+                _rouletteDataSO._rouletteItemDataList[i].rulletItemType = RouletteItemType.Coin;
+                _rouletteDataSO._rouletteItemDataList[i]._itemImage = _rouletteDataSO.itemSprites[(int)RouletteItemType.Coin];   
             }
             else // 달고나일 경우 
             {
                 _rouletteDataSO._rouletteItemDataList[i]._itemCount = _rouletteDataSO.dalgonaCounts[i];
-                _rouletteDataSO._rouletteItemDataList[i].rulletItemType = RoulletItemType.Dalgona;
-                _rouletteDataSO._rouletteItemDataList[i]._itemImage = _rouletteDataSO.itemSprites[(int)RoulletItemType.Dalgona];
+                _rouletteDataSO._rouletteItemDataList[i].rulletItemType = RouletteItemType.Dalgona;
+                _rouletteDataSO._rouletteItemDataList[i]._itemImage = _rouletteDataSO.itemSprites[(int)RouletteItemType.Dalgona];
 
             }
         }
@@ -196,20 +204,35 @@ public class RouletteComponent : MonoBehaviour
     }
     CardData card;
     ///// <summary>
-    ///// 분실물 설정  
+    ///// 특별 아이템 설정  ( 분실물, 쿠폰 ) 
     ///// </summary>
-    private void SetItem(int idx)
+    private void SetISpecialtem(int idx,RouletteItemType rouletteItemType)
     {
         int cardCount = allCardList.Count;
         int index = Random.Range(0, cardCount);
+        int count = Random.Range(5, 21);
 
-        card = allCardList[index];
+        switch (rouletteItemType)
+        {
+            case RouletteItemType.Card:
+                card = allCardList[index];
 
-        _rouletteDataSO._rouletteItemDataList[idx]._itemImage = SkinData.GetSkin(card._skinData._skinType);
-        _rouletteDataSO._rouletteItemDataList[idx].rulletItemType = RoulletItemType.Card;
-        _rouletteDataSO._rouletteItemDataList[idx]._itemCount = 1;
-        _rouletteDataSO._rouletteItemDataList[idx]._chance = 1;
+                _rouletteDataSO._rouletteItemDataList[idx]._itemImage = SkinData.GetSkin(card._skinData._skinType);
+                _rouletteDataSO._rouletteItemDataList[idx].rulletItemType = RouletteItemType.Card;
+                _rouletteDataSO._rouletteItemDataList[idx]._itemCount = count;
+                _rouletteDataSO._rouletteItemDataList[idx]._chance = 5;
+                break;
+            case RouletteItemType.Coupon:
+                _rouletteDataSO._rouletteItemDataList[idx]._itemImage = _rouletteDataSO.itemSprites[(int)RouletteItemType.Coupon];
+                _rouletteDataSO._rouletteItemDataList[idx].rulletItemType = RouletteItemType.Coupon;
+                _rouletteDataSO._rouletteItemDataList[idx]._itemCount = 1;
+                _rouletteDataSO._rouletteItemDataList[idx]._chance = 1000;
+                break;
+        }
+
+;
     }
+
 
     /// <summary>
     /// 선, 아이템 생성 
@@ -252,7 +275,8 @@ public class RouletteComponent : MonoBehaviour
             // _rouletteText.text = string.Format("Stage Clear! 룰렛");
             SetItemCountHard(); 
         }
-        SetItem(count - 1);
+        SetISpecialtem(count - 2, RouletteItemType.Coupon);
+        SetISpecialtem(count - 1, RouletteItemType.Card);
 
         for (int i = 0; i < count; i++)
         {
@@ -309,19 +333,23 @@ public class RouletteComponent : MonoBehaviour
     /// <summary>
     /// 뽑은 아이템 데이터 저장하기 
     /// </summary>
-    private void SaveItemData(RoulletItemType roulletItemType, int amount)
+    private void SaveItemData(RouletteItemType roulletItemType, int amount)
     {
-        if(roulletItemType == RoulletItemType.Coin)
+        if(roulletItemType == RouletteItemType.Coin)
         {
             UserSaveManagerSO.AddMoney(amount);
         }
-        else if (roulletItemType == RoulletItemType.Dalgona)
+        else if (roulletItemType == RouletteItemType.Dalgona)
         {
             UserSaveManagerSO.AddDalgona(amount);
         }
-        else if(roulletItemType == RoulletItemType.Card)
+        else if(roulletItemType == RouletteItemType.Card)
         {
             UserSaveManagerSO.AddCardData(card, amount);
+        }
+        else if(roulletItemType == RouletteItemType.Coupon)
+        {
+            UserSaveManagerSO.AddCoupon(amount); 
         }
     }
     // 클릭시 버튼 없애고 
