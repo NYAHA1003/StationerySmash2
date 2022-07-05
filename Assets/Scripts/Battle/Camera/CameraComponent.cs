@@ -51,7 +51,7 @@ namespace Battle
 			_commandWinLose = commandWInLose;
 			_commandCard = cardCommand;
 
-			updateAction += UpdateCameraScale;
+			//updateAction += UpdateCameraScale;
 			updateAction += UpdateInputMove;
 
 			Vector3 pos = _camera.transform.localPosition;
