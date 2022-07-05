@@ -30,6 +30,10 @@ public class StageDetailPopupPanel : MonoBehaviour
 		_closeButton.onClick.AddListener(() => gameObject.SetActive(false));
 		EventManager.Instance.StartListening(Utill.Data.EventsType.SetNormalBattle, NormalBattle);
 		EventManager.Instance.StartListening(Utill.Data.EventsType.SetHardBattle, HardBattle);
+		_stageNameText.ForceMeshUpdate();
+		_moneyText.ForceMeshUpdate();
+		_expText.ForceMeshUpdate();
+		gameObject.SetActive(false);
 	}
 
 	private void OnDisable()
