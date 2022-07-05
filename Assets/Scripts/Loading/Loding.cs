@@ -35,5 +35,9 @@ namespace Utill.Load
         S5_3,
         S5_4,
         S5_5,
+        SNormalMAx,
+
+        E_Money = 10000,
+        EMax,
     }
 }
