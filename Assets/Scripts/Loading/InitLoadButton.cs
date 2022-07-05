@@ -29,6 +29,10 @@ namespace Utill.Load
 		/// </summary>
 		public void NextBattle()
         {
+            if(UserSaveManagerSO.UserSaveData._lastPlayStage == BattleStageType.S1_1 && AIAndStageData.Instance._currentStageDatas._stageType == BattleStageType.S1_2)
+            {
+                return;
+            }
             var last = System.Enum.GetValues(typeof(BattleStageType)).Cast<BattleStageType>().Last();
             if (AIAndStageData.Instance._currentStageDatas._stageType == last)
 			{

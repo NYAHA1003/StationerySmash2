@@ -9,7 +9,7 @@ public class ButtonNoneParam : ButtonAgent
     {
         Debug.Log("dd");
         Sound.PlayEff(Utill.Data.EffSoundType.Spawn);
-        for(int i = 0; i < eventTypes.Length;i++)
+        for(int i = 0; i < eventTypes.Length; ++i)
         {
             EventManager.Instance.TriggerEvent(eventTypes[i]);
         }
