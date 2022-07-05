@@ -118,7 +118,10 @@ namespace Battle
             _winPanel.gameObject.SetActive(true);
 
             //마지막 스테이지 등록
-            UserSaveManagerSO.SetLastClearStage(_currentStageData._stageType);
+            if (!AIAndStageData.Instance._isEventMode)
+            {
+                UserSaveManagerSO.SetLastClearStage(_currentStageData._stageType);
+            }
             _winPanel.sizeDelta = new Vector2(3, 3);
             _winPanel.DOScale(1, 0.3f).SetEase(Ease.OutExpo).
                 OnComplete(() =>
