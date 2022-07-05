@@ -235,7 +235,7 @@ namespace Battle
 			}
 
 			//카메라 크기가 클 때
-			if ((_stageData.max_Range - 1) - _camera.orthographicSize <= 0.2f)
+			if ((1 + (_stageData.max_Range - 1) * 0.5f) - _camera.orthographicSize <= 0.2f)
 			{
 				SetFalseCameraMoveButton();
 				MovingCameraMoverNoneSize(Vector2.zero, 0.2f, 0.1f);
@@ -248,7 +248,7 @@ namespace Battle
 
 			if (Input.GetKey(KeyCode.UpArrow))
 			{
-				if (_stageData.max_Range - 1 < _camera.orthographicSize)
+				if ((1 + (_stageData.max_Range - 1) * 0.5f < _camera.orthographicSize))
 				{
 					return;
 				}
