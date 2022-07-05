@@ -9,7 +9,9 @@ using Main.Deck;
 public class SceneLoadButtonManager : MonoBehaviour
 {
     [SerializeField]
-    private Button[] buttons;
+    private Button[] stageButtons;
+    [SerializeField]
+    private Button[] eventButtons;
     [SerializeField]
     private Sprite[] _stageSprites;
     private InitLoadButton initLoadButton;
@@ -21,30 +23,49 @@ public class SceneLoadButtonManager : MonoBehaviour
     {
         initLoadButton = GetComponent<InitLoadButton>();
         _warrningComponent = FindObjectOfType<WarrningComponent>();
-         buttons[0].onClick.AddListener(() => initLoadButton.LoadBattleDataStageMake(BattleStageType.ST_MAKE));
+        stageButtons[0].onClick.AddListener(() => initLoadButton.LoadBattleDataStageMake(BattleStageType.ST_MAKE));
+        LoadEventLoadButtons();
         SetBattleLoadButtons();
     }
-   
+
     private void SetBattleLoadButtons()
     {
-        for (int i = 1; i < System.Enum.GetValues(typeof(BattleStageType)).Length; i++)
+        int i = 1;
+        while ((int)BattleStageType.SNormalMAx != (int)(BattleStageType)i)
+        //for (int i = 1; i < System.Enum.GetValues(typeof(BattleStageType)).Length; i++)
         {
             //각 버튼에 enum값 대입하기
+            //int temp = i;
             int temp = i;
-            if(UserSaveManagerSO.UserSaveData._lastPlayStage >= (BattleStageType)i) //스테이지 클리어
+            if (UserSaveManagerSO.UserSaveData._lastPlayStage >= (BattleStageType)i) //스테이지 클리어
             {
-                buttons[temp].GetComponent<Image>().sprite = _stageSprites[2];
+                stageButtons[temp].GetComponent<Image>().sprite = _stageSprites[2];
             }
             else if ((int)UserSaveManagerSO.UserSaveData._lastPlayStage - i == -1) //스테이지 도전 가능
             {
-                buttons[temp].GetComponent<Image>().sprite = _stageSprites[1];
+                stageButtons[temp].GetComponent<Image>().sprite = _stageSprites[1];
             }
             else if (UserSaveManagerSO.UserSaveData._lastPlayStage < (BattleStageType)i) //스테이지 미클리어
             {
-                buttons[temp].GetComponent<Image>().sprite = _stageSprites[0];
+                stageButtons[temp].GetComponent<Image>().sprite = _stageSprites[0];
             }
-            buttons[temp].onClick.AddListener(() => LoadBattleData((BattleStageType)temp));
+            stageButtons[temp].onClick.AddListener(() => LoadBattleData((BattleStageType)temp));
+            i++;
         }
+    }
+    private void LoadEventLoadButtons()
+    {
+        int j = 0;
+        int k = 0;
+        for (int i = (int)BattleStageType.E_Money; i < (int)BattleStageType.EMax; i++)
+        {
+            k = i;
+            eventButtons[j++].onClick.AddListener(() => LoadEventData((BattleStageType)k));
+        }
+    }
+    private void LoadEventData(BattleStageType battleStageType)
+    {
+        initLoadButton.InitBattleData(battleStageType);
     }
     private void LoadBattleData(BattleStageType battleStageType)
     {
@@ -56,5 +77,5 @@ public class SceneLoadButtonManager : MonoBehaviour
         }
         initLoadButton.InitBattleData(battleStageType);
     }
-    
+
 }
