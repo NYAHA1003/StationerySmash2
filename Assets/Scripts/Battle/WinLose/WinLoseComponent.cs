@@ -40,6 +40,8 @@ namespace Battle
         private PencilCaseComponent _pencilCaseComponent = null;
         private StageData _currentStageData = null;
 
+        private bool _isEnd = false;
+
         /// <summary>
         /// √ ±‚»≠
         /// </summary>
@@ -60,6 +62,13 @@ namespace Battle
         /// </summary>
         public void SendEndGame(bool isWin)
         {
+            if(_isEnd)
+			{
+                return;
+			}
+
+            _isEnd = true;
+
             int count = _observers.Count;
             for (int i = 0; i < count; i++)
             {
@@ -82,6 +91,8 @@ namespace Battle
         /// <param name="isWin"></param>
         public void SetWinLosePanel(bool isWin)
         {
+            
+
             if(isWin)
 			{
                 WinPanelActive();
