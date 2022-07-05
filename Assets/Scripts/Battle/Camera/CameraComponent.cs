@@ -54,6 +54,9 @@ namespace Battle
 			updateAction += UpdateCameraScale;
 			updateAction += UpdateInputMove;
 
+			Vector3 pos = _camera.transform.localPosition;
+			pos.y = (0.9f + (_stageData.max_Range - 1) * -0.3f);
+			_camera.transform.localPosition = pos;
 			_originVector = _camera.transform.localPosition;
 
 			//관찰자를 등록한다
@@ -99,7 +102,7 @@ namespace Battle
 		{
 			_camera.transform.DOMove(_originVector, duration).SetEase(Ease.OutExpo);
 			_camera.transform.DOScale(Vector3.one, duration).SetEase(Ease.OutExpo);
-			DOTween.To(() => _camera.orthographicSize, x => _camera.orthographicSize = x, _stageData.max_Range - 1, duration);
+			DOTween.To(() => _camera.orthographicSize, x => _camera.orthographicSize = x, 1 + (_stageData.max_Range - 1) * 0.5f, duration);
 		}
 
 		/// <summary>
