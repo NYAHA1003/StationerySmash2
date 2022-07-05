@@ -56,7 +56,7 @@ namespace Battle
                 _cardCommand.SetMaxCard(8);
                 _costCommand.SetCostSpeed(500);
                 _isSuddenDeath = true;
-                _timeComponent.SetTime(20);
+                _timeComponent.SetTime(50); //서든데스 시간
                 _suddenDeathBackground.SetActive(true);
                 _suddenDeathGlow.SetActive(true);
                 _bgmMixerGruop.audioMixer.SetFloat("BGMPitch", 1.2f);
