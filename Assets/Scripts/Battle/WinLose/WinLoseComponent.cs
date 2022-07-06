@@ -35,6 +35,16 @@ namespace Battle
         private AudioMixerGroup _bgmMixerGroup;
         [SerializeField]
         private Canvas _rouletteCanvas;
+        [SerializeField]
+        private Button _winNextStageButton;
+        [SerializeField]
+        private Button _winRetryButton;
+        [SerializeField]
+        private Button _winGoToMainButton;
+        [SerializeField]
+        private Button _loseRetryButton;
+        [SerializeField]
+        private Button _loseGoToMainButton;
 
         private List<IWinLose> _observers = new List<IWinLose>(); //°üÂûÀÚµé
         private PencilCaseComponent _pencilCaseComponent = null;
@@ -122,6 +132,11 @@ namespace Battle
             {
                 UserSaveManagerSO.SetLastClearStage(_currentStageData._stageType);
             }
+            else
+			{
+                _winNextStageButton.gameObject.SetActive(false);
+                _winRetryButton.gameObject.SetActive(false);
+            }
             _winPanel.sizeDelta = new Vector2(3, 3);
             _winPanel.DOScale(1, 0.3f).SetEase(Ease.OutExpo).
                 OnComplete(() =>
@@ -142,6 +157,11 @@ namespace Battle
         {
             _winLoseCanvas.gameObject.SetActive(true);
             _losePanel.gameObject.SetActive(true);
+
+            if (AIAndStageData.Instance._isEventMode)
+            {
+                _loseRetryButton.gameObject.SetActive(false);
+            }
 
             _losePanel.sizeDelta = new Vector2(3, 3);
             _losePanel.DOScale(1, 0.3f).SetEase(Ease.OutExpo).
