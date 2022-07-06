@@ -6,7 +6,7 @@ using DG.Tweening;
 using Utill.Data;
 using Utill.Tool;
 using Main.Deck;
-
+using Main.Setting;
 
 namespace Battle
 {
@@ -160,6 +160,9 @@ namespace Battle
             _cardComponent.SubtractCardFind(fromCombineCard);
             _cardComponent.SortCard();
             _isFusion = false;
+
+            //카드 효과음 출력
+            Sound.PlayEff(EffSoundType.LevelUp);
         }
 
         /// <summary>

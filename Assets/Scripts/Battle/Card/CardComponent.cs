@@ -6,7 +6,7 @@ using DG.Tweening;
 using Utill.Data;
 using Utill.Tool;
 using Main.Deck;
-
+using Main.Setting;
 namespace Battle
 {
     [System.Serializable]
@@ -208,6 +208,7 @@ namespace Battle
 			{
                 //Ä«µå À¶ÇÕ
                 SetDelayFusion();
+                Sound.PlayEff(EffSoundType.Spawn);
             }
 
             if(_commandUnit.eTeam == TeamType.EnemyTeam)
